@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
+import {
+  ActivityIndicator,
+  AppState,
+  RefreshControl,
+  StatusBar,
+  useWindowDimensions,
+} from 'react-native';
 import Animated, {
   LinearTransition,
   runOnJS,
@@ -294,6 +300,10 @@ const ConversationScreen = () => {
     dispatch(resetActionState());
   };
 
+  const { height: windowHeight } = useWindowDimensions();
+  // Cap the inbox sheet at 70% of the screen; it sizes to content below that.
+  const inboxSheetMaxHeight = Math.round(windowHeight * 0.7);
+
   const filterSnapPoints = useMemo(() => {
     switch (currentBottomSheet) {
       case 'status':
@@ -302,8 +312,10 @@ const ConversationScreen = () => {
         return [200];
       case 'assignee_type':
         return [200];
+      // Inbox list uses dynamic sizing (see maxDynamicContentSize) so the sheet
+      // hugs a short list and caps at 70% for a long, scrollable one.
       case 'inbox_id':
-        return ['70%'];
+        return undefined;
       default:
         return [250];
     }
@@ -330,13 +342,19 @@ const ConversationScreen = () => {
           animationConfigs={animationConfigs}
           enablePanDownToClose
           snapPoints={filterSnapPoints}
+          maxDynamicContentSize={
+            currentBottomSheet === 'inbox_id' ? inboxSheetMaxHeight : undefined
+          }
           onDismiss={handleOnDismiss}>
-          <BottomSheetWrapper>
-            {currentBottomSheet === 'status' ? <StatusFilters /> : null}
-            {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
-            {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
-            {currentBottomSheet === 'inbox_id' ? <InboxFilters /> : null}
-          </BottomSheetWrapper>
+          {currentBottomSheet === 'inbox_id' ? (
+            <InboxFilters />
+          ) : (
+            <BottomSheetWrapper>
+              {currentBottomSheet === 'status' ? <StatusFilters /> : null}
+              {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
+              {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
+            </BottomSheetWrapper>
+          )}
         </BottomSheetModal>
         <ActionBottomSheet />
         <ActionTabs />

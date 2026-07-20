@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { TickIcon } from '@/svg-icons';
@@ -62,26 +63,6 @@ const InboxCell = (props: InboxCellProps) => {
   );
 };
 
-type InboxStackProps = {
-  list: { id: number; name: string; channelType: Channel; medium: string }[];
-};
-
-const InboxStack = (props: InboxStackProps) => {
-  const { list } = props;
-  return (
-    <Animated.ScrollView
-      style={tailwind.style('pl-3 pb-4')}
-      bounces={false}
-      showsVerticalScrollIndicator={true}
-      scrollEventThrottle={16}
-      nestedScrollEnabled={true}>
-      {list.map((value, index) => (
-        <InboxCell key={index} {...{ value, index, isLastItem: index === list.length - 1 }} />
-      ))}
-    </Animated.ScrollView>
-  );
-};
-
 export const InboxFilters = () => {
   const inboxes = useAppSelector(selectAllInboxes);
   const inboxList = [
@@ -104,13 +85,21 @@ export const InboxFilters = () => {
   }));
 
   return (
-    <Animated.ScrollView
-      bounces={false}
-      showsVerticalScrollIndicator={true}
-      scrollEventThrottle={16}
-      nestedScrollEnabled={true}>
-      <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.INBOX.TITLE')} />
-      <InboxStack list={inboxList} />
-    </Animated.ScrollView>
+    <BottomSheetScrollView
+      contentContainerStyle={tailwind.style('pb-4')}
+      stickyHeaderIndices={[0]}
+      showsVerticalScrollIndicator={true}>
+      <Animated.View style={tailwind.style('bg-white pb-3')}>
+        <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.INBOX.TITLE')} />
+      </Animated.View>
+      <Animated.View style={tailwind.style('pl-3')}>
+        {inboxList.map((value, index) => (
+          <InboxCell
+            key={index}
+            {...{ value, index, isLastItem: index === inboxList.length - 1 }}
+          />
+        ))}
+      </Animated.View>
+    </BottomSheetScrollView>
   );
 };

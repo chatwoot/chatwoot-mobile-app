@@ -123,7 +123,7 @@ export const ConversationHeader = () => {
   };
 
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px]'), headerBorderAnimation]}>
+    <Animated.View style={[tailwind.style('border-b-[1px] bg-white z-10'), headerBorderAnimation]}>
       <ConversationHeaderPresenter
         currentState={currentState}
         isSelectedAll={isSelectedAll}

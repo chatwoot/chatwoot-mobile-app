@@ -6,7 +6,11 @@ import {
   StatusBar,
   useWindowDimensions,
 } from 'react-native';
-import Animated, { SharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
+import Animated, {
+  LinearTransition,
+  SharedValue,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -324,7 +328,11 @@ const ConversationScreen = () => {
       />
       <ConversationListStateProvider>
         <ConversationHeader />
-        <ConversationList />
+        <Animated.View
+          style={tailwind.style('flex-1')}
+          layout={LinearTransition.springify().damping(22).stiffness(180)}>
+          <ConversationList />
+        </Animated.View>
         <BottomSheetModal
           ref={filtersModalSheetRef}
           backdropComponent={BottomSheetBackdrop}

@@ -46,7 +46,7 @@ export const MarkdownBubble = (props: MarkdownBubbleProps) => {
     },
     paragraph: {
       marginTop: 0,
-      marginBottom: 0,
+      marginBottom: 12,
       fontFamily: 'Inter-400-20',
     },
     bullet_list: {
@@ -80,6 +80,7 @@ export const MarkdownBubble = (props: MarkdownBubbleProps) => {
       markdownit={MarkdownIt({
         linkify: true,
         typographer: true,
+        breaks: true,
       })}
       onLinkPress={handleURL}
       style={styles}>

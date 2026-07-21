@@ -52,7 +52,7 @@ const checkIfPropsAreSame = (
   return arePropsEqual;
 };
 
-export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
+export const ConversationItemDetailContent = memo((props: ConversationDetailSubCellProps) => {
   const {
     id: conversationId,
     priority,
@@ -84,9 +84,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   }
 
   return (
-    <AnimatedNativeView
-      layout={LinearTransition.springify().damping(28).stiffness(200)}
-      style={tailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-blackA-A3')}>
+    <NativeView style={tailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-blackA-A3')}>
       <AnimatedNativeView
         style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
         <AnimatedNativeView style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px]')}>
@@ -181,6 +179,21 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}
+    </NativeView>
+  );
+}, checkIfPropsAreSame);
+
+ConversationItemDetailContent.displayName = 'ConversationItemDetailContent';
+
+export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
+  if (!props.lastMessage) {
+    return null;
+  }
+  return (
+    <AnimatedNativeView
+      layout={LinearTransition.springify().damping(28).stiffness(200)}
+      style={tailwind.style('flex-1')}>
+      <ConversationItemDetailContent {...props} />
     </AnimatedNativeView>
   );
 }, checkIfPropsAreSame);

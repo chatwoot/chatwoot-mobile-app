@@ -381,6 +381,9 @@
     "CONTACT_ATTRIBUTES": "Contact Attributes",
     "VALUE_UNAVAILABLE": "Unavailable"
   },
+  "CONTACT_CONVERSATIONS": {
+    "TITLE": "Previous Conversations"
+  },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",

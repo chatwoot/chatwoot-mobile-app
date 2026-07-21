@@ -14,7 +14,6 @@ import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { tailwind } from '@/theme';
 import {
   selectConversationById,
-  selectConversationFetching,
   selectConversationError,
 } from '@/store/conversation/conversationSelectors';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -95,7 +94,6 @@ const ChatScreen = (props: ChatScreenProps) => {
   const { conversationId, primaryActorId, primaryActorType } = props.route.params;
   const dispatch = useAppDispatch();
 
-  const conversationFetching = useAppSelector(state => selectConversationFetching(state));
   const conversationError = useAppSelector(state => selectConversationError(state));
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
@@ -147,16 +145,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
-  if (conversationFetching) {
-    return (
-      <Animated.View
-        style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
-        <ActivityIndicator />
-      </Animated.View>
-    );
-  }
-
-  if (conversationError || !conversation) {
+  if (conversationError) {
     return (
       <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
         <Animated.View
@@ -197,7 +186,13 @@ const ChatScreen = (props: ChatScreenProps) => {
       </SafeAreaView>
     );
   }
-  return null;
+
+  return (
+    <Animated.View
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      <ActivityIndicator />
+    </Animated.View>
+  );
 };
 
 export default ChatScreen;

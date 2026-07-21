@@ -38,9 +38,10 @@ import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, Text } from 'react-native';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
+import { useMessageEntrance } from './useMessageEntrance';
 
 // import { ImageMetadata } from '@/types';
 
@@ -112,6 +113,7 @@ const MessageWrapper = ({
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
   });
+  const entranceStyle = useMessageEntrance(item.id);
 
   const flexOrientationClass = () => {
     const map = {
@@ -126,6 +128,9 @@ const MessageWrapper = ({
   // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
   const EMAIL_WIDTH = windowWidth - 52;
 
+  // Only the search-target row animates, so only it needs an Animated.View.
+  const Bubble = isTargetMessage ? Animated.View : View;
+
   return (
     <Animated.View
       style={[
@@ -136,15 +141,16 @@ const MessageWrapper = ({
           !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
           item.private ? 'my-1' : '',
         ),
+        entranceStyle,
       ]}>
-      <Animated.View style={tailwind.style('flex flex-row')}>
+      <View style={tailwind.style('flex flex-row')}>
         {!shouldGroupWithPrevious && shouldShowAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
+          <View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
-          </Animated.View>
+          </View>
         ) : null}
         <MessageMenu menuOptions={getMenuOptions(item)}>
-          <Animated.View
+          <Bubble
             style={[
               tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
@@ -167,31 +173,28 @@ const MessageWrapper = ({
                     : 'rounded-br-none'
                   : '',
               ),
-              zoomStyle,
+              isTargetMessage && zoomStyle,
             ]}>
             {children}
             {/* Highlight overlay for target message */}
             {isTargetMessage && (
               <Animated.View
-                style={[
-                  tailwind.style('absolute inset-0 bg-white rounded-2xl'),
-                  highlightStyle,
-                ]}
+                style={[tailwind.style('absolute inset-0 bg-white rounded-2xl'), highlightStyle]}
                 pointerEvents="none"
               />
             )}
             {!shouldGroupWithPrevious && (
-              <Animated.View
+              <View
                 style={tailwind.style(
                   'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
                 )}>
-                <Animated.Text
+                <Text
                   style={tailwind.style(
                     'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
                     variantTextMap[variant],
                   )}>
                   {unixTimestampToReadableTime(item.createdAt)}
-                </Animated.Text>
+                </Text>
                 <DeliveryStatus
                   isPrivate={item.private}
                   status={item.status}
@@ -202,11 +205,11 @@ const MessageWrapper = ({
                   deliveredColor="text-gray-700"
                   sentColor="text-gray-700"
                 />
-              </Animated.View>
+              </View>
             )}
-          </Animated.View>
+          </Bubble>
         </MessageMenu>
-      </Animated.View>
+      </View>
     </Animated.View>
   );
 };

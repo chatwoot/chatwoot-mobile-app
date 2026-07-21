@@ -4,6 +4,9 @@ import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 
 import { tailwind } from '@/theme';
 
+// Shared parser instance; the options are static.
+const markdownItInstance = MarkdownIt({ linkify: true, typographer: true });
+
 type MarkdownDisplayProps = {
   messageContent: string;
   isIncoming?: boolean;
@@ -66,14 +69,7 @@ export const MarkdownDisplay = (props: MarkdownDisplayProps) => {
     },
   });
   return (
-    <Markdown
-      mergeStyle
-      markdownit={MarkdownIt({
-        linkify: true,
-        typographer: true,
-      })}
-      onLinkPress={handleURL}
-      style={styles}>
+    <Markdown mergeStyle markdownit={markdownItInstance} onLinkPress={handleURL} style={styles}>
       {messageContent}
     </Markdown>
   );

@@ -6,10 +6,7 @@ import i18n from '@/i18n';
 import { tailwind } from '@/theme';
 import { useAppSelector } from '@/hooks';
 import { getLastMessage } from '@/utils';
-import {
-  selectContactConversationsByContactId,
-  selectContactConversationsUiFlags,
-} from '@/store/contact/contactConversationSlice';
+import { selectContactConversationsByContactId } from '@/store/contact/contactConversationSlice';
 
 import { PreviousConversationItem } from './PreviousConversationItem';
 
@@ -22,7 +19,6 @@ export const ContactPreviousConversations = (props: ContactPreviousConversations
   const { contactId, currentConversationId } = props;
 
   const conversations = useAppSelector(selectContactConversationsByContactId(contactId));
-  const { isFetching } = useAppSelector(selectContactConversationsUiFlags(contactId));
 
   const previousConversations = conversations.filter(
     conversation =>
@@ -30,7 +26,7 @@ export const ContactPreviousConversations = (props: ContactPreviousConversations
       getLastMessage({ ...conversation, messages: conversation.messages ?? [] }) !== null,
   );
 
-  if (isFetching || previousConversations.length === 0) {
+  if (previousConversations.length === 0) {
     return null;
   }
 

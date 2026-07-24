@@ -59,7 +59,7 @@ export const InboxFilters = () => {
 
   const handleChangeFilters = (value: InboxSortTypes) => {
     dispatch(setFilters({ key: value }));
-    setTimeout(() => inboxFiltersSheetRef.current?.dismiss({ overshootClamping: true }), 1);
+    setTimeout(() => inboxFiltersSheetRef.current?.dismiss(), 1);
   };
 
   return (

@@ -1,8 +1,7 @@
 import React, { forwardRef, useCallback } from 'react';
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
-import { BottomSheetBackdrop } from '@/components-next';
+import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { COPILOT_ACTIONS } from '@/constants/copilot';
@@ -21,7 +20,7 @@ type ToneSelectionSheetProps = {
   onSelectTone: (tone: CopilotActionKey) => void;
 };
 
-export const ToneSelectionSheet = forwardRef<BottomSheetModal, ToneSelectionSheetProps>(
+export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
   ({ onSelectTone }, ref) => {
     const hapticSelection = useHaptic();
 
@@ -37,15 +36,8 @@ export const ToneSelectionSheet = forwardRef<BottomSheetModal, ToneSelectionShee
     );
 
     return (
-      <BottomSheetModal
-        ref={ref}
-        backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-t-[26px] overflow-hidden')}
-        enablePanDownToClose
-        enableDynamicSizing>
-        <BottomSheetView>
+      <Sheet ref={ref} autoSize>
+        <View>
           <Animated.View style={tailwind.style('items-center pt-1 pb-4')}>
             <Text
               style={tailwind.style(
@@ -69,8 +61,8 @@ export const ToneSelectionSheet = forwardRef<BottomSheetModal, ToneSelectionShee
               </Text>
             </Pressable>
           ))}
-        </BottomSheetView>
-      </BottomSheetModal>
+        </View>
+      </Sheet>
     );
   },
 );

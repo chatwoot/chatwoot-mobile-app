@@ -1,7 +1,6 @@
 import React from 'react';
 import { ActivityIndicator, Pressable, TextInput, TextInputProps } from 'react-native';
 import Animated, { withTiming } from 'react-native-reanimated';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import { CloseIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -11,19 +10,11 @@ import { Icon } from '../icon';
 interface SearchBarProps extends TextInputProps {
   isLoading?: boolean;
   prefix?: RenderPropType;
-  isInsideBottomSheet?: boolean;
   onClear?: () => void;
 }
 
 export const SearchBar = (props: SearchBarProps) => {
-  const {
-    isLoading = false,
-    prefix,
-    isInsideBottomSheet = false,
-    onClear,
-    value,
-    ...otherProps
-  } = props;
+  const { isLoading = false, prefix, onClear, value, ...otherProps } = props;
 
   // Row Exit Animation
   const exiting = () => {
@@ -40,7 +31,7 @@ export const SearchBar = (props: SearchBarProps) => {
     };
   };
 
-  const SearchTextInput = isInsideBottomSheet ? BottomSheetTextInput : TextInput;
+  const SearchTextInput = TextInput;
 
   return (
     <Animated.View exiting={exiting} style={tailwind.style('px-3 h-[36px] relative')}>

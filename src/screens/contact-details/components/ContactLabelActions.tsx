@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
+import type { SheetRef } from '@/components-next/common/sheet/Sheet';
 import i18n from '@/i18n';
 import { useAppDispatch } from '@/hooks';
 import { contactLabelActions } from '@/store/contact/contactLabelActions';
@@ -15,7 +15,7 @@ interface ContactLabelActionsProps {
 export const ContactLabelActions = (props: ContactLabelActionsProps) => {
   const { labels, contactId } = props;
   const dispatch = useAppDispatch();
-  const contactLabelSheetRef = useRef<BottomSheetModal>(null);
+  const contactLabelSheetRef = useRef<SheetRef>(null);
 
   const handleLabelsUpdate = (updatedLabels: string[]) => {
     dispatch(

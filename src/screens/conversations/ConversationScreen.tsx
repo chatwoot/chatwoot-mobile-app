@@ -1,11 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  AppState,
-  RefreshControl,
-  StatusBar,
-  useWindowDimensions,
-} from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, {
   LinearTransition,
   SharedValue,
@@ -13,11 +7,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-  BottomSheetModal,
-  useBottomSheetSpringConfigs,
-  useBottomSheetModal,
-} from '@gorhom/bottom-sheet';
+import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -29,7 +19,8 @@ import {
   AssigneeTypeFilters,
 } from './components';
 
-import { ActionTabs, BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
+import { ActionTabs } from '@/components-next';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 
 import { EmptyStateIcon } from '@/svg-icons';
 import {
@@ -81,7 +72,6 @@ type FlashListRenderItemType = {
 };
 
 const ConversationList = () => {
-  const { dismissAll } = useBottomSheetModal();
   const dispatch = useAppDispatch();
   const [appState, setAppState] = useState(AppState.currentState);
 
@@ -129,7 +119,7 @@ const ConversationList = () => {
   }, [filters]);
 
   useEffect(() => {
-    dismissAll();
+    TrueSheet.dismissAll();
     clearAndFetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -281,12 +271,6 @@ const ConversationScreen = () => {
   const currentBottomSheet = useAppSelector(selectBottomSheetState);
   const dispatch = useAppDispatch();
 
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1.2,
-    stiffness: 300,
-    damping: 50,
-  });
-
   const { filtersModalSheetRef } = useRefsContext();
 
   const handleOnDismiss = () => {
@@ -298,26 +282,20 @@ const ConversationScreen = () => {
     dispatch(resetActionState());
   };
 
-  const { height: windowHeight } = useWindowDimensions();
-  // Cap the inbox sheet at 70% of the screen; it sizes to content below that.
-  const inboxSheetMaxHeight = Math.round(windowHeight * 0.7);
+  const isInbox = currentBottomSheet === 'inbox_id';
 
-  const filterSnapPoints = useMemo(() => {
+  const filterHeight = (() => {
     switch (currentBottomSheet) {
       case 'status':
-        return [290];
+        return 290;
       case 'sort_by':
-        return [200];
+        return 200;
       case 'assignee_type':
-        return [200];
-      // Inbox list uses dynamic sizing (see maxDynamicContentSize) so the sheet
-      // hugs a short list and caps at 70% for a long, scrollable one.
-      case 'inbox_id':
-        return undefined;
+        return 200;
       default:
-        return [250];
+        return 250;
     }
-  }, [currentBottomSheet]);
+  })();
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
@@ -333,31 +311,22 @@ const ConversationScreen = () => {
           layout={LinearTransition.springify().damping(22).stiffness(180)}>
           <ConversationList />
         </Animated.View>
-        <BottomSheetModal
+        <Sheet
           ref={filtersModalSheetRef}
-          backdropComponent={BottomSheetBackdrop}
-          handleIndicatorStyle={tailwind.style(
-            'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-          )}
-          handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-          style={tailwind.style('rounded-[26px] overflow-hidden')}
-          animationConfigs={animationConfigs}
-          enablePanDownToClose
-          snapPoints={filterSnapPoints}
-          maxDynamicContentSize={
-            currentBottomSheet === 'inbox_id' ? inboxSheetMaxHeight : undefined
-          }
+          height={isInbox ? undefined : filterHeight}
+          detents={isInbox ? [0.7] : undefined}
+          scrollable={isInbox}
           onDismiss={handleOnDismiss}>
-          {currentBottomSheet === 'inbox_id' ? (
+          {isInbox ? (
             <InboxFilters />
           ) : (
-            <BottomSheetWrapper>
+            <>
               {currentBottomSheet === 'status' ? <StatusFilters /> : null}
               {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
               {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
-            </BottomSheetWrapper>
+            </>
           )}
-        </BottomSheetModal>
+        </Sheet>
         <ActionBottomSheet />
         <ActionTabs />
       </ConversationListStateProvider>

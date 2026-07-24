@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { BottomSheetBackdrop } from '@/components-next';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import i18n from '@/i18n';
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
@@ -29,22 +28,14 @@ export const MacrosList = ({ conversationId }: { conversationId: number }) => {
 
   const onClose = () => {
     setSelectedMacro(null);
-    macrosListSheetRef.current?.dismiss({ overshootClamping: true });
+    macrosListSheetRef.current?.dismiss();
   };
 
   const { macrosListSheetRef } = useRefsContext();
 
   return (
     <Animated.View>
-      <BottomSheetModal
-        ref={macrosListSheetRef}
-        backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-t-[26px] overflow-hidden')}
-        enablePanDownToClose
-        snapPoints={['75%']}
-        enableDynamicSizing={false}>
+      <Sheet ref={macrosListSheetRef} detents={[0.75]} scrollable>
         <MacroProvider conversationId={conversationId} onClose={onClose}>
           <Animated.View style={tailwind.style('flex-1')}>
             {selectedMacro ? (
@@ -59,7 +50,7 @@ export const MacrosList = ({ conversationId }: { conversationId: number }) => {
                     {i18n.t('MACRO.SELECT_MACRO')}
                   </Animated.Text>
                 </View>
-                <BottomSheetScrollView
+                <ScrollView
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={tailwind.style('px-3 pb-6')}>
                   <MacroStack
@@ -67,12 +58,12 @@ export const MacrosList = ({ conversationId }: { conversationId: number }) => {
                     macrosList={macros}
                     isInsideBottomSheet
                   />
-                </BottomSheetScrollView>
+                </ScrollView>
               </Animated.View>
             )}
           </Animated.View>
         </MacroProvider>
-      </BottomSheetModal>
+      </Sheet>
     </Animated.View>
   );
 };

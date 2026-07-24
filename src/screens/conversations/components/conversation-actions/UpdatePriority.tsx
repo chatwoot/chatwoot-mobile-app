@@ -1,7 +1,6 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
@@ -79,11 +78,11 @@ export const UpdatePriority = () => {
     showToast({
       message: i18n.t('CONVERSATION.PRIORITY_CHANGE'),
     });
-    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+    actionsModalSheetRef.current?.dismiss();
   };
 
   return (
-    <BottomSheetView>
+    <View>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.CHANGE_PRIORITY')} />
       <Animated.View style={tailwind.style('py-1 pl-3')}>
         {PriorityList.map((value, index) => (
@@ -95,6 +94,6 @@ export const UpdatePriority = () => {
           />
         ))}
       </Animated.View>
-    </BottomSheetView>
+    </View>
   );
 };

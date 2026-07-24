@@ -47,3 +47,6 @@ firebase/
 release/
 *.keystore
 *.jks
+
+# vault-only artifact (заметка проекта, не публикуем в репозиторий)
+_SUMMARY.md

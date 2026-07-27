@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.7.0",
+  "version": "4.7.2",
   "packageManager": "pnpm@10.11.0",
   "scripts": {
     "start": "expo start --dev-client",
@@ -36,7 +36,7 @@
   "dependencies": {
     "@chatwoot/markdown-to-txt": "^2.0.4",
     "@chatwoot/react-native-widget": "^0.0.21",
-    "@chatwoot/utils": "^0.0.33",
+    "@chatwoot/utils": "^0.0.56",
     "@gorhom/bottom-sheet": "^5.1.2",
     "@kesha-antonov/react-native-action-cable": "^1.1.5",
     "@nandorojo/galeria": "^1.2.0",

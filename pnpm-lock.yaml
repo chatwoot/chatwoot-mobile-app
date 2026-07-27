@@ -37,8 +37,8 @@ importers:
         specifier: ^0.0.21
         version: 0.0.21(@react-native-async-storage/async-storage@2.1.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0)))(react-native-webview@13.13.5(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       '@chatwoot/utils':
-        specifier: ^0.0.33
-        version: 0.0.33
+        specifier: ^0.0.56
+        version: 0.0.56
       '@gorhom/bottom-sheet':
         specifier: ^5.1.2
         version: 5.1.4(@types/react@19.0.14)(react-native-gesture-handler@2.31.2(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native-reanimated@3.19.5(@babel/core@7.27.1)(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -908,8 +908,8 @@ packages:
       react-native: '*'
       react-native-webview: '>=13.8.6'
 
-  '@chatwoot/utils@0.0.33':
-    resolution: {integrity: sha512-o5+2h+k+2XWRTfhI7mogRCYnbjh+/BKE/px7PYKUMsIS9uecxfNeLzrnaUzNw60dl/0MFe6G0OmcINW+AEh5KA==}
+  '@chatwoot/utils@0.0.56':
+    resolution: {integrity: sha512-A6dmPLfTSrW4qYNY73btyi4PqpfzcXRSaucscZTQdzNqF6G/QUdgnBmHtho8HeiYby/kSHXaSxLJj+0dx3yEQQ==}
     engines: {node: '>=10'}
 
   '@dominicstop/ts-event-emitter@1.1.0':
@@ -7172,7 +7172,7 @@ snapshots:
       react-native-modal: 13.0.1(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-webview: 13.13.5(react-native@0.79.6(@babel/core@7.27.1)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
 
-  '@chatwoot/utils@0.0.33':
+  '@chatwoot/utils@0.0.56':
     dependencies:
       date-fns: 2.30.0
 

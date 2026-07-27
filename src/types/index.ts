@@ -11,6 +11,7 @@ export * from './Message';
 export * from './Team';
 export * from './Account';
 export * from './Macro';
+export * from './MessageTemplate';
 
 export type IconProps = PathProps;
 

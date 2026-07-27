@@ -412,7 +412,8 @@
       "PHOTOS": "Photos",
       "CAMERA": "Camera",
       "ATTACH_FILE": "Attach File",
-      "MACROS": "Macros"
+      "MACROS": "Macros",
+      "WHATSAPP_TEMPLATES": "Whatsapp Templates"
     }
   },
   "CONVERSATION_TEAMS": {
@@ -509,6 +510,25 @@
     "EXECUTION_SUCCESS": "Macro executed successfully",
     "EXECUTION_ERROR": "Macro execution failed",
     "NO_MACROS": "No macros found"
+  },
+  "CONTENT_TEMPLATE": {
+    "TITLE": "Templates",
+    "SELECT_TEMPLATE": "Select WhatsApp Template",
+    "VARIABLES": "Variables",
+    "SEND": "Send",
+    "NO_TEMPLATES": "No templates available",
+    "NO_RESULTS": "No templates match your search",
+    "SEARCH_PLACEHOLDER": "Search for the template you want to send",
+    "IMAGE_URL": "Image URL",
+    "VIDEO_URL": "Video URL",
+    "DOCUMENT_URL": "Document URL",
+    "MEDIA_URL": "Media URL",
+    "IMAGE_URL_PLACEHOLDER": "https://...",
+    "MEDIA_URL_PLACEHOLDER": "https://...",
+    "IMAGE_PREVIEW_FAILED": "Could not load image from URL",
+    "DOCUMENT_NAME": "Document name",
+    "DOCUMENT_NAME_PLACEHOLDER": "Filename (optional)",
+    "BUTTON_PARAMETERS": "Button parameters"
   },
   "SEARCH": {
     "PLACEHOLDER": "Type 2 or more characters to search",

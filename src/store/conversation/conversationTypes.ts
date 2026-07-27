@@ -108,6 +108,8 @@ export interface PendingMessage extends SendMessagePayload {
   createdAt: number;
   messageType: typeof MESSAGE_TYPES.OUTGOING;
   attachments: { id: string }[] | null;
+  senderId: number;
+  senderType: string;
 }
 
 export type MessageBuilderPayload =

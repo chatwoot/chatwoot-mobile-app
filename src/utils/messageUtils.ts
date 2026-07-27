@@ -1,4 +1,4 @@
-import { MESSAGE_TYPES, MESSAGE_STATUS } from '@/constants';
+import { MESSAGE_TYPES, MESSAGE_STATUS, SENDER_TYPES } from '@/constants';
 import { SendMessagePayload } from '@/store/conversation/conversationTypes';
 import type { PendingMessage, MessageBuilderPayload } from '@/store/conversation/conversationTypes';
 
@@ -15,7 +15,7 @@ export const createPendingMessage = (data: SendMessagePayload): PendingMessage =
   const timestamp = Math.floor(new Date().getTime() / 1000);
   const tempMessageId = getUuid();
 
-  const { message, file } = data;
+  const { message, file, sender } = data;
   const tempAttachments = [{ id: tempMessageId }];
   const pendingMessage = {
     ...data,
@@ -26,6 +26,10 @@ export const createPendingMessage = (data: SendMessagePayload): PendingMessage =
     createdAt: timestamp,
     messageType: MESSAGE_TYPES.OUTGOING,
     attachments: file ? tempAttachments : null,
+    // The sender in the payload has no type, so the message cannot be attributed to the current
+    // user once it leaves the progress state. Stamp it here so a failed message stays on the right.
+    senderId: sender?.id,
+    senderType: SENDER_TYPES.USER,
   };
 
   return pendingMessage;

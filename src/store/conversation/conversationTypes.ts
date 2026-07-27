@@ -243,6 +243,11 @@ export interface TogglePriorityPayload {
   priority: ConversationPriority;
 }
 
+export interface RetryMessagePayload {
+  conversationId: number;
+  messageId: number | string;
+}
+
 export interface TranslateMessagePayload {
   conversationId: number;
   messageId: number;

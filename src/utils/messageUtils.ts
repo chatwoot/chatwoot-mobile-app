@@ -1,6 +1,8 @@
 import { MESSAGE_TYPES, MESSAGE_STATUS, SENDER_TYPES } from '@/constants';
 import { SendMessagePayload } from '@/store/conversation/conversationTypes';
 import type { PendingMessage, MessageBuilderPayload } from '@/store/conversation/conversationTypes';
+import type { Message } from '@/types';
+import { hasOneDayPassed } from './dateTimeUtils';
 
 export const getUuid = () =>
   'xxxxxxxx4xxx'.replace(/[xy]/g, c => {
@@ -33,6 +35,29 @@ export const createPendingMessage = (data: SendMessagePayload): PendingMessage =
   };
 
   return pendingMessage;
+};
+
+/**
+ * A failed message falls into one of two cases:
+ * 1. It failed in the app itself (large attachment, no network). The message never reached the
+ *    server, so it has no external error and has to be created again.
+ * 2. It reached the server but the channel failed to deliver it (user blocked the account, provider
+ *    outage). It has an external error and is retried through the retry endpoint.
+ */
+export const hasMessageFailedWithExternalError = (message: Message | PendingMessage): boolean => {
+  const { status } = message;
+  const externalError = (message as Message).contentAttributes?.externalError ?? '';
+  return status === MESSAGE_STATUS.FAILED && externalError !== '';
+};
+
+export const canRetryMessage = (message: Message): boolean => {
+  const { status, content, attachments, createdAt } = message;
+  if (status !== MESSAGE_STATUS.FAILED) {
+    return false;
+  }
+  const hasContent = content !== null && content !== undefined && content !== '';
+  const hasAttachments = !!(attachments && attachments.length > 0);
+  return !hasOneDayPassed(createdAt) && (hasContent || hasAttachments);
 };
 
 export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload => {

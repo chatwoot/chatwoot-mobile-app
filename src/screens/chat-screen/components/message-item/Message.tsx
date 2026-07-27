@@ -19,6 +19,7 @@ import {
   // FileBubble,
   EmailBubble,
   UnsupportedBubble,
+  MessageError,
 } from '../message-components';
 import { showToast } from '@/utils/toastUtils';
 import {
@@ -67,6 +68,7 @@ type MessageWrapperProps = {
   channel?: Channel;
   isTargetMessage?: boolean;
   isListPositioned?: boolean;
+  onRetry: () => void;
 };
 
 const variantTextMap = {
@@ -111,6 +113,7 @@ const MessageWrapper = ({
   channel,
   isTargetMessage = false,
   isListPositioned = true,
+  onRetry,
 }: MessageWrapperProps) => {
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
@@ -212,6 +215,9 @@ const MessageWrapper = ({
           </Animated.View>
         </MessageMenu>
       </Animated.View>
+      {item.status === MESSAGE_STATUS.FAILED ? (
+        <MessageError message={item} orientation={orientation} onRetry={onRetry} />
+      ) : null}
     </Animated.View>
   );
 };
@@ -282,7 +288,16 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
   }
-  
+
+  const handleRetryMessage = async () => {
+    hapticSelection?.();
+    try {
+      await dispatch(conversationActions.retryMessage(item)).unwrap();
+    } catch {
+      showToast({ message: i18n.t('CONVERSATION.RETRY_MESSAGE_ERROR') });
+    }
+  };
+
   const handleTranslateMessage = async (messageId: number) => {
     hapticSelection?.();
     const targetLanguage = i18n.locale?.split('_')[0] || 'en';
@@ -473,7 +488,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
         variant={variant()}
         channel={channel}
         isTargetMessage={isTargetMessage}
-        isListPositioned={isListPositioned}>
+        isListPositioned={isListPositioned}
+        onRetry={handleRetryMessage}>
         {messageContent}
       </MessageWrapper>
     );

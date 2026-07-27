@@ -88,4 +88,6 @@ export interface Message {
   groupWithNext?: boolean | false;
   groupWithPrevious?: boolean | false;
   senderType?: string;
+  // Set when a send fails inside the app, before the message reaches the server
+  meta?: { error?: string };
 }

@@ -22,7 +22,7 @@ import { useAppSelector } from '@/hooks';
 import { convertOggToWav } from '@/utils/audioConverter';
 
 // eslint-disable-next-line react/display-name
-const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
+export const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
     <Svg width="10" height="13" viewBox="0 0 10 13" fill="none">
       <Path d="M0 13V0L10 6.80952L0 13Z" fill={fill} fillOpacity={fillOpacity} />
@@ -30,7 +30,7 @@ const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   );
 });
 // eslint-disable-next-line react/display-name
-const PauseIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
+export const PauseIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
   return (
     <Svg width="10" height="12" viewBox="0 0 10 12" fill="none">
       <Rect width="3" height="12" fill={fill} fillOpacity={fillOpacity} />

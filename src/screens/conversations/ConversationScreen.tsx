@@ -7,7 +7,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TrueSheet } from '@lodev09/react-native-true-sheet';
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -119,7 +118,6 @@ const ConversationList = () => {
   }, [filters]);
 
   useEffect(() => {
-    TrueSheet.dismissAll();
     clearAndFetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
-import Animated, {
-  LinearTransition,
-  SharedValue,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
-import { scheduleOnRN } from 'react-native-worklets';
+import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 
@@ -132,14 +127,14 @@ const ConversationList = () => {
   }, []);
 
   const ListFooterComponent = () => {
-    if (isAllConversationsFetched) return null;
+    if (isAllConversationsFetched || !isFlashListReady) return null;
     return (
       <Animated.View
         style={tailwind.style(
           'flex-1 items-center justify-center pt-8',
           `pb-[${TAB_BAR_HEIGHT}px]`,
         )}>
-        {isAllConversationsFetched ? null : <ActivityIndicator size="small" />}
+        <ActivityIndicator size="small" />
       </Animated.View>
     );
   };
@@ -216,14 +211,12 @@ const ConversationList = () => {
     }
   };
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onBeginDrag: () => {
-      openedRowIndex.value = -1;
-      if (!isFlashListReady) {
-        scheduleOnRN(setFlashListReady, true);
-      }
-    },
-  });
+  const handleScrollBeginDrag = useCallback(() => {
+    openedRowIndex.value = -1;
+    if (!isFlashListReady) {
+      setFlashListReady(true);
+    }
+  }, [isFlashListReady, openedRowIndex]);
 
   const allConversations = useAppSelector(state =>
     getFilteredConversations(state, filters, userId),
@@ -253,7 +246,7 @@ const ConversationList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       showsVerticalScrollIndicator={false}
       data={allConversations}
-      onScroll={scrollHandler}
+      onScrollBeginDrag={handleScrollBeginDrag}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
       ListFooterComponent={ListFooterComponent}

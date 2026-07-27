@@ -7,6 +7,7 @@ import type {
 import type { Message } from '@/types/Message';
 import { MESSAGE_STATUS, MESSAGE_TYPES } from '@/constants';
 import { Agent, ConversationPriority, Team } from '@/types';
+import type { TemplateSendParams } from '@/types/MessageTemplate';
 
 export interface ConversationListAPIResponse {
   data: {
@@ -96,7 +97,7 @@ export interface SendMessagePayload {
   contentAttributes?: {
     inReplyTo: number;
   };
-  templateParams?: string;
+  templateParams?: TemplateSendParams;
   ccEmails?: string;
   bccEmails?: string;
   toEmails?: string;
@@ -121,7 +122,7 @@ export type MessageBuilderPayload =
       content_attributes?: Record<string, unknown>;
       cc_emails?: string;
       bcc_emails?: string;
-      template_params?: string;
+      template_params?: TemplateSendParams;
     };
 
 export interface SendMessageAPIResponse {

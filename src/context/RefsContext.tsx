@@ -21,6 +21,7 @@ interface RefsContextType {
   deliveryStatusSheetRef: React.RefObject<SheetRef>;
   updateParticipantSheetRef: React.RefObject<SheetRef>;
   toneSelectionSheetRef: React.RefObject<SheetRef>;
+  whatsAppTemplatesSheetRef: React.RefObject<SheetRef>;
 }
 
 const RefsContext = React.createContext<RefsContextType | undefined>(undefined);
@@ -53,6 +54,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const deliveryStatusSheetRef = useRef<SheetRef>(null);
   const updateParticipantSheetRef = useRef<SheetRef>(null);
   const toneSelectionSheetRef = useRef<SheetRef>(null);
+  const whatsAppTemplatesSheetRef = useRef<SheetRef>(null);
 
   const { children } = props;
 
@@ -73,6 +75,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
     deliveryStatusSheetRef,
     updateParticipantSheetRef,
     toneSelectionSheetRef,
+    whatsAppTemplatesSheetRef,
   };
 
   return <RefsContext.Provider value={contextRefValues}>{children}</RefsContext.Provider>;

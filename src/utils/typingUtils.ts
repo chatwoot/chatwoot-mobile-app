@@ -1,33 +1,28 @@
 import { TypingUser } from '@/types';
+import i18n from '@/i18n';
 
 export const isContactTyping = (typingUsers: TypingUser[], userId: number) => {
   return typingUsers.some(user => user.id === userId && user.type === 'contact');
 };
 
-export const getTypingUsersText = ({ users }: { users: TypingUser[] }) => {
-  if (!users) {
-    return '';
-  }
-  const isAnyoneTyping = users.length !== 0;
-  if (isAnyoneTyping) {
-    const count = users.length;
-    if (count === 1) {
-      const [user] = users;
-      return `${user.name.toString().replace(/^./, str => str.toUpperCase())} is typing`;
-    }
+const capitalize = (name: string) => name.toString().replace(/^./, str => str.toUpperCase());
 
-    if (count === 2) {
-      const [first, second] = users;
-      return `${first.name.toString().replace(/^./, str => str.toUpperCase())} and ${second.name
-        .toString()
-        .replace(/^./, str => str.toUpperCase())} are typing`;
-    }
-
-    const [user] = users;
-    const rest = users.length - 1;
-    return `${user.name
-      .toString()
-      .replace(/^./, str => str.toUpperCase())} and ${rest} others are typing`;
+export const getTypingUsersText = ({ users }: { users: TypingUser[] }): string | undefined => {
+  const count = users?.length ?? 0;
+  if (count === 0) {
+    return undefined;
   }
-  return false;
+  if (count === 1) {
+    return i18n.t('CONVERSATION.IS_TYPING', { name: capitalize(users[0].name) });
+  }
+  if (count === 2) {
+    return i18n.t('CONVERSATION.ARE_TYPING_PAIR', {
+      first: capitalize(users[0].name),
+      second: capitalize(users[1].name),
+    });
+  }
+  return i18n.t('CONVERSATION.OTHERS_ARE_TYPING', {
+    name: capitalize(users[0].name),
+    count: count - 1,
+  });
 };

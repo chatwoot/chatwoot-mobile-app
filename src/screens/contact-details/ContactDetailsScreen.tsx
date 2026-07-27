@@ -191,8 +191,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
       type: 'link',
     }));
 
-  const fullLocation =
-    location || [city, country].filter(Boolean).join(', ') || null;
+  const fullLocation = location || [city, country].filter(Boolean).join(', ') || null;
 
   const userDetails: GenericListType[] = [
     {

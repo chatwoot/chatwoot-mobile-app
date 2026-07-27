@@ -11,6 +11,7 @@ import * as DropdownMenu from 'zeego/dropdown-menu';
 
 import { BottomSheetHeader, BottomSheetWrapper } from '@/components-next';
 import { tailwind } from '@/theme';
+import i18n from '@/i18n';
 
 export type DashboardList = {
   title: string;
@@ -125,7 +126,7 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
           enablePanDownToClose
           snapPoints={[dropdownMenuList.length * 44 + 4 + 37]}>
           <BottomSheetWrapper>
-            <BottomSheetHeader headerText="Select action" />
+            <BottomSheetHeader headerText={i18n.t('CONVERSATION.ACTIONS.SELECT_ACTION')} />
             <Animated.View style={tailwind.style('py-1 pl-3')}>
               {dropdownMenuList?.map((option, index) => {
                 const handleOnOptionSelect = () => {

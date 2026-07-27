@@ -20,9 +20,21 @@ export const userStatusList = [
 ];
 
 export const AVAILABILITY_STATUS_LIST = [
-  { statusColor: 'bg-green-800', status: 'online' },
-  { statusColor: 'bg-yellow-800', status: 'busy' },
-  { statusColor: 'bg-gray-800', status: 'offline' },
+  {
+    statusColor: 'bg-green-800',
+    status: 'online',
+    titleKey: 'SETTINGS.AVAILABILITY_STATUS.ONLINE',
+  },
+  {
+    statusColor: 'bg-yellow-800',
+    status: 'busy',
+    titleKey: 'SETTINGS.AVAILABILITY_STATUS.BUSY',
+  },
+  {
+    statusColor: 'bg-gray-800',
+    status: 'offline',
+    titleKey: 'SETTINGS.AVAILABILITY_STATUS.OFFLINE',
+  },
 ];
 
 export const AUDIO_FORMATS = {
@@ -34,58 +46,6 @@ export const AUDIO_FORMATS = {
 };
 
 export const MAXIMUM_FILE_UPLOAD_SIZE = 20;
-
-export const CONVERSATION_STATUSES = [
-  {
-    key: 'open',
-    name: 'Open',
-  },
-  {
-    key: 'resolved',
-    name: 'Resolved',
-  },
-  {
-    key: 'pending',
-    name: 'Pending',
-  },
-  {
-    key: 'snoozed',
-    name: 'Snoozed',
-  },
-  {
-    key: 'all',
-    name: 'All',
-  },
-];
-export const SORT_TYPES = [
-  {
-    key: 'latest',
-    name: 'Latest',
-  },
-  {
-    key: 'sort_on_created_at',
-    name: 'Created At',
-  },
-  {
-    key: 'sort_on_priority',
-    name: 'Priority',
-  },
-];
-
-export const ASSIGNEE_TYPES = [
-  {
-    key: 'mine',
-    name: 'Mine',
-  },
-  {
-    key: 'unassigned',
-    name: 'Unassigned',
-  },
-  {
-    key: 'all',
-    name: 'All',
-  },
-];
 
 export const CONVERSATION_STATUS = {
   OPEN: 'open',

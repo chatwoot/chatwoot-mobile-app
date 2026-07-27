@@ -5,6 +5,7 @@ import Animated from 'react-native-reanimated';
 import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
 import { BottomSheetBackdrop, Button } from '@/components-next';
+import i18n from '@/i18n';
 import {
   ConversationBasicActions,
   ConversationLabelActions,
@@ -14,7 +15,6 @@ import {
 } from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { tailwind } from '@/theme';
-import i18n from '@/i18n';
 import { ConversationStatus } from '@/types';
 import { useChatWindowContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -158,7 +158,7 @@ export const ConversationActions = () => {
           <Button
             variant="secondary"
             handlePress={onShareConversation}
-            text={i18n.t('CONVERSATION.SHARE')}
+            text={i18n.t('CONVERSATION.ACTIONS.SHARE_CONVERSATION')}
           />
         </Animated.View>
       </ScrollView>

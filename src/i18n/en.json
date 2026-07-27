@@ -4,7 +4,8 @@
     "ERROR": "Error",
     "ERROR_TITLE": "Unexpected error occurred",
     "REPORT_MESSAGE": "We have reported this to our team ! Please close the app and start again!",
-    "CLOSE": "Close"
+    "CLOSE": "Close",
+    "BACK": "Back"
   },
   "FOOTER": {
     "HOME": "Home",
@@ -174,6 +175,11 @@
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",
     "SNOOZE_UNTIL_NEXT_WEEK": "Until next week",
     "SNOOZE": "Snooze conversation",
+    "REPLYING_TO": "Replying to %{name}",
+    "LOCATION_SEE_ON_MAP": "See on map",
+    "IS_TYPING": "%{name} is typing",
+    "ARE_TYPING_PAIR": "%{first} and %{second} are typing",
+    "OTHERS_ARE_TYPING": "%{name} and %{count} others are typing",
     "CHANGE_PRIORITY": "Change priority",
     "MESSAGES": "Messages",
     "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
@@ -254,6 +260,16 @@
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
+      "MENU_TITLE": "Conversation Actions",
+      "SHARE_CONVERSATION": "Share conversation",
+      "SELECT_ACTION": "Select action",
+      "NONE": "None",
+      "STATUS": {
+        "OPEN": "Open",
+        "PENDING": "Pending",
+        "SNOOZE": "Snooze",
+        "RESOLVE": "Resolve"
+      },
       "ASSIGNEE": {
         "EMPTY": "Unassigned",
         "ASSIGN": "Assign",
@@ -302,7 +318,12 @@
     "LOGOUT": "Logout",
     "SUBMIT": "Submit",
     "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "DEBUG_ACTIONS": "Debug Actions",
+    "AVAILABILITY_STATUS": {
+      "ONLINE": "Online",
+      "BUSY": "Busy",
+      "OFFLINE": "Offline"
+    }
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Notifications",
@@ -372,7 +393,10 @@
   },
   "CONTACT_DETAILS": {
     "TITLE": "Contact Details",
+    "LOCATION": "Location",
+    "PHONE": "Phone",
     "EMAIL": "Email",
+    "COMPANY": "Company",
     "PHONE_NUMBER": "Phone Number",
     "PHONE": "Phone",
     "CALL": "Call",
@@ -383,6 +407,7 @@
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",
+    "PARTICIPANT_COUNT_TEXT": "%{count} participants",
     "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
     "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
     "NO_PARTICIPANTS_TEXT": "No one is participating!.",

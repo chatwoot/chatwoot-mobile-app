@@ -21,6 +21,7 @@ type ConversationActionOptionsType = {
   backgroundActionPressedColor: string;
   borderActionColor: string;
   actionIcon: React.JSX.Element;
+  titleKey: string;
   actionStatus: ConversationStatus | 'open';
 };
 
@@ -33,6 +34,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-gray-200',
     borderActionColor: 'bg-gray-700',
     actionIcon: <OpenIcon stroke={tailwind.color('text-gray-700') as string} />,
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.OPEN',
     actionStatus: 'open',
   },
   {
@@ -40,6 +42,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-amber-200',
     borderActionColor: 'bg-amber-700',
     actionIcon: <PendingFilledIcon />,
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.PENDING',
     actionStatus: 'pending',
   },
   {
@@ -47,6 +50,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-indigo-200',
     borderActionColor: 'bg-indigo-700',
     actionIcon: <SnoozedFilledIcon />,
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.SNOOZE',
     actionStatus: 'snoozed',
   },
   {
@@ -54,6 +58,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-green-200',
     borderActionColor: 'bg-green-700',
     actionIcon: <ResolvedFilledIcon />,
+    titleKey: 'CONVERSATION.ACTIONS.STATUS.RESOLVE',
     actionStatus: 'resolved',
   },
 ];
@@ -85,12 +90,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
     } else {
       actionActive.value = withSpring(0);
     }
-  }, [
-    actionActive,
-    conversationAction.actionStatus,
-    status,
-    isMuted,
-  ]);
+  }, [actionActive, conversationAction.actionStatus, conversationAction.titleKey, status, isMuted]);
 
   const actionBorderColor = tailwind.color(conversationAction.borderActionColor) as string;
 
@@ -127,9 +127,9 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
         <Icon icon={conversationAction.actionIcon} size={32} />
         <Animated.Text
           style={tailwind.style(
-            'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 capitalize text-gray-950 ',
+            'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 text-gray-950 ',
           )}>
-          {i18n.t(`CONVERSATION_ACTION.OPTIONS.${conversationAction.actionStatus.toUpperCase()}`)}
+          {i18n.t(conversationAction.titleKey)}
         </Animated.Text>
       </Pressable>
     </Animated.View>

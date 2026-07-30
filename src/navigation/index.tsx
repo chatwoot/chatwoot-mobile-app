@@ -15,6 +15,8 @@ import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/p
 import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
 import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
+import { resolveAccountSwitch, switchAccount } from '@/utils/accountUtils';
 import { SSO_CALLBACK_URL } from '@/constants';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
@@ -46,6 +48,7 @@ export const AppNavigationContainer = () => {
 
   const installationUrl = useAppSelector(selectInstallationUrl);
   const locale = useAppSelector(selectLocale);
+  const currentAccountId = useAppSelector(selectCurrentUserAccountId);
 
   const linking = {
     prefixes: [installationUrl, SSO_CALLBACK_URL],
@@ -54,6 +57,7 @@ export const AppNavigationContainer = () => {
         ChatScreen: {
           path: 'app/accounts/:accountId/conversations/:conversationId/:primaryActorId?/:primaryActorType?',
           parse: {
+            accountId: (accountId: string) => parseInt(accountId),
             conversationId: (conversationId: string) => parseInt(conversationId),
             primaryActorId: (primaryActorId: string) => parseInt(primaryActorId),
             primaryActorType: (primaryActorType: string) => decodeURIComponent(primaryActorType),
@@ -75,6 +79,7 @@ export const AppNavigationContainer = () => {
 
       let primaryActorId = null;
       let primaryActorType = null;
+      let accountId = null;
       const state = getStateFromPath(path, config);
       const { routes } = state || {};
 
@@ -90,7 +95,14 @@ export const AppNavigationContainer = () => {
         const { params } = routes[0];
         primaryActorId = (params as { primaryActorId?: number })?.primaryActorId;
         primaryActorType = (params as { primaryActorType?: string })?.primaryActorType;
+        accountId = (params as { accountId?: number })?.accountId;
       }
+
+      const targetAccountId = resolveAccountSwitch(accountId);
+      if (targetAccountId) {
+        switchAccount(dispatch, targetAccountId);
+      }
+
       return {
         routes: [
           {
@@ -128,6 +140,7 @@ export const AppNavigationContainer = () => {
         const conversationLink = findConversationLinkFromPush({
           notification: camelCaseNotification,
           installationUrl,
+          currentAccountId,
         });
         if (conversationLink) {
           return conversationLink;
@@ -160,6 +173,7 @@ export const AppNavigationContainer = () => {
           const conversationLink = findConversationLinkFromPush({
             notification: camelCaseNotification,
             installationUrl,
+            currentAccountId,
           });
           if (conversationLink) {
             listener(conversationLink);

@@ -61,7 +61,7 @@ import {
 import { selectFilters, FilterState } from '@/store/conversation/conversationFilterSlice';
 import { ConversationPayload } from '@/store/conversation/conversationTypes';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
-import { selectUserId } from '@/store/auth/authSelectors';
+import { selectUserId, selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
 
@@ -92,6 +92,7 @@ const ConversationList = () => {
   // This is used for pagination
   const [pageNumber, setPageNumber] = useState(1);
   const userId = useAppSelector(selectUserId);
+  const accountId = useAppSelector(selectCurrentUserAccountId);
 
   // This is used to store the index of the item that is currently selected
   const { openedRowIndex } = useConversationListStateContext();
@@ -128,11 +129,12 @@ const ConversationList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
+  // Refetch when the active account changes.
   useEffect(() => {
     dismissAll();
     clearAndFetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accountId]);
 
   const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
     setPageNumber(1);

@@ -26,6 +26,7 @@ import { resetNotifications } from '@/store/notification/notificationSlice';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import { selectSortOrder } from '@/store/notification/notificationFilterSlice';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { EmptyStateIcon } from '@/svg-icons';
 import { InboxSortTypes } from '@/store/notification/notificationTypes';
 
@@ -40,6 +41,7 @@ const InboxList = () => {
   const isNotificationsLoading = useAppSelector(selectIsLoadingNotifications);
   const isAllNotificationsFetched = useAppSelector(selectIsAllNotificationsFetched);
   const sortOrder = useAppSelector(selectSortOrder);
+  const accountId = useAppSelector(selectCurrentUserAccountId);
 
   const notifications = useAppSelector(state => getFilteredNotifications(state, sortOrder));
 
@@ -69,10 +71,11 @@ const InboxList = () => {
     );
   });
 
+  // Refetch when the active account changes.
   useEffect(() => {
     clearAndFetchNotifications(sortOrder);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accountId]);
 
   const clearAndFetchNotifications = useCallback(async (sortOrder: InboxSortTypes) => {
     setPageNumber(1);

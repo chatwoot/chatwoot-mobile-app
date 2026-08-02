@@ -95,6 +95,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       './with-ffmpeg-pod.js',
       './with-android-signing.js',
+      // [conomni] W-fix: свой канал уведомлений Android + монохромная иконка/цвет.
+      './with-android-notifications.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

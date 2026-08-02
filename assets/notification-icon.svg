@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  [conomni] W-fix: монохромная иконка Android-уведомлений.
+  Android требует белый силуэт на прозрачном фоне (система сама тонирует иконку в
+  цвет уведомления через default_notification_color) — цветные иконки превращаются
+  в серый квадрат. Источник — тот же знак бренда, что и src/svg-icons/common/Conomni.tsx
+  (ConomniIcon, портировано из conomni-chatwoot/public/brand-assets/logo_thumbnail.svg),
+  но без цветного фона-плашки: только два кольца.
+-->
+<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="6.4" cy="8" r="3.1" fill="none" stroke="#ffffff" stroke-width="1.6" />
+  <circle cx="9.6" cy="8" r="3.1" fill="none" stroke="#ffffff" stroke-width="1.6" />
+</svg>

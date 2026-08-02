@@ -1,4 +1,5 @@
 import { fromUnixTime, formatDistanceToNow, isSameDay, format } from 'date-fns';
+import { ru } from 'date-fns/locale';
 import i18n from '@/i18n';
 import { UnixTimestamp } from '@/types';
 
@@ -51,23 +52,20 @@ export const formatDate = (date: UnixTimestamp, dateFormat = 'MMM dd, yyyy') => 
   return format(dateObj, dateFormat);
 };
 
-export const unixTimestampToReadableTime = (unixTimestamp: number) => {
-  const date = new Date(unixTimestamp * 1000); // Convert Unix timestamp to milliseconds
-  const hours = date.getHours();
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
-
-  return `${formattedHours}:${minutes} ${ampm}`;
-};
-
+// [conomni] m9: 24-часовой формат + русская локаль вместо 'h:mm a' (было «08:52 AM» —
+// продукт русский, в вебе давно 24-часовой формат). Единственное место, где строится строка
+// времени сообщения; unixTimestampToReadableTime — тонкая обёртка поверх него для мест,
+// принимающих просто timestamp (см. CLAUDE.md: централизованный хелпер, а не правка в каждом компоненте).
 export const messageStamp = ({
   time,
-  dateFormat = 'h:mm a',
+  dateFormat = 'HH:mm',
 }: {
   time: number;
   dateFormat?: string;
 }) => {
   const unixTime = fromUnixTime(time);
-  return format(unixTime, dateFormat);
+  return format(unixTime, dateFormat, { locale: ru });
 };
+
+export const unixTimestampToReadableTime = (unixTimestamp: number) =>
+  messageStamp({ time: unixTimestamp });

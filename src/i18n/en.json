@@ -10,7 +10,11 @@
     "HOME": "Home",
     "CONVERSATION": "Conversations",
     "NOTIFICATION": "Notifications",
-    "SETTINGS": "Settings"
+    "SETTINGS": "Settings",
+    "NEW": "New",
+    "MINE": "Mine",
+    "ARCHIVE": "Archive",
+    "FUNNEL": "Funnel"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "Installation URL",
@@ -525,5 +529,47 @@
     "TONE_CONFIDENT": "Confident",
     "GENERATION_FAILED": "Failed to generate content. Please try again.",
     "FOLLOW_UP_FAILED": "Failed to send follow-up. Please try again."
+  },
+  "CONOMNI": {
+    "CHAT_LIST": {
+      "TITLE_NEW": "New chats",
+      "TITLE_MINE": "My chats",
+      "TITLE_ARCHIVE": "Archive",
+      "BOT_ANSWERS": "bot is replying",
+      "EMPTY_NEW": "All conversations are handled",
+      "EMPTY_MINE": "Nothing is assigned to you yet",
+      "EMPTY_ARCHIVE": "Archive is empty",
+      "NOTIFICATIONS": "Notifications",
+      "FILTERS": "Filters",
+      "FILTER_CHANNELS": "Channels",
+      "FILTER_PERIOD": "Period",
+      "FILTER_ALL_CHANNELS": "All channels",
+      "FILTER_PERIOD_ALL": "All time",
+      "FILTER_PERIOD_TODAY": "Today",
+      "FILTER_PERIOD_WEEK": "Week",
+      "FILTER_PERIOD_MONTH": "Month",
+      "FILTER_RESET": "Reset",
+      "FILTER_APPLY": "Apply",
+      "LOAD_FAILED": "Failed to load the list"
+    },
+    "FUNNEL": {
+      "TITLE": "Funnel",
+      "UNASSIGNED": "Unassigned",
+      "EMPTY_STAGE": "This stage is empty",
+      "PRICE": "Price",
+      "LOAD_FAILED": "Failed to load the funnel"
+    },
+    "STAGE": {
+      "SHEET_TITLE": "Deal stage",
+      "NONE": "No stage",
+      "UPDATE_FAILED": "Failed to change the stage"
+    },
+    "CONVERSATION_INFO": {
+      "TITLE": "Conversation information",
+      "STAGE": "Stage",
+      "PRICE": "Price",
+      "PRICE_PLACEHOLDER": "Not set",
+      "PRICE_FAILED": "Failed to save the price"
+    }
   }
 }

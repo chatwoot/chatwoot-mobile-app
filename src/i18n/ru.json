@@ -10,7 +10,11 @@
     "HOME": "Главная",
     "CONVERSATION": "Сообщения",
     "NOTIFICATION": "Уведомления",
-    "SETTINGS": "Настройки"
+    "SETTINGS": "Настройки",
+    "NEW": "Новые",
+    "MINE": "Мои",
+    "ARCHIVE": "Архив",
+    "FUNNEL": "Воронка"
   },
   "CONFIGURE_URL": {
     "ENTER_URL": "URL установки",
@@ -524,5 +528,47 @@
     "TONE_CONFIDENT": "Уверенный",
     "GENERATION_FAILED": "Не удалось сгенерировать текст. Попробуйте ещё раз.",
     "FOLLOW_UP_FAILED": "Не удалось отправить уточнение. Попробуйте ещё раз."
+  },
+  "CONOMNI": {
+    "CHAT_LIST": {
+      "TITLE_NEW": "Новые чаты",
+      "TITLE_MINE": "Мои чаты",
+      "TITLE_ARCHIVE": "Архив",
+      "BOT_ANSWERS": "отвечает бот",
+      "EMPTY_NEW": "Все обращения разобраны",
+      "EMPTY_MINE": "На вас пока ничего не назначено",
+      "EMPTY_ARCHIVE": "В архиве пусто",
+      "NOTIFICATIONS": "Уведомления",
+      "FILTERS": "Фильтры",
+      "FILTER_CHANNELS": "Источники",
+      "FILTER_PERIOD": "Период",
+      "FILTER_ALL_CHANNELS": "Все источники",
+      "FILTER_PERIOD_ALL": "За всё время",
+      "FILTER_PERIOD_TODAY": "Сегодня",
+      "FILTER_PERIOD_WEEK": "Неделя",
+      "FILTER_PERIOD_MONTH": "Месяц",
+      "FILTER_RESET": "Сбросить",
+      "FILTER_APPLY": "Применить",
+      "LOAD_FAILED": "Не удалось загрузить список"
+    },
+    "FUNNEL": {
+      "TITLE": "Воронка",
+      "UNASSIGNED": "Непринятые",
+      "EMPTY_STAGE": "На этом этапе пусто",
+      "PRICE": "Цена",
+      "LOAD_FAILED": "Не удалось загрузить воронку"
+    },
+    "STAGE": {
+      "SHEET_TITLE": "Этап сделки",
+      "NONE": "Без этапа",
+      "UPDATE_FAILED": "Не удалось изменить этап"
+    },
+    "CONVERSATION_INFO": {
+      "TITLE": "Информация об обращении",
+      "STAGE": "Этап",
+      "PRICE": "Цена",
+      "PRICE_PLACEHOLDER": "Не указана",
+      "PRICE_FAILED": "Не удалось сохранить цену"
+    }
   }
 }

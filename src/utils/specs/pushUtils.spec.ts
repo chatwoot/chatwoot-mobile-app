@@ -1,5 +1,30 @@
+import { Platform } from 'react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { transformNotification } from '../camelCaseKeys';
-import { findConversationLinkFromPush, findNotificationFromFCM } from '../pushUtils';
+import {
+  findConversationLinkFromPush,
+  findNotificationFromFCM,
+  ensureAndroidNotificationChannel,
+  updateBadgeCount,
+  ANDROID_NOTIFICATION_CHANNEL_ID,
+} from '../pushUtils';
+
+// [conomni] m9: локальный factory-мок вместо общего __mocks__/@notifee/react-native.js —
+// тот повторяет паттерн из документации notifee (jest.mock(() => require('.../jest-mock')),
+// но реальный jest-mock.js — ESM-исходник вне allowlist transformIgnorePatterns jest-expo,
+// поэтому падает с SyntaxError, как только его фактически резолвят (что раньше не
+// происходило: notifee грузился только под iOS и ни один тест не проверял вызовы к нему).
+// Простой инлайн-мок здесь не трогает общую инфраструктуру и не требует правки jest.config.js.
+// jest.mock(...) хойстится babel-plugin-jest-hoist выше импортов независимо от места в файле.
+jest.mock('@notifee/react-native', () => ({
+  __esModule: true,
+  default: {
+    createChannel: jest.fn(),
+    setBadgeCount: jest.fn(),
+    cancelAllNotifications: jest.fn(),
+  },
+  AndroidImportance: { HIGH: 4 },
+}));
 
 describe('findNotificationFromFCM', () => {
   it('should return notification from FCM HTTP v1 message', () => {
@@ -115,5 +140,74 @@ describe('findConversationLinkFromPush', () => {
       installationUrl,
     });
     expect(result).toBe(undefined);
+  });
+});
+
+// [conomni] m9: свой канал уведомлений Android с высокой важностью, звуком, вибрацией
+// и бейджем — без него FCM рисует пуш в fcm_fallback_notification_channel, который MIUI
+// и подобные оболочки считают неважным (не всплывает, без звука). См. with-android-notifications.js
+// для manifest-части (id канала должен совпадать с ANDROID_NOTIFICATION_CHANNEL_ID).
+describe('ensureAndroidNotificationChannel', () => {
+  const originalPlatformOS = Platform.OS;
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    Platform.OS = originalPlatformOS;
+  });
+
+  it('creates a high-importance channel with sound, vibration and badge on Android', async () => {
+    Platform.OS = 'android';
+    await ensureAndroidNotificationChannel();
+    expect(notifee.createChannel).toHaveBeenCalledWith({
+      id: ANDROID_NOTIFICATION_CHANNEL_ID,
+      name: 'Сообщения',
+      importance: AndroidImportance.HIGH,
+      sound: 'default',
+      vibration: true,
+      badge: true,
+    });
+  });
+
+  it('does nothing on iOS (channel is Android-only)', async () => {
+    Platform.OS = 'ios';
+    await ensureAndroidNotificationChannel();
+    expect(notifee.createChannel).not.toHaveBeenCalled();
+  });
+});
+
+describe('updateBadgeCount on Android', () => {
+  const originalPlatformOS = Platform.OS;
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    Platform.OS = originalPlatformOS;
+  });
+
+  it('sets the app icon badge via notifee, matching the existing iOS behaviour', async () => {
+    Platform.OS = 'android';
+    await updateBadgeCount({ count: 3 });
+    expect(notifee.setBadgeCount).toHaveBeenCalledWith(3);
+  });
+});
+
+// [conomni] m9: id канала продублирован в JS и в конфиг-плагине, который пишет его в
+// AndroidManifest. Если строки разойдутся, FCM снова начнёт рисовать пуш в
+// fcm_fallback_notification_channel — молча, без единой ошибки, и дефект вернётся ровно
+// тот, что этот патч чинит. Плагин читаем как текст: импортировать его в jest нельзя,
+// он тянет @expo/config-plugins.
+describe('id канала уведомлений совпадает с тем, что плагин пишет в манифест', () => {
+  it('строка в pushUtils равна строке в with-android-notifications.js', () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const fs = require('fs');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const path = require('path');
+    const plugin = fs.readFileSync(
+      path.resolve(__dirname, '../../../with-android-notifications.js'),
+      'utf8'
+    );
+    const match = plugin.match(/NOTIFICATION_CHANNEL_ID\s*=\s*'([^']+)'/);
+
+    expect(match).not.toBeNull();
+    expect(match[1]).toBe(ANDROID_NOTIFICATION_CHANNEL_ID);
   });
 });

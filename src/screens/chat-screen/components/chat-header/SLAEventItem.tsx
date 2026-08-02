@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Animated } from 'react-native';
 import { tailwind } from '@/theme';
 import { SLAEvent } from '@/types/common/SLA';
-import { format, fromUnixTime } from 'date-fns';
+import { messageStamp } from '@/utils/dateTimeUtils';
 
 interface SlaEventsProps {
   label: string;
@@ -10,8 +10,12 @@ interface SlaEventsProps {
 }
 
 export const SlaEvents = ({ label, items }: SlaEventsProps) => {
+  // [conomni] m9: свой 'hh:mm a' (12-часовой, AM/PM) заменён централизованным
+  // хелпером времени (dateTimeUtils.messageStamp) — 24-часовой формат, русская локаль.
+  // Порядок частей тоже русский: с локалью ru шаблон 'MMM dd, yyyy' дал бы
+  // «авг. 02, 2026» — русский месяц в английской структуре.
   const formatDate = (timestamp: number) =>
-    format(fromUnixTime(timestamp), 'MMM dd, yyyy, hh:mm a');
+    messageStamp({ time: timestamp, dateFormat: 'd MMMM yyyy, HH:mm' });
 
   return (
     <Animated.View style={tailwind.style('flex flex-row justify-between')}>

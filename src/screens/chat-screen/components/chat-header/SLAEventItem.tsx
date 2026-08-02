@@ -12,8 +12,10 @@ interface SlaEventsProps {
 export const SlaEvents = ({ label, items }: SlaEventsProps) => {
   // [conomni] m9: свой 'hh:mm a' (12-часовой, AM/PM) заменён централизованным
   // хелпером времени (dateTimeUtils.messageStamp) — 24-часовой формат, русская локаль.
+  // Порядок частей тоже русский: с локалью ru шаблон 'MMM dd, yyyy' дал бы
+  // «авг. 02, 2026» — русский месяц в английской структуре.
   const formatDate = (timestamp: number) =>
-    messageStamp({ time: timestamp, dateFormat: 'MMM dd, yyyy, HH:mm' });
+    messageStamp({ time: timestamp, dateFormat: 'd MMMM yyyy, HH:mm' });
 
   return (
     <Animated.View style={tailwind.style('flex flex-row justify-between')}>

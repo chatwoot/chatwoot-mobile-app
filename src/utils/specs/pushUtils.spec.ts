@@ -189,3 +189,25 @@ describe('updateBadgeCount on Android', () => {
     expect(notifee.setBadgeCount).toHaveBeenCalledWith(3);
   });
 });
+
+// [conomni] m9: id канала продублирован в JS и в конфиг-плагине, который пишет его в
+// AndroidManifest. Если строки разойдутся, FCM снова начнёт рисовать пуш в
+// fcm_fallback_notification_channel — молча, без единой ошибки, и дефект вернётся ровно
+// тот, что этот патч чинит. Плагин читаем как текст: импортировать его в jest нельзя,
+// он тянет @expo/config-plugins.
+describe('id канала уведомлений совпадает с тем, что плагин пишет в манифест', () => {
+  it('строка в pushUtils равна строке в with-android-notifications.js', () => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const fs = require('fs');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const path = require('path');
+    const plugin = fs.readFileSync(
+      path.resolve(__dirname, '../../../with-android-notifications.js'),
+      'utf8'
+    );
+    const match = plugin.match(/NOTIFICATION_CHANNEL_ID\s*=\s*'([^']+)'/);
+
+    expect(match).not.toBeNull();
+    expect(match[1]).toBe(ANDROID_NOTIFICATION_CHANNEL_ID);
+  });
+});

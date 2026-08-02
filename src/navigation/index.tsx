@@ -39,7 +39,11 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
 // [conomni] m9: канал должен существовать до прихода первого пуша, иначе FCM рисует
 // его в fcm_fallback_notification_channel (см. pushUtils.ts) — создаём при загрузке модуля,
 // максимально рано в жизненном цикле приложения. Идемпотентно, повторные запуски безопасны.
-ensureAndroidNotificationChannel();
+ensureAndroidNotificationChannel().catch(error =>
+  // отказ создания канала не должен ронять запуск приложения необработанным промисом:
+  // пуши в этом случае деградируют до системного канала, но всё остальное работает
+  console.warn('[conomni] не удалось создать канал уведомлений', error)
+);
 
 export const AppNavigationContainer = () => {
   const [fontsLoaded] = useFonts({

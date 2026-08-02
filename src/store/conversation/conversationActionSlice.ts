@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
 
-type ActionType = 'Assign' | 'Status' | 'Label' | 'TeamAssign' | 'Priority' | null;
+// [conomni] задача C7: 'Stage' — этап воронки, меняется одним тапом из шапки диалога.
+type ActionType = 'Assign' | 'Status' | 'Label' | 'TeamAssign' | 'Priority' | 'Stage' | null;
 
 export interface ActionState {
   currentActionState: ActionType;

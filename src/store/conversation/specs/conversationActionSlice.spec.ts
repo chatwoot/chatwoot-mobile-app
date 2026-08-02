@@ -53,6 +53,17 @@ describe('conversationAction reducer', () => {
 
       expect(nextState.currentActionState).toBe('TeamAssign');
     });
+
+    // [conomni] задача C7: этап воронки в шапке чата тоже открывается общей шторкой действий.
+    it('should set the action state to Stage', () => {
+      const initialState = {
+        currentActionState: 'TeamAssign',
+      } as ActionState;
+
+      const nextState = conversationActionReducer(initialState, setActionState('Stage'));
+
+      expect(nextState.currentActionState).toBe('Stage');
+    });
   });
 
   describe('resetActionState', () => {

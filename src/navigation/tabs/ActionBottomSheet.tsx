@@ -15,6 +15,7 @@ import {
   UpdateLabels,
   UpdateTeam,
   UpdatePriority,
+  UpdateStage,
 } from '@/screens/conversations/components/conversation-actions';
 
 const ActionBottomSheet = () => {
@@ -40,6 +41,8 @@ const ActionBottomSheet = () => {
       case 'Priority':
         return [300];
       case 'TeamAssign':
+        return [400];
+      case 'Stage': // [conomni] задача C7: список этапов воронки, как Assign/TeamAssign
         return [400];
       default:
         return [250];
@@ -67,6 +70,7 @@ const ActionBottomSheet = () => {
       {currentActionState === 'Status' ? <UpdateStatus /> : null}
       {currentActionState === 'Label' ? <UpdateLabels /> : null}
       {currentActionState === 'Priority' ? <UpdatePriority /> : null}
+      {currentActionState === 'Stage' ? <UpdateStage /> : null}
     </BottomSheetModal>
   );
 };

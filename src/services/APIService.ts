@@ -96,6 +96,13 @@ class APIService {
     return this.api.put<T>(url, data, config);
   }
 
+  // [conomni] Мобильный паритет: воронка правится строго PATCH-ом
+  // (`patch 'funnel/conversations/:id'` в маршрутах форка, PUT-алиаса нет),
+  // а в апстримовом клиенте метода не было вовсе.
+  public async patch<T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) {
+    return this.api.patch<T>(url, data, config);
+  }
+
   public async delete<T>(url: string, config?: AxiosRequestConfig) {
     return this.api.delete<T>(url, config);
   }

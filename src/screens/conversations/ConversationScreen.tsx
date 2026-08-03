@@ -159,12 +159,18 @@ const ConversationList = () => {
   }, []);
 
   useEffect(() => {
+    dismissAll();
+    // Dismiss stale sheets only when this screen first mounts. Account and
+    // filter changes must not close a sheet owned by another mounted tab.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (!accountId) return undefined;
 
-    dismissAll();
     clearAndFetchConversations(filters);
     return () => activeConversationRequest.current?.abort();
-  }, [accountId, clearAndFetchConversations, dismissAll, filters]);
+  }, [accountId, clearAndFetchConversations, filters]);
 
   const ListFooterComponent = () => {
     if (isAllConversationsFetched) return null;

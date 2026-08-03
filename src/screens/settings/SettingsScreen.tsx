@@ -69,6 +69,7 @@ import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { acquireAccountSwitchLock, releaseAccountSwitchLock } from './utils/accountSwitchLock';
+import { runAccountSwitchTransaction } from './utils/accountSwitchTransaction';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -177,22 +178,26 @@ const SettingsScreen = () => {
   const changeAccount = async (accountId: number) => {
     if (accountId === activeAccountId || !acquireAccountSwitchLock(accountSwitchLockRef)) return;
 
-    const previousAccountId = activeAccountId;
     setIsSwitchingAccount(true);
-    dispatch(clearAllContacts());
-    dispatch(clearAllConversations());
-    dispatch(resetNotifications());
-    dispatch(clearSearchResults());
-    dispatch(setAccount(accountId));
-    try {
-      await dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } })).unwrap();
-      switchAccountSheetRef.current?.dismiss();
-      navigation.dispatch(StackActions.replace('Tab'));
-    } catch {
-      if (previousAccountId) dispatch(setAccount(previousAccountId));
-      releaseAccountSwitchLock(accountSwitchLockRef);
-      setIsSwitchingAccount(false);
-    }
+    await runAccountSwitchTransaction({
+      updateRemoteAccount: () =>
+        dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } })).unwrap(),
+      commitLocalAccount: () => {
+        dispatch(clearAllContacts());
+        dispatch(clearAllConversations());
+        dispatch(resetNotifications());
+        dispatch(clearSearchResults());
+        dispatch(setAccount(accountId));
+      },
+      onSuccess: () => {
+        switchAccountSheetRef.current?.dismiss();
+        navigation.dispatch(StackActions.replace('Tab'));
+      },
+      onFailure: () => {
+        releaseAccountSwitchLock(accountSwitchLockRef);
+        setIsSwitchingAccount(false);
+      },
+    });
   };
 
   useEffect(() => {

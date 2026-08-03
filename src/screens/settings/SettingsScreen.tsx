@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StatusBar, Text, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -68,6 +68,7 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { acquireAccountSwitchLock, releaseAccountSwitchLock } from './utils/accountSwitchLock';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -84,6 +85,8 @@ const SettingsScreen = () => {
   // const { bottom } = useSafeAreaInsets();
 
   const [showWidget, toggleWidget] = useState(false);
+  const [isSwitchingAccount, setIsSwitchingAccount] = useState(false);
+  const accountSwitchLockRef = useRef(false);
   const user = useSelector(selectUser);
   const {
     name,
@@ -172,7 +175,10 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = async (accountId: number) => {
+    if (accountId === activeAccountId || !acquireAccountSwitchLock(accountSwitchLockRef)) return;
+
     const previousAccountId = activeAccountId;
+    setIsSwitchingAccount(true);
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(resetNotifications());
@@ -180,9 +186,12 @@ const SettingsScreen = () => {
     dispatch(setAccount(accountId));
     try {
       await dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } })).unwrap();
+      switchAccountSheetRef.current?.dismiss();
       navigation.dispatch(StackActions.replace('Tab'));
     } catch {
       if (previousAccountId) dispatch(setAccount(previousAccountId));
+      releaseAccountSwitchLock(accountSwitchLockRef);
+      setIsSwitchingAccount(false);
     }
   };
 
@@ -400,6 +409,7 @@ const SettingsScreen = () => {
             currentAccountId={activeAccountId}
             changeAccount={changeAccount}
             accounts={accounts}
+            disabled={isSwitchingAccount}
           />
         </BottomSheetWrapper>
       </BottomSheetModal>

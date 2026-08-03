@@ -171,14 +171,19 @@ const SettingsScreen = () => {
     dispatch(setLocale(locale));
   };
 
-  const changeAccount = (accountId: number) => {
+  const changeAccount = async (accountId: number) => {
+    const previousAccountId = activeAccountId;
     dispatch(clearAllContacts());
     dispatch(clearAllConversations());
     dispatch(resetNotifications());
     dispatch(clearSearchResults());
     dispatch(setAccount(accountId));
-    dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
-    navigation.dispatch(StackActions.replace('Tab'));
+    try {
+      await dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } })).unwrap();
+      navigation.dispatch(StackActions.replace('Tab'));
+    } catch {
+      if (previousAccountId) dispatch(setAccount(previousAccountId));
+    }
   };
 
   useEffect(() => {

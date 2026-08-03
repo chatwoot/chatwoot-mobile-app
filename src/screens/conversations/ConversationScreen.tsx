@@ -61,7 +61,7 @@ import {
 import { selectFilters, FilterState } from '@/store/conversation/conversationFilterSlice';
 import { ConversationPayload } from '@/store/conversation/conversationTypes';
 import { clearAllConversations } from '@/store/conversation/conversationSlice';
-import { selectUserId } from '@/store/auth/authSelectors';
+import { selectCurrentUserAccountId, selectUserId } from '@/store/auth/authSelectors';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
 
@@ -92,6 +92,8 @@ const ConversationList = () => {
   // This is used for pagination
   const [pageNumber, setPageNumber] = useState(1);
   const userId = useAppSelector(selectUserId);
+  const accountId = useAppSelector(selectCurrentUserAccountId);
+  const activeConversationRequest = useRef<{ abort: () => void } | null>(null);
 
   // This is used to store the index of the item that is currently selected
   const { openedRowIndex } = useConversationListStateContext();
@@ -113,7 +115,43 @@ const ConversationList = () => {
   }, []);
 
   const filters = useAppSelector(selectFilters);
-  const previousFilters = useRef(filters);
+
+  const fetchConversations = useCallback(
+    (filters: FilterState, page: number = 1) => {
+      if (!accountId) return;
+
+      const conversationFilters = {
+        accountId,
+        status: filters.status,
+        assigneeType: filters.assignee_type,
+        page,
+        sortBy: filters.sort_by,
+        inboxId: parseInt(filters.inbox_id),
+      } as ConversationPayload;
+
+      const request = dispatch(conversationActions.fetchConversations(conversationFilters));
+      activeConversationRequest.current = request;
+      request.finally(() => {
+        if (activeConversationRequest.current === request) {
+          activeConversationRequest.current = null;
+        }
+      });
+      return request;
+    },
+    [accountId, dispatch],
+  );
+
+  const clearAndFetchConversations = useCallback(
+    async (filters: FilterState) => {
+      activeConversationRequest.current?.abort();
+      setPageNumber(1);
+      dispatch(clearAllConversations());
+      dispatch(clearAllContacts());
+      dispatch(clearAssignableAgents());
+      return fetchConversations(filters);
+    },
+    [dispatch, fetchConversations],
+  );
 
   // Reset last active timestamp when the conversation screen is opened
   useEffect(() => {
@@ -121,27 +159,12 @@ const ConversationList = () => {
   }, []);
 
   useEffect(() => {
-    if (previousFilters.current !== filters) {
-      previousFilters.current = filters;
-      clearAndFetchConversations(filters);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+    if (!accountId) return undefined;
 
-  useEffect(() => {
     dismissAll();
     clearAndFetchConversations(filters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
-    setPageNumber(1);
-    await dispatch(clearAllConversations());
-    await dispatch(clearAllContacts());
-    await dispatch(clearAssignableAgents());
-    fetchConversations(filters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => activeConversationRequest.current?.abort();
+  }, [accountId, clearAndFetchConversations, dismissAll, filters]);
 
   const ListFooterComponent = () => {
     if (isAllConversationsFetched) return null;
@@ -197,22 +220,6 @@ const ConversationList = () => {
       appStateListener?.remove();
     };
   }, [appState, checkAppStateAndFetchConversations, clearAndFetchConversations, filters]);
-
-  const fetchConversations = useCallback(
-    async (filters: FilterState, page: number = 1) => {
-      const conversationFilters = {
-        status: filters.status,
-        assigneeType: filters.assignee_type,
-        page: page,
-        sortBy: filters.sort_by,
-        inboxId: parseInt(filters.inbox_id),
-      } as ConversationPayload;
-
-      dispatch(conversationActions.fetchConversations(conversationFilters));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
-  );
 
   const onChangePageNumber = () => {
     const nextPageNumber = pageNumber + 1;

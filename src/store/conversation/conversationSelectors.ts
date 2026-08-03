@@ -6,6 +6,7 @@ import { CONVERSATION_PRIORITY_ORDER } from '@/constants';
 import { shouldApplyFilters } from '@/utils/conversationUtils';
 import type { Conversation } from '@/types';
 import { MESSAGE_TYPES } from '@/constants';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 
 export const selectConversationsState = (state: RootState) => state.conversations;
 
@@ -48,10 +49,11 @@ export const selectIsLoadingMessages = createSelector(
 export const getFilteredConversations = createDraftSafeSelector(
   [
     selectAllConversations,
+    selectCurrentUserAccountId,
     (_, filters: FilterState) => filters,
     (_, __, userId: number | undefined) => userId,
   ],
-  (conversations, filters, userId) => {
+  (conversations, activeAccountId, filters, userId) => {
     const { assignee_type: assigneeType, sort_by: sortBy } = filters;
     let sortType = filters.sort_by; // Create mutable variable
 
@@ -81,7 +83,9 @@ export const getFilteredConversations = createDraftSafeSelector(
       sortType = 'latest';
     }
 
-    const sortedConversations = conversations.sort(comparator[sortType as keyof SortComparator]);
+    const sortedConversations = conversations
+      .filter(conversation => Number(conversation.accountId) === Number(activeAccountId))
+      .sort(comparator[sortType as keyof SortComparator]);
 
     if (assigneeType === 'me') {
       return sortedConversations.filter(conversation => {

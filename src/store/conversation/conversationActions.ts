@@ -37,9 +37,9 @@ import { Platform } from 'react-native';
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
     'conversations/fetchConversations',
-    async (payload, { rejectWithValue }) => {
+    async (payload, { rejectWithValue, signal }) => {
       try {
-        return await ConversationService.getConversations(payload);
+        return await ConversationService.getConversations(payload, signal);
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {
@@ -257,7 +257,11 @@ export const conversationActions = {
     },
   ),
   translateMessage: createAsyncThunk<
-    TranslateMessageAPIResponse & { conversationId: number; messageId: number; targetLanguage: string },
+    TranslateMessageAPIResponse & {
+      conversationId: number;
+      messageId: number;
+      targetLanguage: string;
+    },
     TranslateMessagePayload
   >('conversations/translateMessage', async (payload, { rejectWithValue }) => {
     try {

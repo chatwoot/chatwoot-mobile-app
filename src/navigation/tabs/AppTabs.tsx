@@ -19,8 +19,9 @@ import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
+import type { ChatListTab } from '@/store/chat-list/chatListTypes';
 
-import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
+import { AuthStack, ChatListStack, FunnelStack, SettingsStack, InboxStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
@@ -44,7 +45,16 @@ import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 const Tab = createBottomTabNavigator();
 
 export type TabParamList = {
-  Conversations: undefined;
+  // Три списочных таба (C4/C5) — один экран `ChatListScreen`, вкладку задаёт `initialParams`
+  // на `Tab.Screen` (см. `ChatListStack.tsx`); `undefined` — тип на случай программного
+  // `navigation.navigate(name)` без параметров (тогда действует дефолт 'new' внутри стека).
+  ChatListNew: { tab: ChatListTab } | undefined;
+  ChatListMine: { tab: ChatListTab } | undefined;
+  ChatListArchive: { tab: ChatListTab } | undefined;
+  Funnel: undefined;
+  // Таб уведомлений остаётся зарегистрированным роутом навигатора, но не рисуется в баре
+  // (BottomTabBar.tsx фильтрует state.routes) — достижим только программно, колокольчиком
+  // в шапке списка.
   Inbox: undefined;
   Settings: undefined;
   Login: undefined;
@@ -160,16 +170,29 @@ const Tabs = () => {
   }, []);
 
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
+    // "Новые" — первый видимый таб бара (C4, п.5 плана волны): initialRouteName вместо
+    // прежнего "Inbox" (тот таб больше не рисуется в баре, см. TabParamList выше).
+    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="ChatListNew">
       {hasConversationPermission && (
         <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
       )}
       {hasConversationPermission && (
-        <Tab.Screen
-          name="Conversations"
-          options={{ headerShown: false }}
-          component={ConversationStack}
-        />
+        <Tab.Screen name="ChatListNew" options={{ headerShown: false }}>
+          {() => <ChatListStack tab="new" />}
+        </Tab.Screen>
+      )}
+      {hasConversationPermission && (
+        <Tab.Screen name="ChatListMine" options={{ headerShown: false }}>
+          {() => <ChatListStack tab="mine" />}
+        </Tab.Screen>
+      )}
+      {hasConversationPermission && (
+        <Tab.Screen name="ChatListArchive" options={{ headerShown: false }}>
+          {() => <ChatListStack tab="archive" />}
+        </Tab.Screen>
+      )}
+      {hasConversationPermission && (
+        <Tab.Screen name="Funnel" options={{ headerShown: false }} component={FunnelStack} />
       )}
       <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
     </Tab.Navigator>

@@ -1,5 +1,28 @@
+/* eslint-disable import/first -- jest.mock ставим до импортов: шимы нативных модулей должны быть видны глазом раньше кода, который их требует */
 // [conomni] задача C7: чистые функции контейнера шапки чата, вынесенные ради тестируемости
 // (нет @testing-library в проекте — сам контейнер не рендерится).
+// ChatHeaderContainer.tsx тянет @/hooks → react-redux (ESM-сборка `react-native` условия
+// пакета парсится как модуль, jest падает на "Cannot use import statement outside a
+// module") и, транзитивно через ChatHeader.tsx → @/components-next, react-native-keyboard-
+// controller (падает без нативной линковки, тот же приём, что ChatListRow.spec.ts). Оба —
+// починка окружения теста, реальные хуки в тесте не вызываются (компонент не рендерится).
+jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: jest.fn() }));
+jest.mock('react-native-keyboard-controller', () => ({ useKeyboardHandler: jest.fn() }));
+jest.mock('@react-native-clipboard/clipboard', () => ({
+  getString: jest.fn(),
+  setString: jest.fn(),
+}));
+// DropdownMenu.tsx (соседний файл, импортируется ChatHeader.tsx) тянет `zeego/dropdown-menu`
+// — чистый ESM-пакет, jest его не транспилирует (не входит в default transformIgnorePatterns).
+jest.mock('zeego/dropdown-menu', () => ({
+  create: (component: unknown) => component,
+  Root: 'View',
+  Trigger: 'View',
+  Content: 'View',
+  Item: 'View',
+  ItemTitle: 'Text',
+}));
+
 import { resolveConversationStageId, openStageSheet } from '../ChatHeaderContainer';
 import { selectSingleConversation } from '@/store/conversation/conversationSelectedSlice';
 import { setActionState } from '@/store/conversation/conversationActionSlice';

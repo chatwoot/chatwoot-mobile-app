@@ -127,6 +127,16 @@ const chatListSlice = createSlice({
         const { tab, requestedIds, rows } = action.payload;
         state.cards[tab] = applyRowsToTab(state.cards[tab], tab, requestedIds, rows);
       })
+      .addCase(chatListActions.fetchLiveRows.fulfilled, (state, action) => {
+        // C9: один ответ `chat_list/rows` — но, в отличие от fetchRows.fulfilled выше,
+        // адресован не одной вкладке, а всем трём сразу: ActionCable-сигнал не несёт
+        // информации о текущей вкладке строки, применяем ту же чистую applyRowsToTab
+        // отдельно к каждой — она трогает только карточки из requestedIds (см. её doc-комментарий).
+        const { requestedIds, rows } = action.payload;
+        (['new', 'mine', 'archive'] as ChatListTab[]).forEach(tab => {
+          state.cards[tab] = applyRowsToTab(state.cards[tab], tab, requestedIds, rows);
+        });
+      })
       .addCase(chatListActions.fetchBadgeCounters.fulfilled, (state, action) => {
         state.badgeCounters.new = action.payload.counters.new;
       });

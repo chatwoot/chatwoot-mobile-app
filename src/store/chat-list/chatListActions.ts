@@ -10,6 +10,8 @@ import type {
   ChatListCounters,
   FetchChatListPayload,
   FetchRowsPayload,
+  FetchLiveRowsPayload,
+  ChatListLiveRowsResponse,
   ApiErrorResponse,
 } from './chatListTypes';
 
@@ -76,6 +78,25 @@ export const chatListActions = {
       try {
         const { rows, counters } = await ChatListService.fetchRows(ids);
         return { tab, requestedIds: ids, rows, counters };
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
+    },
+  ),
+  // C9 «Живое обновление списков»: ActionCable-накопитель (chatListLiveUpdates.ts) копит
+  // display_id по сигналам сокета и раз в 3с зовёт это ОДНОГО тонка — без параметра tab,
+  // потому что сокет глобальный и не знает, какая вкладка сейчас открыта. Результат этого
+  // единственного HTTP-запроса раскладывается по всем вкладкам в chatListSlice.ts.
+  fetchLiveRows: createAsyncThunk<ChatListLiveRowsResponse, FetchLiveRowsPayload>(
+    'chatList/fetchLiveRows',
+    async ({ ids }, { rejectWithValue }) => {
+      try {
+        const { rows, counters } = await ChatListService.fetchRows(ids);
+        return { requestedIds: ids, rows, counters };
       } catch (error) {
         const { response } = error as AxiosError<ApiErrorResponse>;
         if (!response) {

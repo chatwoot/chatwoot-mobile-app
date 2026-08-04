@@ -1,13 +1,18 @@
 import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import type { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import type { AppDispatch } from '@/store';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectSingleConversation } from '@/store/conversation/conversationSelectedSlice';
+import { setActionState } from '@/store/conversation/conversationActionSlice';
 import { CONVERSATION_STATUS } from '@/constants';
 import { ConversationStatus } from '@/types/common/ConversationStatus';
+import type { Conversation } from '@/types';
 import { ChatHeader } from './ChatHeader';
 import { DashboardList } from './DropdownMenu';
 import { ImageSourcePropType } from 'react-native';
@@ -16,6 +21,32 @@ import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { selectStageById, selectStages } from '@/store/funnel/funnelSelectors';
+import { funnelActions } from '@/store/funnel/funnelActions';
+
+// [conomni] задача C7: этап диалога лежит в `custom_attributes` (jsonb) под ключом
+// `conomni_stage_id` — проверено по коду форка (app/services/conomni/funnel.rb:4,
+// STAGE_KEY = 'conomni_stage_id'). Значение приходит СТРОКОЙ (jsonb), пустая строка и
+// отсутствие ключа равнозначны «этапа нет» — это не ошибка. Чистая функция ради
+// тестируемости (в проекте нет @testing-library, контейнер не рендерится в тестах).
+export const resolveConversationStageId = (conversation?: Conversation | null): string | null => {
+  const stageId = conversation?.customAttributes?.conomni_stage_id;
+  return stageId ? stageId : null;
+};
+
+// [conomni] задача C7: тап по этапу в шапке — выбрать диалог (та же селекция, что у
+// bulk-действий) и открыть общую шторку действий в состоянии 'Stage' (ветка уже заведена
+// в ActionBottomSheet.tsx). Диалог ещё не загружен — тапать нечем, ничего не делаем.
+export const openStageSheet = (
+  dispatch: AppDispatch,
+  conversation: Conversation | undefined,
+  actionsModalSheetRef: React.RefObject<BottomSheetModal>,
+): void => {
+  if (!conversation) return;
+  dispatch(selectSingleConversation(conversation));
+  dispatch(setActionState('Stage'));
+  actionsModalSheetRef.current?.present();
+};
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -34,6 +65,20 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const dashboardApps = useAppSelector(selectAllDashboardApps);
 
   const appliedSla = conversation?.appliedSla;
+
+  // [conomni] задача C7: справочник этапов — из стора воронки (C2); если его ещё нет
+  // (открыли чат напрямую из списка, минуя вкладку «Воронка»), подтягиваем один раз.
+  const stages = useAppSelector(selectStages);
+  const conversationStageId = resolveConversationStageId(conversation);
+  const stage = useAppSelector(state =>
+    conversationStageId ? selectStageById(state, conversationStageId) : undefined,
+  );
+
+  useEffect(() => {
+    if (stages.length === 0) {
+      dispatch(funnelActions.fetchStages());
+    }
+  }, [dispatch, stages.length]);
 
   const [slaStatus, setSlaStatus] = useState<SLAStatus | null>(null);
 
@@ -67,8 +112,12 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     }
   }, [appliedSla, conversation]);
 
-  const { chatPagerView } = useRefsContext();
+  const { chatPagerView, actionsModalSheetRef } = useRefsContext();
   const { pagerViewIndex } = useChatWindowContext();
+
+  const handleStagePress = () => {
+    openStageSheet(dispatch, conversation, actionsModalSheetRef);
+  };
 
   const createTimer = useCallback(() => {
     timerRef.current = setTimeout(() => {
@@ -168,9 +217,11 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       hasSla={!!appliedSla}
       slaEvents={conversation?.slaEvents}
       statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
+      stage={stage}
       onBackPress={handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
+      onStagePress={handleStagePress}
     />
   );
 };

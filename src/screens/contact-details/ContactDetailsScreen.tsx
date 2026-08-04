@@ -25,6 +25,8 @@ import {
   ContactBasicActions,
   ContactMetaInformation,
   ContactLabelActions,
+  ConversationInfoSection,
+  shouldShowConversationInfoSection,
 } from './components';
 import { AttributeList } from '@/components-next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -191,8 +193,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
       type: 'link',
     }));
 
-  const fullLocation =
-    location || [city, country].filter(Boolean).join(', ') || null;
+  const fullLocation = location || [city, country].filter(Boolean).join(', ') || null;
 
   const userDetails: GenericListType[] = [
     {
@@ -240,6 +241,13 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
           {email || phoneNumber ? (
             <Animated.View style={tailwind.style('mt-[23px] px-4')}>
               <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
+            </Animated.View>
+          ) : null}
+          {/* [conomni] задача C8: карточка обращения — только когда экран открыт из диалога
+              (conversationId приходит из шапки чата), не при открытии по contactId. */}
+          {shouldShowConversationInfoSection(conversationId) ? (
+            <Animated.View style={tailwind.style('pt-10')}>
+              <ConversationInfoSection conversationId={conversationId as number} />
             </Animated.View>
           ) : null}
           <Animated.View style={tailwind.style('pt-10')}>

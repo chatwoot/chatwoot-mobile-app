@@ -124,7 +124,9 @@ export const StageTabs: React.FC<StageTabsProps> = ({ stages, activeStageId, onS
                 style={[
                   tailwind.style(
                     'text-sm tracking-[0.32px]',
-                    isActive ? 'font-inter-medium-24 text-gray-950' : 'font-inter-normal-20 text-gray-600',
+                    isActive
+                      ? 'font-inter-medium-24 text-gray-950'
+                      : 'font-inter-normal-20 text-gray-600',
                   ),
                   isActive && color ? { color } : null,
                 ]}>

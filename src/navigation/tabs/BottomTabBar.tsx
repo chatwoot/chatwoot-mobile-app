@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -10,20 +10,33 @@ import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { selectChatListBadgeCounters } from '@/store/chat-list/chatListSelectors';
 
 import {
+  ArchiveIconFilled,
+  ArchiveIconOutline,
   ConversationIconFilled,
   ConversationIconOutline,
+  FunnelIconFilled,
+  FunnelIconOutline,
   InboxIconFilled,
   InboxIconOutline,
   SettingsIconFilled,
   SettingsIconOutline,
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import i18n from '@/i18n';
 import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
+import {
+  formatBadgeCount,
+  getTabBadgeCount,
+  getTabLabelKey,
+  shouldShowBadge,
+  visibleTabBarRoutes,
+} from './tabBarUtils';
 
 const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
@@ -37,10 +50,17 @@ type TabBarIconsProps = {
 
 const TabBarIcons = ({ focused, route }: TabBarIconsProps) => {
   switch (route.name) {
-    case 'Conversations':
+    // "Новые" переиспользует прежнюю иконку таба "Conversations" (диалоговый пузырь) —
+    // задача заводит только FunnelIcon/ArchiveIcon (C4), см. комментарий в плане волны.
+    case 'ChatListNew':
       return focused ? <ConversationIconFilled /> : <ConversationIconOutline />;
-    case 'Inbox':
+    // "Мои" переиспользует прежнюю иконку таба "Inbox" (тот таб больше не в баре).
+    case 'ChatListMine':
       return focused ? <InboxIconFilled /> : <InboxIconOutline />;
+    case 'ChatListArchive':
+      return focused ? <ArchiveIconFilled /> : <ArchiveIconOutline />;
+    case 'Funnel':
+      return focused ? <FunnelIconFilled /> : <FunnelIconOutline />;
     case 'Settings':
       return focused ? <SettingsIconFilled /> : <SettingsIconOutline />;
   }
@@ -84,7 +104,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
 const TabItem = (props: any) => {
   const { handlers, animatedStyle } = useScaleAnimation();
 
-  const { onPress, onLongPress, isFocused, options, route } = props;
+  const { onPress, onLongPress, isFocused, options, route, labelKey, badgeCount } = props;
 
   // Memoize hitSlop to prevent new object reference on every render
   const hitSlop = React.useMemo(() => ({ top: 2, left: 10, right: 10, bottom: 10 }), []);
@@ -94,6 +114,9 @@ const TabItem = (props: any) => {
     () => (isFocused ? { selected: true } : {}),
     [isFocused],
   );
+
+  const showBadge = shouldShowBadge(badgeCount);
+
   return (
     <Animated.View
       style={[tailwind.style('justify-center items-center flex-1 bg-transparent'), animatedStyle]}>
@@ -105,8 +128,36 @@ const TabItem = (props: any) => {
         accessibilityLabel={options.tabBarAccessibilityLabel}
         testID={options.tabBarTestID}
         onPress={onPress}
-        onLongPress={onLongPress}>
-        <TabBarIcons focused={isFocused} route={route} />
+        onLongPress={onLongPress}
+        style={tailwind.style('items-center')}>
+        <View>
+          <TabBarIcons focused={isFocused} route={route} />
+          {showBadge ? (
+            <View
+              style={tailwind.style(
+                'absolute -top-1 -right-2 min-w-[16px] h-4 px-1 rounded-full bg-tomato-700 items-center justify-center',
+              )}>
+              <Text
+                style={tailwind.style(
+                  'text-[10px] leading-[12px] font-inter-semibold-20 text-white',
+                )}>
+                {formatBadgeCount(badgeCount)}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        {labelKey ? (
+          <Text
+            numberOfLines={1}
+            style={tailwind.style(
+              'text-[10px] leading-[12px] mt-1',
+              isFocused
+                ? 'font-inter-medium-24 text-gray-950'
+                : 'font-inter-normal-20 text-gray-600',
+            )}>
+            {i18n.t(labelKey)}
+          </Text>
+        ) : null}
       </Pressable>
     </Animated.View>
   );
@@ -115,6 +166,13 @@ const TabItem = (props: any) => {
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
+  const badgeCounters = useAppSelector(selectChatListBadgeCounters);
+
+  // Пять роутов бара в фиксированном порядке (C4, п.1/3 плана волны) — таб `Inbox`
+  // остаётся зарегистрированным роутом Tab.Navigator (уведомления открываются
+  // колокольчиком в шапке списка), но здесь не рисуется.
+  const barRoutes = visibleTabBarRoutes(state.routes);
+  const focusedRouteKey = state.routes[state.index]?.key;
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -155,21 +213,21 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
+            'flex flex-row absolute w-full bottom-0 px-2 pt-[11px] pb-8 bg-[#00000009]',
             `h-[${tabBarHeight}px]`,
           ),
         ],
         android: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white',
+            'flex flex-row absolute w-full bottom-0 px-2 py-[11px] bg-white',
             `h-[${tabBarHeight}px]`,
           ),
         ],
       })}>
       <Animated.View style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3')} />
-      {state.routes.map((route, index) => {
+      {barRoutes.map(route => {
         const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
+        const isFocused = route.key === focusedRouteKey;
 
         return (
           <TabItem
@@ -179,6 +237,8 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
             onLongPress={createLongPressHandler(route)}
             route={route}
             isFocused={isFocused}
+            labelKey={getTabLabelKey(route.name)}
+            badgeCount={getTabBadgeCount(route.name, badgeCounters)}
           />
         );
       })}

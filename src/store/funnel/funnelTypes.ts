@@ -96,9 +96,12 @@ export interface FetchStageColumnResult {
 // stageId/price опциональны НЕЗАВИСИМО друг от друга и различают «не передано» (ключ
 // отсутствует в теле запроса) от «передано null» (стереть этап). Непереданный stageId
 // не должен уехать на сервер как null — это стёрло бы этап диалога.
+// stageId — `number | string`, а не только `number`: справочник этапов (funnelSelectors)
+// отдаёт числовой id, а `conversation.customAttributes.conomni_stage_id` (задача C7) —
+// строку из jsonb; сервер принимает оба варианта одинаково.
 export interface UpdateConversationFunnelPayload {
   conversationId: number;
-  stageId?: number | null;
+  stageId?: number | string | null;
   price?: number | string;
 }
 

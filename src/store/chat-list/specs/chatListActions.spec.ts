@@ -141,6 +141,30 @@ describe('chatListActions', () => {
     });
   });
 
+  describe('fetchLiveRows', () => {
+    it('C9: зовёт ChatListService.fetchRows ОДИН раз и отдаёт requestedIds без привязки к вкладке', async () => {
+      const rows = [buildCard({ id: 9 })];
+      const counters = buildCounters();
+      (ChatListService.fetchRows as jest.Mock).mockResolvedValue({ rows, counters });
+
+      const dispatch = jest.fn();
+      const getState = jest.fn();
+      const result = await chatListActions.fetchLiveRows({ ids: [9, 10] })(
+        dispatch,
+        getState,
+        undefined,
+      );
+
+      expect(ChatListService.fetchRows).toHaveBeenCalledTimes(1);
+      expect(ChatListService.fetchRows).toHaveBeenCalledWith([9, 10]);
+      expect(result.payload).toEqual({
+        requestedIds: [9, 10],
+        rows,
+        counters,
+      });
+    });
+  });
+
   describe('fetchBadgeCounters', () => {
     it('шлёт запрос без фильтра ответственного (без assignee_id[])', async () => {
       const counters = buildCounters({ new: 3 });

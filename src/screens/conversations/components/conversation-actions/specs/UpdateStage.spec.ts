@@ -1,6 +1,20 @@
+/* eslint-disable import/first -- jest.mock ставим до импортов: шимы нативных модулей должны быть видны глазом раньше кода, который их требует */
 // [conomni] задача C7: в проекте нет @testing-library — компонент UpdateStage сам не
 // рендерится, тестируем чистые функции, вынесенные из него специально ради тестируемости
 // (тот же приём, что ChannelBrandMark.spec.ts / FunnelScreen.spec.ts).
+// UpdateStage.tsx рендерит BottomSheetHeader/Icon (@/components-next) → барель index.ts
+// реэкспортит ВСЕ подпапки next-компонентов, включая чужие (@/utils →
+// react-native-keyboard-controller, LabelActions → @/hooks → react-redux,
+// AttributeList → @react-native-clipboard/clipboard) — без линковки/ESM-транспиляции они
+// падают при простом require в jest. Три моки ниже — починка окружения теста (компонент
+// не рендерится), тот же приём, что ChatListRow.spec.ts / ChatListScreen.spec.ts.
+jest.mock('react-native-keyboard-controller', () => ({ useKeyboardHandler: jest.fn() }));
+jest.mock('react-redux', () => ({ useDispatch: jest.fn(), useSelector: jest.fn() }));
+jest.mock('@react-native-clipboard/clipboard', () => ({
+  getString: jest.fn(),
+  setString: jest.fn(),
+}));
+
 import { stageUpdatePayload, handleStageSelect } from '../UpdateStage';
 import { funnelActions } from '@/store/funnel/funnelActions';
 import { conversationActions } from '@/store/conversation/conversationActions';

@@ -115,7 +115,8 @@ const FunnelScreen: React.FC = () => {
     [],
   );
 
-  const showEmptyLoader = (isLoadingStages || (isLoadingColumn && cards.length === 0)) && !isRefreshing;
+  const showEmptyLoader =
+    (isLoadingStages || (isLoadingColumn && cards.length === 0)) && !isRefreshing;
 
   return (
     <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>

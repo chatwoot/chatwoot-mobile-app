@@ -136,6 +136,67 @@ describe('chatListSlice: fetchChatList', () => {
   });
 });
 
+describe('chatListSlice: fetchLiveRows (C9, живое обновление списков)', () => {
+  it('одним ответом обновляет ВСЕ три вкладки — сокет не знает, в какой вкладке сейчас строка', () => {
+    const state = emptyState({
+      cards: {
+        new: [buildCard({ id: 1, tab: 'new' })],
+        mine: [buildCard({ id: 2, tab: 'accepted' })],
+        archive: [],
+      },
+    });
+    // id 1 переехал в "accepted" (мои), id 2 — в архив.
+    const rows = [
+      buildCard({ id: 1, tab: 'accepted' }),
+      buildCard({ id: 2, tab: 'archive', status: 'resolved' }),
+    ];
+    const counters = buildCounters();
+
+    const next = chatListReducer(
+      state,
+      chatListActions.fetchLiveRows.fulfilled({ requestedIds: [1, 2], rows, counters }, 'req', {
+        ids: [1, 2],
+      }),
+    );
+
+    expect(next.cards.new).toHaveLength(0);
+    expect(next.cards.mine.map(c => c.id)).toEqual([1]);
+    expect(next.cards.archive.map(c => c.id)).toEqual([2]);
+  });
+
+  it('id, о котором не спрашивали, ни в одной вкладке не трогается', () => {
+    const untouched = buildCard({ id: 3, tab: 'new' });
+    const state = emptyState({ cards: { new: [untouched], mine: [], archive: [] } });
+
+    const next = chatListReducer(
+      state,
+      chatListActions.fetchLiveRows.fulfilled(
+        { requestedIds: [1], rows: [], counters: buildCounters() },
+        'req',
+        { ids: [1] },
+      ),
+    );
+
+    expect(next.cards.new).toEqual([untouched]);
+  });
+
+  it('строка по ранее неизвестному id появляется в списке впервые', () => {
+    const state = emptyState();
+
+    const row = buildCard({ id: 5, tab: 'new' });
+    const next = chatListReducer(
+      state,
+      chatListActions.fetchLiveRows.fulfilled(
+        { requestedIds: [5], rows: [row], counters: buildCounters() },
+        'req',
+        { ids: [5] },
+      ),
+    );
+
+    expect(next.cards.new).toEqual([row]);
+  });
+});
+
 describe('chatListSlice: fetchBadgeCounters', () => {
   it('badgeCounters.new берётся из counters.new ответа', () => {
     const counters = buildCounters({ new: 4 });

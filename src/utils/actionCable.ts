@@ -24,6 +24,11 @@ import {
   NotificationCreatedResponse,
   NotificationRemovedResponse,
 } from '@/store/notification/notificationTypes';
+import { chatListActions } from '@/store/chat-list/chatListActions';
+import {
+  createChatListLiveUpdates,
+  ChatListLiveUpdates,
+} from '@/store/chat-list/chatListLiveUpdates';
 
 interface ActionCableConfig {
   pubSubToken: string;
@@ -36,10 +41,20 @@ class ActionCableConnector extends BaseActionCableConnector {
   private CancelTyping: { [key: number]: NodeJS.Timeout | null };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   protected events: { [key: string]: (data: any) => void };
+  // C9 «Живое обновление списков»: копилка display_id, изменённых событиями ниже — раз в
+  // 3 секунды одним запросом дёргает fetchRows (см. chatListLiveUpdates.ts). Живёт на
+  // экземпляре коннектора, а не модулем-синглтоном, чтобы disconnect() снимал таймер именно
+  // этого соединения и не тёк, если коннектор пересоздадут.
+  private chatListLiveUpdates: ChatListLiveUpdates;
 
   constructor(pubSubToken: string, webSocketUrl: string, accountId: number, userId: number) {
     super(pubSubToken, webSocketUrl, accountId, userId);
     this.CancelTyping = {};
+    this.chatListLiveUpdates = createChatListLiveUpdates({
+      onFlush: ids => {
+        store.dispatch(chatListActions.fetchLiveRows({ ids }));
+      },
+    });
     this.events = {
       'message.created': this.onMessageCreated,
       'message.updated': this.onMessageUpdated,
@@ -69,12 +84,21 @@ class ActionCableConnector extends BaseActionCableConnector {
     const lastActivityAt = conversation?.lastActivityAt;
     store.dispatch(updateConversationLastActivity({ lastActivityAt, conversationId }));
     store.dispatch(addOrUpdateMessage(message));
+    // C9: сообщение — сигнал, что строка списка чата с этим display_id могла измениться
+    // (last_message/last_activity_at/human_waiting_since); полезной нагрузки события для
+    // самой строки не хватает, поэтому копим id и не собираем карточку из события.
+    this.chatListLiveUpdates.registerConversationId(conversationId);
   };
 
   onConversationCreated = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(addConversation(conversation));
     store.dispatch(addContact(conversation));
+    // C9: новый диалог может появиться в списке впервые (id ранее не встречался — копилка
+    // это не проверяет, id просто попадает в следующий запрос строк), плюс отдельный сигнал
+    // перезапросить бейджи меню — сразу, а не вместе с батчем строк.
+    this.chatListLiveUpdates.registerConversationId(conversation.id);
+    store.dispatch(chatListActions.fetchBadgeCounters());
   };
 
   onMessageUpdated = (data: Message) => {
@@ -91,16 +115,22 @@ class ActionCableConnector extends BaseActionCableConnector {
   onAssigneeChanged = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(updateConversation(conversation));
+    // C9: смена ответственного двигает строку между вкладками "Новые"/"Мои" — сигнал.
+    this.chatListLiveUpdates.registerConversationId(conversation.id);
   };
 
   onStatusChange = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(updateConversation(conversation));
+    // C9: смена статуса двигает строку между вкладками (напр. в архив) — сигнал.
+    this.chatListLiveUpdates.registerConversationId(conversation.id);
   };
 
   onConversationRead = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(updateConversation(conversation));
+    // C9: прочтение меняет unread_count строки списка — сигнал.
+    this.chatListLiveUpdates.registerConversationId(conversation.id);
   };
 
   onContactUpdate = (data: Contact) => {
@@ -165,6 +195,19 @@ class ActionCableConnector extends BaseActionCableConnector {
         users,
       }),
     );
+  };
+
+  /**
+   * C9: снимает таймер живого обновления списков — обязателен при отключении сокета,
+   * иначе накопитель продолжает копить id и тикать в фоне без адресата (§7 спеки волны).
+   * Публичный метод инстанса (не модуль-синглтон): у него нет собственного слушателя на
+   * `disconnected` — `BaseActionCableConnector` не отдаёт наружу канал/эмиттер, на котором
+   * можно было бы штатно подписаться из этого файла (см. отчёт задачи C9). Метод —
+   * готовый явный хук для места, которое управляет жизненным циклом соединения (логаут,
+   * пересоздание коннектора и т.п.).
+   */
+  disconnect = (): void => {
+    this.chatListLiveUpdates.stop();
   };
 }
 

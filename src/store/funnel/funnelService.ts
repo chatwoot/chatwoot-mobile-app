@@ -37,7 +37,7 @@ export class FunnelService {
     // В тело попадают ТОЛЬКО реально переданные ключи. `!== undefined` отличает
     // «не передано» (пропустить) от «передано null» (стереть этап) — при омиссии
     // stageId в объекте его вообще не будет как свойства, значит здесь undefined.
-    const body: { stage_id?: number | null; price?: number | string } = {};
+    const body: { stage_id?: number | string | null; price?: number | string } = {};
     if (stageId !== undefined) {
       body.stage_id = stageId;
     }

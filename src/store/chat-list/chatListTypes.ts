@@ -129,6 +129,21 @@ export interface ChatListRowsResponse {
   counters: ChatListCounters;
 }
 
+/** C9 «Живое обновление списков»: сокет сигналит «этот display_id изменился» без привязки
+ * к конкретной вкладке приложения (ActionCable — не экран, у него нет текущей вкладки).
+ * Поэтому, в отличие от FetchRowsPayload/ChatListRowsResponse выше, здесь нет `tab` —
+ * один HTTP-запрос `chat_list/rows`, а его результат раскладывается по ВСЕМ трём вкладкам
+ * сразу (см. chatListSlice.ts). */
+export interface FetchLiveRowsPayload {
+  ids: number[];
+}
+
+export interface ChatListLiveRowsResponse {
+  requestedIds: number[];
+  rows: Card[];
+  counters: ChatListCounters;
+}
+
 export interface ApiErrorResponse {
   success: boolean;
   errors: string[];

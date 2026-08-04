@@ -31,6 +31,7 @@ import { ActivityIndicator, Pressable } from 'react-native';
 import i18n from '@/i18n';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
+import { WhatsAppTemplatesList } from './components/whatsapp-templates';
 import { macroActions } from '@/store/macro/macroActions';
 
 export const ChatWindow = (props: ChatScreenProps) => {
@@ -39,6 +40,7 @@ export const ChatWindow = (props: ChatScreenProps) => {
       <MessagesListContainer />
       <ReplyBoxContainer />
       <MacrosList conversationId={props.route.params.conversationId} />
+      <WhatsAppTemplatesList conversationId={props.route.params.conversationId} />
     </Animated.View>
   );
 };

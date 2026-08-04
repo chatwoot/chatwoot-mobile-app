@@ -325,6 +325,22 @@ describe('getTemplatesForInbox', () => {
     expect(getTemplatesForInbox({} as Inbox)).toEqual([]);
     expect(getTemplatesForInbox(undefined)).toEqual([]);
   });
+
+  it('returns empty array when the api serves the jsonb defaults as objects', () => {
+    const inbox = {
+      messageTemplates: {},
+      contentTemplates: {},
+    } as unknown as Inbox;
+    expect(getTemplatesForInbox(inbox)).toEqual([]);
+  });
+
+  it('ignores non-array template collections', () => {
+    const inbox = {
+      messageTemplates: 'invalid',
+      contentTemplates: { templates: {} },
+    } as unknown as Inbox;
+    expect(getTemplatesForInbox(inbox)).toEqual([]);
+  });
 });
 
 describe('getHeaderSubtitle', () => {

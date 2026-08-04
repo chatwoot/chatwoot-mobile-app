@@ -100,6 +100,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-android-notification-channel.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

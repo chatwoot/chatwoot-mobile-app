@@ -100,6 +100,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-image-viewer-patch.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

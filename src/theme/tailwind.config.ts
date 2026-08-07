@@ -19,6 +19,7 @@ const chatwootAppColors = {
 };
 
 export const twConfig = {
+  darkMode: 'class',
   theme: {
     ...defaultTheme,
     extend: {

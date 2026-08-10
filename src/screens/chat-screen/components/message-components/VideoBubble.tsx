@@ -32,6 +32,8 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
       player.currentTime = 0;
       setPlayVideo(false);
     });
+    // Sync the current status in case the player became ready before this subscription.
+    setStatus(player.status);
     return () => {
       statusSub.remove();
       endSub.remove();

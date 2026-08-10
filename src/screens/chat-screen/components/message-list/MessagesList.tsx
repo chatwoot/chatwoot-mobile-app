@@ -6,7 +6,6 @@ import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
-// import { MessageItemContainer } from '../message-item/MessageItemContainer';
 import { useRefsContext } from '@/context';
 
 export type FlashListRenderProps = {
@@ -78,8 +77,6 @@ export const MessagesList = ({
         isTargetMessage={isTarget}
       />
     );
-    // TODO: Deprecate this after the new message item is ready
-    // return <MessageItemContainer item={item} index={index} />;
   };
 
   const animatedFlashlistStyle = useAnimatedStyle(() => {

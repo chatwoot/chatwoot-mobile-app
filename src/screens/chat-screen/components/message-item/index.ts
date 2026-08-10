@@ -1,1 +1,1 @@
-export * from './MessageItem';
+export * from './Message';

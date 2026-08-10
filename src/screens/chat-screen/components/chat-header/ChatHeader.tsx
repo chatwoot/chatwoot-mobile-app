@@ -3,7 +3,7 @@ import { ImageSourcePropType, Keyboard, Platform, Pressable } from 'react-native
 import Animated from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
-import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
+import { ChevronLeft, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { tailwind } from '@/theme';
 import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
@@ -86,11 +86,10 @@ export const ChatHeader = ({
             <Pressable hitSlop={8} onPress={onToggleChatStatus}>
               <Icon
                 icon={
-                  isResolved ? (
-                    <ResolvedIcon strokeWidth={2} stroke={tailwind.color('bg-green-700')} />
-                  ) : (
-                    <OpenIcon strokeWidth={2} />
-                  )
+                  <ResolvedIcon
+                    strokeWidth={2}
+                    {...(isResolved && { stroke: tailwind.color('bg-green-700') })}
+                  />
                 }
                 size={24}
               />

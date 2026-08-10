@@ -4,6 +4,7 @@ import { Alert, BackHandler } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
 import { AppNavigator } from '@/navigation';
+import { AppErrorBoundary } from '@/components-next/error-boundary';
 
 import i18n from '@/i18n';
 
@@ -13,9 +14,7 @@ const Chatwoot = () => {
       'hardwareBackPress',
       handleBackButtonClick,
     );
-    return () => {
-      subscription.remove();
-    };
+    return () => subscription.remove();
   }, []);
   const handleBackButtonClick = () => {
     Alert.alert(
@@ -37,7 +36,9 @@ const Chatwoot = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AppNavigator />
+        <AppErrorBoundary>
+          <AppNavigator />
+        </AppErrorBoundary>
       </PersistGate>
     </Provider>
   );

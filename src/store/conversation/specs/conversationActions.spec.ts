@@ -51,10 +51,13 @@ describe('conversationActions.retryMessage', () => {
   });
 
   it('uses the retry endpoint when the message failed with an external error', async () => {
+    // The retry endpoint renders the same message partial as create, so the response carries the
+    // id and conversation_id needed to move the message out of the progress state
     (ConversationService.retryMessage as jest.Mock).mockResolvedValueOnce({
       id: 12,
       conversation_id: 1,
       content: 'Hello',
+      content_attributes: {},
     });
 
     const message = failedMessage({
@@ -70,7 +73,15 @@ describe('conversationActions.retryMessage', () => {
 
     const payloads = addOrUpdateMessagePayloads(dispatch);
     expect(payloads[0].status).toBe(MESSAGE_STATUS.PROGRESS);
-    expect(payloads[1].status).toBe(MESSAGE_STATUS.SENT);
+    // Without a conversationId and id the reducer cannot place the message and the bubble would be
+    // left stuck showing as sending
+    expect(payloads[1]).toEqual(
+      expect.objectContaining({
+        id: 12,
+        conversationId: 1,
+        status: MESSAGE_STATUS.SENT,
+      }),
+    );
   });
 
   it('creates the message again when it never reached the server', async () => {

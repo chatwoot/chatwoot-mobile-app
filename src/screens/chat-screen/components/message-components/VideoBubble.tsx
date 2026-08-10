@@ -96,41 +96,6 @@ export const VideoBubble = (props: VideoBubbleProps) => {
           videoSrc,
         }}
       />
-      {/* TODO: Fix this */}
-      {/* <Animated.View
-        pointerEvents={'none'}
-        entering={FadeIn.duration(300).easing(Easing.ease)}
-        exiting={FadeOut.duration(300).easing(Easing.ease)}>
-        <ImageBackground
-          source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')}
-          style={tailwind.style(
-            'absolute bottom-0 right-0 h-15 w-33 z-20 ',
-            shouldRenderAvatar
-              ? isOutgoing
-                ? 'rounded-br-none'
-                : isIncoming
-                  ? 'rounded-bl-none'
-                  : ''
-              : '',
-          )}>
-          <Animated.View style={tailwind.style('flex flex-row absolute right-3 bottom-[5px]')}>
-            <Text
-              style={tailwind.style(
-                'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] text-whiteA-A12 pr-1',
-              )}>
-              {unixTimestampToReadableTime(timeStamp)}
-            </Text>
-            <DeliveryStatus
-              isPrivate={isPrivate}
-              status={status}
-              messageType={messageType}
-              channel={channel}
-              errorMessage={errorMessage || ''}
-              sourceId={sourceId}
-            />
-          </Animated.View>
-        </ImageBackground>
-      </Animated.View> */}
     </React.Fragment>
   );
 };

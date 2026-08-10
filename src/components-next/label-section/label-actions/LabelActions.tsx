@@ -103,7 +103,7 @@ export const LabelActions = (props: LabelActionsProps) => {
           </Animated.Text>
         </Pressable>
       </Animated.View>
-      <Sheet ref={addLabelSheetRef} height={316} scrollable>
+      <Sheet ref={addLabelSheetRef} height={316} scrollable onDismiss={() => setSearchTerm('')}>
         <SearchBar
           onSubmitEditing={handleOnSubmitEditing}
           onChangeText={handleChangeText}

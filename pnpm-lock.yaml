@@ -217,9 +217,6 @@ importers:
       react-native-gesture-handler:
         specifier: ^2.32.0
         version: 2.32.0(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
-      react-native-image-modal:
-        specifier: ^3.0.14
-        version: 3.0.14
       react-native-image-picker:
         specifier: ^7.1.2
         version: 7.2.3(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
@@ -5413,9 +5410,6 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
-
-  react-native-image-modal@3.0.14:
-    resolution: {integrity: sha512-ih1pXgd+oR/BFlQIUdggfE0GbX4vPyU0aWVxRdmU4A2K1sImvHo8daZR7iYIwfxCO5blAKHTx9ehBC2VLBB3fA==}
 
   react-native-image-picker@7.2.3:
     resolution: {integrity: sha512-zKIZUlQNU3EtqizsXSH92zPeve4vpUrsqHu2kkpCxWE9TZhJFZBb+irDsBOY8J21k0+Edgt06TMQGJ+iPUIXyA==}
@@ -12715,8 +12709,6 @@ snapshots:
       invariant: 2.2.4
       react: 19.2.3
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
-
-  react-native-image-modal@3.0.14: {}
 
   react-native-image-picker@7.2.3(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3):
     dependencies:

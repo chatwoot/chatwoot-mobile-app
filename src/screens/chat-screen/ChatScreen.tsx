@@ -119,7 +119,7 @@ const ChatScreen = (props: ChatScreenProps) => {
   useEffect(() => {
     dispatch(macroActions.fetchMacros());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accountId]);
 
   useEffect(() => {
     if (primaryActorId && primaryActorType) {

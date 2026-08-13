@@ -2,43 +2,34 @@ import RNFS from 'react-native-fs';
 import { FFmpegKit } from 'ffmpeg-kit-react-native';
 import * as Sentry from '@sentry/react-native';
 
-export const convertOggToWav = async (oggUrl: string): Promise<string | Error> => {
-  const tempOggPath = `${RNFS.CachesDirectoryPath}/temp.ogg`;
-  const fileName = `converted_${Date.now()}.wav`;
-  const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
+import { getAudioExtension } from './audioUtils';
+
+/**
+ * Downloads a remote audio file and transcodes it to WAV so AVFoundation can
+ * play it. Throws when the download or the conversion fails.
+ */
+export const convertToWav = async (sourceUrl: string): Promise<string> => {
+  const sourceExtension = getAudioExtension(sourceUrl) || 'tmp';
+  const inputPath = `${RNFS.CachesDirectoryPath}/source_${Date.now()}.${sourceExtension}`;
+  const outputPath = `${RNFS.CachesDirectoryPath}/converted_${Date.now()}.wav`;
 
   try {
-    // Download the OGG file and wait for completion
-    const downloadResult = await RNFS.downloadFile({ fromUrl: oggUrl, toFile: tempOggPath })
+    const downloadResult = await RNFS.downloadFile({ fromUrl: sourceUrl, toFile: inputPath })
       .promise;
 
-    // Verify download was successful
     if (downloadResult.statusCode !== 200) {
-      Sentry.captureException(
-        new Error(`Download failed with status ${downloadResult.statusCode}`),
-      );
       throw new Error(`Download failed with status ${downloadResult.statusCode}`);
     }
 
-    // Verify file exists before conversion
-    const fileExists = await RNFS.exists(tempOggPath);
+    const fileExists = await RNFS.exists(inputPath);
     if (!fileExists) {
       throw new Error('Downloaded file not found');
     }
 
-    // Convert OGG to WAV using ffmpeg
     await FFmpegKit.execute(
-      `-i "${tempOggPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
+      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
     );
 
-    // Clean up the temporary OGG file
-    try {
-      await RNFS.unlink(tempOggPath);
-    } catch {
-      // File may already be cleaned up
-    }
-
-    // Verify output file exists
     const outputExists = await RNFS.exists(outputPath);
     if (!outputExists) {
       throw new Error('Conversion failed - output file not found');
@@ -47,7 +38,13 @@ export const convertOggToWav = async (oggUrl: string): Promise<string | Error> =
     return `file://${outputPath}`;
   } catch (error) {
     Sentry.captureException(error);
-    return error as Error;
+    throw error;
+  } finally {
+    try {
+      await RNFS.unlink(inputPath);
+    } catch {
+      // File may already be cleaned up
+    }
   }
 };
 

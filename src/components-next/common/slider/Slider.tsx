@@ -54,8 +54,19 @@ export const Slider = (props: SliderProps) => {
   useAnimatedReaction(
     () => currentPosition.value,
     (next, _prev) => {
+      // Containers written without a duration report 0, which leaves no range to
+      // interpolate the knob position against.
+      if (totalDuration.value <= 0) {
+        translationX.value = 0;
+        return;
+      }
       translationX.value = withSpring(
-        interpolate(next, [0, totalDuration.value], [0, sliderMaxWidth.value - 16]),
+        interpolate(
+          next,
+          [0, totalDuration.value],
+          [0, sliderMaxWidth.value - 16],
+          Extrapolation.CLAMP,
+        ),
         {
           damping: 24,
           stiffness: 200,
@@ -67,11 +78,18 @@ export const Slider = (props: SliderProps) => {
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
+      // Without a known duration there is nothing to seek against.
+      if (totalDuration.value <= 0) {
+        return;
+      }
       runOnJS(pauseAudio)();
       sliderActive.value = withSpring(1, DefaultSpringConfig);
       context.value = { x: translationX.value };
     })
     .onUpdate(event => {
+      if (totalDuration.value <= 0) {
+        return;
+      }
       translationX.value = clamp(
         event.translationX + context.value.x,
         0,
@@ -79,6 +97,9 @@ export const Slider = (props: SliderProps) => {
       );
     })
     .onEnd(() => {
+      if (totalDuration.value <= 0) {
+        return;
+      }
       const seekToValue = interpolate(
         translationX.value,
         [0, sliderMaxWidth.value - 16],

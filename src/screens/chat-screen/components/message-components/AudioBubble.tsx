@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Platform, Pressable, View } from 'react-native';
-import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import * as Sentry from '@sentry/react-native';
@@ -14,12 +13,20 @@ import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import {
+  Callback,
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+} from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
 // eslint-disable-next-line import/no-unresolved
-import { convertOggToWav } from '@/utils/audioConverter';
+import { convertToWav } from '@/utils/audioConverter';
+import { isIosUnsupportedAudio } from '@/utils/audioUtils';
 
 // eslint-disable-next-line react/display-name
 export const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -62,13 +69,12 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = useCallback(
-    (data: { data: PlayBackType }) => {
-      const playBackData = data.data as PlayBackType;
+  const audioPlayBackStatus = useCallback<Callback>(
+    ({ data: playBackData }) => {
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
         totalDuration.value = playBackData.duration;
-        if (playBackData.currentPosition === playBackData.duration) {
+        if (playBackData.isFinished) {
           currentPosition.value = 0;
           totalDuration.value = 0;
           setAudioPlaying(false);
@@ -80,20 +86,30 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   useEffect(() => {
+    let isActive = true;
     const prepareAudio = async () => {
-      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
+      if (Platform.OS === 'ios' && isIosUnsupportedAudio(audioSrc)) {
         setIsSoundLoading(true);
         try {
-          const convertedSrc = await convertOggToWav(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
+          const convertedSrc = await convertToWav(audioSrc);
+          if (isActive) {
+            setConvertedAudioSrc(convertedSrc);
+          }
         } catch (error) {
           Sentry.captureException(error);
         } finally {
-          setIsSoundLoading(false);
+          if (isActive) {
+            setIsSoundLoading(false);
+          }
         }
+      } else {
+        setConvertedAudioSrc(audioSrc);
       }
     };
     prepareAudio();
+    return () => {
+      isActive = false;
+    };
   }, [audioSrc]);
 
   const togglePlayback = useCallback(() => {
@@ -106,11 +122,16 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       setAudioPlaying(!isAudioPlaying);
     } else {
       setIsSoundLoading(true);
-      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
-        setIsSoundLoading(false);
-        setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
-      });
+      startPlayer(convertedAudioSrc, audioPlayBackStatus)
+        .then(() => {
+          setAudioPlaying(true);
+          dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
+        })
+        .catch(error => {
+          Sentry.captureException(error);
+          setAudioPlaying(false);
+        })
+        .finally(() => setIsSoundLoading(false));
     }
   }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);
 
@@ -130,11 +151,11 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   useEffect(() => {
-    if (currentPlayingAudioSrc !== audioSrc) {
+    if (currentPlayingAudioSrc !== convertedAudioSrc) {
       currentPosition.value = 0;
       totalDuration.value = 0;
     }
-  }, [currentPlayingAudioSrc, audioSrc, currentPosition, totalDuration]);
+  }, [currentPlayingAudioSrc, convertedAudioSrc, currentPosition, totalDuration]);
 
   useEffect(() => {
     return () => {

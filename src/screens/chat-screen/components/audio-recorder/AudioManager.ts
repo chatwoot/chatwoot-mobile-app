@@ -53,7 +53,7 @@ export const startPlayer = async (path: string, callback: Callback) => {
     status: AudioStatus.STARTED,
   });
   audioRecorderPlayer.addPlayBackListener(async e => {
-    if (e.currentPosition === e.duration) {
+    if (e.isFinished) {
       currentCallback({
         status: AudioStatus.STOPPED,
         data: e,

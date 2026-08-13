@@ -38,7 +38,7 @@ export const PreviousConversationItem = ({ conversation }: PreviousConversationI
 
   return (
     <GestureDetector gesture={tapGesture}>
-      <Animated.View style={tailwind.style('px-3')}>
+      <Animated.View style={tailwind.style('px-3 flex-row')}>
         <ConversationItemDetailContent
           id={conversation.id}
           priority={conversation.priority}
@@ -50,7 +50,7 @@ export const PreviousConversationItem = ({ conversation }: PreviousConversationI
           inbox={inbox ?? null}
           lastMessage={lastMessage}
           inboxId={conversation.inboxId}
-          slaPolicyId={conversation.slaPolicyId}
+          slaPolicyId={conversation.appliedSla ? conversation.slaPolicyId : null}
           appliedSla={conversation.appliedSla}
           appliedSlaConversationDetails={{
             firstReplyCreatedAt: conversation.firstReplyCreatedAt,

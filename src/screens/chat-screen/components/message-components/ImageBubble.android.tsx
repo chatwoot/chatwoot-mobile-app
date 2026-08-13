@@ -5,8 +5,11 @@ import { useImageDimensions } from '@/hooks/useImageDimensions';
 import type { ImageCellProps, ImageContainerProps } from '@/hooks/useImageDimensions';
 
 export const ImageBubbleContainer = (props: ImageContainerProps) => {
-  const { imageSrc, maxWidth = 300, maxHeight = 360 } = props;
-  const imageStyle = useImageDimensions(imageSrc, maxWidth, maxHeight);
+  const { imageSrc, maxWidth = 300, maxHeight = 360, sourceWidth, sourceHeight } = props;
+  const imageStyle = useImageDimensions(imageSrc, maxWidth, maxHeight, {
+    width: sourceWidth,
+    height: sourceHeight,
+  });
 
   return (
     <ImageModal

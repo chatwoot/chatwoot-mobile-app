@@ -16,6 +16,7 @@ import { Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
+import { isOggAudioAttachment } from '@/utils/attachmentUtils';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
 // eslint-disable-next-line import/no-unresolved
@@ -41,16 +42,18 @@ export const PauseIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
 
 type AudioBubbleProps = {
   audioSrc: string;
+  contentType?: string | null;
+  extension?: string | null;
   variant: string;
 };
 
-type AudioPlayerProps = Pick<AudioBubbleProps, 'audioSrc'> & {
+type AudioPlayerProps = Pick<AudioBubbleProps, 'audioSrc' | 'contentType' | 'extension'> & {
   variant: string;
 };
 
 // eslint-disable-next-line react/display-name
 export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
-  const { audioSrc, variant } = props;
+  const { audioSrc, contentType, extension, variant } = props;
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
@@ -80,21 +83,39 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   useEffect(() => {
+    let isActive = true;
+
     const prepareAudio = async () => {
-      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
-        setIsSoundLoading(true);
-        try {
-          const convertedSrc = await convertOggToWav(audioSrc);
+      setConvertedAudioSrc(audioSrc);
+      setIsSoundLoading(false);
+
+      if (Platform.OS !== 'ios' || !isOggAudioAttachment({ audioSrc, contentType, extension })) {
+        return;
+      }
+
+      setIsSoundLoading(true);
+      try {
+        const convertedSrc = await convertOggToWav(audioSrc);
+        if (convertedSrc instanceof Error) {
+          throw convertedSrc;
+        }
+        if (isActive) {
           setConvertedAudioSrc(convertedSrc);
-        } catch (error) {
-          Sentry.captureException(error);
-        } finally {
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+      } finally {
+        if (isActive) {
           setIsSoundLoading(false);
         }
       }
     };
     prepareAudio();
-  }, [audioSrc]);
+
+    return () => {
+      isActive = false;
+    };
+  }, [audioSrc, contentType, extension]);
 
   const togglePlayback = useCallback(() => {
     if (convertedAudioSrc === currentPlayingAudioSrc) {
@@ -201,11 +222,16 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
 // eslint-disable-next-line react/display-name
 export const AudioBubble = React.memo<AudioBubbleProps>(props => {
-  const { audioSrc, variant } = props;
+  const { audioSrc, contentType, extension, variant } = props;
 
   return (
     <Animated.View style={tailwind.style('w-full flex flex-row items-center')}>
-      <AudioBubblePlayer audioSrc={audioSrc} variant={variant} />
+      <AudioBubblePlayer
+        audioSrc={audioSrc}
+        contentType={contentType}
+        extension={extension}
+        variant={variant}
+      />
     </Animated.View>
   );
 });

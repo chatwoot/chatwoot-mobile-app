@@ -3,19 +3,28 @@ import { Image as RNImage } from 'react-native';
 
 export type ImageCellProps = {
   imageSrc: string;
+  sourceWidth?: number | null;
+  sourceHeight?: number | null;
 };
 
 export type ImageContainerProps = Pick<ImageCellProps, 'imageSrc'> & {
   maxWidth?: number;
   maxHeight?: number;
+  sourceWidth?: number | null;
+  sourceHeight?: number | null;
 };
 
 const imageDimensionsCache = new Map<string, { width: number; height: number }>();
+
+const isValidImageDimension = (dimension?: number | null) => {
+  return typeof dimension === 'number' && Number.isFinite(dimension) && dimension > 0;
+};
 
 export const useImageDimensions = (
   imageSrc: string,
   maxWidth = 300,
   maxHeight = 360,
+  sourceDimensions?: { width?: number | null; height?: number | null },
 ) => {
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(
     null,
@@ -23,6 +32,23 @@ export const useImageDimensions = (
 
   useEffect(() => {
     let isMounted = true;
+    const sourceWidth = sourceDimensions?.width;
+    const sourceHeight = sourceDimensions?.height;
+    const hasSourceDimensions =
+      isValidImageDimension(sourceWidth) && isValidImageDimension(sourceHeight);
+
+    if (hasSourceDimensions) {
+      const dimensions = {
+        width: sourceWidth as number,
+        height: sourceHeight as number,
+      };
+      imageDimensionsCache.set(imageSrc, dimensions);
+      setImageDimensions(dimensions);
+      return () => {
+        isMounted = false;
+      };
+    }
+
     const cachedImageDimensions = imageDimensionsCache.get(imageSrc);
 
     if (cachedImageDimensions) {
@@ -53,7 +79,7 @@ export const useImageDimensions = (
     return () => {
       isMounted = false;
     };
-  }, [imageSrc]);
+  }, [imageSrc, sourceDimensions?.height, sourceDimensions?.width]);
 
   const imageStyle = useMemo(() => {
     const fallbackHeight = Math.round(maxWidth * 0.75);

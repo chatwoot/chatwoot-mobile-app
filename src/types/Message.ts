@@ -33,8 +33,12 @@ export type ImageMetadata = {
   fileType: 'image' | 'video' | 'audio' | 'file' | 'ig_reel';
   accountId: number;
   extension: string | null;
+  contentType?: string | null;
   dataUrl: string;
   thumbUrl: string;
+  fileSize?: number | null;
+  width?: number | null;
+  height?: number | null;
   fallbackTitle: string;
   coordinatesLat: number;
   coordinatesLong: number;

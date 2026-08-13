@@ -7,12 +7,16 @@ import { clearAllConversations } from '@/store/conversation/conversationSlice';
 import { clearAllContacts } from '@/store/contact/contactSlice';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearSearchResults } from '@/store/search/searchSlice';
+import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllContacts());
   dispatch(clearAllConversations());
   dispatch(resetNotifications());
   dispatch(clearSearchResults());
+  dispatch(clearSelection());
+  dispatch(setCurrentState('none'));
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
 };

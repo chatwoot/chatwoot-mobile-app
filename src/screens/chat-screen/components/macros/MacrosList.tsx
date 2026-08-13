@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { BottomSheetBackdrop } from '@/components-next';
@@ -15,7 +16,10 @@ import MacroStack from './MacroStack';
 import MacroDetails from './MacroDetails';
 import { MacroProvider } from './MacroContext';
 
+const LIST_BOTTOM_PADDING = 24;
+
 export const MacrosList = ({ conversationId }: { conversationId: number }) => {
+  const { bottom } = useSafeAreaInsets();
   const macros = useAppSelector(selectAllMacros);
   const [selectedMacro, setSelectedMacro] = useState<Macro | null>(null);
 
@@ -61,7 +65,11 @@ export const MacrosList = ({ conversationId }: { conversationId: number }) => {
                 </View>
                 <BottomSheetScrollView
                   showsVerticalScrollIndicator={false}
-                  contentContainerStyle={tailwind.style('px-3 pb-6')}>
+                  // The sheet reaches the screen edge, so the last row needs to clear the home indicator.
+                  contentContainerStyle={tailwind.style(
+                    'px-3',
+                    `pb-[${LIST_BOTTOM_PADDING + bottom}px]`,
+                  )}>
                   <MacroStack
                     handleMacroPress={handleMacroPress}
                     macrosList={macros}

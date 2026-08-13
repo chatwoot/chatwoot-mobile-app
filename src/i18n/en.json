@@ -382,7 +382,8 @@
     "VALUE_UNAVAILABLE": "Unavailable"
   },
   "CONTACT_CONVERSATIONS": {
-    "TITLE": "Previous Conversations"
+    "TITLE": "Previous Conversations",
+    "EMPTY": "No previous conversations"
   },
   "CONVERSATION_PARTICIPANTS": {
     "TITLE": "Participants",

@@ -1,12 +1,15 @@
 import React from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import i18n from '@/i18n';
 import { tailwind } from '@/theme';
 import { useAppSelector } from '@/hooks';
 import { getLastMessage } from '@/utils';
-import { selectContactConversationsByContactId } from '@/store/contact/contactConversationSlice';
+import {
+  selectContactConversationsByContactId,
+  selectHasLoadedContactConversations,
+} from '@/store/contact/contactConversationSlice';
 
 import { PreviousConversationItem } from './PreviousConversationItem';
 
@@ -19,6 +22,7 @@ export const ContactPreviousConversations = (props: ContactPreviousConversations
   const { contactId, currentConversationId } = props;
 
   const conversations = useAppSelector(selectContactConversationsByContactId(contactId));
+  const hasLoaded = useAppSelector(selectHasLoadedContactConversations(contactId));
 
   const previousConversations = conversations.filter(
     conversation =>
@@ -26,9 +30,36 @@ export const ContactPreviousConversations = (props: ContactPreviousConversations
       getLastMessage({ ...conversation, messages: conversation.messages ?? [] }) !== null,
   );
 
-  if (previousConversations.length === 0) {
-    return null;
-  }
+  const renderContent = () => {
+    if (!hasLoaded) {
+      return (
+        <Animated.View style={tailwind.style('items-center justify-center py-6')}>
+          <ActivityIndicator />
+        </Animated.View>
+      );
+    }
+
+    return (
+      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+        <Animated.View style={tailwind.style('rounded-[13px] overflow-hidden')}>
+          {previousConversations.length === 0 ? (
+            <Animated.View style={tailwind.style('items-center justify-center py-4 px-4')}>
+              <Animated.Text
+                style={tailwind.style(
+                  'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-900',
+                )}>
+                {i18n.t('CONTACT_CONVERSATIONS.EMPTY')}
+              </Animated.Text>
+            </Animated.View>
+          ) : (
+            previousConversations.map(conversation => (
+              <PreviousConversationItem key={conversation.id} conversation={conversation} />
+            ))
+          )}
+        </Animated.View>
+      </Animated.View>
+    );
+  };
 
   return (
     <Animated.View style={tailwind.style('pt-10')}>
@@ -40,13 +71,7 @@ export const ContactPreviousConversations = (props: ContactPreviousConversations
           {i18n.t('CONTACT_CONVERSATIONS.TITLE')}
         </Animated.Text>
       </Animated.View>
-      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
-        <Animated.View style={tailwind.style('rounded-[13px] overflow-hidden')}>
-          {previousConversations.map(conversation => (
-            <PreviousConversationItem key={conversation.id} conversation={conversation} />
-          ))}
-        </Animated.View>
-      </Animated.View>
+      {renderContent()}
     </Animated.View>
   );
 };

@@ -18,6 +18,7 @@ import {
   selectConversationError,
 } from '@/store/conversation/conversationSelectors';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 
 import { notificationActions } from '@/store/notification/notificationAction';
 import { MarkAsReadPayload } from '@/store/notification/notificationTypes';
@@ -100,17 +101,20 @@ const ChatScreen = (props: ChatScreenProps) => {
   const conversationFetching = useAppSelector(state => selectConversationFetching(state));
   const conversationError = useAppSelector(state => selectConversationError(state));
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const accountId = useAppSelector(selectCurrentUserAccountId);
 
   const fetchConversation = () => {
     dispatch(conversationActions.fetchConversation(conversationId));
   };
 
+  // Refetch when the conversation or account changes, since a push can reuse this
+  // screen with new params instead of remounting.
   useEffect(() => {
     if (!conversation) {
       fetchConversation();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [conversationId, accountId]);
 
   useEffect(() => {
     dispatch(macroActions.fetchMacros());
@@ -127,7 +131,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [primaryActorId, primaryActorType]);
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {

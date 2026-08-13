@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -132,6 +132,17 @@ const Tabs = () => {
       actionCableConnector.init({ pubSubToken, webSocketUrl, accountId, userId });
     }
   }, [accountId, pubSubToken, userId, webSocketUrl]);
+
+  // Reconnect ActionCable when the active account changes (mount is handled above).
+  const isInitialAccountMount = useRef(true);
+  useEffect(() => {
+    if (isInitialAccountMount.current) {
+      isInitialAccountMount.current = false;
+      return;
+    }
+    initActionCable();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountId]);
 
   useEffect(() => {
     dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));

@@ -12,9 +12,12 @@ export interface ActionCableEvent<T = unknown> {
 class BaseActionCableConnector {
   protected events: { [key: string]: (data: unknown) => void };
   protected accountId: number;
+  private consumer: ReturnType<typeof ActionCable.createConsumer>;
+  private presenceInterval: ReturnType<typeof setInterval>;
 
   constructor(pubSubToken: string, webSocketUrl: string, accountId: number, userId: number) {
     const connectActionCable = ActionCable.createConsumer(webSocketUrl);
+    this.consumer = connectActionCable;
 
     const channel = cable.setChannel(
       channelName,
@@ -40,10 +43,15 @@ class BaseActionCableConnector {
     this.events = {};
     this.accountId = accountId;
 
-    setInterval(() => {
+    this.presenceInterval = setInterval(() => {
       cable.channel(channelName).perform('update_presence');
     }, PRESENCE_INTERVAL);
   }
+
+  disconnect = (): void => {
+    clearInterval(this.presenceInterval);
+    this.consumer.disconnect();
+  };
 
   protected isAValidEvent = (data: unknown): boolean => {
     const { account_id } = data as { account_id: number };

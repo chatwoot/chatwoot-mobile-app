@@ -145,7 +145,12 @@ const ChatScreen = (props: ChatScreenProps) => {
     const { messageId } = props.route.params;
     return (
       <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-        <ChatWindowProvider conversationId={conversationId} messageId={messageId}>
+        {/* Remount the chat subtree when the conversation or account changes so its
+            account-scoped data (agents, teams, participants, canned responses) refetches. */}
+        <ChatWindowProvider
+          key={`${accountId}-${conversationId}`}
+          conversationId={conversationId}
+          messageId={messageId}>
           <ChatScreenWrapper {...props} />
         </ChatWindowProvider>
         <ActionBottomSheet />

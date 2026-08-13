@@ -133,13 +133,18 @@ const Tabs = () => {
     }
   }, [accountId, pubSubToken, userId, webSocketUrl]);
 
-  // Reconnect ActionCable when the active account changes (mount is handled above).
+  // Re-run the account-scoped bootstrap when the active account changes, e.g. after a
+  // cross-account push switch while the tabs stay mounted (mount is handled above).
   const isInitialAccountMount = useRef(true);
   useEffect(() => {
     if (isInitialAccountMount.current) {
       isInitialAccountMount.current = false;
       return;
     }
+    dispatch(inboxActions.fetchInboxes());
+    dispatch(labelActions.fetchLabels());
+    dispatch(dashboardAppActions.index());
+    dispatch(customAttributeActions.index());
     initActionCable();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);

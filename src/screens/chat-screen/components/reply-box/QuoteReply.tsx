@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 
 import { selectQuoteMessage, setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 
-import { VideoPlayer } from '../message-components';
+import { VideoBubblePlayer } from '../message-components';
 import { Message } from '@/types';
 
 const AudioIcon = () => {
@@ -117,7 +117,10 @@ export const QuoteReply = () => {
           ) : null}
           {quoteMessage?.attachments?.length > 0 &&
           quoteMessage?.attachments[0].fileType === 'video' ? (
-            <VideoPlayer playerEnabled={false} videoSrc={quoteMessage?.attachments[0].dataUrl} />
+            <VideoBubblePlayer
+              playerEnabled={false}
+              videoSrc={quoteMessage?.attachments[0].dataUrl}
+            />
           ) : null}
           {quoteMessage?.attachments?.length > 0 &&
           quoteMessage?.attachments[0].fileType === 'audio' ? (

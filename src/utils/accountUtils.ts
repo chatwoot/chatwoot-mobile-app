@@ -10,6 +10,9 @@ import { clearSearchResults } from '@/store/search/searchSlice';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { resetFilters } from '@/store/conversation/conversationFilterSlice';
+import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
+import { clearAllParticipants } from '@/store/conversation-participant/conversationParticipantSlice';
+import { resetCopilot } from '@/store/copilot/copilotSlice';
 
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllContacts());
@@ -19,6 +22,9 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearSelection());
   dispatch(setCurrentState('none'));
   dispatch(resetFilters());
+  dispatch(clearAssignableAgents());
+  dispatch(clearAllParticipants());
+  dispatch(resetCopilot());
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
 };

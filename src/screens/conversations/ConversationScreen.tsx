@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   AppState,
@@ -114,27 +114,19 @@ const ConversationList = () => {
   }, []);
 
   const filters = useAppSelector(selectFilters);
-  const previousFilters = useRef(filters);
 
   // Reset last active timestamp when the conversation screen is opened
   useEffect(() => {
     AsyncStorage.removeItem(LAST_ACTIVE_TIMESTAMP_KEY);
   }, []);
 
-  useEffect(() => {
-    if (previousFilters.current !== filters) {
-      previousFilters.current = filters;
-      clearAndFetchConversations(filters);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
-
-  // Refetch when the active account changes.
+  // Fetch on mount and whenever the account or filters change (single effect so a
+  // switch that also resets filters doesn't fire two fetches).
   useEffect(() => {
     dismissAll();
     clearAndFetchConversations(filters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accountId]);
+  }, [accountId, filters]);
 
   const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
     setPageNumber(1);

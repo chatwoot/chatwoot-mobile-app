@@ -90,7 +90,22 @@ class APIService {
     );
 
     this.api.interceptors.response.use(
-      (response: AxiosResponse) => response,
+      (response: AxiosResponse) => {
+        // Drop responses for an account other than the one now active (a request that was
+        // in flight when the user switched accounts) so stale data can't repopulate the UI.
+        const requestedAccountId = response.config.url?.match(/accounts\/(\d+)\//)?.[1];
+        const activeAccountId = getStore().getState().auth.user?.account_id;
+        if (
+          requestedAccountId &&
+          activeAccountId &&
+          Number(requestedAccountId) !== Number(activeAccountId)
+        ) {
+          return Promise.reject(
+            new axios.CanceledError('Ignoring response for a previous account'),
+          );
+        }
+        return response;
+      },
       async (error: AxiosError) => {
         if (axios.isCancel(error)) {
           return Promise.reject(error);

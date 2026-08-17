@@ -44,6 +44,20 @@ import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 
 // import { ImageMetadata } from '@/types';
 
+const BOT_SENDER_TYPES: string[] = [SENDER_TYPES.AGENT_BOT, SENDER_TYPES.CAPTAIN_ASSISTANT];
+
+const isBotSender = (senderType?: string) => !!senderType && BOT_SENDER_TYPES.includes(senderType);
+
+// Captain assistants are serialized with `avatarUrl`, the other sender types with `thumbnail`.
+const senderAvatarSource = (sender: Message['sender']) => {
+  if (!sender) {
+    return null;
+  }
+  const avatarUrl = 'avatarUrl' in sender ? sender.avatarUrl : null;
+  const thumbnail = 'thumbnail' in sender ? sender.thumbnail : null;
+  return avatarUrl || thumbnail || null;
+};
+
 type MessageComponentProps = {
   item: Message;
   index: number;
@@ -251,7 +265,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (status === MESSAGE_STATUS.FAILED) return MESSAGE_VARIANTS.ERROR;
     if (item.contentAttributes?.isUnsupported) return MESSAGE_VARIANTS.UNSUPPORTED;
 
-    const isBot = !sender || sender.type === SENDER_TYPES.AGENT_BOT;
+    const isBot = !sender || isBotSender(sender.type);
     if (isBot && messageType === MESSAGE_TYPES.OUTGOING) {
       return MESSAGE_VARIANTS.BOT;
     }
@@ -404,7 +418,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     return {
       name: sender?.name || '',
       src: {
-        uri: sender?.thumbnail || null,
+        uri: senderAvatarSource(sender),
       },
     };
   };

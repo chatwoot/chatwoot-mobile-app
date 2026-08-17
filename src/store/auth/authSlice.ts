@@ -118,9 +118,13 @@ export const authSlice = createSlice({
         }
       })
       .addCase(authActions.getProfile.fulfilled, (state, action) => {
+        // Keep the locally selected active account; the profile response can carry a
+        // stale account_id if it resolves around an in-flight account switch.
+        const activeAccountId = state.user?.account_id;
         state.user = {
           ...state.user,
           ...action.payload,
+          ...(activeAccountId != null ? { account_id: activeAccountId } : {}),
         } as User;
       })
       .addCase(authActions.login.rejected, (state, action) => {

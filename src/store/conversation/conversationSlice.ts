@@ -222,7 +222,11 @@ const conversationSlice = createSlice({
         state.isConversationFetching = false;
         state.isAllMessagesFetched = false;
       })
-      .addCase(conversationActions.fetchConversation.rejected, state => {
+      .addCase(conversationActions.fetchConversation.rejected, (state, action) => {
+        // Ignore responses fenced during an account switch; a fresh fetch is already running.
+        if (action.error?.name === 'CanceledError') {
+          return;
+        }
         state.isConversationFetching = false;
         state.error = state.error || 'Unable to load conversation';
       })

@@ -118,14 +118,20 @@ export const authSlice = createSlice({
         }
       })
       .addCase(authActions.getProfile.fulfilled, (state, action) => {
-        // Keep the locally selected active account; the profile response can carry a
-        // stale account_id if it resolves around an in-flight account switch.
+        // Keep the locally selected account if a switch's profile refresh resolves with a
+        // stale account_id, but only while it's still a member account; otherwise adopt the
+        // refreshed active account (e.g. access to the previous account was removed).
         const activeAccountId = state.user?.account_id;
+        const mergedUser = { ...state.user, ...action.payload } as User;
+        const keepLocalAccount =
+          activeAccountId != null &&
+          (mergedUser.accounts ?? []).some(
+            account => Number(account.id) === Number(activeAccountId),
+          );
         state.user = {
-          ...state.user,
-          ...action.payload,
-          ...(activeAccountId != null ? { account_id: activeAccountId } : {}),
-        } as User;
+          ...mergedUser,
+          ...(keepLocalAccount ? { account_id: activeAccountId } : {}),
+        };
       })
       .addCase(authActions.login.rejected, (state, action) => {
         state.uiFlags.isLoggingIn = false;

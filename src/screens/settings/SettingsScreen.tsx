@@ -90,9 +90,10 @@ const SettingsScreen = () => {
     account_id: activeAccountId,
   } = user || {};
 
+  // Refetch when the active account changes; notification settings are account-scoped.
   useEffect(() => {
     dispatch(settingsActions.getNotificationSettings());
-  }, [dispatch]);
+  }, [dispatch, activeAccountId]);
 
   const pushToken = useAppSelector(selectPushToken);
 

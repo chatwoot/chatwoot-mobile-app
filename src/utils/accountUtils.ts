@@ -9,6 +9,7 @@ import { resetNotifications } from '@/store/notification/notificationSlice';
 import { clearSearchResults } from '@/store/search/searchSlice';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { resetFilters } from '@/store/conversation/conversationFilterSlice';
 
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllContacts());
@@ -17,6 +18,7 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearSearchResults());
   dispatch(clearSelection());
   dispatch(setCurrentState('none'));
+  dispatch(resetFilters());
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
 };

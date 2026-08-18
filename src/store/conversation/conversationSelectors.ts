@@ -40,6 +40,11 @@ export const selectIsAllMessagesFetched = createSelector(
   state => state.isAllMessagesFetched,
 );
 
+export const selectIsAllNewerMessagesFetched = createSelector(
+  selectConversationsState,
+  state => state.isAllNewerMessagesFetched,
+);
+
 export const selectIsLoadingMessages = createSelector(
   selectConversationsState,
   state => state.isLoadingMessages,

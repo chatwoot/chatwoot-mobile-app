@@ -31,7 +31,7 @@ const SortByCell = (props: SortByCellProps) => {
   const handlePreferredSortPress = () => {
     hapticSelection?.();
     dispatch(setFilters({ key: 'sort_by', value }));
-    setTimeout(() => filtersModalSheetRef.current?.dismiss({ overshootClamping: true }), 1);
+    setTimeout(() => filtersModalSheetRef.current?.dismiss(), 1);
   };
 
   return (

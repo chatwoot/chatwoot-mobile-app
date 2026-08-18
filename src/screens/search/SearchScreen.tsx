@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Tabs, type TabItem } from '@/components-next/common/tabs';
 
@@ -8,6 +7,7 @@ import { tailwind } from '@/theme';
 import { useSearchScreen } from './hooks/useSearchScreen';
 import { SearchHeader } from './components/header/SearchHeader';
 import { SearchContent } from './components/views/SearchContent';
+import { FadeInView } from './components/shared/FadeInView';
 import type { SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import { createRenderItem } from './utils/renderItem';
@@ -82,11 +82,7 @@ const SearchScreen = () => {
           <Tabs items={tabItems} activeTabId={activeTab} onTabPress={handleTabChange} />
         </View>
       )}
-      <Animated.View
-        key={activeTab}
-        entering={FadeIn.duration(200)}
-        exiting={FadeOut.duration(150)}
-        style={tailwind.style('flex-1')}>
+      <FadeInView key={activeTab} style={tailwind.style('flex-1')}>
         <SearchContent
           showRecentSearches={showRecentSearches}
           recentSearches={recentSearches}
@@ -109,7 +105,7 @@ const SearchScreen = () => {
           onEndReached={createEndReachedHandler}
           renderItem={renderItem}
         />
-      </Animated.View>
+      </FadeInView>
     </SafeAreaView>
   );
 };

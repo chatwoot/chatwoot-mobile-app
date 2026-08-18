@@ -6,7 +6,6 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import i18n from 'i18n';
@@ -197,11 +196,9 @@ export const AppNavigationContainer = () => {
         routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
       }}
       fallback={<ActivityIndicator animating />}>
-      <BottomSheetModalProvider>
-        <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
-          <AppTabs />
-        </View>
-      </BottomSheetModalProvider>
+      <View style={styles.navigationLayout} onLayout={onLayoutRootView}>
+        <AppTabs />
+      </View>
     </NavigationContainer>
   );
 };

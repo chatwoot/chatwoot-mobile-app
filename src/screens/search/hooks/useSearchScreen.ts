@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 import { debounce } from 'lodash';
 
@@ -41,9 +41,9 @@ export function useSearchScreen() {
   );
 
   const [listRefs] = useState(() => {
-    const refs = {} as Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>;
+    const refs = {} as Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem>>>;
     SEARCH_SECTIONS.forEach(section => {
-      refs[section.id] = React.createRef<FlashList<SearchItem>>();
+      refs[section.id] = React.createRef<FlashListRef<SearchItem>>();
     });
     return refs;
   });
@@ -331,13 +331,13 @@ export function useSearchScreen() {
   );
 
   const getItemsToShow = useCallback(
-    (items: SearchItem[], sectionId: SearchSectionType) => {
+    (items: SearchItem[], _sectionId: SearchSectionType) => {
       if (activeTab === 'all') {
-        return expandedSections[sectionId] ? items.slice(0, INITIAL_ITEMS_TO_SHOW) : [];
+        return items.slice(0, INITIAL_ITEMS_TO_SHOW);
       }
       return items;
     },
-    [activeTab, expandedSections],
+    [activeTab],
   );
 
   const showRecentSearches = useMemo(() => {

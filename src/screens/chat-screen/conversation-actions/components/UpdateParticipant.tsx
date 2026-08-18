@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
@@ -99,7 +98,7 @@ const ParticipantStack = ({
   };
 
   return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
+    <ScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
       {isFetching && allAgents.length === 0 ? (
         <ActivityIndicator />
       ) : (
@@ -116,7 +115,7 @@ const ParticipantStack = ({
           );
         })
       )}
-    </BottomSheetScrollView>
+    </ScrollView>
   );
 };
 
@@ -136,11 +135,8 @@ export const UpdateParticipant = (props: UpdateParticipantProps) => {
   const selectAgents = useAppSelector(selectAssignableParticipantsByInboxId);
   const allAgents = inboxId ? selectAgents(inboxId, searchTerm) : [];
 
-  const handleFocus = () => {
-    updateParticipantSheetRef.current?.expand();
-  };
   const handleBlur = () => {
-    updateParticipantSheetRef.current?.dismiss({ overshootClamping: true });
+    updateParticipantSheetRef.current?.dismiss();
   };
 
   const handleChangeText = (text: string) => {
@@ -150,8 +146,6 @@ export const UpdateParticipant = (props: UpdateParticipantProps) => {
   return (
     <React.Fragment>
       <SearchBar
-        isInsideBottomSheet
-        onFocus={handleFocus}
         onBlur={handleBlur}
         onChangeText={handleChangeText}
         placeholder={i18n.t('CONVERSATION.ASSIGNEE.AGENTS.SEARCH_AGENT')}

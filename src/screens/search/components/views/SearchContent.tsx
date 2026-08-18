@@ -1,12 +1,12 @@
 import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 
 import { tailwind } from '@/theme';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import type { TabType } from '../../hooks/useSearchScreen';
+import { FadeInView } from '../shared/FadeInView';
 import { RecentSearchesView } from './RecentSearchesView';
 import { AllResultsView } from './AllResultsView';
 import { SearchResultsList } from './SearchResultsList';
@@ -34,7 +34,7 @@ interface SearchContentProps {
   expandedSections: Record<SearchSectionType, boolean>;
   searchQuery: string;
   allSectionsData: Record<SearchSectionType, SearchItem[]>;
-  listRefs: Record<SearchSectionType, React.RefObject<FlashList<SearchItem>>>;
+  listRefs: Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem>>>;
   getItemsToShow: (items: SearchItem[], sectionId: SearchSectionType) => SearchItem[];
   onRecentSearchSelect: (query: string) => void;
   onClearRecentSearches: () => void;
@@ -95,9 +95,7 @@ export function SearchContent({
     0,
   );
 
-  const allSearchesFailed = SEARCH_SECTIONS.every(
-    section => sectionData[section.id]?.hasError,
-  );
+  const allSearchesFailed = SEARCH_SECTIONS.every(section => sectionData[section.id]?.hasError);
   const hasResults = totalResults > 0;
 
   const allSearchesCancelled = SEARCH_SECTIONS.every(
@@ -143,11 +141,9 @@ export function SearchContent({
     const section = sectionData[activeSection.id];
     if (!section) {
       return (
-        <Animated.View
-          entering={FadeIn.duration(200)}
-          style={tailwind.style('flex-1 items-center justify-center')}>
+        <FadeInView style={tailwind.style('flex-1 items-center justify-center')}>
           <ActivityIndicator />
-        </Animated.View>
+        </FadeInView>
       );
     }
 
@@ -159,7 +155,10 @@ export function SearchContent({
     if (section.isCancelled && items.length === 0) {
       return (
         <SearchEmptyState
-          sectionLabel={i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') || 'results'}
+          sectionLabel={
+            i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') ||
+            'results'
+          }
           searchQuery={searchQuery}
           errorMessage={i18n.t('SEARCH.ERROR_CANCELLED')}
           onRetry={() => onRetry(activeSection.id)}
@@ -170,7 +169,10 @@ export function SearchContent({
     if (section.hasError && items.length === 0) {
       return (
         <SearchEmptyState
-          sectionLabel={i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') || 'results'}
+          sectionLabel={
+            i18n.t(SEARCH_SECTIONS.find(s => s.id === activeSection.id)?.labelKey || '') ||
+            'results'
+          }
           searchQuery={searchQuery}
           errorMessage={i18n.t('SEARCH.ERROR_GENERIC')}
           onRetry={() => onRetry(activeSection.id)}

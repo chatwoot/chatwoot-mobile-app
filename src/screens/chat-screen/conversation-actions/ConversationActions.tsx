@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { Alert, Dimensions, Platform, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { BottomSheetBackdrop, Button } from '@/components-next';
+import { Button } from '@/components-next';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import {
   ConversationBasicActions,
   ConversationLabelActions,
@@ -36,11 +36,6 @@ export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
   const dispatch = useAppDispatch();
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
-  });
   const { updateParticipantSheetRef, actionsModalSheetRef } = useRefsContext();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
@@ -162,18 +157,9 @@ export const ConversationActions = () => {
           />
         </Animated.View>
       </ScrollView>
-      <BottomSheetModal
-        ref={updateParticipantSheetRef}
-        backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-[26px] overflow-hidden')}
-        animationConfigs={animationConfigs}
-        enablePanDownToClose
-        enableDynamicSizing={false}
-        snapPoints={[400]}>
+      <Sheet ref={updateParticipantSheetRef} height={400} scrollable>
         <UpdateParticipant activeConversationParticipants={conversationParticipants} />
-      </BottomSheetModal>
+      </Sheet>
     </Animated.View>
   );
 };

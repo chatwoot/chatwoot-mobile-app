@@ -25,7 +25,7 @@ export const AddCommandButton = ({
 
   return (
     <Animated.View
-      layout={LinearTransition.springify().damping(20).stiffness(180)}
+      layout={LinearTransition.springify().mass(1).damping(15).stiffness(105)}
       style={animatedStyle}>
       <Pressable
         {...otherProps}

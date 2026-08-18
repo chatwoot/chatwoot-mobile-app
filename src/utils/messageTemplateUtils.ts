@@ -191,12 +191,16 @@ const normalizeTwilio = (template: TwilioContentTemplate): NormalizedTemplate | 
   };
 };
 
+// `message_templates` and `content_templates` are jsonb columns that default to
+// `{}`, so a channel that has never synced templates serves an object, not an array.
+const toArray = <T>(value: T[] | undefined): T[] => (Array.isArray(value) ? value : []);
+
 export const getTemplates = (
   messageTemplates: WhatsAppMessageTemplate[] | undefined,
   contentTemplates: TwilioContentTemplate[] | undefined,
 ): NormalizedTemplate[] => {
-  const whatsapp = (messageTemplates || []).filter(isSendableTemplate).map(normalizeWhatsApp);
-  const twilio = (contentTemplates || [])
+  const whatsapp = toArray(messageTemplates).filter(isSendableTemplate).map(normalizeWhatsApp);
+  const twilio = toArray(contentTemplates)
     .map(normalizeTwilio)
     .filter((entry): entry is NormalizedTemplate => entry !== null);
   return [...whatsapp, ...twilio];

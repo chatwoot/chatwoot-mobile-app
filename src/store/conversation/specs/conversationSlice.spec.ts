@@ -215,6 +215,13 @@ describe('conversation reducer', () => {
   });
 
   it('ignores outdated conversations from list fetches', () => {
+    const requestArg = {
+      accountId: 1,
+      status: 'open' as const,
+      assigneeType: 'all' as const,
+      page: 1,
+      sortBy: 'latest' as const,
+    };
     const initialConversation = {
       ...conversation,
       status: 'resolved' as const,
@@ -227,7 +234,11 @@ describe('conversation reducer', () => {
       updatedAt: 100,
     };
 
-    let state = conversationReducer(undefined, addConversation(initialConversation));
+    let state = conversationReducer(
+      undefined,
+      conversationActions.fetchConversations.pending('request-id', requestArg),
+    );
+    state = conversationReducer(state, addConversation(initialConversation));
     state = conversationReducer(
       state,
       conversationActions.fetchConversations.fulfilled(
@@ -240,16 +251,65 @@ describe('conversation reducer', () => {
           },
         },
         'request-id',
-        {
-          status: 'open',
-          assigneeType: 'all',
-          page: 1,
-          sortBy: 'latest',
-        },
+        requestArg,
       ),
     );
 
     expect(state.entities[conversation.id]?.status).toBe('resolved');
     expect(state.entities[conversation.id]?.updatedAt).toBe(200);
+  });
+
+  it('ignores a list response from the previously active account', () => {
+    const accountOneRequest = {
+      accountId: 1,
+      status: 'open' as const,
+      assigneeType: 'all' as const,
+      page: 1,
+      sortBy: 'latest' as const,
+    };
+    const accountTwoRequest = { ...accountOneRequest, accountId: 2 };
+    const accountTwoConversation = {
+      ...conversation,
+      id: 251,
+      accountId: 2,
+    };
+
+    let state = conversationReducer(
+      undefined,
+      conversationActions.fetchConversations.pending('request-a', accountOneRequest),
+    );
+    state = conversationReducer(
+      state,
+      conversationActions.fetchConversations.pending('request-b', accountTwoRequest),
+    );
+    state = conversationReducer(
+      state,
+      conversationActions.fetchConversations.fulfilled(
+        {
+          conversations: [conversation],
+          meta: { mineCount: 1, unassignedCount: 0, allCount: 1 },
+        },
+        'request-a',
+        accountOneRequest,
+      ),
+    );
+
+    expect(state.ids).toEqual([]);
+    expect(state.isLoadingConversations).toBe(true);
+
+    state = conversationReducer(
+      state,
+      conversationActions.fetchConversations.fulfilled(
+        {
+          conversations: [accountTwoConversation],
+          meta: { mineCount: 1, unassignedCount: 0, allCount: 1 },
+        },
+        'request-b',
+        accountTwoRequest,
+      ),
+    );
+
+    expect(state.ids).toEqual([accountTwoConversation.id]);
+    expect(state.entities[accountTwoConversation.id]?.accountId).toBe(2);
   });
 });

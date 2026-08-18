@@ -26,16 +26,21 @@ jest.mock('@/services/APIService', () => ({
 
 describe('ConversationService', () => {
   it('should fetch all conversations', async () => {
+    const controller = new AbortController();
     (apiService.get as jest.Mock).mockResolvedValueOnce({
       data: conversationListResponse,
     });
 
-    const result = await ConversationService.getConversations({
-      status: 'open',
-      assigneeType: 'all',
-      page: 1,
-      sortBy: 'latest',
-    });
+    const result = await ConversationService.getConversations(
+      {
+        accountId: 1,
+        status: 'open',
+        assigneeType: 'all',
+        page: 1,
+        sortBy: 'latest',
+      },
+      controller.signal,
+    );
     expect(apiService.get).toHaveBeenCalledWith('conversations', {
       params: {
         inbox_id: null,
@@ -44,6 +49,7 @@ describe('ConversationService', () => {
         page: 1,
         sort_by: 'latest',
       },
+      signal: controller.signal,
     });
     expect(result).toEqual({
       conversations: conversationListResponse.data.payload.map(transformConversation),

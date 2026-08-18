@@ -35,6 +35,7 @@ export interface ConversationResponse {
 }
 
 export interface ConversationPayload {
+  accountId: number;
   page: number;
   status: ConversationStatus;
   assigneeType: AssigneeTypes;

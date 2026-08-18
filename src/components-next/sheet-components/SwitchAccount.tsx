@@ -13,6 +13,7 @@ type AccountCellProps = {
   currentAccountId: number | undefined;
   changeAccount: (accountId: number) => void;
   isLastItem: boolean;
+  disabled: boolean;
 };
 
 const AccountCell = ({
@@ -21,6 +22,7 @@ const AccountCell = ({
   currentAccountId,
   changeAccount,
   isLastItem,
+  disabled,
 }: AccountCellProps) => {
   const hapticSelection = useHaptic();
 
@@ -32,8 +34,12 @@ const AccountCell = ({
   const isSelected = item.id === currentAccountId;
 
   return (
-    <Pressable onPress={handlePress}>
-      <Animated.View style={tailwind.style('flex flex-row items-center')}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityState={{ disabled, selected: isSelected }}
+      disabled={disabled}
+      onPress={handlePress}>
+      <Animated.View style={tailwind.style('flex flex-row items-center', disabled && 'opacity-50')}>
         <Animated.View
           style={tailwind.style(
             'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
@@ -64,10 +70,12 @@ export const SwitchAccount = ({
   currentAccountId,
   changeAccount,
   accounts,
+  disabled = false,
 }: {
   currentAccountId: number | undefined;
   changeAccount: (accountId: number) => void;
   accounts: Account[];
+  disabled?: boolean;
 }) => (
   <Animated.View style={tailwind.style('py-1 pl-3')}>
     {accounts.map((item, index) => (
@@ -78,6 +86,7 @@ export const SwitchAccount = ({
         currentAccountId={currentAccountId}
         changeAccount={changeAccount}
         isLastItem={index === accounts.length - 1}
+        disabled={disabled}
       />
     ))}
   </Animated.View>

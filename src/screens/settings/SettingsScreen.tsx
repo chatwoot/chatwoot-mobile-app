@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StatusBar, Text, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -68,6 +68,8 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { acquireAccountSwitchLock, releaseAccountSwitchLock } from './utils/accountSwitchLock';
+import { runAccountSwitchTransaction } from './utils/accountSwitchTransaction';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -84,6 +86,8 @@ const SettingsScreen = () => {
   // const { bottom } = useSafeAreaInsets();
 
   const [showWidget, toggleWidget] = useState(false);
+  const [isSwitchingAccount, setIsSwitchingAccount] = useState(false);
+  const accountSwitchLockRef = useRef(false);
   const user = useSelector(selectUser);
   const {
     name,
@@ -171,14 +175,29 @@ const SettingsScreen = () => {
     dispatch(setLocale(locale));
   };
 
-  const changeAccount = (accountId: number) => {
-    dispatch(clearAllContacts());
-    dispatch(clearAllConversations());
-    dispatch(resetNotifications());
-    dispatch(clearSearchResults());
-    dispatch(setAccount(accountId));
-    dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
-    navigation.dispatch(StackActions.replace('Tab'));
+  const changeAccount = async (accountId: number) => {
+    if (accountId === activeAccountId || !acquireAccountSwitchLock(accountSwitchLockRef)) return;
+
+    setIsSwitchingAccount(true);
+    await runAccountSwitchTransaction({
+      updateRemoteAccount: () =>
+        dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } })).unwrap(),
+      commitLocalAccount: () => {
+        dispatch(clearAllContacts());
+        dispatch(clearAllConversations());
+        dispatch(resetNotifications());
+        dispatch(clearSearchResults());
+        dispatch(setAccount(accountId));
+      },
+      onSuccess: () => {
+        switchAccountSheetRef.current?.dismiss();
+        navigation.dispatch(StackActions.replace('Tab'));
+      },
+      onFailure: () => {
+        releaseAccountSwitchLock(accountSwitchLockRef);
+        setIsSwitchingAccount(false);
+      },
+    });
   };
 
   useEffect(() => {
@@ -395,6 +414,7 @@ const SettingsScreen = () => {
             currentAccountId={activeAccountId}
             changeAccount={changeAccount}
             accounts={accounts}
+            disabled={isSwitchingAccount}
           />
         </BottomSheetWrapper>
       </BottomSheetModal>

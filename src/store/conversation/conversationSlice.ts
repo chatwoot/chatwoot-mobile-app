@@ -8,6 +8,8 @@ import { Message } from '@/types/Message';
 import { PendingMessage } from './conversationTypes';
 
 export interface ConversationState {
+  activeAccountId: number | null;
+  currentListRequestId: string | null;
   meta: {
     mineCount: number;
     unassignedCount: number;
@@ -25,6 +27,8 @@ export interface ConversationState {
 export const conversationAdapter = createEntityAdapter<Conversation>();
 
 const initialState = conversationAdapter.getInitialState<ConversationState>({
+  activeAccountId: null,
+  currentListRequestId: null,
   meta: {
     mineCount: 0,
     unassignedCount: 0,
@@ -114,7 +118,15 @@ const conversationSlice = createSlice({
   name: 'conversation',
   initialState,
   reducers: {
-    clearAllConversations: conversationAdapter.removeAll,
+    clearAllConversations: state => {
+      conversationAdapter.removeAll(state);
+      state.activeAccountId = null;
+      state.currentListRequestId = null;
+      state.isLoadingConversations = false;
+      state.isAllConversationsFetched = false;
+      state.error = null;
+      state.meta = { ...initialState.meta };
+    },
     addConversation: (state, action) => {
       const conversation = action.payload;
       conversationAdapter.addOne(state, conversation);
@@ -181,14 +193,30 @@ const conversationSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(conversationActions.fetchConversations.pending, state => {
+      .addCase(conversationActions.fetchConversations.pending, (state, action) => {
+        const { accountId } = action.meta.arg;
+        if (state.activeAccountId !== accountId) {
+          conversationAdapter.removeAll(state);
+          state.isAllConversationsFetched = false;
+          state.meta = { ...initialState.meta };
+        }
+        state.activeAccountId = accountId;
+        state.currentListRequestId = action.meta.requestId;
         state.error = null;
         state.isLoadingConversations = true;
       })
-      .addCase(conversationActions.fetchConversations.fulfilled, (state, { payload }) => {
+      .addCase(conversationActions.fetchConversations.fulfilled, (state, action) => {
+        const { payload, meta: requestMeta } = action;
+        if (
+          state.activeAccountId !== requestMeta.arg.accountId ||
+          state.currentListRequestId !== requestMeta.requestId
+        ) {
+          return;
+        }
         const { conversations, meta } = payload;
         const conversationsToUpsert = conversations.filter(
           conversation =>
+            Number(conversation.accountId) === Number(requestMeta.arg.accountId) &&
             !isOutdatedConversationUpdate(state.entities[conversation.id], conversation),
         );
         conversationAdapter.upsertMany(
@@ -200,9 +228,17 @@ const conversationSlice = createSlice({
         state.isLoadingConversations = false;
         state.isAllConversationsFetched = conversations.length < 20 || false;
         state.meta = meta;
+        state.currentListRequestId = null;
       })
-      .addCase(conversationActions.fetchConversations.rejected, (state, { error }) => {
+      .addCase(conversationActions.fetchConversations.rejected, (state, action) => {
+        if (
+          state.activeAccountId !== action.meta.arg.accountId ||
+          state.currentListRequestId !== action.meta.requestId
+        ) {
+          return;
+        }
         state.isLoadingConversations = false;
+        state.currentListRequestId = null;
       })
       .addCase(conversationActions.fetchConversation.pending, state => {
         state.error = null;

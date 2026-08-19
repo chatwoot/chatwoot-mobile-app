@@ -4,7 +4,7 @@ import { differenceInHours } from 'date-fns';
 
 import { FileErrorIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { Message } from '@/types';
+import { ImageMetadata, Message } from '@/types';
 import { Icon } from '@/components-next';
 import { ATTACHMENT_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 import i18n from '@/i18n';
@@ -27,6 +27,26 @@ const isInstagramStoryExpired = (messageTimestamp: number) => {
   return differenceInHours(currentTime, messageTime) > 24;
 };
 
+// Attachments render grouped by type rather than in payload order: media, then audio,
+// then files.
+const MEDIA_TYPES = [ATTACHMENT_TYPES.IMAGE, ATTACHMENT_TYPES.VIDEO, ATTACHMENT_TYPES.IG_REEL];
+
+const groupByType = (attachments: ImageMetadata[]) => {
+  const ofType = (...types: string[]) =>
+    attachments.filter(attachment => types.includes(attachment.fileType));
+
+  const media = ofType(...MEDIA_TYPES).sort(
+    (a, b) => MEDIA_TYPES.indexOf(a.fileType) - MEDIA_TYPES.indexOf(b.fileType),
+  );
+
+  return [
+    ...media,
+    ...ofType(ATTACHMENT_TYPES.AUDIO),
+    ...ofType(ATTACHMENT_TYPES.FILE),
+    ...ofType(ATTACHMENT_TYPES.LOCATION),
+  ];
+};
+
 export const MessageAttachments = (props: MessageAttachmentsProps) => {
   const { item, variant } = props;
   const { attachments, private: isPrivate, contentAttributes, createdAt } = item;
@@ -40,7 +60,7 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
 
   return (
     <React.Fragment>
-      {attachments.map((attachment, index) => {
+      {groupByType(attachments).map((attachment, index) => {
         const key = attachment.fileType + index;
 
         if (attachment.fileType === ATTACHMENT_TYPES.IMAGE) {

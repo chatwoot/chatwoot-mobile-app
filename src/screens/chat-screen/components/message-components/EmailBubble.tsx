@@ -13,6 +13,7 @@ import { MESSAGE_TYPES } from '@/constants';
 type EmailBubbleProps = {
   item: Message;
   variant: string;
+  orientation?: string;
 };
 
 export const EmailBubble = (props: EmailBubbleProps) => {
@@ -80,7 +81,12 @@ export const EmailBubble = (props: EmailBubbleProps) => {
             />
           )}
         </Animated.View>
-        <MessageAttachments item={messageItem} variant={props.variant} mediaSize="thumbnail" />
+        <MessageAttachments
+          item={messageItem}
+          variant={props.variant}
+          orientation={props.orientation}
+          mediaSize="thumbnail"
+        />
       </Animated.View>
     </React.Fragment>
   );

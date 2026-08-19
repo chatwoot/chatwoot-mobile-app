@@ -16,6 +16,7 @@ import { MessageAttachments } from './MessageAttachments';
 type ComposedBubbleProps = {
   item: Message;
   variant: string;
+  orientation?: string;
 };
 
 export const ComposedBubble = (props: ComposedBubbleProps) => {
@@ -54,7 +55,11 @@ export const ComposedBubble = (props: ComposedBubbleProps) => {
             <Spinner size={12} stroke={tailwind.color('text-gray-900')} />
           </Animated.View>
         )}
-        <MessageAttachments item={props.item} variant={props.variant} />
+        <MessageAttachments
+          item={props.item}
+          variant={props.variant}
+          orientation={props.orientation}
+        />
       </Animated.View>
     </Animated.View>
   );

@@ -6,7 +6,7 @@ import { FileErrorIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { ImageMetadata, Message } from '@/types';
 import { Icon } from '@/components-next';
-import { ATTACHMENT_TYPES, TEXT_MAX_WIDTH } from '@/constants';
+import { ATTACHMENT_TYPES, ORIENTATION, TEXT_MAX_WIDTH } from '@/constants';
 import i18n from '@/i18n';
 
 import { ImageBubbleContainer, ImageThumbnail } from './ImageBubble';
@@ -18,6 +18,7 @@ import { LocationBubble } from './LocationBubble';
 type MessageAttachmentsProps = {
   item: Message;
   variant: string;
+  orientation?: string;
   /** Email bubbles show fixed-size thumbnails, chat bubbles show full-width media. */
   mediaSize?: 'default' | 'thumbnail';
 };
@@ -50,7 +51,7 @@ const groupByType = (attachments: ImageMetadata[]) => {
 };
 
 export const MessageAttachments = (props: MessageAttachmentsProps) => {
-  const { item, variant, mediaSize = 'default' } = props;
+  const { item, variant, orientation = ORIENTATION.LEFT, mediaSize = 'default' } = props;
   const { attachments, private: isPrivate, contentAttributes, createdAt } = item;
 
   if (!attachments || attachments.length === 0) {
@@ -61,7 +62,8 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
   const imageWidth = TEXT_MAX_WIDTH - 24 - (isPrivate ? 13 : 0);
 
   return (
-    <React.Fragment>
+    <Animated.View
+      style={tailwind.style(orientation === ORIENTATION.RIGHT ? 'items-end' : 'items-start')}>
       {groupByType(attachments).map((attachment, index) => {
         const key = attachment.fileType + index;
 
@@ -136,6 +138,6 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
 
         return null;
       })}
-    </React.Fragment>
+    </Animated.View>
   );
 };

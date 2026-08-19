@@ -457,16 +457,18 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (isUnsupported) {
       messageContent = <UnsupportedBubble />;
     } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
+      messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     } else if (isEmailInbox && !item.private) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
+      messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     }
     // TODO: Add this once we have a proper way to render single attachments
     // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
     //   messageContent = renderSingleAttachment(attachments[0]);
     // }
     else if (attachments?.length >= 1 || isReplyMessage) {
-      messageContent = <ComposedBubble item={item} variant={variant()} />;
+      messageContent = (
+        <ComposedBubble item={item} variant={variant()} orientation={orientation()} />
+      );
     } else if (item.content) {
       messageContent = <TextBubble item={item} variant={variant()} />;
     } else {

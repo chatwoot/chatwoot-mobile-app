@@ -261,18 +261,16 @@ export const EMAIL_ATTACHMENTS = [
     },
     attachments: [
       {
-        id: 831,
+        id: 828,
         message_id: 60916,
-        file_type: 'file',
+        file_type: 'image',
         account_id: 51,
         extension: null,
-        data_url:
-          'https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/requirements.pdf',
-        thumb_url:
-          'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9UY21WemFYcGxYM1J2WDJacGJHeGJCMmtCK2pBPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a6ed995cc4ac2dd2fa023068ee23b23efa1efb/requirements.pdf',
-        file_size: 841909,
-        width: null,
-        height: null,
+        data_url: 'https://random.imagecdn.app/500/500',
+        thumb_url: 'https://random.imagecdn.app/500/500',
+        file_size: 1617507,
+        width: 1600,
+        height: 900,
       },
       {
         id: 830,
@@ -299,16 +297,18 @@ export const EMAIL_ATTACHMENTS = [
         height: 1080,
       },
       {
-        id: 828,
+        id: 831,
         message_id: 60916,
-        file_type: 'image',
+        file_type: 'file',
         account_id: 51,
         extension: null,
-        data_url: 'https://random.imagecdn.app/500/500',
-        thumb_url: 'https://random.imagecdn.app/500/500',
-        file_size: 1617507,
-        width: 1600,
-        height: 900,
+        data_url:
+          'https://staging.chatwoot.com/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/requirements.pdf',
+        thumb_url:
+          'https://staging.chatwoot.com/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdFdKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--10170e22f42401a9259e17eba6e59877127353d0/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCam9UY21WemFYcGxYM1J2WDJacGJHeGJCMmtCK2pBPSIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--31a6ed995cc4ac2dd2fa023068ee23b23efa1efb/requirements.pdf',
+        file_size: 841909,
+        width: null,
+        height: null,
       },
     ],
     sender: {

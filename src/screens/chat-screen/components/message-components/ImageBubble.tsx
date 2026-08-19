@@ -22,6 +22,23 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
   );
 };
 
+// Fixed-size media thumbnail.
+export const ImageThumbnail = (props: ImageCellProps) => {
+  const { imageSrc } = props;
+
+  return (
+    <Galeria urls={[imageSrc]}>
+      <Galeria.Image>
+        <Image
+          source={{ uri: imageSrc }}
+          contentFit="cover"
+          style={tailwind.style('h-[72px] w-[72px] rounded-xl bg-gray-100 overflow-hidden')}
+        />
+      </Galeria.Image>
+    </Galeria>
+  );
+};
+
 export const ImageBubble = (props: ImageCellProps) => {
   const { imageSrc } = props;
 

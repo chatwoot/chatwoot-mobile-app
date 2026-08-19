@@ -86,6 +86,64 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   );
 };
 
+// Fixed-size media thumbnail. Playback is handed to the fullscreen player, so the
+// inline view carries no controls.
+export const VideoThumbnail = (props: VideoBubbleProps) => {
+  const { videoSrc } = props;
+  const videoRef = useRef<VideoView>(null);
+  const [status, setStatus] = useState<VideoPlayerStatus>('loading');
+
+  const player = useVideoPlayer({ uri: videoSrc }, instance => {
+    instance.loop = false;
+  });
+
+  useEffect(() => {
+    const statusSub = player.addListener('statusChange', ({ status: nextStatus }) => {
+      setStatus(nextStatus);
+    });
+    setStatus(player.status);
+    return () => {
+      statusSub.remove();
+    };
+  }, [player]);
+
+  const handlePlayPress = async () => {
+    player.play();
+    await videoRef.current?.enterFullscreen();
+  };
+
+  return (
+    <Animated.View
+      style={tailwind.style('h-[72px] w-[72px] rounded-xl bg-gray-100 overflow-hidden')}>
+      <VideoView
+        style={tailwind.style('h-full w-full')}
+        ref={videoRef}
+        player={player}
+        contentFit="cover"
+        nativeControls={false}
+        onFullscreenExit={() => {
+          player.pause();
+          player.currentTime = 0;
+        }}
+      />
+      {status === 'loading' || status === 'idle' ? (
+        <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
+          <Spinner size={16} />
+        </Animated.View>
+      ) : (
+        <Pressable
+          onPress={handlePlayPress}
+          style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
+          <Image
+            source={require('../../../../assets/local/PlayIcon.png')} // eslint-disable-line @typescript-eslint/no-require-imports
+            style={tailwind.style('h-7 w-7')}
+          />
+        </Pressable>
+      )}
+    </Animated.View>
+  );
+};
+
 export const VideoBubble = (props: VideoBubbleProps) => {
   const { videoSrc } = props;
 

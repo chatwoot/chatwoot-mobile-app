@@ -59,11 +59,13 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
   const isAnInstagramStory = contentAttributes?.imageType === ATTACHMENT_TYPES.STORY_MENTION;
   const imageWidth = TEXT_MAX_WIDTH - 24 - (isPrivate ? 13 : 0);
   const isThumbnail = mediaSize === 'thumbnail';
-  const isRightAligned = orientation === ORIENTATION.RIGHT;
+  // Rows stay stretched so percentage-width media resolves against the bubble; the
+  // contents are aligned inside each row instead.
+  const rowAlignment = orientation === ORIENTATION.RIGHT ? 'justify-end' : 'justify-start';
   const { media, recordings, files, locations } = groupByType(attachments);
 
   // Thumbnails sit side by side and wrap; full-width media stacks.
-  const mediaItemStyle = isThumbnail ? '' : 'my-2';
+  const mediaItemStyle = isThumbnail ? '' : `flex flex-row my-2 ${rowAlignment}`;
 
   const renderMedia = (attachment: ImageMetadata, index: number) => {
     const key = `${attachment.fileType}-${attachment.id ?? index}`;
@@ -97,7 +99,7 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
     }
 
     return (
-      <Animated.View key={key} style={tailwind.style('flex flex-row items-center', mediaItemStyle)}>
+      <Animated.View key={key} style={tailwind.style('items-center', mediaItemStyle)}>
         {isThumbnail ? (
           <VideoThumbnail videoSrc={attachment.dataUrl} />
         ) : (
@@ -108,12 +110,11 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
   };
 
   return (
-    <Animated.View style={tailwind.style(isRightAligned ? 'items-end' : 'items-start')}>
+    <Animated.View>
       {media.length > 0 ? (
         <Animated.View
           style={tailwind.style(
-            isThumbnail ? 'flex flex-row flex-wrap gap-1 my-2' : '',
-            isThumbnail && isRightAligned ? 'justify-end' : '',
+            isThumbnail ? `flex flex-row flex-wrap gap-1 my-2 ${rowAlignment}` : '',
           )}>
           {media.map(renderMedia)}
         </Animated.View>
@@ -122,7 +123,7 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
       {recordings.map((attachment, index) => (
         <Animated.View
           key={`audio-${attachment.id ?? index}`}
-          style={tailwind.style('flex flex-row items-center my-2')}>
+          style={tailwind.style('flex flex-row items-center my-2', rowAlignment)}>
           <AudioBubble audioSrc={attachment.dataUrl} variant={variant} />
         </Animated.View>
       ))}
@@ -130,7 +131,10 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
       {files.map((attachment, index) => (
         <Animated.View
           key={`file-${attachment.id ?? index}`}
-          style={tailwind.style('flex flex-row items-center relative max-w-[300px] my-2')}>
+          style={tailwind.style(
+            'flex flex-row items-center relative max-w-[300px] my-2',
+            rowAlignment,
+          )}>
           <FileBubblePreview fileSrc={attachment.dataUrl} isComposed variant={variant} />
         </Animated.View>
       ))}
@@ -138,7 +142,7 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
       {locations.map((attachment, index) => (
         <Animated.View
           key={`location-${attachment.id ?? index}`}
-          style={tailwind.style('flex flex-row items-center my-2')}>
+          style={tailwind.style('flex flex-row items-center my-2', rowAlignment)}>
           <LocationBubble
             latitude={attachment.coordinatesLat}
             longitude={attachment.coordinatesLong}

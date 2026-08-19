@@ -9,15 +9,17 @@ import { Icon } from '@/components-next';
 import { ATTACHMENT_TYPES, TEXT_MAX_WIDTH } from '@/constants';
 import i18n from '@/i18n';
 
-import { ImageBubbleContainer } from './ImageBubble';
+import { ImageBubbleContainer, ImageThumbnail } from './ImageBubble';
 import { FileBubblePreview } from './FileBubble';
 import { AudioBubble } from './AudioBubble';
-import { VideoBubble } from './VideoBubble';
+import { VideoBubble, VideoThumbnail } from './VideoBubble';
 import { LocationBubble } from './LocationBubble';
 
 type MessageAttachmentsProps = {
   item: Message;
   variant: string;
+  /** Email bubbles show fixed-size thumbnails, chat bubbles show full-width media. */
+  mediaSize?: 'default' | 'thumbnail';
 };
 
 const isInstagramStoryExpired = (messageTimestamp: number) => {
@@ -48,7 +50,7 @@ const groupByType = (attachments: ImageMetadata[]) => {
 };
 
 export const MessageAttachments = (props: MessageAttachmentsProps) => {
-  const { item, variant } = props;
+  const { item, variant, mediaSize = 'default' } = props;
   const { attachments, private: isPrivate, contentAttributes, createdAt } = item;
 
   if (!attachments || attachments.length === 0) {
@@ -78,7 +80,11 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
             </Animated.View>
           ) : (
             <Animated.View key={key} style={tailwind.style('my-2')}>
-              <ImageBubbleContainer imageSrc={attachment.dataUrl} maxWidth={imageWidth} />
+              {mediaSize === 'thumbnail' ? (
+                <ImageThumbnail imageSrc={attachment.dataUrl} />
+              ) : (
+                <ImageBubbleContainer imageSrc={attachment.dataUrl} maxWidth={imageWidth} />
+              )}
             </Animated.View>
           );
         }
@@ -99,7 +105,11 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
         ) {
           return (
             <Animated.View key={key} style={tailwind.style('flex flex-row items-center my-2')}>
-              <VideoBubble videoSrc={attachment.dataUrl} />
+              {mediaSize === 'thumbnail' ? (
+                <VideoThumbnail videoSrc={attachment.dataUrl} />
+              ) : (
+                <VideoBubble videoSrc={attachment.dataUrl} />
+              )}
             </Animated.View>
           );
         }

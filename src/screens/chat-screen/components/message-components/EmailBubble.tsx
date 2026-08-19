@@ -7,6 +7,7 @@ import { tailwind } from '@/theme';
 import { EmailMeta } from './EmailMeta';
 import { Message } from '@/types';
 import { MarkdownBubble } from './MarkdownBubble';
+import { MessageAttachments } from './MessageAttachments';
 import { MESSAGE_TYPES } from '@/constants';
 
 type EmailBubbleProps = {
@@ -79,6 +80,7 @@ export const EmailBubble = (props: EmailBubbleProps) => {
             />
           )}
         </Animated.View>
+        <MessageAttachments item={messageItem} variant={props.variant} mediaSize="thumbnail" />
       </Animated.View>
     </React.Fragment>
   );

@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
+import { ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BottomSheetBackdrop } from '@/components-next';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import i18n from '@/i18n';
 import { useRefsContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -22,6 +23,8 @@ type WhatsAppTemplatesListProps = {
   conversationId: number;
 };
 
+const LIST_BOTTOM_PADDING = 24;
+
 const EmptyState = ({ label }: { label: string }) => (
   <Animated.View style={tailwind.style('flex-1 items-center justify-center px-6 pt-6')}>
     <Animated.Text
@@ -35,6 +38,7 @@ const EmptyState = ({ label }: { label: string }) => (
 
 export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListProps) => {
   const dispatch = useAppDispatch();
+  const { bottom } = useSafeAreaInsets();
   const { whatsAppTemplatesSheetRef } = useRefsContext();
   const [selectedTemplate, setSelectedTemplate] = useState<NormalizedTemplate | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,7 +62,7 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
 
   const handleClose = () => {
     resetLocalState();
-    whatsAppTemplatesSheetRef.current?.dismiss({ overshootClamping: true });
+    whatsAppTemplatesSheetRef.current?.dismiss();
   };
 
   const handleSend = ({
@@ -91,10 +95,11 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
       return <EmptyState label={i18n.t('CONTENT_TEMPLATE.NO_RESULTS')} />;
     }
     return (
-      <BottomSheetScrollView
+      <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={tailwind.style('pb-6')}>
+        // The sheet reaches the screen edge, so the last row needs to clear the home indicator.
+        contentContainerStyle={tailwind.style(`pb-[${LIST_BOTTOM_PADDING + bottom}px]`)}>
         {filteredTemplates.map((template, index) => (
           <WhatsAppTemplateItem
             key={`${template.platform}-${template.id}`}
@@ -103,24 +108,17 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
             isLastItem={index === filteredTemplates.length - 1}
           />
         ))}
-      </BottomSheetScrollView>
+      </ScrollView>
     );
   };
 
   return (
     <Animated.View>
-      <BottomSheetModal
+      <Sheet
         ref={whatsAppTemplatesSheetRef}
-        backdropComponent={BottomSheetBackdrop}
-        onDismiss={resetLocalState}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-t-[26px] overflow-hidden')}
-        enablePanDownToClose
-        snapPoints={['85%']}
-        enableDynamicSizing={false}
-        keyboardBehavior="interactive"
-        keyboardBlurBehavior="restore">
+        detents={[0.85]}
+        scrollable
+        onDismiss={resetLocalState}>
         <Animated.View style={tailwind.style('flex-1 pt-4')}>
           {selectedTemplate ? (
             <WhatsAppTemplateForm
@@ -137,7 +135,7 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
             </Animated.View>
           )}
         </Animated.View>
-      </BottomSheetModal>
+      </Sheet>
     </Animated.View>
   );
 };

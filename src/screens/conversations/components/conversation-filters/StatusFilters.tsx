@@ -1,7 +1,6 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
@@ -37,7 +36,7 @@ const StatusCell = (props: StatusCellProps) => {
   const handleStatusPress = () => {
     hapticSelection?.();
     dispatch(setFilters({ key: 'status', value: value.id }));
-    setTimeout(() => filtersModalSheetRef.current?.dismiss({ overshootClamping: true }), 1);
+    setTimeout(() => filtersModalSheetRef.current?.dismiss(), 1);
   };
 
   return (
@@ -80,9 +79,9 @@ const StatusStack = (props: StatusStackProps) => {
 
 export const StatusFilters = () => {
   return (
-    <BottomSheetView>
+    <View>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.STATUS.TITLE')} />
       <StatusStack statusList={status} />
-    </BottomSheetView>
+    </View>
   );
 };

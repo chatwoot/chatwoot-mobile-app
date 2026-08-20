@@ -1,7 +1,6 @@
 import React from 'react';
-import { View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import { tailwind } from '@/theme';
 
@@ -29,7 +28,7 @@ const TemplateVariableInput = ({
       )}>
       {label}
     </Animated.Text>
-    <BottomSheetTextInput
+    <TextInput
       value={value}
       onChangeText={onChangeText}
       onFocus={onFocus}

@@ -8,7 +8,6 @@ import Animated, {
   interpolate,
   interpolateColor,
   LinearTransition,
-  runOnJS,
   SharedValue,
   SlideInDown,
   useAnimatedReaction,
@@ -18,6 +17,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { scheduleOnRN } from 'react-native-worklets';
 
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
@@ -160,8 +160,10 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
 
   const isTapped = useSharedValue(0);
 
-  const hasLeftElement = useDerivedValue(() => leftElement !== undefined);
-  const hasRightElement = useDerivedValue(() => rightElement !== undefined);
+  // Plain booleans (not derived values): capturing the React element inside a
+  // worklet closure throws "Cannot copy value of type FiberNode" on Reanimated 4.
+  const hasLeftElement = leftElement !== undefined;
+  const hasRightElement = rightElement !== undefined;
 
   const closeRow = () => {
     'worklet';
@@ -191,7 +193,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     (currentValue, previousValue) => {
       // Drag has been overswiped and beyond max translation
       if (currentValue !== previousValue && currentValue) {
-        hapticWarning && runOnJS(hapticWarning)();
+        hapticWarning && scheduleOnRN(hapticWarning);
       }
     },
   );
@@ -200,12 +202,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     .enabled(handleLongPress !== undefined)
     .minDuration(250)
     .maxDistance(20)
-    .onStart(() => handleLongPress && runOnJS(handleLongPress)())
+    .onStart(() => handleLongPress && scheduleOnRN(handleLongPress))
     .onFinalize(() => (isTapped.value = withSpring(0, { damping: 25, stiffness: 120 })));
 
   const tapGesture = Gesture.Tap()
     .onStart(() => (isTapped.value = withTiming(1, { duration: 100 })))
-    .onEnd(() => runOnJS(handlePress)())
+    .onEnd(() => scheduleOnRN(handlePress))
     .onFinalize(() => (isTapped.value = withTiming(0, { duration: 150 })));
 
   const panGesture = Gesture.Pan()
@@ -260,13 +262,13 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
 
       // Clamped Value > 0 - for Left Element
       // Clamped Value < 0 - for Right Element
-      if (clampedVal > 0 && hasLeftElement.value) {
+      if (clampedVal > 0 && hasLeftElement) {
         animStatePos.value = withSpring(clampedVal, {
           damping: dampingValue,
           stiffness: stiffnessValue,
         });
       }
-      if (clampedVal < 0 && hasRightElement.value) {
+      if (clampedVal < 0 && hasRightElement) {
         animStatePos.value = withSpring(clampedVal, {
           damping: dampingValue,
           stiffness: stiffnessValue,
@@ -278,12 +280,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
        * The below two conditions takes care of triggering the over swipe
        * when `triggerOverswipeOnFlick` is set to true
        */
-      if (hasLeftElement.value && evt.translationX > maxSnapPointRight && triggerOverswipeOnFlick) {
+      if (hasLeftElement && evt.translationX > maxSnapPointRight && triggerOverswipeOnFlick) {
         // The case where you are swiping towards right and the left element is present
-        handleOnLeftOverswiped && runOnJS(handleOnLeftOverswiped)();
+        handleOnLeftOverswiped && scheduleOnRN(handleOnLeftOverswiped);
         if (!dragOverSwiped.value) {
           // trigger haptic in cases where the drag isnt overswiped but is flicked to trigger action
-          hapticWarning && runOnJS(hapticWarning)();
+          hapticWarning && scheduleOnRN(hapticWarning);
         }
         animStatePos.value = withSpring(
           0,
@@ -298,12 +300,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
         );
         return;
       }
-      if (hasRightElement.value && evt.translationX < maxSnapPointLeft && triggerOverswipeOnFlick) {
+      if (hasRightElement && evt.translationX < maxSnapPointLeft && triggerOverswipeOnFlick) {
         // The case where you are swiping towards left and the right element is present
-        handleOnRightOverswiped && runOnJS(handleOnRightOverswiped)();
+        handleOnRightOverswiped && scheduleOnRN(handleOnRightOverswiped);
         if (!dragOverSwiped.value) {
           // trigger haptic in cases where the drag isnt overswiped but is flicked to trigger action
-          hapticWarning && runOnJS(hapticWarning)();
+          hapticWarning && scheduleOnRN(hapticWarning);
         }
         animStatePos.value = withSpring(
           0,
@@ -320,12 +322,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       }
       if (dragOverSwiped.value) {
         // Pane is overswiped and the direction is towards right and it has left element
-        if (hasLeftElement.value && swipingRight.value) {
-          handleOnLeftOverswiped && runOnJS(handleOnLeftOverswiped)();
+        if (hasLeftElement && swipingRight.value) {
+          handleOnLeftOverswiped && scheduleOnRN(handleOnLeftOverswiped);
         }
         // Pane is overswiped and the direction is towards left and it has right element
-        if (hasRightElement.value && swipingLeft.value) {
-          handleOnRightOverswiped && runOnJS(handleOnRightOverswiped)();
+        if (hasRightElement && swipingLeft.value) {
+          handleOnRightOverswiped && scheduleOnRN(handleOnRightOverswiped);
         }
         animStatePos.value = withSpring(
           0,
@@ -349,8 +351,8 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
         // Conditional Snap points so that we dont open the
         const allSnapPoints = [
           0,
-          !hasLeftElement.value ? 0 : isLeftOpen ? 0 : SNAP_POINT,
-          !hasRightElement.value ? 0 : isRightOpen ? 0 : -SNAP_POINT,
+          !hasLeftElement ? 0 : isLeftOpen ? 0 : SNAP_POINT,
+          !hasRightElement ? 0 : isRightOpen ? 0 : -SNAP_POINT,
         ];
 
         const closestSnapPoint = allSnapPoints.reduce((acc, cur) => {
@@ -450,7 +452,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       <AnimatedPressable
         onPress={handleOnPressLeft}
         style={[
-          StyleSheet.absoluteFillObject,
+          StyleSheet.absoluteFill,
           tailwind.style('flex justify-center items-start', leftElementBgColor),
           leftStyle,
         ]}>
@@ -461,7 +463,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       <AnimatedPressable
         onPress={handleOnPressRight}
         style={[
-          StyleSheet.absoluteFillObject,
+          StyleSheet.absoluteFill,
           tailwind.style('flex justify-center items-end', rightElementBgColor),
           rightStyle,
         ]}>
@@ -475,11 +477,12 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
             Platform.OS === 'ios'
               ? SlideInDown.delay(index * 20)
                   .springify()
-                  .damping(20)
-                  .stiffness(120)
+                  .mass(1)
+                  .damping(15)
+                  .stiffness(70)
               : FadeIn
           }
-          layout={LinearTransition.springify().damping(28).stiffness(200)}
+          layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}
           style={[tailwind.style('flex-1 z-10', `w-[${WIDTH}px]`), overlayStyle, tappedCellStyle]}>
           {children}
         </AnimatedNativeView>

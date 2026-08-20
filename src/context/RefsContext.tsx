@@ -1,27 +1,27 @@
 import React, { useRef } from 'react';
 import PagerView from 'react-native-pager-view';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 import { Message } from '@/types';
+import type { SheetRef } from '@/components-next/common/sheet/Sheet';
 
 interface RefsContextType {
-  userAvailabilityStatusSheetRef: React.RefObject<BottomSheetModal>;
-  filtersModalSheetRef: React.RefObject<BottomSheetModal>;
-  actionsModalSheetRef: React.RefObject<BottomSheetModal>;
-  languagesModalSheetRef: React.RefObject<BottomSheetModal>;
+  userAvailabilityStatusSheetRef: React.RefObject<SheetRef>;
+  filtersModalSheetRef: React.RefObject<SheetRef>;
+  actionsModalSheetRef: React.RefObject<SheetRef>;
+  languagesModalSheetRef: React.RefObject<SheetRef>;
   chatPagerView: React.RefObject<PagerView>;
-  addLabelSheetRef: React.RefObject<BottomSheetModal>;
-  macrosListSheetRef: React.RefObject<BottomSheetModal>;
-  notificationPreferencesSheetRef: React.RefObject<BottomSheetModal>;
-  switchAccountSheetRef: React.RefObject<BottomSheetModal>;
-  debugActionsSheetRef: React.RefObject<BottomSheetModal>;
-  messageListRef: React.RefObject<FlashList<Message | { date: string }>>;
-  inboxFiltersSheetRef: React.RefObject<BottomSheetModal>;
-  slaEventsSheetRef: React.RefObject<BottomSheetModal>;
-  deliveryStatusSheetRef: React.RefObject<BottomSheetModal>;
-  updateParticipantSheetRef: React.RefObject<BottomSheetModal>;
-  toneSelectionSheetRef: React.RefObject<BottomSheetModal>;
-  whatsAppTemplatesSheetRef: React.RefObject<BottomSheetModal>;
+  addLabelSheetRef: React.RefObject<SheetRef>;
+  macrosListSheetRef: React.RefObject<SheetRef>;
+  notificationPreferencesSheetRef: React.RefObject<SheetRef>;
+  switchAccountSheetRef: React.RefObject<SheetRef>;
+  debugActionsSheetRef: React.RefObject<SheetRef>;
+  messageListRef: React.RefObject<FlashListRef<Message | { date: string }>>;
+  inboxFiltersSheetRef: React.RefObject<SheetRef>;
+  slaEventsSheetRef: React.RefObject<SheetRef>;
+  deliveryStatusSheetRef: React.RefObject<SheetRef>;
+  updateParticipantSheetRef: React.RefObject<SheetRef>;
+  toneSelectionSheetRef: React.RefObject<SheetRef>;
+  whatsAppTemplatesSheetRef: React.RefObject<SheetRef>;
 }
 
 const RefsContext = React.createContext<RefsContextType | undefined>(undefined);
@@ -38,23 +38,23 @@ const useRefsContext = (): RefsContextType => {
 };
 
 const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNode }>> = props => {
-  const userAvailabilityStatusSheetRef = useRef<BottomSheetModal>(null);
-  const filtersModalSheetRef = useRef<BottomSheetModal>(null);
-  const actionsModalSheetRef = useRef<BottomSheetModal>(null);
-  const languagesModalSheetRef = useRef<BottomSheetModal>(null);
-  const notificationPreferencesSheetRef = useRef<BottomSheetModal>(null);
-  const addLabelSheetRef = useRef<BottomSheetModal>(null);
-  const macrosListSheetRef = useRef<BottomSheetModal>(null);
+  const userAvailabilityStatusSheetRef = useRef<SheetRef>(null);
+  const filtersModalSheetRef = useRef<SheetRef>(null);
+  const actionsModalSheetRef = useRef<SheetRef>(null);
+  const languagesModalSheetRef = useRef<SheetRef>(null);
+  const notificationPreferencesSheetRef = useRef<SheetRef>(null);
+  const addLabelSheetRef = useRef<SheetRef>(null);
+  const macrosListSheetRef = useRef<SheetRef>(null);
   const chatPagerView = useRef<PagerView>(null);
-  const switchAccountSheetRef = useRef<BottomSheetModal>(null);
-  const debugActionsSheetRef = useRef<BottomSheetModal>(null);
-  const inboxFiltersSheetRef = useRef<BottomSheetModal>(null);
-  const messageListRef = useRef<FlashList<Message | { date: string }>>(null);
-  const slaEventsSheetRef = useRef<BottomSheetModal>(null);
-  const deliveryStatusSheetRef = useRef<BottomSheetModal>(null);
-  const updateParticipantSheetRef = useRef<BottomSheetModal>(null);
-  const toneSelectionSheetRef = useRef<BottomSheetModal>(null);
-  const whatsAppTemplatesSheetRef = useRef<BottomSheetModal>(null);
+  const switchAccountSheetRef = useRef<SheetRef>(null);
+  const debugActionsSheetRef = useRef<SheetRef>(null);
+  const inboxFiltersSheetRef = useRef<SheetRef>(null);
+  const messageListRef = useRef<FlashListRef<Message | { date: string }>>(null);
+  const slaEventsSheetRef = useRef<SheetRef>(null);
+  const deliveryStatusSheetRef = useRef<SheetRef>(null);
+  const updateParticipantSheetRef = useRef<SheetRef>(null);
+  const toneSelectionSheetRef = useRef<SheetRef>(null);
+  const whatsAppTemplatesSheetRef = useRef<SheetRef>(null);
 
   const { children } = props;
 

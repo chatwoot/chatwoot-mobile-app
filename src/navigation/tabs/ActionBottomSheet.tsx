@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
-import tailwind from 'twrnc';
-import { BottomSheetBackdrop } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
   resetActionState,
   selectCurrentActionState,
 } from '@/store/conversation/conversationActionSlice';
 
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { useRefsContext } from '@/context';
 import {
   UpdateAssignee,
@@ -21,53 +19,46 @@ const ActionBottomSheet = () => {
   const dispatch = useAppDispatch();
   const currentActionState = useAppSelector(selectCurrentActionState);
 
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
-  });
-
   const { actionsModalSheetRef } = useRefsContext();
 
-  const actionSnapPoints = useMemo(() => {
+  const actionHeight = useMemo(() => {
     switch (currentActionState) {
       case 'Assign':
-        return [400];
+        return 400;
       case 'Status':
-        return [250];
+        return 250;
       case 'Label':
-        return [368];
+        return 368;
       case 'Priority':
-        return [300];
+        return 300;
       case 'TeamAssign':
-        return [400];
+        return 400;
       default:
-        return [250];
+        return 250;
     }
   }, [currentActionState]);
+
+  const isScrollable =
+    currentActionState === 'Assign' ||
+    currentActionState === 'Label' ||
+    currentActionState === 'TeamAssign';
 
   const handleOnDismiss = () => {
     dispatch(resetActionState());
   };
 
   return (
-    <BottomSheetModal
+    <Sheet
       ref={actionsModalSheetRef}
-      backdropComponent={BottomSheetBackdrop}
-      handleIndicatorStyle={tailwind.style('overflow-hidden w-8 h-1 rounded-[11px]')}
-      handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-      style={tailwind.style('rounded-[26px] overflow-hidden')}
-      animationConfigs={animationConfigs}
-      enablePanDownToClose
-      enableDynamicSizing={false}
-      snapPoints={actionSnapPoints}
+      height={actionHeight}
+      scrollable={isScrollable}
       onDismiss={handleOnDismiss}>
       {currentActionState === 'Assign' ? <UpdateAssignee /> : null}
       {currentActionState === 'TeamAssign' ? <UpdateTeam /> : null}
       {currentActionState === 'Status' ? <UpdateStatus /> : null}
       {currentActionState === 'Label' ? <UpdateLabels /> : null}
       {currentActionState === 'Priority' ? <UpdatePriority /> : null}
-    </BottomSheetModal>
+    </Sheet>
   );
 };
 

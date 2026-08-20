@@ -1,6 +1,6 @@
 import React from 'react';
 import { Channel, Message } from '@/types';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
@@ -38,11 +38,26 @@ import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, Text } from 'react-native';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
+import { useMessageEntrance } from './useMessageEntrance';
 
 // import { ImageMetadata } from '@/types';
+
+const BOT_SENDER_TYPES: string[] = [SENDER_TYPES.AGENT_BOT, SENDER_TYPES.CAPTAIN_ASSISTANT];
+
+const isBotSender = (senderType?: string) => !!senderType && BOT_SENDER_TYPES.includes(senderType);
+
+// Captain assistants are serialized with `avatarUrl`, the other sender types with `thumbnail`.
+const senderAvatarSource = (sender: Message['sender']) => {
+  if (!sender) {
+    return null;
+  }
+  const avatarUrl = 'avatarUrl' in sender ? sender.avatarUrl : null;
+  const thumbnail = 'thumbnail' in sender ? sender.thumbnail : null;
+  return avatarUrl || thumbnail || null;
+};
 
 type MessageComponentProps = {
   item: Message;
@@ -50,7 +65,6 @@ type MessageComponentProps = {
   isEmailInbox: boolean;
   currentUserId: number;
   isTargetMessage?: boolean;
-  isListPositioned?: boolean;
 };
 
 type MessageWrapperProps = {
@@ -66,7 +80,6 @@ type MessageWrapperProps = {
   variant: string;
   channel?: Channel;
   isTargetMessage?: boolean;
-  isListPositioned?: boolean;
 };
 
 const variantTextMap = {
@@ -110,12 +123,11 @@ const MessageWrapper = ({
   variant,
   channel,
   isTargetMessage = false,
-  isListPositioned = true,
 }: MessageWrapperProps) => {
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
-    isListPositioned,
   });
+  const entranceStyle = useMessageEntrance(item.id);
 
   const flexOrientationClass = () => {
     const map = {
@@ -130,9 +142,11 @@ const MessageWrapper = ({
   // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
   const EMAIL_WIDTH = windowWidth - 52;
 
+  // Only the search-target row animates, so only it needs an Animated.View.
+  const Bubble = isTargetMessage ? Animated.View : View;
+
   return (
     <Animated.View
-      entering={FadeIn.duration(350)}
       style={[
         tailwind.style(
           'my-[1px]',
@@ -141,15 +155,16 @@ const MessageWrapper = ({
           !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
           item.private ? 'my-1' : '',
         ),
+        entranceStyle,
       ]}>
-      <Animated.View style={tailwind.style('flex flex-row')}>
+      <View style={tailwind.style('flex flex-row')}>
         {!shouldGroupWithPrevious && shouldShowAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
+          <View style={tailwind.style('flex items-end justify-end mr-1')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
-          </Animated.View>
+          </View>
         ) : null}
         <MessageMenu menuOptions={getMenuOptions(item)}>
-          <Animated.View
+          <Bubble
             style={[
               tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
@@ -172,31 +187,28 @@ const MessageWrapper = ({
                     : 'rounded-br-none'
                   : '',
               ),
-              zoomStyle,
+              isTargetMessage && zoomStyle,
             ]}>
             {children}
             {/* Highlight overlay for target message */}
             {isTargetMessage && (
               <Animated.View
-                style={[
-                  tailwind.style('absolute inset-0 bg-white rounded-2xl'),
-                  highlightStyle,
-                ]}
+                style={[tailwind.style('absolute inset-0 bg-white rounded-2xl'), highlightStyle]}
                 pointerEvents="none"
               />
             )}
             {!shouldGroupWithPrevious && (
-              <Animated.View
+              <View
                 style={tailwind.style(
                   'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
                 )}>
-                <Animated.Text
+                <Text
                   style={tailwind.style(
                     'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
                     variantTextMap[variant],
                   )}>
                   {unixTimestampToReadableTime(item.createdAt)}
-                </Animated.Text>
+                </Text>
                 <DeliveryStatus
                   isPrivate={item.private}
                   status={item.status}
@@ -207,11 +219,11 @@ const MessageWrapper = ({
                   deliveredColor="text-gray-700"
                   sentColor="text-gray-700"
                 />
-              </Animated.View>
+              </View>
             )}
-          </Animated.View>
+          </Bubble>
         </MessageMenu>
-      </Animated.View>
+      </View>
     </Animated.View>
   );
 };
@@ -219,7 +231,7 @@ const MessageWrapper = ({
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox, isTargetMessage = false, isListPositioned = true } = props;
+  const { item, currentUserId, isEmailInbox, isTargetMessage = false } = props;
   const {
     messageType,
     contentType,
@@ -251,7 +263,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (status === MESSAGE_STATUS.FAILED) return MESSAGE_VARIANTS.ERROR;
     if (item.contentAttributes?.isUnsupported) return MESSAGE_VARIANTS.UNSUPPORTED;
 
-    const isBot = !sender || sender.type === SENDER_TYPES.AGENT_BOT;
+    const isBot = !sender || isBotSender(sender.type);
     if (isBot && messageType === MESSAGE_TYPES.OUTGOING) {
       return MESSAGE_VARIANTS.BOT;
     }
@@ -404,7 +416,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     return {
       name: sender?.name || '',
       src: {
-        uri: sender?.thumbnail || null,
+        uri: senderAvatarSource(sender),
       },
     };
   };
@@ -445,16 +457,18 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (isUnsupported) {
       messageContent = <UnsupportedBubble />;
     } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
+      messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     } else if (isEmailInbox && !item.private) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
+      messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     }
     // TODO: Add this once we have a proper way to render single attachments
     // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
     //   messageContent = renderSingleAttachment(attachments[0]);
     // }
     else if (attachments?.length >= 1 || isReplyMessage) {
-      messageContent = <ComposedBubble item={item} variant={variant()} />;
+      messageContent = (
+        <ComposedBubble item={item} variant={variant()} orientation={orientation()} />
+      );
     } else if (item.content) {
       messageContent = <TextBubble item={item} variant={variant()} />;
     } else {
@@ -472,8 +486,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
         getMenuOptions={getMenuOptions}
         variant={variant()}
         channel={channel}
-        isTargetMessage={isTargetMessage}
-        isListPositioned={isListPositioned}>
+        isTargetMessage={isTargetMessage}>
         {messageContent}
       </MessageWrapper>
     );

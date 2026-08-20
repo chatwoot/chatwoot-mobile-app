@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { AppState, Platform, View, ActivityIndicator } from 'react-native';
@@ -9,6 +9,7 @@ import {
   getMessagesByConversationId,
   selectConversationById,
   selectIsAllMessagesFetched,
+  selectIsAllNewerMessagesFetched,
   selectIsLoadingMessages,
 } from '@/store/conversation/conversationSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -76,10 +77,16 @@ export const MessagesListContainer = () => {
     useChatWindowContext();
   const dispatch = useAppDispatch();
   const [isFlashListReady, setFlashListReady] = React.useState(false);
-  const [isListVisible, setIsListVisible] = useState(!messageId);
+  // True while a search jump is loading both sides of the target, so the list is
+  // mounted once with stable data (avoids the target index shifting mid-load).
+  const [isSearchLoading, setIsSearchLoading] = useState(!!messageId);
+  // Search-jump fetches, aborted when navigating to another target or conversation
+  // so a stale resetMessages response can't replace the current target's window.
+  const inFlightSearchFetchesRef = useRef<{ abort: () => void }[]>([]);
 
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const isAllMessagesFetched = useAppSelector(selectIsAllMessagesFetched);
+  const isAllNewerMessagesFetched = useAppSelector(selectIsAllNewerMessagesFetched);
   const isLoadingMessages = useAppSelector(selectIsLoadingMessages);
   const messages = useAppSelector(state => getMessagesByConversationId(state, { conversationId }));
   const attachments = useAppSelector(selectAttachments);
@@ -125,14 +132,35 @@ export const MessagesListContainer = () => {
       targetMessageId?: number;
     }) => {
       if (targetMessageId !== undefined) {
-        // Load target message and messages around it (for search navigation)
-        dispatch(
+        // Search navigation: load a count-based window around the target (ID
+        // spans are unreliable because message ids are global across all
+        // conversations). First the target + older messages (resets the list),
+        // then a page of newer messages so the target has context on both sides.
+        const resetRequest = dispatch(
           conversationActions.fetchPreviousMessages({
             conversationId,
-            afterId: targetMessageId - 100,
-            beforeId: targetMessageId + 100,
+            beforeId: targetMessageId + 1,
+            resetMessages: true,
           }),
         );
+        inFlightSearchFetchesRef.current.push(resetRequest);
+        const resetResult = await resetRequest;
+        // Aborted because a newer target or conversation took over; skip the
+        // follow-up fetch so stale data can't land on the current window.
+        if (
+          conversationActions.fetchPreviousMessages.rejected.match(resetResult) &&
+          resetResult.meta.aborted
+        ) {
+          return;
+        }
+        const newerRequest = dispatch(
+          conversationActions.fetchPreviousMessages({
+            conversationId,
+            afterId: targetMessageId,
+          }),
+        );
+        inFlightSearchFetchesRef.current.push(newerRequest);
+        await newerRequest;
       } else if (loadingMessagesForFirstTime) {
         dispatch(
           conversationActions.fetchPreviousMessages({
@@ -152,14 +180,14 @@ export const MessagesListContainer = () => {
           );
         }
       } else {
-        // Load newer messages (after the newest message we have)
-        // Note: This is not currently triggered as Flashlist v1 doesnot support onStartReached
+        // Load newer messages (after the newest we have). Any overlap is
+        // de-duplicated in the slice, so pass the id directly to avoid skipping one.
         const afterId = firstMessageId();
         if (afterId) {
           dispatch(
             conversationActions.fetchPreviousMessages({
               conversationId,
-              afterId: afterId + 1, // +1 to exclude the message we already have
+              afterId,
             }),
           );
         }
@@ -173,7 +201,10 @@ export const MessagesListContainer = () => {
     const appStateListener = AppState.addEventListener('change', nextAppState => {
       if (appState.match(/inactive|background/) && nextAppState === 'active') {
         const routeName = getCurrentRouteName();
-        if (routeName && SCREENS.CHAT === routeName) {
+        // Only refresh to the latest page when already at the newest edge. While a
+        // search window (older messages) is showing, refreshing would prepend the
+        // latest page with a gap and disable newer pagination.
+        if (routeName && SCREENS.CHAT === routeName && isAllNewerMessagesFetched) {
           dispatch(
             conversationActions.fetchPreviousMessages({
               conversationId,
@@ -186,8 +217,10 @@ export const MessagesListContainer = () => {
     return () => {
       appStateListener?.remove();
     };
-  }, [appState, conversationId, dispatch]);
+  }, [appState, conversationId, dispatch, isAllNewerMessagesFetched]);
 
+  // Inverted list: older history is at the end of the data, fetched when the
+  // user scrolls to the bottom (visually the top).
   const onEndReached = () => {
     const shouldFetchMoreMessages = !isAllMessagesFetched && !isLoadingMessages && isFlashListReady;
     if (shouldFetchMoreMessages) {
@@ -195,27 +228,47 @@ export const MessagesListContainer = () => {
     }
   };
 
+  // After a search jump the loaded window can sit before the latest messages;
+  // page newer ones in when the user scrolls to the newest edge (visually the
+  // bottom). No-op on a normal chat, which is already at the latest.
+  const onStartReached = () => {
+    const shouldFetchNewerMessages =
+      !isAllNewerMessagesFetched && !isLoadingMessages && isFlashListReady;
+    if (shouldFetchNewerMessages) {
+      loadMessages({ loadOlder: false });
+    }
+  };
+
+  // A new search target re-mounts the list; wait for its layout before positioning.
   useEffect(() => {
     if (messageId) {
-      setIsListVisible(false);
       setFlashListReady(false);
-    } else {
-      setIsListVisible(true);
     }
   }, [messageId]);
 
   useEffect(() => {
+    let active = true;
     if (messageId) {
-      loadMessages({ targetMessageId: messageId });
+      setIsSearchLoading(true);
+      loadMessages({ targetMessageId: messageId }).finally(() => {
+        if (active) setIsSearchLoading(false);
+      });
     } else {
       loadMessages({ loadingMessagesForFirstTime: true });
     }
     dispatch(conversationParticipantActions.index({ conversationId }));
+    return () => {
+      active = false;
+      inFlightSearchFetchesRef.current.forEach(request => request.abort());
+      inFlightSearchFetchesRef.current = [];
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId, messageId]);
 
   const groupedMessages = getGroupedMessages(messages);
 
+  // The list is rendered inverted, so data stays newest-first and each day's
+  // date separator follows that day's messages (it renders above them).
   const allMessages = flatMap(groupedMessages, section => [
     ...section.data,
     { date: section.date },
@@ -234,57 +287,26 @@ export const MessagesListContainer = () => {
   const isEmailInbox = isAnEmailChannel(inbox);
   const userId = useAppSelector(selectUserId);
 
-  // Compute target message index for initialScrollIndex (so FlashList starts
-  // rendering from the target position, making items near it measured early)
-  const targetMessageIndex = messageId
-    ? messagesWithGrouping.findIndex(
-        item => !('date' in item) && 'id' in item && item.id === messageId,
-      )
-    : undefined;
+  const clearScrollToMessageId = useCallback(
+    () => setScrollToMessageId(undefined),
+    [setScrollToMessageId],
+  );
 
-  useScrollToMessage({
+  const { highlightedMessageId, isListVisible } = useScrollToMessage({
     messageId,
+    scrollToMessageId,
+    clearScrollToMessageId,
     messages: messagesWithGrouping,
     messageListRef,
     isFlashListReady,
     isLoadingMessages,
-    onPositioned: useCallback(() => setIsListVisible(true), []),
   });
 
-  // Handle scroll-to-message when tapping a quoted message reply
-  useEffect(() => {
-    if (!scrollToMessageId) return;
-
-    const targetIndex = messagesWithGrouping.findIndex(
-      item => !('date' in item) && 'id' in item && item.id === scrollToMessageId,
-    );
-
-    if (targetIndex >= 0) {
-      try {
-        messageListRef.current?.scrollToIndex({
-          index: targetIndex,
-          animated: true,
-          viewPosition: 0.5,
-        });
-      } catch {
-        // scrollToIndex can throw if index is out of range during layout changes
-      }
-    }
-
-    // Clear after a delay to allow the highlight animation to complete
-    const timer = setTimeout(() => {
-      setScrollToMessageId(undefined);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [scrollToMessageId, messagesWithGrouping, messageListRef, setScrollToMessageId]);
-
-  // The active target message ID — either from search navigation or quote tap
-  const activeTargetMessageId = scrollToMessageId || messageId;
-
-  // Show loader when navigating to a message from search until messages are loaded
-  // (prevents list from rendering at wrong position)
-  if (messageId && messagesWithGrouping.length === 0 && isLoadingMessages) {
+  // For search navigation, keep the loader up while both sides of the target load
+  // so the list mounts once with stable data. Gated on isSearchLoading only: once
+  // loading settles the list renders even with no messages, so an empty or deleted
+  // target lands on a recoverable empty state instead of a permanent spinner.
+  if (messageId && isSearchLoading) {
     return (
       <View style={tailwind.style('flex-1 bg-white justify-center items-center')}>
         <ActivityIndicator />
@@ -304,15 +326,11 @@ export const MessagesListContainer = () => {
           isFlashListReady={isFlashListReady}
           setFlashListReady={setFlashListReady}
           onEndReached={onEndReached}
+          onStartReached={onStartReached}
           isEmailInbox={isEmailInbox}
           currentUserId={userId as number}
-          targetMessageId={activeTargetMessageId}
-          initialScrollIndex={
-            targetMessageIndex !== undefined && targetMessageIndex >= 0
-              ? targetMessageIndex
-              : undefined
-          }
-          isListPositioned={isListVisible}
+          isSearchNavigation={messageId !== undefined}
+          highlightedMessageId={highlightedMessageId}
         />
       </View>
       {!isListVisible && messageId && (

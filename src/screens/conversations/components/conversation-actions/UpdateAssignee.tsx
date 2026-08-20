@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
@@ -88,13 +87,6 @@ export const UpdateAssignee = () => {
     inboxIds.some(id => (state.assignableAgents.records[id]?.length ?? 0) > 0),
   );
 
-  const handleFocus = () => {
-    actionsModalSheetRef.current?.expand();
-  };
-  const handleBlur = () => {
-    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
-  };
-
   useEffect(() => {
     dispatch(assignableAgentActions.fetchAgents({ inboxIds }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +100,7 @@ export const UpdateAssignee = () => {
     if (isMultipleConversationsSelected) {
       const payload = { type: 'Conversation', ids: selectedIds, fields: { assignee_id: agent.id } };
       await dispatch(conversationActions.bulkAction(payload));
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+      actionsModalSheetRef.current?.dismiss();
     } else {
       if (!selectedConversation?.id) return;
       await dispatch(
@@ -121,7 +113,7 @@ export const UpdateAssignee = () => {
       showToast({
         message: i18n.t('CONVERSATION.ASSIGN_CHANGE'),
       });
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+      actionsModalSheetRef.current?.dismiss();
     }
   };
 
@@ -130,16 +122,11 @@ export const UpdateAssignee = () => {
   return (
     <React.Fragment>
       <SearchBar
-        isInsideBottomSheet
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         onChangeText={handleChangeText}
         placeholder={i18n.t('CONVERSATION.ASSIGNEE.AGENTS.SEARCH_AGENT')}
       />
 
-      <BottomSheetScrollView
-        showsVerticalScrollIndicator={false}
-        style={tailwind.style('my-1 pl-3')}>
+      <ScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
         {isFetching && !hasAgentRecords ? (
           <ActivityIndicator />
         ) : (
@@ -178,7 +165,7 @@ export const UpdateAssignee = () => {
             })}
           </>
         )}
-      </BottomSheetScrollView>
+      </ScrollView>
     </React.Fragment>
   );
 };

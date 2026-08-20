@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
-import Animated, {
-  LinearTransition,
-  runOnJS,
-  SharedValue,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
+import Animated, { SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
@@ -57,14 +52,14 @@ const InboxList = () => {
 
   // eslint-disable-next-line react/display-name
   const ListFooterComponent = React.memo(() => {
-    if (isAllNotificationsFetched) return null;
+    if (isAllNotificationsFetched || !isFlashListReady) return null;
     return (
       <Animated.View
         style={tailwind.style(
           'flex-1 items-center justify-center pt-8',
           `pb-[${TAB_BAR_HEIGHT}px]`,
         )}>
-        {isAllNotificationsFetched ? null : <ActivityIndicator size="small" />}
+        <ActivityIndicator size="small" />
       </Animated.View>
     );
   });
@@ -123,14 +118,12 @@ const InboxList = () => {
     );
   };
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onBeginDrag: () => {
-      openedRowIndex.value = -1;
-      if (!isFlashListReady) {
-        runOnJS(setFlashListReady)(true);
-      }
-    },
-  });
+  const handleScrollBeginDrag = useCallback(() => {
+    openedRowIndex.value = -1;
+    if (!isFlashListReady) {
+      setFlashListReady(true);
+    }
+  }, [isFlashListReady, openedRowIndex]);
 
   const shouldShowEmptyLoader = isNotificationsLoading && notifications.length === 0;
 
@@ -154,11 +147,9 @@ const InboxList = () => {
   ) : (
     <AnimatedFlashlist
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={notifications}
-      estimatedItemSize={71}
-      onScroll={scrollHandler}
+      onScrollBeginDrag={handleScrollBeginDrag}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
       ListFooterComponent={ListFooterComponent}

@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { Icon, Spinner } from '@/components-next';
 import i18n from '@/i18n';
@@ -109,7 +108,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
         </Animated.View>
       </View>
       {macro.actions && (
-        <BottomSheetScrollView
+        <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-4')}>
           {resolvedMacro().map((action, index) => (
@@ -134,7 +133,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
               </Animated.Text>
             </View>
           ))}
-        </BottomSheetScrollView>
+        </ScrollView>
       )}
     </Animated.View>
   );

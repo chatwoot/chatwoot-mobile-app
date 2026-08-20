@@ -12,10 +12,7 @@ import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
-import { clearAllConversations } from '@/store/conversation/conversationSlice';
-import { resetNotifications } from '@/store/notification/notificationSlice';
-import { clearAllContacts } from '@/store/contact/contactSlice';
-import { clearSearchResults } from '@/store/search/searchSlice';
+import { switchAccount } from '@/utils/accountUtils';
 
 import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
@@ -47,7 +44,7 @@ import {
   selectUser,
   selectAccounts,
 } from '@/store/auth/authSelectors';
-import { logout, setAccount } from '@/store/auth/authSlice';
+import { logout } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
 import {
   selectLocale,
@@ -87,9 +84,10 @@ const SettingsScreen = () => {
     account_id: activeAccountId,
   } = user || {};
 
+  // Refetch when the active account changes; notification settings are account-scoped.
   useEffect(() => {
     dispatch(settingsActions.getNotificationSettings());
-  }, [dispatch]);
+  }, [dispatch, activeAccountId]);
 
   const pushToken = useAppSelector(selectPushToken);
 
@@ -160,12 +158,7 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    dispatch(clearAllContacts());
-    dispatch(clearAllConversations());
-    dispatch(resetNotifications());
-    dispatch(clearSearchResults());
-    dispatch(setAccount(accountId));
-    dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
+    switchAccount(dispatch, accountId);
     navigation.dispatch(StackActions.replace('Tab'));
   };
 

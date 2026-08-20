@@ -1,7 +1,6 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
@@ -77,7 +76,7 @@ export const UpdateStatus = () => {
     if (isMultipleConversationsSelected) {
       const payload = { type: 'Conversation', ids: selectedIds, fields: { status } };
       dispatch(conversationActions.bulkAction(payload));
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+      actionsModalSheetRef.current?.dismiss();
       dispatch(setCurrentState('none'));
     } else {
       if (!selectedConversation?.id) return;
@@ -90,12 +89,12 @@ export const UpdateStatus = () => {
           },
         }),
       );
-      actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+      actionsModalSheetRef.current?.dismiss();
     }
   };
 
   return (
-    <BottomSheetView>
+    <View>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.CHANGE_STATUS')} />
       <Animated.View style={tailwind.style('py-1 pl-3')}>
         {statusList.map((value, index) => (
@@ -106,6 +105,6 @@ export const UpdateStatus = () => {
           />
         ))}
       </Animated.View>
-    </BottomSheetView>
+    </View>
   );
 };

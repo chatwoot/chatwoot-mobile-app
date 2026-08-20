@@ -1,8 +1,6 @@
 import React from 'react';
 import { Pressable } from 'react-native';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
-
-import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { tailwind } from '@/theme';
 import { DoubleCheckIcon, WarningIcon, MessagePendingIcon } from '@/svg-icons';
 import { Icon } from '@/components-next/common';
@@ -58,12 +56,6 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
   const isALineChannel = channel === INBOX_TYPES.LINE;
   const isAnInstagramChannel = channel === INBOX_TYPES.INSTAGRAM;
   const isATiktokChannel = channel === INBOX_TYPES.TIKTOK;
-
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
-  });
 
   const showSentIndicator = () => {
     if (!shouldShowStatusIndicator) {
@@ -155,21 +147,9 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
     return (
       <Pressable onPress={() => deliveryStatusSheetRef.current?.present()}>
         <Icon icon={<WarningIcon stroke={tailwind.color('text-whiteA-A11')} />} size={14} />
-        <BottomSheetModal
-          ref={deliveryStatusSheetRef}
-          backdropComponent={BottomSheetBackdrop}
-          handleIndicatorStyle={tailwind.style(
-            'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-          )}
-          enablePanDownToClose
-          animationConfigs={animationConfigs}
-          handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-          style={tailwind.style('rounded-[26px] overflow-hidden')}
-          snapPoints={['15']}>
-          <BottomSheetWrapper>
-            <ErrorInformation errorMessage={errorMessage} />
-          </BottomSheetWrapper>
-        </BottomSheetModal>
+        <Sheet ref={deliveryStatusSheetRef} autoSize>
+          <ErrorInformation errorMessage={errorMessage} />
+        </Sheet>
       </Pressable>
     );
   }

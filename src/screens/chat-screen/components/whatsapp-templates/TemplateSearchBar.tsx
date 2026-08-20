@@ -1,6 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { TextInput, View } from 'react-native';
 
 import { Icon } from '@/components-next';
 import i18n from '@/i18n';
@@ -19,7 +18,7 @@ const TemplateSearchBar = ({ value, onChangeText }: TemplateSearchBarProps) => (
         'h-9 flex-row items-center gap-[6px] px-[10px] rounded-[11px] bg-blackA-A3',
       )}>
       <Icon icon={<SearchIcon />} size={18} />
-      <BottomSheetTextInput
+      <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={i18n.t('CONTENT_TEMPLATE.SEARCH_PLACEHOLDER')}

@@ -3,7 +3,6 @@ import { ActivityIndicator, Pressable } from 'react-native';
 import Animated, {
   FadeIn,
   FadeOut,
-  Layout,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -17,6 +16,8 @@ import { getSearchSectionById } from '@/screens/search/config';
 import type { TabType } from '../../hooks/useSearchScreen';
 import { SearchEmptyState } from './SearchEmptyState';
 import { SearchListItems } from './SearchListItems';
+import { FadeInView } from './FadeInView';
+import { Collapsible } from './Collapsible';
 import i18n from 'i18n';
 
 const INITIAL_ITEMS_TO_SHOW = 5;
@@ -72,7 +73,8 @@ export function SearchSection({
   const section = getSearchSectionById(sectionId);
   if (!section) return null;
 
-  const shouldShowSection = activeTab === 'all' || items.length > 0 || isInitialLoading || hasError || isCancelled;
+  const shouldShowSection =
+    activeTab === 'all' || items.length > 0 || isInitialLoading || hasError || isCancelled;
   if (!shouldShowSection) {
     return null;
   }
@@ -82,14 +84,13 @@ export function SearchSection({
   };
 
   return (
-    <Animated.View key={sectionId} layout={Layout.springify().damping(20).stiffness(180)}>
-      <Animated.View
-        entering={FadeIn.duration(200)}
-        style={tailwind.style('px-4 py-2 flex-row items-center justify-between')}>
+    <Animated.View key={sectionId}>
+      <FadeInView style={tailwind.style('px-4 py-2 flex-row items-center justify-between')}>
         {activeTab === 'all' && items.length > 0 && !isInitialLoading ? (
           <Pressable
             onPress={() => onViewMore(sectionId)}
             disabled={isInitialLoading}
+            hitSlop={{ top: 14, bottom: 14, left: 8, right: 8 }}
             style={tailwind.style('flex-row items-center flex-1')}>
             <Animated.Text
               style={tailwind.style(
@@ -125,7 +126,7 @@ export function SearchSection({
               </Animated.Text>
             </Pressable>
           )}
-      </Animated.View>
+      </FadeInView>
       {isCancelled && items.length === 0 ? (
         <SearchEmptyState
           sectionLabel={i18n.t(section.labelKey)}
@@ -145,11 +146,9 @@ export function SearchSection({
           exiting={FadeOut.duration(200)}
         />
       ) : isInitialLoading && items.length === 0 ? (
-        <Animated.View
-          entering={FadeIn.duration(200)}
-          style={tailwind.style('px-4 py-8 items-center')}>
+        <FadeInView style={tailwind.style('px-4 py-8 items-center')}>
           <ActivityIndicator />
-        </Animated.View>
+        </FadeInView>
       ) : items.length === 0 && activeTab === 'all' && !isInitialLoading ? (
         <SearchEmptyState
           sectionLabel={i18n.t(section.labelKey)}
@@ -158,17 +157,15 @@ export function SearchSection({
           exiting={FadeOut.duration(200)}
         />
       ) : (
-        <>
-          {isExpanded && (
-            <SearchListItems
-              sectionId={sectionId}
-              items={itemsToShow}
-              renderItem={renderItem}
-              getItemId={section.getItemId}
-              useFlashList={false}
-            />
-          )}
-        </>
+        <Collapsible expanded={isExpanded}>
+          <SearchListItems
+            sectionId={sectionId}
+            items={itemsToShow}
+            renderItem={renderItem}
+            getItemId={section.getItemId}
+            useFlashList={false}
+          />
+        </Collapsible>
       )}
     </Animated.View>
   );

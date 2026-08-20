@@ -25,8 +25,6 @@ import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
-
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
 
@@ -71,10 +69,14 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
     };
   });
 
+  // BlurView does not reliably apply flex/positioning styles under the New
+  // Architecture, so the layout lives on a plain Animated.View and BlurView is
+  // only an absolute-fill background behind the tab items.
   return Platform.OS === 'ios' ? (
-    <AnimatedBlurView {...{ blurAmount, blurType }} style={[style, animatedTabBarStyle]}>
+    <Animated.View style={[style, animatedTabBarStyle]}>
+      <BlurView {...{ blurAmount, blurType }} style={tailwind.style('absolute inset-0 bg-white')} />
       {children}
-    </AnimatedBlurView>
+    </Animated.View>
   ) : (
     <Animated.View style={[style, animatedTabBarStyle]}>{children}</Animated.View>
   );

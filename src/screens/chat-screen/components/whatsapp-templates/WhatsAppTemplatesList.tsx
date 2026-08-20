@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
+import { ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
-import { BottomSheetBackdrop } from '@/components-next';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import i18n from '@/i18n';
 import { useRefsContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -62,7 +62,7 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
 
   const handleClose = () => {
     resetLocalState();
-    whatsAppTemplatesSheetRef.current?.dismiss({ overshootClamping: true });
+    whatsAppTemplatesSheetRef.current?.dismiss();
   };
 
   const handleSend = ({
@@ -95,7 +95,7 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
       return <EmptyState label={i18n.t('CONTENT_TEMPLATE.NO_RESULTS')} />;
     }
     return (
-      <BottomSheetScrollView
+      <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         // The sheet reaches the screen edge, so the last row needs to clear the home indicator.
@@ -108,24 +108,17 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
             isLastItem={index === filteredTemplates.length - 1}
           />
         ))}
-      </BottomSheetScrollView>
+      </ScrollView>
     );
   };
 
   return (
     <Animated.View>
-      <BottomSheetModal
+      <Sheet
         ref={whatsAppTemplatesSheetRef}
-        backdropComponent={BottomSheetBackdrop}
-        onDismiss={resetLocalState}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-t-[26px] overflow-hidden')}
-        enablePanDownToClose
-        snapPoints={['85%']}
-        enableDynamicSizing={false}
-        keyboardBehavior="interactive"
-        keyboardBlurBehavior="restore">
+        detents={[0.85]}
+        scrollable
+        onDismiss={resetLocalState}>
         <Animated.View style={tailwind.style('flex-1 pt-4')}>
           {selectedTemplate ? (
             <WhatsAppTemplateForm
@@ -142,7 +135,7 @@ export const WhatsAppTemplatesList = ({ conversationId }: WhatsAppTemplatesListP
             </Animated.View>
           )}
         </Animated.View>
-      </BottomSheetModal>
+      </Sheet>
     </Animated.View>
   );
 };

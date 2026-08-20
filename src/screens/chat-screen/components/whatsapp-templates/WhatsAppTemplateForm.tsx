@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import Animated, { FadeIn } from 'react-native-reanimated';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import i18n from '@/i18n';
 import { tailwind } from '@/theme';
@@ -90,7 +89,7 @@ const WhatsAppTemplateForm = ({ template, onBack, onSend }: WhatsAppTemplateForm
         onSend={handleSend}
       />
 
-      <BottomSheetScrollView
+      <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={tailwind.style('px-6 pb-12 pt-2')}>
@@ -155,7 +154,7 @@ const WhatsAppTemplateForm = ({ template, onBack, onSend }: WhatsAppTemplateForm
             ))}
           </View>
         )}
-      </BottomSheetScrollView>
+      </ScrollView>
     </Animated.View>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet } from 'react-native';
 import FileViewer from 'react-native-file-viewer';
 import Animated from 'react-native-reanimated';
-import RNFetchBlob from 'rn-fetch-blob';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import { FileIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -32,7 +32,7 @@ type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
 
 export const FileBubblePreview = (props: FilePreviewProps) => {
   const { fileSrc, isComposed = false, variant } = props;
-  const dirs = RNFetchBlob.fs.dirs;
+  const dirs = ReactNativeBlobUtil.fs.dirs;
 
   const [fileDownload, setFileDownload] = useState(false);
   const fileName = fileSrc.split('/')[fileSrc.split('/').length - 1];
@@ -49,12 +49,12 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
 
   useEffect(() => {
     const asyncFileDownload = () => {
-      RNFetchBlob.fs.exists(localFilePath).then(res => {
+      ReactNativeBlobUtil.fs.exists(localFilePath).then(res => {
         if (res) {
           setFileDownload(false);
         } else {
           setFileDownload(true);
-          RNFetchBlob.config({
+          ReactNativeBlobUtil.config({
             overwrite: true,
             path: localFilePath,
             fileCache: true,

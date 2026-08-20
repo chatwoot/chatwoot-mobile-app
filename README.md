@@ -64,4 +64,4 @@ If you wish to contribute, please take a quick look at the [CONTRIBUTING.md](htt
 
 If there's anything you'd like to chat about, please feel free to join our [Discord](https://discord.gg/cJXdrwS) chat!
 
-_Chatwoot_ &copy; 2017-2025, Chatwoot Inc - Released under the MIT License.
+_Chatwoot_ &copy; 2017-2026, Chatwoot Inc - Released under the MIT License.

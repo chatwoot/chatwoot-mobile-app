@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useEffect, useMemo } from 'react';
 import {
-  NativeSyntheticEvent,
+  BlurEvent,
+  FocusEvent,
   Platform,
   Pressable,
-  TextInputFocusEventData,
   StyleSheet,
   ScrollView,
 } from 'react-native';
@@ -139,7 +139,7 @@ export const MessageTextInput = ({
   };
 
   const handleOnFocus = useCallback(
-    (_args: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    (_args: FocusEvent) => {
       setAddMenuOptionSheetState(false);
       setIsTextInputFocused(true);
     },
@@ -162,7 +162,7 @@ export const MessageTextInput = ({
   }, [quoteMessage]);
 
   const handleOnBlur = useCallback(
-    (_args: NativeSyntheticEvent<TextInputFocusEventData>) => {
+    (_args: BlurEvent) => {
       // shouldHandleKeyboardEvents.value = false;
       setIsTextInputFocused(false);
       onBlur();
@@ -221,12 +221,12 @@ export const MessageTextInput = ({
   return (
     <LayoutAnimationConfig skipEntering={true}>
       <Animated.View
-        layout={LinearTransition.springify().damping(20).stiffness(120)}
+        layout={LinearTransition.springify().mass(1).damping(15).stiffness(70)}
         style={[tailwind.style('flex-1 my-0.5')]}>
         <MentionInput
           // @ts-expect-error MentionInput ref typing issue with forwardRef
           ref={textInputRef}
-          layout={LinearTransition.springify().damping(20).stiffness(120)}
+          layout={LinearTransition.springify().mass(1).damping(15).stiffness(70)}
           onChange={onChangeText}
           partTypes={[
             {

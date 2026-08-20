@@ -4,18 +4,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.8.0',
+    version: '4.9.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
-    newArchEnabled: false,
     scheme: 'chatwootapp',
-    splash: {
-      image: './assets/splash.png',
-      resizeMode: 'contain',
-      backgroundColor: '#ffffff',
-      enableFullScreenImage_legacy: true,
-    },
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.chatwoot.app',
@@ -75,31 +68,46 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     owner: 'chatwoot',
     plugins: [
       'expo-font',
+      'expo-image',
+      'expo-status-bar',
+      [
+        'expo-splash-screen',
+        {
+          image: './assets/splash.png',
+          resizeMode: 'contain',
+          backgroundColor: '#ffffff',
+          enableFullScreenImage_legacy: true,
+        },
+      ],
       ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
       [
-        '@sentry/react-native/expo',
+        '@sentry/react-native',
         {
           url: 'https://sentry.io/',
           project: process.env.EXPO_PUBLIC_SENTRY_PROJECT_NAME,
           organization: process.env.EXPO_PUBLIC_SENTRY_ORG_NAME,
         },
       ],
+      'expo-web-browser',
+      '@react-native-community/datetimepicker',
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',
       [
         'expo-build-properties',
         {
-          // https://github.com/invertase/notifee/issues/808#issuecomment-2175934609
+          // compileSdk/targetSdk 36 = Expo SDK 54 / RN 0.81 default (Android 16).
+          // notifee (issue #808) needs compileSdk >= 35, satisfied by 36.
           android: {
             minSdkVersion: 24,
-            compileSdkVersion: 35,
-            targetSdkVersion: 35,
+            compileSdkVersion: 36,
+            targetSdkVersion: 36,
             enableProguardInReleaseBuilds: true,
           },
-          ios: { useFrameworks: 'static' },
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-notifee-maven-repo.js',
+      './with-ios-modular-headers.js',
     ],
     androidNavigationBar: { backgroundColor: '#ffffff' },
   };

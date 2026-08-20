@@ -1,13 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-import {
-  AVPlaybackStatus,
-  ResizeMode,
-  Video,
-  VideoFullscreenUpdate,
-  VideoFullscreenUpdateEvent,
-} from 'expo-av';
+import { useVideoPlayer, VideoView, type VideoPlayerStatus } from 'expo-video';
 import { Image } from 'expo-image';
 import { tailwind } from '@/theme';
 import { Spinner } from '@/components-next/spinner';
@@ -22,61 +16,51 @@ type VideoPlayerProps = Pick<VideoBubbleProps, 'videoSrc'> & {
 
 export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   const { videoSrc, playerEnabled = true } = props;
-  const video = React.useRef<Video>(null);
+  const videoRef = useRef<VideoView>(null);
   const [playVideo, setPlayVideo] = useState(false);
+  const [status, setStatus] = useState<VideoPlayerStatus>('loading');
 
-  const [videoLoading, setVideoLoading] = useState(true);
-
-  const [videoStatus, setVideoStatus] = React.useState<AVPlaybackStatus | null>(null);
-  const handlePlayPress = () => {
-    setPlayVideo(true);
-    video.current?.presentFullscreenPlayer();
-    video.current?.playAsync();
-  };
+  const player = useVideoPlayer({ uri: videoSrc }, instance => {
+    instance.loop = false;
+  });
 
   useEffect(() => {
-    if (videoStatus?.isLoaded) {
-      if (videoStatus?.didJustFinish) {
-        video.current?.playFromPositionAsync(0);
-        setPlayVideo(false);
-      }
-    }
-  }, [videoStatus]);
-
-  const handlePlaybackStatus = (status: AVPlaybackStatus) => {
-    setVideoStatus(status);
-  };
-
-  const handleOnFullScreenUpdate = (event: VideoFullscreenUpdateEvent) => {
-    if (event.fullscreenUpdate === VideoFullscreenUpdate.PLAYER_WILL_DISMISS) {
+    const statusSub = player.addListener('statusChange', ({ status: nextStatus }) => {
+      setStatus(nextStatus);
+    });
+    const endSub = player.addListener('playToEnd', () => {
+      player.currentTime = 0;
       setPlayVideo(false);
-    }
+    });
+    // Sync the current status in case the player became ready before this subscription.
+    setStatus(player.status);
+    return () => {
+      statusSub.remove();
+      endSub.remove();
+    };
+  }, [player]);
+
+  // Loader shown over the thumbnail until the first frame is ready.
+  const videoLoading = status === 'loading' || status === 'idle';
+
+  const handlePlayPress = async () => {
+    setPlayVideo(true);
+    player.play();
+    await videoRef.current?.enterFullscreen();
   };
-
-  // To have a loader while the Video is loaded, and
-  // thumbnail is shown
-  const handleOnLoadStart = useCallback(() => {
-    setVideoLoading(true);
-  }, []);
-
-  const handleOnLoad = useCallback(() => {
-    setVideoLoading(false);
-  }, []);
 
   return (
     <React.Fragment>
-      <Video
+      <VideoView
         style={tailwind.style('w-full ios:h-full aspect-video')}
-        ref={video}
-        source={{
-          uri: videoSrc,
+        ref={videoRef}
+        player={player}
+        contentFit={Platform.OS === 'android' ? 'contain' : 'cover'}
+        nativeControls={playerEnabled}
+        onFullscreenExit={() => {
+          player.pause();
+          setPlayVideo(false);
         }}
-        shouldPlay={playVideo}
-        resizeMode={Platform.OS === 'android' ? ResizeMode.CONTAIN : ResizeMode.COVER}
-        onLoadStart={handleOnLoadStart}
-        onLoad={handleOnLoad}
-        onPlaybackStatusUpdate={handlePlaybackStatus}
-        onFullscreenUpdate={handleOnFullScreenUpdate}
       />
       {videoLoading ? (
         <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
@@ -102,6 +86,64 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
   );
 };
 
+// Fixed-size media thumbnail. Playback is handed to the fullscreen player, so the
+// inline view carries no controls.
+export const VideoThumbnail = (props: VideoBubbleProps) => {
+  const { videoSrc } = props;
+  const videoRef = useRef<VideoView>(null);
+  const [status, setStatus] = useState<VideoPlayerStatus>('loading');
+
+  const player = useVideoPlayer({ uri: videoSrc }, instance => {
+    instance.loop = false;
+  });
+
+  useEffect(() => {
+    const statusSub = player.addListener('statusChange', ({ status: nextStatus }) => {
+      setStatus(nextStatus);
+    });
+    setStatus(player.status);
+    return () => {
+      statusSub.remove();
+    };
+  }, [player]);
+
+  const handlePlayPress = async () => {
+    player.play();
+    await videoRef.current?.enterFullscreen();
+  };
+
+  return (
+    <Animated.View
+      style={tailwind.style('h-[72px] w-[72px] rounded-xl bg-gray-100 overflow-hidden')}>
+      <VideoView
+        style={tailwind.style('h-full w-full')}
+        ref={videoRef}
+        player={player}
+        contentFit="cover"
+        nativeControls={false}
+        onFullscreenExit={() => {
+          player.pause();
+          player.currentTime = 0;
+        }}
+      />
+      {status === 'loading' || status === 'idle' ? (
+        <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
+          <Spinner size={16} />
+        </Animated.View>
+      ) : (
+        <Pressable
+          onPress={handlePlayPress}
+          style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
+          <Image
+            source={require('../../../../assets/local/PlayIcon.png')} // eslint-disable-line @typescript-eslint/no-require-imports
+            style={tailwind.style('h-7 w-7')}
+          />
+        </Pressable>
+      )}
+    </Animated.View>
+  );
+};
+
 export const VideoBubble = (props: VideoBubbleProps) => {
   const { videoSrc } = props;
 
@@ -112,41 +154,6 @@ export const VideoBubble = (props: VideoBubbleProps) => {
           videoSrc,
         }}
       />
-      {/* TODO: Fix this */}
-      {/* <Animated.View
-        pointerEvents={'none'}
-        entering={FadeIn.duration(300).easing(Easing.ease)}
-        exiting={FadeOut.duration(300).easing(Easing.ease)}>
-        <ImageBackground
-          source={require('../../../../assets/local/ImageCellTimeStampOverlay.png')}
-          style={tailwind.style(
-            'absolute bottom-0 right-0 h-15 w-33 z-20 ',
-            shouldRenderAvatar
-              ? isOutgoing
-                ? 'rounded-br-none'
-                : isIncoming
-                  ? 'rounded-bl-none'
-                  : ''
-              : '',
-          )}>
-          <Animated.View style={tailwind.style('flex flex-row absolute right-3 bottom-[5px]')}>
-            <Text
-              style={tailwind.style(
-                'text-xs font-inter-420-20 tracking-[0.32px] leading-[14px] text-whiteA-A12 pr-1',
-              )}>
-              {unixTimestampToReadableTime(timeStamp)}
-            </Text>
-            <DeliveryStatus
-              isPrivate={isPrivate}
-              status={status}
-              messageType={messageType}
-              channel={channel}
-              errorMessage={errorMessage || ''}
-              sourceId={sourceId}
-            />
-          </Animated.View>
-        </ImageBackground>
-      </Animated.View> */}
     </React.Fragment>
   );
 };

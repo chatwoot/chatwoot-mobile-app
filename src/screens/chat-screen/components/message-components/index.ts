@@ -2,6 +2,7 @@ export * from './TextBubble';
 export * from './ActivityBubble';
 export * from './MarkdownBubble';
 export * from './ComposedBubble';
+export * from './MessageAttachments';
 export * from './FileBubble';
 export * from './AudioBubble';
 export * from './LocationBubble';

@@ -1,6 +1,12 @@
 import React from 'react';
 import { Pressable, Text, ViewStyle } from 'react-native';
-import Animated, { AnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  AnimatedStyle,
+  useAnimatedStyle,
+  useDerivedValue,
+  withDelay,
+  withTiming,
+} from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -19,23 +25,20 @@ type ConversationHeaderPresenterProps = {
   onClearFilter: () => void;
 };
 
-type LeftSectionProps = {
-  currentState: HeaderState;
-  isSelectedAll: boolean;
-  onLeftIconPress: () => void;
-};
-
-type FilterSectionProps = {
-  filtersAppliedCount: number;
-  onClearFilter: () => void;
-  handlers: Record<string, unknown>;
-  animatedStyle: ViewStyle | AnimatedStyle<ViewStyle>;
-};
-
 type RightSectionProps = {
   currentState: HeaderState;
   filtersAppliedCount: number;
   onRightIconPress: () => void;
+};
+
+type LeftSlotProps = {
+  currentState: HeaderState;
+  isSelectedAll: boolean;
+  filtersAppliedCount: number;
+  onLeftIconPress: () => void;
+  onClearFilter: () => void;
+  handlers: Record<string, unknown>;
+  animatedStyle: ViewStyle | AnimatedStyle<ViewStyle>;
 };
 
 const HeaderTitle = () => (
@@ -50,26 +53,64 @@ const HeaderTitle = () => (
   </Animated.View>
 );
 
-const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSectionProps) => {
-  const { entering, exiting } = useHeaderAnimation();
+const CROSSFADE_MS = 180;
 
-  if (currentState === 'Filter' || currentState === 'Search') return null;
-  if (currentState !== 'Select') {
-    return (
-      <Animated.View style={tailwind.style('flex-1 items-start')}>
-        <Pressable onPress={onLeftIconPress} hitSlop={16}>
-          <Animated.View exiting={exiting} entering={entering}>
-            <Icon size={24} icon={<SearchIcon stroke={tailwind.color('text-gray-800')} />} />
-          </Animated.View>
-        </Pressable>
-      </Animated.View>
-    );
-  }
+const LeftSlot = ({
+  currentState,
+  isSelectedAll,
+  filtersAppliedCount,
+  onLeftIconPress,
+  onClearFilter,
+  handlers,
+  animatedStyle,
+}: LeftSlotProps) => {
+  const searchActive = currentState === 'none';
+  const clearActive = currentState === 'Filter';
+  const selectActive = currentState === 'Select';
+
+  const searchOpacity = useDerivedValue(
+    () =>
+      withDelay(
+        searchActive ? CROSSFADE_MS : 0,
+        withTiming(searchActive ? 1 : 0, { duration: CROSSFADE_MS }),
+      ),
+    [searchActive],
+  );
+  const clearOpacity = useDerivedValue(
+    () =>
+      withDelay(
+        clearActive ? CROSSFADE_MS : 0,
+        withTiming(clearActive ? 1 : 0, { duration: CROSSFADE_MS }),
+      ),
+    [clearActive],
+  );
+  const selectOpacity = useDerivedValue(
+    () =>
+      withDelay(
+        selectActive ? CROSSFADE_MS : 0,
+        withTiming(selectActive ? 1 : 0, { duration: CROSSFADE_MS }),
+      ),
+    [selectActive],
+  );
+
+  const searchStyle = useAnimatedStyle(() => ({ opacity: searchOpacity.value }));
+  const clearStyle = useAnimatedStyle(() => ({ opacity: clearOpacity.value }));
+  const selectStyle = useAnimatedStyle(() => ({ opacity: selectOpacity.value }));
 
   return (
-    <Animated.View style={tailwind.style('flex-1 items-start')}>
-      <Pressable onPress={onLeftIconPress} hitSlop={16}>
-        <Animated.View exiting={exiting} entering={entering}>
+    <Animated.View style={tailwind.style('flex-1 h-6')}>
+      <Animated.View
+        style={[tailwind.style('absolute inset-0 flex-row items-center'), searchStyle]}
+        pointerEvents={searchActive ? 'auto' : 'none'}>
+        <Pressable onPress={onLeftIconPress} hitSlop={16}>
+          <Icon size={24} icon={<SearchIcon stroke={tailwind.color('text-gray-800')} />} />
+        </Pressable>
+      </Animated.View>
+
+      <Animated.View
+        style={[tailwind.style('absolute inset-0 flex-row items-center'), selectStyle]}
+        pointerEvents={selectActive ? 'auto' : 'none'}>
+        <Pressable onPress={onLeftIconPress} hitSlop={16}>
           <Icon
             size={24}
             icon={
@@ -80,35 +121,25 @@ const LeftSection = ({ currentState, isSelectedAll, onLeftIconPress }: LeftSecti
               )
             }
           />
-        </Animated.View>
-      </Pressable>
-    </Animated.View>
-  );
-};
+        </Pressable>
+      </Animated.View>
 
-const FilterSection = ({
-  filtersAppliedCount,
-  onClearFilter,
-  handlers,
-  animatedStyle,
-}: FilterSectionProps) => {
-  const { entering, exiting } = useHeaderAnimation();
-
-  return (
-    <Animated.View
-      style={[tailwind.style('flex-1'), animatedStyle]}
-      exiting={exiting}
-      entering={entering}>
-      <Pressable onPress={onClearFilter} disabled={filtersAppliedCount === 0} {...handlers}>
-        <Text
-          style={tailwind.style(
-            'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px]',
-            filtersAppliedCount === 0 ? 'text-gray-700' : 'text-blue-800',
-          )}>
-          {i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
-          {filtersAppliedCount > 0 ? ` (${filtersAppliedCount})` : ''}
-        </Text>
-      </Pressable>
+      <Animated.View
+        style={[tailwind.style('absolute inset-0 flex-row items-center'), clearStyle]}
+        pointerEvents={clearActive ? 'auto' : 'none'}>
+        <Pressable onPress={onClearFilter} disabled={filtersAppliedCount === 0} {...handlers}>
+          <Animated.View style={animatedStyle}>
+            <Text
+              style={tailwind.style(
+                'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px]',
+                filtersAppliedCount === 0 ? 'text-gray-700' : 'text-blue-800',
+              )}>
+              {i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
+              {filtersAppliedCount > 0 ? ` (${filtersAppliedCount})` : ''}
+            </Text>
+          </Animated.View>
+        </Pressable>
+      </Animated.View>
     </Animated.View>
   );
 };
@@ -157,19 +188,15 @@ export const ConversationHeaderPresenter = ({
   return (
     <Animated.View
       style={[tailwind.style('flex flex-row justify-between items-center px-4 pt-2 pb-[12px]')]}>
-      <LeftSection
+      <LeftSlot
         currentState={currentState}
         isSelectedAll={isSelectedAll}
+        filtersAppliedCount={filtersAppliedCount}
         onLeftIconPress={onLeftIconPress}
+        onClearFilter={onClearFilter}
+        handlers={handlers}
+        animatedStyle={animatedStyle}
       />
-      {currentState === 'Filter' && (
-        <FilterSection
-          filtersAppliedCount={filtersAppliedCount}
-          onClearFilter={onClearFilter}
-          handlers={handlers}
-          animatedStyle={animatedStyle}
-        />
-      )}
       <HeaderTitle />
       <RightSection
         currentState={currentState}

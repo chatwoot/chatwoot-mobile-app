@@ -1,3 +1,35 @@
+diff --git a/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift b/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
+index 09be306d5aa39337c5114c2ad6ba7513218e0751..30cdd1c6aefc77a4c254fb5b63ed267b8b6672ce 100644
+--- a/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
++++ b/ios/Sources/Extensions+Helpers/RCTView+Helpers.swift
+@@ -25,17 +25,6 @@ public extension RCTView {
+     return rootView.recursivelyFindSubview(whereType: targetType);
+   };
+   
+-  var closestParentReactContentView: RCTRootContentView? {
+-    let targetType = RCTRootContentView.self;
+-  
+-    if let match = self.recursivelyFindParentView(whereType: targetType) {
+-      return match;
+-    };
+-    
+-    guard let rootView = self.rootViewForCurrentWindow else { return nil };
+-    return rootView.recursivelyFindSubview(whereType: targetType);
+-  };
+-  
+   var reactTouchHandlers: [RCTTouchHandler]? {
+     self.gestureRecognizers?.compactMap {
+       $0 as? RCTTouchHandler
+@@ -58,6 +47,8 @@ public extension RCTView {
+       currentView = superview;
+     };
+     
+-    return closestParentReactContentView?.reactTouchHandlers?.first;
++    // RCTRootContentView is a Paper-only class not linkable in New Arch (RN 0.86);
++    // the superview walk above is the touch-handler lookup path on Fabric.
++    return nil;
+   };
+ };
 diff --git a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h b/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h
 index bdf7ca90c1f224f0704acf65353cf881751724f6..1c75a62973649950999f17a4b81468a31bdcc668 100644
 --- a/ios/Sources/RNIUtilitiesModule/RNIUtilitiesFollyConvert.h

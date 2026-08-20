@@ -1,10 +1,8 @@
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
-import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
-
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { Icon } from '@/components-next/common/icon';
 import { DoubleCheckIcon, InboxFilterIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
@@ -22,12 +20,6 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   const handleToggleState = () => {
     inboxFiltersSheetRef.current?.present();
   };
-
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
-  });
 
   return (
     <Animated.View style={[tailwind.style('border-b-[1px] border-b-blackA-A3')]}>
@@ -52,19 +44,9 @@ export const InboxHeader = (props: InboxHeaderProps) => {
           </Pressable>
         </Animated.View>
       </Animated.View>
-      <BottomSheetModal
-        ref={inboxFiltersSheetRef}
-        backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-[26px] overflow-hidden')}
-        animationConfigs={animationConfigs}
-        enablePanDownToClose
-        snapPoints={[160]}>
-        <BottomSheetWrapper>
-          <InboxFilters />
-        </BottomSheetWrapper>
-      </BottomSheetModal>
+      <Sheet ref={inboxFiltersSheetRef} height={160}>
+        <InboxFilters />
+      </Sheet>
     </Animated.View>
   );
 };

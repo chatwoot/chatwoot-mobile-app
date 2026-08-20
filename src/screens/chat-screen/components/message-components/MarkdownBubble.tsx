@@ -6,6 +6,9 @@ import { openURL } from '@/utils/urlUtils';
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
 
+// Shared parser instance; the options are static.
+const markdownItInstance = MarkdownIt({ linkify: true, typographer: true });
+
 type MarkdownBubbleProps = {
   messageContent: string;
   variant: string;
@@ -75,14 +78,7 @@ export const MarkdownBubble = (props: MarkdownBubbleProps) => {
     },
   });
   return (
-    <Markdown
-      mergeStyle
-      markdownit={MarkdownIt({
-        linkify: true,
-        typographer: true,
-      })}
-      onLinkPress={handleURL}
-      style={styles}>
+    <Markdown mergeStyle markdownit={markdownItInstance} onLinkPress={handleURL} style={styles}>
       {messageContent}
     </Markdown>
   );

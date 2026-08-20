@@ -48,13 +48,16 @@ export const filterDuplicateSourceMessages = (messages: Message[] = []): Message
 };
 
 export const getLastMessage = (conversation: Conversation): Message | null => {
-  const lastMessageIncludingActivity = conversation.messages[conversation.messages.length - 1];
-  const nonActivityMessages = conversation.messages.filter(message => message.messageType !== 2);
+  // A conversation reaches the list before its messages are hydrated, so the
+  // array is absent even though the type declares it.
+  const messages = conversation.messages ?? [];
+  const lastMessageIncludingActivity = messages[messages.length - 1];
+  const nonActivityMessages = messages.filter(message => message.messageType !== 2);
   const lastNonActivityMessageInStore = nonActivityMessages[nonActivityMessages.length - 1];
   const lastNonActivityMessageFromAPI = conversation.lastNonActivityMessage;
 
   if (!lastNonActivityMessageInStore && !lastNonActivityMessageFromAPI) {
-    return lastMessageIncludingActivity;
+    return lastMessageIncludingActivity ?? null;
   }
   return getLastNonActivityMessage(lastNonActivityMessageInStore, lastNonActivityMessageFromAPI);
 };

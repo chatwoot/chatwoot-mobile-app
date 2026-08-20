@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import { selectSelectedConversation } from '@/store/conversation/conversationSelectedSlice';
 import { isAssignableAgentFetching } from '@/store/assignable-agent/assignableAgentSelectors';
+import { isConversationParticipantsFetching } from '@/store/conversation-participant/conversationParticipantSelectors';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
@@ -54,24 +55,33 @@ const ParticipantStack = ({
   activeConversationParticipants,
 }: {
   allAgents: Agent[];
-  activeConversationParticipants: Agent[];
+  activeConversationParticipants?: Agent[];
 }) => {
   const isFetching = useAppSelector(isAssignableAgentFetching);
+  const isFetchingParticipants = useAppSelector(isConversationParticipantsFetching);
 
   const dispatch = useAppDispatch();
 
   const selectedConversation = useAppSelector(selectSelectedConversation);
 
+  // An update replaces the whole participant set, so building one from an
+  // assumed empty list would drop everyone already on the conversation.
+  const hasLoadedParticipants = activeConversationParticipants !== undefined;
+
   const updatedAgents = allAgents.map(agent => {
     return {
       ...agent,
-      isParticipant: activeConversationParticipants.some(
+      isParticipant: (activeConversationParticipants ?? []).some(
         participant => participant.id === agent.id,
       ),
     };
   });
 
   const handleAssigneePress = async (item: Agent & { isParticipant: boolean }) => {
+    if (!activeConversationParticipants) {
+      return;
+    }
+
     let updateAgentList = [...activeConversationParticipants];
     if (item.isParticipant) {
       updateAgentList = updateAgentList.filter(agent => agent.id !== item.id);
@@ -99,8 +109,15 @@ const ParticipantStack = ({
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
-      {isFetching && allAgents.length === 0 ? (
+      {(isFetching && allAgents.length === 0) || isFetchingParticipants ? (
         <ActivityIndicator />
+      ) : !hasLoadedParticipants ? (
+        <Animated.Text
+          style={tailwind.style(
+            'text-base text-gray-900 font-inter-420-20 leading-[21px] py-3 pr-3',
+          )}>
+          {i18n.t('ERRORS.COMMON_ERROR')}
+        </Animated.Text>
       ) : (
         updatedAgents.map((value, index) => {
           return (
@@ -120,7 +137,7 @@ const ParticipantStack = ({
 };
 
 type UpdateParticipantProps = {
-  activeConversationParticipants: Agent[];
+  activeConversationParticipants?: Agent[];
 };
 
 export const UpdateParticipant = (props: UpdateParticipantProps) => {

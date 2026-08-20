@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -30,6 +30,12 @@ export const NotificationPreferences = () => {
   const dispatch = useAppDispatch();
 
   const [selectedPushFlags, setPushFlags] = useState(selected_push_flags);
+
+  // Re-seed local toggles when the fetched settings change (e.g. after an account switch),
+  // since useState only captures the initial value.
+  useEffect(() => {
+    setPushFlags(selected_push_flags);
+  }, [selected_push_flags]);
 
   const onPushItemChange = (item: string) => {
     const pushFlags = addOrRemoveItemFromArray([...selectedPushFlags], item);

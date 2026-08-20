@@ -14,10 +14,16 @@ type MessageErrorProps = {
   message: Message;
   orientation: string;
   onRetry: () => void;
+  canSendPublicReply: boolean;
 };
 
-export const MessageError = ({ message, orientation, onRetry }: MessageErrorProps) => {
-  const canRetry = canRetryMessage(message);
+export const MessageError = ({
+  message,
+  orientation,
+  onRetry,
+  canSendPublicReply,
+}: MessageErrorProps) => {
+  const canRetry = canRetryMessage(message, canSendPublicReply);
 
   return (
     <Animated.View

@@ -36,7 +36,7 @@ import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { CopyIcon, Trash, ReplyIcon, TranslateIcon} from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
-import { inboxSupportsReplyTo } from '@/utils';
+import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
 import { Dimensions, View, Text } from 'react-native';
@@ -82,6 +82,7 @@ type MessageWrapperProps = {
   channel?: Channel;
   isTargetMessage?: boolean;
   onRetry: () => void;
+  canSendPublicReply: boolean;
 };
 
 const variantTextMap = {
@@ -126,6 +127,7 @@ const MessageWrapper = ({
   channel,
   isTargetMessage = false,
   onRetry,
+  canSendPublicReply,
 }: MessageWrapperProps) => {
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
@@ -226,7 +228,12 @@ const MessageWrapper = ({
         </MessageMenu>
       </View>
       {item.status === MESSAGE_STATUS.FAILED ? (
-        <MessageError message={item} orientation={orientation} onRetry={onRetry} />
+        <MessageError
+          message={item}
+          orientation={orientation}
+          onRetry={onRetry}
+          canSendPublicReply={canSendPublicReply}
+        />
       ) : null}
     </Animated.View>
   );
@@ -298,6 +305,10 @@ export const MessageComponent = (props: MessageComponentProps) => {
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
   }
+
+  // Mirrors the condition the reply box uses to decide between reply and note mode, so the retry
+  // button is offered exactly where a public reply could still be composed.
+  const canSendPublicReply = !!conversation?.canReply || isAWhatsAppChannel(inbox);
 
   const handleRetryMessage = async () => {
     hapticSelection?.();
@@ -500,7 +511,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
         variant={variant()}
         channel={channel}
         isTargetMessage={isTargetMessage}
-        onRetry={handleRetryMessage}>
+        onRetry={handleRetryMessage}
+        canSendPublicReply={canSendPublicReply}>
         {messageContent}
       </MessageWrapper>
     );

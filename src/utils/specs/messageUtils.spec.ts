@@ -92,6 +92,23 @@ describe('canRetryMessage', () => {
     expect(canRetryMessage(buildMessage({ content: '', attachments: [] }))).toBe(false);
   });
 
+  it('does not allow retrying a public message once the reply window has closed', () => {
+    // The window is measured from the contact's last message, so a recent failure can fall outside
+    // it and would be rejected by the channel on a resend
+    expect(canRetryMessage(buildMessage({ private: false } as Partial<Message>), false)).toBe(
+      false,
+    );
+  });
+
+  it('allows retrying a private note regardless of the reply window', () => {
+    // A note never leaves the dashboard, so the window does not apply
+    expect(canRetryMessage(buildMessage({ private: true } as Partial<Message>), false)).toBe(true);
+  });
+
+  it('allows retrying a public message while the reply window is open', () => {
+    expect(canRetryMessage(buildMessage({ private: false } as Partial<Message>), true)).toBe(true);
+  });
+
   it('does not allow retrying a message that has not failed', () => {
     expect(canRetryMessage(buildMessage({ status: MESSAGE_STATUS.SENT } as Partial<Message>))).toBe(
       false,

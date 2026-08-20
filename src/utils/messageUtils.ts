@@ -50,9 +50,19 @@ export const hasMessageFailedWithExternalError = (message: Message | PendingMess
   return status === MESSAGE_STATUS.FAILED && externalError !== '';
 };
 
-export const canRetryMessage = (message: Message): boolean => {
-  const { status, content, attachments, createdAt } = message;
+/**
+ * @param canSendPublicReply Whether the conversation still accepts public replies. The reply window
+ *   is measured from the contact's last message, while the age check below is measured from when
+ *   the message was queued, so a recent failure can sit outside a closed window.
+ */
+export const canRetryMessage = (message: Message, canSendPublicReply = true): boolean => {
+  const { status, content, attachments, createdAt, private: isPrivate } = message;
   if (status !== MESSAGE_STATUS.FAILED || hasOneDayPassed(createdAt)) {
+    return false;
+  }
+  // A public reply cannot be delivered once the reply window has closed. Private notes never leave
+  // the dashboard, so the window does not apply to them.
+  if (!isPrivate && !canSendPublicReply) {
     return false;
   }
   return !!content || !!attachments?.length;

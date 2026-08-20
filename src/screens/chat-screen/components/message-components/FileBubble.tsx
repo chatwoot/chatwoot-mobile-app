@@ -9,6 +9,7 @@ import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
+import { errorMessage } from '@/utils/errorUtils';
 
 const generateUniqueFileName = (url: string, originalFileName: string) => {
   const hash = url.split('').reduce((acc, char) => {
@@ -41,9 +42,11 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
 
   const previewFile = () => {
     try {
-      FileViewer.open(localFilePath).catch(e => Alert.alert(e));
+      FileViewer.open(localFilePath).catch(e =>
+        Alert.alert('Not able to preview file', errorMessage(e)),
+      );
     } catch (e) {
-      Alert.alert('Not able to preview file' + e);
+      Alert.alert('Not able to preview file', errorMessage(e));
     }
   };
 

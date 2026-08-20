@@ -41,13 +41,8 @@ import { transformMessage } from '@/utils/camelCaseKeys';
 import { Platform } from 'react-native';
 
 const getSendMessageContentType = (file?: SendMessagePayload['file']) => {
-  if (Platform.OS === 'ios' && file) {
-    return file.type;
-  }
-  if (Platform.OS === 'android' && file) {
-    return 'multipart/form-data';
-  }
-  return 'application/json';
+  if (!file) return 'application/json';
+  return Platform.OS === 'ios' ? file.type : 'multipart/form-data';
 };
 
 export const conversationActions = {

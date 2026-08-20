@@ -52,12 +52,10 @@ export const hasMessageFailedWithExternalError = (message: Message | PendingMess
 
 export const canRetryMessage = (message: Message): boolean => {
   const { status, content, attachments, createdAt } = message;
-  if (status !== MESSAGE_STATUS.FAILED) {
+  if (status !== MESSAGE_STATUS.FAILED || hasOneDayPassed(createdAt)) {
     return false;
   }
-  const hasContent = content !== null && content !== undefined && content !== '';
-  const hasAttachments = !!(attachments && attachments.length > 0);
-  return !hasOneDayPassed(createdAt) && (hasContent || hasAttachments);
+  return !!content || !!attachments?.length;
 };
 
 export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload => {

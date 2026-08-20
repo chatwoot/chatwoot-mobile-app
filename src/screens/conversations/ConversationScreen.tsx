@@ -17,12 +17,7 @@ import { ActionTabs } from '@/components-next';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 
 import { EmptyStateIcon } from '@/svg-icons';
-import {
-  SCREENS,
-  TAB_BAR_HEIGHT,
-  LAST_ACTIVE_TIMESTAMP_KEY,
-  LAST_ACTIVE_TIMESTAMP_THRESHOLD,
-} from '@/constants';
+import { SCREENS, LAST_ACTIVE_TIMESTAMP_KEY, LAST_ACTIVE_TIMESTAMP_THRESHOLD } from '@/constants';
 import {
   ConversationListStateProvider,
   useConversationListStateContext,
@@ -53,6 +48,7 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
+import { useTabBarHeight } from '@/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // The screen list thats need to be checked for refreshing the conversations list
@@ -67,6 +63,7 @@ type FlashListRenderItemType = {
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
+  const tabBarHeight = useTabBarHeight();
   const [appState, setAppState] = useState(AppState.currentState);
 
   // This is used to prevent the infinite scrolling before the list is ready
@@ -124,10 +121,7 @@ const ConversationList = () => {
     if (isAllConversationsFetched || !isFlashListReady) return null;
     return (
       <Animated.View
-        style={tailwind.style(
-          'flex-1 items-center justify-center pt-8',
-          `pb-[${TAB_BAR_HEIGHT}px]`,
-        )}>
+        style={tailwind.style('flex-1 items-center justify-center pt-8', `pb-[${tabBarHeight}px]`)}>
         <ActivityIndicator size="small" />
       </Animated.View>
     );
@@ -220,7 +214,7 @@ const ConversationList = () => {
 
   return shouldShowEmptyLoader ? (
     <Animated.View
-      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${tabBarHeight}px]`)}>
       <ActivityIndicator />
     </Animated.View>
   ) : allConversations.length === 0 ? (
@@ -228,7 +222,7 @@ const ConversationList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       contentContainerStyle={tailwind.style(
         'flex-1 items-center justify-center',
-        `pb-[${TAB_BAR_HEIGHT}px]`,
+        `pb-[${tabBarHeight}px]`,
       )}>
       <EmptyStateIcon />
       <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
@@ -247,7 +241,7 @@ const ConversationList = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       renderItem={handleRender}
-      contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
+      contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}
     />
   );
 };

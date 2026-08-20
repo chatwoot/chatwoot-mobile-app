@@ -1,24 +1,20 @@
 import { useLayoutEffect } from 'react';
-import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { FadeIn } from 'react-native-reanimated';
 
-// Ids whose entrance already played; a recycled or remounted row starts fully
-// visible instead of re-initialising to opacity 0.
+// Message ids whose entrance already played; a recycled or refetched row appears
+// instantly instead of fading in again.
 const enteredIds = new Set<number>();
 
-// Fades a message row in on mount the first time its id is seen. Runs in a
-// layout effect so the fade starts before the first paint (matching the feel of
-// a native entering animation) rather than a frame later.
+// Returns a declarative entering animation the first time a message id is seen, and
+// undefined afterwards. Unlike a manual opacity shared value, Reanimated drives the
+// fade to the row's natural opacity on the UI thread, so an interrupted animation can
+// never leave a row stuck invisible.
 export function useMessageEntrance(itemId: number) {
-  const opacity = useSharedValue(enteredIds.has(itemId) ? 1 : 0);
+  const isFirstEntrance = !enteredIds.has(itemId);
 
   useLayoutEffect(() => {
-    if (enteredIds.has(itemId)) {
-      opacity.value = 1;
-      return;
-    }
     enteredIds.add(itemId);
-    opacity.value = withTiming(1, { duration: 350 });
-  }, [itemId, opacity]);
+  }, [itemId]);
 
-  return useAnimatedStyle(() => ({ opacity: opacity.value }));
+  return isFirstEntrance ? FadeIn.duration(350) : undefined;
 }

@@ -127,7 +127,7 @@ const MessageWrapper = ({
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
   });
-  const entranceStyle = useMessageEntrance(item.id);
+  const entering = useMessageEntrance(item.id);
 
   const flexOrientationClass = () => {
     const map = {
@@ -147,16 +147,14 @@ const MessageWrapper = ({
 
   return (
     <Animated.View
-      style={[
-        tailwind.style(
-          'my-[1px]',
-          flexOrientationClass(),
-          shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
-          !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-          item.private ? 'my-1' : '',
-        ),
-        entranceStyle,
-      ]}>
+      entering={entering}
+      style={tailwind.style(
+        'my-[1px]',
+        flexOrientationClass(),
+        shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
+        !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+        item.private ? 'my-1' : '',
+      )}>
       <View style={tailwind.style('flex flex-row')}>
         {!shouldGroupWithPrevious && shouldShowAvatar ? (
           <View style={tailwind.style('flex items-end justify-end mr-1')}>

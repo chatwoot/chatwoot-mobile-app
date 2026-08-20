@@ -48,8 +48,8 @@ export const filterDuplicateSourceMessages = (messages: Message[] = []): Message
 };
 
 export const getLastMessage = (conversation: Conversation): Message | null => {
-  // A conversation reaches the list before its messages are hydrated, so the
-  // array is absent even though the type declares it.
+  // transformConversation normalises this, so the fallback only covers
+  // conversations built outside that path.
   const messages = conversation.messages ?? [];
   const lastMessageIncludingActivity = messages[messages.length - 1];
   const nonActivityMessages = messages.filter(message => message.messageType !== 2);

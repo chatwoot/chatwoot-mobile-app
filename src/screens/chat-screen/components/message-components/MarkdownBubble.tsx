@@ -24,16 +24,15 @@ const variantTextMap = {
   [MESSAGE_VARIANTS.EMAIL]: 'text-gray-950',
 };
 
-export const MarkdownBubble = (props: MarkdownBubbleProps) => {
-  const { messageContent, variant } = props;
-  const handleURL = (url: string) => {
-    openURL({ URL: url });
-    return true;
-  };
+const handleURL = (url: string) => {
+  openURL({ URL: url });
+  return true;
+};
 
+const buildStyles = (variant: string) => {
   const textStyle = tailwind.style(variantTextMap[variant]);
 
-  const styles = StyleSheet.create({
+  return StyleSheet.create({
     text: {
       fontSize: 16,
       letterSpacing: 0.32,
@@ -77,9 +76,38 @@ export const MarkdownBubble = (props: MarkdownBubbleProps) => {
       ...textStyle,
     },
   });
+};
+
+// Markdown compares its props by identity, and on a miss it re-tokenises the
+// message and rebuilds the Text tree beneath it. A fresh tree is a new
+// attributed string on the native side, which iOS lays out again on the main
+// thread. Styles are built once per variant so a re-render of the surrounding
+// row does not invalidate the whole tree.
+const stylesByVariant = new Map<string, ReturnType<typeof buildStyles>>();
+
+const getStyles = (variant: string) => {
+  const cachedStyles = stylesByVariant.get(variant);
+  if (cachedStyles) {
+    return cachedStyles;
+  }
+
+  const styles = buildStyles(variant);
+  stylesByVariant.set(variant, styles);
+  return styles;
+};
+
+export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
+  const { messageContent, variant } = props;
+
   return (
-    <Markdown mergeStyle markdownit={markdownItInstance} onLinkPress={handleURL} style={styles}>
+    <Markdown
+      mergeStyle
+      markdownit={markdownItInstance}
+      onLinkPress={handleURL}
+      style={getStyles(variant)}>
       {messageContent}
     </Markdown>
   );
-};
+});
+
+MarkdownBubble.displayName = 'MarkdownBubble';

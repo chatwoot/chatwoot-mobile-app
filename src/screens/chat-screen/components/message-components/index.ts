@@ -11,3 +11,4 @@ export * from './VideoBubble';
 export * from './EmailBubble';
 export * from './UnsupportedBubble';
 export * from './DeliveryStatus';
+export * from './MessageError';

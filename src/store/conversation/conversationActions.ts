@@ -27,12 +27,23 @@ import type {
   TogglePriorityPayload,
   TranslateMessagePayload,
   TranslateMessageAPIResponse,
+  PendingMessage,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { MESSAGE_STATUS } from '@/constants';
-import { buildCreatePayload, createPendingMessage } from '@/utils/messageUtils';
+import type { Message } from '@/types';
+import {
+  buildCreatePayload,
+  createPendingMessage,
+  hasMessageFailedWithExternalError,
+} from '@/utils/messageUtils';
 import { transformMessage } from '@/utils/camelCaseKeys';
 import { Platform } from 'react-native';
+
+const getSendMessageContentType = (file?: SendMessagePayload['file']) => {
+  if (!file) return 'application/json';
+  return Platform.OS === 'ios' ? file.type : 'multipart/form-data';
+};
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
@@ -93,12 +104,7 @@ export const conversationActions = {
         });
         const payload = buildCreatePayload(pendingMessage);
         const { file } = sendMessagePayload;
-        const contentType =
-          Platform.OS === 'ios' && file
-            ? file.type
-            : Platform.OS === 'android' && file
-              ? 'multipart/form-data'
-              : 'application/json';
+        const contentType = getSendMessageContentType(file);
 
         const response = await ConversationService.sendMessage(conversationId, payload, {
           headers: {
@@ -123,6 +129,65 @@ export const conversationActions = {
           type: 'conversation/addOrUpdateMessage',
           payload: {
             ...pendingMessage,
+            meta: {
+              error: errorMessage,
+            },
+            status: MESSAGE_STATUS.FAILED,
+          },
+        });
+        if (!response) {
+          throw error;
+        }
+        return rejectWithValue(response.data);
+      }
+    },
+  ),
+  retryMessage: createAsyncThunk<SendMessageAPIResponse, Message>(
+    'conversations/retryMessage',
+    async (failedMessage, { dispatch, rejectWithValue }) => {
+      const { conversationId, id } = failedMessage;
+
+      try {
+        dispatch({
+          type: 'conversation/addOrUpdateMessage',
+          payload: {
+            ...failedMessage,
+            status: MESSAGE_STATUS.PROGRESS,
+          },
+        });
+
+        // A message that reached the server and failed to deliver is retried through the retry
+        // endpoint. One that never left the app is created again from the stored pending message.
+        let response: SendMessageAPIResponse;
+        if (hasMessageFailedWithExternalError(failedMessage)) {
+          response = await ConversationService.retryMessage({ conversationId, messageId: id });
+        } else {
+          const pendingMessage = failedMessage as unknown as PendingMessage;
+          const payload = buildCreatePayload(pendingMessage);
+          response = await ConversationService.sendMessage(conversationId, payload, {
+            headers: {
+              'Content-Type': getSendMessageContentType(pendingMessage.file),
+            },
+          });
+        }
+
+        const camelCaseMessage = transformMessage(response);
+
+        dispatch({
+          type: 'conversation/addOrUpdateMessage',
+          payload: {
+            ...camelCaseMessage,
+            status: MESSAGE_STATUS.SENT,
+          },
+        });
+        return response;
+      } catch (error) {
+        const { response } = error as AxiosError<ApiErrorResponse>;
+        const errorMessage = response?.data?.errors?.[0];
+        dispatch({
+          type: 'conversation/addOrUpdateMessage',
+          payload: {
+            ...failedMessage,
             meta: {
               error: errorMessage,
             },

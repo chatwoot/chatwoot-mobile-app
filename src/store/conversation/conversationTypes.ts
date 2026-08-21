@@ -111,6 +111,8 @@ export interface PendingMessage extends SendMessagePayload {
   createdAt: number;
   messageType: typeof MESSAGE_TYPES.OUTGOING;
   attachments: { id: string }[] | null;
+  senderId: number;
+  senderType: string;
 }
 
 export type MessageBuilderPayload =
@@ -242,6 +244,11 @@ export interface TypingPayload {
 export interface TogglePriorityPayload {
   conversationId: number;
   priority: ConversationPriority;
+}
+
+export interface RetryMessagePayload {
+  conversationId: number;
+  messageId: number | string;
 }
 
 export interface TranslateMessagePayload {

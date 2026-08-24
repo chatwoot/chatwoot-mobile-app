@@ -3,7 +3,6 @@ import { Platform, Pressable, View } from 'react-native';
 import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
-import * as Sentry from '@sentry/react-native';
 
 import {
   selectCurrentPlayingAudioSrc,
@@ -13,6 +12,8 @@ import {
 import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
+import { FileErrorIcon } from '@/svg-icons';
+import i18n from '@/i18n';
 import { Spinner } from '@/components-next/spinner';
 import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -55,6 +56,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
   const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
+  const [hasConversionFailed, setHasConversionFailed] = useState(false);
 
   const dispatch = useDispatch();
   const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
@@ -80,20 +82,34 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   useEffect(() => {
+    let active = true;
+
     const prepareAudio = async () => {
       if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
         setIsSoundLoading(true);
+        setHasConversionFailed(false);
         try {
           const convertedSrc = await convertOggToWav(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
-        } catch (error) {
-          Sentry.captureException(error);
+          if (active) {
+            setConvertedAudioSrc(convertedSrc);
+          }
+        } catch {
+          // convertOggToWav reports to Sentry already.
+          if (active) {
+            setHasConversionFailed(true);
+          }
         } finally {
-          setIsSoundLoading(false);
+          if (active) {
+            setIsSoundLoading(false);
+          }
         }
       }
     };
     prepareAudio();
+
+    return () => {
+      active = false;
+    };
   }, [audioSrc]);
 
   const togglePlayback = useCallback(() => {
@@ -159,6 +175,17 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     }),
     [variant, manualSeekTo, currentPosition, totalDuration, pauseAudio],
   );
+
+  if (hasConversionFailed) {
+    return (
+      <View style={tailwind.style('w-full flex flex-row items-center gap-1 flex-1')}>
+        <Icon icon={<FileErrorIcon fill={tailwind.color('text-gray-900')} />} size={16} />
+        <Animated.Text style={tailwind.style('text-cxs font-inter-420-20 text-gray-900')}>
+          {i18n.t('CONVERSATION.AUDIO_NOT_AVAILABLE')}
+        </Animated.Text>
+      </View>
+    );
+  }
 
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>

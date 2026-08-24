@@ -31,12 +31,12 @@ import {
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { UserAvatar } from './components/UserAvatar';
 
-import { LANGUAGES, TAB_BAR_HEIGHT } from '@/constants';
+import { LANGUAGES } from '@/constants';
 import { useRefsContext } from '@/context';
 import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
-import { useHaptic } from '@/utils';
+import { useHaptic, useTabBarHeight } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
 import {
@@ -69,6 +69,7 @@ const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVe
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const tabBarHeight = useTabBarHeight();
   const availabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
 
@@ -261,7 +262,7 @@ const SettingsScreen = () => {
       <SettingsHeader />
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}>
+        contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}>
         <Animated.View style={tailwind.style('flex justify-center items-center pt-4 gap-4')}>
           <Animated.View>
             <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />

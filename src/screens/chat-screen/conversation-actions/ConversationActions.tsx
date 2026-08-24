@@ -15,6 +15,7 @@ import {
 import { TAB_BAR_HEIGHT } from '@/constants';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
+import { errorMessage } from '@/utils/errorUtils';
 import { ConversationStatus } from '@/types';
 import { useChatWindowContext } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -70,7 +71,7 @@ export const ConversationActions = () => {
         url,
       });
     } catch (error) {
-      Alert.alert((error as Error).message);
+      Alert.alert(i18n.t('COMMON.ERROR_TITLE'), errorMessage(error));
     }
   };
 

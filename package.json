@@ -202,7 +202,13 @@
       "@expo/fingerprint>minimatch": "3.1.4",
       "@typescript-eslint/typescript-estree>minimatch": "9.0.7",
       "glob>minimatch": "9.0.7",
-      "tar": "7.5.11"
+      "tar": "7.5.11",
+      "protobufjs": "^7.6.1",
+      "postcss": "^8.5.23",
+      "ws@7": "^7.5.11",
+      "ws@8": "^8.21.0",
+      "brace-expansion@1": "^1.1.18",
+      "brace-expansion@5": "^5.0.9"
     }
   }
 }

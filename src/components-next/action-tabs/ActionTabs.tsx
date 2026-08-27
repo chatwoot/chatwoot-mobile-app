@@ -23,8 +23,6 @@ const ACTION_TAB_HEIGHT = 58;
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
-
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
 
@@ -89,10 +87,18 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
     };
   });
 
+  // BlurView does not reliably apply flex/positioning styles under the New
+  // Architecture, so the layout lives on a plain Animated.View and BlurView is
+  // only an absolute-fill background behind the action items. The blur is
+  // clipped by its own wrapper rather than by the outer view, because
+  // overflow-hidden on the shadow-casting view would clip the shadow away.
   return Platform.OS === 'ios' ? (
-    <AnimatedBlurView {...{ blurAmount, blurType }} style={[style, animatedTabBarStyle]}>
+    <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
+      <Animated.View style={tailwind.style('absolute inset-0 rounded-[30px] overflow-hidden')}>
+        <BlurView {...{ blurAmount, blurType }} style={tailwind.style('flex-1 bg-[#00000009]')} />
+      </Animated.View>
       {children}
-    </AnimatedBlurView>
+    </Animated.View>
   ) : (
     <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
       {children}
@@ -175,7 +181,7 @@ export const ActionTabs = () => {
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-[#00000009]',
+            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-white',
             `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
               (SCREEN_WIDTH - 220) / 2
             }px]`,
@@ -201,11 +207,10 @@ const styles = StyleSheet.create({
   listShadow:
     Platform.select({
       ios: {
-        shadowColor: '#00000040',
-        shadowOffset: { width: 0, height: 0.15 },
-        shadowRadius: 2,
-        shadowOpacity: 0.35,
-        elevation: 2,
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 12,
+        shadowOpacity: 0.12,
       },
       android: {
         elevation: 4,

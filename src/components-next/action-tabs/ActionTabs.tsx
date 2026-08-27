@@ -87,11 +87,8 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
     };
   });
 
-  // BlurView does not reliably apply flex/positioning styles under the New
-  // Architecture, so the layout lives on a plain Animated.View and BlurView is
-  // only an absolute-fill background behind the action items. The blur is
-  // clipped by its own wrapper rather than by the outer view, because
-  // overflow-hidden on the shadow-casting view would clip the shadow away.
+  // Layout and shadow sit on the Animated.View. BlurView fills it as a
+  // background, clipped to the corner radius by its own wrapper.
   return Platform.OS === 'ios' ? (
     <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
       <Animated.View style={tailwind.style('absolute inset-0 rounded-[30px] overflow-hidden')}>

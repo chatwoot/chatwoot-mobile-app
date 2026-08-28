@@ -45,13 +45,14 @@ export const settingsActions = {
     'settings/setInstallationUrl',
     async (url, { rejectWithValue }) => {
       try {
-        if (!checkValidUrl({ url })) {
+        const installationUrl = extractDomain({ url });
+        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
+        const WEB_SOCKET_URL = `wss://${installationUrl}/cable`;
+
+        if (!checkValidUrl({ url: INSTALLATION_URL })) {
           throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
         }
 
-        const installationUrl = extractDomain({ url });
-        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
-        const WEB_SOCKET_URL = `wss://${url}/cable`;
         const isValid = await SettingsService.verifyInstallationUrl(INSTALLATION_URL);
 
         if (!isValid) {

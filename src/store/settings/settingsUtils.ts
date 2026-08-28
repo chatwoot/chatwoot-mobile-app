@@ -7,13 +7,14 @@ export const handleApiError = (error: unknown, customErrorMsg?: string) => {
   return errorMessage;
 };
 
+/**
+ * The host of a Chatwoot installation. The field accepts a bare host, and a
+ * keyboard or a paste can add surrounding whitespace, so the input is trimmed
+ * before any scheme is stripped.
+ */
 export const extractDomain = ({ url }: { url: string }) => {
-  const isValidUrl = checkValidUrl({ url });
-
-  if (!isValidUrl) {
-    return url;
-  }
-  const domain = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+  const trimmedUrl = url.trim();
+  const domain = trimmedUrl.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
   if (
     domain != null &&
     domain.length > 2 &&
@@ -22,13 +23,20 @@ export const extractDomain = ({ url }: { url: string }) => {
   ) {
     return domain[2];
   }
-  return url;
+  return trimmedUrl;
 };
 
-export const checkValidUrl = ({ url }: { url: string }) => {
+/**
+ * Takes an absolute URL. Whitespace is rejected on its own, since the URL
+ * constructor accepts more than the platform's networking stack does.
+ */
+export const checkValidUrl = ({ url }: { url: string }): boolean => {
+  if (!url || /\s/.test(url)) {
+    return false;
+  }
   try {
     return Boolean(new URL(url));
-  } catch (e) {
-    return e;
+  } catch {
+    return false;
   }
 };

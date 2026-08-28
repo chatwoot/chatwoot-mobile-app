@@ -23,8 +23,6 @@ const ACTION_TAB_HEIGHT = 58;
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
-
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
 
@@ -89,10 +87,15 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
     };
   });
 
+  // Layout and shadow sit on the Animated.View. BlurView fills it as a
+  // background, clipped to the corner radius by its own wrapper.
   return Platform.OS === 'ios' ? (
-    <AnimatedBlurView {...{ blurAmount, blurType }} style={[style, animatedTabBarStyle]}>
+    <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
+      <Animated.View style={tailwind.style('absolute inset-0 rounded-[30px] overflow-hidden')}>
+        <BlurView {...{ blurAmount, blurType }} style={tailwind.style('flex-1 bg-[#00000009]')} />
+      </Animated.View>
       {children}
-    </AnimatedBlurView>
+    </Animated.View>
   ) : (
     <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
       {children}
@@ -175,7 +178,7 @@ export const ActionTabs = () => {
       style={Platform.select({
         ios: [
           tailwind.style(
-            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-[#00000009]',
+            'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px]',
             `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
               (SCREEN_WIDTH - 220) / 2
             }px]`,
@@ -201,11 +204,10 @@ const styles = StyleSheet.create({
   listShadow:
     Platform.select({
       ios: {
-        shadowColor: '#00000040',
-        shadowOffset: { width: 0, height: 0.15 },
-        shadowRadius: 2,
-        shadowOpacity: 0.35,
-        elevation: 2,
+        shadowColor: '#000000',
+        shadowOffset: { width: 0, height: 8 },
+        shadowRadius: 10,
+        shadowOpacity: 0.25,
       },
       android: {
         elevation: 4,

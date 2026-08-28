@@ -18,6 +18,12 @@ interface EmailParams {
 
 const SCHEME_PATTERN = /^[a-z][a-z0-9+.-]*:/i;
 const WEB_SCHEME_PATTERN = /^https?:/i;
+// A scheme may contain dots, so a host and port reads as one. A dotted host or
+// localhost followed by a port is the host form.
+const HOST_AND_PORT_PATTERN = /^(localhost|[a-z0-9-]+(\.[a-z0-9-]+)+):\d+([/?#]|$)/i;
+
+const hasScheme = (target: string): boolean =>
+  SCHEME_PATTERN.test(target) && !HOST_AND_PORT_PATTERN.test(target);
 
 /**
  * Opens a target in whichever app the system has registered for its scheme.
@@ -45,7 +51,7 @@ export const openURL = async ({ URL }: URLParams): Promise<void> => {
     return;
   }
 
-  const absoluteURL = SCHEME_PATTERN.test(target) ? target : `https://${target}`;
+  const absoluteURL = hasScheme(target) ? target : `https://${target}`;
 
   if (WEB_SCHEME_PATTERN.test(absoluteURL)) {
     try {

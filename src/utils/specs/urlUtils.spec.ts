@@ -35,6 +35,24 @@ describe('openURL', () => {
     expect(openBrowserAsync).toHaveBeenCalledWith('https://www.chatwoot.com');
   });
 
+  it.each([
+    ['chatwoot.local:3000/path', 'https://chatwoot.local:3000/path'],
+    ['www.chatwoot.com:8443', 'https://www.chatwoot.com:8443'],
+    ['localhost:3000', 'https://localhost:3000'],
+    ['192.168.1.5:3000/inbox?tab=1', 'https://192.168.1.5:3000/inbox?tab=1'],
+  ])('treats %s as a host and port, not a scheme', async (target, expected) => {
+    await openURL({ URL: target });
+
+    expect(openBrowserAsync).toHaveBeenCalledWith(expected);
+  });
+
+  it('keeps a scheme whose target is numeric', async () => {
+    await openURL({ URL: 'tel:12345' });
+
+    expect(openBrowserAsync).not.toHaveBeenCalled();
+    expect(openSystemURL).toHaveBeenCalledWith('tel:12345');
+  });
+
   it('hands a non-web scheme to the system handler', async () => {
     await openURL({ URL: 'mailto:hello@chatwoot.com' });
 

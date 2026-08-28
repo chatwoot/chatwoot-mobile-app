@@ -9,6 +9,7 @@ import { tailwind } from '@/theme';
 import { AttributeListType } from '@/types';
 import { Icon } from '@/components-next/common';
 import { showToast } from '@/utils/toastUtils';
+import { formatAttributeValue } from '@/utils/attributeUtils';
 
 type AttributeItemProps = {
   listItem: AttributeListType;
@@ -41,7 +42,7 @@ const AttributeItem = (props: AttributeItemProps) => {
     if (listItem.type === 'checkbox') {
       return listItem.subtitle ? 'Yes' : 'No';
     }
-    return listItem.subtitle;
+    return formatAttributeValue(listItem.subtitle);
   }, [listItem.type, listItem.subtitle, formattedDate]);
 
   return (

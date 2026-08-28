@@ -42,6 +42,7 @@ describe('isUnactionablePushError', () => {
   it.each([
     'MISSING_INSTANCEID_SERVICE',
     '[messaging/unknown] SERVICE_NOT_AVAILABLE',
+    '[messaging/unknown] java.io.IOException: java.util.concurrent.ExecutionException: java.io.IOException: FIS_AUTH_ERROR',
     'A TLS error caused the secure connection to fail.',
     'A server with the specified hostname could not be found.',
     'No APNS token specified before fetching FCM Token',

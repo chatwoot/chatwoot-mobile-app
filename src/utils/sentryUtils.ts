@@ -45,6 +45,7 @@ const UNACTIONABLE_PUSH_MESSAGES = [
   'MISSING_INSTANCEID_SERVICE',
   'AUTHENTICATION_FAILED',
   'TOO_MANY_REGISTRATIONS',
+  'FIS_AUTH_ERROR',
   // iOS: the Firebase installations handshake never completed
   'The request timed out',
   'The network connection was lost',

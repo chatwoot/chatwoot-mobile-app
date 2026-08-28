@@ -22,8 +22,19 @@ const WEB_SCHEME_PATTERN = /^https?:/i;
 // localhost followed by a port is the host form.
 const HOST_AND_PORT_PATTERN = /^(localhost|[a-z0-9-]+(\.[a-z0-9-]+)+):\d+([/?#]|$)/i;
 
+// Mentions render as markdown links carrying an in-app scheme.
+const IGNORED_SCHEME_PATTERN = /^mention:/i;
+
 const hasScheme = (target: string): boolean =>
   SCHEME_PATTERN.test(target) && !HOST_AND_PORT_PATTERN.test(target);
+
+const toAbsoluteURL = (target: string): string => {
+  // A protocol-relative target already carries its host.
+  if (target.startsWith('//')) {
+    return `https:${target}`;
+  }
+  return hasScheme(target) ? target : `https://${target}`;
+};
 
 /**
  * Opens a target in whichever app the system has registered for its scheme.
@@ -47,11 +58,11 @@ const openWithSystemHandler = async (target: string): Promise<void> => {
  */
 export const openURL = async ({ URL }: URLParams): Promise<void> => {
   const target = URL?.trim();
-  if (!target) {
+  if (!target || IGNORED_SCHEME_PATTERN.test(target)) {
     return;
   }
 
-  const absoluteURL = hasScheme(target) ? target : `https://${target}`;
+  const absoluteURL = toAbsoluteURL(target);
 
   if (WEB_SCHEME_PATTERN.test(absoluteURL)) {
     try {

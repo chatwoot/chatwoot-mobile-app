@@ -78,6 +78,26 @@ describe('openURL', () => {
     expect(showToast).toHaveBeenCalled();
   });
 
+  it.each([
+    'mention://user/14',
+    'mention://user/5/Josephine',
+    'mention://user/20/Ziva%20Immigration%20Support',
+  ])('ignores the mention link %s', async target => {
+    await openURL({ URL: target });
+
+    expect(openBrowserAsync).not.toHaveBeenCalled();
+    expect(openSystemURL).not.toHaveBeenCalled();
+    expect(showToast).not.toHaveBeenCalled();
+  });
+
+  it('keeps the host of a protocol-relative target', async () => {
+    await openURL({ URL: '//drive.google.com/file/d/1xvY/view?usp=drivesdk' });
+
+    expect(openBrowserAsync).toHaveBeenCalledWith(
+      'https://drive.google.com/file/d/1xvY/view?usp=drivesdk',
+    );
+  });
+
   it('ignores an empty target', async () => {
     await openURL({ URL: '   ' });
 

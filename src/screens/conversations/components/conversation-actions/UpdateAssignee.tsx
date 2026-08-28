@@ -10,7 +10,10 @@ import { SelfAssign, TickIcon } from '@/svg-icons';
 
 import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectAssignableAgentsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
+import {
+  selectAssignableAgents,
+  selectAssignableAgentsByInboxId,
+} from '@/store/assignable-agent/assignableAgentSelectors';
 import {
   selectSelectedIds,
   selectSelectedInboxes,
@@ -117,7 +120,11 @@ export const UpdateAssignee = () => {
     }
   };
 
-  const selfAgent = agents.find(agent => agent.id === userId);
+  // Read from the unfiltered records so the row stays available while searching.
+  const agentRecords = useAppSelector(selectAssignableAgents);
+  const selfAgent = inboxIds
+    .flatMap(id => agentRecords[id] || [])
+    .find(agent => agent.id === userId);
 
   return (
     <React.Fragment>
@@ -131,10 +138,10 @@ export const UpdateAssignee = () => {
           <ActivityIndicator />
         ) : (
           <>
-            {!isSelfAssign && (
+            {!isSelfAssign && selfAgent && (
               <Pressable
                 style={tailwind.style('flex flex-row items-center')}
-                onPress={() => handleAssigneePress(selfAgent as Agent)}>
+                onPress={() => handleAssigneePress(selfAgent)}>
                 <Animated.View style={tailwind.style('p-0.5')}>
                   <Icon icon={<SelfAssign />} size={24} />
                 </Animated.View>

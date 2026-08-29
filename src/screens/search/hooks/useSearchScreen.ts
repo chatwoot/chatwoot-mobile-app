@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlashListRef } from '@shopify/flash-list';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, type NavigationProp, type ParamListBase } from '@react-navigation/native';
 import { debounce } from 'lodash';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -14,7 +14,11 @@ import {
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { clearSearchResults, prepareNewSearch, setQuery } from '@/store/search/searchSlice';
 import { RecentSearches } from '../utils/recentSearches';
-import { SEARCH_SECTION_IDS, type SearchItem, type SearchSectionType } from '@/store/search/searchTypes';
+import {
+  SEARCH_SECTION_IDS,
+  type SearchItem,
+  type SearchSectionType,
+} from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 
 const VALID_TAB_IDS = new Set<string>(['all', ...SEARCH_SECTION_IDS]);
@@ -24,7 +28,7 @@ export type TabType = 'all' | SearchSectionType;
 const INITIAL_ITEMS_TO_SHOW = 5;
 
 export function useSearchScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<ParamListBase>>();
   const dispatch = useAppDispatch();
 
   const [searchText, setSearchText] = useState('');
@@ -41,7 +45,7 @@ export function useSearchScreen() {
   );
 
   const [listRefs] = useState(() => {
-    const refs = {} as Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem>>>;
+    const refs = {} as Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem> | null>>;
     SEARCH_SECTIONS.forEach(section => {
       refs[section.id] = React.createRef<FlashListRef<SearchItem>>();
     });
@@ -61,7 +65,7 @@ export function useSearchScreen() {
   }, [accountId]);
 
   const debouncedSearchRef = useRef<ReturnType<typeof debounce> | null>(null);
-  const inFlightSearchesRef = useRef<Array<{ abort: () => void }>>([]);
+  const inFlightSearchesRef = useRef<{ abort: () => void }[]>([]);
 
   const cancelInFlightSearches = useCallback(() => {
     inFlightSearchesRef.current.forEach(promise => promise.abort());
@@ -100,7 +104,7 @@ export function useSearchScreen() {
         debouncedSearchRef.current.cancel();
       }
     };
-  }, [dispatch, accountId]);
+  }, [dispatch, accountId, cancelInFlightSearches]);
 
   const handleSearchChange = useCallback(
     (text: string) => {
@@ -170,7 +174,7 @@ export function useSearchScreen() {
       });
       setExpandedSections(newExpanded);
     },
-    [dispatch, accountId],
+    [dispatch, cancelInFlightSearches],
   );
 
   const handleClearRecentSearches = useCallback(async () => {
@@ -305,7 +309,6 @@ export function useSearchScreen() {
     return data;
   }, [sectionData]);
 
-
   const createEndReachedHandler = useCallback(
     (sectionId: SearchSectionType) => {
       return () => {
@@ -327,7 +330,7 @@ export function useSearchScreen() {
         handleLoadMore(sectionId);
       };
     },
-    [handleLoadMore, sectionData, searchText, query],
+    [handleLoadMore, sectionData, query],
   );
 
   const getItemsToShow = useCallback(
@@ -365,7 +368,7 @@ export function useSearchScreen() {
         return () => clearTimeout(timer);
       }
     }
-  }, [activeTab]);
+  }, [activeTab, listRefs]);
 
   return {
     searchText,

@@ -7,6 +7,7 @@ import { tailwind } from '@/theme';
 import { ImageMetadata, Message } from '@/types';
 import { Icon } from '@/components-next';
 import { ATTACHMENT_TYPES, ORIENTATION, TEXT_MAX_WIDTH } from '@/constants';
+import { groupAttachmentsByType } from '@/utils/attachmentUtils';
 import i18n from '@/i18n';
 
 import { ImageBubbleContainer, ImageThumbnail } from './ImageBubble';
@@ -30,24 +31,6 @@ const isInstagramStoryExpired = (messageTimestamp: number) => {
   return differenceInHours(currentTime, messageTime) > 24;
 };
 
-// Attachments render grouped by type rather than in payload order: media, then audio,
-// then files.
-const MEDIA_TYPES = [ATTACHMENT_TYPES.IMAGE, ATTACHMENT_TYPES.VIDEO, ATTACHMENT_TYPES.IG_REEL];
-
-const groupByType = (attachments: ImageMetadata[]) => {
-  const ofType = (...types: string[]) =>
-    attachments.filter(attachment => types.includes(attachment.fileType));
-
-  return {
-    media: ofType(...MEDIA_TYPES).sort(
-      (a, b) => MEDIA_TYPES.indexOf(a.fileType) - MEDIA_TYPES.indexOf(b.fileType),
-    ),
-    recordings: ofType(ATTACHMENT_TYPES.AUDIO),
-    files: ofType(ATTACHMENT_TYPES.FILE),
-    locations: ofType(ATTACHMENT_TYPES.LOCATION),
-  };
-};
-
 export const MessageAttachments = (props: MessageAttachmentsProps) => {
   const { item, variant, orientation = ORIENTATION.LEFT, mediaSize = 'default' } = props;
   const { attachments, private: isPrivate, contentAttributes, createdAt } = item;
@@ -62,7 +45,7 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
   // Rows stay stretched so percentage-width media resolves against the bubble; the
   // contents are aligned inside each row instead.
   const rowAlignment = orientation === ORIENTATION.RIGHT ? 'justify-end' : 'justify-start';
-  const { media, recordings, files, locations } = groupByType(attachments);
+  const { media, recordings, files, locations } = groupAttachmentsByType(attachments);
 
   // Thumbnails sit side by side and wrap; full-width media stacks.
   const mediaItemStyle = isThumbnail ? '' : `flex flex-row my-2 ${rowAlignment}`;

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
@@ -44,7 +43,7 @@ const TeamCell = (props: TeamCellProps) => {
     showToast({
       message: i18n.t('CONVERSATION.TEAM_CHANGE'),
     });
-    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+    actionsModalSheetRef.current?.dismiss();
   };
 
   return (
@@ -73,7 +72,7 @@ const TeamStack = ({ teams, teamId }: { teams: Team[]; teamId: string | undefine
   const isFetching = useAppSelector(selectLoading);
 
   return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
+    <ScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
       {isFetching ? (
         <ActivityIndicator />
       ) : (
@@ -83,12 +82,11 @@ const TeamStack = ({ teams, teamId }: { teams: Team[]; teamId: string | undefine
           );
         })
       )}
-    </BottomSheetScrollView>
+    </ScrollView>
   );
 };
 
 export const UpdateTeam = () => {
-  const { actionsModalSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');
 
   const selectedConversation = useAppSelector(selectSelectedConversation);
@@ -97,13 +95,6 @@ export const UpdateTeam = () => {
 
   const teamId = selectedConversation?.meta?.team?.id;
 
-  const handleFocus = () => {
-    actionsModalSheetRef.current?.expand();
-  };
-  const handleBlur = () => {
-    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
-  };
-
   const handleChangeText = (text: string) => {
     setSearchTerm(text);
   };
@@ -111,9 +102,6 @@ export const UpdateTeam = () => {
   return (
     <React.Fragment>
       <SearchBar
-        isInsideBottomSheet
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         onChangeText={handleChangeText}
         placeholder={i18n.t('CONVERSATION.SEARCH_TEAM')}
       />

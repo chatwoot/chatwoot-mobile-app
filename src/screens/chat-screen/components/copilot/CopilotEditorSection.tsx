@@ -65,7 +65,7 @@ export const CopilotEditorSection = ({
 
   return (
     <Animated.View
-      entering={FadeInDown.springify().damping(20).stiffness(180)}
+      entering={FadeInDown.springify().mass(1).damping(15).stiffness(105)}
       exiting={FadeOutUp.duration(150)}
       style={tailwind.style('flex-row items-start px-1 mb-2')}>
       {showActions ? (

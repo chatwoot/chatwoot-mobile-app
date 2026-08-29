@@ -1,5 +1,6 @@
 import { Agent } from './Agent';
 import { AgentBot } from './AgentBot';
+import { CaptainAssistant } from './CaptainAssistant';
 import { UnixTimestamp } from './common';
 import { Contact } from './Contact';
 import { Conversation } from './Conversation';
@@ -78,7 +79,7 @@ export interface Message {
   inboxId: number;
   messageType: MessageType;
   private: boolean;
-  sender?: Agent | User | AgentBot | Contact | null;
+  sender?: Agent | User | AgentBot | CaptainAssistant | Contact | null;
   sourceId: string | null;
   status: MessageStatus;
   lastNonActivityMessage: Message | null;
@@ -88,4 +89,6 @@ export interface Message {
   groupWithNext?: boolean | false;
   groupWithPrevious?: boolean | false;
   senderType?: string;
+  // Set when a send fails inside the app, before the message reaches the server
+  meta?: { error?: string };
 }

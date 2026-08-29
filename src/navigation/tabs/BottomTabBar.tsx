@@ -9,6 +9,7 @@ import Animated, {
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 
 import {
@@ -24,8 +25,6 @@ import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
-
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
@@ -71,10 +70,14 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
     };
   });
 
+  // BlurView does not reliably apply flex/positioning styles under the New
+  // Architecture, so the layout lives on a plain Animated.View and BlurView is
+  // only an absolute-fill background behind the tab items.
   return Platform.OS === 'ios' ? (
-    <AnimatedBlurView {...{ blurAmount, blurType }} style={[style, animatedTabBarStyle]}>
+    <Animated.View style={[style, animatedTabBarStyle]}>
+      <BlurView {...{ blurAmount, blurType }} style={tailwind.style('absolute inset-0 bg-white')} />
       {children}
-    </AnimatedBlurView>
+    </Animated.View>
   ) : (
     <Animated.View style={[style, animatedTabBarStyle]}>{children}</Animated.View>
   );
@@ -115,6 +118,7 @@ const TabItem = (props: any) => {
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
+  const { bottom } = useSafeAreaInsets();
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -161,8 +165,8 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
         ],
         android: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] py-[11px] bg-white',
-            `h-[${tabBarHeight}px]`,
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] bg-white',
+            `h-[${tabBarHeight}px] pb-[${bottom + 11}px]`,
           ),
         ],
       })}>

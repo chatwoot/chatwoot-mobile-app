@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet } from 'react-native';
 import FileViewer from 'react-native-file-viewer';
 import Animated from 'react-native-reanimated';
-import RNFetchBlob from 'rn-fetch-blob';
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import { FileIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
+import { errorMessage } from '@/utils/errorUtils';
 
 const generateUniqueFileName = (url: string, originalFileName: string) => {
   const hash = url.split('').reduce((acc, char) => {
@@ -32,7 +33,7 @@ type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
 
 export const FileBubblePreview = (props: FilePreviewProps) => {
   const { fileSrc, isComposed = false, variant } = props;
-  const dirs = RNFetchBlob.fs.dirs;
+  const dirs = ReactNativeBlobUtil.fs.dirs;
 
   const [fileDownload, setFileDownload] = useState(false);
   const fileName = fileSrc.split('/')[fileSrc.split('/').length - 1];
@@ -41,20 +42,22 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
 
   const previewFile = () => {
     try {
-      FileViewer.open(localFilePath).catch(e => Alert.alert(e));
+      FileViewer.open(localFilePath).catch(e =>
+        Alert.alert('Not able to preview file', errorMessage(e)),
+      );
     } catch (e) {
-      Alert.alert('Not able to preview file' + e);
+      Alert.alert('Not able to preview file', errorMessage(e));
     }
   };
 
   useEffect(() => {
     const asyncFileDownload = () => {
-      RNFetchBlob.fs.exists(localFilePath).then(res => {
+      ReactNativeBlobUtil.fs.exists(localFilePath).then(res => {
         if (res) {
           setFileDownload(false);
         } else {
           setFileDownload(true);
-          RNFetchBlob.config({
+          ReactNativeBlobUtil.config({
             overwrite: true,
             path: localFilePath,
             fileCache: true,

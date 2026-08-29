@@ -25,9 +25,11 @@ export const updateBadgeCount = async ({ count = 0 }) => {
 export const findConversationLinkFromPush = ({
   notification,
   installationUrl,
+  currentAccountId,
 }: {
   notification: Notification;
   installationUrl: string;
+  currentAccountId?: number;
 }) => {
   const { notificationType } = notification;
 
@@ -40,7 +42,9 @@ export const findConversationLinkFromPush = ({
       conversationId = primaryActor.conversationId;
     }
     if (conversationId) {
-      const conversationLink = `${installationUrl}/app/accounts/1/conversations/${conversationId}/${primaryActorId}/${primaryActorType}`;
+      // Older servers omit accountId; fall back to the active account so the link stays valid.
+      const accountId = notification.accountId ?? currentAccountId;
+      const conversationLink = `${installationUrl}/app/accounts/${accountId}/conversations/${conversationId}/${primaryActorId}/${primaryActorType}`;
       return conversationLink;
     }
   }

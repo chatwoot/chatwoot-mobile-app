@@ -77,7 +77,9 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
 
   const hasLabels = labels.length > 0;
 
-  const hasSLA = !!slaPolicyId && shouldShowSLA;
+  // A conversation can carry a policy id without the applied SLA record being
+  // serialised, so the record itself gates the indicator.
+  const hasSLA = !!slaPolicyId && !!appliedSla && shouldShowSLA;
 
   if (!lastMessage) {
     return null;
@@ -85,7 +87,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
 
   return (
     <AnimatedNativeView
-      layout={LinearTransition.springify().damping(28).stiffness(200)}
+      layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}
       style={tailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-blackA-A3')}>
       <AnimatedNativeView
         style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
@@ -127,10 +129,10 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           <AnimatedNativeView
             style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
             <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
-              {hasSLA && (
+              {hasSLA && appliedSla && (
                 <SLAIndicator
                   slaPolicyId={slaPolicyId}
-                  appliedSla={appliedSla as SLA}
+                  appliedSla={appliedSla}
                   appliedSlaConversationDetails={
                     appliedSlaConversationDetails as {
                       firstReplyCreatedAt: number;

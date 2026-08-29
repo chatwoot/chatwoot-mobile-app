@@ -24,6 +24,7 @@ import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
 import { checkValidUrl, extractDomain, handleApiError } from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
+import { isUnactionablePushError } from '@/utils/sentryUtils';
 
 const createSettingsThunk = <TResponse, TPayload>(
   type: string,
@@ -129,7 +130,9 @@ export const settingsActions = {
         await SettingsService.saveDeviceDetails(pushData);
         return { fcmToken };
       } catch (error) {
-        Sentry.captureException(error);
+        if (!isUnactionablePushError(error)) {
+          Sentry.captureException(error);
+        }
         return rejectWithValue(
           error instanceof Error ? error.message : 'Error saving device details',
         );

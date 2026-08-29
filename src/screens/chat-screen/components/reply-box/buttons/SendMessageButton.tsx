@@ -27,7 +27,7 @@ export const SendMessageButton = (props: SendMessageButtonProps) => {
   return (
     <Pressable {...restProps} disabled={disabled} {...(disabled ? {} : handlers)}>
       <Animated.View
-        layout={LinearTransition.springify().damping(20).stiffness(180)}
+        layout={LinearTransition.springify().mass(1).damping(15).stiffness(105)}
         entering={sendIconEnterAnimation}
         exiting={sendIconExitAnimation}
         style={[tailwind.style('flex items-center justify-center h-10 w-10'), disabled ? {} : animatedStyle]}>

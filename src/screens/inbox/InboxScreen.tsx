@@ -1,15 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
-import Animated, {
-  LinearTransition,
-  runOnJS,
-  SharedValue,
-  useAnimatedScrollHandler,
-} from 'react-native-reanimated';
+import Animated, { SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
-import { TAB_BAR_HEIGHT } from '@/constants';
 import { InboxListStateProvider } from '@/context';
 import type { Notification } from '@/types/Notification';
 import { tailwind } from '@/theme';
@@ -24,14 +18,17 @@ import { InboxHeader, InboxItemContainer } from './components';
 import { useInboxListStateContext } from '@/context';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { showToast } from '@/utils/toastUtils';
+import { useTabBarHeight } from '@/utils';
 import i18n from '@/i18n';
 import { selectSortOrder } from '@/store/notification/notificationFilterSlice';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { EmptyStateIcon } from '@/svg-icons';
 import { InboxSortTypes } from '@/store/notification/notificationTypes';
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Notification>);
 
 const InboxList = () => {
+  const tabBarHeight = useTabBarHeight();
   const [pageNumber, setPageNumber] = useState(1);
 
   const [isFlashListReady, setFlashListReady] = useState(false);
@@ -40,6 +37,7 @@ const InboxList = () => {
   const isNotificationsLoading = useAppSelector(selectIsLoadingNotifications);
   const isAllNotificationsFetched = useAppSelector(selectIsAllNotificationsFetched);
   const sortOrder = useAppSelector(selectSortOrder);
+  const accountId = useAppSelector(selectCurrentUserAccountId);
 
   const notifications = useAppSelector(state => getFilteredNotifications(state, sortOrder));
 
@@ -57,22 +55,20 @@ const InboxList = () => {
 
   // eslint-disable-next-line react/display-name
   const ListFooterComponent = React.memo(() => {
-    if (isAllNotificationsFetched) return null;
+    if (isAllNotificationsFetched || !isFlashListReady) return null;
     return (
       <Animated.View
-        style={tailwind.style(
-          'flex-1 items-center justify-center pt-8',
-          `pb-[${TAB_BAR_HEIGHT}px]`,
-        )}>
-        {isAllNotificationsFetched ? null : <ActivityIndicator size="small" />}
+        style={tailwind.style('flex-1 items-center justify-center pt-8', `pb-[${tabBarHeight}px]`)}>
+        <ActivityIndicator size="small" />
       </Animated.View>
     );
   });
 
+  // Refetch when the active account changes.
   useEffect(() => {
     clearAndFetchNotifications(sortOrder);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accountId]);
 
   const clearAndFetchNotifications = useCallback(async (sortOrder: InboxSortTypes) => {
     setPageNumber(1);
@@ -123,20 +119,18 @@ const InboxList = () => {
     );
   };
 
-  const scrollHandler = useAnimatedScrollHandler({
-    onBeginDrag: () => {
-      openedRowIndex.value = -1;
-      if (!isFlashListReady) {
-        runOnJS(setFlashListReady)(true);
-      }
-    },
-  });
+  const handleScrollBeginDrag = useCallback(() => {
+    openedRowIndex.value = -1;
+    if (!isFlashListReady) {
+      setFlashListReady(true);
+    }
+  }, [isFlashListReady, openedRowIndex]);
 
   const shouldShowEmptyLoader = isNotificationsLoading && notifications.length === 0;
 
   return shouldShowEmptyLoader ? (
     <Animated.View
-      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${tabBarHeight}px]`)}>
       <ActivityIndicator />
     </Animated.View>
   ) : notifications.length === 0 ? (
@@ -144,7 +138,7 @@ const InboxList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       contentContainerStyle={tailwind.style(
         'flex-1 items-center justify-center',
-        `pb-[${TAB_BAR_HEIGHT}px]`,
+        `pb-[${tabBarHeight}px]`,
       )}>
       <EmptyStateIcon />
       <Animated.Text style={tailwind.style('pt-6 text-md tracking-[0.32px] text-gray-800')}>
@@ -154,16 +148,14 @@ const InboxList = () => {
   ) : (
     <AnimatedFlashlist
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      layout={LinearTransition.springify().damping(18).stiffness(120)}
       showsVerticalScrollIndicator={false}
       data={notifications}
-      estimatedItemSize={71}
-      onScroll={scrollHandler}
+      onScrollBeginDrag={handleScrollBeginDrag}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
       ListFooterComponent={ListFooterComponent}
       renderItem={handleRender}
-      contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT - 1}px]`)}
+      contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}
     />
   );
 };

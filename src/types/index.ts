@@ -4,6 +4,7 @@ import { AllStatusTypes, AssigneeTypes, SortTypes } from './common';
 
 export * from './Agent';
 export * from './AgentBot';
+export * from './CaptainAssistant';
 export * from './common';
 export * from './Contact';
 export * from './Conversation';
@@ -11,6 +12,7 @@ export * from './Message';
 export * from './Team';
 export * from './Account';
 export * from './Macro';
+export * from './MessageTemplate';
 
 export type IconProps = PathProps;
 

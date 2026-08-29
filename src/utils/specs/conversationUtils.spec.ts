@@ -141,4 +141,22 @@ describe('getLastMessage', () => {
     };
     expect(getLastMessage(testConversation)).toEqual(lastMessage);
   });
+
+  it('should return the api message when the conversation has no messages array', () => {
+    const testConversation = {
+      ...conversation,
+      messages: undefined,
+      lastNonActivityMessage: lastMessage,
+    } as unknown as Conversation;
+    expect(getLastMessage(testConversation)).toEqual(lastMessage);
+  });
+
+  it('should return null when the conversation has neither messages nor an api message', () => {
+    const testConversation = {
+      ...conversation,
+      messages: undefined,
+      lastNonActivityMessage: null,
+    } as unknown as Conversation;
+    expect(getLastMessage(testConversation)).toBeNull();
+  });
 });

@@ -1,11 +1,10 @@
 import React from 'react';
 import { ImageSourcePropType, Keyboard, Platform, Pressable } from 'react-native';
-import { BottomSheetModal, useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 import Animated from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
-import { ChevronLeft, OpenIcon, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
-import { BottomSheetBackdrop, BottomSheetWrapper } from '@/components-next';
+import { ChevronLeft, Overflow, ResolvedIcon, SLAIcon } from '@/svg-icons';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { tailwind } from '@/theme';
 import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
 import { SLAEvent } from '@/types/common';
@@ -40,12 +39,6 @@ export const ChatHeader = ({
   onToggleChatStatus,
 }: ChatHeaderProps) => {
   const { slaEventsSheetRef } = useRefsContext();
-
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
-  });
 
   const toggleSlaEventsSheet = () => {
     if (slaEvents?.length) {
@@ -93,11 +86,10 @@ export const ChatHeader = ({
             <Pressable hitSlop={8} onPress={onToggleChatStatus}>
               <Icon
                 icon={
-                  isResolved ? (
-                    <ResolvedIcon strokeWidth={2} stroke={tailwind.color('bg-green-700')} />
-                  ) : (
-                    <OpenIcon strokeWidth={2} />
-                  )
+                  <ResolvedIcon
+                    strokeWidth={2}
+                    {...(isResolved && { stroke: tailwind.color('bg-green-700') })}
+                  />
                 }
                 size={24}
               />
@@ -110,19 +102,9 @@ export const ChatHeader = ({
           )}
         </Animated.View>
       </Animated.View>
-      <BottomSheetModal
-        ref={slaEventsSheetRef}
-        backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        enablePanDownToClose
-        animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['36%']}>
-        <BottomSheetWrapper>
-          <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
-        </BottomSheetWrapper>
-      </BottomSheetModal>
+      <Sheet ref={slaEventsSheetRef} detents={[0.36]}>
+        <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
+      </Sheet>
     </Animated.View>
   );
 };

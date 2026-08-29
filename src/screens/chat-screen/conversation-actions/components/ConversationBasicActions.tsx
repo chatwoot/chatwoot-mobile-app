@@ -85,12 +85,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
     } else {
       actionActive.value = withSpring(0);
     }
-  }, [
-    actionActive,
-    conversationAction.actionStatus,
-    status,
-    isMuted,
-  ]);
+  }, [actionActive, conversationAction.actionStatus, status, isMuted]);
 
   const actionBorderColor = tailwind.color(conversationAction.borderActionColor) as string;
 

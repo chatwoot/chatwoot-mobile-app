@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Platform, Pressable, View } from 'react-native';
-import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 import * as Sentry from '@sentry/react-native';
@@ -14,11 +13,17 @@ import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import {
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+  type Callback,
+} from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
-// eslint-disable-next-line import/no-unresolved
 import { convertOggToWav } from '@/utils/audioConverter';
 
 // eslint-disable-next-line react/display-name
@@ -62,9 +67,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = useCallback(
-    (data: { data: PlayBackType }) => {
-      const playBackData = data.data as PlayBackType;
+  const audioPlayBackStatus = useCallback<Callback>(
+    ({ data: playBackData }) => {
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
         totalDuration.value = playBackData.duration;
@@ -85,7 +89,9 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
         setIsSoundLoading(true);
         try {
           const convertedSrc = await convertOggToWav(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
+          if (typeof convertedSrc === 'string') {
+            setConvertedAudioSrc(convertedSrc);
+          }
         } catch (error) {
           Sentry.captureException(error);
         } finally {

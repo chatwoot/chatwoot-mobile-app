@@ -21,7 +21,7 @@ import { filterTeams } from '@/store/team/teamSelectors';
 type TeamCellProps = {
   value: Team;
   lastItem: boolean;
-  teamId: string | undefined;
+  teamId: number | undefined;
 };
 
 const TeamCell = (props: TeamCellProps) => {
@@ -68,7 +68,7 @@ const TeamCell = (props: TeamCellProps) => {
   );
 };
 
-const TeamStack = ({ teams, teamId }: { teams: Team[]; teamId: string | undefined }) => {
+const TeamStack = ({ teams, teamId }: { teams: Team[]; teamId: number | undefined }) => {
   const isFetching = useAppSelector(selectLoading);
 
   return (
@@ -101,10 +101,7 @@ export const UpdateTeam = () => {
 
   return (
     <React.Fragment>
-      <SearchBar
-        onChangeText={handleChangeText}
-        placeholder={i18n.t('CONVERSATION.SEARCH_TEAM')}
-      />
+      <SearchBar onChangeText={handleChangeText} placeholder={i18n.t('CONVERSATION.SEARCH_TEAM')} />
       <TeamStack teams={teams} teamId={teamId} />
     </React.Fragment>
   );

@@ -109,6 +109,5 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',
     ],
-    androidNavigationBar: { backgroundColor: '#ffffff' },
   };
 };

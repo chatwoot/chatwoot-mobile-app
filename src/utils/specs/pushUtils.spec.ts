@@ -12,6 +12,16 @@ describe('findNotificationFromFCM', () => {
     expect(result).toEqual({ id: 123, title: 'Test Notification' });
   });
 
+  it.each([
+    ['no data', {}],
+    ['no notification field', { data: {} }],
+    ['a malformed payload', { data: { payload: 'not json' } }],
+    ['a payload without a notification', { data: { payload: '{"data": {}}' } }],
+    ['a malformed legacy notification', { data: { notification: 'not json' } }],
+  ])('returns null for a message with %s', (_case, message) => {
+    expect(findNotificationFromFCM({ message })).toBeNull();
+  });
+
   it('should return notification from FCM legacy message', () => {
     const message = {
       data: {

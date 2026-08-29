@@ -135,14 +135,16 @@ export const AppNavigationContainer = () => {
       const message = await messaging().getInitialNotification();
       if (message) {
         const notification = findNotificationFromFCM({ message });
-        const camelCaseNotification = transformNotification(notification);
-        const conversationLink = findConversationLinkFromPush({
-          notification: camelCaseNotification,
-          installationUrl,
-          currentAccountId,
-        });
-        if (conversationLink) {
-          return conversationLink;
+        if (notification) {
+          const camelCaseNotification = transformNotification(notification);
+          const conversationLink = findConversationLinkFromPush({
+            notification: camelCaseNotification,
+            installationUrl,
+            currentAccountId,
+          });
+          if (conversationLink) {
+            return conversationLink;
+          }
         }
       }
       return undefined;
@@ -167,15 +169,17 @@ export const AppNavigationContainer = () => {
       const unsubscribeNotification = messaging().onNotificationOpenedApp(message => {
         if (message) {
           const notification = findNotificationFromFCM({ message });
-          const camelCaseNotification = transformNotification(notification);
+          if (notification) {
+            const camelCaseNotification = transformNotification(notification);
 
-          const conversationLink = findConversationLinkFromPush({
-            notification: camelCaseNotification,
-            installationUrl,
-            currentAccountId,
-          });
-          if (conversationLink) {
-            listener(conversationLink);
+            const conversationLink = findConversationLinkFromPush({
+              notification: camelCaseNotification,
+              installationUrl,
+              currentAccountId,
+            });
+            if (conversationLink) {
+              listener(conversationLink);
+            }
           }
         }
       });

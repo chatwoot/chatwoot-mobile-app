@@ -44,6 +44,7 @@ describe('isUnactionablePushError', () => {
     '[messaging/unknown] SERVICE_NOT_AVAILABLE',
     '[messaging/unknown] java.io.IOException: java.util.concurrent.ExecutionException: java.io.IOException: FIS_AUTH_ERROR',
     'A TLS error caused the secure connection to fail.',
+    'An SSL error has occurred and a secure connection to the server cannot be made.',
     'A server with the specified hostname could not be found.',
     'No APNS token specified before fetching FCM Token',
   ])('drops %s', message => {

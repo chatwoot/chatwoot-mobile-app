@@ -51,6 +51,7 @@ const UNACTIONABLE_PUSH_MESSAGES = [
   'The network connection was lost',
   'The Internet connection appears to be offline',
   'A TLS error caused the secure connection to fail',
+  'An SSL error has occurred',
   'A server with the specified hostname could not be found',
   'No APNS token specified',
 ];

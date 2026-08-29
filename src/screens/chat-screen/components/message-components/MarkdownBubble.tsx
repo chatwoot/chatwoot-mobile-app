@@ -33,6 +33,9 @@ const buildStyles = (variant: string) => {
   const textStyle = tailwind.style(variantTextMap[variant]);
 
   return StyleSheet.create({
+    body: {
+      rowGap: 12,
+    },
     text: {
       fontSize: 16,
       letterSpacing: 0.32,
@@ -48,7 +51,7 @@ const buildStyles = (variant: string) => {
     },
     paragraph: {
       marginTop: 0,
-      marginBottom: 12,
+      marginBottom: 0,
       fontFamily: 'Inter-400-20',
     },
     bullet_list: {

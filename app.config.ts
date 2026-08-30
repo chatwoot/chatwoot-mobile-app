@@ -79,7 +79,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           enableFullScreenImage_legacy: true,
         },
       ],
-      ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
+      [
+        'react-native-permissions',
+        { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] },
+      ],
       [
         '@sentry/react-native',
         {

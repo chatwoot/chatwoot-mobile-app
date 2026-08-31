@@ -52,6 +52,18 @@ describe('extractDomain', () => {
   it('returns unparseable input for the validator to reject', () => {
     expect(extractDomain({ url: 'app chatwoot com' })).toBe('app chatwoot com');
   });
+
+  it.each([
+    ['trusted.example\n.evil.example'],
+    ['trusted.example\t.evil.example'],
+    ['trusted.example\r.evil.example'],
+    ['https://trusted.example\n.evil.example'],
+  ])('does not join %j around its whitespace into another host', url => {
+    const host = extractDomain({ url });
+
+    expect(host).toBe(url.trim());
+    expect(checkValidUrl({ url: `https://${host}/` })).toBe(false);
+  });
 });
 
 describe('buildWebSocketUrl', () => {

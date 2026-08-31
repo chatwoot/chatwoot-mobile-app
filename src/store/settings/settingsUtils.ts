@@ -24,6 +24,13 @@ export const extractDomain = ({ url }: { url: string }) => {
   const trimmedUrl = url.trim();
   const hasScheme = SCHEME.test(trimmedUrl);
 
+  // The URL parser strips tabs and line breaks out of its input, which joins the
+  // text around them into a host that was never entered. Such a value is returned
+  // unparsed, for `checkValidUrl` to reject.
+  if (/\s/.test(trimmedUrl)) {
+    return trimmedUrl;
+  }
+
   try {
     const { host } = new URL(hasScheme ? trimmedUrl : `${URL_TYPE}${trimmedUrl}`);
     return host;

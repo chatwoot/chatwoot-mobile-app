@@ -11,11 +11,10 @@ const path = require('path');
 // use_modular_headers! globally, which can disturb the React/Expo pods).
 const MARKER = 'with-ios-modular-headers';
 
-// @react-native-firebase v26 resolves firebase-ios-sdk through SPM. Those SPM
-// products are automatic libraries rather than dynamic ones, so every RNFirebase
-// pod embeds its own copy of Firebase and the copies collide as duplicate symbols
-// under static linkage. Opting out of SPM keeps Firebase on CocoaPods, which is
-// what the modular-header fix above is written against.
+// firebase-ios-sdk's Swift Package products are automatic libraries, so each
+// @react-native-firebase pod resolving Firebase through SPM embeds its own copy, and
+// those copies collide as duplicate symbols under static linkage. Opting out keeps
+// Firebase on CocoaPods.
 const SPM_OPT_OUT = '$RNFirebaseDisableSPM = true';
 
 // Pods that Firebase's Swift pods import but which ship without module maps.

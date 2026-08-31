@@ -22,7 +22,7 @@ import type {
 } from './settingsTypes';
 import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
-import { checkValidUrl, extractDomain, handleApiError } from './settingsUtils';
+import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { isUnactionablePushError } from '@/utils/sentryUtils';
 
@@ -47,7 +47,7 @@ export const settingsActions = {
       try {
         const installationUrl = extractDomain({ url });
         const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
-        const WEB_SOCKET_URL = `wss://${installationUrl}/cable`;
+        const WEB_SOCKET_URL = buildWebSocketUrl(installationUrl);
 
         if (!checkValidUrl({ url: INSTALLATION_URL })) {
           throw new Error(I18n.t('CONFIGURE_URL.ERROR'));

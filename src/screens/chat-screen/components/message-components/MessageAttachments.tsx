@@ -70,6 +70,10 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
         );
       }
 
+      if (!attachment.dataUrl) {
+        return null;
+      }
+
       return (
         <Animated.View key={key} style={tailwind.style(mediaItemStyle)}>
           {isThumbnail ? (
@@ -79,6 +83,10 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
           )}
         </Animated.View>
       );
+    }
+
+    if (!attachment.dataUrl) {
+      return null;
     }
 
     return (

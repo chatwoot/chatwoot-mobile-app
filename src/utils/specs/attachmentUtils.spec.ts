@@ -6,14 +6,14 @@ const attachment = (fileType: string, dataUrl: string | null, id: number) =>
   ({ fileType, dataUrl, id }) as unknown as ImageMetadata;
 
 describe('groupAttachmentsByType', () => {
-  it('drops media without a source', () => {
+  it('keeps media without a source, so an expired story still reaches its placeholder', () => {
     const withSource = attachment(ATTACHMENT_TYPES.IMAGE, 'https://cdn/1.png', 1);
-    const grouped = groupAttachmentsByType([
-      withSource,
-      attachment(ATTACHMENT_TYPES.IMAGE, null, 2),
-    ]);
+    const withoutSource = attachment(ATTACHMENT_TYPES.IMAGE, null, 2);
 
-    expect(grouped.media).toEqual([withSource]);
+    expect(groupAttachmentsByType([withSource, withoutSource]).media).toEqual([
+      withSource,
+      withoutSource,
+    ]);
   });
 
   it('drops audio and files without a source', () => {

@@ -50,7 +50,7 @@ import { ReplyWarning } from './ReplyWarning';
 import { CannedResponses } from './CannedResponses';
 import { AttachedMedia } from '../message-components/AttachedMedia';
 import { CommandOptionsMenu } from '../message-components/CommandOptionsMenu';
-import { SendMessagePayload } from '@/store/conversation/conversationTypes';
+import { AttachmentFile, SendMessagePayload } from '@/store/conversation/conversationTypes';
 import { TypingIndicator } from './TypingIndicator';
 import { getTypingUsersText } from '@/utils';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
@@ -126,7 +126,9 @@ const BottomSheetContent = () => {
   } = useChatWindowContext();
 
   // Copilot
-  const copilotAbortRef = useRef<{ abort: () => void; unwrap: () => Promise<unknown> }>();
+  const copilotAbortRef = useRef<{ abort: () => void; unwrap: () => Promise<unknown> } | null>(
+    null,
+  );
   const isCopilotActive = useAppSelector(selectIsCopilotActive);
   const isGenerating = useAppSelector(selectIsGenerating);
   const generatedContent = useAppSelector(selectGeneratedContent);
@@ -173,14 +175,14 @@ const BottomSheetContent = () => {
 
   useEffect(() => {
     if (!lastEmail) return;
-    const {
-      contentAttributes: { email: emailAttributes = {} },
-    } = lastEmail;
+    const emailAttributes = lastEmail.contentAttributes?.email;
+    if (!emailAttributes) return;
 
     // Retrieve the email of the current conversation's sender
     const conversationContact = conversation?.meta?.sender?.email || '';
+    const from = emailAttributes.from ?? [];
     let cc = emailAttributes.cc ? [...emailAttributes.cc] : [];
-    let to = [];
+    let to: string[] = [];
 
     // there might be a situation where the current conversation will include a message from a third person,
     // and the current conversation contact is in CC.
@@ -192,8 +194,8 @@ const BottomSheetContent = () => {
 
     // If the last incoming message sender is different from the conversation contact, add them to the "to"
     // and add the conversation contact to the CC
-    if (!emailAttributes.from.includes(conversationContact)) {
-      to.push(...emailAttributes.from);
+    if (!from.includes(conversationContact)) {
+      to.push(...from);
       cc.push(conversationContact);
     }
 
@@ -230,7 +232,7 @@ const BottomSheetContent = () => {
     dispatch(setQuoteMessage(null));
   }, [conversationId, dispatch]);
 
-  const derivedAddMenuOptionStateValue = useDerivedValue(() => {
+  const derivedAddMenuOptionStateValue = useDerivedValue<number>(() => {
     return isAddMenuOptionSheetOpen
       ? withSpring(1, SHEET_APPEAR_SPRING_CONFIG)
       : withSpring(0, SHEET_APPEAR_SPRING_CONFIG);
@@ -312,9 +314,7 @@ const BottomSheetContent = () => {
   const handleCopilotFollowUp = (message: string) => {
     if (followUpContext && message.trim().length > 0) {
       copilotAbortRef.current?.abort();
-      const promise = dispatch(
-        sendCopilotFollowUp({ followUpContext, message, conversationId }),
-      );
+      const promise = dispatch(sendCopilotFollowUp({ followUpContext, message, conversationId }));
       copilotAbortRef.current = promise;
       promise.unwrap().catch((err: { name?: string }) => {
         if (err?.name === 'AbortError') return;
@@ -337,7 +337,7 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const getMessagePayload = (message: string, audioFile: File | null) => {
+  const getMessagePayload = (message: string, audioFile: AttachmentFile | null) => {
     let updatedMessage = message;
     if (isPrivate) {
       const regex = /@\[([\w\s]+)\]\((\d+)\)/g;
@@ -397,11 +397,11 @@ const BottomSheetContent = () => {
     return messagePayload;
   };
 
-  const onRecordingComplete = async (audioFile: File | null) => {
+  const onRecordingComplete = async (audioFile: AttachmentFile | null) => {
     confirmOnSendReply(audioFile);
   };
 
-  const confirmOnSendReply = (audioFile: File | null) => {
+  const confirmOnSendReply = (audioFile: AttachmentFile | null) => {
     hapticSelection?.();
     if (textInputRef && 'current' in textInputRef && textInputRef.current) {
       (textInputRef.current as TextInput).clear();
@@ -513,7 +513,11 @@ const BottomSheetContent = () => {
       )}
 
       <Animated.View
-        layout={isCopilotActive ? undefined : LinearTransition.springify().mass(1).damping(29).stiffness(140)}
+        layout={
+          isCopilotActive
+            ? undefined
+            : LinearTransition.springify().mass(1).damping(29).stiffness(140)
+        }
         style={tailwind.style(
           `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
         )}>
@@ -551,7 +555,11 @@ const BottomSheetContent = () => {
         ) : null}
         {!isVoiceRecorderOpen ? (
           <Animated.View
-            layout={isCopilotActive ? undefined : LinearTransition.springify().mass(1).damping(15).stiffness(105)}
+            layout={
+              isCopilotActive
+                ? undefined
+                : LinearTransition.springify().mass(1).damping(15).stiffness(105)
+            }
             style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
             {!isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton

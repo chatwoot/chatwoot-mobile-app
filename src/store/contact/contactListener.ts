@@ -7,14 +7,18 @@ import { addNotification } from '../notification/notificationSlice';
 import { addContact, addContacts } from './contactSlice';
 import { Conversation } from '@/types/Conversation';
 import { Notification } from '@/types/Notification';
+import type { ConversationListResponse } from '../conversation/conversationTypes';
+import type {
+  NotificationCreatedResponse,
+  NotificationResponse,
+} from '../notification/notificationTypes';
 
 export const contactListenerMiddleware = createListenerMiddleware();
 
 contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversations.fulfilled),
   effect: (action, listenerApi) => {
-    const { payload } = action;
-    const { conversations } = payload;
+    const { conversations } = action.payload as ConversationListResponse;
     const contacts = conversations.map((conversation: Conversation) => conversation.meta.sender);
     if (contacts.length > 0) {
       listenerApi.dispatch(addContacts({ contacts }));
@@ -36,7 +40,7 @@ contactListenerMiddleware.startListening({
 contactListenerMiddleware.startListening({
   matcher: isAnyOf(notificationActions.fetchNotifications.fulfilled),
   effect: (action, listenerApi) => {
-    const { payload: notifications } = action.payload;
+    const { payload: notifications } = action.payload as NotificationResponse;
     const conversationNotifications = notifications.filter(
       (notification: Notification) =>
         notification.primaryActorType === 'Conversation' && notification.primaryActor?.meta?.sender,
@@ -53,8 +57,7 @@ contactListenerMiddleware.startListening({
 contactListenerMiddleware.startListening({
   matcher: isAnyOf(addNotification),
   effect: (action, listenerApi) => {
-    const { payload } = action;
-    const { notification } = payload;
+    const { notification } = action.payload as NotificationCreatedResponse;
     const contact = notification?.primaryActor?.meta?.sender;
     if (contact) {
       listenerApi.dispatch(addContact(contact));

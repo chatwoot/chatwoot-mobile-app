@@ -85,7 +85,7 @@ export interface Message {
   lastNonActivityMessage: Message | null;
   conversation?: Conversation | null;
   shouldRenderAvatar?: boolean | false;
-  senderId: number;
+  senderId?: number;
   groupWithNext?: boolean | false;
   groupWithPrevious?: boolean | false;
   senderType?: string;

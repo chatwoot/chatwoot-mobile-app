@@ -66,7 +66,7 @@ export const findNotificationFromFCM = ({ message }: { message: FCMMessage }) =>
     notification = parsedPayload.data.notification;
   }
   // FCM legacy. It will be deprecated soon
-  else {
+  else if (message?.data?.notification) {
     notification = JSON.parse(message.data.notification);
   }
   return notification;

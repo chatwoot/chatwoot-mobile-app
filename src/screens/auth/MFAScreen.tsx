@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
+import { StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSharedValue } from 'react-native-reanimated';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { Button, VerificationCode } from '@/components-next';
 import { useAnimatedShake } from '@/components-next/verification-code/hooks/use-animated-shake';

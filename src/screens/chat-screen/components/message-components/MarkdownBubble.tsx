@@ -7,7 +7,7 @@ import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
 
 // Shared parser instance; the options are static.
-const markdownItInstance = MarkdownIt({ linkify: true, typographer: true });
+const markdownItInstance = MarkdownIt({ linkify: true, typographer: true, breaks: true });
 
 type MarkdownBubbleProps = {
   messageContent: string;
@@ -33,6 +33,9 @@ const buildStyles = (variant: string) => {
   const textStyle = tailwind.style(variantTextMap[variant]);
 
   return StyleSheet.create({
+    body: {
+      rowGap: 12,
+    },
     text: {
       fontSize: 16,
       letterSpacing: 0.32,

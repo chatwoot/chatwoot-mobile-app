@@ -43,6 +43,7 @@ export const SearchBar = (props: SearchBarProps) => {
         <Icon icon={prefix ? prefix : <SearchIcon />} size={18} />
       </Animated.View>
       <SearchTextInput
+        accessible={true}
         style={[
           tailwind.style(
             'h-9 px-8.5 py-[7px] bg-blackA-A3 text-black text-base font-inter-normal-20 leading-[19.5px] rounded-[11px]',
@@ -63,6 +64,9 @@ export const SearchBar = (props: SearchBarProps) => {
         <Pressable
           onPress={onClear}
           hitSlop={8}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Clear search"
           style={tailwind.style(
             'absolute bg-transparent z-10 inset-y-0 right-0 mr-5.5 flex items-center justify-center',
           )}>

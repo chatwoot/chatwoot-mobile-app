@@ -450,6 +450,9 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
   return (
     <AnimatedNativeView style={tailwind.style('flex flex-row')}>
       <AnimatedPressable
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Left Action"
         onPress={handleOnPressLeft}
         style={[
           StyleSheet.absoluteFill,
@@ -461,6 +464,9 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
         </AnimatedNativeView>
       </AnimatedPressable>
       <AnimatedPressable
+        accessible={true}
+        accessibilityRole="button"
+        accessibilityLabel="Right Action"
         onPress={handleOnPressRight}
         style={[
           StyleSheet.absoluteFill,

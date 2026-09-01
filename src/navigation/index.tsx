@@ -13,6 +13,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
+import { getLinkingPrefixes, linkingConfig } from './linking';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
 import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
@@ -55,20 +56,8 @@ export const AppNavigationContainer = () => {
   const currentAccountId = useAppSelector(selectCurrentUserAccountId);
 
   const linking = {
-    prefixes: [installationUrl, SSO_CALLBACK_URL],
-    config: {
-      screens: {
-        ChatScreen: {
-          path: 'app/accounts/:accountId/conversations/:conversationId/:primaryActorId?/:primaryActorType?',
-          parse: {
-            accountId: (accountId: string) => parseInt(accountId),
-            conversationId: (conversationId: string) => parseInt(conversationId),
-            primaryActorId: (primaryActorId: string) => parseInt(primaryActorId),
-            primaryActorType: (primaryActorType: string) => decodeURIComponent(primaryActorType),
-          },
-        },
-      },
-    },
+    prefixes: getLinkingPrefixes(installationUrl),
+    config: linkingConfig,
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStateFromPath: (path: string, config: any) => {

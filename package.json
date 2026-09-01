@@ -94,7 +94,7 @@
     "react-native-image-picker": "^7.1.2",
     "react-native-ios-context-menu": "^3.2.1",
     "react-native-ios-utilities": "^5.2.0",
-    "react-native-keyboard-controller": "^1.22.4",
+    "react-native-keyboard-controller": "^1.21.9",
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-pager-view": "^8.0.2",
     "react-native-permissions": "^5.2.4",

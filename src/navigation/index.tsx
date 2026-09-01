@@ -74,7 +74,10 @@ export const AppNavigationContainer = () => {
 
       const { accountId, conversationId, primaryActorId, primaryActorType } = params;
 
-      const targetAccountId = resolveAccountSwitch(accountId);
+      const { hasAccess, accountId: targetAccountId } = resolveAccountSwitch(accountId);
+      if (!hasAccess) {
+        return;
+      }
       if (targetAccountId) {
         switchAccount(dispatch, targetAccountId);
       }

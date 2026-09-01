@@ -1,7 +1,5 @@
-import { getStateFromPath } from '@react-navigation/native';
-
 import { CHATWOOT_APP_URL, SSO_CALLBACK_URL } from '@/constants';
-import { getLinkingPrefixes, linkingConfig } from '@/navigation/linking';
+import { getConversationParamsFromPath, getLinkingPrefixes } from '@/navigation/linking';
 
 describe('navigation linking', () => {
   const installationUrl = 'https://chat.example.com/';
@@ -18,20 +16,16 @@ describe('navigation linking', () => {
     const url = `${CHATWOOT_APP_URL}app/accounts/42/conversations/314`;
     const path = url.slice(CHATWOOT_APP_URL.length);
 
-    expect(getStateFromPath(path, linkingConfig)).toMatchObject({
-      routes: [
-        {
-          name: 'ChatScreen',
-          params: {
-            accountId: 42,
-            conversationId: 314,
-          },
-        },
-      ],
+    expect(getConversationParamsFromPath(path)).toMatchObject({
+      accountId: 42,
+      conversationId: 314,
     });
   });
 
-  it('ignores custom-scheme links outside the configured conversation route', () => {
-    expect(getStateFromPath('settings', linkingConfig)).toBeUndefined();
-  });
+  it.each(['settings', 'settings/conversations/314', 'foo/conversations/314'])(
+    'ignores custom-scheme path %s outside the configured conversation route',
+    path => {
+      expect(getConversationParamsFromPath(path)).toBeNull();
+    },
+  );
 });

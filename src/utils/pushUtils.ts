@@ -58,16 +58,24 @@ interface FCMMessage {
   };
 }
 
+// A push can arrive without the field the branch below reads, and its contents
+// come from the server, so a parse is never assumed to succeed.
+const parseJSON = (value?: string) => {
+  if (!value) {
+    return null;
+  }
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+};
+
 export const findNotificationFromFCM = ({ message }: { message: FCMMessage }) => {
-  let notification = null;
   // FCM HTTP v1
   if (message?.data?.payload) {
-    const parsedPayload = JSON.parse(message.data.payload);
-    notification = parsedPayload.data.notification;
+    return parseJSON(message.data.payload)?.data?.notification ?? null;
   }
   // FCM legacy. It will be deprecated soon
-  else {
-    notification = JSON.parse(message.data.notification);
-  }
-  return notification;
+  return parseJSON(message?.data?.notification);
 };

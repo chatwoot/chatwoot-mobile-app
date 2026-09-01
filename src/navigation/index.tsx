@@ -69,8 +69,8 @@ export const AppNavigationContainer = () => {
         },
       },
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getStateFromPath: (path: string, config: any) => {
       // Handle SSO callback - App running, receives deep link
       if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
@@ -140,14 +140,16 @@ export const AppNavigationContainer = () => {
       const message = await getInitialNotification(getMessaging());
       if (message) {
         const notification = findNotificationFromFCM({ message });
-        const camelCaseNotification = transformNotification(notification);
-        const conversationLink = findConversationLinkFromPush({
-          notification: camelCaseNotification,
-          installationUrl,
-          currentAccountId,
-        });
-        if (conversationLink) {
-          return conversationLink;
+        if (notification) {
+          const camelCaseNotification = transformNotification(notification);
+          const conversationLink = findConversationLinkFromPush({
+            notification: camelCaseNotification,
+            installationUrl,
+            currentAccountId,
+          });
+          if (conversationLink) {
+            return conversationLink;
+          }
         }
       }
       return undefined;
@@ -172,15 +174,17 @@ export const AppNavigationContainer = () => {
       const unsubscribeNotification = onNotificationOpenedApp(getMessaging(), message => {
         if (message) {
           const notification = findNotificationFromFCM({ message });
-          const camelCaseNotification = transformNotification(notification);
+          if (notification) {
+            const camelCaseNotification = transformNotification(notification);
 
-          const conversationLink = findConversationLinkFromPush({
-            notification: camelCaseNotification,
-            installationUrl,
-            currentAccountId,
-          });
-          if (conversationLink) {
-            listener(conversationLink);
+            const conversationLink = findConversationLinkFromPush({
+              notification: camelCaseNotification,
+              installationUrl,
+              currentAccountId,
+            });
+            if (conversationLink) {
+              listener(conversationLink);
+            }
           }
         }
       });

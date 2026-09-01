@@ -104,6 +104,14 @@ export type SwipeableProps = {
    * @default 'bg-green-800'
    */
   rightElementBgColor?: string;
+  /**
+   * Accessibility label for the left action button
+   */
+  leftActionAccessibilityLabel?: string;
+  /**
+   * Accessibility label for the right action button
+   */
+  rightActionAccessibilityLabel?: string;
 };
 
 // eslint-disable-next-line react/display-name
@@ -125,6 +133,8 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
     noOfPointers = 1,
     leftElementBgColor = 'bg-blue-800',
     rightElementBgColor = 'bg-green-800',
+    leftActionAccessibilityLabel,
+    rightActionAccessibilityLabel,
   } = props;
 
   const hapticWarning = useHaptic('success');
@@ -452,7 +462,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       <AnimatedPressable
         accessible={true}
         accessibilityRole="button"
-        accessibilityLabel="Left Action"
+        accessibilityLabel={leftActionAccessibilityLabel}
         onPress={handleOnPressLeft}
         style={[
           StyleSheet.absoluteFill,
@@ -466,7 +476,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
       <AnimatedPressable
         accessible={true}
         accessibilityRole="button"
-        accessibilityLabel="Right Action"
+        accessibilityLabel={rightActionAccessibilityLabel}
         onPress={handleOnPressRight}
         style={[
           StyleSheet.absoluteFill,

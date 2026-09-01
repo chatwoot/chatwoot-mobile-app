@@ -73,6 +73,10 @@
     }
   },
   "CONVERSATION": {
+    "ACTIONS": {
+      "MARK_AS_READ": "Mark conversation as read",
+      "MARK_AS_UNREAD": "Mark conversation as unread"
+    },
     "HEADER": {
       "TITLE": "Conversations",
       "CLEAR_FILTER": "Clear"
@@ -308,6 +312,10 @@
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
+    "ACTIONS": {
+      "MARK_AS_READ": "Mark notification as read",
+      "MARK_AS_UNREAD": "Mark notification as unread"
+    },
     "HEADER_TITLE": "Notifications",
     "INBOX": "Inbox",
     "EMPTY": "No notifications yet.",

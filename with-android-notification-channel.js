@@ -1,37 +1,16 @@
-const {
-  withAndroidManifest,
-  withMainApplication,
-  createRunOncePlugin,
-} = require('@expo/config-plugins');
+const { withMainApplication, createRunOncePlugin } = require('@expo/config-plugins');
 
 const CHANNEL_ID = 'default';
 const CHANNEL_NAME = 'Default';
-const META_NAME = 'com.google.firebase.messaging.default_notification_channel_id';
 const MARKER = 'CW-3883 default notification channel';
 
-// Points FCM at the channel below for backgrounded/killed notifications.
-function withMetaData(config) {
-  return withAndroidManifest(config, cfg => {
-    const application = cfg.modResults.manifest.application?.[0];
-    if (application) {
-      application['meta-data'] = application['meta-data'] || [];
-      const existing = application['meta-data'].find(
-        item => item.$['android:name'] === META_NAME,
-      );
-      if (existing) {
-        existing.$['android:value'] = CHANNEL_ID;
-      } else {
-        application['meta-data'].push({
-          $: { 'android:name': META_NAME, 'android:value': CHANNEL_ID },
-        });
-      }
-    }
-    return cfg;
-  });
-}
+// The manifest meta-data pointing FCM at this channel comes from the
+// `messaging_android_notification_channel_id` key in firebase.json, which
+// @react-native-firebase reads into its own manifest entry.
 
 // notifee is not autolinked on Android, so create the channel with the platform API.
-// A high-importance channel plays the default notification sound (Android 8+ ties sound to the channel).
+// A high-importance channel with vibration enabled plays the default notification sound and
+// vibrates (Android 8+ ties both to the channel; vibration is off unless enabled explicitly).
 function withChannelCreation(config) {
   return withMainApplication(config, cfg => {
     if (cfg.modResults.language !== 'kt' || cfg.modResults.contents.includes(MARKER)) {
@@ -46,6 +25,7 @@ function withChannelCreation(config) {
         "${CHANNEL_NAME}",
         android.app.NotificationManager.IMPORTANCE_HIGH
       )
+      notificationChannel.enableVibration(true)
       getSystemService(android.app.NotificationManager::class.java)?.createNotificationChannel(notificationChannel)
     }`;
     cfg.modResults.contents = cfg.modResults.contents.replace(anchor, channelCode);
@@ -54,7 +34,7 @@ function withChannelCreation(config) {
 }
 
 function withAndroidNotificationChannel(config) {
-  return withChannelCreation(withMetaData(config));
+  return withChannelCreation(config);
 }
 
 module.exports = createRunOncePlugin(

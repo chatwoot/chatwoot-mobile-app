@@ -6,6 +6,7 @@ import { CloseIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { RenderPropType } from '@/types';
 import { Icon } from '../icon';
+import i18n from '@/i18n';
 
 interface SearchBarProps extends TextInputProps {
   isLoading?: boolean;
@@ -66,7 +67,7 @@ export const SearchBar = (props: SearchBarProps) => {
           hitSlop={8}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel="Clear search"
+          accessibilityLabel={i18n.t('SEARCH.CLEAR_SEARCH')}
           style={tailwind.style(
             'absolute bg-transparent z-10 inset-y-0 right-0 mr-5.5 flex items-center justify-center',
           )}>

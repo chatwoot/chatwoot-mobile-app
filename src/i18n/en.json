@@ -73,10 +73,6 @@
     }
   },
   "CONVERSATION": {
-    "ACTIONS": {
-      "MARK_AS_READ": "Mark conversation as read",
-      "MARK_AS_UNREAD": "Mark conversation as unread"
-    },
     "HEADER": {
       "TITLE": "Conversations",
       "CLEAR_FILTER": "Clear"
@@ -261,6 +257,8 @@
       "EXPAND": "Expand email"
     },
     "ACTIONS": {
+      "MARK_AS_READ": "Mark conversation as read",
+      "MARK_AS_UNREAD": "Mark conversation as unread",
       "ASSIGNEE": {
         "EMPTY": "Unassigned",
         "ASSIGN": "Assign",
@@ -549,6 +547,7 @@
     "PLACEHOLDER": "Type 2 or more characters to search",
     "HINT": "Search by conversation id, email, phone number, messages for better search results.",
     "ALL_RESULTS": "All Results",
+    "CLEAR_SEARCH": "Clear search",
     "RECENT_SEARCHES": "Recent Searches",
     "CLEAR_ALL": "Clear all",
     "VIEW_MORE": "View more",

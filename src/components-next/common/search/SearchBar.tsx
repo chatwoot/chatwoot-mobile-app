@@ -5,6 +5,7 @@ import Animated, { withTiming } from 'react-native-reanimated';
 import { CloseIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { RenderPropType } from '@/types';
+import i18n from '@/i18n';
 import { Icon } from '../icon';
 
 interface SearchBarProps extends TextInputProps {
@@ -66,7 +67,7 @@ export const SearchBar = (props: SearchBarProps) => {
           hitSlop={8}
           accessible={true}
           accessibilityRole="button"
-          accessibilityLabel="Clear search"
+          accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
           style={tailwind.style(
             'absolute bg-transparent z-10 inset-y-0 right-0 mr-5.5 flex items-center justify-center',
           )}>

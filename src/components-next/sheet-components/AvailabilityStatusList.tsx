@@ -36,7 +36,8 @@ const StatusCell = ({
     <Pressable
       onPress={handlePress}
       accessible={true}
-      accessibilityRole="button"
+      accessibilityRole="radio"
+      accessibilityState={{ selected: isSelected }}
       accessibilityLabel={i18n.t(`AVAILABILITY.${item.status.toUpperCase()}`)}
     >
       <Animated.View style={tailwind.style('flex flex-row items-center')}>

@@ -36,6 +36,7 @@ const AccountCell = ({
       onPress={handlePress}
       accessible={true}
       accessibilityRole="button"
+      accessibilityState={{ selected: isSelected }}
       accessibilityLabel={`${item.name}, ${item.role}`}
     >
       <Animated.View style={tailwind.style('flex flex-row items-center')}>

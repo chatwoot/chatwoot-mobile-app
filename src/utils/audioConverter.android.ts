@@ -5,7 +5,3 @@ import { AudioAttachmentSource } from '@/utils/audioSource';
 export const preparePlayableAudio = async (source: AudioAttachmentSource): Promise<string> => {
   return source.dataUrl;
 };
-
-export const convertAacToWav = async (inputPath: string): Promise<string> => {
-  return '';
-};

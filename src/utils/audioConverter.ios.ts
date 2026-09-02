@@ -119,24 +119,3 @@ export const preparePlayableAudio = async (source: AudioAttachmentSource): Promi
     inFlightPreparations.delete(source.dataUrl);
   }
 };
-
-export const convertAacToWav = async (inputPath: string): Promise<string> => {
-  try {
-    const fileName = `converted_${Date.now()}.wav`;
-    const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
-
-    await FFmpegKit.execute(
-      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
-    );
-
-    const outputExists = await RNFS.exists(outputPath);
-    if (!outputExists) {
-      throw new Error('Conversion failed - output file not found');
-    }
-
-    return outputPath; // 👈 Return without file:// prefix
-  } catch (error) {
-    Sentry.captureException(error);
-    throw error;
-  }
-};

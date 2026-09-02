@@ -1,13 +1,7 @@
-import React, { useEffect, useMemo, useState, useCallback } from 'react';
-import { Platform, Pressable, View } from 'react-native';
-import { PlayBackType } from 'react-native-audio-recorder-player';
-import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
+import React, { useMemo } from 'react';
+import { Pressable, View } from 'react-native';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
-
-import {
-  selectCurrentPlayingAudioSrc,
-  setCurrentPlayingAudioSrc,
-} from '@/store/conversation/audioPlayerSlice';
 
 import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
@@ -15,13 +9,9 @@ import { Icon, Slider } from '@/components-next/common';
 import { FileErrorIcon } from '@/svg-icons';
 import i18n from '@/i18n';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '@/hooks';
-// eslint-disable-next-line import/no-unresolved
-import { preparePlayableAudio } from '@/utils/audioConverter';
-import { iosNeedsConversion } from '@/utils/audioSource';
+
+import { useAudioBubblePlayback } from './useAudioBubblePlayback';
 
 // eslint-disable-next-line react/display-name
 export const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -48,141 +38,35 @@ type AudioBubbleProps = {
   variant: string;
 };
 
-type AudioPlayerProps = AudioBubbleProps;
-
 // eslint-disable-next-line react/display-name
-export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
+export const AudioBubblePlayer = React.memo((props: AudioBubbleProps) => {
   const { audioSrc, contentType, extension, variant } = props;
 
-  const [isSoundLoading, setIsSoundLoading] = useState(false);
-  const [isAudioPlaying, setAudioPlaying] = useState(false);
-  const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
-  const [hasConversionFailed, setHasConversionFailed] = useState(false);
-
-  const dispatch = useDispatch();
-  const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
-
-  const currentPosition = useSharedValue(0);
-  const totalDuration = useSharedValue(0);
-
-  const audioPlayBackStatus = useCallback(
-    (data: { data: PlayBackType }) => {
-      const playBackData = data.data as PlayBackType;
-      if (playBackData) {
-        currentPosition.value = playBackData.currentPosition;
-        totalDuration.value = playBackData.duration;
-        if (playBackData.currentPosition === playBackData.duration) {
-          currentPosition.value = 0;
-          totalDuration.value = 0;
-          setAudioPlaying(false);
-          dispatch(setCurrentPlayingAudioSrc(''));
-        }
-      }
-    },
-    [currentPosition, totalDuration, dispatch],
+  const source = useMemo(
+    () => ({ dataUrl: audioSrc, contentType, extension }),
+    [audioSrc, contentType, extension],
   );
+  const { state, currentPosition, totalDuration, toggle, pause, seekTo } =
+    useAudioBubblePlayback(source);
 
-  useEffect(() => {
-    let active = true;
-
-    const source = { dataUrl: audioSrc, contentType, extension };
-
-    const prepareAudio = async () => {
-      // Sources the metadata marks as natively playable skip the download.
-      // Ogg/WebM and unidentified sources go through preparePlayableAudio.
-      if (Platform.OS !== 'ios' || iosNeedsConversion(source) === false) {
-        return;
-      }
-      setIsSoundLoading(true);
-      setHasConversionFailed(false);
-      try {
-        const playableSrc = await preparePlayableAudio(source);
-        if (active) {
-          setConvertedAudioSrc(playableSrc);
-        }
-      } catch {
-        // preparePlayableAudio reports to Sentry already.
-        if (active) {
-          setHasConversionFailed(true);
-        }
-      } finally {
-        if (active) {
-          setIsSoundLoading(false);
-        }
-      }
-    };
-    prepareAudio();
-
-    return () => {
-      active = false;
-    };
-  }, [audioSrc, contentType, extension]);
-
-  const togglePlayback = useCallback(() => {
-    if (convertedAudioSrc === currentPlayingAudioSrc) {
-      if (isAudioPlaying) {
-        pausePlayer();
-      } else {
-        resumePlayer();
-      }
-      setAudioPlaying(!isAudioPlaying);
-    } else {
-      setIsSoundLoading(true);
-      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
-        setIsSoundLoading(false);
-        setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
-      });
-    }
-  }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);
-
-  const manualSeekTo = useCallback(async (manualSeekPosition: number) => {
-    seekTo(manualSeekPosition).then(() => {
-      resumePlayer();
-    });
-  }, []);
-
-  const pauseAudio = useCallback(async () => {
-    await pausePlayer();
-  }, []);
-
-  const isCurrentAudioSrcPlaying = useMemo(
-    () => currentPlayingAudioSrc === convertedAudioSrc && isAudioPlaying,
-    [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying],
-  );
-
-  useEffect(() => {
-    if (currentPlayingAudioSrc !== audioSrc) {
-      currentPosition.value = 0;
-      totalDuration.value = 0;
-    }
-  }, [currentPlayingAudioSrc, audioSrc, currentPosition, totalDuration]);
-
-  useEffect(() => {
-    return () => {
-      stopPlayer()
-        .then()
-        .finally(() => {
-          setAudioPlaying(false);
-          dispatch(setCurrentPlayingAudioSrc(''));
-        });
-    };
-  }, [dispatch]);
+  const isUserVariant = variant === MESSAGE_VARIANTS.USER;
+  const iconFill = isUserVariant ? 'white' : 'black';
+  const iconFillOpacity = isUserVariant ? '1' : '0.565';
 
   const sliderProps = useMemo(
     () => ({
-      trackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500',
-      filledTrackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-blue-700',
-      knobStyle: variant === MESSAGE_VARIANTS.USER ? 'border-blue-300' : 'border-blue-700',
-      manualSeekTo,
+      trackColor: isUserVariant ? 'bg-whiteA-A9' : 'bg-gray-500',
+      filledTrackColor: isUserVariant ? 'bg-white' : 'bg-blue-700',
+      knobStyle: isUserVariant ? 'border-blue-300' : 'border-blue-700',
+      manualSeekTo: seekTo,
       currentPosition,
       totalDuration,
-      pauseAudio,
+      pauseAudio: pause,
     }),
-    [variant, manualSeekTo, currentPosition, totalDuration, pauseAudio],
+    [isUserVariant, seekTo, currentPosition, totalDuration, pause],
   );
 
-  if (hasConversionFailed) {
+  if (state === 'failed') {
     return (
       <View style={tailwind.style('w-full flex flex-row items-center gap-1 flex-1')}>
         <Icon icon={<FileErrorIcon fill={tailwind.color('text-gray-900')} />} size={16} />
@@ -195,35 +79,24 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
-      <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
-        {isSoundLoading ? (
+      <Pressable disabled={state === 'loading'} hitSlop={10} onPress={toggle}>
+        {state === 'loading' ? (
           <Animated.View>
-            <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
+            <Spinner size={13} stroke={iconFill} />
           </Animated.View>
-        ) : isCurrentAudioSrcPlaying ? (
+        ) : state === 'playing' ? (
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
-            <Icon
-              icon={
-                <PauseIcon
-                  fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-                />
-              }
-              size={13}
-            />
+            <Icon icon={<PauseIcon fillOpacity={iconFillOpacity} fill={iconFill} />} size={13} />
           </Animated.View>
         ) : (
           <Animated.View
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
-            <PlayIcon
-              fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-            />
+            <PlayIcon fillOpacity={iconFillOpacity} fill={iconFill} />
           </Animated.View>
         )}
       </Pressable>

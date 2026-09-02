@@ -5,6 +5,8 @@ jest.mock('@sentry/react-native', () => ({
   captureException: jest.fn(),
 }));
 
+jest.mock('react-native-permissions', () => jest.requireActual('react-native-permissions/mock'));
+
 jest.mock('@react-native-firebase/messaging', () => jest.fn());
 
 jest.mock('react-native-device-info', () => ({

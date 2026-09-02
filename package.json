@@ -94,7 +94,7 @@
     "react-native-image-picker": "^7.1.2",
     "react-native-ios-context-menu": "^3.2.1",
     "react-native-ios-utilities": "^5.2.0",
-    "react-native-keyboard-controller": "^1.21.9",
+    "react-native-keyboard-controller": "^1.22.4",
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-pager-view": "^8.0.2",
     "react-native-permissions": "^5.2.4",
@@ -187,7 +187,8 @@
       "@react-native-menu/menu@1.2.3": "patches/@react-native-menu__menu@1.2.3.patch",
       "@react-native-clipboard/clipboard@1.16.2": "patches/@react-native-clipboard__clipboard@1.16.2.patch",
       "react-native-modal": "patches/react-native-modal.patch",
-      "expo-modules-jsi@57.0.3": "patches/expo-modules-jsi@57.0.3.patch"
+      "expo-modules-jsi@57.0.3": "patches/expo-modules-jsi@57.0.3.patch",
+      "react-native-reanimated@4.5.5": "patches/react-native-reanimated@4.5.5.patch"
     },
     "overrides": {
       "@expo/dom-webview": "57.0.1",

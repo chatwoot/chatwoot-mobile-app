@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.9.2",
+  "version": "4.9.3",
   "packageManager": "pnpm@10.11.0",
   "scripts": {
     "start": "expo start --dev-client",

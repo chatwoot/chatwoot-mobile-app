@@ -1,8 +1,8 @@
 import RNFS from 'react-native-fs';
-import { FFmpegKit } from 'ffmpeg-kit-react-native';
+import { FFmpegKit, FFprobeKit } from 'ffmpeg-kit-react-native';
 import * as Sentry from '@sentry/react-native';
 
-import { convertOggToWav } from '@/utils/audioConverter.ios';
+import { preparePlayableAudio } from '@/utils/audioConverter.ios';
 
 jest.mock('react-native-fs', () => ({
   CachesDirectoryPath: '/caches',
@@ -13,16 +13,23 @@ jest.mock('react-native-fs', () => ({
 
 jest.mock('ffmpeg-kit-react-native', () => ({
   FFmpegKit: { execute: jest.fn() },
+  FFprobeKit: { getMediaInformation: jest.fn() },
 }));
 
 jest.mock('@sentry/react-native', () => ({ captureException: jest.fn() }));
 
 const mockRNFS = RNFS as jest.Mocked<typeof RNFS>;
 const mockExecute = FFmpegKit.execute as jest.Mock;
+const mockProbe = FFprobeKit.getMediaInformation as jest.Mock;
+
+const probeResult = (format: string | undefined) => ({
+  getMediaInformation: () => ({ getFormat: () => format }),
+});
 const mockCapture = Sentry.captureException as jest.Mock;
 
-const A = 'https://example.com/a.ogg';
-const B = 'https://example.com/b.ogg';
+const A = { dataUrl: 'https://example.com/a.oga' };
+const B = { dataUrl: 'https://example.com/b.oga' };
+const UNKNOWN = { dataUrl: 'https://example.com/01sdhn' };
 
 // exists() is called for the cached output first, then for the downloaded
 // input, then for the conversion output.
@@ -31,23 +38,42 @@ const existsSequence = (...values: boolean[]) => {
   mockRNFS.exists.mockImplementation(() => Promise.resolve(queue.shift() ?? false));
 };
 
-describe('convertOggToWav', () => {
+describe('preparePlayableAudio', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockRNFS.downloadFile.mockReturnValue({
       promise: Promise.resolve({ statusCode: 200 }),
     } as never);
+    mockProbe.mockResolvedValue(probeResult('ogg'));
     mockExecute.mockResolvedValue(undefined);
     mockRNFS.unlink.mockResolvedValue(undefined as never);
   });
 
+  it('returns natively playable sources untouched without downloading', async () => {
+    const source = { dataUrl: 'https://example.com/a.mp3', contentType: 'audio/mpeg' };
+
+    await expect(preparePlayableAudio(source)).resolves.toBe(source.dataUrl);
+    expect(mockRNFS.downloadFile).not.toHaveBeenCalled();
+  });
+
+  it('converts ogg sources to a cached m4a file', async () => {
+    existsSequence(false, true, true);
+
+    const result = await preparePlayableAudio(A);
+
+    expect(result).toMatch(/^file:\/\/\/caches\/audio_[a-z0-9]+\.m4a$/);
+    expect(mockExecute).toHaveBeenCalledTimes(1);
+    expect(mockExecute.mock.calls[0][0]).toContain('-c:a aac');
+    expect(mockProbe).not.toHaveBeenCalled();
+  });
+
   it('gives each source url its own temp and output paths', async () => {
     existsSequence(false, true, true);
-    await convertOggToWav(A);
+    await preparePlayableAudio(A);
     const firstDownload = mockRNFS.downloadFile.mock.calls[0][0];
 
     existsSequence(false, true, true);
-    await convertOggToWav(B);
+    await preparePlayableAudio(B);
     const secondDownload = mockRNFS.downloadFile.mock.calls[1][0];
 
     // A shared temp file let one conversion delete the file another was using.
@@ -56,19 +82,50 @@ describe('convertOggToWav', () => {
 
   it('reuses an already converted file without downloading again', async () => {
     existsSequence(true);
-    const result = await convertOggToWav(A);
+    const result = await preparePlayableAudio(A);
 
     expect(mockRNFS.downloadFile).not.toHaveBeenCalled();
     expect(result).toContain('file:///caches/');
   });
 
-  it('shares one conversion between concurrent callers of the same url', async () => {
+  it('shares one preparation between concurrent callers of the same url', async () => {
     existsSequence(false, true, true);
 
-    const [first, second] = await Promise.all([convertOggToWav(A), convertOggToWav(A)]);
+    const [first, second] = await Promise.all([preparePlayableAudio(A), preparePlayableAudio(A)]);
 
     expect(mockRNFS.downloadFile).toHaveBeenCalledTimes(1);
     expect(first).toEqual(second);
+  });
+
+  it('removes the downloaded file after converting', async () => {
+    existsSequence(false, true, true);
+
+    await preparePlayableAudio(A);
+
+    expect(mockRNFS.unlink).toHaveBeenCalledWith(expect.stringMatching(/\.download$/));
+  });
+
+  describe('sources with no format metadata', () => {
+    it('converts when ffprobe reports an ogg container', async () => {
+      existsSequence(false, true, true);
+      mockProbe.mockResolvedValue(probeResult('ogg'));
+
+      const result = await preparePlayableAudio(UNKNOWN);
+
+      expect(mockProbe).toHaveBeenCalledWith(expect.stringMatching(/\.download$/));
+      expect(result).toMatch(/\.m4a$/);
+    });
+
+    it('plays from the original url when ffprobe reports a native format', async () => {
+      existsSequence(false, true);
+      mockProbe.mockResolvedValue(probeResult('mp3'));
+
+      const result = await preparePlayableAudio(UNKNOWN);
+
+      expect(result).toBe(UNKNOWN.dataUrl);
+      expect(mockExecute).not.toHaveBeenCalled();
+      expect(mockRNFS.unlink).toHaveBeenCalledWith(expect.stringMatching(/\.download$/));
+    });
   });
 
   it('throws when the download fails', async () => {
@@ -77,27 +134,29 @@ describe('convertOggToWav', () => {
       promise: Promise.resolve({ statusCode: 404 }),
     } as never);
 
-    await expect(convertOggToWav(A)).rejects.toThrow('Download failed with status 404');
+    await expect(preparePlayableAudio(A)).rejects.toThrow('Download failed with status 404');
   });
 
   it('throws when the converted file is missing', async () => {
     existsSequence(false, true, false);
 
-    await expect(convertOggToWav(A)).rejects.toThrow('Conversion failed - output file not found');
+    await expect(preparePlayableAudio(A)).rejects.toThrow(
+      'Conversion failed - output file not found',
+    );
   });
 
   it('reports a failure to sentry once', async () => {
     existsSequence(false, false);
 
-    await expect(convertOggToWav(A)).rejects.toThrow('Downloaded file not found');
+    await expect(preparePlayableAudio(A)).rejects.toThrow('Downloaded file not found');
     expect(mockCapture).toHaveBeenCalledTimes(1);
   });
 
   it('retries after a failure instead of caching the rejection', async () => {
     existsSequence(false, false);
-    await expect(convertOggToWav(A)).rejects.toThrow();
+    await expect(preparePlayableAudio(A)).rejects.toThrow();
 
     existsSequence(false, true, true);
-    await expect(convertOggToWav(A)).resolves.toContain('file:///caches/');
+    await expect(preparePlayableAudio(A)).resolves.toContain('file:///caches/');
   });
 });

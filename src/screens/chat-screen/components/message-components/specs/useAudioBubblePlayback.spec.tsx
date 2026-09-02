@@ -8,9 +8,9 @@ import { preparePlayableAudio } from '@/utils/audioConverter';
 
 import { useAudioBubblePlayback } from '../useAudioBubblePlayback';
 
-jest.mock('expo-audio', () => ({
-  createAudioPlayer: jest.fn(),
-  setAudioModeAsync: jest.fn(() => Promise.resolve()),
+jest.mock('expo-audio', () => ({ createAudioPlayer: jest.fn() }));
+jest.mock('@/utils/audioSession', () => ({
+  ensurePlaybackAudioMode: jest.fn(() => Promise.resolve()),
 }));
 jest.mock('@sentry/react-native', () => ({ captureException: jest.fn() }));
 jest.mock('@/utils/audioConverter', () => ({ preparePlayableAudio: jest.fn() }));
@@ -151,7 +151,11 @@ describe('useAudioBubblePlayback', () => {
 
     expect(result.current.state).toBe('paused');
     expect(result.current.currentPosition.value).toBe(0);
+    expect(player.pause).toHaveBeenCalledTimes(1);
     expect(player.seekTo).toHaveBeenCalledWith(0);
+    expect(player.pause.mock.invocationCallOrder[0]).toBeLessThan(
+      player.seekTo.mock.invocationCallOrder[0],
+    );
   });
 
   it('keeps the playing state while the player buffers', async () => {

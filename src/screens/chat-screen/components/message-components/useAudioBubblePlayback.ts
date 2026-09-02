@@ -7,13 +7,9 @@ import * as Sentry from '@sentry/react-native';
 // eslint-disable-next-line import/no-unresolved
 import { preparePlayableAudio } from '@/utils/audioConverter';
 import { AudioAttachmentSource } from '@/utils/audioSource';
+import { ensurePlaybackAudioMode } from '@/utils/audioSession';
 
-import {
-  claimPlayback,
-  ensurePlaybackAudioMode,
-  PlaybackOwner,
-  releasePlayback,
-} from './audioPlaybackController';
+import { claimPlayback, PlaybackOwner, releasePlayback } from './audioPlaybackController';
 
 export type AudioPlaybackState = 'idle' | 'loading' | 'playing' | 'paused' | 'failed';
 
@@ -70,6 +66,9 @@ export const useAudioBubblePlayback = (source: AudioAttachmentSource) => {
 
       if (status.didJustFinish) {
         currentPosition.value = 0;
+        // ExoPlayer keeps playWhenReady after the end of the track, so seeking
+        // back without pausing would start it again.
+        playerRef.current?.pause();
         playerRef.current?.seekTo(0);
         releasePlayback(ownerRef.current);
         setState('paused');

@@ -187,7 +187,8 @@
       "@react-native-menu/menu@1.2.3": "patches/@react-native-menu__menu@1.2.3.patch",
       "@react-native-clipboard/clipboard@1.16.2": "patches/@react-native-clipboard__clipboard@1.16.2.patch",
       "react-native-modal": "patches/react-native-modal.patch",
-      "expo-modules-jsi@57.0.3": "patches/expo-modules-jsi@57.0.3.patch"
+      "expo-modules-jsi@57.0.3": "patches/expo-modules-jsi@57.0.3.patch",
+      "react-native-reanimated@4.5.5": "patches/react-native-reanimated@4.5.5.patch"
     },
     "overrides": {
       "@expo/dom-webview": "57.0.1",

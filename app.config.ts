@@ -112,7 +112,20 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           },
         },
       ],
-      './with-ffmpeg-pod.js',
+      [
+        'react-native-audio-api',
+        {
+          // iOS decodes Ogg/Opus through the statically linked libopus; the
+          // optional FFmpeg build ships no Opus or Matroska support, so it is
+          // left out. The module is not linked on Android
+          // (react-native.config.js), which plays Ogg and WebM natively.
+          disableFFmpeg: true,
+          iosBackgroundMode: false,
+          androidPermissions: [],
+          androidForegroundService: false,
+          androidFSTypes: [],
+        },
+      ],
       './with-android-notification-channel.js',
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',

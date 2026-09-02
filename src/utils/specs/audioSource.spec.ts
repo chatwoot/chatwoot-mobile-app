@@ -1,7 +1,7 @@
 import {
   getUrlExtension,
   iosNeedsConversion,
-  isUnsupportedIosContainerFormat,
+  isUnsupportedIosContainer,
 } from '@/utils/audioSource';
 
 const REDIRECT = 'https://app.chatwoot.com/rails/active_storage/blobs/redirect/abc123';
@@ -89,17 +89,18 @@ describe('iosNeedsConversion', () => {
   });
 });
 
-describe('isUnsupportedIosContainerFormat', () => {
-  it('recognises the Ogg and WebM container formats', () => {
-    expect(isUnsupportedIosContainerFormat('ogg')).toBe(true);
-    expect(isUnsupportedIosContainerFormat('matroska,webm')).toBe(true);
+describe('isUnsupportedIosContainer', () => {
+  const bytes = (...values: number[]) => new Uint8Array(values);
+
+  it('recognises the Ogg and WebM magic bytes', () => {
+    expect(isUnsupportedIosContainer(bytes(0x4f, 0x67, 0x67, 0x53, 0x00))).toBe(true);
+    expect(isUnsupportedIosContainer(bytes(0x1a, 0x45, 0xdf, 0xa3))).toBe(true);
   });
 
-  it('accepts natively playable formats', () => {
-    expect(isUnsupportedIosContainerFormat('mp3')).toBe(false);
-    expect(isUnsupportedIosContainerFormat('mov,mp4,m4a,3gp,3g2,mj2')).toBe(false);
-    expect(isUnsupportedIosContainerFormat('wav')).toBe(false);
-    expect(isUnsupportedIosContainerFormat(null)).toBe(false);
-    expect(isUnsupportedIosContainerFormat(undefined)).toBe(false);
+  it('rejects other headers and short buffers', () => {
+    expect(isUnsupportedIosContainer(bytes(0x49, 0x44, 0x33, 0x04))).toBe(false); // ID3
+    expect(isUnsupportedIosContainer(bytes(0x52, 0x49, 0x46, 0x46))).toBe(false); // RIFF
+    expect(isUnsupportedIosContainer(bytes(0x4f, 0x67))).toBe(false);
+    expect(isUnsupportedIosContainer(bytes())).toBe(false);
   });
 });

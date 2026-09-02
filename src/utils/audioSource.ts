@@ -19,7 +19,10 @@ const UNSUPPORTED_IOS_CONTENT_TYPES = new Set([
 
 const UNSUPPORTED_IOS_EXTENSIONS = new Set(['ogg', 'oga', 'opus', 'webm']);
 
-const UNSUPPORTED_IOS_CONTAINER_FORMATS = new Set(['ogg', 'webm', 'matroska']);
+// First bytes of each container: "OggS", and the EBML header that opens every
+// WebM/Matroska file.
+const OGG_MAGIC = [0x4f, 0x67, 0x67, 0x53];
+const EBML_MAGIC = [0x1a, 0x45, 0xdf, 0xa3];
 
 export const getUrlExtension = (url: string): string | null => {
   const path = url.split(/[?#]/)[0];
@@ -63,13 +66,11 @@ export const iosNeedsConversion = (source: AudioAttachmentSource): boolean | und
   return undefined;
 };
 
-/** `format` is ffprobe's container format name, e.g. `ogg` or `matroska,webm`. */
-export const isUnsupportedIosContainerFormat = (format?: string | null): boolean => {
-  if (!format) {
-    return false;
-  }
-  return format
-    .toLowerCase()
-    .split(',')
-    .some(name => UNSUPPORTED_IOS_CONTAINER_FORMATS.has(name.trim()));
-};
+const startsWith = (bytes: Uint8Array, magic: number[]) =>
+  magic.every((byte, index) => bytes[index] === byte);
+
+/** `header` holds at least the first four bytes of the file. */
+export const isWebmContainer = (header: Uint8Array): boolean => startsWith(header, EBML_MAGIC);
+
+export const isUnsupportedIosContainer = (header: Uint8Array): boolean =>
+  startsWith(header, OGG_MAGIC) || isWebmContainer(header);

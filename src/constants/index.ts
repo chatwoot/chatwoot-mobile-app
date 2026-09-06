@@ -282,8 +282,10 @@ export const ATTACHMENT_TYPES = {
   FALLBACK: 'fallback',
   SHARE: 'share',
   STORY_MENTION: 'story_mention',
+  IG_STORY_REPLY: 'ig_story_reply',
   CONTACT: 'contact',
   IG_REEL: 'ig_reel',
+  IG_STORY: 'ig_story',
 };
 
 export const MEDIA_TYPES = [

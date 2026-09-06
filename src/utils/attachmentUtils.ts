@@ -5,6 +5,7 @@ import { ImageMetadata } from '@/types';
 // audio, then files.
 const VISUAL_MEDIA_TYPES = [
   ATTACHMENT_TYPES.IMAGE,
+  ATTACHMENT_TYPES.IG_STORY,
   ATTACHMENT_TYPES.VIDEO,
   ATTACHMENT_TYPES.IG_REEL,
 ];

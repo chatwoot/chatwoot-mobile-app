@@ -85,7 +85,6 @@
     "react": "19.2.3",
     "react-hook-form": "^7.52.1",
     "react-native": "0.86.0",
-    "react-native-audio-recorder-player": "^3.6.11",
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-blob-util": "^0.24.10",
     "react-native-device-info": "^11.1.0",
@@ -152,7 +151,6 @@
         "exclude": [
           "@kesha-antonov/react-native-action-cable",
           "@notifee/react-native",
-          "react-native-audio-recorder-player",
           "react-native-file-viewer",
           "react-native-file-viewer",
           "react-native-fs",
@@ -184,7 +182,6 @@
     "patchedDependencies": {
       "ffmpeg-kit-react-native@6.0.2": "patches/ffmpeg-kit-react-native.patch",
       "react-native-ios-utilities@5.2.0": "patches/react-native-ios-utilities@5.2.0.patch",
-      "react-native-audio-recorder-player@3.6.12": "patches/react-native-audio-recorder-player@3.6.12.patch",
       "@react-native-menu/menu@1.2.3": "patches/@react-native-menu__menu@1.2.3.patch",
       "@react-native-clipboard/clipboard@1.16.2": "patches/@react-native-clipboard__clipboard@1.16.2.patch",
       "react-native-modal": "patches/react-native-modal.patch",

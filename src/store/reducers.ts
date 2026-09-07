@@ -21,7 +21,6 @@ import contactConversationSlice from '@/store/contact/contactConversationSlice';
 import dashboardAppSlice from '@/store/dashboard-app/dashboardAppSlice';
 import customAttributeSlice from '@/store/custom-attribute/customAttributeSlice';
 import conversationParticipantSlice from '@/store/conversation-participant/conversationParticipantSlice';
-import localRecordedAudioCacheSlice from '@/store/conversation/localRecordedAudioCacheSlice';
 
 import cannedResponseSlice from '@/store/canned-response/cannedResponseSlice';
 import macroSlice from '@/store/macro/macroSlice';
@@ -52,7 +51,6 @@ export const appReducer = combineReducers({
   customAttributes: customAttributeSlice,
   conversationParticipants: conversationParticipantSlice,
   cannedResponses: cannedResponseSlice,
-  localRecordedAudioCache: localRecordedAudioCacheSlice,
   search: searchSlice,
   copilot: copilotSlice,
 });

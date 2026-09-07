@@ -1,19 +1,13 @@
 type Controller = typeof import('../audioPlaybackController');
 
-// The controller keeps the active owner and the audio-mode promise at module
-// level, so every test gets its own copy of the module and its mocks.
-const loadController = () => {
+// The controller keeps the active owner at module level, so every test gets
+// its own copy of the module.
+const loadController = (): Controller => {
   let controller!: Controller;
-  let setAudioModeAsync!: jest.Mock;
-  let captureException!: jest.Mock;
   jest.isolateModules(() => {
-    jest.doMock('expo-audio', () => ({ setAudioModeAsync: jest.fn() }));
-    jest.doMock('@sentry/react-native', () => ({ captureException: jest.fn() }));
-    setAudioModeAsync = jest.requireMock('expo-audio').setAudioModeAsync;
-    captureException = jest.requireMock('@sentry/react-native').captureException;
     controller = jest.requireActual('../audioPlaybackController');
   });
-  return { ...controller, setAudioModeAsync, captureException };
+  return controller;
 };
 
 describe('claimPlayback', () => {
@@ -61,30 +55,5 @@ describe('claimPlayback', () => {
     claimPlayback(other);
 
     expect(holder.pause).toHaveBeenCalledTimes(1);
-  });
-});
-
-describe('ensurePlaybackAudioMode', () => {
-  it('enables silent-mode playback once for every caller', async () => {
-    const { ensurePlaybackAudioMode, setAudioModeAsync } = loadController();
-    setAudioModeAsync.mockResolvedValue(undefined);
-
-    await Promise.all([ensurePlaybackAudioMode(), ensurePlaybackAudioMode()]);
-    await ensurePlaybackAudioMode();
-
-    expect(setAudioModeAsync).toHaveBeenCalledTimes(1);
-    expect(setAudioModeAsync).toHaveBeenCalledWith({ playsInSilentMode: true });
-  });
-
-  it('reports a failure, resolves anyway, and retries next time', async () => {
-    const { ensurePlaybackAudioMode, setAudioModeAsync, captureException } = loadController();
-    setAudioModeAsync.mockRejectedValueOnce(new Error('session busy'));
-    setAudioModeAsync.mockResolvedValueOnce(undefined);
-
-    await expect(ensurePlaybackAudioMode()).resolves.toBeUndefined();
-    await ensurePlaybackAudioMode();
-
-    expect(captureException).toHaveBeenCalledTimes(1);
-    expect(setAudioModeAsync).toHaveBeenCalledTimes(2);
   });
 });

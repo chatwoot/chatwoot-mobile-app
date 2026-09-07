@@ -15,7 +15,6 @@ import conversationTypingSlice from '@/store/conversation/conversationTypingSlic
 import notificationSlice from '@/store/notification/notificationSlice';
 import notificationFilterSlice from '@/store/notification/notificationFilterSlice';
 import sendMessageSlice from '@/store/conversation/sendMessageSlice';
-import audioPlayerSlice from '@/store/conversation/audioPlayerSlice';
 import teamSlice from '@/store/team/teamSlice';
 import contactLabelSlice from '@/store/contact/contactLabelSlice';
 import contactConversationSlice from '@/store/contact/contactConversationSlice';
@@ -45,7 +44,6 @@ export const appReducer = combineReducers({
   notifications: notificationSlice,
   notificationFilter: notificationFilterSlice,
   sendMessage: sendMessageSlice,
-  audioPlayer: audioPlayerSlice,
   teams: teamSlice,
   macros: macroSlice,
   contactLabels: contactLabelSlice,

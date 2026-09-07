@@ -65,6 +65,7 @@
     "diff": "8.0.3",
     "expo": "~57.0.7",
     "expo-application": "~57.0.2",
+    "expo-audio": "~57.0.4",
     "expo-auth-session": "~57.0.4",
     "expo-build-properties": "~57.0.6",
     "expo-constants": "^57.0.6",

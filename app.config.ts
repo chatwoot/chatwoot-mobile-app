@@ -2,7 +2,7 @@ import { ConfigContext, ExpoConfig } from 'expo/config';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   return {
-    name: 'Chatwoot',
+    name: 'Chatwoot NutriPlus',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
     version: '4.9.3',
     orientation: 'portrait',
@@ -30,7 +30,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     android: {
       adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
-      package: 'com.chatwoot.app',
+      package: 'com.crnutriplus.chatwoot',
       permissions: [
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',

@@ -1,8 +1,8 @@
 module.exports = {
   dependencies: {
-    'ffmpeg-kit-react-native': {
+    'react-native-audio-api': {
       platforms: {
-        android: null, // 👈 prevents Android autolinking
+        android: null, // Android plays Ogg/Opus and WebM natively; only iOS decodes.
       },
     },
     '@notifee/react-native': {

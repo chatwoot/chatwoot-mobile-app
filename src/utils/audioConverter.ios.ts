@@ -1,12 +1,20 @@
-import RNFS from 'react-native-fs';
-import { FFmpegKit, FFprobeKit } from 'ffmpeg-kit-react-native';
+import * as FileSystem from 'expo-file-system/legacy';
+import { decodeAudioData } from 'react-native-audio-api';
+import { fromByteArray } from 'base64-js';
 import * as Sentry from '@sentry/react-native';
 
 import {
   AudioAttachmentSource,
   iosNeedsConversion,
-  isUnsupportedIosContainerFormat,
+  isUnsupportedIosContainer,
+  isWebmContainer,
 } from '@/utils/audioSource';
+import { encodeWav } from '@/utils/wavEncoder';
+import { webmToOgg } from '@/utils/webmToOgg';
+
+// Opus voice notes are wideband speech; decoding straight to this rate keeps
+// the cached file small without audible loss.
+const DECODE_SAMPLE_RATE = 24000;
 
 // Preparations in progress, keyed by source url. Two bubbles asking for the same
 // audio share one download rather than racing over the same files.
@@ -19,78 +27,61 @@ const hashUrl = (url: string) => {
   return Math.abs(hash).toString(36);
 };
 
-const unlinkQuietly = async (path: string) => {
-  try {
-    await RNFS.unlink(path);
-  } catch {
-    // File may already be cleaned up
+const download = async (url: string): Promise<ArrayBuffer> => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Download failed with status ${response.status}`);
   }
+  return response.arrayBuffer();
 };
 
-const hasUnsupportedContainer = async (path: string): Promise<boolean> => {
-  const session = await FFprobeKit.getMediaInformation(path);
-  const format = session.getMediaInformation()?.getFormat();
-  return isUnsupportedIosContainerFormat(format);
-};
-
-const convertToM4a = async (inputPath: string, outputPath: string) => {
-  // AAC in an MP4 container plays natively on iOS and is a fraction of the size
-  // of PCM. Channel count and sample rate follow the source.
-  await FFmpegKit.execute(`-i "${inputPath}" -vn -y -c:a aac -b:a 64k "${outputPath}"`);
-
-  const outputExists = await RNFS.exists(outputPath);
-  if (!outputExists) {
-    throw new Error('Conversion failed - output file not found');
-  }
+const convertToWav = async (bytes: ArrayBuffer, outputPath: string) => {
+  // The decoder reads Opus from Ogg but not from WebM, so WebM is re-wrapped
+  // into Ogg first; the packets themselves are unchanged.
+  const header = new Uint8Array(bytes, 0, 4);
+  const decodable = isWebmContainer(header) ? webmToOgg(bytes).buffer : bytes;
+  const decoded = await decodeAudioData(decodable as ArrayBuffer, DECODE_SAMPLE_RATE);
+  const channels = Array.from({ length: decoded.numberOfChannels }, (_, index) =>
+    decoded.getChannelData(index),
+  );
+  const wav = encodeWav({ sampleRate: decoded.sampleRate, channels });
+  await FileSystem.writeAsStringAsync(outputPath, fromByteArray(wav), {
+    encoding: FileSystem.EncodingType.Base64,
+  });
 };
 
 const runPreparation = async (source: AudioAttachmentSource): Promise<string> => {
   const { dataUrl } = source;
   // Paths are derived from the url so that concurrent preparations of different
   // audio never share a file.
-  const key = hashUrl(dataUrl);
-  const downloadPath = `${RNFS.CachesDirectoryPath}/audio_${key}.download`;
-  const outputPath = `${RNFS.CachesDirectoryPath}/audio_${key}.m4a`;
+  const outputPath = `${FileSystem.cacheDirectory}audio_${hashUrl(dataUrl)}.wav`;
 
   // Replaying audio that has already been converted skips the download.
-  if (await RNFS.exists(outputPath)) {
-    return `file://${outputPath}`;
+  const cached = await FileSystem.getInfoAsync(outputPath);
+  if (cached.exists) {
+    return outputPath;
   }
 
-  const downloadResult = await RNFS.downloadFile({ fromUrl: dataUrl, toFile: downloadPath })
-    .promise;
+  const bytes = await download(dataUrl);
 
-  if (downloadResult.statusCode !== 200) {
-    throw new Error(`Download failed with status ${downloadResult.statusCode}`);
+  // Metadata that identifies the container is trusted. Otherwise the first
+  // bytes decide; anything AVFoundation can open is streamed from the original
+  // url so the player can rely on the server's content type.
+  const needsConversion =
+    iosNeedsConversion(source) ?? isUnsupportedIosContainer(new Uint8Array(bytes, 0, 4));
+
+  if (!needsConversion) {
+    return dataUrl;
   }
 
-  const fileExists = await RNFS.exists(downloadPath);
-  if (!fileExists) {
-    throw new Error('Downloaded file not found');
-  }
-
-  try {
-    // Metadata that identifies the container is trusted. Otherwise ffprobe
-    // inspects the downloaded file; anything AVFoundation can open is streamed
-    // from the original url so the player can rely on the server's content type.
-    const needsConversion =
-      iosNeedsConversion(source) ?? (await hasUnsupportedContainer(downloadPath));
-
-    if (!needsConversion) {
-      return dataUrl;
-    }
-
-    await convertToM4a(downloadPath, outputPath);
-    return `file://${outputPath}`;
-  } finally {
-    await unlinkQuietly(downloadPath);
-  }
+  await convertToWav(bytes, outputPath);
+  return outputPath;
 };
 
 /**
  * Resolves the uri the native player should open for an audio attachment.
- * Sources iOS can play directly resolve to their own url; Ogg/WebM sources are
- * downloaded, converted to m4a and resolved to the cached local file.
+ * Sources iOS can play directly resolve to their own url; Ogg/Opus sources are
+ * downloaded, decoded to a wav file and resolved to that cached file.
  */
 export const preparePlayableAudio = async (source: AudioAttachmentSource): Promise<string> => {
   if (iosNeedsConversion(source) === false) {

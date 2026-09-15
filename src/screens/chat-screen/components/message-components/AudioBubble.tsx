@@ -89,7 +89,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
     const prepareAudio = async () => {
       // A recycled bubble starts from the new source, not the previous
-      // attachment's converted file or failure state.
+      // attachment's converted file, failure state or loading spinner.
+      setIsSoundLoading(false);
       setHasConversionFailed(false);
       setConvertedAudioSrc(audioSrc);
       // Sources the metadata marks as natively playable skip the download.

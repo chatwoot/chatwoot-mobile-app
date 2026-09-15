@@ -88,13 +88,16 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     const source = { dataUrl: audioSrc, contentType, extension };
 
     const prepareAudio = async () => {
+      // A recycled bubble starts from the new source, not the previous
+      // attachment's converted file or failure state.
+      setHasConversionFailed(false);
+      setConvertedAudioSrc(audioSrc);
       // Sources the metadata marks as natively playable skip the download.
       // Ogg/WebM and unidentified sources go through preparePlayableAudio.
       if (Platform.OS !== 'ios' || iosNeedsConversion(source) === false) {
         return;
       }
       setIsSoundLoading(true);
-      setHasConversionFailed(false);
       try {
         const playableSrc = await preparePlayableAudio(source);
         if (active) {

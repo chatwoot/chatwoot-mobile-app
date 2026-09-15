@@ -78,8 +78,15 @@ describe('iosNeedsConversion', () => {
     expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/x`, extension: 'aac' })).toBe(false);
   });
 
+  it('converts webm-audio and matroska extensions', () => {
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.weba` })).toBe(true);
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.mka` })).toBe(true);
+  });
+
   it('leaves the decision to the file header when metadata says nothing', () => {
     expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/01sdhn` })).toBeUndefined();
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.bin` })).toBeUndefined();
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/x`, extension: 'mkv' })).toBeUndefined();
     expect(
       iosNeedsConversion({
         dataUrl: `${REDIRECT}/01sdhn`,

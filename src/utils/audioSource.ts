@@ -17,7 +17,27 @@ const UNSUPPORTED_IOS_CONTENT_TYPES = new Set([
   'video/webm',
 ]);
 
-const UNSUPPORTED_IOS_EXTENSIONS = new Set(['ogg', 'oga', 'opus', 'webm']);
+const UNSUPPORTED_IOS_EXTENSIONS = new Set(['ogg', 'oga', 'opus', 'webm', 'weba', 'mka', 'spx']);
+
+// Containers AVFoundation opens natively. Anything else without a content type
+// is left to ffprobe rather than assumed playable.
+const SUPPORTED_IOS_EXTENSIONS = new Set([
+  'mp3',
+  'm4a',
+  'm4b',
+  'mp4',
+  'aac',
+  'wav',
+  'wave',
+  'aif',
+  'aiff',
+  'aifc',
+  'caf',
+  'flac',
+  'amr',
+  '3gp',
+  '3gpp',
+]);
 
 const UNSUPPORTED_IOS_CONTAINER_FORMATS = new Set(['ogg', 'webm', 'matroska']);
 
@@ -57,7 +77,7 @@ export const iosNeedsConversion = (source: AudioAttachmentSource): boolean | und
   if (contentType && contentType.startsWith('audio/')) {
     return false;
   }
-  if (extension && !contentType) {
+  if (extension && SUPPORTED_IOS_EXTENSIONS.has(extension)) {
     return false;
   }
   return undefined;

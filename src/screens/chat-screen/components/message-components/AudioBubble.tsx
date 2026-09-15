@@ -58,6 +58,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const [isAudioPlaying, setAudioPlaying] = useState(false);
   const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
   const [hasConversionFailed, setHasConversionFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const dispatch = useDispatch();
   const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
@@ -88,8 +89,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     const source = { dataUrl: audioSrc, contentType, extension };
 
     const prepareAudio = async () => {
-      // A recycled bubble starts from the new source, not the previous
-      // attachment's converted file, failure state or loading spinner.
+      // Every run starts from the incoming source with no loading or failure state.
       setIsSoundLoading(false);
       setHasConversionFailed(false);
       setConvertedAudioSrc(audioSrc);
@@ -120,7 +120,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     return () => {
       active = false;
     };
-  }, [audioSrc, contentType, extension]);
+  }, [audioSrc, contentType, extension, retryCount]);
 
   const togglePlayback = useCallback(() => {
     if (convertedAudioSrc === currentPlayingAudioSrc) {
@@ -187,13 +187,18 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   if (hasConversionFailed) {
+    const failureColor = variant === MESSAGE_VARIANTS.USER ? 'text-white' : 'text-gray-900';
+    // Tapping the failure row runs the preparation again.
     return (
-      <View style={tailwind.style('w-full flex flex-row items-center gap-1 flex-1')}>
-        <Icon icon={<FileErrorIcon fill={tailwind.color('text-gray-900')} />} size={16} />
-        <Animated.Text style={tailwind.style('text-cxs font-inter-420-20 text-gray-900')}>
+      <Pressable
+        hitSlop={10}
+        onPress={() => setRetryCount(count => count + 1)}
+        style={tailwind.style('w-full flex flex-row items-center gap-1 flex-1')}>
+        <Icon icon={<FileErrorIcon fill={tailwind.color(failureColor)} />} size={16} />
+        <Animated.Text style={tailwind.style(`text-cxs font-inter-420-20 ${failureColor}`)}>
           {i18n.t('CONVERSATION.AUDIO_NOT_AVAILABLE')}
         </Animated.Text>
-      </View>
+      </Pressable>
     );
   }
 

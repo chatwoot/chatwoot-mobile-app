@@ -86,6 +86,10 @@ describe('iosNeedsConversion', () => {
       true,
     );
     expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.wma` })).toBe(true);
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.ra` })).toBe(true);
+    expect(
+      iosNeedsConversion({ dataUrl: `${REDIRECT}/x`, contentType: 'audio/x-pn-realaudio' }),
+    ).toBe(true);
   });
 
   it('leaves unrecognised audio types to the file header', () => {
@@ -113,16 +117,20 @@ describe('iosNeedsConversion', () => {
 });
 
 describe('isUnsupportedIosContainerFormat', () => {
-  it('recognises the Ogg and WebM container formats', () => {
+  it('treats every container outside the native set as unsupported', () => {
     expect(isUnsupportedIosContainerFormat('ogg')).toBe(true);
     expect(isUnsupportedIosContainerFormat('matroska,webm')).toBe(true);
     expect(isUnsupportedIosContainerFormat('asf')).toBe(true);
+    expect(isUnsupportedIosContainerFormat('rm')).toBe(true);
+    expect(isUnsupportedIosContainerFormat('mpegts')).toBe(true);
   });
 
   it('accepts natively playable formats', () => {
     expect(isUnsupportedIosContainerFormat('mp3')).toBe(false);
     expect(isUnsupportedIosContainerFormat('mov,mp4,m4a,3gp,3g2,mj2')).toBe(false);
     expect(isUnsupportedIosContainerFormat('wav')).toBe(false);
+    expect(isUnsupportedIosContainerFormat('aac')).toBe(false);
+    expect(isUnsupportedIosContainerFormat('flac')).toBe(false);
     expect(isUnsupportedIosContainerFormat(null)).toBe(false);
     expect(isUnsupportedIosContainerFormat(undefined)).toBe(false);
   });

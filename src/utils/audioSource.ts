@@ -19,6 +19,9 @@ const UNSUPPORTED_IOS_CONTENT_TYPES = new Set([
   'audio/matroska',
   'audio/x-ms-wma',
   'audio/x-ms-wax',
+  'audio/x-pn-realaudio',
+  'audio/vnd.rn-realaudio',
+  'audio/x-realaudio',
 ]);
 
 // Types AVFoundation opens natively. Any other audio type is left to ffprobe.
@@ -61,6 +64,9 @@ const UNSUPPORTED_IOS_EXTENSIONS = new Set([
   'mka',
   'spx',
   'wma',
+  'ra',
+  'rm',
+  'ram',
 ]);
 
 // Containers AVFoundation opens natively. Anything else without a content type
@@ -83,7 +89,23 @@ const SUPPORTED_IOS_EXTENSIONS = new Set([
   '3gpp',
 ]);
 
-const UNSUPPORTED_IOS_CONTAINER_FORMATS = new Set(['ogg', 'webm', 'matroska', 'asf']);
+// ffprobe container names AVFoundation opens natively. Any other container
+// reported for downloaded bytes is converted.
+const SUPPORTED_IOS_CONTAINER_FORMATS = new Set([
+  'mp3',
+  'mov',
+  'mp4',
+  'm4a',
+  '3gp',
+  '3g2',
+  'mj2',
+  'aac',
+  'wav',
+  'aiff',
+  'caf',
+  'flac',
+  'amr',
+]);
 
 export const getUrlExtension = (url: string): string | null => {
   const path = url.split(/[?#]/)[0];
@@ -127,13 +149,16 @@ export const iosNeedsConversion = (source: AudioAttachmentSource): boolean | und
   return undefined;
 };
 
-/** `format` is ffprobe's container format name, e.g. `ogg` or `matroska,webm`. */
+/**
+ * `format` is ffprobe's container format name, e.g. `ogg` or `matroska,webm`.
+ * A container is unsupported unless one of its names is in the native set.
+ */
 export const isUnsupportedIosContainerFormat = (format?: string | null): boolean => {
   if (!format) {
     return false;
   }
-  return format
+  return !format
     .toLowerCase()
     .split(',')
-    .some(name => UNSUPPORTED_IOS_CONTAINER_FORMATS.has(name.trim()));
+    .some(name => SUPPORTED_IOS_CONTAINER_FORMATS.has(name.trim()));
 };

@@ -1,6 +1,7 @@
 import RNFS from 'react-native-fs';
 import { FFmpegKit, FFprobeKit } from 'ffmpeg-kit-react-native';
 import * as Sentry from '@sentry/react-native';
+import * as Crypto from 'expo-crypto';
 
 import {
   AudioAttachmentSource,
@@ -12,12 +13,8 @@ import {
 // audio share one download rather than racing over the same files.
 const inFlightPreparations = new Map<string, Promise<string>>();
 
-const hashUrl = (url: string) => {
-  const hash = url.split('').reduce((acc, char) => {
-    return ((acc << 5) - acc + char.charCodeAt(0)) | 0;
-  }, 0);
-  return Math.abs(hash).toString(36);
-};
+// SHA-256 of the url: distinct urls get distinct cache files.
+const hashUrl = (url: string) => Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, url);
 
 const unlinkQuietly = async (path: string) => {
   try {
@@ -48,7 +45,7 @@ const runPreparation = async (source: AudioAttachmentSource): Promise<string> =>
   const { dataUrl } = source;
   // Paths are derived from the url so that concurrent preparations of different
   // audio never share a file.
-  const key = hashUrl(dataUrl);
+  const key = await hashUrl(dataUrl);
   const downloadPath = `${RNFS.CachesDirectoryPath}/audio_${key}.download`;
   const outputPath = `${RNFS.CachesDirectoryPath}/audio_${key}.m4a`;
 

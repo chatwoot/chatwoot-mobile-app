@@ -18,6 +18,13 @@ jest.mock('ffmpeg-kit-react-native', () => ({
 
 jest.mock('@sentry/react-native', () => ({ captureException: jest.fn() }));
 
+jest.mock('expo-crypto', () => ({
+  CryptoDigestAlgorithm: { SHA256: 'SHA-256' },
+  digestStringAsync: jest.fn((_algorithm: string, value: string) =>
+    Promise.resolve(Buffer.from(value).toString('hex')),
+  ),
+}));
+
 const mockRNFS = RNFS as jest.Mocked<typeof RNFS>;
 const mockExecute = FFmpegKit.execute as jest.Mock;
 const mockProbe = FFprobeKit.getMediaInformation as jest.Mock;

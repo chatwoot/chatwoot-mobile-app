@@ -1,5 +1,5 @@
 import RNFS from 'react-native-fs';
-import { FFmpegKit, FFprobeKit } from 'ffmpeg-kit-react-native';
+import { FFmpegKit, FFprobeKit, ReturnCode } from 'ffmpeg-kit-react-native';
 import * as Sentry from '@sentry/react-native';
 import * as Crypto from 'expo-crypto';
 
@@ -31,14 +31,28 @@ const hasUnsupportedContainer = async (path: string): Promise<boolean> => {
 };
 
 const convertToM4a = async (inputPath: string, outputPath: string) => {
+  // FFmpeg writes to a partial file that only becomes the cached output once
+  // the session has succeeded, so a failed or interrupted conversion is never
+  // served as a cache hit.
+  const partialPath = `${outputPath}.partial`;
   // AAC in an MP4 container plays natively on iOS and is a fraction of the size
   // of PCM. Channel count and sample rate follow the source.
-  await FFmpegKit.execute(`-i "${inputPath}" -vn -y -c:a aac -b:a 64k "${outputPath}"`);
+  const session = await FFmpegKit.execute(
+    `-i "${inputPath}" -vn -y -c:a aac -b:a 64k -f mp4 "${partialPath}"`,
+  );
+  const returnCode = await session.getReturnCode();
 
-  const outputExists = await RNFS.exists(outputPath);
+  if (!ReturnCode.isSuccess(returnCode)) {
+    await unlinkQuietly(partialPath);
+    throw new Error(`Conversion failed with ffmpeg return code ${returnCode?.getValue()}`);
+  }
+
+  const outputExists = await RNFS.exists(partialPath);
   if (!outputExists) {
     throw new Error('Conversion failed - output file not found');
   }
+
+  await RNFS.moveFile(partialPath, outputPath);
 };
 
 const runPreparation = async (source: AudioAttachmentSource): Promise<string> => {

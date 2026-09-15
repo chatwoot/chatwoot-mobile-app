@@ -9,11 +9,13 @@ jest.mock('react-native-fs', () => ({
   downloadFile: jest.fn(),
   exists: jest.fn(),
   unlink: jest.fn(),
+  moveFile: jest.fn(),
 }));
 
 jest.mock('ffmpeg-kit-react-native', () => ({
   FFmpegKit: { execute: jest.fn() },
   FFprobeKit: { getMediaInformation: jest.fn() },
+  ReturnCode: { isSuccess: (code: { getValue: () => number }) => code.getValue() === 0 },
 }));
 
 jest.mock('@sentry/react-native', () => ({ captureException: jest.fn() }));
@@ -31,6 +33,9 @@ const mockProbe = FFprobeKit.getMediaInformation as jest.Mock;
 
 const probeResult = (format: string | undefined) => ({
   getMediaInformation: () => ({ getFormat: () => format }),
+});
+const ffmpegSession = (code: number) => ({
+  getReturnCode: () => Promise.resolve({ getValue: () => code }),
 });
 const mockCapture = Sentry.captureException as jest.Mock;
 
@@ -52,7 +57,8 @@ describe('preparePlayableAudio', () => {
       promise: Promise.resolve({ statusCode: 200 }),
     } as never);
     mockProbe.mockResolvedValue(probeResult('ogg'));
-    mockExecute.mockResolvedValue(undefined);
+    mockExecute.mockResolvedValue(ffmpegSession(0));
+    mockRNFS.moveFile.mockResolvedValue(undefined as never);
     mockRNFS.unlink.mockResolvedValue(undefined as never);
   });
 
@@ -71,7 +77,21 @@ describe('preparePlayableAudio', () => {
     expect(result).toMatch(/^file:\/\/\/caches\/audio_[a-z0-9]+\.m4a$/);
     expect(mockExecute).toHaveBeenCalledTimes(1);
     expect(mockExecute.mock.calls[0][0]).toContain('-c:a aac');
+    expect(mockExecute.mock.calls[0][0]).toContain('.m4a.partial"');
+    expect(mockRNFS.moveFile).toHaveBeenCalledWith(
+      expect.stringMatching(/\.m4a\.partial$/),
+      expect.stringMatching(/\.m4a$/),
+    );
     expect(mockProbe).not.toHaveBeenCalled();
+  });
+
+  it('rejects and discards the partial file when ffmpeg exits with an error', async () => {
+    existsSequence(false, true, true);
+    mockExecute.mockResolvedValue(ffmpegSession(1));
+
+    await expect(preparePlayableAudio(A)).rejects.toThrow('ffmpeg return code 1');
+    expect(mockRNFS.unlink).toHaveBeenCalledWith(expect.stringMatching(/\.m4a\.partial$/));
+    expect(mockRNFS.moveFile).not.toHaveBeenCalled();
   });
 
   it('gives each source url its own temp and output paths', async () => {

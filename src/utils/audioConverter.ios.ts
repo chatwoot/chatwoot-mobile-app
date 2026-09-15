@@ -13,8 +13,36 @@ import {
 // audio share one download rather than racing over the same files.
 const inFlightPreparations = new Map<string, Promise<string>>();
 
+// Urls whose downloaded bytes ffprobe found natively playable. They stream
+// from the original url and are not downloaded again this session.
+const nativeSources = new Set<string>();
+
+// Bumped whenever the ffmpeg parameters change so cached output is regenerated.
+const CACHE_VERSION = 1;
+
 // SHA-256 of the url: distinct urls get distinct cache files.
 const hashUrl = (url: string) => Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, url);
+
+const LEGACY_FILE_PATTERN = /^(temp\.ogg|converted_\d+\.wav|audio_[a-z0-9_]+\.(download|partial))$/;
+const LEGACY_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+// Removes stale temp and legacy conversion files from the cache directory.
+// Files younger than a day are left alone: a recording may still be uploading.
+const sweepLegacyFiles = async () => {
+  try {
+    const entries = await RNFS.readDir(RNFS.CachesDirectoryPath);
+    const cutoff = Date.now() - LEGACY_MAX_AGE_MS;
+    await Promise.all(
+      entries
+        .filter(entry => LEGACY_FILE_PATTERN.test(entry.name))
+        .filter(entry => (entry.mtime?.getTime() ?? 0) < cutoff)
+        .map(entry => unlinkQuietly(entry.path)),
+    );
+  } catch {
+    // The sweep is best effort.
+  }
+};
+let legacySweep: Promise<void> | null = null;
 
 const unlinkQuietly = async (path: string) => {
   try {
@@ -26,20 +54,19 @@ const unlinkQuietly = async (path: string) => {
 
 const hasUnsupportedContainer = async (path: string): Promise<boolean> => {
   const session = await FFprobeKit.getMediaInformation(path);
-  const format = session.getMediaInformation()?.getFormat();
-  return isUnsupportedIosContainerFormat(format);
+  const information = session.getMediaInformation();
+  if (!information) {
+    throw new Error('Downloaded audio could not be inspected');
+  }
+  return isUnsupportedIosContainerFormat(information.getFormat());
 };
 
-const convertToM4a = async (inputPath: string, outputPath: string) => {
-  // FFmpeg writes to a partial file that only becomes the cached output once
-  // the session has succeeded, so a failed or interrupted conversion is never
-  // served as a cache hit.
+// Runs ffmpeg with `inputArgs` writing `format` to a partial file, and moves
+// it to `outputPath` only when the session succeeds. A failed or interrupted
+// run therefore never leaves a file at the output path.
+const runFfmpeg = async (inputArgs: string, format: string, outputPath: string) => {
   const partialPath = `${outputPath}.partial`;
-  // AAC in an MP4 container plays natively on iOS and is a fraction of the size
-  // of PCM. Channel count and sample rate follow the source.
-  const session = await FFmpegKit.execute(
-    `-i "${inputPath}" -vn -y -c:a aac -b:a 64k -f mp4 "${partialPath}"`,
-  );
+  const session = await FFmpegKit.execute(`${inputArgs} -y -f ${format} "${partialPath}"`);
   const returnCode = await session.getReturnCode();
 
   if (!ReturnCode.isSuccess(returnCode)) {
@@ -47,21 +74,27 @@ const convertToM4a = async (inputPath: string, outputPath: string) => {
     throw new Error(`Conversion failed with ffmpeg return code ${returnCode?.getValue()}`);
   }
 
-  const outputExists = await RNFS.exists(partialPath);
-  if (!outputExists) {
-    throw new Error('Conversion failed - output file not found');
-  }
-
   await RNFS.moveFile(partialPath, outputPath);
 };
+
+const convertToM4a = (inputPath: string, outputPath: string) =>
+  // AAC in an MP4 container plays natively on iOS and is a fraction of the size
+  // of PCM. Channel count and sample rate follow the source.
+  runFfmpeg(`-i "${inputPath}" -vn -c:a aac -b:a 128k`, 'mp4', outputPath);
 
 const runPreparation = async (source: AudioAttachmentSource): Promise<string> => {
   const { dataUrl } = source;
   // Paths are derived from the url so that concurrent preparations of different
   // audio never share a file.
+  if (nativeSources.has(dataUrl)) {
+    return dataUrl;
+  }
+
+  legacySweep ??= sweepLegacyFiles();
+
   const key = await hashUrl(dataUrl);
   const downloadPath = `${RNFS.CachesDirectoryPath}/audio_${key}.download`;
-  const outputPath = `${RNFS.CachesDirectoryPath}/audio_${key}.m4a`;
+  const outputPath = `${RNFS.CachesDirectoryPath}/audio_${key}_v${CACHE_VERSION}.m4a`;
 
   // Replaying audio that has already been converted skips the download.
   if (await RNFS.exists(outputPath)) {
@@ -88,6 +121,7 @@ const runPreparation = async (source: AudioAttachmentSource): Promise<string> =>
       iosNeedsConversion(source) ?? (await hasUnsupportedContainer(downloadPath));
 
     if (!needsConversion) {
+      nativeSources.add(dataUrl);
       return dataUrl;
     }
 
@@ -123,8 +157,7 @@ export const preparePlayableAudio = async (source: AudioAttachmentSource): Promi
       console.error('[audio-prepare]', source.dataUrl, error);
     }
     Sentry.captureException(error);
-    // Rejecting lets the caller show a failure state. Returning the error made
-    // it the audio source, which crashed the native player.
+    // Rejecting lets the caller show a failure state.
     throw error;
   } finally {
     inFlightPreparations.delete(source.dataUrl);
@@ -136,16 +169,10 @@ export const convertAacToWav = async (inputPath: string): Promise<string> => {
     const fileName = `converted_${Date.now()}.wav`;
     const outputPath = `${RNFS.CachesDirectoryPath}/${fileName}`;
 
-    await FFmpegKit.execute(
-      `-i "${inputPath}" -vn -y -ar 44100 -ac 2 -c:a pcm_s16le "${outputPath}"`,
-    );
+    await runFfmpeg(`-i "${inputPath}" -vn -ar 44100 -ac 2 -c:a pcm_s16le`, 'wav', outputPath);
 
-    const outputExists = await RNFS.exists(outputPath);
-    if (!outputExists) {
-      throw new Error('Conversion failed - output file not found');
-    }
-
-    return outputPath; // 👈 Return without file:// prefix
+    // Returned without a file:// prefix; the caller adds it per platform.
+    return outputPath;
   } catch (error) {
     Sentry.captureException(error);
     throw error;

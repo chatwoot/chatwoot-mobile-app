@@ -10,6 +10,7 @@ jest.mock('react-native-fs', () => ({
   exists: jest.fn(),
   unlink: jest.fn(),
   moveFile: jest.fn(),
+  readDir: jest.fn(() => Promise.resolve([])),
 }));
 
 jest.mock('ffmpeg-kit-react-native', () => ({
@@ -42,9 +43,10 @@ const mockCapture = Sentry.captureException as jest.Mock;
 const A = { dataUrl: 'https://example.com/a.oga' };
 const B = { dataUrl: 'https://example.com/b.oga' };
 const UNKNOWN = { dataUrl: 'https://example.com/01sdhn' };
+const UNKNOWN_B = { dataUrl: 'https://example.com/01sdhm' };
+const UNREADABLE = { dataUrl: 'https://example.com/01sdhl' };
 
-// exists() is called for the cached output first, then for the downloaded
-// input, then for the conversion output.
+// exists() is called for the cached output first, then for the downloaded input.
 const existsSequence = (...values: boolean[]) => {
   const queue = [...values];
   mockRNFS.exists.mockImplementation(() => Promise.resolve(queue.shift() ?? false));
@@ -70,11 +72,11 @@ describe('preparePlayableAudio', () => {
   });
 
   it('converts ogg sources to a cached m4a file', async () => {
-    existsSequence(false, true, true);
+    existsSequence(false, true);
 
     const result = await preparePlayableAudio(A);
 
-    expect(result).toMatch(/^file:\/\/\/caches\/audio_[a-z0-9]+\.m4a$/);
+    expect(result).toMatch(/^file:\/\/\/caches\/audio_[a-z0-9]+_v\d+\.m4a$/);
     expect(mockExecute).toHaveBeenCalledTimes(1);
     expect(mockExecute.mock.calls[0][0]).toContain('-c:a aac');
     expect(mockExecute.mock.calls[0][0]).toContain('.m4a.partial"');
@@ -86,7 +88,7 @@ describe('preparePlayableAudio', () => {
   });
 
   it('rejects and discards the partial file when ffmpeg exits with an error', async () => {
-    existsSequence(false, true, true);
+    existsSequence(false, true);
     mockExecute.mockResolvedValue(ffmpegSession(1));
 
     await expect(preparePlayableAudio(A)).rejects.toThrow('ffmpeg return code 1');
@@ -95,15 +97,14 @@ describe('preparePlayableAudio', () => {
   });
 
   it('gives each source url its own temp and output paths', async () => {
-    existsSequence(false, true, true);
+    existsSequence(false, true);
     await preparePlayableAudio(A);
     const firstDownload = mockRNFS.downloadFile.mock.calls[0][0];
 
-    existsSequence(false, true, true);
+    existsSequence(false, true);
     await preparePlayableAudio(B);
     const secondDownload = mockRNFS.downloadFile.mock.calls[1][0];
 
-    // A shared temp file let one conversion delete the file another was using.
     expect(firstDownload.toFile).not.toEqual(secondDownload.toFile);
   });
 
@@ -116,7 +117,7 @@ describe('preparePlayableAudio', () => {
   });
 
   it('shares one preparation between concurrent callers of the same url', async () => {
-    existsSequence(false, true, true);
+    existsSequence(false, true);
 
     const [first, second] = await Promise.all([preparePlayableAudio(A), preparePlayableAudio(A)]);
 
@@ -125,7 +126,7 @@ describe('preparePlayableAudio', () => {
   });
 
   it('removes the downloaded file after converting', async () => {
-    existsSequence(false, true, true);
+    existsSequence(false, true);
 
     await preparePlayableAudio(A);
 
@@ -134,7 +135,7 @@ describe('preparePlayableAudio', () => {
 
   describe('sources with no format metadata', () => {
     it('converts when ffprobe reports an ogg container', async () => {
-      existsSequence(false, true, true);
+      existsSequence(false, true);
       mockProbe.mockResolvedValue(probeResult('ogg'));
 
       const result = await preparePlayableAudio(UNKNOWN);
@@ -164,12 +165,28 @@ describe('preparePlayableAudio', () => {
     await expect(preparePlayableAudio(A)).rejects.toThrow('Download failed with status 404');
   });
 
-  it('throws when the converted file is missing', async () => {
-    existsSequence(false, true, false);
+  it('throws when the converted file cannot be moved into place', async () => {
+    existsSequence(false, true);
+    mockRNFS.moveFile.mockRejectedValue(new Error('no such file') as never);
 
-    await expect(preparePlayableAudio(A)).rejects.toThrow(
-      'Conversion failed - output file not found',
-    );
+    await expect(preparePlayableAudio(A)).rejects.toThrow('no such file');
+  });
+
+  it('throws when ffprobe cannot read the download', async () => {
+    existsSequence(false, true);
+    mockProbe.mockResolvedValue({ getMediaInformation: () => undefined });
+
+    await expect(preparePlayableAudio(UNREADABLE)).rejects.toThrow('could not be inspected');
+    expect(mockExecute).not.toHaveBeenCalled();
+  });
+
+  it('remembers a native probe verdict and does not download that url again', async () => {
+    existsSequence(false, true);
+    mockProbe.mockResolvedValue(probeResult('mp3'));
+
+    await expect(preparePlayableAudio(UNKNOWN_B)).resolves.toBe(UNKNOWN_B.dataUrl);
+    await expect(preparePlayableAudio(UNKNOWN_B)).resolves.toBe(UNKNOWN_B.dataUrl);
+    expect(mockRNFS.downloadFile).toHaveBeenCalledTimes(1);
   });
 
   it('reports a failure to sentry once', async () => {
@@ -183,7 +200,7 @@ describe('preparePlayableAudio', () => {
     existsSequence(false, false);
     await expect(preparePlayableAudio(A)).rejects.toThrow();
 
-    existsSequence(false, true, true);
+    existsSequence(false, true);
     await expect(preparePlayableAudio(A)).resolves.toContain('file:///caches/');
   });
 });

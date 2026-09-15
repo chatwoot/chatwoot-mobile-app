@@ -34,7 +34,7 @@ describe('iosNeedsConversion', () => {
   });
 
   it('trusts the content type over a misleading extension', () => {
-    // CW-7275: Evolution API notes registered with extension mp3 and audio/opus.
+    // Evolution API registers Opus notes with an mp3 extension and audio/opus type.
     expect(
       iosNeedsConversion({
         dataUrl: `${REDIRECT}/voice.mp3`,

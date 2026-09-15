@@ -156,6 +156,16 @@ describe('preparePlayableAudio', () => {
     });
   });
 
+  it('removes the partial download when the request fails', async () => {
+    existsSequence(false);
+    mockRNFS.downloadFile.mockReturnValue({
+      promise: Promise.resolve({ statusCode: 500 }),
+    } as never);
+
+    await expect(preparePlayableAudio(A)).rejects.toThrow('status 500');
+    expect(mockRNFS.unlink).toHaveBeenCalledWith(expect.stringMatching(/\.download$/));
+  });
+
   it('throws when the download fails', async () => {
     existsSequence(false);
     mockRNFS.downloadFile.mockReturnValue({

@@ -106,19 +106,19 @@ const runPreparation = async (source: AudioAttachmentSource): Promise<string> =>
     return `file://${outputPath}`;
   }
 
-  const downloadResult = await RNFS.downloadFile({ fromUrl: dataUrl, toFile: downloadPath })
-    .promise;
-
-  if (downloadResult.statusCode !== 200) {
-    throw new Error(`Download failed with status ${downloadResult.statusCode}`);
-  }
-
-  const fileExists = await RNFS.exists(downloadPath);
-  if (!fileExists) {
-    throw new Error('Downloaded file not found');
-  }
-
   try {
+    const downloadResult = await RNFS.downloadFile({ fromUrl: dataUrl, toFile: downloadPath })
+      .promise;
+
+    if (downloadResult.statusCode !== 200) {
+      throw new Error(`Download failed with status ${downloadResult.statusCode}`);
+    }
+
+    const fileExists = await RNFS.exists(downloadPath);
+    if (!fileExists) {
+      throw new Error('Downloaded file not found');
+    }
+
     // Metadata that identifies the container is trusted. Otherwise ffprobe
     // inspects the downloaded file; anything AVFoundation can open is streamed
     // from the original url so the player can rely on the server's content type.

@@ -78,6 +78,22 @@ describe('iosNeedsConversion', () => {
     expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/x`, extension: 'aac' })).toBe(false);
   });
 
+  it('converts wma and matroska content types', () => {
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/x`, contentType: 'audio/x-ms-wma' })).toBe(
+      true,
+    );
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/x`, contentType: 'audio/x-matroska' })).toBe(
+      true,
+    );
+    expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.wma` })).toBe(true);
+  });
+
+  it('leaves unrecognised audio types to the file header', () => {
+    expect(
+      iosNeedsConversion({ dataUrl: `${REDIRECT}/x`, contentType: 'audio/x-unknown' }),
+    ).toBeUndefined();
+  });
+
   it('converts webm-audio and matroska extensions', () => {
     expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.weba` })).toBe(true);
     expect(iosNeedsConversion({ dataUrl: `${REDIRECT}/note.mka` })).toBe(true);
@@ -100,6 +116,7 @@ describe('isUnsupportedIosContainerFormat', () => {
   it('recognises the Ogg and WebM container formats', () => {
     expect(isUnsupportedIosContainerFormat('ogg')).toBe(true);
     expect(isUnsupportedIosContainerFormat('matroska,webm')).toBe(true);
+    expect(isUnsupportedIosContainerFormat('asf')).toBe(true);
   });
 
   it('accepts natively playable formats', () => {

@@ -15,9 +15,53 @@ const UNSUPPORTED_IOS_CONTENT_TYPES = new Set([
   'application/ogg',
   'audio/webm',
   'video/webm',
+  'audio/x-matroska',
+  'audio/matroska',
+  'audio/x-ms-wma',
+  'audio/x-ms-wax',
 ]);
 
-const UNSUPPORTED_IOS_EXTENSIONS = new Set(['ogg', 'oga', 'opus', 'webm', 'weba', 'mka', 'spx']);
+// Types AVFoundation opens natively. Any other audio type is left to ffprobe.
+const SUPPORTED_IOS_CONTENT_TYPES = new Set([
+  'audio/mpeg',
+  'audio/mp3',
+  'audio/mpeg3',
+  'audio/x-mpeg',
+  'audio/mp4',
+  'audio/m4a',
+  'audio/x-m4a',
+  'audio/m4b',
+  'audio/x-m4b',
+  'audio/mp4a-latm',
+  'audio/aac',
+  'audio/aacp',
+  'audio/x-aac',
+  'audio/wav',
+  'audio/x-wav',
+  'audio/wave',
+  'audio/vnd.wave',
+  'audio/x-pn-wav',
+  'audio/aiff',
+  'audio/x-aiff',
+  'audio/x-caf',
+  'audio/flac',
+  'audio/x-flac',
+  'audio/amr',
+  'audio/3gpp',
+  'audio/3gpp2',
+  'video/mp4',
+]);
+
+const UNSUPPORTED_IOS_EXTENSIONS = new Set([
+  'ogg',
+  'oga',
+  'opus',
+  'webm',
+  'weba',
+  'mka',
+  'spx',
+  'wma',
+]);
 
 // Containers AVFoundation opens natively. Anything else without a content type
 // is left to ffprobe rather than assumed playable.
@@ -39,7 +83,7 @@ const SUPPORTED_IOS_EXTENSIONS = new Set([
   '3gpp',
 ]);
 
-const UNSUPPORTED_IOS_CONTAINER_FORMATS = new Set(['ogg', 'webm', 'matroska']);
+const UNSUPPORTED_IOS_CONTAINER_FORMATS = new Set(['ogg', 'webm', 'matroska', 'asf']);
 
 export const getUrlExtension = (url: string): string | null => {
   const path = url.split(/[?#]/)[0];
@@ -72,9 +116,9 @@ export const iosNeedsConversion = (source: AudioAttachmentSource): boolean | und
   if (extension && UNSUPPORTED_IOS_EXTENSIONS.has(extension)) {
     return true;
   }
-  // A recognised audio type that is not in the unsupported set plays natively.
-  // Generic types (application/octet-stream) say nothing about the container.
-  if (contentType && contentType.startsWith('audio/')) {
+  // Generic types (application/octet-stream) and audio types outside the
+  // supported set say nothing certain about the container.
+  if (contentType && SUPPORTED_IOS_CONTENT_TYPES.has(contentType)) {
     return false;
   }
   if (extension && SUPPORTED_IOS_EXTENSIONS.has(extension)) {

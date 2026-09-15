@@ -2,7 +2,7 @@ import RNFS from 'react-native-fs';
 import { FFmpegKit, FFprobeKit } from 'ffmpeg-kit-react-native';
 import * as Sentry from '@sentry/react-native';
 
-import { preparePlayableAudio } from '@/utils/audioConverter.ios';
+import { isSweepableAudioFile, preparePlayableAudio } from '@/utils/audioConverter.ios';
 
 jest.mock('react-native-fs', () => ({
   CachesDirectoryPath: '/caches',
@@ -202,5 +202,23 @@ describe('preparePlayableAudio', () => {
 
     existsSequence(false, true);
     await expect(preparePlayableAudio(A)).resolves.toContain('file:///caches/');
+  });
+});
+
+describe('isSweepableAudioFile', () => {
+  const hash = 'a'.repeat(64);
+
+  it('matches the temp, download and interrupted-conversion files the converters write', () => {
+    expect(isSweepableAudioFile('temp.ogg')).toBe(true);
+    expect(isSweepableAudioFile('converted_1725000000000.wav')).toBe(true);
+    expect(isSweepableAudioFile('converted_1725000000000.wav.partial')).toBe(true);
+    expect(isSweepableAudioFile(`audio_${hash}.download`)).toBe(true);
+    expect(isSweepableAudioFile(`audio_${hash}_v1.m4a.partial`)).toBe(true);
+  });
+
+  it('leaves completed conversions and unrelated files alone', () => {
+    expect(isSweepableAudioFile(`audio_${hash}_v1.m4a`)).toBe(false);
+    expect(isSweepableAudioFile('image_cache.partial')).toBe(false);
+    expect(isSweepableAudioFile('Snapshots')).toBe(false);
   });
 });

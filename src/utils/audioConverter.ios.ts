@@ -23,7 +23,12 @@ const CACHE_VERSION = 1;
 // SHA-256 of the url: distinct urls get distinct cache files.
 const hashUrl = (url: string) => Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, url);
 
-const LEGACY_FILE_PATTERN = /^(temp\.ogg|converted_\d+\.wav|audio_[a-z0-9_]+\.(download|partial))$/;
+// Files the sweep removes: the previous converter's fixed temp file, recorder
+// output, and this converter's download and interrupted-conversion files.
+const LEGACY_FILE_PATTERN =
+  /^(temp\.ogg|converted_\d+\.wav(\.partial)?|audio_[a-z0-9]+\.download|audio_[a-z0-9]+_v\d+\.m4a\.partial)$/;
+
+export const isSweepableAudioFile = (name: string) => LEGACY_FILE_PATTERN.test(name);
 const LEGACY_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 // Removes stale temp and legacy conversion files from the cache directory.
@@ -34,7 +39,7 @@ const sweepLegacyFiles = async () => {
     const cutoff = Date.now() - LEGACY_MAX_AGE_MS;
     await Promise.all(
       entries
-        .filter(entry => LEGACY_FILE_PATTERN.test(entry.name))
+        .filter(entry => isSweepableAudioFile(entry.name))
         .filter(entry => (entry.mtime?.getTime() ?? 0) < cutoff)
         .map(entry => unlinkQuietly(entry.path)),
     );

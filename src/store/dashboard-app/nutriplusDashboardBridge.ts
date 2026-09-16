@@ -10,7 +10,15 @@ export function isNutriplusDashboardUrl(url: string) {
 }
 
 export function isNutriplusDashboardReadyMessage(url: string, data: string) {
-  return data === 'nutriplus-dashboard-app:ready' && isNutriplusDashboardUrl(url);
+  if (data !== 'nutriplus-dashboard-app:ready') return false;
+
+  try {
+    const source = new URL(url);
+    const dashboard = new URL(NUTRIPLUS_DASHBOARD_URL);
+    return source.href === dashboard.href || source.origin === dashboard.origin;
+  } catch {
+    return false;
+  }
 }
 
 export function buildNutriplusBootstrapScript(token: string, installationUrl: string) {

@@ -11,6 +11,7 @@ import { useAppSelector } from '@/hooks';
 import {
   buildNutriplusBootstrapScript,
   isNutriplusDashboardReadyMessage,
+  isNutriplusDashboardUrl,
 } from '@/store/dashboard-app/nutriplusDashboardBridge';
 import { NutriplusDashboardService } from '@/store/dashboard-app/nutriplusDashboardService';
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
@@ -102,6 +103,7 @@ const DashboardScreen = () => {
           }
 
           if (
+            !isNutriplusDashboardUrl(url) ||
             !isNutriplusDashboardReadyMessage(messageUrl, messageData) ||
             nutriplusBootstrapInFlight.current
           ) {

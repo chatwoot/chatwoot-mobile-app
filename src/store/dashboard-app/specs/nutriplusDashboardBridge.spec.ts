@@ -13,10 +13,17 @@ describe('NutriPlus dashboard mobile bridge', () => {
     expect(isNutriplusDashboardUrl('https://example.com/operations/crm-panel/embed')).toBe(false);
   });
 
-  it('accepts ready only from the exact NutriPlus dashboard URL', () => {
+  it('accepts ready from the exact NutriPlus URL or Android source origin', () => {
     expect(isNutriplusDashboardReadyMessage(dashboardUrl, 'nutriplus-dashboard-app:ready')).toBe(
       true,
     );
+
+    expect(
+      isNutriplusDashboardReadyMessage(
+        'https://nutriplus-precios.ever1822.chatgpt.site',
+        'nutriplus-dashboard-app:ready',
+      ),
+    ).toBe(true);
 
     expect(
       isNutriplusDashboardReadyMessage(dashboardUrl, 'chatwoot-dashboard-app:fetch-info'),

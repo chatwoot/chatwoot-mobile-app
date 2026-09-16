@@ -151,6 +151,9 @@ importers:
       expo-constants:
         specifier: ^57.0.6
         version: 57.0.6(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))
+      expo-crypto:
+        specifier: ~57.0.1
+        version: 57.0.1(expo@57.0.7)
       expo-device:
         specifier: ~57.0.1
         version: 57.0.1(expo@57.0.7)

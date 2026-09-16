@@ -115,7 +115,12 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
         <Animated.View
           key={`audio-${attachment.id ?? index}`}
           style={tailwind.style('flex flex-row items-center my-2', rowAlignment)}>
-          <AudioBubble audioSrc={attachment.dataUrl} variant={variant} />
+          <AudioBubble
+            audioSrc={attachment.dataUrl}
+            contentType={attachment.contentType}
+            extension={attachment.extension}
+            variant={variant}
+          />
         </Animated.View>
       ))}
 

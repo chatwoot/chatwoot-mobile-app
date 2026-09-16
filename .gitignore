@@ -10,6 +10,8 @@ web-build/
 
 # Native
 *.orig.*
+*.aab
+*.ipa
 *.jks
 *.p8
 *.p12

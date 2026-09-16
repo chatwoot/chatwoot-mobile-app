@@ -34,6 +34,7 @@ export type ImageMetadata = {
   fileType: 'image' | 'video' | 'audio' | 'file' | 'ig_reel';
   accountId: number;
   extension: string | null;
+  contentType?: string | null;
   dataUrl: string;
   thumbUrl: string;
   fallbackTitle: string;

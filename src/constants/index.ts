@@ -196,7 +196,8 @@ export const URL_REGEX = {
   CONVERSATION: 'app/accounts/[-0-9]+/conversations/[-0-9]',
 };
 
-export const SSO_CALLBACK_URL = 'chatwootapp://auth/saml';
+export const CHATWOOT_APP_URL = 'chatwootapp://';
+export const SSO_CALLBACK_URL = `${CHATWOOT_APP_URL}auth/saml`;
 
 export const CONVERSATION_TOGGLE_STATUS = {
   open: 'RESOLVE',

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Dimensions, Linking, Platform, Pressable } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, AppState, Dimensions, Linking, Platform, Pressable } from 'react-native';
 import AudioRecorderPlayer, {
   RecordBackType,
   AVEncodingOption,
@@ -8,7 +8,7 @@ import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { isUndefined } from 'lodash';
 import * as Sentry from '@sentry/react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import { PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 import { TEXT_INPUT_CONTAINER_HEIGHT } from '@/constants';
 import { useChatWindowContext } from '@/context';
@@ -29,6 +29,9 @@ import i18n from '@/i18n';
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
 const ARPlayer = new AudioRecorderPlayer();
+
+const MICROPHONE_PERMISSION =
+  Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO;
 
 /**
  * ! Handling Audio Server Side
@@ -83,15 +86,59 @@ export const AudioRecorder = ({
 
   const [recorderData, setRecorderData] = useState<RecordBackType | undefined>(undefined);
 
+  const deleteRecorder = useCallback(async () => {
+    await ARPlayer.stopRecorder();
+    setIsVoiceRecorderOpen(false);
+  }, [setIsVoiceRecorderOpen]);
+
+  // Nothing is recording while the microphone is blocked, so the recorder only
+  // has to close.
+  const closeRecorder = useCallback(() => {
+    setIsVoiceRecorderOpen(false);
+  }, [setIsVoiceRecorderOpen]);
+
+  const startRecording = useCallback(() => {
+    ARPlayer.addRecordBackListener((recordingMeta: RecordBackType) => {
+      setRecorderData(recordingMeta);
+    });
+    const dirs = ReactNativeBlobUtil.fs.dirs;
+    const path = Platform.select({
+      ios: `audio-${localRecordedAudioCacheFilePaths.length}.m4a`,
+      android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.aac`,
+    });
+
+    ARPlayer.startRecorder(path, {
+      AVFormatIDKeyIOS: AVEncodingOption.aac,
+      AVNumberOfChannelsKeyIOS: 2,
+      AVSampleRateKeyIOS: 44100,
+      AudioSourceAndroid: 1, // MIC
+      OutputFormatAndroid: 6, // AAC_ADTS
+      AudioEncoderAndroid: 3, // AAC
+      AudioSamplingRateAndroid: 16000,
+      AudioEncodingBitRateAndroid: 128000,
+      AudioChannelsAndroid: 2,
+    })
+      .then((value: string) => {
+        if (value) {
+          setIsAudioRecording(true);
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          'Error preparing audio file',
+          error instanceof Error ? error.message : String(error),
+        );
+        deleteRecorder();
+      });
+  }, [deleteRecorder, localRecordedAudioCacheFilePaths.length]);
+
   useEffect(() => {
     const requestMicrophonePermission = async () => {
       try {
-        const result = await request(
-          Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO,
-        );
+        const result = await request(MICROPHONE_PERMISSION);
 
         if (result === RESULTS.GRANTED || result === RESULTS.LIMITED) {
-          addRecorderListener();
+          startRecording();
           return;
         }
         // A refusal the system will ask about again needs no explanation here; the
@@ -106,54 +153,36 @@ export const AudioRecorder = ({
         setIsMicrophoneBlocked(true);
       }
     };
-    const addRecorderListener = () => {
-      ARPlayer.addRecordBackListener((recordingMeta: RecordBackType) => {
-        setRecorderData(recordingMeta);
-      });
-      const dirs = ReactNativeBlobUtil.fs.dirs;
-      const path = Platform.select({
-        ios: `audio-${localRecordedAudioCacheFilePaths.length}.m4a`,
-        android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.aac`,
-      });
-
-      ARPlayer.startRecorder(path, {
-        AVFormatIDKeyIOS: AVEncodingOption.aac,
-        AVNumberOfChannelsKeyIOS: 2,
-        AVSampleRateKeyIOS: 44100,
-        AudioSourceAndroid: 1, // MIC
-        OutputFormatAndroid: 6, // AAC_ADTS
-        AudioEncoderAndroid: 3, // AAC
-        AudioSamplingRateAndroid: 16000,
-        AudioEncodingBitRateAndroid: 128000,
-        AudioChannelsAndroid: 2,
-      })
-        .then((value: string) => {
-          if (value) {
-            setIsAudioRecording(true);
-          }
-        })
-        .catch(error => {
-          Alert.alert(
-            'Error preparing audio file',
-            error instanceof Error ? error.message : String(error),
-          );
-          deleteRecorder();
-        });
-    };
     requestMicrophonePermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const deleteRecorder = async () => {
-    await ARPlayer.stopRecorder();
-    setIsVoiceRecorderOpen(false);
-  };
+  // Granting the microphone from the device settings leaves this component mounted,
+  // so the permission is read again whenever the app returns to the foreground.
+  useEffect(() => {
+    if (!isMicrophoneBlocked) {
+      return;
+    }
 
-  // Nothing is recording while the microphone is blocked, so the recorder only
-  // has to close.
-  const closeRecorder = () => {
-    setIsVoiceRecorderOpen(false);
-  };
+    const subscription = AppState.addEventListener('change', async nextState => {
+      if (nextState !== 'active') {
+        return;
+      }
+
+      try {
+        const result = await check(MICROPHONE_PERMISSION);
+
+        if (result === RESULTS.GRANTED || result === RESULTS.LIMITED) {
+          setIsMicrophoneBlocked(false);
+          startRecording();
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    });
+
+    return () => subscription.remove();
+  }, [isMicrophoneBlocked, startRecording]);
 
   const createAudioFile = async (value: string) => {
     const cleanPath =

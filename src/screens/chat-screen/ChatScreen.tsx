@@ -18,7 +18,7 @@ import {
   selectConversationError,
 } from '@/store/conversation/conversationSelectors';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
+import { selectCurrentUserAccountId, selectUser } from '@/store/auth/authSelectors';
 
 import { notificationActions } from '@/store/notification/notificationAction';
 import { MarkAsReadPayload } from '@/store/notification/notificationTypes';
@@ -35,6 +35,9 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { WhatsAppTemplatesList } from './components/whatsapp-templates';
 import { macroActions } from '@/store/macro/macroActions';
+import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
+import { isNutriplusDashboardUrl } from '@/store/dashboard-app/nutriplusDashboardBridge';
+import { DashboardWebView } from '@/screens/dashboard/DashboardWebView';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -52,9 +55,24 @@ type ChatScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'Ch
 const ConversationPagerView = (props: ChatScreenProps) => {
   const { chatPagerView } = useRefsContext();
   const { setPagerViewIndex } = useChatWindowContext();
+  const conversationId = props.route.params.conversationId;
+
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const currentUser = useAppSelector(selectUser);
+  const dashboardApps = useAppSelector(selectAllDashboardApps);
+
+  const nutriplusDashboardApp = dashboardApps.find(dashboardApp =>
+    dashboardApp.content.some(content => isNutriplusDashboardUrl(content.url)),
+  );
+
+  const nutriplusDashboardUrl = nutriplusDashboardApp?.content.find(content =>
+    isNutriplusDashboardUrl(content.url),
+  )?.url;
+
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
     setPagerViewIndex(e.nativeEvent.position);
   };
+
   return (
     <PagerView
       ref={chatPagerView}
@@ -65,6 +83,17 @@ const ConversationPagerView = (props: ChatScreenProps) => {
       initialPage={0}
       onPageSelected={onPageSelected}>
       <ChatWindow {...props} />
+
+      {conversation && currentUser && nutriplusDashboardUrl ? (
+        <Animated.View style={tailwind.style('flex-1')}>
+          <DashboardWebView
+            conversation={conversation}
+            currentUser={currentUser}
+            url={nutriplusDashboardUrl}
+          />
+        </Animated.View>
+      ) : null}
+
       <ConversationActions />
     </PagerView>
   );

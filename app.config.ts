@@ -65,11 +65,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       eas: {
-        projectId: process.env.EXPO_PUBLIC_PROJECT_ID,
+        projectId: '37e171d9-b9a9-40ac-8bad-5d93d4af8f7a',
         storybookEnabled: process.env.EXPO_STORYBOOK_ENABLED,
       },
     },
-    owner: 'chatwoot',
+    owner: 'nutripluscrm',
     plugins: [
       'expo-font',
       'expo-image',

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { Alert, Dimensions, Platform, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
@@ -28,6 +29,9 @@ import { selectSingleConversation } from '@/store/conversation/conversationSelec
 import { teamActions } from '@/store/team/teamActions';
 import { selectAllTeams } from '@/store/team/teamSelectors';
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
+import { selectUser } from '@/store/auth/authSelectors';
+import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
+import { isNutriplusDashboardUrl } from '@/store/dashboard-app/nutriplusDashboardBridge';
 import { ConversationMetaInformation } from './components/ConversationMetaInformation';
 import { selectConversationParticipantsByConversationId } from '@/store/conversation-participant/conversationParticipantSelectors';
 
@@ -37,11 +41,20 @@ export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const { updateParticipantSheetRef, actionsModalSheetRef } = useRefsContext();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
   const installationUrl = useAppSelector(selectInstallationUrl);
+  const currentUser = useAppSelector(selectUser);
+  const dashboardApps = useAppSelector(selectAllDashboardApps);
+  const nutriplusDashboardApp = dashboardApps.find(dashboardApp =>
+    dashboardApp.content.some(content => isNutriplusDashboardUrl(content.url)),
+  );
+  const nutriplusDashboardUrl = nutriplusDashboardApp?.content.find(content =>
+    isNutriplusDashboardUrl(content.url),
+  )?.url;
 
   const { status, muted: isMuted, meta, priority = null } = conversation || {};
   const { assignee, team } = meta || {};
@@ -111,6 +124,19 @@ export const ConversationActions = () => {
     actionsModalSheetRef.current?.present();
   };
 
+  const onOpenNutriplusCrm = () => {
+    if (!conversation || !currentUser || !nutriplusDashboardUrl) return;
+
+    navigation.dispatch(
+      StackActions.push('Dashboard', {
+        url: nutriplusDashboardUrl,
+        title: nutriplusDashboardApp?.title || 'NutriPlus CRM',
+        conversation,
+        currentUser,
+      }),
+    );
+  };
+
   const onAddParticipant = () => {
     if (!conversation) return;
     dispatch(selectSingleConversation(conversation));
@@ -135,6 +161,7 @@ export const ConversationActions = () => {
             onChangeAssignee={onChangeAssignee}
             onChangeTeamAssignee={onChangeTeamAssignee}
             onChangePriority={onChangePriority}
+            onOpenNutriplusCrm={onOpenNutriplusCrm}
           />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-10')}>

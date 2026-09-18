@@ -53,7 +53,10 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
   const renderMedia = (attachment: ImageMetadata, index: number) => {
     const key = `${attachment.fileType}-${attachment.id ?? index}`;
 
-    if (attachment.fileType === ATTACHMENT_TYPES.IMAGE) {
+    if (
+      attachment.fileType === ATTACHMENT_TYPES.IMAGE ||
+      attachment.fileType === ATTACHMENT_TYPES.IG_STORY
+    ) {
       if (isAnInstagramStory && isInstagramStoryExpired(createdAt)) {
         return (
           <Animated.View

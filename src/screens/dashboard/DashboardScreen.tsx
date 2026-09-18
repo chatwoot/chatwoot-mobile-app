@@ -7,6 +7,14 @@ import snakecaseKeys from 'snakecase-keys';
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { Icon } from '@/components-next';
+import { useAppSelector } from '@/hooks';
+import {
+  buildNutriplusBootstrapScript,
+  isNutriplusDashboardReadyMessage,
+  isNutriplusDashboardUrl,
+} from '@/store/dashboard-app/nutriplusDashboardBridge';
+import { NutriplusDashboardService } from '@/store/dashboard-app/nutriplusDashboardService';
+import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { CloseIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
@@ -16,6 +24,8 @@ const DashboardScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const webviewRef = useRef<WebView>(null);
+  const nutriplusBootstrapInFlight = useRef(false);
+  const installationUrl = useAppSelector(selectInstallationUrl);
 
   const { conversation, currentUser, title, url } = route.params as {
     conversation: Conversation;
@@ -84,9 +94,36 @@ const DashboardScreen = () => {
         onLoadEnd={() => {
           webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
         }}
-        onMessage={event => {
-          if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
+        onMessage={async event => {
+          const { data: messageData, url: messageUrl } = event.nativeEvent;
+
+          if (messageData === 'chatwoot-dashboard-app:fetch-info') {
             webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
+            return;
+          }
+
+          if (
+            !isNutriplusDashboardUrl(url) ||
+            !isNutriplusDashboardReadyMessage(messageUrl, messageData) ||
+            nutriplusBootstrapInFlight.current
+          ) {
+            return;
+          }
+
+          nutriplusBootstrapInFlight.current = true;
+
+          try {
+            const { token } = await NutriplusDashboardService.bootstrap(conversation.id);
+
+            if (!token) return;
+
+            webviewRef.current?.injectJavaScript(
+              buildNutriplusBootstrapScript(token, installationUrl),
+            );
+          } catch {
+            return;
+          } finally {
+            nutriplusBootstrapInFlight.current = false;
           }
         }}
       />

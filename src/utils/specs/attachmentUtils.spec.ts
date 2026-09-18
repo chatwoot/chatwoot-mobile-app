@@ -16,6 +16,12 @@ describe('groupAttachmentsByType', () => {
     ]);
   });
 
+  it('keeps Instagram story attachments as visual media', () => {
+    const story = attachment(ATTACHMENT_TYPES.IG_STORY, 'https://cdn/story.jpg', 3);
+
+    expect(groupAttachmentsByType([story]).media).toEqual([story]);
+  });
+
   it('drops audio and files without a source', () => {
     const grouped = groupAttachmentsByType([
       attachment(ATTACHMENT_TYPES.AUDIO, null, 1),

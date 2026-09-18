@@ -7,6 +7,7 @@ import { Agent, ConversationPriority, Team } from '@/types';
 import AssigneePanel from './AssigneePanel';
 import TeamPanel from './TeamPanel';
 import PriorityPanel from './PriorityPanel';
+import NutriplusCrmPanel from './NutriplusCrmPanel';
 
 type ConversationSettingsPanelProps = {
   priority: ConversationPriority;
@@ -15,6 +16,7 @@ type ConversationSettingsPanelProps = {
   onChangeAssignee: () => void;
   onChangeTeamAssignee: () => void;
   onChangePriority: () => void;
+  onOpenNutriplusCrm: () => void;
 };
 
 export const ConversationSettingsPanel = ({
@@ -24,12 +26,14 @@ export const ConversationSettingsPanel = ({
   onChangeAssignee,
   onChangeTeamAssignee,
   onChangePriority,
+  onOpenNutriplusCrm,
 }: ConversationSettingsPanelProps) => {
   return (
     <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
       <AssigneePanel assignee={assignee} onPress={onChangeAssignee} />
       <TeamPanel team={team} onPress={onChangeTeamAssignee} />
       <PriorityPanel priority={priority} onPress={onChangePriority} />
+      <NutriplusCrmPanel onPress={onOpenNutriplusCrm} />
     </Animated.View>
   );
 };

@@ -16,6 +16,8 @@ import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { isNutriplusDashboardUrl } from '@/store/dashboard-app/nutriplusDashboardBridge';
+import { getConversationActionsPageIndex, NUTRIPLUS_CRM_PAGE_INDEX } from '../../conversationPager';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -32,6 +34,10 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+
+  const hasNutriplusCrm = dashboardApps.some(dashboardApp =>
+    dashboardApp.content.some(content => isNutriplusDashboardUrl(content.url)),
+  );
 
   const appliedSla = conversation?.appliedSla;
 
@@ -103,6 +109,11 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
 
   const handleNavigation = (url?: string, title?: string) => {
     if (url) {
+      if (isNutriplusDashboardUrl(url)) {
+        chatPagerView.current?.setPage(NUTRIPLUS_CRM_PAGE_INDEX);
+        return;
+      }
+
       const navigateToScreen = StackActions.push('Dashboard', {
         url,
         title,
@@ -110,9 +121,10 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         currentUser,
       });
       navigation.dispatch(navigateToScreen);
-    } else {
-      chatPagerView.current?.setPage(1);
+      return;
     }
+
+    chatPagerView.current?.setPage(getConversationActionsPageIndex(hasNutriplusCrm));
   };
 
   const toggleChatStatus = async () => {

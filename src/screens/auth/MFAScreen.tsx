@@ -57,9 +57,14 @@ const MFAScreen = () => {
     if (error) dispatch(clearAuthError());
     verificationStatus.value = 'inProgress';
 
+    if (newCode.length !== 6) return;
+
     // Email verification waits for an explicit Verify so the remember-device
-    // choice below the input is part of the submission.
-    if (newCode.length === 6 && !isEmailChannel) {
+    // choice below the input is part of the submission; closing the keyboard
+    // brings that choice and the button into view.
+    if (isEmailChannel) {
+      hiddenInputRef.current?.blur();
+    } else {
       handleVerify(newCode.join(''));
     }
   };

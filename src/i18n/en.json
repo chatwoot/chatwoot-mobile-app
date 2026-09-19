@@ -56,6 +56,12 @@
   },
   "MFA": {
     "TITLE": "Two-Factor Authentication",
+    "EMAIL": {
+      "TITLE": "Check your email",
+      "DESCRIPTION": "This device isn't recognised yet. Enter the 6-digit code we emailed you to continue.",
+      "INSTRUCTIONS": "Enter the 6-digit code from your email",
+      "REMEMBER_DEVICE": "Don't ask again on this device for 30 days"
+    },
     "TABS": {
       "AUTHENTICATOR_APP": "Authenticator App",
       "BACKUP_CODE": "Backup Code"

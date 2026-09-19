@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
+import { StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSharedValue } from 'react-native-reanimated';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { Button, VerificationCode } from '@/components-next';
+import { Icon } from '@/components-next/common';
+import { CheckedIcon, UncheckedIcon } from '@/svg-icons';
 import { useAnimatedShake } from '@/components-next/verification-code/hooks/use-animated-shake';
 import type { StatusType } from '@/components-next/verification-code';
 import { tailwind } from '@/theme';
@@ -16,11 +18,14 @@ import i18n from '@/i18n';
 const MFAScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const { mfaToken, uiFlags, error } = useAppSelector(state => state.auth);
+  const { mfaToken, verificationChannel, uiFlags, error } = useAppSelector(state => state.auth);
+
+  const isEmailChannel = verificationChannel === 'email';
 
   const [activeTab, setActiveTab] = useState<'authenticator' | 'backup'>('authenticator');
   const [code, setCode] = useState<string[]>([]);
   const [backupCode, setBackupCode] = useState('');
+  const [rememberDevice, setRememberDevice] = useState(true);
   const [isCodeWrong, setIsCodeWrong] = useState(false);
   const hiddenInputRef = useRef<TextInput>(null);
   const backupInputRef = useRef<TextInput>(null);
@@ -69,6 +74,7 @@ const MFAScreen = () => {
         ...(activeTab === 'authenticator'
           ? { otp_code: enteredCode || code.join('') }
           : { backup_code: backupCode }),
+        ...(isEmailChannel ? { remember_device: rememberDevice } : {}),
       };
 
       await dispatch(authActions.verifyMfa(payload)).unwrap();
@@ -112,58 +118,67 @@ const MFAScreen = () => {
           <View style={tailwind.style('pt-6 gap-4')}>
             <Animated.Text
               style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20 text-center')}>
-              {i18n.t('MFA.TITLE')}
+              {isEmailChannel ? i18n.t('MFA.EMAIL.TITLE') : i18n.t('MFA.TITLE')}
             </Animated.Text>
+            {isEmailChannel && (
+              <Text style={tailwind.style('text-gray-700 font-inter-normal-20 text-center')}>
+                {i18n.t('MFA.EMAIL.DESCRIPTION')}
+              </Text>
+            )}
           </View>
 
           {/* Tab Selector */}
-          <View style={tailwind.style('flex-row mt-8 mb-6 bg-gray-100 rounded-lg p-1')}>
-            <Pressable
-              style={tailwind.style(
-                `flex-1 py-3 px-4 rounded-md ${activeTab === 'authenticator' ? 'bg-white' : ''}`,
-              )}
-              onPress={() => {
-                setActiveTab('authenticator');
-                setIsCodeWrong(false);
-                dispatch(clearAuthError());
-                verificationStatus.value = 'inProgress';
-              }}>
-              <Text
+          {!isEmailChannel && (
+            <View style={tailwind.style('flex-row mt-8 mb-6 bg-gray-100 rounded-lg p-1')}>
+              <Pressable
                 style={tailwind.style(
-                  `text-center font-inter-normal-20 ${
-                    activeTab === 'authenticator' ? 'text-gray-950' : 'text-gray-600'
-                  }`,
-                )}>
-                {i18n.t('MFA.TABS.AUTHENTICATOR_APP')}
-              </Text>
-            </Pressable>
-            <Pressable
-              style={tailwind.style(
-                `flex-1 py-3 px-4 rounded-md ${activeTab === 'backup' ? 'bg-white' : ''}`,
-              )}
-              onPress={() => {
-                setActiveTab('backup');
-                setIsCodeWrong(false);
-                dispatch(clearAuthError());
-                verificationStatus.value = 'inProgress';
-              }}>
-              <Text
+                  `flex-1 py-3 px-4 rounded-md ${activeTab === 'authenticator' ? 'bg-white' : ''}`,
+                )}
+                onPress={() => {
+                  setActiveTab('authenticator');
+                  setIsCodeWrong(false);
+                  dispatch(clearAuthError());
+                  verificationStatus.value = 'inProgress';
+                }}>
+                <Text
+                  style={tailwind.style(
+                    `text-center font-inter-normal-20 ${
+                      activeTab === 'authenticator' ? 'text-gray-950' : 'text-gray-600'
+                    }`,
+                  )}>
+                  {i18n.t('MFA.TABS.AUTHENTICATOR_APP')}
+                </Text>
+              </Pressable>
+              <Pressable
                 style={tailwind.style(
-                  `text-center font-inter-normal-20 ${
-                    activeTab === 'backup' ? 'text-gray-950' : 'text-gray-600'
-                  }`,
-                )}>
-                {i18n.t('MFA.TABS.BACKUP_CODE')}
-              </Text>
-            </Pressable>
-          </View>
+                  `flex-1 py-3 px-4 rounded-md ${activeTab === 'backup' ? 'bg-white' : ''}`,
+                )}
+                onPress={() => {
+                  setActiveTab('backup');
+                  setIsCodeWrong(false);
+                  dispatch(clearAuthError());
+                  verificationStatus.value = 'inProgress';
+                }}>
+                <Text
+                  style={tailwind.style(
+                    `text-center font-inter-normal-20 ${
+                      activeTab === 'backup' ? 'text-gray-950' : 'text-gray-600'
+                    }`,
+                  )}>
+                  {i18n.t('MFA.TABS.BACKUP_CODE')}
+                </Text>
+              </Pressable>
+            </View>
+          )}
 
           {/* Code Input */}
-          <View style={tailwind.style('mt-4')}>
+          <View style={tailwind.style(isEmailChannel ? 'mt-14' : 'mt-4')}>
             <Text style={[tailwind.style('text-gray-700 font-inter-normal-20 mb-4 pl-2')]}>
-              {activeTab === 'authenticator'
-                ? i18n.t('MFA.INSTRUCTIONS.AUTHENTICATOR')
-                : i18n.t('MFA.INSTRUCTIONS.BACKUP')}
+              {isEmailChannel
+                ? i18n.t('MFA.EMAIL.INSTRUCTIONS')
+                : activeTab === 'authenticator'
+                  ? i18n.t('MFA.INSTRUCTIONS.AUTHENTICATOR')
+                  : i18n.t('MFA.INSTRUCTIONS.BACKUP')}
             </Text>
 
             {activeTab === 'authenticator' ? (
@@ -234,6 +249,19 @@ const MFAScreen = () => {
 
                 {!error && <View style={tailwind.style('mb-8')} />}
               </>
+            )}
+
+            {isEmailChannel && (
+              <Pressable
+                onPress={() => setRememberDevice(value => !value)}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: rememberDevice }}
+                style={tailwind.style('flex-row items-center gap-3 mb-6 pl-2')}>
+                <Icon icon={rememberDevice ? <CheckedIcon /> : <UncheckedIcon />} size={20} />
+                <Text style={tailwind.style('flex-1 text-gray-700 font-inter-normal-20')}>
+                  {i18n.t('MFA.EMAIL.REMEMBER_DEVICE')}
+                </Text>
+              </Pressable>
             )}
 
             <Button

@@ -24,6 +24,7 @@ export class AuthService {
       return {
         mfa_required: true,
         mfa_token: response.data.mfa_token,
+        verification_channel: response.data.verification_channel ?? null,
       } as MfaRequiredResponse;
     }
 

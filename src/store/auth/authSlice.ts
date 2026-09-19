@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { authActions } from './authActions';
 import { User } from '@/types/User';
-import { AuthHeaders } from './authTypes';
+import { AuthHeaders, VerificationChannel } from './authTypes';
 export interface AuthState {
   user: User | null;
   accessToken: string | null;
@@ -13,6 +13,7 @@ export interface AuthState {
   headers: AuthHeaders | null;
   error: string | null;
   mfaToken: string | null;
+  verificationChannel: VerificationChannel | null;
 }
 const initialState: AuthState = {
   user: null,
@@ -25,6 +26,7 @@ const initialState: AuthState = {
   headers: null,
   error: null,
   mfaToken: null,
+  verificationChannel: null,
 };
 export const authSlice = createSlice({
   name: 'auth',
@@ -38,6 +40,7 @@ export const authSlice = createSlice({
       state.accessToken = null;
       state.headers = null;
       state.mfaToken = null;
+      state.verificationChannel = null;
       state.error = null;
       state.uiFlags = {
         isLoggingIn: false,
@@ -50,6 +53,7 @@ export const authSlice = createSlice({
     },
     clearMfaToken: state => {
       state.mfaToken = null;
+      state.verificationChannel = null;
     },
     setCurrentUserAvailability(state, action) {
       const { users } = action.payload;
@@ -105,9 +109,9 @@ export const authSlice = createSlice({
         // Check if MFA is required
         if ('mfa_required' in action.payload) {
           state.mfaToken = action.payload.mfa_token;
+          state.verificationChannel = action.payload.verification_channel ?? null;
           state.uiFlags.isLoggingIn = false;
           state.error = null;
-          // MFA token will not be persisted due to blacklist in persist config
         } else {
           // Regular login success
           state.user = action.payload.user;
@@ -115,6 +119,7 @@ export const authSlice = createSlice({
           state.uiFlags.isLoggingIn = false;
           state.error = null;
           state.mfaToken = null;
+          state.verificationChannel = null;
         }
       })
       .addCase(authActions.getProfile.fulfilled, (state, action) => {
@@ -164,6 +169,7 @@ export const authSlice = createSlice({
         state.uiFlags.isVerifyingMfa = false;
         state.error = null;
         state.mfaToken = null;
+        state.verificationChannel = null;
       })
       .addCase(authActions.verifyMfa.rejected, (state, action) => {
         state.uiFlags.isVerifyingMfa = false;
@@ -179,6 +185,7 @@ export const authSlice = createSlice({
         state.uiFlags.isLoggingIn = false;
         state.error = null;
         state.mfaToken = null;
+        state.verificationChannel = null;
       })
       .addCase(authActions.loginWithSso.rejected, (state, action) => {
         state.uiFlags.isLoggingIn = false;

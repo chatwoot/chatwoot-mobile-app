@@ -120,9 +120,9 @@ const MFAScreen = () => {
       <View style={tailwind.style('flex-1 bg-white')}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-8')}
+          contentContainerStyle={tailwind.style('px-6 pt-4')}
           keyboardShouldPersistTaps="handled">
-          <View style={tailwind.style('pt-6 gap-4')}>
+          <View style={tailwind.style('gap-4')}>
             <View
               style={tailwind.style(
                 'self-center w-16 h-16 rounded-full border border-gray-300 items-center justify-center',

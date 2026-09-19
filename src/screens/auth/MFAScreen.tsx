@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StatusBar, View, TextInput, Text, Pressable, ScrollView } from 'react-native';
+import { StatusBar, View, TextInput, Text, Pressable } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
@@ -118,10 +119,11 @@ const MFAScreen = () => {
         barStyle={'dark-content'}
       />
       <View style={tailwind.style('flex-1 bg-white')}>
-        <ScrollView
+        <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-6 pt-4')}
-          keyboardShouldPersistTaps="handled">
+          keyboardShouldPersistTaps="handled"
+          bottomOffset={24}
+          contentContainerStyle={tailwind.style('px-6 pt-4 pb-8')}>
           <View style={tailwind.style('gap-4')}>
             <View
               style={tailwind.style(
@@ -299,7 +301,7 @@ const MFAScreen = () => {
               </Text>
             </Pressable>
           </View>
-        </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     </SafeAreaView>
   );

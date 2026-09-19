@@ -59,7 +59,7 @@
     "CANCEL": "Cancel and return to login",
     "EMAIL": {
       "TITLE": "Check your email",
-      "DESCRIPTION": "You're signing in from a new device.",
+      "DESCRIPTION": "You are signing in from a device we have not seen before. We emailed a 6-digit code to your address, enter it below to finish signing in.",
       "INSTRUCTIONS": "Enter the 6-digit code from your email",
       "REMEMBER_DEVICE": "Don't ask again on this device for 30 days"
     },

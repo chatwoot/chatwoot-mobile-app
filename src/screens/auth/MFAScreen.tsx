@@ -5,7 +5,7 @@ import Animated, { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { Button, VerificationCode } from '@/components-next';
 import { Icon } from '@/components-next/common';
-import { CheckedIcon, LockIcon, UncheckedIcon } from '@/svg-icons';
+import { CheckedIcon, LockKeyholeIcon, UncheckedIcon } from '@/svg-icons';
 import { useAnimatedShake } from '@/components-next/verification-code/hooks/use-animated-shake';
 import type { StatusType } from '@/components-next/verification-code';
 import { tailwind } from '@/theme';
@@ -120,7 +120,7 @@ const MFAScreen = () => {
               style={tailwind.style(
                 'self-center w-16 h-16 rounded-full border border-gray-300 items-center justify-center',
               )}>
-              <Icon icon={<LockIcon fill={tailwind.color('text-gray-800')} />} size={28} />
+              <Icon icon={<LockKeyholeIcon stroke={tailwind.color('text-gray-800')} />} size={24} />
             </View>
             <Animated.Text
               style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20 text-center')}>

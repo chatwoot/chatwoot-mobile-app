@@ -5,7 +5,7 @@ import Animated, { useSharedValue } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { Button, VerificationCode } from '@/components-next';
 import { Icon } from '@/components-next/common';
-import { CheckedIcon, UncheckedIcon } from '@/svg-icons';
+import { CheckedIcon, LockIcon, UncheckedIcon } from '@/svg-icons';
 import { useAnimatedShake } from '@/components-next/verification-code/hooks/use-animated-shake';
 import type { StatusType } from '@/components-next/verification-code';
 import { tailwind } from '@/theme';
@@ -116,6 +116,12 @@ const MFAScreen = () => {
           contentContainerStyle={tailwind.style('px-6 pt-8')}
           keyboardShouldPersistTaps="handled">
           <View style={tailwind.style('pt-6 gap-4')}>
+            <View
+              style={tailwind.style(
+                'self-center w-16 h-16 rounded-full border border-gray-300 items-center justify-center',
+              )}>
+              <Icon icon={<LockIcon fill={tailwind.color('text-gray-800')} />} size={28} />
+            </View>
             <Animated.Text
               style={tailwind.style('text-2xl text-gray-950 font-inter-semibold-20 text-center')}>
               {isEmailChannel ? i18n.t('MFA.EMAIL.TITLE') : i18n.t('MFA.TITLE')}
@@ -173,7 +179,7 @@ const MFAScreen = () => {
 
           {/* Code Input */}
           <View style={tailwind.style(isEmailChannel ? 'mt-14' : 'mt-4')}>
-            <Text style={[tailwind.style('text-gray-700 font-inter-normal-20 mb-4 pl-2')]}>
+            <Text style={[tailwind.style('text-gray-950 font-inter-420-20 mb-4 pl-2')]}>
               {isEmailChannel
                 ? i18n.t('MFA.EMAIL.INSTRUCTIONS')
                 : activeTab === 'authenticator'
@@ -277,6 +283,14 @@ const MFAScreen = () => {
                 uiFlags.isVerifyingMfa
               }
             />
+            <Pressable
+              onPress={() => navigation.goBack()}
+              accessibilityRole="button"
+              style={tailwind.style('mt-6 items-center')}>
+              <Text style={tailwind.style('font-inter-normal-20 text-gray-800')}>
+                {i18n.t('MFA.CANCEL')}
+              </Text>
+            </Pressable>
           </View>
         </ScrollView>
       </View>

@@ -56,9 +56,10 @@
   },
   "MFA": {
     "TITLE": "Two-Factor Authentication",
+    "CANCEL": "Cancel and return to login",
     "EMAIL": {
       "TITLE": "Check your email",
-      "DESCRIPTION": "This device isn't recognised yet. Enter the 6-digit code we emailed you to continue.",
+      "DESCRIPTION": "You're signing in from a new device.",
       "INSTRUCTIONS": "Enter the 6-digit code from your email",
       "REMEMBER_DEVICE": "Don't ask again on this device for 30 days"
     },

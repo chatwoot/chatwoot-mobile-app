@@ -5,10 +5,23 @@
   },
   "build": {
     "development": {
+      "environment": "development",
       "developmentClient": true,
       "distribution": "internal"
     },
+    "preview": {
+      "environment": "production",
+      "distribution": "internal",
+      "env": {
+        "NODE_ENV": "production",
+        "SENTRY_DISABLE_AUTO_UPLOAD": "true"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
     "production": {
+      "environment": "production",
       "autoIncrement": true
     }
   },

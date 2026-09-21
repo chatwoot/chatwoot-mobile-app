@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Dimensions, PermissionsAndroid, Platform, Pressable } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Alert, AppState, Dimensions, Linking, Platform, Pressable } from 'react-native';
 import AudioRecorderPlayer, {
   RecordBackType,
   AVEncodingOption,
@@ -8,10 +8,11 @@ import Animated, { SlideInDown, SlideOutDown } from 'react-native-reanimated';
 import { isUndefined } from 'lodash';
 import * as Sentry from '@sentry/react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 import { TEXT_INPUT_CONTAINER_HEIGHT } from '@/constants';
 import { useChatWindowContext } from '@/context';
-import { SendIcon, Trash } from '@/svg-icons';
+import { CloseIcon, SendIcon, Trash } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Icon } from '@/components-next';
 import { PauseIcon, PlayIcon } from '../message-components';
@@ -22,10 +23,15 @@ import {
 } from '@/store/conversation/localRecordedAudioCacheSlice';
 // eslint-disable-next-line import/no-unresolved
 import { convertAacToWav } from '@/utils/audioConverter';
+import { isRecordedFilePath } from '@/utils/audioRecording';
+import i18n from '@/i18n';
 
 const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
 
 const ARPlayer = new AudioRecorderPlayer();
+
+const MICROPHONE_PERMISSION =
+  Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO;
 
 /**
  * ! Handling Audio Server Side
@@ -75,71 +81,108 @@ export const AudioRecorder = ({
 
   const [isAudioRecording, setIsAudioRecording] = useState(false);
 
+  // Set when the microphone can only be granted from the device settings.
+  const [isMicrophoneBlocked, setIsMicrophoneBlocked] = useState(false);
+
   const [recorderData, setRecorderData] = useState<RecordBackType | undefined>(undefined);
 
-  useEffect(() => {
-    const requestAndroidPermission = async () => {
-      try {
-        const grants = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-        );
+  const deleteRecorder = useCallback(async () => {
+    await ARPlayer.stopRecorder();
+    setIsVoiceRecorderOpen(false);
+  }, [setIsVoiceRecorderOpen]);
 
-        if (grants === PermissionsAndroid.RESULTS.GRANTED) {
-          addRecorderListener();
-        } else {
+  // Nothing is recording while the microphone is blocked, so the recorder only
+  // has to close.
+  const closeRecorder = useCallback(() => {
+    setIsVoiceRecorderOpen(false);
+  }, [setIsVoiceRecorderOpen]);
+
+  const startRecording = useCallback(() => {
+    ARPlayer.addRecordBackListener((recordingMeta: RecordBackType) => {
+      setRecorderData(recordingMeta);
+    });
+    const dirs = ReactNativeBlobUtil.fs.dirs;
+    const path = Platform.select({
+      ios: `audio-${localRecordedAudioCacheFilePaths.length}.m4a`,
+      android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.aac`,
+    });
+
+    ARPlayer.startRecorder(path, {
+      AVFormatIDKeyIOS: AVEncodingOption.aac,
+      AVNumberOfChannelsKeyIOS: 2,
+      AVSampleRateKeyIOS: 44100,
+      AudioSourceAndroid: 1, // MIC
+      OutputFormatAndroid: 6, // AAC_ADTS
+      AudioEncoderAndroid: 3, // AAC
+      AudioSamplingRateAndroid: 16000,
+      AudioEncodingBitRateAndroid: 128000,
+      AudioChannelsAndroid: 2,
+    })
+      .then((value: string) => {
+        if (value) {
+          setIsAudioRecording(true);
+        }
+      })
+      .catch(error => {
+        Alert.alert(
+          'Error preparing audio file',
+          error instanceof Error ? error.message : String(error),
+        );
+        deleteRecorder();
+      });
+  }, [deleteRecorder, localRecordedAudioCacheFilePaths.length]);
+
+  useEffect(() => {
+    const requestMicrophonePermission = async () => {
+      try {
+        const result = await request(MICROPHONE_PERMISSION);
+
+        if (result === RESULTS.GRANTED || result === RESULTS.LIMITED) {
+          startRecording();
           return;
         }
-      } catch (err) {
-        console.warn(err);
-        return;
+        // A refusal the system will ask about again needs no explanation here; the
+        // dialog the user just dismissed is the one that matters.
+        if (result === RESULTS.DENIED) {
+          setIsVoiceRecorderOpen(false);
+          return;
+        }
+        setIsMicrophoneBlocked(true);
+      } catch (error) {
+        Sentry.captureException(error);
+        setIsMicrophoneBlocked(true);
       }
     };
-    const addRecorderListener = () => {
-      ARPlayer.addRecordBackListener((recordingMeta: RecordBackType) => {
-        setRecorderData(recordingMeta);
-      });
-      const dirs = ReactNativeBlobUtil.fs.dirs;
-      const path = Platform.select({
-        ios: `audio-${localRecordedAudioCacheFilePaths.length}.m4a`,
-        android: `${dirs.CacheDir}/audio-${localRecordedAudioCacheFilePaths.length}.aac`,
-      });
-
-      ARPlayer.startRecorder(path, {
-        AVFormatIDKeyIOS: AVEncodingOption.aac,
-        AVNumberOfChannelsKeyIOS: 2,
-        AVSampleRateKeyIOS: 44100,
-        AudioSourceAndroid: 1, // MIC
-        OutputFormatAndroid: 6, // AAC_ADTS
-        AudioEncoderAndroid: 3, // AAC
-        AudioSamplingRateAndroid: 16000,
-        AudioEncodingBitRateAndroid: 128000,
-        AudioChannelsAndroid: 2,
-      })
-        .then((value: string) => {
-          if (value) {
-            setIsAudioRecording(true);
-          }
-        })
-        .catch(error => {
-          Alert.alert(
-            'Error preparing audio file',
-            error instanceof Error ? error.message : String(error),
-          );
-          deleteRecorder();
-        });
-    };
-    if (Platform.OS === 'android') {
-      requestAndroidPermission();
-    } else {
-      addRecorderListener();
-    }
+    requestMicrophonePermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const deleteRecorder = async () => {
-    await ARPlayer.stopRecorder();
-    setIsVoiceRecorderOpen(false);
-  };
+  // Granting the microphone from the device settings leaves this component mounted,
+  // so the permission is read again whenever the app returns to the foreground.
+  useEffect(() => {
+    if (!isMicrophoneBlocked) {
+      return;
+    }
+
+    const subscription = AppState.addEventListener('change', async nextState => {
+      if (nextState !== 'active') {
+        return;
+      }
+
+      try {
+        const result = await check(MICROPHONE_PERMISSION);
+
+        if (result === RESULTS.GRANTED || result === RESULTS.LIMITED) {
+          setIsMicrophoneBlocked(false);
+          startRecording();
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    });
+
+    return () => subscription.remove();
+  }, [isMicrophoneBlocked, startRecording]);
 
   const createAudioFile = async (value: string) => {
     const cleanPath =
@@ -185,6 +228,12 @@ export const AudioRecorder = ({
     setIsSending(true);
     ARPlayer.stopRecorder()
       .then(async value => {
+        // A second send tap, or a recorder that never started, resolves with a status
+        // string rather than a path. Neither state has a recording to attach.
+        if (!isRecordedFilePath(value)) {
+          setIsVoiceRecorderOpen(false);
+          return;
+        }
         try {
           const audioFile = await createAudioFile(value);
           dispatch(addNewCachePath(audioFile.originalPath));
@@ -226,44 +275,73 @@ export const AudioRecorder = ({
         `max-h-[${TEXT_INPUT_CONTAINER_HEIGHT}px]`,
       )}>
       <Pressable
-        onPress={deleteRecorder}
+        onPress={isMicrophoneBlocked ? closeRecorder : deleteRecorder}
         style={tailwind.style('h-10 w-10 flex items-center justify-center')}>
-        <Icon icon={<Trash />} size={28} />
+        {isMicrophoneBlocked ? (
+          <Icon icon={<CloseIcon />} size={20} />
+        ) : (
+          <Icon icon={<Trash />} size={28} />
+        )}
       </Pressable>
       <Animated.View
         style={tailwind.style(
           'bg-blue-800 px-3 py-[7px] rounded-2xl min-h-9 flex flex-row items-center justify-between mx-1.5',
           `w-[${RecorderSegmentWidth}px]`,
         )}>
-        <Pressable onPress={toggleRecorder} hitSlop={12}>
-          {isAudioRecording ? (
-            <Animated.View>
-              <Icon icon={<PauseIcon fill={'white'} />} />
-            </Animated.View>
-          ) : (
-            <Animated.View>
-              <Icon icon={<PlayIcon fill={'white'} />} />
-            </Animated.View>
-          )}
-        </Pressable>
-        <Animated.Text
-          style={tailwind.style(
-            'text-xs leading-[14px] font-inter-420-20 tracking-[0.32px] text-whiteA-A12',
-          )}>
-          {millisecondsToTimeString(recorderData?.currentPosition)}
-        </Animated.Text>
+        {isMicrophoneBlocked ? (
+          <React.Fragment>
+            <Animated.Text
+              style={tailwind.style(
+                'text-xs leading-[14px] font-inter-420-20 tracking-[0.32px] text-whiteA-A12',
+              )}>
+              {i18n.t('CONVERSATION.MICROPHONE_ACCESS_NEEDED')}
+            </Animated.Text>
+            <Pressable onPress={() => Linking.openSettings()} hitSlop={12}>
+              <Animated.Text
+                style={tailwind.style(
+                  'text-xs leading-[14px] font-inter-medium-24 tracking-[0.32px] text-white underline',
+                )}>
+                {i18n.t('CONVERSATION.MICROPHONE_OPEN_SETTINGS')}
+              </Animated.Text>
+            </Pressable>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Pressable onPress={toggleRecorder} hitSlop={12}>
+              {isAudioRecording ? (
+                <Animated.View>
+                  <Icon icon={<PauseIcon fill={'white'} />} />
+                </Animated.View>
+              ) : (
+                <Animated.View>
+                  <Icon icon={<PlayIcon fill={'white'} />} />
+                </Animated.View>
+              )}
+            </Pressable>
+            <Animated.Text
+              style={tailwind.style(
+                'text-xs leading-[14px] font-inter-420-20 tracking-[0.32px] text-whiteA-A12',
+              )}>
+              {millisecondsToTimeString(recorderData?.currentPosition)}
+            </Animated.Text>
+          </React.Fragment>
+        )}
       </Animated.View>
-      <Pressable
-        disabled={isSending}
-        onPress={sendRecordedMessage}
-        style={tailwind.style('h-10 w-10 flex items-center justify-center')}>
-        <Animated.View
-          style={tailwind.style(
-            'flex items-center justify-center h-7 w-7 rounded-full bg-blue-800',
-          )}>
-          <Icon icon={<SendIcon />} size={16} />
-        </Animated.View>
-      </Pressable>
+      {!isMicrophoneBlocked ? (
+        <Pressable
+          disabled={isSending}
+          onPress={sendRecordedMessage}
+          style={tailwind.style('h-10 w-10 flex items-center justify-center')}>
+          <Animated.View
+            style={tailwind.style(
+              'flex items-center justify-center h-7 w-7 rounded-full bg-blue-800',
+            )}>
+            <Icon icon={<SendIcon />} size={16} />
+          </Animated.View>
+        </Pressable>
+      ) : (
+        <Animated.View style={tailwind.style('h-10 w-10')} />
+      )}
     </Animated.View>
   );
 };

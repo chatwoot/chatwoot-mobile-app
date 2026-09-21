@@ -37,6 +37,7 @@ describe('Auth Slice', () => {
     headers: null,
     error: null,
     mfaToken: null,
+    verificationChannel: null,
   };
 
   const loggedInState = {
@@ -206,6 +207,49 @@ describe('Auth Slice', () => {
       expect(state.headers).toEqual(payload.headers);
       expect(state.uiFlags.isLoggingIn).toBe(false);
       expect(state.error).toBeNull();
+    });
+
+    it('should store the MFA token and verification channel when verification is required', () => {
+      const payload = {
+        mfa_required: true,
+        mfa_token: 'mfa-token',
+        verification_channel: 'email',
+      };
+      const action = { type: authActions.login.fulfilled.type, payload };
+      const state = authReducer(initialState, action);
+
+      expect(state.user).toBeNull();
+      expect(state.mfaToken).toBe('mfa-token');
+      expect(state.verificationChannel).toBe('email');
+      expect(state.uiFlags.isLoggingIn).toBe(false);
+    });
+
+    it('should default the verification channel to null for authenticator MFA', () => {
+      const payload = { mfa_required: true, mfa_token: 'mfa-token' };
+      const action = { type: authActions.login.fulfilled.type, payload };
+      const state = authReducer(initialState, action);
+
+      expect(state.mfaToken).toBe('mfa-token');
+      expect(state.verificationChannel).toBeNull();
+    });
+
+    it('should clear the MFA token and verification channel once verification succeeds', () => {
+      const pendingState = {
+        ...initialState,
+        mfaToken: 'mfa-token',
+        verificationChannel: 'email' as const,
+      };
+      const payload = {
+        user: mockUser,
+        headers: { 'access-token': 'token', uid: 'uid', client: 'client' },
+      };
+      const action = { type: authActions.verifyMfa.fulfilled.type, payload };
+      const state = authReducer(pendingState, action);
+
+      expect(state.user).toEqual(mockUser);
+      expect(state.mfaToken).toBeNull();
+      expect(state.verificationChannel).toBeNull();
+      expect(state.uiFlags.isVerifyingMfa).toBe(false);
     });
 
     it('should handle login failure', () => {

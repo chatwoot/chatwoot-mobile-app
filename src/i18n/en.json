@@ -56,6 +56,13 @@
   },
   "MFA": {
     "TITLE": "Two-Factor Authentication",
+    "CANCEL": "Cancel and return to login",
+    "EMAIL": {
+      "TITLE": "Check your email",
+      "DESCRIPTION": "You're signing in from a new device.",
+      "INSTRUCTIONS": "Enter the 6-digit code from your email",
+      "REMEMBER_DEVICE": "Don't ask again on this device for 30 days"
+    },
     "TABS": {
       "AUTHENTICATOR_APP": "Authenticator App",
       "BACKUP_CODE": "Backup Code"

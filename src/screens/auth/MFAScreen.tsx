@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StatusBar, View, TextInput, Text, Pressable } from 'react-native';
+import { Keyboard, StatusBar, View, TextInput, Text, Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { useSharedValue } from 'react-native-reanimated';
@@ -28,6 +28,7 @@ const MFAScreen = () => {
   const [backupCode, setBackupCode] = useState('');
   const [rememberDevice, setRememberDevice] = useState(true);
   const [isCodeWrong, setIsCodeWrong] = useState(false);
+  const [isCodeFocused, setIsCodeFocused] = useState(true);
   const hiddenInputRef = useRef<TextInput>(null);
   const backupInputRef = useRef<TextInput>(null);
 
@@ -37,6 +38,16 @@ const MFAScreen = () => {
   useEffect(() => {
     dispatch(resetSettings());
   }, [dispatch]);
+
+  // Dismissing the keyboard by tapping elsewhere leaves the code input focused, so a
+  // later tap on it would not reopen the keyboard; blur it whenever the keyboard hides.
+  useEffect(() => {
+    const subscription = Keyboard.addListener('keyboardDidHide', () => {
+      hiddenInputRef.current?.blur();
+      setIsCodeFocused(false);
+    });
+    return () => subscription.remove();
+  }, []);
 
   // Clear MFA token when navigating back to login
   useEffect(() => {
@@ -58,14 +69,9 @@ const MFAScreen = () => {
     if (error) dispatch(clearAuthError());
     verificationStatus.value = 'inProgress';
 
-    if (newCode.length !== 6) return;
-
     // Email verification waits for an explicit Verify so the remember-device
-    // choice below the input is part of the submission; closing the keyboard
-    // brings that choice and the button into view.
-    if (isEmailChannel) {
-      hiddenInputRef.current?.blur();
-    } else {
+    // choice below the input is part of the submission.
+    if (newCode.length === 6 && !isEmailChannel) {
       handleVerify(newCode.join(''));
     }
   };
@@ -198,16 +204,32 @@ const MFAScreen = () => {
 
             {activeTab === 'authenticator' ? (
               <>
-                <Pressable onPress={() => hiddenInputRef.current?.focus()}>
-                  <Animated.View style={[rShakeStyle, tailwind.style('mb-2')]}>
-                    <VerificationCode
-                      code={code}
-                      maxLength={6}
-                      status={verificationStatus}
-                      isCodeWrong={isCodeWrong}
-                    />
-                  </Animated.View>
-                </Pressable>
+                <Animated.View style={[rShakeStyle, tailwind.style('mb-2')]}>
+                  <VerificationCode
+                    code={code}
+                    maxLength={6}
+                    status={verificationStatus}
+                    isCodeWrong={isCodeWrong}
+                    focused={isCodeFocused}
+                  />
+                  {/* Invisible input over the boxes: tapping focuses it, long press pastes */}
+                  <TextInput
+                    ref={hiddenInputRef}
+                    style={tailwind.style('absolute inset-0 text-transparent bg-transparent')}
+                    value={code.join('')}
+                    onChangeText={handleCodeChange}
+                    onPressIn={() => hiddenInputRef.current?.focus()}
+                    onFocus={() => setIsCodeFocused(true)}
+                    onBlur={() => setIsCodeFocused(false)}
+                    maxLength={6}
+                    keyboardType="numeric"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    autoFocus
+                    caretHidden
+                    textContentType="oneTimeCode"
+                  />
+                </Animated.View>
 
                 {/* Error message for authenticator */}
                 {error && (
@@ -218,19 +240,6 @@ const MFAScreen = () => {
                 )}
 
                 {!error && <View style={tailwind.style('mb-8')} />}
-
-                {/* Hidden TextInput for OTP */}
-                <TextInput
-                  ref={hiddenInputRef}
-                  style={tailwind.style('opacity-0 w-1 h-1')}
-                  value={code.join('')}
-                  onChangeText={handleCodeChange}
-                  maxLength={6}
-                  keyboardType="numeric"
-                  autoCapitalize="none"
-                  autoFocus
-                  textContentType="oneTimeCode"
-                />
               </>
             ) : (
               <>
@@ -271,7 +280,8 @@ const MFAScreen = () => {
                 onPress={() => setRememberDevice(value => !value)}
                 accessibilityRole="checkbox"
                 accessibilityState={{ checked: rememberDevice }}
-                style={tailwind.style('flex-row items-center gap-3 mb-6 pl-2')}>
+                hitSlop={12}
+                style={tailwind.style('flex-row items-center gap-3 mb-4 py-2 pl-2 min-h-11')}>
                 <Icon icon={rememberDevice ? <CheckedIcon /> : <UncheckedIcon />} size={20} />
                 <Text style={tailwind.style('flex-1 text-gray-700 font-inter-normal-20')}>
                   {i18n.t('MFA.EMAIL.REMEMBER_DEVICE')}

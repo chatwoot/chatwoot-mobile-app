@@ -131,6 +131,11 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       spacing={27}
       leftElement={isRead ? <ReadComponent /> : <UnreadComponent />}
       rightElement={<DeleteComponent />}
+      leftActionAccessibilityLabel={
+        isRead
+          ? i18n.t('NOTIFICATION.ACTIONS.MARK_AS_UNREAD')
+          : i18n.t('NOTIFICATION.ACTIONS.MARK_AS_READ')
+      }
       handleLeftElementPress={onSwipeLeftAction}
       handleOnLeftOverswiped={onSwipeLeftAction}
       handleRightElementPress={onSwipeRightAction}

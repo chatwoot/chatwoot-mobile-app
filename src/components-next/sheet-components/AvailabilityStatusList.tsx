@@ -33,7 +33,13 @@ const StatusCell = ({
   const isSelected = availabilityStatus === item.status;
 
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable
+      onPress={handlePress}
+      accessible={true}
+      accessibilityRole="radio"
+      accessibilityState={{ selected: isSelected }}
+      accessibilityLabel={i18n.t(`AVAILABILITY.${item.status.toUpperCase()}`)}
+    >
       <Animated.View style={tailwind.style('flex flex-row items-center')}>
         <Animated.View style={tailwind.style('h-4 w-4 rounded-full m-1.5', item.statusColor)} />
         <Animated.View

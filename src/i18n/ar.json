@@ -218,6 +218,8 @@
       "REPLY": "إضافة رد",
       "DELETE_MESSAGE": "Delete message"
     },
+    "SHOW_MORE": "عرض المزيد",
+    "SHOW_LESS": "عرض أقل",
     "EMAIL_HEADER": {
       "FROM": "من",
       "TO": "إلى",

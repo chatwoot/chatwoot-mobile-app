@@ -256,6 +256,8 @@
     "TRANSLATE_ERROR": "Failed to translate message",
     "VIEW_ORIGINAL": "View original",
     "VIEW_TRANSLATED": "View translated",
+    "SHOW_MORE": "Show more",
+    "SHOW_LESS": "Show less",
     "EMAIL_HEADER": {
       "FROM": "From",
       "TO": "To",

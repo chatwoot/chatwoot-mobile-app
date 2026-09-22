@@ -221,6 +221,8 @@
       "REPLY": "Responder",
       "DELETE_MESSAGE": "Delete message"
     },
+    "SHOW_MORE": "Mostrar más",
+    "SHOW_LESS": "Mostrar menos",
     "EMAIL_HEADER": {
       "FROM": "Desde",
       "TO": "Para",

@@ -89,6 +89,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
               <MarkdownBubble
                 messageContent={replyMessageItem?.content?.split('\n')?.[0]}
                 variant={props.variant}
+                expandable={false}
               />
             ) : (
               <Animated.Text

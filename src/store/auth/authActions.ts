@@ -4,6 +4,7 @@ import type {
   LoginPayload,
   LoginResponse,
   MfaRequiredResponse,
+  MfaSetupRequiredResponse,
   MfaVerificationPayload,
   ResetPasswordPayload,
   ResetPasswordResponse,
@@ -34,11 +35,10 @@ const createAuthThunk = <TResponse, TPayload>(
   );
 };
 export const authActions = {
-  login: createAuthThunk<LoginResponse | MfaRequiredResponse, LoginPayload>(
-    'auth/login',
-    AuthService.login,
-    I18n.t('ERRORS.AUTH'),
-  ),
+  login: createAuthThunk<
+    LoginResponse | MfaRequiredResponse | MfaSetupRequiredResponse,
+    LoginPayload
+  >('auth/login', AuthService.login, I18n.t('ERRORS.AUTH')),
 
   verifyMfa: createAuthThunk<LoginResponse, MfaVerificationPayload>(
     'auth/verifyMfa',

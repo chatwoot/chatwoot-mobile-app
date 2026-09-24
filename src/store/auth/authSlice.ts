@@ -106,6 +106,13 @@ export const authSlice = createSlice({
         state.error = null;
       })
       .addCase(authActions.login.fulfilled, (state, action) => {
+        // Enrolment is required before a session can be issued; the login screen
+        // tells the user to set it up on the web app.
+        if ('mfa_setup_required' in action.payload) {
+          state.uiFlags.isLoggingIn = false;
+          state.error = null;
+          return;
+        }
         // Check if MFA is required
         if ('mfa_required' in action.payload) {
           state.mfaToken = action.payload.mfa_token;

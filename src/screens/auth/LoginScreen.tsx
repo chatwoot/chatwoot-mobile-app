@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, Image, Pressable, ScrollView, StatusBar, TextInput, View } from 'react-native';
+import {
+  Alert,
+  Animated,
+  Image,
+  Pressable,
+  ScrollView,
+  StatusBar,
+  TextInput,
+  View,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
@@ -24,6 +33,7 @@ import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
 import { SsoUtils } from '@/utils/ssoUtils';
+import { openURL } from '@/utils/urlUtils';
 
 type FormData = {
   email: string;
@@ -65,6 +75,20 @@ const LoginScreen = () => {
     }
   }, [installationUrl, navigation, dispatch]);
 
+  const showMfaSetupRequiredAlert = () => {
+    Alert.alert(
+      i18n.t('LOGIN.MFA_SETUP_REQUIRED.TITLE'),
+      i18n.t('LOGIN.MFA_SETUP_REQUIRED.MESSAGE'),
+      [
+        {
+          text: i18n.t('LOGIN.MFA_SETUP_REQUIRED.OPEN_WEB'),
+          onPress: () => openURL({ URL: installationUrl }),
+        },
+        { text: i18n.t('LOGIN.MFA_SETUP_REQUIRED.DISMISS'), style: 'cancel' },
+      ],
+    );
+  };
+
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
     // Clear any existing auth state before login
@@ -72,6 +96,11 @@ const LoginScreen = () => {
 
     try {
       const result = await dispatch(authActions.login({ email, password })).unwrap();
+
+      if ('mfa_setup_required' in result) {
+        showMfaSetupRequiredAlert();
+        return;
+      }
 
       // Check if MFA is required in the response
       if ('mfa_required' in result && result.mfa_required) {

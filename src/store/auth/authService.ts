@@ -5,6 +5,7 @@ import type {
   LoginResponse,
   LoginApiResponse,
   MfaRequiredResponse,
+  MfaSetupRequiredResponse,
   MfaVerificationPayload,
   ResetPasswordPayload,
   ResetPasswordResponse,
@@ -16,8 +17,14 @@ import type {
 } from './authTypes';
 
 export class AuthService {
-  static async login(credentials: LoginPayload): Promise<LoginResponse | MfaRequiredResponse> {
+  static async login(
+    credentials: LoginPayload,
+  ): Promise<LoginResponse | MfaRequiredResponse | MfaSetupRequiredResponse> {
     const response = await apiService.post<LoginApiResponse>('auth/sign_in', credentials);
+
+    if (response.data.mfa_setup_required) {
+      return { mfa_setup_required: true };
+    }
 
     // Check if MFA is required
     if (response.data.mfa_required) {

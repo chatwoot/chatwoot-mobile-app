@@ -52,6 +52,24 @@ describe('AuthService', () => {
       });
     });
 
+    it('returns a setup marker without a session when the account enforces MFA', async () => {
+      const credentials = { email: 'test@example.com', password: 'password' };
+      (apiService.post as jest.Mock).mockResolvedValueOnce({
+        status: 206,
+        data: {
+          mfa_setup_required: true,
+          mfa_setup_token: 'setup-token',
+          secret: 'secret',
+          error: 'Your account requires two-factor authentication.',
+        },
+        headers: {},
+      });
+
+      const result = await AuthService.login(credentials);
+
+      expect(result).toEqual({ mfa_setup_required: true });
+    });
+
     it('should throw error when login fails', async () => {
       const credentials = { email: 'test@example.com', password: 'wrong' };
       const error = new Error('Invalid credentials');

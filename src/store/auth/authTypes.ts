@@ -23,6 +23,12 @@ export interface MfaRequiredResponse {
   verification_channel: VerificationChannel | null;
 }
 
+// The account enforces two-factor authentication and this user has not enrolled yet.
+// Enrolment happens on the web app, so the setup token the server sends is not carried.
+export interface MfaSetupRequiredResponse {
+  mfa_setup_required: true;
+}
+
 export interface MfaVerificationPayload {
   mfa_token: string;
   otp_code?: string;
@@ -33,6 +39,7 @@ export interface MfaVerificationPayload {
 export interface LoginApiResponse {
   data?: User;
   mfa_required?: boolean;
+  mfa_setup_required?: boolean;
   mfa_token?: string;
   verification_channel?: VerificationChannel | null;
 }

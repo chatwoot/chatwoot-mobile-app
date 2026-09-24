@@ -14,12 +14,15 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetSettings } from '@/store/settings/settingsSlice';
 import { authActions } from '@/store/auth/authActions';
 import { resetAuth, clearAuthError } from '@/store/auth/authSlice';
+import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import i18n from '@/i18n';
+import { showMfaSetupRequiredAlert } from './utils/mfaSetupRequiredAlert';
 
 const MFAScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const { mfaToken, verificationChannel, uiFlags, error } = useAppSelector(state => state.auth);
+  const installationUrl = useAppSelector(selectInstallationUrl);
 
   const isEmailChannel = verificationChannel === 'email';
 
@@ -91,7 +94,13 @@ const MFAScreen = () => {
         ...(isEmailChannel ? { remember_device: rememberDevice } : {}),
       };
 
-      await dispatch(authActions.verifyMfa(payload)).unwrap();
+      const result = await dispatch(authActions.verifyMfa(payload)).unwrap();
+
+      if ('mfa_setup_required' in result) {
+        showMfaSetupRequiredAlert(installationUrl);
+        navigation.goBack();
+        return;
+      }
 
       verificationStatus.value = 'correct';
 

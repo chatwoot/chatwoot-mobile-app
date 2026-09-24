@@ -46,10 +46,19 @@ export class AuthService {
     } as LoginResponse;
   }
 
-  static async verifyMfa(payload: MfaVerificationPayload): Promise<LoginResponse> {
-    const response = await apiService.post<{ data: User }>('auth/sign_in', payload);
+  static async verifyMfa(
+    payload: MfaVerificationPayload,
+  ): Promise<LoginResponse | MfaSetupRequiredResponse> {
+    const response = await apiService.post<LoginApiResponse>('auth/sign_in', payload);
+
+    // A redeemed device-verification code on an enforcing account still ends in the
+    // setup challenge rather than a session.
+    if (response.data.mfa_setup_required) {
+      return { mfa_setup_required: true };
+    }
+
     return {
-      user: response.data.data,
+      user: response.data.data as User,
       headers: {
         'access-token': response.headers['access-token'],
         uid: response.headers.uid,

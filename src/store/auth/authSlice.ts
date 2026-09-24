@@ -171,6 +171,13 @@ export const authSlice = createSlice({
         state.error = null;
       })
       .addCase(authActions.verifyMfa.fulfilled, (state, action) => {
+        if ('mfa_setup_required' in action.payload) {
+          state.uiFlags.isVerifyingMfa = false;
+          state.error = null;
+          state.mfaToken = null;
+          state.verificationChannel = null;
+          return;
+        }
         state.user = action.payload.user;
         state.headers = action.payload.headers;
         state.uiFlags.isVerifyingMfa = false;

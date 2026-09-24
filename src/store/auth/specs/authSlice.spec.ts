@@ -270,6 +270,27 @@ describe('Auth Slice', () => {
       expect(state.uiFlags.isVerifyingMfa).toBe(false);
     });
 
+    it('stays logged out and drops the token when verification ends in an MFA setup challenge', () => {
+      const pendingState = {
+        ...initialState,
+        mfaToken: 'mfa-token',
+        verificationChannel: 'email' as const,
+        uiFlags: { ...initialState.uiFlags, isVerifyingMfa: true },
+      };
+      const action = {
+        type: authActions.verifyMfa.fulfilled.type,
+        payload: { mfa_setup_required: true },
+      };
+      const state = authReducer(pendingState, action);
+
+      expect(state.user).toBeNull();
+      expect(state.headers).toBeNull();
+      expect(state.mfaToken).toBeNull();
+      expect(state.verificationChannel).toBeNull();
+      expect(state.uiFlags.isVerifyingMfa).toBe(false);
+      expect(state.error).toBeNull();
+    });
+
     it('should handle login failure', () => {
       const error = 'Invalid credentials';
       const action = {

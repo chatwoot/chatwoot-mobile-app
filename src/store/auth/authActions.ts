@@ -40,7 +40,7 @@ export const authActions = {
     LoginPayload
   >('auth/login', AuthService.login, I18n.t('ERRORS.AUTH')),
 
-  verifyMfa: createAuthThunk<LoginResponse, MfaVerificationPayload>(
+  verifyMfa: createAuthThunk<LoginResponse | MfaSetupRequiredResponse, MfaVerificationPayload>(
     'auth/verifyMfa',
     AuthService.verifyMfa,
     I18n.t('ERRORS.AUTH'),

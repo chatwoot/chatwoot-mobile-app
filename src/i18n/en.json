@@ -46,7 +46,7 @@
     "CHANGE_URL": "Change URL",
     "MFA_SETUP_REQUIRED": {
       "TITLE": "Two-factor authentication required",
-      "MESSAGE": "Your account requires two-factor authentication. Sign in on the web to set it up, then come back here.",
+      "MESSAGE": "Your account requires two-factor authentication. Sign in to Chatwoot on the web to set it up, then come back here.",
       "OPEN_WEB": "Open web app",
       "DISMISS": "OK"
     }

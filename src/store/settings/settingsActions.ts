@@ -19,7 +19,9 @@ import type {
   NotificationSettingsPayload,
   InstallationUrls,
   PushPayload,
+  VoipPushPayload,
 } from './settingsTypes';
+import { getVoipToken, isSystemCallUiAvailable } from '@/services/voice/chatwootCalls';
 import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
 import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
@@ -135,6 +137,27 @@ export const settingsActions = {
           error instanceof Error ? error.message : 'Error saving device details',
         );
       }
+    },
+  ),
+
+  // The VoIP push token rings this phone for calls while the app is closed; it is a
+  // separate subscription from the FCM one because Apple delivers it through PushKit
+  saveVoipToken: createAsyncThunk<{ voipToken: string | null }, void>(
+    'settings/saveVoipToken',
+    async () => {
+      if (!isSystemCallUiAvailable()) return { voipToken: null };
+      const voipToken = getVoipToken() ?? null;
+      if (!voipToken) return { voipToken: null };
+      const payload: VoipPushPayload = {
+        subscription_type: 'apns_voip',
+        subscription_attributes: {
+          devicePlatform: getSystemName(),
+          push_token: voipToken,
+          device_id: await getUniqueId(),
+        },
+      };
+      await SettingsService.saveVoipToken(payload);
+      return { voipToken };
     },
   ),
 

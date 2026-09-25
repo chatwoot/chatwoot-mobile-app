@@ -59,6 +59,7 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { getVoipToken } from '@/services/voice/chatwootCalls';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -189,6 +190,8 @@ const SettingsScreen = () => {
     await AsyncStorage.removeItem('cwCookie');
     await RecentSearches.clearAll();
     await dispatch(settingsActions.removeDevice({ pushToken }));
+    const voipToken = getVoipToken();
+    if (voipToken) await dispatch(settingsActions.removeDevice({ pushToken: voipToken }));
     dispatch(logout());
   }, [dispatch, pushToken]);
 

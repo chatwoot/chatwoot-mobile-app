@@ -13,6 +13,9 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
+import { OngoingCallBar } from '@/screens/call';
+import notifee from '@notifee/react-native';
+import { handleCallNotificationEvent, isCallPush } from '@/utils/callNotifications';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
 import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
@@ -28,24 +31,20 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { SsoUtils } from '@/utils/ssoUtils';
 import { useAppDispatch } from '@/hooks';
-import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
-import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
-import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
-import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
-import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
+import { APP_FONTS } from '@/theme/fonts';
 
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
+  // Call pushes are rung by the native service, which posts the notification before
+  // JavaScript has started; this path would only duplicate it.
+  if (isCallPush(remoteMessage.data)) return;
   console.log('Message handled in the background!', remoteMessage);
 });
 
+// Answer and decline can be pressed while the app is not running
+notifee.onBackgroundEvent(handleCallNotificationEvent);
+
 export const AppNavigationContainer = () => {
-  const [fontsLoaded] = useFonts({
-    'Inter-400-20': Inter40020,
-    'Inter-420-20': Inter42020,
-    'Inter-500-24': Inter50024,
-    'Inter-580-24': Inter58024,
-    'Inter-600-20': Inter60020,
-  });
+  const [fontsLoaded] = useFonts(APP_FONTS);
 
   const routeNameRef = useRef<string | undefined>(undefined);
   const dispatch = useAppDispatch();
@@ -231,7 +230,9 @@ export const AppNavigator = () => {
       <KeyboardProvider>
         <RefsProvider>
           <SafeAreaProvider>
-            <AppNavigationContainer />
+            <OngoingCallBar>
+              <AppNavigationContainer />
+            </OngoingCallBar>
           </SafeAreaProvider>
         </RefsProvider>
       </KeyboardProvider>

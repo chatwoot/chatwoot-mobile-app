@@ -40,6 +40,7 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { InAppCallScreen } from '@/screens/call';
 
 const Tab = createBottomTabNavigator();
 
@@ -197,35 +198,38 @@ export const AppTabs = () => {
 
   if (isLoggedIn) {
     return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Tab" component={Tabs} />
-        <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
-          name="ChatScreen"
-          component={ChatScreen}
-        />
-        <Stack.Screen
-          options={{
-            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-            animation: 'slide_from_bottom',
-          }}
-          name="ContactDetails"
-          component={ContactDetailsScreen}
-        />
-        <Stack.Screen
-          options={{
-            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-            animation: 'slide_from_bottom',
-          }}
-          name="Dashboard"
-          component={DashboardScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false, animation: 'slide_from_right' }}
-          name="SearchScreen"
-          component={SearchScreen}
-        />
-      </Stack.Navigator>
+      <React.Fragment>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Tab" component={Tabs} />
+          <Stack.Screen
+            options={{ animation: 'slide_from_right' }}
+            name="ChatScreen"
+            component={ChatScreen}
+          />
+          <Stack.Screen
+            options={{
+              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+              animation: 'slide_from_bottom',
+            }}
+            name="ContactDetails"
+            component={ContactDetailsScreen}
+          />
+          <Stack.Screen
+            options={{
+              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+              animation: 'slide_from_bottom',
+            }}
+            name="Dashboard"
+            component={DashboardScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false, animation: 'slide_from_right' }}
+            name="SearchScreen"
+            component={SearchScreen}
+          />
+        </Stack.Navigator>
+        <InAppCallScreen />
+      </React.Fragment>
     );
   } else {
     return <AuthStack />;

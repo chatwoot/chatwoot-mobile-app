@@ -11,3 +11,4 @@ export * from './priority-icons';
 export * from './sla-icons';
 export * from './conversation-icons';
 export * from './copilot-icons';
+export * from './call-controls';

@@ -294,12 +294,35 @@
       "TRANSCRIPT_SHOW_LESS": "Show less"
     },
     "VOICE_WIDGET": {
+      "INCOMING_CALL": "Incoming call",
+      "OUTGOING_CALL": "Outgoing call",
+      "CALL_IN_PROGRESS": "Call in progress",
       "UNKNOWN_CALLER": "Unknown caller",
+      "REJECT_CALL": "Decline",
+      "JOIN_CALL": "Answer",
+      "END_CALL": "End call",
+      "GO_TO_CONVERSATION": "Open conversation",
       "ANSWER_UNAVAILABLE": "Answering from the app is not available yet. Answer from the web app.",
       "REJECT_FAILED": "Couldn't decline the call",
+      "CALLING": "Calling…",
+      "RINGING": "Ringing…",
+      "CONNECTING": "Connecting…",
+      "MUTE": "Mute",
+      "UNMUTE": "Unmute",
+      "SPEAKER": "Speaker",
+      "AUDIO_ROUTE": "Audio",
+      "ON_HOLD": "On hold",
+      "RESUME": "Resume",
+      "HOLD": "Hold",
+      "ROUTE_EARPIECE": "Earpiece",
+      "ROUTE_SPEAKER": "Speaker",
+      "ROUTE_BLUETOOTH": "Bluetooth",
+      "ROUTE_WIRED": "Wired headset",
       "ANSWERED_ELSEWHERE": "This call was answered by another agent.",
       "CALL_ALREADY_ENDED": "The caller hung up before you could answer.",
-      "JOIN_FAILED": "Couldn't connect the call."
+      "JOIN_FAILED": "Couldn't connect the call.",
+      "MINIMISE": "Minimise call",
+      "RETURN_TO_CALL": "Return to call"
     }
   },
   "FILTER": {

@@ -8,6 +8,7 @@ export * from './CaretRight';
 export * from './Chat';
 export * from './Chatwoot';
 export * from './ChevronLeft';
+export * from './ChevronRight';
 export * from './Clear';
 export * from './Close';
 export * from './DoubleCheck';

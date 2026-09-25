@@ -292,6 +292,14 @@
       "TRANSCRIPT": "Transcript",
       "TRANSCRIPT_SHOW_MORE": "Show more",
       "TRANSCRIPT_SHOW_LESS": "Show less"
+    },
+    "VOICE_WIDGET": {
+      "UNKNOWN_CALLER": "Unknown caller",
+      "ANSWER_UNAVAILABLE": "Answering from the app is not available yet. Answer from the web app.",
+      "REJECT_FAILED": "Couldn't decline the call",
+      "ANSWERED_ELSEWHERE": "This call was answered by another agent.",
+      "CALL_ALREADY_ENDED": "The caller hung up before you could answer.",
+      "JOIN_FAILED": "Couldn't connect the call."
     }
   },
   "FILTER": {

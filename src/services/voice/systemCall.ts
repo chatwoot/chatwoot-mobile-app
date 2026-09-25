@@ -1,0 +1,323 @@
+import { Platform } from 'react-native';
+
+import type { AppDispatch, RootState } from '@/store';
+import { VOICE_CALL_PROVIDERS } from '@/constants';
+import { callActions } from '@/store/call/callActions';
+import {
+  addCall,
+  clearActiveCall,
+  markSystemUiFailed,
+  setMuted,
+  setSystemUuid,
+} from '@/store/call/callSlice';
+import {
+  selectActiveCall,
+  selectCalls,
+  selectIsJoining,
+  selectLocalCallSid,
+} from '@/store/call/callSelectors';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
+import type { LiveCall } from '@/store/call/callTypes';
+import i18n from '@/i18n';
+
+import { callEngine } from './callEngine';
+import { markLocalEnd } from './callSessionCore';
+import {
+  activateWebrtcAudio,
+  addAudioSessionListener,
+  deactivateWebrtcAudio,
+  addCallKitActionListener,
+  addIncomingCallListener,
+  callKitReady,
+  endSystemCall,
+  getPendingSystemCalls,
+  isSystemCallUiAvailable,
+  markCallAnswering,
+  reportIncomingSystemCall,
+  reportSystemCallConnected,
+  requestSystemCallAnswer,
+  requestSystemCallEnd,
+  requestSystemCallMute,
+  startOutgoingSystemCall,
+  type SystemCall,
+  type SystemCallEndReason,
+} from '@/services/voice/chatwootCalls';
+
+// Keeps the OS call UI (CallKit) in step with the call store. User actions taken in the
+// system UI arrive as events and drive the store; actions taken in our own sheet are routed
+// through the system UI first so both stay consistent and the audio session is managed
+// by the OS. Without the native module every function is a no-op.
+
+type Store = { dispatch: AppDispatch; getState: () => RootState };
+
+type JoinResult = { status: string };
+
+// How the OS call UI should explain a call that ended without this device's action
+export const systemEndReason = (
+  store: Store,
+  callSid: string,
+  status?: string | null,
+): SystemCallEndReason => {
+  if (selectLocalCallSid(store.getState()) === callSid) return 'remote';
+  switch (status) {
+    case 'rejected':
+      return 'declined_elsewhere';
+    case 'no-answer':
+    case 'no_answer':
+      return 'unanswered';
+    case 'in-progress':
+    case 'in_progress':
+    case 'completed':
+      return 'answered_elsewhere';
+    default:
+      return 'remote';
+  }
+};
+
+// Joins in flight, so an end that lands mid-join settles after the join and ends the
+// call that was actually established instead of rejecting a call already accepted
+const pendingJoins = new Map<string, Promise<JoinResult>>();
+
+const startJoin = (store: Store, callSid: string) => {
+  markCallAnswering(callSid);
+  const join = store.dispatch(callActions.joinCall(callSid)).unwrap() as Promise<JoinResult>;
+  pendingJoins.set(callSid, join);
+  join.finally(() => pendingJoins.delete(callSid)).catch(() => {});
+  return join;
+};
+
+const endLocally = (store: Store, call: LiveCall | undefined, callSid: string) => {
+  const pending = pendingJoins.get(callSid);
+  if (pending) {
+    pending
+      .then(result => {
+        if (result.status === 'joined') return store.dispatch(callActions.endCall()).unwrap();
+        return store.dispatch(callActions.rejectIncomingCall(callSid)).unwrap();
+      })
+      .catch(() => store.dispatch(callActions.rejectIncomingCall(callSid)));
+    return;
+  }
+  const active = selectActiveCall(store.getState());
+  if (call?.isActive || (!call && active)) {
+    store.dispatch(callActions.endCall());
+  } else if (call) {
+    store.dispatch(callActions.rejectIncomingCall(callSid));
+  }
+};
+
+// The OS call screen shows one name, so it carries the inbox the call came through:
+// an agent answering needs to know which number rang before they pick up.
+export const callerInfo = (state: RootState, call: LiveCall) => {
+  const conversation = call.conversationId
+    ? selectConversationById(state, call.conversationId)
+    : undefined;
+  const contact = conversation?.meta?.sender;
+  const inbox = call.inboxId ? selectInboxById(state, call.inboxId) : undefined;
+  const name =
+    call.caller?.name || contact?.name || i18n.t('CONVERSATION.VOICE_WIDGET.UNKNOWN_CALLER');
+  const handle = call.caller?.phone || contact?.phoneNumber || name;
+  return {
+    name,
+    handle,
+    avatar: call.caller?.avatar || contact?.thumbnail || '',
+    inboxName: inbox?.name ?? '',
+    displayName: inbox?.name ? `${name} · ${inbox.name}` : name,
+  };
+};
+
+export const systemCall = {
+  isAvailable: () => isSystemCallUiAvailable(),
+
+  // Shows the OS incoming-call UI for a call that arrived over the socket
+  async reportRinging(store: Store, call: LiveCall) {
+    if (!isSystemCallUiAvailable() || call.systemUuid || !call.provider) return;
+    const { displayName, handle } = callerInfo(store.getState(), call);
+    try {
+      const systemUuid = await reportIncomingSystemCall({
+        callSid: call.callSid,
+        provider: call.provider,
+        displayName,
+        handle,
+        conversationId: call.conversationId,
+        inboxId: call.inboxId,
+      });
+      if (__DEV__) console.log('[callkit] reported incoming', systemUuid);
+      store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
+    } catch (error) {
+      console.warn('System call UI could not show the call', error);
+      store.dispatch(markSystemUiFailed(call.callSid));
+    }
+  },
+
+  // Whether the OS is presenting the ring for this call, so the app's own ring UI stays out
+  // of the way until the call is answered
+  ringsInSystemUi(call: LiveCall) {
+    return (
+      isSystemCallUiAvailable() &&
+      call.callDirection === 'inbound' &&
+      !call.isActive &&
+      !call.systemUiFailed
+    );
+  },
+
+  async startOutgoing(store: Store, call: LiveCall) {
+    if (!isSystemCallUiAvailable() || !call.provider) return;
+    const { displayName, handle } = callerInfo(store.getState(), call);
+    try {
+      const systemUuid = await startOutgoingSystemCall({
+        callSid: call.callSid,
+        provider: call.provider,
+        displayName,
+        handle,
+        conversationId: call.conversationId,
+        inboxId: call.inboxId,
+      });
+      store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
+    } catch (error) {
+      console.warn('System call UI could not start the call', error);
+    }
+  },
+
+  // A joined call with a system call behind it is marked connected; without one, WebRTC
+  // audio is switched on directly because no OS activation will come
+  connected(call: LiveCall) {
+    if (call.systemUuid) {
+      reportSystemCallConnected(call.systemUuid);
+    } else if (Platform.OS === 'ios' && call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
+      activateWebrtcAudio();
+    }
+  },
+
+  // A socket event says the call finished elsewhere; the system call ends with that reason
+  endedBySid(store: Store, callSid: string, reason: SystemCallEndReason) {
+    const call = selectCalls(store.getState()).find(entry => entry.callSid === callSid);
+    if (call?.systemUuid) endSystemCall(call.systemUuid, reason);
+  },
+
+  ended(call: LiveCall, reason: SystemCallEndReason) {
+    if (call.systemUuid) {
+      endSystemCall(call.systemUuid, reason);
+    } else if (Platform.OS === 'ios' && call.isActive) {
+      deactivateWebrtcAudio();
+    }
+  },
+
+  // Our sheet's buttons: go through the OS so its UI updates and audio is activated,
+  // then the matching action event performs the real work
+  answer(store: Store, call: LiveCall) {
+    if (call.systemUuid) return requestSystemCallAnswer(call.systemUuid);
+    return startJoin(store, call.callSid);
+  },
+
+  // The OS may no longer know the call (ended by a cancel push, or a provider reset);
+  // the call is then ended locally so the far side still hangs up
+  async end(store: Store, call: LiveCall) {
+    markLocalEnd(call.callSid);
+    if (call.systemUuid) {
+      try {
+        await requestSystemCallEnd(call.systemUuid);
+        return;
+      } catch {
+        // fall through to the local end
+      }
+    }
+    endLocally(store, call, call.callSid);
+  },
+
+  mute(store: Store, call: LiveCall | null, muted: boolean) {
+    if (call?.systemUuid) return requestSystemCallMute(call.systemUuid, muted);
+    return store.dispatch(callActions.toggleMute()).unwrap();
+  },
+
+  // Calls the OS already knows about when JavaScript starts: a push reported them, or the
+  // user answered on the lock screen before the app finished launching
+  adoptPendingCalls(store: Store) {
+    const pending = getPendingSystemCalls();
+    pending.forEach(system => adoptSystemCall(store, system));
+    callKitReady();
+  },
+
+  // Wires the OS events for the lifetime of the app session. `onIncoming` runs after a
+  // push-delivered call is adopted, so the caller can bring the socket back and check
+  // whether the call is still ringing.
+  attach(store: Store, onIncoming?: () => void) {
+    if (!isSystemCallUiAvailable()) return () => {};
+
+    const incoming = addIncomingCallListener(system => {
+      adoptSystemCall(store, system);
+      onIncoming?.();
+    });
+
+    const actions = addCallKitActionListener(event => {
+      if (__DEV__) console.log('[callkit] action', JSON.stringify(event));
+      if (event.type === 'reset') {
+        store.dispatch(clearActiveCall());
+        return;
+      }
+      const call = selectCalls(store.getState()).find(entry => entry.callSid === event.callSid);
+      switch (event.type) {
+        case 'answer':
+          if (call && !call.isActive && !selectIsJoining(store.getState())) {
+            startJoin(store, call.callSid)
+              .then(result => {
+                if (result.status !== 'joined') endSystemCall(event.uuid, 'answered_elsewhere');
+              })
+              .catch(() => endSystemCall(event.uuid, 'failed'));
+          }
+          break;
+        case 'end':
+          endLocally(store, call, event.callSid);
+          break;
+        case 'mute':
+          callEngine.setMuted(event.muted).catch(() => {});
+          store.dispatch(setMuted(event.muted));
+          break;
+        case 'hold':
+          store.dispatch(callActions.setHold(event.onHold));
+          break;
+        default:
+          break;
+      }
+    });
+
+    // The module switches the media engines' audio when the OS activates the session
+    const audio = addAudioSessionListener(event => {
+      if (__DEV__) console.log('[callkit] audio session', JSON.stringify(event));
+    });
+
+    return () => {
+      incoming.remove();
+      actions.remove();
+      audio.remove();
+    };
+  },
+};
+
+// Puts a system-reported call into the store and, if the user already answered it on the
+// lock screen, joins it straight away
+const adoptSystemCall = (store: Store, system: SystemCall) => {
+  const known = selectCalls(store.getState()).find(entry => entry.callSid === system.callSid);
+  if (!known) {
+    store.dispatch(
+      addCall({
+        callSid: system.callSid,
+        callId: system.callId,
+        provider: system.provider,
+        conversationId: system.conversationId,
+        inboxId: system.inboxId,
+        callDirection: system.outgoing ? 'outbound' : 'inbound',
+        caller: { name: system.displayName, phone: system.handle },
+        systemUuid: system.uuid,
+      }),
+    );
+  } else if (!known.systemUuid) {
+    store.dispatch(setSystemUuid({ callSid: system.callSid, systemUuid: system.uuid }));
+  }
+  if (system.answered && !system.outgoing) {
+    const current = selectCalls(store.getState()).find(entry => entry.callSid === system.callSid);
+    if (current && !current.isActive && selectLocalCallSid(store.getState()) !== system.callSid) {
+      startJoin(store, system.callSid).catch(() => endSystemCall(system.uuid, 'failed'));
+    }
+  }
+};

@@ -260,8 +260,13 @@ const conversationSlice = createSlice({
           conversation.messages.sort((a, b) => b.createdAt - a.createdAt);
           state.isAllNewerMessagesFetched = messages.length < 20;
         } else {
-          // First load or older pagination: prepend older messages.
-          conversation.messages.unshift(...messages);
+          // First load or older pagination: prepend older messages. A message already
+          // in the list is replaced by the fetched copy so the freshest state is shown.
+          const fetchedIds = new Set(messages.map(m => m.id));
+          conversation.messages = [
+            ...messages,
+            ...conversation.messages.filter(m => !fetchedIds.has(m.id)),
+          ];
           state.isAllMessagesFetched = messages.length < 20 || false;
           // A first load (no beforeId) lands on the latest messages.
           if (beforeId == null) {

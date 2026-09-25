@@ -75,7 +75,14 @@
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Conversations",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "Clear",
+      "VOICE_CALL": "Start call",
+      "WHATSAPP_CALL": "Start WhatsApp call",
+      "VOICE_CALL_FAILED": "Could not start the call.",
+      "WHATSAPP_CALL_FAILED": "Could not start the WhatsApp call.",
+      "WHATSAPP_CALL_PERMISSION_REQUESTED": "Sent a call permission request to the contact. Try again once they accept.",
+      "WHATSAPP_CALL_PERMISSION_PENDING": "Call permission request already sent recently. Try again once the contact accepts.",
+      "CALL_UNAVAILABLE": "Calling from the app is not available yet. Start the call from the web app."
     },
     "FILTERS": {
       "AGENT": {

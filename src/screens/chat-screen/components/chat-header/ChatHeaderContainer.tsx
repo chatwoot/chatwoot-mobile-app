@@ -16,6 +16,12 @@ import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
+import { selectHasActiveCall, selectHasIncomingCall } from '@/store/call/callSelectors';
+import { callActions } from '@/store/call/callActions';
+import { getVoiceCallProvider } from '@/utils/inboxUtils';
+import { isMediaUnavailableError } from '@/services/voice/callEngine';
+import { VOICE_CALL_PROVIDERS } from '@/constants';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -32,6 +38,13 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+  const inbox = useAppSelector(state =>
+    conversation?.inboxId ? selectInboxById(state, conversation.inboxId) : undefined,
+  );
+  const hasActiveCall = useAppSelector(selectHasActiveCall);
+  const hasIncomingCall = useAppSelector(selectHasIncomingCall);
+  const [isStartingCall, setIsStartingCall] = useState(false);
+  const voiceCallProvider = getVoiceCallProvider(inbox);
 
   const appliedSla = conversation?.appliedSla;
 
@@ -132,6 +145,43 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
+  // Mirrors the web header button: one call at a time, permission outcomes are
+  // information rather than failures.
+  const startCall = async () => {
+    if (!voiceCallProvider || !inbox || isStartingCall) return;
+    const isWhatsapp = voiceCallProvider === VOICE_CALL_PROVIDERS.WHATSAPP;
+    setIsStartingCall(true);
+    try {
+      const result = await dispatch(
+        callActions.startOutboundCall({
+          provider: voiceCallProvider,
+          conversationId,
+          inboxId: inbox.id,
+          contactId: conversation?.meta?.sender?.id,
+        }),
+      ).unwrap();
+      if (result.status === 'permission_requested') {
+        showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_REQUESTED') });
+      } else if (result.status === 'permission_pending') {
+        showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_PENDING') });
+      }
+    } catch (error) {
+      if (isMediaUnavailableError(error)) {
+        showToast({ message: i18n.t('CONVERSATION.HEADER.CALL_UNAVAILABLE') });
+      } else {
+        showToast({
+          message: i18n.t(
+            isWhatsapp
+              ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
+              : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
+          ),
+        });
+      }
+    } finally {
+      setIsStartingCall(false);
+    }
+  };
+
   const dashboardRoutes = dashboardApps.map(dashboardApp => ({
     title: dashboardApp.title,
     url: dashboardApp.content[0].url,
@@ -168,6 +218,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       hasSla={!!appliedSla}
       slaEvents={conversation?.slaEvents}
       statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
+      showCallButton={voiceCallProvider !== null}
+      isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
+      onCallPress={startCall}
       onBackPress={handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}

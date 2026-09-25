@@ -24,6 +24,7 @@ import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
 import { SsoUtils } from '@/utils/ssoUtils';
+import { showMfaSetupRequiredAlert } from './utils/mfaSetupRequiredAlert';
 
 type FormData = {
   email: string;
@@ -72,6 +73,11 @@ const LoginScreen = () => {
 
     try {
       const result = await dispatch(authActions.login({ email, password })).unwrap();
+
+      if ('mfa_setup_required' in result) {
+        showMfaSetupRequiredAlert(installationUrl);
+        return;
+      }
 
       // Check if MFA is required in the response
       if ('mfa_required' in result && result.mfa_required) {

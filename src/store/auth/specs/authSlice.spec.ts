@@ -224,6 +224,24 @@ describe('Auth Slice', () => {
       expect(state.uiFlags.isLoggingIn).toBe(false);
     });
 
+    it('stays logged out when the account requires MFA enrolment', () => {
+      const pendingState = {
+        ...initialState,
+        uiFlags: { ...initialState.uiFlags, isLoggingIn: true },
+      };
+      const action = {
+        type: authActions.login.fulfilled.type,
+        payload: { mfa_setup_required: true },
+      };
+      const state = authReducer(pendingState, action);
+
+      expect(state.user).toBeNull();
+      expect(state.headers).toBeNull();
+      expect(state.mfaToken).toBeNull();
+      expect(state.uiFlags.isLoggingIn).toBe(false);
+      expect(state.error).toBeNull();
+    });
+
     it('should default the verification channel to null for authenticator MFA', () => {
       const payload = { mfa_required: true, mfa_token: 'mfa-token' };
       const action = { type: authActions.login.fulfilled.type, payload };
@@ -250,6 +268,27 @@ describe('Auth Slice', () => {
       expect(state.mfaToken).toBeNull();
       expect(state.verificationChannel).toBeNull();
       expect(state.uiFlags.isVerifyingMfa).toBe(false);
+    });
+
+    it('stays logged out and drops the token when verification ends in an MFA setup challenge', () => {
+      const pendingState = {
+        ...initialState,
+        mfaToken: 'mfa-token',
+        verificationChannel: 'email' as const,
+        uiFlags: { ...initialState.uiFlags, isVerifyingMfa: true },
+      };
+      const action = {
+        type: authActions.verifyMfa.fulfilled.type,
+        payload: { mfa_setup_required: true },
+      };
+      const state = authReducer(pendingState, action);
+
+      expect(state.user).toBeNull();
+      expect(state.headers).toBeNull();
+      expect(state.mfaToken).toBeNull();
+      expect(state.verificationChannel).toBeNull();
+      expect(state.uiFlags.isVerifyingMfa).toBe(false);
+      expect(state.error).toBeNull();
     });
 
     it('should handle login failure', () => {

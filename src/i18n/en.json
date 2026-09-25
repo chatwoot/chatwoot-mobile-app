@@ -43,7 +43,13 @@
     "SETTINGS": "Settings",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_URL": "Change URL",
+    "MFA_SETUP_REQUIRED": {
+      "TITLE": "Two-factor authentication required",
+      "MESSAGE": "Your account requires two-factor authentication. Sign in to Chatwoot on the web to set it up, then come back here.",
+      "OPEN_WEB": "Open web app",
+      "DISMISS": "OK"
+    }
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Please enter your email",

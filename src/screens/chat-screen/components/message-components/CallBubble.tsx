@@ -1,12 +1,11 @@
-import React, { useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
-import { Pressable } from 'react-native-gesture-handler';
+import React, { useMemo } from 'react';
+import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import i18n from '@/i18n';
-import { MESSAGE_VARIANTS } from '@/constants';
+import { MESSAGE_VARIANTS, VOICE_CALL_STATUS } from '@/constants';
 import { getVoiceCallDisplay } from '@/utils/voiceCallUtils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectFullScreenCall } from '@/store/call/callSelectors';
@@ -14,7 +13,9 @@ import { setMinimised } from '@/store/call/callSlice';
 
 import { AudioBubble } from './AudioBubble';
 import { CallActionButton } from './call-bubble/CallActionButton';
-import { CallGlyph } from './call-bubble/CallGlyph';
+import { CallStatusCard } from './call-bubble/CallStatusCard';
+import { CallTranscript } from './call-bubble/CallTranscript';
+import type { CallBubbleState } from './call-bubble/callBubbleTheme';
 import { useCallBubbleActions } from './call-bubble/useCallBubbleActions';
 
 type CallBubbleProps = {
@@ -22,85 +23,60 @@ type CallBubbleProps = {
   variant: string;
 };
 
-const TRANSCRIPT_PREVIEW_LINES = 3;
-
 const isLightOnDark = (variant: string) =>
   variant === MESSAGE_VARIANTS.USER || variant === MESSAGE_VARIANTS.ERROR;
 
+const callState = (display: ReturnType<typeof getVoiceCallDisplay>): CallBubbleState => {
+  if (display.isFailed) return 'missed';
+  if (display.status === VOICE_CALL_STATUS.IN_PROGRESS) return 'live';
+  if (display.status === VOICE_CALL_STATUS.COMPLETED) return 'ended';
+  return 'ringing';
+};
+
+// A call in the conversation, on a card inset into the message bubble: which way it went
+// and how it ended, the one action it offers, and the recording and transcript it left.
 export const CallBubble = ({ item, variant }: CallBubbleProps) => {
   const display = useMemo(() => getVoiceCallDisplay(item), [item]);
-  const [transcriptExpanded, setTranscriptExpanded] = useState(false);
   const dispatch = useAppDispatch();
   const liveCall = useAppSelector(selectFullScreenCall);
   const actions = useCallBubbleActions(item, display);
   const callSid = item.call?.providerCallId;
-  // The bubble opens the call screen while this device is on that very call
+  // The card opens the call screen while this device is on that very call
   const isThisDevicesCall = !!liveCall && !!callSid && liveCall.callSid === callSid;
 
-  const openCallScreen = () => dispatch(setMinimised(false));
-
+  const state = callState(display);
   const lightOnDark = isLightOnDark(variant);
-  const titleColor = lightOnDark ? 'text-white' : 'text-gray-950';
-  const subtextColor = lightOnDark ? 'text-blue-100' : 'text-gray-700';
-  const glyphColor = display.isFailed
-    ? tailwind.color(lightOnDark ? 'text-ruby-300' : 'text-ruby-800')
-    : tailwind.color(lightOnDark ? 'text-white' : 'text-gray-900');
-  const glyphBackground = lightOnDark
-    ? 'bg-blue-800'
-    : display.isFailed
-      ? 'bg-ruby-100'
-      : 'bg-gray-200';
-
-  const subtextParts = [
-    display.subtextKey ? i18n.t(display.subtextKey, display.subtextParams) : null,
-    display.status === 'completed' ? display.duration : null,
-  ].filter(Boolean);
-
-  const header = (
-    <View style={tailwind.style('flex flex-row items-center gap-3')}>
-      <View
-        style={tailwind.style(
-          'h-10 w-10 rounded-full items-center justify-center',
-          glyphBackground,
-        )}>
-        <CallGlyph
-          color={glyphColor as string}
-          failed={display.isFailed}
-          outbound={display.isOutbound}
-        />
-      </View>
-      <View style={tailwind.style('flex-1')}>
-        <Text style={tailwind.style('text-md font-inter-medium-24 tracking-[0.32px]', titleColor)}>
-          {i18n.t(display.labelKey)}
-        </Text>
-        {subtextParts.length > 0 ? (
-          <Text
-            style={tailwind.style(
-              'text-sm font-inter-420-20 tracking-[0.32px] pt-0.5',
-              subtextColor,
-            )}>
-            {subtextParts.join(' · ')}
-          </Text>
-        ) : null}
-      </View>
-    </View>
-  );
+  const subtitle = display.subtextKey ? i18n.t(display.subtextKey, display.subtextParams) : '';
 
   return (
-    <Animated.View style={tailwind.style('flex flex-col gap-3 min-w-[220px]')}>
-      {isThisDevicesCall ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={i18n.t('CONVERSATION.VOICE_WIDGET.RETURN_TO_CALL')}
-          onPress={openCallScreen}>
-          {header}
-        </Pressable>
-      ) : (
-        header
-      )}
+    <Animated.View style={tailwind.style('gap-3 min-w-[240px]')}>
+      <CallStatusCard
+        state={state}
+        isOutbound={display.isOutbound}
+        title={i18n.t(display.labelKey)}
+        subtitle={subtitle}
+        duration={state === 'ended' ? display.duration : undefined}
+        onOpenCall={isThisDevicesCall ? () => dispatch(setMinimised(false)) : undefined}>
+        {actions.canJoinCall ? (
+          <CallActionButton
+            label={i18n.t('CONVERSATION.VOICE_CALL.JOIN_CALL')}
+            tone="answer"
+            inFlight={actions.isJoining}
+            onPress={actions.joinCall}
+          />
+        ) : null}
+        {actions.canCallBack ? (
+          <CallActionButton
+            label={i18n.t('CONVERSATION.VOICE_CALL.CALL_BACK')}
+            tone="callback"
+            inFlight={actions.isCallingBack}
+            onPress={actions.callBack}
+          />
+        ) : null}
+      </CallStatusCard>
 
       {display.recording ? (
-        <View style={tailwind.style('flex flex-row items-center')}>
+        <View style={tailwind.style('flex-row items-center')}>
           <AudioBubble
             audioSrc={display.recording.dataUrl}
             contentType={display.recording.contentType}
@@ -110,48 +86,8 @@ export const CallBubble = ({ item, variant }: CallBubbleProps) => {
         </View>
       ) : null}
 
-      {actions.canCallBack ? (
-        <CallActionButton
-          label={i18n.t('CONVERSATION.VOICE_CALL.CALL_BACK')}
-          onPress={actions.callBack}
-          disabled={actions.isCallingBack}
-          lightOnDark={lightOnDark}
-        />
-      ) : null}
-
-      {actions.canJoinCall ? (
-        <CallActionButton
-          label={i18n.t('CONVERSATION.VOICE_CALL.JOIN_CALL')}
-          onPress={actions.joinCall}
-          disabled={actions.isJoining}
-          lightOnDark={lightOnDark}
-        />
-      ) : null}
-
       {display.transcript ? (
-        <View style={tailwind.style('flex flex-col gap-1')}>
-          <Text
-            style={tailwind.style(
-              'text-xs font-inter-medium-24 uppercase tracking-[0.48px]',
-              subtextColor,
-            )}>
-            {i18n.t('CONVERSATION.VOICE_CALL.TRANSCRIPT')}
-          </Text>
-          <Text
-            numberOfLines={transcriptExpanded ? undefined : TRANSCRIPT_PREVIEW_LINES}
-            style={tailwind.style('text-sm font-inter-420-20 tracking-[0.32px]', titleColor)}>
-            {display.transcript}
-          </Text>
-          <Pressable onPress={() => setTranscriptExpanded(value => !value)} hitSlop={6}>
-            <Text style={tailwind.style('text-xs font-inter-medium-24 pt-0.5', subtextColor)}>
-              {i18n.t(
-                transcriptExpanded
-                  ? 'CONVERSATION.VOICE_CALL.TRANSCRIPT_SHOW_LESS'
-                  : 'CONVERSATION.VOICE_CALL.TRANSCRIPT_SHOW_MORE',
-              )}
-            </Text>
-          </Pressable>
-        </View>
+        <CallTranscript text={display.transcript} lightOnDark={lightOnDark} />
       ) : null}
     </Animated.View>
   );

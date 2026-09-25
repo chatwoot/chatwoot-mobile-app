@@ -1,42 +1,63 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { Pressable } from 'react-native-gesture-handler';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import { Path, Svg } from 'react-native-svg';
 
 import { tailwind } from '@/theme';
-import { CallIcon } from '@/svg-icons';
+
+import { HANDSET_PATH } from '@/svg-icons';
+
+import { CALL_GREEN, CALL_LINK } from './callBubbleTheme';
 
 type CallActionButtonProps = {
   label: string;
+  // Answering a ring is the strong action; calling back is the quiet one
+  tone: 'answer' | 'callback';
+  inFlight: boolean;
   onPress: () => void;
-  disabled: boolean;
-  lightOnDark: boolean;
 };
 
-// The one action a call bubble offers: joining a call still ringing, or calling back
-export const CallActionButton = ({
-  label,
-  onPress,
-  disabled,
-  lightOnDark,
-}: CallActionButtonProps) => {
-  const foreground = tailwind.color(lightOnDark ? 'text-blue-800' : 'text-white') as string;
+const TONES = {
+  answer: { background: CALL_GREEN, border: CALL_GREEN, foreground: '#FFFFFF' },
+  callback: { background: 'rgba(14,142,255,0.1)', border: 'transparent', foreground: CALL_LINK },
+};
+
+// The one action a call card offers, across the foot of the card
+export const CallActionButton = ({ label, tone, inFlight, onPress }: CallActionButtonProps) => {
+  const { background, border, foreground } = TONES[tone];
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
-      disabled={disabled}
+      accessibilityState={{ disabled: inFlight }}
+      disabled={inFlight}
       onPress={onPress}
-      style={tailwind.style(
-        'self-start flex-row items-center gap-2 rounded-full px-4 py-2',
-        lightOnDark ? 'bg-white' : 'bg-blue-800',
-        disabled ? 'opacity-50' : '',
-      )}>
-      <CallIcon color={foreground} size={16} />
+      style={({ pressed }) => [
+        tailwind.style(
+          'h-[38px] rounded-[10px] border-[1.5px] flex-row items-center justify-center gap-2',
+        ),
+        {
+          backgroundColor: background,
+          borderColor: border,
+          opacity: inFlight ? 0.55 : pressed ? 0.8 : 1,
+        },
+      ]}>
+      {inFlight ? (
+        <ActivityIndicator size="small" color={foreground} />
+      ) : (
+        <View style={tailwind.style('h-4 w-4')}>
+          <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
+            <Path
+              d={HANDSET_PATH}
+              stroke={foreground}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </Svg>
+        </View>
+      )}
       <Text
-        style={[
-          tailwind.style('text-sm font-inter-medium-24 tracking-[0.32px]'),
-          { color: foreground },
-        ]}>
+        style={[tailwind.style('font-inter-580-24 text-[14px] leading-5'), { color: foreground }]}>
         {label}
       </Text>
     </Pressable>

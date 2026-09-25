@@ -250,6 +250,7 @@ export const NOTIFICATION_TYPES = [
   'sla_missed_first_response',
   'sla_missed_next_response',
   'sla_missed_resolution',
+  'voice_call_missed',
 ];
 
 export const URL_WITHOUT_HTTP_REGEX =
@@ -295,7 +296,27 @@ export const MEDIA_TYPES = [
 
 export const CONTENT_TYPES = {
   INCOMING_EMAIL: 'incoming_email',
+  VOICE_CALL: 'voice_call',
 };
+
+export const VOICE_CALL_STATUS = {
+  RINGING: 'ringing',
+  IN_PROGRESS: 'in-progress',
+  COMPLETED: 'completed',
+  NO_ANSWER: 'no-answer',
+  FAILED: 'failed',
+  REJECTED: 'rejected',
+} as const;
+
+export const VOICE_CALL_PROVIDERS = {
+  TWILIO: 'twilio',
+  WHATSAPP: 'whatsapp',
+} as const;
+
+export const VOICE_CALL_END_REASON = {
+  AGENT_REJECTED: 'agent_rejected',
+  AGENT_HANGUP: 'agent_hangup',
+} as const;
 
 export const ORIENTATION = {
   LEFT: 'left',

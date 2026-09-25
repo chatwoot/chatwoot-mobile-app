@@ -20,7 +20,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSMicrophoneUsageDescription: 'This app requires access to the microphone to record audio.',
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
-        UIBackgroundModes: ['fetch', 'remote-notification'],
+        UIBackgroundModes: ['fetch', 'remote-notification', 'audio', 'voip'],
         ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file
@@ -35,6 +35,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',
         'android.permission.POST_NOTIFICATIONS',
+        'android.permission.USE_FULL_SCREEN_INTENT',
+        'android.permission.FOREGROUND_SERVICE',
+        'android.permission.FOREGROUND_SERVICE_MICROPHONE',
+        'android.permission.MANAGE_OWN_CALLS',
       ],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
@@ -96,6 +100,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       'expo-web-browser',
+      [
+        '@config-plugins/react-native-webrtc',
+        {
+          cameraPermission: 'Chatwoot needs camera access to attach photos to conversations.',
+          microphonePermission: 'Chatwoot needs the microphone for voice calls and voice notes.',
+        },
+      ],
       '@react-native-community/datetimepicker',
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',

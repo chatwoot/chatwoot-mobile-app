@@ -58,6 +58,9 @@ importers:
       '@chatwoot/utils':
         specifier: ^0.0.56
         version: 0.0.56
+      '@config-plugins/react-native-webrtc':
+        specifier: 15.0.2
+        version: 15.0.2(expo@57.0.7)
       '@expo/dom-webview':
         specifier: 57.0.1
         version: 57.0.1(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
@@ -163,6 +166,9 @@ importers:
       expo-font:
         specifier: ~57.0.1
         version: 57.0.1(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
+      expo-glass-effect:
+        specifier: ~57.0.3
+        version: 57.0.3(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       expo-haptics:
         specifier: ~57.0.1
         version: 57.0.1(expo@57.0.7)
@@ -226,6 +232,9 @@ importers:
       react-native-image-picker:
         specifier: ^7.1.2
         version: 7.2.3(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
+      react-native-incall-manager:
+        specifier: 4.3.0
+        version: 4.3.0(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))
       react-native-ios-context-menu:
         specifier: ^3.2.1
         version: 3.2.1(react-native-ios-utilities@5.2.0(patch_hash=b239f9cdd1ff8c04478e1012621c971225207cd7d737505c413f7f61856a48a1)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
@@ -259,6 +268,9 @@ importers:
       react-native-svg:
         specifier: ^15.15.4
         version: 15.15.4(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
+      react-native-webrtc:
+        specifier: 124.0.8
+        version: 124.0.8(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))
       react-native-webview:
         specifier: ^13.16.1
         version: 13.16.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
@@ -307,10 +319,10 @@ importers:
         version: 5.0.1
       '@storybook/addon-ondevice-actions':
         specifier: ^8.6.2
-        version: 8.6.2(prettier@3.5.3)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))
+        version: 8.6.2(prettier@3.5.3)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))
       '@storybook/addon-ondevice-controls':
         specifier: ^8.6.2
-        version: 8.6.2(00065e83d94663b4aa5402cff59e737b)
+        version: 8.6.2(dee1667839a061bab5d1bf887ba11055)
       '@storybook/react-native':
         specifier: ^8.6.2
         version: 8.6.2(d9b33de3d8927aa88bd2481fc63ad7d4)
@@ -893,6 +905,11 @@ packages:
   '@chatwoot/utils@0.0.56':
     resolution: {integrity: sha512-A6dmPLfTSrW4qYNY73btyi4PqpfzcXRSaucscZTQdzNqF6G/QUdgnBmHtho8HeiYby/kSHXaSxLJj+0dx3yEQQ==}
     engines: {node: '>=10'}
+
+  '@config-plugins/react-native-webrtc@15.0.2':
+    resolution: {integrity: sha512-sH4T7Z4P2RowV91k9CEwEr0unn+396NBexxCNZwRXuJXwguDU1qZWpE6fcwN0730B8uiS83F7+CLTyhpC7qRHQ==}
+    peerDependencies:
+      expo: '>=56'
 
   '@dominicstop/ts-event-emitter@1.1.0':
     resolution: {integrity: sha512-CcxmJIvUb1vsFheuGGVSQf4KdPZC44XolpUT34+vlal+LyQoBUOn31pjFET5M9ctOxEpt8xa0M3/2M7uUiAoJw==}
@@ -3277,6 +3294,15 @@ packages:
       supports-color:
         optional: true
 
+  debug@4.3.4:
+    resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
   debug@4.4.0:
     resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
     engines: {node: '>=6.0'}
@@ -3744,6 +3770,13 @@ packages:
 
   expo-font@57.0.1:
     resolution: {integrity: sha512-QyS9L1Kh9sKJg4gfU6rdbpxpmH+DyzBX8z6jVvXMUDoqLr1GqmkO/Wu379KCXjL///kWbhpNlbi7AgBuj4VdIQ==}
+    peerDependencies:
+      expo: '*'
+      react: '*'
+      react-native: '*'
+
+  expo-glass-effect@57.0.3:
+    resolution: {integrity: sha512-aTh2J5eCxf+rSRMBJTnP8Ib5/k8DYFVDuEX1xqesN9F9aqTXocwMv/aQRVBNUs/iogDWhHIJz2pN97IsrrTcoA==}
     peerDependencies:
       expo: '*'
       react: '*'
@@ -4959,6 +4992,9 @@ packages:
   ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
 
+  ms@2.1.2:
+    resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
+
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
@@ -5445,6 +5481,11 @@ packages:
       react: '*'
       react-native: '*'
 
+  react-native-incall-manager@4.3.0:
+    resolution: {integrity: sha512-T9TayjZH0n8kVX0KMaVCRethCJWgWC83xL8elVUV54Ue0BpFh5B8YvQUsn8p0Kxoh5zYz+MCOD9/6RrFpC+IRg==}
+    peerDependencies:
+      react-native: '>=0.40.0'
+
   react-native-ios-context-menu@3.2.1:
     resolution: {integrity: sha512-OBQbb3I/VUx2wQgz4cqN614kt3nJ+qx5wxEdtGN1Aj4nYYL1orp7VLFkV6axof6DgOyv0YD6af2RUTok6a2xDQ==}
     peerDependencies:
@@ -5540,6 +5581,11 @@ packages:
     resolution: {integrity: sha512-My330Do7/DvKnEvwQc0WdcBnFPploYKp9CYlefDXzIdEaA+PAhDYllkvGeEroEzvc4Kzzj2O4yVdz8v6fjRvhA==}
     peerDependencies:
       react-native: '*'
+
+  react-native-webrtc@124.0.8:
+    resolution: {integrity: sha512-uuQxvmk+mvnk5U0tr+1N42sKZqgm41fJrBA+fmCvML9J9P4roSh2So82t5RHAlu/vE9vxu5AKgivAiH61clCBg==}
+    peerDependencies:
+      react-native: '>=0.60.0'
 
   react-native-webview@13.16.1:
     resolution: {integrity: sha512-If0eHhoEdOYDcHsX+xBFwHMbWBGK1BvGDQDQdVkwtSIXiq1uiqjkpWVP2uQ1as94J0CzvFE9PUNDuhiX0Z6ubw==}
@@ -7193,6 +7239,10 @@ snapshots:
   '@chatwoot/utils@0.0.56':
     dependencies:
       date-fns: 2.30.0
+
+  '@config-plugins/react-native-webrtc@15.0.2(expo@57.0.7)':
+    dependencies:
+      expo: 57.0.7(@babel/core@7.27.1)(@expo/dom-webview@57.0.1)(react-dom@19.2.0(react@19.2.3))(react-native-webview@13.16.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native-worklets@0.10.1(@babel/core@7.27.1)(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
 
   '@dominicstop/ts-event-emitter@1.1.0': {}
 
@@ -8984,7 +9034,7 @@ snapshots:
 
   '@standard-schema/utils@0.3.0': {}
 
-  '@storybook/addon-actions@8.6.12(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/addon-actions@8.6.12(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
       '@storybook/global': 5.0.0
       '@types/uuid': 9.0.8
@@ -8993,17 +9043,17 @@ snapshots:
       storybook: 8.6.17(prettier@2.8.8)
       uuid: 9.0.1
 
-  '@storybook/addon-controls@8.6.12(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/addon-controls@8.6.12(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
       '@storybook/global': 5.0.0
       dequal: 2.0.3
       storybook: 8.6.17(prettier@2.8.8)
       ts-dedent: 2.2.0
 
-  '@storybook/addon-ondevice-actions@8.6.2(prettier@3.5.3)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/addon-ondevice-actions@8.6.2(prettier@3.5.3)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
-      '@storybook/addon-actions': 8.6.12(storybook@8.6.17(prettier@3.5.3))
-      '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@3.5.3))
+      '@storybook/addon-actions': 8.6.12(storybook@8.6.17(prettier@2.8.8))
+      '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@2.8.8))
       '@storybook/global': 5.0.0
       fast-deep-equal: 2.0.1
       react: 19.2.3
@@ -9015,15 +9065,15 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@storybook/addon-ondevice-controls@8.6.2(00065e83d94663b4aa5402cff59e737b)':
+  '@storybook/addon-ondevice-controls@8.6.2(dee1667839a061bab5d1bf887ba11055)':
     dependencies:
       '@gorhom/bottom-sheet': 5.2.14(9c9f9bb8612e5efb38618b1a1f1ba0ea)
       '@react-native-community/datetimepicker': 8.4.4(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       '@react-native-community/slider': 5.0.1
-      '@storybook/addon-controls': 8.6.12(storybook@8.6.17(prettier@3.5.3))
-      '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@3.5.3))
+      '@storybook/addon-controls': 8.6.12(storybook@8.6.17(prettier@2.8.8))
+      '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@2.8.8))
       '@storybook/react-native-theming': 8.6.2(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
-      '@storybook/react-native-ui': 8.6.2(e9f6712ba444a3ce86d001ba9045d730)
+      '@storybook/react-native-ui': 8.6.2(3caf69f048ff2354c78072cbe8b06b3e)
       deep-equal: 1.1.2
       prop-types: 15.8.1
       react: 19.2.3
@@ -9044,13 +9094,13 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@storybook/components@8.6.12(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/components@8.6.12(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
       storybook: 8.6.17(prettier@2.8.8)
 
   '@storybook/core@8.6.12(prettier@2.8.8)(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
-      '@storybook/theming': 8.6.12(storybook@8.6.17(prettier@3.5.3))
+      '@storybook/theming': 8.6.12(storybook@8.6.17(prettier@2.8.8))
       better-opn: 3.0.2
       browser-assert: 1.2.1
       esbuild: 0.25.3
@@ -9069,9 +9119,9 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@storybook/core@8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/core@8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
-      '@storybook/theming': 8.6.12(storybook@8.6.17(prettier@3.5.3))
+      '@storybook/theming': 8.6.12(storybook@8.6.17(prettier@2.8.8))
       better-opn: 3.0.2
       browser-assert: 1.2.1
       esbuild: 0.25.3
@@ -9117,15 +9167,15 @@ snapshots:
 
   '@storybook/global@5.0.0': {}
 
-  '@storybook/manager-api@8.6.12(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/manager-api@8.6.12(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
       storybook: 8.6.17(prettier@2.8.8)
 
-  '@storybook/preview-api@8.6.12(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/preview-api@8.6.12(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
       storybook: 8.6.17(prettier@2.8.8)
 
-  '@storybook/react-dom-shim@8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/react-dom-shim@8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
       react: 19.2.3
       react-dom: 19.2.0(react@19.2.3)
@@ -9137,11 +9187,11 @@ snapshots:
       react: 19.2.3
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
 
-  '@storybook/react-native-ui@8.6.2(a60f109e7fdf2678148e38ff5aa624d7)':
+  '@storybook/react-native-ui@8.6.2(3caf69f048ff2354c78072cbe8b06b3e)':
     dependencies:
       '@gorhom/bottom-sheet': 5.2.14(9c9f9bb8612e5efb38618b1a1f1ba0ea)
-      '@storybook/core': 8.6.12(prettier@2.8.8)(storybook@8.6.17(prettier@2.8.8))
-      '@storybook/react': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))(typescript@5.9.3)
+      '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@2.8.8))
+      '@storybook/react': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))(typescript@5.9.3)
       '@storybook/react-native-theming': 8.6.2(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       fuse.js: 7.1.0
       memoizerific: 1.11.3
@@ -9163,11 +9213,11 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@storybook/react-native-ui@8.6.2(e9f6712ba444a3ce86d001ba9045d730)':
+  '@storybook/react-native-ui@8.6.2(a60f109e7fdf2678148e38ff5aa624d7)':
     dependencies:
       '@gorhom/bottom-sheet': 5.2.14(9c9f9bb8612e5efb38618b1a1f1ba0ea)
-      '@storybook/core': 8.6.12(prettier@3.5.3)(storybook@8.6.17(prettier@3.5.3))
-      '@storybook/react': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))(typescript@5.9.3)
+      '@storybook/core': 8.6.12(prettier@2.8.8)(storybook@8.6.17(prettier@2.8.8))
+      '@storybook/react': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))(typescript@5.9.3)
       '@storybook/react-native-theming': 8.6.2(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       fuse.js: 7.1.0
       memoizerific: 1.11.3
@@ -9195,7 +9245,7 @@ snapshots:
       '@storybook/core': 8.6.12(prettier@2.8.8)(storybook@8.6.17(prettier@2.8.8))
       '@storybook/csf': 0.1.13
       '@storybook/global': 5.0.0
-      '@storybook/react': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))(typescript@5.9.3)
+      '@storybook/react': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))(typescript@5.9.3)
       '@storybook/react-native-theming': 8.6.2(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       '@storybook/react-native-ui': 8.6.2(a60f109e7fdf2678148e38ff5aa624d7)
       commander: 8.3.0
@@ -9223,21 +9273,21 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@storybook/react@8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))(typescript@5.9.3)':
+  '@storybook/react@8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))(typescript@5.9.3)':
     dependencies:
-      '@storybook/components': 8.6.12(storybook@8.6.17(prettier@3.5.3))
+      '@storybook/components': 8.6.12(storybook@8.6.17(prettier@2.8.8))
       '@storybook/global': 5.0.0
-      '@storybook/manager-api': 8.6.12(storybook@8.6.17(prettier@3.5.3))
-      '@storybook/preview-api': 8.6.12(storybook@8.6.17(prettier@3.5.3))
-      '@storybook/react-dom-shim': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@3.5.3))
-      '@storybook/theming': 8.6.12(storybook@8.6.17(prettier@3.5.3))
+      '@storybook/manager-api': 8.6.12(storybook@8.6.17(prettier@2.8.8))
+      '@storybook/preview-api': 8.6.12(storybook@8.6.17(prettier@2.8.8))
+      '@storybook/react-dom-shim': 8.6.12(react-dom@19.2.0(react@19.2.3))(react@19.2.3)(storybook@8.6.17(prettier@2.8.8))
+      '@storybook/theming': 8.6.12(storybook@8.6.17(prettier@2.8.8))
       react: 19.2.3
       react-dom: 19.2.0(react@19.2.3)
       storybook: 8.6.17(prettier@2.8.8)
     optionalDependencies:
       typescript: 5.9.3
 
-  '@storybook/theming@8.6.12(storybook@8.6.17(prettier@3.5.3))':
+  '@storybook/theming@8.6.12(storybook@8.6.17(prettier@2.8.8))':
     dependencies:
       storybook: 8.6.17(prettier@2.8.8)
 
@@ -10151,6 +10201,10 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
+  debug@4.3.4:
+    dependencies:
+      ms: 2.1.2
+
   debug@4.4.0:
     dependencies:
       ms: 2.1.3
@@ -10751,6 +10805,12 @@ snapshots:
     dependencies:
       expo: 57.0.7(@babel/core@7.27.1)(@expo/dom-webview@57.0.1)(react-dom@19.2.0(react@19.2.3))(react-native-webview@13.16.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native-worklets@0.10.1(@babel/core@7.27.1)(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       fontfaceobserver: 2.3.0
+      react: 19.2.3
+      react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
+
+  expo-glass-effect@57.0.3(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3):
+    dependencies:
+      expo: 57.0.7(@babel/core@7.27.1)(@expo/dom-webview@57.0.1)(react-dom@19.2.0(react@19.2.3))(react-native-webview@13.16.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native-worklets@0.10.1(@babel/core@7.27.1)(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       react: 19.2.3
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
 
@@ -12285,6 +12345,8 @@ snapshots:
 
   ms@2.0.0: {}
 
+  ms@2.1.2: {}
+
   ms@2.1.3: {}
 
   multitars@1.0.0: {}
@@ -12745,6 +12807,10 @@ snapshots:
       react: 19.2.3
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
 
+  react-native-incall-manager@4.3.0(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)):
+    dependencies:
+      react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
+
   react-native-ios-context-menu@3.2.1(react-native-ios-utilities@5.2.0(patch_hash=b239f9cdd1ff8c04478e1012621c971225207cd7d737505c413f7f61856a48a1)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3):
     dependencies:
       '@dominicstop/ts-event-emitter': 1.1.0
@@ -12838,6 +12904,14 @@ snapshots:
     dependencies:
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
       whatwg-url-without-unicode: 8.0.0-3
+
+  react-native-webrtc@124.0.8(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)):
+    dependencies:
+      base64-js: 1.5.1
+      debug: 4.3.4
+      react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
+    transitivePeerDependencies:
+      - supports-color
 
   react-native-webview@13.16.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3):
     dependencies:

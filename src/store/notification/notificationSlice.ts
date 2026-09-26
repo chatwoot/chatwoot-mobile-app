@@ -99,15 +99,18 @@ const notificationsSlice = createSlice({
         notificationActions.markAsRead.fulfilled,
         (state, action: PayloadAction<MarkAsReadPayload>) => {
           const { primaryActorId } = action.payload;
-          const notification = Object.values(state.entities).find(
-            n => n?.primaryActorId === primaryActorId,
+          // The server marks every unread notification of the primary actor read, and
+          // leaves the count alone when they were already read.
+          const unreadNotifications = Object.values(state.entities).filter(
+            n => n?.primaryActorId === primaryActorId && !n.readAt,
           );
-          if (notification) {
-            notificationsAdapter.updateOne(state, {
-              id: notification.id,
-              changes: { readAt: new Date().toISOString() },
-            });
-            state.unreadCount -= 1;
+          if (unreadNotifications.length) {
+            const readAt = new Date().toISOString();
+            notificationsAdapter.updateMany(
+              state,
+              unreadNotifications.map(n => ({ id: n!.id, changes: { readAt } })),
+            );
+            state.unreadCount = Math.max(state.unreadCount - unreadNotifications.length, 0);
             updateBadgeCount({ count: state.unreadCount });
           }
         },

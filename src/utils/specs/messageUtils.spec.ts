@@ -1,4 +1,5 @@
 import {
+  buildCreatePayload,
   canRetryMessage,
   createPendingMessage,
   hasMessageFailedWithExternalError,
@@ -33,6 +34,29 @@ describe('createPendingMessage', () => {
     expect(pendingMessage.senderId).toBe(7);
     expect(pendingMessage.senderType).toBe(SENDER_TYPES.USER);
     expect(pendingMessage.messageType).toBe(MESSAGE_TYPES.OUTGOING);
+  });
+});
+
+describe('buildCreatePayload', () => {
+  const buildEmailReply = () =>
+    createPendingMessage({
+      conversationId: 1,
+      message: 'Hello',
+      private: false,
+      sender: { id: 7, thumbnail: '' },
+      ccEmails: 'contact@example.com',
+      bccEmails: 'audit@example.com',
+      toEmails: 'colleague@example.com',
+    } as SendMessagePayload);
+
+  it('sends the To recipients of a reply without attachments', () => {
+    const payload = buildCreatePayload(buildEmailReply());
+
+    expect(payload).toMatchObject({
+      cc_emails: 'contact@example.com',
+      bcc_emails: 'audit@example.com',
+      to_emails: 'colleague@example.com',
+    });
   });
 });
 

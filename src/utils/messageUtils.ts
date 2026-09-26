@@ -120,6 +120,7 @@ export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload 
       },
       cc_emails: ccEmails,
       bcc_emails: bccEmails,
+      to_emails: toEmails,
       template_params: templateParams,
     };
   }

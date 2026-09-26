@@ -124,6 +124,7 @@ export type MessageBuilderPayload =
       content_attributes?: Record<string, unknown>;
       cc_emails?: string;
       bcc_emails?: string;
+      to_emails?: string;
       template_params?: TemplateSendParams;
     };
 

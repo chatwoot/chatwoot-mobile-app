@@ -84,7 +84,7 @@
     "lodash": "^4.17.21",
     "react": "19.2.3",
     "react-hook-form": "^7.52.1",
-    "react-native": "0.86.0",
+    "react-native": "0.87.0",
     "react-native-audio-recorder-player": "^3.6.11",
     "react-native-autoheight-webview": "^1.6.5",
     "react-native-blob-util": "^0.24.10",
@@ -112,7 +112,7 @@
     "semver": "^7.6.3",
     "snakecase-keys": "^8.0.1",
     "string.prototype.matchall": "4.0.3",
-    "tailwindcss": "^3.4.12",
+    "tailwindcss": "^4.0.0",
     "twrnc": "^4.5.1",
     "use-deep-compare-effect": "^1.8.1",
     "zeego": "^2.0.4"

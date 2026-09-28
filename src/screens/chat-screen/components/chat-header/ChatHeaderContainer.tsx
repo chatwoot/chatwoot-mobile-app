@@ -20,7 +20,7 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectHasActiveCall, selectHasIncomingCall } from '@/store/call/callSelectors';
 import { callActions } from '@/store/call/callActions';
 import { getVoiceCallProvider } from '@/utils/inboxUtils';
-import { isMediaUnavailableError } from '@/services/voice/callEngine';
+import { reportOutboundFailure } from '@/utils/voiceCallFeedback';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 
 type ChatScreenHeaderProps = {
@@ -166,17 +166,12 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_PENDING') });
       }
     } catch (error) {
-      if (isMediaUnavailableError(error)) {
-        showToast({ message: i18n.t('CONVERSATION.HEADER.CALL_UNAVAILABLE') });
-      } else {
-        showToast({
-          message: i18n.t(
-            isWhatsapp
-              ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
-              : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
-          ),
-        });
-      }
+      reportOutboundFailure(
+        error,
+        isWhatsapp
+          ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
+          : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
+      );
     } finally {
       setIsStartingCall(false);
     }

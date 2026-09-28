@@ -20,6 +20,7 @@ import { selectConversationById } from '@/store/conversation/conversationSelecto
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import type { LiveCall } from '@/store/call/callTypes';
 import i18n from '@/i18n';
+import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 
 import { callEngine } from './callEngine';
 import { markLocalEnd } from './callSessionCore';
@@ -263,7 +264,11 @@ export const systemCall = {
               .then(result => {
                 if (result.status !== 'joined') endSystemCall(event.uuid, 'answered_elsewhere');
               })
-              .catch(() => endSystemCall(event.uuid, 'failed'));
+              .catch(error => {
+                // Answered from the OS call screen, so the reason has nowhere else to go
+                reportAnswerFailure(error);
+                endSystemCall(event.uuid, 'failed');
+              });
           }
           break;
         case 'end':
@@ -317,7 +322,10 @@ const adoptSystemCall = (store: Store, system: SystemCall) => {
   if (system.answered && !system.outgoing) {
     const current = selectCalls(store.getState()).find(entry => entry.callSid === system.callSid);
     if (current && !current.isActive && selectLocalCallSid(store.getState()) !== system.callSid) {
-      startJoin(store, system.callSid).catch(() => endSystemCall(system.uuid, 'failed'));
+      startJoin(store, system.callSid).catch(error => {
+        reportAnswerFailure(error);
+        endSystemCall(system.uuid, 'failed');
+      });
     }
   }
 };

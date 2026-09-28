@@ -4,7 +4,7 @@ import { store } from '@/store';
 import type { LiveCall } from '@/store/call/callTypes';
 import { systemCall } from '@/services/voice/systemCall';
 import { useHaptic } from '@/utils';
-import { toastJoinError, toastJoinOutcome } from '@/utils/voiceCallToasts';
+import { reportAnswerFailure, toastJoinOutcome } from '@/utils/voiceCallFeedback';
 
 // Answer and end for the call on screen, routed through the OS call UI where there is one
 export const useCallActions = (call: LiveCall, isJoining: boolean) => {
@@ -19,7 +19,7 @@ export const useCallActions = (call: LiveCall, isJoining: boolean) => {
       const result = await systemCall.answer(store, call);
       if (result) toastJoinOutcome(result.status);
     } catch (error) {
-      toastJoinError(error);
+      reportAnswerFailure(error);
     }
   }, [call, hapticSelection, isJoining]);
 

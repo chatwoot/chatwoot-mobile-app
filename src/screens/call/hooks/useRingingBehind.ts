@@ -11,7 +11,7 @@ import { systemCall } from '@/services/voice/systemCall';
 import { useHaptic } from '@/utils';
 import { cancelCallNotification } from '@/utils/callNotifications';
 import { showToast } from '@/utils/toastUtils';
-import { toastJoinOutcome } from '@/utils/voiceCallToasts';
+import { reportAnswerFailure, toastJoinOutcome } from '@/utils/voiceCallFeedback';
 
 type Options = {
   // The call on screen, which the ringing ones queue behind
@@ -52,8 +52,8 @@ export const useRingingBehind = ({ call, activeCall, isJoining }: Options) => {
         if (!result) return false;
         toastJoinOutcome(result.status);
         return true;
-      } catch {
-        showToast({ message: i18n.t('CONVERSATION.VOICE_WIDGET.JOIN_FAILED') });
+      } catch (error) {
+        reportAnswerFailure(error);
         return false;
       } finally {
         endCallSwitch();

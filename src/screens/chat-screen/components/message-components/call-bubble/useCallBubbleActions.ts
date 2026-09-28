@@ -15,12 +15,15 @@ import {
 } from '@/store/call/callSelectors';
 import { addCall } from '@/store/call/callSlice';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
-import { isMediaUnavailableError } from '@/services/voice/callEngine';
 import { systemCall } from '@/services/voice/systemCall';
 import type { Message } from '@/types';
 import { showToast } from '@/utils/toastUtils';
 import type { getVoiceCallDisplay } from '@/utils/voiceCallUtils';
-import { toastJoinError, toastJoinOutcome } from '@/utils/voiceCallToasts';
+import {
+  reportAnswerFailure,
+  reportOutboundFailure,
+  toastJoinOutcome,
+} from '@/utils/voiceCallFeedback';
 
 type Display = ReturnType<typeof getVoiceCallDisplay>;
 
@@ -79,7 +82,7 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
       const result = (await systemCall.answer(store, entry)) as { status?: string } | void;
       toastJoinOutcome(result?.status);
     } catch (error) {
-      toastJoinError(error);
+      reportAnswerFailure(error);
     }
   };
 
@@ -102,15 +105,12 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
         showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_PENDING') });
       }
     } catch (error) {
-      showToast({
-        message: i18n.t(
-          isMediaUnavailableError(error)
-            ? 'CONVERSATION.HEADER.CALL_UNAVAILABLE'
-            : isWhatsapp
-              ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
-              : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
-        ),
-      });
+      reportOutboundFailure(
+        error,
+        isWhatsapp
+          ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
+          : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
+      );
     } finally {
       setIsCallingBack(false);
     }

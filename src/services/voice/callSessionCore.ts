@@ -21,6 +21,7 @@ import {
 import { setWebrtcConnectionLostHandler, webrtcEngine } from '@/services/voice/webrtcEngine';
 import { callerInfo, systemCall } from '@/services/voice/systemCall';
 import { takePendingCallAction } from '@/utils/callNotifications';
+import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
   addAudioRouteListener,
   getAudioRoute,
@@ -118,7 +119,9 @@ export const applyPendingCallAction = async () => {
   try {
     const result = (await systemCall.answer(store, call)) as { status: string } | void;
     if (!result || result.status !== 'joined') reportNativeCallState('failed');
-  } catch {
+  } catch (error) {
+    // Answered on the native screen, so the reason is told once the app is in front
+    reportAnswerFailure(error);
     reportNativeCallState('failed');
   }
 };

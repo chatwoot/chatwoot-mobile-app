@@ -50,7 +50,12 @@ export type StartOutboundCallParams = {
 export type StartOutboundCallResult =
   | { status: 'calling'; callSid: string }
   | { status: 'locked' }
+  | { status: 'cancelled' }
   | { status: 'permission_requested' | 'permission_pending' };
+
+// Set when the agent ends a call that is still being placed. The provider request may
+// already be in flight, so the call is torn down as soon as it has an id to tear down.
+let placingCancelled = false;
 
 const findCall = (state: RootState, callSid: string) =>
   selectCalls(state).find(call => call.callSid === callSid);
@@ -103,12 +108,24 @@ export const callActions = {
       const state = getState();
       if (selectHasActiveCall(state) || selectHasIncomingCall(state)) return { status: 'locked' };
       const senderId = selectUserId(state) ?? undefined;
+      placingCancelled = false;
       // The call screen opens on this, before the media offer and the provider request
       dispatch(setPlacingCall({ conversationId, inboxId, provider }));
+
+      // Ends the call the provider just created, when the agent gave up while it was placed
+      const cancelIfAsked = async (callSid: string) => {
+        if (!placingCancelled) return false;
+        await dispatch(callActions.rejectIncomingCall(callSid));
+        return true;
+      };
 
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
           const sdpOffer = await callEngine.whatsapp.createOffer();
+          if (placingCancelled) {
+            await callEngine.whatsapp.hangup().catch(() => {});
+            return { status: 'cancelled' };
+          }
           const response = await CallService.initiateWhatsappCall({ sdpOffer, conversationId });
           if (
             response.status === 'permission_requested' ||
@@ -132,6 +149,7 @@ export const callActions = {
               recordingEnabled: response.recording_enabled,
             }),
           );
+          if (await cancelIfAsked(response.call_id)) return { status: 'cancelled' };
           return { status: 'calling', callSid: response.call_id };
         }
 
@@ -148,6 +166,7 @@ export const callActions = {
             senderId,
           }),
         );
+        if (await cancelIfAsked(response.call_sid)) return { status: 'cancelled' };
         // The agent leg joins the conference right away; the contact is being dialed meanwhile
         dispatch(callActions.joinCall(response.call_sid));
         return { status: 'calling', callSid: response.call_sid };
@@ -243,6 +262,17 @@ export const callActions = {
       } finally {
         dispatch(setIsJoining(false));
       }
+    },
+  ),
+
+  // Ends a call that is still being placed, before the provider has given it an id. The
+  // screen closes now; the start request tears the call down once it can.
+  cancelPlacingCall: createAsyncThunk<void, void, { state: RootState }>(
+    'calls/cancelPlacingCall',
+    async (_, { dispatch }) => {
+      placingCancelled = true;
+      dispatch(setPlacingCall(null));
+      await callEngine.whatsapp.hangup().catch(() => {});
     },
   ),
 

@@ -70,7 +70,7 @@ export const FullScreenCall = ({ call, onMinimise, onOpenConversation }: FullScr
         isOnHold={isOnHold}
         isSpeakerOn={isSpeakerOn}
         audioRoute={audioRoute}
-        isEnding={isEnding || !call.callSid}
+        isEnding={isEnding}
         onMinimise={onMinimise}
         onToggleMute={() => systemCall.mute(store, call, !isMuted)}
         onToggleSpeaker={() => dispatch(callActions.toggleSpeaker())}

@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { store } from '@/store';
+import { callActions } from '@/store/call/callActions';
 import type { LiveCall } from '@/store/call/callTypes';
 import { systemCall } from '@/services/voice/systemCall';
 import { useHaptic } from '@/utils';
@@ -28,6 +29,11 @@ export const useCallActions = (call: LiveCall, isJoining: boolean) => {
     hapticSelection?.();
     setIsEnding(true);
     try {
+      // A call still being placed has no id for the OS or the provider to end yet
+      if (!call.callSid) {
+        await store.dispatch(callActions.cancelPlacingCall());
+        return;
+      }
       await systemCall.end(store, call);
     } catch {
       // The call state is cleared locally whatever the request did

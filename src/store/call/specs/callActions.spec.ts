@@ -163,6 +163,56 @@ describe('callActions.startOutboundCall', () => {
     });
     createOffer.mockRestore();
   });
+
+  it('tears down a WhatsApp call the agent ended while it was still being placed', async () => {
+    const store = buildStore();
+    let resolveOffer: (offer: string) => void = () => {};
+    const createOffer = jest
+      .spyOn(callEngine.whatsapp, 'createOffer')
+      .mockImplementation(() => new Promise(resolve => (resolveOffer = resolve)));
+    const hangup = jest.spyOn(callEngine.whatsapp, 'hangup').mockResolvedValue(undefined);
+
+    const placing = run(store)(
+      callActions.startOutboundCall({ provider: 'whatsapp', conversationId: 37, inboxId: 7 }),
+    ).unwrap();
+    expect(store.getState().calls.placingCall).toMatchObject({ conversationId: 37 });
+
+    await run(store)(callActions.cancelPlacingCall());
+    expect(store.getState().calls.placingCall).toBeNull();
+    resolveOffer('v=0 offer');
+
+    expect(await placing).toEqual({ status: 'cancelled' });
+    expect(CallService.initiateWhatsappCall).not.toHaveBeenCalled();
+    expect(store.getState().calls.calls).toHaveLength(0);
+    createOffer.mockRestore();
+    hangup.mockRestore();
+  });
+
+  it('terminates a WhatsApp call the provider created after the agent had already ended it', async () => {
+    const store = buildStore();
+    const createOffer = jest
+      .spyOn(callEngine.whatsapp, 'createOffer')
+      .mockResolvedValue('v=0 offer');
+    const hangup = jest.spyOn(callEngine.whatsapp, 'hangup').mockResolvedValue(undefined);
+    let resolveInitiate: (value: unknown) => void = () => {};
+    (CallService.initiateWhatsappCall as jest.Mock).mockImplementation(
+      () => new Promise(resolve => (resolveInitiate = resolve)),
+    );
+    (CallService.terminateWhatsappCall as jest.Mock).mockResolvedValue({});
+
+    const placing = run(store)(
+      callActions.startOutboundCall({ provider: 'whatsapp', conversationId: 37, inboxId: 7 }),
+    ).unwrap();
+    await new Promise(resolve => setTimeout(resolve, 0));
+    await run(store)(callActions.cancelPlacingCall());
+    resolveInitiate({ status: 'calling', call_id: 'wacid.late', id: 13, conversation_id: 37 });
+
+    expect(await placing).toEqual({ status: 'cancelled' });
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(13);
+    expect(store.getState().calls.calls).toHaveLength(0);
+    createOffer.mockRestore();
+    hangup.mockRestore();
+  });
 });
 
 describe('callActions.rejectIncomingCall', () => {

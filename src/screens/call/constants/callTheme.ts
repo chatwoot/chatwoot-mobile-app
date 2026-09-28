@@ -66,3 +66,6 @@ export const solidSurface = (radius: number, elevation: 'card' | 'pill') => ({
 });
 
 export const SOLID_CONTROL_OFF = 'hsl(0, 0%, 92%)';
+// A control that does nothing yet loses its tile and fades, rather than dimming as a whole
+export const CALL_GLYPH_INACTIVE = 'hsl(0, 0%, 76%)';
+export const CALL_LABEL_INACTIVE = 'hsl(0, 0%, 68%)';

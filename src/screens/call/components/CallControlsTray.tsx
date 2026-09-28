@@ -13,7 +13,7 @@ import {
 } from '@/svg-icons';
 import type { AudioRoute } from '@/services/voice/chatwootCalls';
 
-import { CALL_GLYPH_OFF } from '../constants/callTheme';
+import { CALL_GLYPH_INACTIVE, CALL_GLYPH_OFF } from '../constants/callTheme';
 import { isHeadsetRoute } from '../utils/audioRoutes';
 import { AudioRouteIcon } from './AudioRouteIcon';
 import { CallControl } from './CallControl';
@@ -21,7 +21,7 @@ import { CallControl } from './CallControl';
 const WHITE = '#FFFFFF';
 
 type CallControlsTrayProps = {
-  // False while an outbound call is still ringing: no media yet, so no mute or speaker
+  // False while an outbound call is still ringing: there is nothing to hold yet
   isConnected: boolean;
   isMuted: boolean;
   isOnHold: boolean;
@@ -60,7 +60,6 @@ export const CallControlsTray = ({
         isMuted ? 'CONVERSATION.VOICE_WIDGET.UNMUTE' : 'CONVERSATION.VOICE_WIDGET.MUTE',
       )}
       tone={isMuted ? 'off' : 'on'}
-      inactive={!isConnected}
       onPress={onToggleMute}>
       {isMuted ? <MicOffGlyph color={CALL_GLYPH_OFF} /> : <MicOnGlyph color={WHITE} />}
     </CallControl>
@@ -72,7 +71,6 @@ export const CallControlsTray = ({
             : i18n.t('CONVERSATION.VOICE_WIDGET.AUDIO_ROUTE')
         }
         tone={currentRoute !== 'earpiece' ? 'on' : 'off'}
-        inactive={!isConnected}
         onPress={onToggleRoutePicker}>
         <AudioRouteIcon
           route={currentRoute}
@@ -83,7 +81,6 @@ export const CallControlsTray = ({
       <CallControl
         label={i18n.t('CONVERSATION.VOICE_WIDGET.SPEAKER')}
         tone={isSpeakerOn ? 'on' : 'off'}
-        inactive={!isConnected}
         onPress={onToggleSpeaker}>
         <SpeakerGlyph color={isSpeakerOn ? WHITE : CALL_GLYPH_OFF} />
       </CallControl>
@@ -95,7 +92,11 @@ export const CallControlsTray = ({
       tone={isOnHold ? 'hold' : 'off'}
       inactive={!isConnected}
       onPress={onToggleHold}>
-      {isOnHold ? <ResumeGlyph color={WHITE} /> : <HoldGlyph color={CALL_GLYPH_OFF} />}
+      {isOnHold ? (
+        <ResumeGlyph color={WHITE} />
+      ) : (
+        <HoldGlyph color={isConnected ? CALL_GLYPH_OFF : CALL_GLYPH_INACTIVE} />
+      )}
     </CallControl>
     <CallControl
       label={i18n.t('CONVERSATION.VOICE_WIDGET.END_CALL')}

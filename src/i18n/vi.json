@@ -22,8 +22,8 @@
     "ERROR": "Url cài đặt không hợp lệ"
   },
   "LOGIN": {
-    "TITLE": "Log in to your account",
-    "DESCRIPTION": "You are connected to {{baseUrl}}.",
+    "TITLE": "Đăng nhập vào tài khoản của bạn",
+    "DESCRIPTION": "Bạn đã kết nối với {{baseUrl}}.",
     "EMAIL": "Email",
     "PASSWORD": "Mật khẩu",
     "EMAIL_REQUIRED": "Email bắt buộc có",
@@ -31,7 +31,7 @@
     "PASSWORD_REQUIRED": "Mật khẩu bắt buộc có",
     "PASSWORD_ERROR": "Điền password hợp lệ",
     "LOGIN": "Đăng nhập",
-    "LOGIN_LOADING": "Signing In...",
+    "LOGIN_LOADING": "Đang đăng nhập...",
     "FORGOT_PASSWORD": "Quên mật khẩu?",
     "RESET_HERE": "Đặt lại ở đây",
     "NO_ACCOUNT": "Không có tài khoản?",
@@ -53,25 +53,25 @@
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Các cuộc hội thoại",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "Xoá bộ lọc"
     },
     "FILTERS": {
       "AGENT": {
         "SEARCH_AGENT": "Tìm kiếm nhân viên"
       },
       "INBOX": {
-        "TITLE": "Filter by inbox"
+        "TITLE": "Lọc theo hộp thư"
       },
       "SORT_BY": {
         "TITLE": "Sắp bởi",
         "OPTIONS": {
-          "LATEST": "Latest",
+          "LATEST": "Mới nhất",
           "SORT_ON_CREATED_AT": "Tạo vào lúc",
           "SORT_ON_PRIORITY": "Sự ưu tiên"
         }
       },
       "STATUS": {
-        "TITLE": "Filter by status",
+        "TITLE": "Lọc theo trạng thái",
         "OPTIONS": {
           "OPEN": "Mở",
           "PENDING": "Chờ giải quyết",
@@ -81,9 +81,9 @@
         }
       },
       "ASSIGNEE_TYPE": {
-        "TITLE": "Filter by assignee type",
+        "TITLE": "Lọc theo người được phân công",
         "OPTIONS": {
-          "ME": "Me",
+          "ME": "Tôi",
           "UNASSIGNED": "Chưa được phân công",
           "ALL": "Tất cả"
         }
@@ -97,8 +97,8 @@
         "SEARCH_AGENT": "Tìm kiếm nhân viên"
       },
       "STATUS": {
-        "HEADER_TITLE": "Assign status",
-        "TITLE": "Filter by status",
+        "HEADER_TITLE": "Gán trạng thái",
+        "TITLE": "Lọc theo trạng thái",
         "OPTIONS": {
           "OPEN": "Mở",
           "PENDING": "Chờ giải quyết",
@@ -130,12 +130,12 @@
     "ASSIGNED_AGENT": "Đại lý được phân công",
     "TEAM": "Nhóm",
     "PRIVATE_MSG_INPUT": "Chỉ hiện cho nhà cung cấp",
-    "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
+    "UNSUPPORTED_MESSAGE": "Tin nhắn này không được hỗ trợ. Bạn có thể xem tin nhắn này trên ứng dụng Facebook / Instagram.",
     "NOT_FOUND": {
-      "TITLE": "Unable to fetch conversation",
-      "RETRY": "Retry",
-      "BACK_TO_HOME": "Go back to home",
-      "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
+      "TITLE": "Không thể tải cuộc trò chuyện",
+      "RETRY": "Thử lại",
+      "BACK_TO_HOME": "Quay về trang chủ",
+      "DESCRIPTION": "Có vẻ như không thể tải cuộc trò chuyện này đúng cách. Nguyên nhân có thể do sự cố mạng hoặc cuộc trò chuyện không còn khả dụng. Vui lòng nhấn vào nút thử lại để thử lại."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
@@ -151,22 +151,22 @@
     "SNOOZE_UNTIL_NEXT_REPLY": "Cho đến phản hồi kế tiếp",
     "SNOOZE_UNTIL_TOMORROW": "Cho đến ngày mai",
     "SNOOZE_UNTIL_NEXT_WEEK": "Cho đến tuần sau",
-    "SNOOZE": "Snooze conversation",
-    "CHANGE_PRIORITY": "Change priority",
+    "SNOOZE": "Tạm dừng cuộc trò chuyện",
+    "CHANGE_PRIORITY": "Thay đổi sự ưu tiên",
     "MESSAGES": "Tin nhắn",
-    "UNDEFINED_VARIABLES_TITLE": "Undefined variables",
+    "UNDEFINED_VARIABLES_TITLE": "Các biến chưa xác định",
     "UNDEFINED_VARIABLES_CLOSE": "Đóng",
-    "DELETE_MESSAGE_TITLE": "Are you sure you want to delete this message?",
-    "DELETE_MESSAGE_SUB_TITLE": "This action cannot be undone.",
-    "COPY_MESSAGE": "Message copied to clipboard",
-    "STORY_NOT_AVAILABLE": "This story is no longer available",
+    "DELETE_MESSAGE_TITLE": "Bạn có chắc chắn muốn xoá tin nhắn này không?",
+    "DELETE_MESSAGE_SUB_TITLE": "Hành động này không thể hoàn tác.",
+    "COPY_MESSAGE": "Tin nhắn đã được sao chép vào khay nhớ tạm",
+    "STORY_NOT_AVAILABLE": "Tin này không còn khả dụng",
     "DELETE_MESSAGE_SUCCESS": "Tin nhắn được xoá thành công",
     "NO_CONTENT": "Không có nội dung",
     "ASSIGN_CHANGE": "Người Được Chỉ Định Cuộc Hội Thoại đã thay đổi",
-    "TEAM_CHANGE": "Conversation Team changed",
-    "STATUS_CHANGE": "Conversation Status changed",
-    "PRIORITY_CHANGE": "Conversation Priority changed",
-    "PARTICIPANT_CHANGE": "Conversation Participant changed",
+    "TEAM_CHANGE": "Nhóm của cuộc hội thoại đã thay đổi",
+    "STATUS_CHANGE": "Trạng thái cuộc hội thoại đã thay đổi",
+    "PRIORITY_CHANGE": "Độ ưu tiên của cuộc hội thoại đã thay đổi",
+    "PARTICIPANT_CHANGE": "Người tham gia cuộc hội thoại đã thay đổi",
     "CHANGE_STATUS": "Thay đổi trạng thái",
     "SEARCH_TEAM": "Tìm kiếm nhóm",
     "PRIORITY": {
@@ -180,10 +180,10 @@
       },
       "CHANGE_PRIORITY": {
         "SELECT_PLACEHOLDER": "Không có",
-        "INPUT_PLACEHOLDER": "Select priority",
+        "INPUT_PLACEHOLDER": "Chọn sự ưu tiên",
         "NO_RESULTS": "Không tìm thấy kết quả",
-        "SUCCESSFUL": "Changed priority of conversation id %{conversationId} to %{priority}",
-        "FAILED": "Couldn't change priority. Please try again."
+        "SUCCESSFUL": "Đã thay đổi sự ưu tiên của cuộc trò chuyện %{conversationId} thành %{priority}",
+        "FAILED": "Không thể thay đổi sự ưu tiên. Vui lòng thử lại."
       }
     },
     "ITEM": {
@@ -210,13 +210,13 @@
         "CONTENT": "có một đường dẫn chia sẻ"
       },
       "contact": {
-        "CONTENT": "Shared a contact"
+        "CONTENT": "Đã chia sẻ một liên hệ"
       }
     },
     "LONG_PRESS_ACTIONS": {
       "COPY": "Sao Chép",
       "REPLY": "Trả lời",
-      "DELETE_MESSAGE": "Delete message"
+      "DELETE_MESSAGE": "Xoá tin nhắn"
     },
     "EMAIL_HEADER": {
       "FROM": "Từ",
@@ -224,7 +224,7 @@
       "BCC": "Bcc",
       "CC": "Cc",
       "SUBJECT": "Chủ đề",
-      "EXPAND": "Expand email"
+      "EXPAND": "Mở rộng email"
     },
     "ACTIONS": {
       "ASSIGNEE": {
@@ -233,21 +233,21 @@
         "EDIT": "Chỉnh sửa"
       },
       "TEAM": {
-        "EMPTY": "No team assigned",
+        "EMPTY": "Chưa được phân nhóm",
         "ASSIGN": "Gán"
       },
       "PRIORITY": {
-        "EMPTY": "No priority added",
+        "EMPTY": "Chưa có sự ưu tiên",
         "EDIT": "Chỉnh sửa"
       }
     }
   },
   "FILTER": {
-    "ALL_INBOXES": "All inboxes",
-    "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
-    "FILTER_BY_CONVERSATION_STATUS": "Filter by conversation status",
+    "ALL_INBOXES": "Tất cả hộp thư đến",
+    "FILTER_BY_ASSIGNEE_TYPE": "Lọc theo người được phân công",
+    "FILTER_BY_CONVERSATION_STATUS": "Lọc theo trạng thái cuộc trò chuyện",
     "SORT_BY": "Sắp bởi",
-    "FILTER_BY_INBOX": "Filter by inbox",
+    "FILTER_BY_INBOX": "Lọc theo hộp thư đến",
     "HEADER_TITLE": "Bộ lọc Cuộc trò chuyện",
     "CHOOSE_INBOX": "Chọn Hộp thư đến",
     "CHOOSE_STATUS": "Trạng thái cuộc trò chuyện",
@@ -261,20 +261,20 @@
   "SETTINGS": {
     "HEADER_TITLE": "Cài đặt",
     "SET_AVAILABILITY": "Đặt chính mình như",
-    "CHANGE_AVAILABILITY": "Set availability",
-    "PREFERENCES": "Preferences",
+    "CHANGE_AVAILABILITY": "Đặt trạng thái sẵn sàng",
+    "PREFERENCES": "Tuỳ chọn",
     "ABOUT": "Về",
     "SUPPORT": "Hỗ trợ",
     "SWITCH_ACCOUNT": "Chuyển tài khoản",
     "CHANGE_LANGUAGE": "Thay đổi ngôn ngữ",
     "NOTIFICATIONS": "Thông báo",
     "NOTIFICATION_PREFERENCES": "Tuỳ chọn thông báo",
-    "READ_DOCS": "Read Docs",
+    "READ_DOCS": "Đọc tài liệu",
     "CHAT_WITH_US": "Trò chuyện với chúng tôi",
     "LOGOUT": "Đăng xuất",
     "SUBMIT": "Gửi",
-    "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "SET_LANGUAGE": "Cài đặt ngôn ngữ",
+    "DEBUG_ACTIONS": "Hành động gỡ lỗi"
   },
   "NOTIFICATION": {
     "HEADER_TITLE": "Thông báo",
@@ -287,31 +287,31 @@
     "DELETE": "Xoá",
     "TYPES": {
       "CONVERSATION_MENTION": "Bạn đã được nhắc đến trong một cuộc trò chuyện",
-      "CONVERSATION_CREATION": "New conversation created",
-      "CONVERSATION_ASSIGNMENT": "A conversation has been assigned to you",
-      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "New message in an assigned conversation",
-      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
-      "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
-      "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "CONVERSATION_CREATION": "Cuộc trò chuyện mới đã được tạo",
+      "CONVERSATION_ASSIGNMENT": "Một cuộc trò chuyện đã được phân công cho bạn",
+      "ASSIGNED_CONVERSATION_NEW_MESSAGE": "Tin nhắn mới trong cuộc trò chuyện được phân công",
+      "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "Tin nhắn mới trong cuộc trò chuyện bạn đang tham gia",
+      "SLA_MISSED_FIRST_RESPONSE": "Mục tiêu SLA phản hồi đầu tiên bị trễ cho cuộc trò chuyện",
+      "SLA_MISSED_NEXT_RESPONSE": "Mục tiêu SLA phản hồi tiếp theo bị trễ cho cuộc trò chuyện",
+      "SLA_MISSED_RESOLUTION": "Mục tiêu SLA giải quyết bị trễ cho cuộc trò chuyện"
     },
     "FILTERS": {
       "SORT_BY": {
         "TITLE": "Sắp bởi",
         "OPTIONS": {
-          "ASC": "Oldest",
-          "DESC": "Newest"
+          "ASC": "Cũ nhất",
+          "DESC": "Mới nhất"
         }
       }
     },
     "ALERTS": {
-      "MARK_AS_READ": "Notification marked as read",
-      "MARK_AS_UNREAD": "Notification marked as unread",
-      "SNOOZE": "Notification snoozed",
-      "DELETE": "Notification deleted",
-      "MARK_ALL_READ": "All notifications marked as read",
-      "DELETE_ALL": "All notifications deleted",
-      "DELETE_ALL_READ": "All read notifications deleted"
+      "MARK_AS_READ": "Thông báo được đánh dấu là đã đọc",
+      "MARK_AS_UNREAD": "Thông báo được đánh dấu là chưa đọc",
+      "SNOOZE": "Thông báo đã tạm dừng",
+      "DELETE": "Thông báo đã được xoá",
+      "MARK_ALL_READ": "Tất cả thông báo đã được đánh dấu là đã đọc",
+      "DELETE_ALL": "Tất cả thông báo đã được xoá",
+      "DELETE_ALL_READ": "Tất cả thông báo đã đọc đã được xoá"
     }
   },
   "AVAILABILITY": {
@@ -323,46 +323,46 @@
     "TITLE": "Tuỳ chọn thông báo",
     "EMAIL": "Thông Báo Email",
     "PUSH": "Thông Báo",
-    "CONVERSATION_CREATE_PUSH": "A new conversation is created",
-    "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
-    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
-    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
-    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",
-    "CONVERSATION_SLA_MISSED_RESOLUTION": "A conversation misses resolution SLA"
+    "CONVERSATION_CREATE_PUSH": "Một cuộc trò chuyện mới được tạo",
+    "CONVERSATION_ASSIGNEE_PUSH": "Một cuộc trò chuyện được phân công cho bạn",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "Bạn được nhắc đến trong cuộc trò chuyện",
+    "CONVERSATION_MENTION": "Một tin nhắn mới được tạo trong cuộc trò chuyện được phân công",
+    "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "Một tin nhắn mới được tạo trong cuộc trò chuyện bạn đang tham gia",
+    "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "Một cuộc trò chuyện bị trễ SLA phản hồi đầu tiên",
+    "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "Một cuộc trò chuyện bị trễ SLA phản hồi tiếp theo",
+    "CONVERSATION_SLA_MISSED_RESOLUTION": "Một cuộc trò chuyện bị trễ SLA giải quyết"
   },
   "CONVERSATION_DETAILS": {
-    "TITLE": "Attributes",
+    "TITLE": "Thuộc tính",
     "BROWSER": "Trình duyệt",
     "OPERATING_SYSTEM": "Hệ điều hành",
     "INITIATED_AT": "Bắt đầu lúc",
     "INITIATED_FROM": "Bắt đầu từ",
     "IP_ADDRESS": "Địa chỉ IP",
-    "CONVERSATION_ID": "Conversation ID",
-    "CLIPBOARD_SUCCESS": "Copied to clipboard"
+    "CONVERSATION_ID": "ID cuộc trò chuyện",
+    "CLIPBOARD_SUCCESS": "Đã sao chép vào khay nhớ tạm"
   },
   "CONTACT_DETAILS": {
     "TITLE": "Chi tiết liên hệ",
     "EMAIL": "Email",
     "PHONE_NUMBER": "Số điện thoại",
-    "CALL": "Call",
+    "CALL": "Gọi",
     "CONTACT_ATTRIBUTES": "Thuộc tính của liên hệ",
     "VALUE_UNAVAILABLE": "Không có sẵn"
   },
   "CONVERSATION_PARTICIPANTS": {
-    "TITLE": "Participants",
-    "TOTAL_PARTICIPANTS_TEXT": "%{count} people are participating.",
-    "TOTAL_PARTICIPANT_TEXT": "%{count} person is participating.",
-    "NO_PARTICIPANTS_TEXT": "No one is participating!.",
+    "TITLE": "Người tham gia",
+    "TOTAL_PARTICIPANTS_TEXT": "%{count} người đang tham gia.",
+    "TOTAL_PARTICIPANT_TEXT": "%{count} người đang tham gia.",
+    "NO_PARTICIPANTS_TEXT": "Không có ai đang tham gia!.",
     "WATCH_CONVERSATION": "Mở cuộc trò chuyện",
-    "YOU_ARE_WATCHING": "You are participating",
+    "YOU_ARE_WATCHING": "Bạn đang tham gia",
     "NO_RECORDS_FOUND": "Không tìm thấy kết quả",
-    "SELECT_PARTICIPANTS": "Select agents",
-    "ADD_PARTICIPANTS": "Select participants",
+    "SELECT_PARTICIPANTS": "Chọn nhân viên",
+    "ADD_PARTICIPANTS": "Chọn người tham gia",
     "REMAINING_PARTICIPANTS_TEXT": "khác",
     "REMAINING_PARTICIPANT_TEXT": "khác",
-    "ADD_PARTICIPANT": "Add Participant"
+    "ADD_PARTICIPANT": "Thêm người tham gia"
   },
   "CONTACT_ATTRIBUTES": {
     "TITLE": "Thuộc tính của liên hệ"
@@ -370,42 +370,42 @@
   "CONVERSATION_ACTION": {
     "TITLE": "Hành động",
     "OPTIONS": {
-      "OPEN": "Open",
-      "PENDING": "Pending",
-      "SNOOZED": "Snooze",
-      "RESOLVED": "resolve"
+      "OPEN": "Mở",
+      "PENDING": "Chờ giải quyết",
+      "SNOOZED": "Tạm dừng",
+      "RESOLVED": "Đã giải quyết"
     }
   },
   "CONVERSATION_TEAMS": {
     "TITLE": "Gán nhóm",
     "SELECT_TEAM": "Chọn nhóm",
-    "NO_RESULT": "No team found"
+    "NO_RESULT": "Không tìm thấy nhóm"
   },
   "CONVERSATION_LABELS": {
     "TITLE": "Nhãn hội thoại",
     "ADD_LABEL": "Thêm nhãn",
     "EMPTY_LIST": "Vui lòng thêm nhãn cho tài khoản của bạn",
-    "NO_LABEL": "No labels assigned",
+    "NO_LABEL": "Chưa có nhãn nào được gán",
     "UPDATE_LABEL": "Nhãn được cập nhật thành công",
-    "SELECTED": "Selected",
-    "NOT_SELECTED": "No labels selected",
+    "SELECTED": "Đã chọn",
+    "NOT_SELECTED": "Chưa có nhãn nào được chọn",
     "NO_RESULT": "Không tìm thấy nhãn"
   },
   "CONVERSATION_AGENTS": {
     "TITLE": "Gán tổng đài viên",
     "SELECT_AGENT": "Chọn thành viên",
-    "NO_RESULT": "No agent found"
+    "NO_RESULT": "Không tìm thấy nhân viên"
   },
   "AGENT": {
     "TITLE": "Chọn đại lý"
   },
   "TEAMS": {
     "TITLE": "Chọn nhóm",
-    "EMPTY": "Please add teams to your account to assign conversations to teams.",
+    "EMPTY": "Vui lòng thêm nhóm vào tài khoản của bạn để phân công cuộc trò chuyện cho nhóm.",
     "CHANGE_TEAMS": "Nhóm của cuộc trò chuyện đã được thay đổi"
   },
   "ERRORS": {
-    "COMMON_ERROR": "Could not connect to Chatwoot Server, Please try again later",
+    "COMMON_ERROR": "Không thể kết nối với máy chủ Chatwoot, vui lòng thử lại sau",
     "OfFLINE": "Bạn phải kết nối với Wi-fi hoặc mạng di động để trực tuyến trở lại",
     "CANNOT_FETCH": "Đã xảy ra lỗi khi lấy thông tin, vui lòng thử lại",
     "AUTH": "Tài khoản/Mật khẩu không đúng. Vui lòng thử lại",
@@ -439,26 +439,26 @@
       "FRT": "FRT %{status}",
       "NRT": "NRT %{status}",
       "RT": "RT %{status}",
-      "MISSED": "missed",
-      "DUE": "due"
+      "MISSED": "quá hạn",
+      "DUE": "đến hạn"
     },
     "MISSES": {
-      "TITLE": "SLA Misses",
+      "TITLE": "Bỏ lỡ SLA",
       "FRT": "Thời gian phản hồi đầu tiên",
-      "NRT": "Next response time",
-      "RT": "Resolution time",
-      "SHOW_MORE": "{count} more",
-      "HIDE": "Hide {count} rows"
+      "NRT": "Thời gian phản hồi tiếp theo",
+      "RT": "Thời gian giải quyết",
+      "SHOW_MORE": "Thêm {count}",
+      "HIDE": "Ẩn {count} hàng"
     }
   },
   "MACRO": {
-    "TITLE": "Macros",
-    "SELECT_MACRO": "Select macro",
+    "TITLE": "Macro",
+    "SELECT_MACRO": "Chọn macro",
     "ACTIONS": {
-      "RUN": "Run"
+      "RUN": "Chạy"
     },
     "EXECUTION_SUCCESS": "Macro được thực thi thành công",
-    "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTION_ERROR": "Thực thi macro thất bại",
     "NO_MACROS": "Không tìm thấy macro"
   }
 }

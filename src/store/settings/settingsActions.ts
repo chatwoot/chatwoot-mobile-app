@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
 
 import { getMessaging, getToken } from '@react-native-firebase/messaging';
-import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 import {
   getSystemName,
   getManufacturer,
@@ -102,12 +101,6 @@ export const settingsActions = {
 
         const brandName = await getBrand();
         const buildNumber = await getBuildNumber();
-
-        // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
-        const { status } = await checkNotifications();
-        if (status !== RESULTS.GRANTED) {
-          await requestNotifications(['alert', 'sound', 'badge']);
-        }
 
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691

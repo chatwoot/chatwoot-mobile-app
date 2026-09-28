@@ -89,7 +89,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       [
         'react-native-permissions',
-        { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] },
+        { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications', 'Microphone'] },
       ],
       [
         '@sentry/react-native',

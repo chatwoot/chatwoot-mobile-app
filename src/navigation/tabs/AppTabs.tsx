@@ -41,6 +41,8 @@ import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { InAppCallScreen } from '@/screens/call';
+import { runCallReadiness } from '@/screens/call/utils/callReadiness';
+import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 
 const Tab = createBottomTabNavigator();
 
@@ -91,7 +93,7 @@ const Tabs = () => {
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
-    dispatch(settingsActions.saveDeviceDetails());
+    askForPermissions();
     dispatch(inboxActions.fetchInboxes());
     initActionCable();
     dispatch(labelActions.fetchLabels());
@@ -102,6 +104,18 @@ const Tabs = () => {
     initAnalytics();
     initSentry();
     initPushNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Every prompt the app needs, in one run: notifications first, then what a call will
+  // need on the accounts that can call, so the agent is not asked again while a caller is
+  // ringing. The push token is registered once notifications have been answered.
+  const askForPermissions = useCallback(async () => {
+    // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
+    const { status } = await checkNotifications();
+    if (status !== RESULTS.GRANTED) await requestNotifications(['alert', 'sound', 'badge']);
+    runCallReadiness().catch(() => {});
+    dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

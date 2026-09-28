@@ -43,7 +43,13 @@
     "SETTINGS": "Settings",
     "CHANGE_LANGUAGE": "Change language",
     "TERMS": "Terms & Conditions",
-    "CHANGE_URL": "Change URL"
+    "CHANGE_URL": "Change URL",
+    "MFA_SETUP_REQUIRED": {
+      "TITLE": "Two-factor authentication required",
+      "MESSAGE": "Your account requires two-factor authentication. Sign in to Chatwoot on the web to set it up, then come back here.",
+      "OPEN_WEB": "Open web app",
+      "DISMISS": "OK"
+    }
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Please enter your email",
@@ -56,6 +62,13 @@
   },
   "MFA": {
     "TITLE": "Two-Factor Authentication",
+    "CANCEL": "Cancel and return to login",
+    "EMAIL": {
+      "TITLE": "Check your email",
+      "DESCRIPTION": "You're signing in from a new device.",
+      "INSTRUCTIONS": "Enter the 6-digit code from your email",
+      "REMEMBER_DEVICE": "Don't ask again on this device for 30 days"
+    },
     "TABS": {
       "AUTHENTICATOR_APP": "Authenticator App",
       "BACKUP_CODE": "Backup Code"

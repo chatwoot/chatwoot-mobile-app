@@ -91,7 +91,7 @@ export const ChatHeader = ({
                 accessibilityRole="button"
                 onPress={onCallPress}
                 style={tailwind.style(isCallDisabled ? 'opacity-40' : '')}>
-                <Icon icon={<PhoneOutlineIcon strokeWidth={2} />} size={24} />
+                <Icon icon={<PhoneOutlineIcon />} size={24} />
               </Pressable>
             )}
             {hasSla && (

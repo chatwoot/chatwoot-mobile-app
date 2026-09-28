@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectIncomingCalls } from '@/store/call/callSelectors';
 import { dismissCall, markCallDismissed } from '@/store/call/callSlice';
 
-import { ringTimeoutFor } from '../constants/ringTimeouts';
+import { RING_TIMEOUT_MS } from '../constants/ringTimeouts';
 
 // Dismisses each ringing call locally once its provider's ring window has passed; the
 // call is not rejected for everyone
@@ -19,7 +19,7 @@ export const useRingTimeouts = () => {
 
     incomingCalls.forEach(call => {
       if (timers.has(call.callSid)) return;
-      const remaining = Math.max(0, call.addedAt + ringTimeoutFor(call.provider) - Date.now());
+      const remaining = Math.max(0, call.addedAt + RING_TIMEOUT_MS - Date.now());
       timers.set(
         call.callSid,
         setTimeout(() => {

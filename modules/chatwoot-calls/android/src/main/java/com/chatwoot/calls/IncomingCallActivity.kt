@@ -315,7 +315,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     private var current: IncomingCallActivity? = null
 
     private const val MATCH = FrameLayout.LayoutParams.MATCH_PARENT
-    private const val RING_TIMEOUT_MS = 45_000L
+    private const val RING_TIMEOUT_MS = 60_000L
     private const val CONNECT_TIMEOUT_MS = 30_000L
     private const val TAP_GUARD_MS = 800L
     private const val CALL_SCREEN_COMPONENT = "ChatwootLockScreenCall"

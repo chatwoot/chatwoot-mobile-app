@@ -9,7 +9,7 @@ import { addCall } from '@/store/call/callSlice';
 import { selectAllConversations } from '@/store/conversation/conversationSelectors';
 import { routeVoiceCallCreated } from '@/utils/voiceCallRouting';
 
-import { ringTimeoutFor } from '../constants/ringTimeouts';
+import { RING_TIMEOUT_MS } from '../constants/ringTimeouts';
 
 // Cable events are one-shot, so a call that rang while the app was closed or the phone
 // was locked is only visible through its ringing message in the conversation cache.
@@ -47,8 +47,7 @@ export const useRingingCallsFromCache = () => {
       (conversation.messages || []).forEach(message => {
         if (message.call?.status !== VOICE_CALL_STATUS.RINGING) return;
         const startedAt = Number(message.createdAt) * 1000;
-        const timeout = ringTimeoutFor(message.call.provider);
-        if (!Number.isFinite(startedAt) || Date.now() - startedAt > timeout) return;
+        if (!Number.isFinite(startedAt) || Date.now() - startedAt > RING_TIMEOUT_MS) return;
         const decision = routeVoiceCallCreated(message, context);
         if (decision.action === 'add') dispatch(addCall({ ...decision.call, addedAt: startedAt }));
       });

@@ -63,7 +63,7 @@ object CallNotification {
   // hide the app name from the call's own header
   const val GROUP_CALLS = "chatwoot_calls"
   const val ACCENT = 0xFF1F93FF.toInt()
-  private const val RING_TIMEOUT_MS = 45_000L
+  private const val RING_TIMEOUT_MS = 60_000L
 
   fun show(context: Context, data: Map<String, String>) {
     val callSid = data["call_id"] ?: return

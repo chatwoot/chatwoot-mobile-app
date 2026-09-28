@@ -65,7 +65,8 @@ final class CallKitManager: NSObject {
   private var heldBySystem: Set<UUID> = []
   private var holdRequestedHere: Set<UUID> = []
 
-  private static let ringTimeout: [String: TimeInterval] = ["whatsapp": 45, "twilio": 60]
+  // Matches the window the server rings for, so CallKit never ends a live ring early
+  private static let ringTimeout: TimeInterval = 60
 
   private override init() {
     let configuration = CXProviderConfiguration()
@@ -155,7 +156,7 @@ final class CallKitManager: NSObject {
       uuid: uuid, callSid: callSid, provider: providerName, conversationId: conversationId,
       inboxId: inboxId, accountId: accountId, displayName: displayName, handle: handle,
       outgoing: false, answered: false, ringTimer: nil)
-    let timeout = Self.ringTimeout[providerName] ?? 60
+    let timeout = Self.ringTimeout
     tracked.ringTimer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false) { [weak self] _ in
       self?.endCall(uuid: uuid, reason: .unanswered)
     }

@@ -44,11 +44,23 @@ export class MediaUnavailableError extends Error {
   }
 }
 
+// The agent has turned the microphone off for the app, so no call can carry audio
+export class MicrophoneDeniedError extends Error {
+  constructor() {
+    super('Microphone permission denied');
+    this.name = 'MicrophoneDeniedError';
+  }
+}
+
 // Thunks serialise thrown errors into plain objects, so the check is by name, not class
+const isErrorNamed = (error: unknown, name: string) =>
+  typeof error === 'object' && error !== null && (error as { name?: string }).name === name;
+
 export const isMediaUnavailableError = (error: unknown) =>
-  typeof error === 'object' &&
-  error !== null &&
-  (error as { name?: string }).name === 'MediaUnavailableError';
+  isErrorNamed(error, 'MediaUnavailableError');
+
+export const isMicrophoneDeniedError = (error: unknown) =>
+  isErrorNamed(error, 'MicrophoneDeniedError');
 
 const unavailable = (provider: VoiceCallProvider) => async () => {
   throw new MediaUnavailableError(provider);

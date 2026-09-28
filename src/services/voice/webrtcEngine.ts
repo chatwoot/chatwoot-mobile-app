@@ -1,4 +1,5 @@
-import { PermissionsAndroid, Platform } from 'react-native';
+import { Platform } from 'react-native';
+import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import {
   MediaStream,
   RTCPeerConnection,
@@ -11,6 +12,7 @@ import {
   isTelecomAvailable,
   setSpeakerOn as nativeSetSpeakerOn,
 } from '@/services/voice/chatwootCalls';
+import { MicrophoneDeniedError } from '@/services/voice/callEngine';
 
 import type { IceServer } from '@/store/call/callTypes';
 
@@ -44,17 +46,16 @@ export const setWebrtcConnectionLostHandler = (handler: (() => void) | null) => 
   onConnectionLost = handler;
 };
 
+// Asks where the agent has not decided yet, and reports a refusal the call screen can
+// explain. Where the permission was granted at login this returns at once.
 const ensureMicrophonePermission = async () => {
-  if (Platform.OS !== 'android') return;
-  const result = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
-  if (result !== PermissionsAndroid.RESULTS.GRANTED) {
-    throw new Error('Microphone permission denied');
-  }
+  const microphone =
+    Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO;
+  const status = await request(microphone);
+  if (status !== RESULTS.GRANTED) throw new MicrophoneDeniedError();
   // Telecom needs this to offer Bluetooth headsets as a route; a refusal only loses that
-  if (Number(Platform.Version) >= 31) {
-    await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT).catch(
-      () => {},
-    );
+  if (Platform.OS === 'android' && Number(Platform.Version) >= 31) {
+    await request(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT).catch(() => {});
   }
 };
 

@@ -49,6 +49,8 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
 
 object CallNotification {
   const val CHANNEL_ID = "voice_calls_ring"
+  // The ring screen has its own ringtone, so a notification posted beside it stays quiet
+  const val SILENT_CHANNEL_ID = "voice_calls_ring_silent"
   const val NOTIFICATION_ID = 4711
   const val ACTION_ANSWER = "com.chatwoot.calls.ANSWER"
   const val ACTION_DECLINE = "com.chatwoot.calls.DECLINE"
@@ -73,14 +75,20 @@ object CallNotification {
     remember(callSid, data)
     ringing[callSid] = data
     TelecomCalls.add(context, callSid, name, caller?.optString("phone").orEmpty(), outgoing = false)
-    // The ring screen keeps the call it is showing; a further ring waits its turn there
-    val fullScreen = !IncomingCallActivity.isRinging()
+    // The ring screen keeps the call it is showing; a further ring waits its turn there.
+    // Exactly one thing rings: the ring screen where it is up, the app itself where the
+    // agent is looking at it, and otherwise this notification.
+    val ringScreenShowing = IncomingCallActivity.isRinging()
+    val ringsElsewhere = ringScreenShowing || AppVisibility.foreground
+    val fullScreen = !ringScreenShowing
     val manager = NotificationManagerCompat.from(context)
-    manager.notify(NOTIFICATION_ID, build(context, data, callSid, name, inboxName, null, fullScreen))
+    manager.notify(NOTIFICATION_ID, build(context, data, callSid, name, inboxName, null, fullScreen, ringsElsewhere))
     // The photo follows once it is in, as long as the call is still ringing
     ContactPhoto.fetchAsync(caller?.optString("avatar")) { photo ->
       val stillRinging = manager.activeNotifications.any { it.id == NOTIFICATION_ID }
-      if (stillRinging) manager.notify(NOTIFICATION_ID, build(context, data, callSid, name, inboxName, photo, fullScreen))
+      if (stillRinging) {
+        manager.notify(NOTIFICATION_ID, build(context, data, callSid, name, inboxName, photo, fullScreen, true))
+      }
     }
   }
 
@@ -102,14 +110,18 @@ object CallNotification {
     name: String,
     inboxName: String,
     photo: android.graphics.Bitmap?,
-    fullScreen: Boolean = true
+    fullScreen: Boolean = true,
+    silent: Boolean = false
   ): android.app.Notification {
     val person = Person.Builder()
       .setName(name)
       .setImportant(true)
       .apply { photo?.let { setIcon(IconCompat.createWithBitmap(it)) } }
       .build()
-    val builder = androidx.core.app.NotificationCompat.Builder(context, CHANNEL_ID)
+    val builder = androidx.core.app.NotificationCompat.Builder(
+      context,
+      if (silent) SILENT_CHANNEL_ID else CHANNEL_ID
+    )
       .setSmallIcon(R.drawable.cw_notification_logo)
       .setColor(ACCENT)
       .setGroup(GROUP_CALLS)
@@ -118,6 +130,7 @@ object CallNotification {
       .setVisibility(androidx.core.app.NotificationCompat.VISIBILITY_PUBLIC)
       .setOngoing(true)
       .setAutoCancel(false)
+      .setOnlyAlertOnce(true)
       .setTimeoutAfter(RING_TIMEOUT_MS)
       .apply { if (fullScreen) setFullScreenIntent(openAppIntent(context, callSid, data), true) }
       .setStyle(
@@ -245,24 +258,41 @@ object CallNotification {
 }
 
 object CallNotificationChannel {
+  // Two channels for the same ring: the audible one for a call the phone shows only as a
+  // notification, and a silent one for a call whose ring screen is already ringing
   fun ensure(context: Context) {
     val manager = context.getSystemService(android.app.NotificationManager::class.java) ?: return
-    if (manager.getNotificationChannel(CallNotification.CHANNEL_ID) != null) return
-    val channel = android.app.NotificationChannel(
-      CallNotification.CHANNEL_ID,
-      "Calls",
-      android.app.NotificationManager.IMPORTANCE_HIGH
-    ).apply {
-      lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
-      enableVibration(true)
-      setSound(
-        android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_RINGTONE),
-        android.media.AudioAttributes.Builder()
-          .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-          .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
-          .build()
-      )
+    if (manager.getNotificationChannel(CallNotification.CHANNEL_ID) == null) {
+      manager.createNotificationChannel(ringingChannel())
     }
-    manager.createNotificationChannel(channel)
+    if (manager.getNotificationChannel(CallNotification.SILENT_CHANNEL_ID) == null) {
+      manager.createNotificationChannel(silentChannel())
+    }
+  }
+
+  private fun ringingChannel() = android.app.NotificationChannel(
+    CallNotification.CHANNEL_ID,
+    "Calls",
+    android.app.NotificationManager.IMPORTANCE_HIGH
+  ).apply {
+    lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+    enableVibration(true)
+    setSound(
+      android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_RINGTONE),
+      android.media.AudioAttributes.Builder()
+        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+        .build()
+    )
+  }
+
+  private fun silentChannel() = android.app.NotificationChannel(
+    CallNotification.SILENT_CHANNEL_ID,
+    "Calls in progress",
+    android.app.NotificationManager.IMPORTANCE_HIGH
+  ).apply {
+    lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+    enableVibration(false)
+    setSound(null, null)
   }
 }

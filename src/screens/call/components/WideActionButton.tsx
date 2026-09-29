@@ -3,11 +3,9 @@ import { Pressable, Text, View } from 'react-native';
 
 import { tailwind } from '@/theme';
 
-import { GlassSurface } from './GlassSurface';
-
 type WideActionButtonProps = {
   label: string;
-  fill: 'bg-ruby-700' | 'bg-green-700';
+  fill: string;
   disabled?: boolean;
   onPress: () => void;
   children: React.ReactNode;
@@ -27,16 +25,14 @@ export const WideActionButton = ({
     accessibilityState={{ disabled: !!disabled }}
     disabled={disabled}
     onPress={onPress}
-    style={({ pressed }) => tailwind.style('flex-1', disabled || pressed ? 'opacity-60' : '')}>
-    <GlassSurface
-      interactive
-      tint={tailwind.color(fill) as string}
-      style={tailwind.style('h-11 rounded-xl flex-row items-center justify-center gap-2')}
-      fallbackStyle={tailwind.style(fill)}>
-      <View style={tailwind.style('h-[18px] w-[18px]')}>{children}</View>
-      <Text style={tailwind.style('font-inter-580-24 text-[15px] leading-5 text-white')}>
-        {label}
-      </Text>
-    </GlassSurface>
+    style={({ pressed }) => [
+      tailwind.style('flex-1 h-11 rounded-xl flex-row items-center justify-center gap-2'),
+      { backgroundColor: fill },
+      disabled || pressed ? tailwind.style('opacity-60') : null,
+    ]}>
+    <View style={tailwind.style('h-[18px] w-[18px]')}>{children}</View>
+    <Text style={tailwind.style('font-inter-580-24 text-[15px] leading-5 text-white')}>
+      {label}
+    </Text>
   </Pressable>
 );

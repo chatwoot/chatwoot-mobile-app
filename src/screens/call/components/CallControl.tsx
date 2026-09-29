@@ -5,26 +5,28 @@ import { tailwind } from '@/theme';
 
 import {
   CALL_END,
-  CALL_HOLD,
-  CALL_LABEL_INACTIVE,
-  CALL_LIVE,
-  SOLID_CONTROL_OFF,
+  CALL_LABEL_TEXT,
+  CONTROL_DISABLED_BORDER,
+  CONTROL_DISABLED_LABEL,
+  CONTROL_HOLD_FILL,
+  CONTROL_OFF_FILL,
+  CONTROL_ON_FILL,
 } from '../constants/callTheme';
-import { GlassSurface } from './GlassSurface';
 
 export type CallControlTone = 'on' | 'off' | 'hold' | 'end';
 
-const CONTROL_FILL: Record<Exclude<CallControlTone, 'off'>, string> = {
-  on: CALL_LIVE,
-  hold: CALL_HOLD,
+const CONTROL_FILL: Record<CallControlTone, string> = {
+  on: CONTROL_ON_FILL,
+  off: CONTROL_OFF_FILL,
+  hold: CONTROL_HOLD_FILL,
   end: CALL_END,
 };
 
 type CallControlProps = {
   label: string;
-  // What is live is green, what is off is grey; hold and end keep their own colours
+  // A toggle that is on is blue, one that is off is grey; hold and end keep their own colours
   tone: CallControlTone;
-  // A control that does nothing yet keeps its place in the row, without its tile
+  // A control that does nothing yet keeps its place in the row as an empty outline
   inactive?: boolean;
   disabled?: boolean;
   onPress: () => void;
@@ -39,45 +41,32 @@ export const CallControl = ({
   disabled,
   onPress,
   children,
-}: CallControlProps) => {
-  const glyph = (
-    <View style={tailwind.style('h-[26px] w-[26px] items-center justify-center')}>{children}</View>
-  );
-
-  return (
-    <View style={tailwind.style('w-[68px] items-center gap-2')}>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={label}
-        accessibilityState={{ disabled: !!disabled || !!inactive, selected: tone === 'on' }}
-        disabled={disabled || inactive}
-        onPress={onPress}
-        style={({ pressed }) => (pressed && !inactive ? tailwind.style('opacity-70') : null)}>
-        {inactive ? (
-          <View
-            style={tailwind.style('h-[60px] w-[60px] rounded-[18px] items-center justify-center')}>
-            {glyph}
-          </View>
-        ) : (
-          <GlassSurface
-            interactive
-            tint={tone === 'off' ? undefined : CONTROL_FILL[tone]}
-            style={tailwind.style('h-[60px] w-[60px] rounded-[18px] items-center justify-center')}
-            fallbackStyle={{
-              backgroundColor: tone === 'off' ? SOLID_CONTROL_OFF : CONTROL_FILL[tone],
-            }}>
-            {glyph}
-          </GlassSurface>
-        )}
-      </Pressable>
-      <Text
-        numberOfLines={1}
-        style={[
-          tailwind.style('font-inter-420-20 text-[13px] leading-4 text-gray-900 max-w-[68px]'),
-          inactive ? { color: CALL_LABEL_INACTIVE } : null,
-        ]}>
-        {label}
-      </Text>
-    </View>
-  );
-};
+}: CallControlProps) => (
+  <View style={tailwind.style('w-[60px] items-center gap-2')}>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: !!disabled || !!inactive, selected: tone === 'on' }}
+      disabled={disabled || inactive}
+      onPress={onPress}
+      style={({ pressed }) => [
+        tailwind.style('h-[60px] w-[60px] rounded-[18px] items-center justify-center'),
+        inactive
+          ? { borderWidth: 1.5, borderColor: CONTROL_DISABLED_BORDER }
+          : { backgroundColor: CONTROL_FILL[tone] },
+        pressed && !inactive ? tailwind.style('opacity-70') : null,
+      ]}>
+      <View style={tailwind.style('h-[26px] w-[26px] items-center justify-center')}>
+        {children}
+      </View>
+    </Pressable>
+    <Text
+      numberOfLines={1}
+      style={[
+        tailwind.style('font-inter-420-20 text-[13px] leading-4 max-w-[68px]'),
+        { color: inactive ? CONTROL_DISABLED_LABEL : CALL_LABEL_TEXT },
+      ]}>
+      {label}
+    </Text>
+  </View>
+);

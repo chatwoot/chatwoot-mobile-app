@@ -1,7 +1,9 @@
 import React from 'react';
 
-import { CallStateGlyph, type CallStateIconProps } from './Glyph';
+import { EndGlyph } from '../call-controls/EndGlyph';
+import type { CallStateIconProps } from './Glyph';
 
-export const PhoneMissedIcon = ({ color, size }: CallStateIconProps) => (
-  <CallStateGlyph color={color} size={size} marks="M22 2l-6 6M16 2l6 6" />
+// A call nobody picked up, drawn as the hung-up handset
+export const PhoneMissedIcon = ({ color, size = 20 }: CallStateIconProps) => (
+  <EndGlyph color={color} size={size} />
 );

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Glyph, HANDSET_PATH, type GlyphProps } from './Glyph';
+import { Glyph, type GlyphProps } from './Glyph';
 
-// Two bars above a handset
 export const HoldGlyph = ({ color, size }: GlyphProps) => (
-  <Glyph color={color} size={size} d={`M17 3h-2v7h2V3zm3 0h-2v7h2V3z${HANDSET_PATH}`} />
+  <Glyph color={color} size={size} d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
 );

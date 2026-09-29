@@ -39,7 +39,7 @@ internal class IncomingCallViews(private val context: Context) {
       clipChildren = false
       clipToPadding = false
     }
-    root.addView(header(inboxName), LinearLayout.LayoutParams(MATCH, WRAP))
+    root.addView(header(), LinearLayout.LayoutParams(MATCH, WRAP))
 
     val centre = LinearLayout(context).apply {
       orientation = LinearLayout.VERTICAL
@@ -48,33 +48,39 @@ internal class IncomingCallViews(private val context: Context) {
       clipChildren = false
       clipToPadding = false
     }
-    val state = text("Incoming call", 15f, STATE, medium = true)
+    val state = text("Incoming call", 17f, STATE, medium = true)
     stateLabel = state
-    centre.addView(state, LinearLayout.LayoutParams(WRAP, WRAP).apply { bottomMargin = dp(28) })
+    centre.addView(state, LinearLayout.LayoutParams(WRAP, WRAP).apply { bottomMargin = dp(24) })
     centre.addView(avatarWithSonar(callerName), LinearLayout.LayoutParams(dp(132), dp(132)))
     centre.addView(text(callerName.ifEmpty { "Unknown caller" }, 30f, INK, bold = true), params(dp(26)))
     if (callerPhone.isNotEmpty()) centre.addView(text(callerPhone, 17f, MUTED), params(dp(6)))
+    if (inboxName.isNotEmpty()) {
+      centre.addView(
+        text(inboxName, 17f, MUTED).apply { maxLines = 1; ellipsize = TextUtils.TruncateAt.END },
+        params(dp(6))
+      )
+    }
     root.addView(centre, LinearLayout.LayoutParams(MATCH, 0).apply { weight = 1f })
 
     val host = FrameLayout(context).apply {
       setPadding(dp(16), dp(16), dp(16), dp(16))
       background = GradientDrawable().apply {
-        cornerRadius = dp(30).toFloat()
+        cornerRadius = dp(24).toFloat()
         setColor(Color.parseColor(SURFACE))
       }
-      elevation = dp(6).toFloat()
+      elevation = dp(4).toFloat()
     }
     trayHost = host
     root.addView(host, LinearLayout.LayoutParams(MATCH, WRAP).apply {
-      marginStart = dp(16)
-      marginEnd = dp(16)
+      marginStart = dp(20)
+      marginEnd = dp(20)
     })
     return root
   }
 
   // Decline and Answer as two wide buttons side by side
   fun showRingingTray(onDecline: () -> Unit, onAnswer: () -> Unit) {
-    trayHost?.setPadding(dp(20), dp(16), dp(20), dp(16))
+    trayHost?.setPadding(dp(16), dp(16), dp(16), dp(16))
     val tray = LinearLayout(context).apply {
       orientation = LinearLayout.HORIZONTAL
       gravity = Gravity.CENTER
@@ -99,34 +105,37 @@ internal class IncomingCallViews(private val context: Context) {
     onSpeaker: () -> Unit,
     onEnd: () -> Unit
   ) {
-    trayHost?.setPadding(dp(20), dp(16), dp(20), dp(14))
+    trayHost?.setPadding(dp(16), dp(16), dp(16), dp(16))
     val tray = LinearLayout(context).apply {
       orientation = LinearLayout.HORIZONTAL
       gravity = Gravity.CENTER
     }
     val mute = callButton(
       if (muted) "Unmute" else "Mute",
-      if (muted) TOGGLE else ANSWER,
-      R.drawable.cw_call_mic,
-      if (muted) GLYPH_OFF else WHITE,
+      TOGGLE,
+      if (muted) R.drawable.cw_call_mic_off else R.drawable.cw_call_mic,
+      GLYPH_OFF,
       enabled,
       onMute
     )
     val speaker = callButton(
       "Speaker",
-      if (speakerOn) ANSWER else TOGGLE,
+      if (speakerOn) TOGGLE_ON else TOGGLE,
       R.drawable.cw_call_speaker,
-      if (speakerOn) WHITE else GLYPH_OFF,
+      if (speakerOn) GLYPH_ON else GLYPH_OFF,
       enabled,
       onSpeaker
     )
-    val hold = callButton("Hold", TOGGLE, R.drawable.cw_call_hold, GLYPH_OFF, false) {}
+    val hold = callButton("Hold", null, R.drawable.cw_call_hold, GLYPH_DISABLED, false) {}
     val end = callButton("End call", DECLINE, R.drawable.cw_call_decline, WHITE, onPress = onEnd)
-    val slot = { LinearLayout.LayoutParams(0, WRAP).apply { weight = 1f } }
-    tray.addView(mute, slot())
-    tray.addView(speaker, slot())
-    tray.addView(hold, slot())
-    tray.addView(end, slot())
+    // Four 60dp columns spread across the tray, the outer ones against its edges
+    val columns = listOf(mute, speaker, hold, end)
+    columns.forEachIndexed { index, column ->
+      tray.addView(column, LinearLayout.LayoutParams(dp(60), WRAP))
+      if (index < columns.lastIndex) {
+        tray.addView(View(context), LinearLayout.LayoutParams(0, 0).apply { weight = 1f })
+      }
+    }
     replaceTray(tray)
   }
 
@@ -167,7 +176,7 @@ internal class IncomingCallViews(private val context: Context) {
     return LayerDrawable(arrayOf(ColorDrawable(Color.parseColor(BACKGROUND)), wash))
   }
 
-  private fun header(inboxName: String): View {
+  private fun header(): View {
     val row = LinearLayout(context).apply {
       orientation = LinearLayout.HORIZONTAL
       gravity = Gravity.CENTER_VERTICAL
@@ -180,7 +189,7 @@ internal class IncomingCallViews(private val context: Context) {
       )
     }
     row.addView(
-      text(inboxName.ifEmpty { "Call" }, 17f, INK, medium = true).apply {
+      text(TITLE, 17f, INK, medium = true).apply {
         gravity = Gravity.START
         maxLines = 1
         ellipsize = TextUtils.TruncateAt.END
@@ -221,21 +230,20 @@ internal class IncomingCallViews(private val context: Context) {
     return holder
   }
 
-  // The initial on a gradient in the ring colour until the photo arrives
+  // The initial in the ring colours until the photo arrives
   private fun avatar(callerName: String): View {
     val initial = callerName.trim().take(1).uppercase().ifEmpty { "?" }
     val frame = FrameLayout(context).apply {
-      background = GradientDrawable(
-        GradientDrawable.Orientation.TL_BR,
-        intArrayOf(Color.parseColor(AVATAR_FROM), Color.parseColor(AVATAR_TO))
-      ).apply { shape = GradientDrawable.OVAL }
+      background = GradientDrawable().apply {
+        shape = GradientDrawable.OVAL
+        setColor(Color.parseColor(AVATAR_FILL))
+      }
       clipToOutline = true
       outlineProvider = object : ViewOutlineProvider() {
         override fun getOutline(view: View, outline: Outline) {
           outline.setOval(0, 0, view.width, view.height)
         }
       }
-      elevation = dp(8).toFloat()
     }
     frame.addView(
       TextView(context).apply {
@@ -272,9 +280,11 @@ internal class IncomingCallViews(private val context: Context) {
     return row
   }
 
+  // A tile with its label underneath. A null fill draws the outline of a control that has
+  // nothing to act on yet.
   private fun callButton(
     label: String,
-    color: String,
+    fill: String?,
     icon: Int,
     glyphColor: String,
     enabled: Boolean = true,
@@ -283,7 +293,7 @@ internal class IncomingCallViews(private val context: Context) {
     val column = LinearLayout(context).apply {
       orientation = LinearLayout.VERTICAL
       gravity = Gravity.CENTER_HORIZONTAL
-      alpha = if (enabled) 1f else 0.45f
+      alpha = if (enabled || fill == null) 1f else 0.45f
       isEnabled = enabled
       if (enabled) setOnClickListener { onPress() }
     }
@@ -293,14 +303,18 @@ internal class IncomingCallViews(private val context: Context) {
       setPadding(dp(17), dp(17), dp(17), dp(17))
       background = GradientDrawable().apply {
         cornerRadius = dp(18).toFloat()
-        setColor(Color.parseColor(color))
+        if (fill != null) setColor(Color.parseColor(fill))
+        else setStroke(dp(1.5f), Color.parseColor(DISABLED_BORDER))
       }
       imageTintList = ColorStateList.valueOf(Color.parseColor(glyphColor))
       isClickable = false
     }
     column.addView(button, LinearLayout.LayoutParams(dp(60), dp(60)))
     column.addView(
-      text(label, 13f, LABEL).apply { maxLines = 1; ellipsize = TextUtils.TruncateAt.END },
+      text(label, 13f, if (fill == null) LABEL_DISABLED else LABEL).apply {
+        maxLines = 1
+        ellipsize = TextUtils.TruncateAt.END
+      },
       params(dp(8))
     )
     return column
@@ -319,28 +333,35 @@ internal class IncomingCallViews(private val context: Context) {
   private fun params(topMargin: Int) =
     LinearLayout.LayoutParams(MATCH, WRAP).apply { this.topMargin = topMargin }
 
-  private fun dp(value: Int) =
-    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value.toFloat(), context.resources.displayMetrics).toInt()
+  private fun dp(value: Int) = dp(value.toFloat())
+
+  private fun dp(value: Float) =
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, context.resources.displayMetrics).toInt()
 
   companion object {
     const val BACKGROUND = "#F4F4F6"
+    private const val TITLE = "Chatwoot Audio"
     private const val WASH = "#420880E7"
     private const val SURFACE = "#FFFFFF"
     private const val WHITE = "#FFFFFF"
     private const val INK = "#202020"
     private const val MUTED = "#737373"
     private const val LABEL = "#666666"
-    private const val STATE = "#0D71C6"
+    private const val STATE = "#076CC5"
     private const val SONAR = "#2E0880E7"
     private const val SONAR_PERIOD_MS = 3200L
     private const val SONAR_STAGGER_MS = 1600L
-    private const val AVATAR_FROM = "#C8DDF3"
-    private const val AVATAR_TO = "#94B7DB"
-    private const val AVATAR_INK = "#1D4972"
-    private const val TOGGLE = "#EBEBEB"
+    private const val AVATAR_FILL = "#D5EFFF"
+    private const val AVATAR_INK = "#0D74CE"
+    private const val TOGGLE = "#F2F2F4"
+    private const val TOGGLE_ON = "#D5EFFF"
     private const val GLYPH_OFF = "#646464"
-    private const val DECLINE = "#E5486A"
-    private const val ANSWER = "#30A46C"
+    private const val GLYPH_ON = "#0880EA"
+    private const val GLYPH_DISABLED = "#B5B5BA"
+    private const val DISABLED_BORDER = "#DFDFE2"
+    private const val LABEL_DISABLED = "#ADADAD"
+    private const val DECLINE = "#E54666"
+    private const val ANSWER = "#12A594"
     private const val MATCH = LinearLayout.LayoutParams.MATCH_PARENT
     private const val WRAP = LinearLayout.LayoutParams.WRAP_CONTENT
   }

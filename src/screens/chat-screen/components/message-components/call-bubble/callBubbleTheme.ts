@@ -5,8 +5,6 @@ export type CallBubbleState = 'ringing' | 'live' | 'ended' | 'missed';
 export const CARD_INK = '#1C1C1E';
 export const CARD_MUTED = '#6B6B70';
 export const CARD_SURFACE = '#FFFFFF';
-// A missed call an agent placed keeps its warning on the pale grey bubble
-export const CARD_MISSED_SURFACE = '#FDEEF1';
 
 export const CALL_RED = '#D6335B';
 export const CALL_GREEN = '#1F9D55';

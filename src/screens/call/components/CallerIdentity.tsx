@@ -3,28 +3,27 @@ import { Text, View } from 'react-native';
 
 import { tailwind } from '@/theme';
 
-import { CALL_TONES, type CallTone } from '../constants/callTheme';
+import { CALL_MUTED_TEXT, CALL_TONES, type CallTone } from '../constants/callTheme';
 import type { CallerInfo } from '../hooks/useCallerInfo';
 import { CallAvatar } from './CallAvatar';
 import { GoToConversationButton } from './GoToConversationButton';
+import { InboxChannelIcon } from './InboxChannelIcon';
 
 type CallerIdentityProps = {
   info: CallerInfo;
   statusText: string;
   tone: CallTone;
-  // The timer reads larger than the phase words
-  showsTimer: boolean;
-  // Discs swell out from the avatar while the call rings or is being placed
+  // Discs swell out from the avatar while the call rings
   aura: boolean;
   onOpenConversation?: () => void;
 };
 
-// The middle of the call screen: the phase or timer, the caller, and the way into the chat
+// The middle of the call screen: the phase or timer, the caller, the inbox they rang, and the
+// way into the chat
 export const CallerIdentity = ({
   info,
   statusText,
   tone,
-  showsTimer,
   aura,
   onOpenConversation,
 }: CallerIdentityProps) => (
@@ -33,10 +32,7 @@ export const CallerIdentity = ({
     pointerEvents="box-none">
     <Text
       style={[
-        tailwind.style('font-inter-medium-24'),
-        showsTimer
-          ? tailwind.style('text-[20px] leading-[26px] tracking-[0.5px] mb-[22px] tabular-nums')
-          : tailwind.style('text-[15px] leading-5 mb-7'),
+        tailwind.style('font-inter-medium-24 text-[17px] leading-[22px] mb-6 tabular-nums'),
         { color: CALL_TONES[tone].status },
       ]}>
       {statusText}
@@ -56,6 +52,19 @@ export const CallerIdentity = ({
         )}>
         {info.phone}
       </Text>
+    ) : null}
+    {info.inboxName ? (
+      <View style={tailwind.style('flex-row items-center gap-2 mt-1.5 max-w-full')}>
+        <InboxChannelIcon channelType={info.channelType} medium={info.medium} size={18} />
+        <Text
+          numberOfLines={1}
+          style={[
+            tailwind.style('font-inter-420-20 text-[17px] leading-[22px] shrink'),
+            { color: CALL_MUTED_TEXT },
+          ]}>
+          {info.inboxName}
+        </Text>
+      </View>
     ) : null}
     {onOpenConversation ? <GoToConversationButton onPress={onOpenConversation} /> : null}
   </View>

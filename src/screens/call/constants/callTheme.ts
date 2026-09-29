@@ -1,71 +1,88 @@
 import { Platform } from 'react-native';
 
-// The call screen's palette. Each phase of a call has a tint that washes the backdrop,
-// colours the status line and tints the avatar when there is no photo.
+// The call screen's palette, from Radix light. Each phase of a call has a colour that
+// washes the backdrop, colours the status line and tints the avatar when there is no photo.
 export type CallTone = 'ringing' | 'live' | 'held';
 
 export const CALL_SCREEN_BACKGROUND = '#F4F4F6';
 export const CALL_INK = 'hsl(0, 0%, 12.5%)';
 export const CALL_MUTED_TEXT = 'hsl(0, 0%, 45%)';
 export const CALL_LABEL_TEXT = 'hsl(0, 0%, 40%)';
-export const CALL_GLYPH_OFF = 'hsl(0, 0%, 39.3%)';
 export const CALL_LINK = 'hsl(208, 93.5%, 47.4%)';
-export const CALL_END = 'hsl(348, 75%, 58.5%)';
-export const CALL_LIVE = 'hsl(151, 55%, 41.5%)';
-export const CALL_HOLD = 'hsl(24, 94%, 50%)';
-export const CALL_RING = 'hsl(208, 93%, 47%)';
+export const CALL_LINK_SOFT = 'hsla(208, 93.5%, 47.4%, 0.1)';
+export const CALL_RING_TEXT = 'hsl(208, 93.5%, 40%)';
+export const CALL_DIVIDER = 'hsl(240, 5%, 93%)';
+
+// Ruby 9 and Teal 9: the colours of ending and answering
+export const CALL_END = '#e54666';
+export const CALL_ANSWER = '#12a594';
+
+// A control that is off: a pale grey tile with a mid-grey glyph
+export const CONTROL_OFF_FILL = 'hsl(240, 5%, 95%)';
+export const CONTROL_OFF_GLYPH = 'hsl(0, 0%, 39.3%)';
+// A toggle that is on: Blue 4 with the app's blue glyph
+export const CONTROL_ON_FILL = '#d5efff';
+export const CONTROL_ON_GLYPH = CALL_LINK;
+// A held call's Resume: Amber 4 with Amber 11
+export const CONTROL_HOLD_FILL = '#ffee9c';
+export const CONTROL_HOLD_GLYPH = '#ab6400';
+// A control with nothing to act on yet: an outline, no fill
+export const CONTROL_DISABLED_BORDER = 'hsl(240, 5%, 88%)';
+export const CONTROL_DISABLED_GLYPH = 'hsl(240, 4%, 72%)';
+export const CONTROL_DISABLED_LABEL = 'hsl(0, 0%, 68%)';
 
 type ToneColours = {
+  // The backdrop's two washes: the colour and how strongly each shows
   wash: string;
+  washTop: number;
+  washLow: number;
   status: string;
-  avatarFrom: string;
-  avatarTo: string;
+  avatarFill: string;
   avatarInk: string;
   sonar: string;
 };
 
 export const CALL_TONES: Record<CallTone, ToneColours> = {
   ringing: {
-    wash: CALL_RING,
-    status: 'hsl(208, 93.5%, 40%)',
-    avatarFrom: 'hsl(208, 60%, 88%)',
-    avatarTo: 'hsl(208, 50%, 72%)',
-    avatarInk: 'hsl(208, 60%, 28%)',
+    wash: 'hsl(208, 93%, 47%)',
+    washTop: 0.26,
+    washLow: 0.14,
+    status: CALL_RING_TEXT,
+    avatarFill: '#d5efff',
+    avatarInk: '#0d74ce',
     sonar: 'hsla(208, 93%, 47%, 0.18)',
   },
   live: {
-    wash: CALL_LIVE,
-    status: 'hsl(151, 55%, 30%)',
-    avatarFrom: 'hsl(151, 40%, 88%)',
-    avatarTo: 'hsl(151, 35%, 72%)',
-    avatarInk: 'hsl(151, 45%, 22%)',
-    sonar: 'hsla(151, 55%, 41.5%, 0.18)',
+    wash: 'rgb(18, 165, 148)',
+    washTop: 0.22,
+    washLow: 0.12,
+    status: '#008573',
+    avatarFill: '#ccf3ea',
+    avatarInk: '#008573',
+    sonar: 'rgba(18, 165, 148, 0.18)',
   },
   held: {
-    wash: CALL_HOLD,
-    status: 'hsl(24, 94%, 40%)',
-    avatarFrom: 'hsl(24, 70%, 90%)',
-    avatarTo: 'hsl(24, 60%, 76%)',
-    avatarInk: 'hsl(24, 70%, 28%)',
-    sonar: 'hsla(24, 94%, 50%, 0.18)',
+    wash: 'rgb(255, 197, 61)',
+    washTop: 0.32,
+    washLow: 0.18,
+    status: '#ab6400',
+    avatarFill: '#ffee9c',
+    avatarInk: '#ab6400',
+    sonar: 'rgba(255, 197, 61, 0.18)',
   },
 };
 
-// A raised white surface: the solid look the glass falls back to
-export const solidSurface = (radius: number, elevation: 'card' | 'pill') => ({
-  backgroundColor: '#FFFFFF',
-  borderRadius: radius,
-  ...(Platform.OS === 'android'
-    ? { elevation: elevation === 'card' ? 6 : 2 }
-    : {
-        shadowColor: '#000',
-        shadowOpacity: elevation === 'card' ? 0.08 : 0.06,
-        shadowRadius: elevation === 'card' ? 14 : 4,
-        shadowOffset: { width: 0, height: elevation === 'card' ? 8 : 2 },
-      }),
-});
+// Raised white surfaces: the tray, popovers, the strip and the sheet
+export const CARD_SHADOW = {
+  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.04), 0px 8px 24px rgba(0, 0, 0, 0.07)',
+};
+export const SHEET_SHADOW = { boxShadow: '0px -8px 24px rgba(0, 0, 0, 0.06)' };
+export const PILL_SHADOW = {
+  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.06), 0px 0px 0px 1px rgba(0, 0, 0, 0.04)',
+};
 
-export const SOLID_CONTROL_OFF = 'hsl(0, 0%, 92%)';
-// A control that does nothing yet loses its tile and fades, rather than dimming as a whole
-export const CALL_GLYPH_INACTIVE = 'hsl(0, 0%, 76%)';
-export const CALL_LABEL_INACTIVE = 'hsl(0, 0%, 68%)';
+// The control tray: 16pt padding around a 60pt button and its 16pt label
+export const CALL_TRAY_HEIGHT = 116;
+// Where the tray sits above the bottom safe area
+export const callTrayBottom = (safeBottom: number) =>
+  safeBottom + (Platform.OS === 'ios' ? 12 : 16);

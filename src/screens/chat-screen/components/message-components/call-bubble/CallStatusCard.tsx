@@ -4,7 +4,7 @@ import { Pressable, Text, View } from 'react-native';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import {
-  ChevronRight,
+  CaretRightBoldGlyph,
   PhoneCallIcon,
   PhoneIncomingIcon,
   PhoneMissedIcon,
@@ -16,7 +16,6 @@ import {
   CALL_BUBBLE_TONES,
   CALL_GREEN,
   CARD_INK,
-  CARD_MISSED_SURFACE,
   CARD_MUTED,
   CARD_SURFACE,
   type CallBubbleState,
@@ -61,14 +60,15 @@ export const CallStatusCard = ({
   children,
 }: CallStatusCardProps) => {
   const tone = CALL_BUBBLE_TONES[state];
-  const surface = state === 'missed' && isOutbound ? CARD_MISSED_SURFACE : CARD_SURFACE;
   const isRinging = state === 'ringing' && !isOutbound;
+  // A finished call the agent placed draws its icon in the card's ink rather than grey
+  const iconColour = state === 'ended' && isOutbound ? CARD_INK : tone.icon;
 
   const card = (
     <View
       style={[
         tailwind.style('-ml-[7px] -mr-[5px] -mt-[3px] rounded-[14px] px-3 py-[11px] gap-2.5'),
-        { backgroundColor: surface },
+        { backgroundColor: CARD_SURFACE },
       ]}>
       <View style={tailwind.style('flex-row items-center gap-3')}>
         <View
@@ -76,7 +76,7 @@ export const CallStatusCard = ({
             tailwind.style('h-[38px] w-[38px] rounded-[10px] items-center justify-center'),
             { backgroundColor: tone.iconBox },
           ]}>
-          <StateIcon state={state} isOutbound={isOutbound} colour={tone.icon} />
+          <StateIcon state={state} isOutbound={isOutbound} colour={iconColour} />
         </View>
         <View style={tailwind.style('flex-1 min-w-0')}>
           <View style={tailwind.style('flex-row items-center gap-2')}>
@@ -116,8 +116,8 @@ export const CallStatusCard = ({
           ) : null}
         </View>
         {onOpenCall ? (
-          <View style={tailwind.style('h-[18px] w-[18px] mt-px')}>
-            <ChevronRight stroke={CARD_MUTED} />
+          <View style={tailwind.style('mt-px')}>
+            <CaretRightBoldGlyph color={CARD_MUTED} size={18} />
           </View>
         ) : null}
       </View>

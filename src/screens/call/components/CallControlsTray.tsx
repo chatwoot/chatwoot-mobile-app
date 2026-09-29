@@ -13,7 +13,12 @@ import {
 } from '@/svg-icons';
 import type { AudioRoute } from '@/services/voice/chatwootCalls';
 
-import { CALL_GLYPH_INACTIVE, CALL_GLYPH_OFF } from '../constants/callTheme';
+import {
+  CONTROL_DISABLED_GLYPH,
+  CONTROL_HOLD_GLYPH,
+  CONTROL_OFF_GLYPH,
+  CONTROL_ON_GLYPH,
+} from '../constants/callTheme';
 import { isHeadsetRoute } from '../utils/audioRoutes';
 import { AudioRouteIcon } from './AudioRouteIcon';
 import { CallControl } from './CallControl';
@@ -59,9 +64,13 @@ export const CallControlsTray = ({
       label={i18n.t(
         isMuted ? 'CONVERSATION.VOICE_WIDGET.UNMUTE' : 'CONVERSATION.VOICE_WIDGET.MUTE',
       )}
-      tone={isMuted ? 'off' : 'on'}
+      tone="off"
       onPress={onToggleMute}>
-      {isMuted ? <MicOffGlyph color={CALL_GLYPH_OFF} /> : <MicOnGlyph color={WHITE} />}
+      {isMuted ? (
+        <MicOffGlyph color={CONTROL_OFF_GLYPH} size={26} />
+      ) : (
+        <MicOnGlyph color={CONTROL_OFF_GLYPH} size={26} />
+      )}
     </CallControl>
     {hasHeadset ? (
       <CallControl
@@ -74,7 +83,8 @@ export const CallControlsTray = ({
         onPress={onToggleRoutePicker}>
         <AudioRouteIcon
           route={currentRoute}
-          color={currentRoute !== 'earpiece' ? WHITE : CALL_GLYPH_OFF}
+          color={currentRoute !== 'earpiece' ? CONTROL_ON_GLYPH : CONTROL_OFF_GLYPH}
+          size={26}
         />
       </CallControl>
     ) : (
@@ -82,7 +92,7 @@ export const CallControlsTray = ({
         label={i18n.t('CONVERSATION.VOICE_WIDGET.SPEAKER')}
         tone={isSpeakerOn ? 'on' : 'off'}
         onPress={onToggleSpeaker}>
-        <SpeakerGlyph color={isSpeakerOn ? WHITE : CALL_GLYPH_OFF} />
+        <SpeakerGlyph color={isSpeakerOn ? CONTROL_ON_GLYPH : CONTROL_OFF_GLYPH} size={26} />
       </CallControl>
     )}
     <CallControl
@@ -93,9 +103,9 @@ export const CallControlsTray = ({
       inactive={!isConnected}
       onPress={onToggleHold}>
       {isOnHold ? (
-        <ResumeGlyph color={WHITE} />
+        <ResumeGlyph color={CONTROL_HOLD_GLYPH} size={26} />
       ) : (
-        <HoldGlyph color={isConnected ? CALL_GLYPH_OFF : CALL_GLYPH_INACTIVE} />
+        <HoldGlyph color={isConnected ? CONTROL_OFF_GLYPH : CONTROL_DISABLED_GLYPH} size={26} />
       )}
     </CallControl>
     <CallControl
@@ -103,7 +113,7 @@ export const CallControlsTray = ({
       tone="end"
       disabled={isEnding}
       onPress={onEnd}>
-      <EndGlyph color={WHITE} />
+      <EndGlyph color={WHITE} size={26} />
     </CallControl>
   </View>
 );

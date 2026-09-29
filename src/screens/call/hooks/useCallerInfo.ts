@@ -4,7 +4,15 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import type { LiveCall } from '@/store/call/callTypes';
 
-export type CallerInfo = { name: string; phone: string; avatar: string; inboxName: string };
+export type CallerInfo = {
+  name: string;
+  phone: string;
+  avatar: string;
+  inboxName: string;
+  // What kind of inbox the call came through, which picks its icon
+  channelType: string;
+  medium: string;
+};
 
 // Who is on the call, from the call itself first and the conversation's contact otherwise
 export const useCallerInfo = (call: LiveCall | null): CallerInfo => {
@@ -20,5 +28,7 @@ export const useCallerInfo = (call: LiveCall | null): CallerInfo => {
     phone: call?.caller?.phone || contact?.phoneNumber || '',
     avatar: call?.caller?.avatar || contact?.thumbnail || '',
     inboxName: inbox?.name || '',
+    channelType: inbox?.channelType || '',
+    medium: inbox?.medium || '',
   };
 };

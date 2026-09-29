@@ -10,17 +10,17 @@ import { CALL_TONES, type CallTone } from '../constants/callTheme';
 // caller and a smaller one low on the right, under the controls
 export const CallBackdrop = ({ tone }: { tone: CallTone }) => {
   const { width, height } = useWindowDimensions();
-  const colour = CALL_TONES[tone].wash;
+  const { wash: colour, washTop, washLow } = CALL_TONES[tone];
   return (
     <View style={tailwind.style('absolute inset-0 bg-[#F4F4F6]')}>
       <Svg width={width} height={height}>
         <Defs>
           <RadialGradient id="washTop" cx="50%" cy="50%" r="50%">
-            <Stop offset="0" stopColor={colour} stopOpacity={0.26} />
+            <Stop offset="0" stopColor={colour} stopOpacity={washTop} />
             <Stop offset="1" stopColor={colour} stopOpacity={0} />
           </RadialGradient>
           <RadialGradient id="washLow" cx="50%" cy="50%" r="50%">
-            <Stop offset="0" stopColor={colour} stopOpacity={0.14} />
+            <Stop offset="0" stopColor={colour} stopOpacity={washLow} />
             <Stop offset="1" stopColor={colour} stopOpacity={0} />
           </RadialGradient>
         </Defs>

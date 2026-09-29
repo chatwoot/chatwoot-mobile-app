@@ -1,20 +1,20 @@
 import React from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 import type { AudioRoute } from '@/services/voice/chatwootCalls';
+import { isOutboundCallRinging } from '@/utils/voiceCallUtils';
 
 import { AudioRoutePicker } from './components/AudioRoutePicker';
 import { CallBackdrop } from './components/CallBackdrop';
 import { CallControlsTray } from './components/CallControlsTray';
 import { CallHeader } from './components/CallHeader';
 import { CallerIdentity } from './components/CallerIdentity';
-import { GlassSurface } from './components/GlassSurface';
 import { IncomingCallActions } from './components/IncomingCallActions';
-import { solidSurface } from './constants/callTheme';
+import { CARD_SHADOW, callTrayBottom } from './constants/callTheme';
 import { useAudioRoutePicker } from './hooks/useAudioRoutePicker';
 import type { CallerInfo } from './hooks/useCallerInfo';
 import { useDeviceLocked } from './hooks/useDeviceLocked';
@@ -96,18 +96,17 @@ export const ActiveCallScreen = ({
     isConnecting,
     isIncoming,
   });
-  const trayBottom = insets.bottom + (Platform.OS === 'ios' ? 12 : 16);
+  const trayBottom = callTrayBottom(insets.bottom);
 
   return (
     <View style={tailwind.style('absolute inset-0')}>
       <CallBackdrop tone={tone} />
-      <CallHeader inboxName={info.inboxName} canMinimise={!isLocked} onMinimise={onMinimise} />
+      <CallHeader canMinimise={!isLocked} onMinimise={onMinimise} />
       <CallerIdentity
         info={info}
         statusText={statusText}
         tone={tone}
-        showsTimer={isConnected}
-        aura={!isConnected && !isConnecting}
+        aura={!!isIncoming || (!isConnected && !isConnecting && isOutboundCallRinging(call))}
         onOpenConversation={call.conversationId && !isLocked ? onOpenConversation : undefined}
       />
 
@@ -121,7 +120,7 @@ export const ActiveCallScreen = ({
         />
       ) : null}
 
-      <View style={[tailwind.style('absolute left-4 right-4 gap-2.5'), { bottom: trayBottom }]}>
+      <View style={[tailwind.style('absolute left-5 right-5 gap-2'), { bottom: trayBottom }]}>
         {routePicker.isOpen ? (
           <AudioRoutePicker
             routes={availableAudioRoutes(audioRoute)}
@@ -134,9 +133,7 @@ export const ActiveCallScreen = ({
           />
         ) : null}
 
-        <GlassSurface
-          style={tailwind.style('rounded-[30px] px-5', isIncoming ? 'py-4' : 'pt-4 pb-3.5')}
-          fallbackStyle={solidSurface(30, 'card')}>
+        <View style={[tailwind.style('rounded-3xl bg-white p-4'), CARD_SHADOW]}>
           {isIncoming ? (
             <IncomingCallActions
               onDecline={onEnd}
@@ -161,7 +158,7 @@ export const ActiveCallScreen = ({
               onEnd={onEnd}
             />
           )}
-        </GlassSurface>
+        </View>
       </View>
     </View>
   );

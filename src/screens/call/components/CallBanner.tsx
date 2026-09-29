@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 
-import { GlassSurface } from './GlassSurface';
+import { CALL_LINK } from '../constants/callTheme';
 
 // Height of the bar's own row, on top of the status bar it covers
 export const CALL_BANNER_ROW_HEIGHT = 46;
@@ -29,10 +29,8 @@ export const CallBanner = ({ duration, isConnected, isRinging, onPress }: CallBa
       accessibilityLabel={i18n.t('CONVERSATION.VOICE_WIDGET.RETURN_TO_CALL')}
       onPress={onPress}
       style={tailwind.style('absolute top-0 left-0 right-0')}>
-      <GlassSurface
-        tint={tailwind.color('bg-blue-800') as string}
-        style={[tailwind.style('px-5'), { paddingTop: insets.top }]}
-        fallbackStyle={tailwind.style('bg-blue-800')}>
+      <View
+        style={[tailwind.style('px-5'), { paddingTop: insets.top, backgroundColor: CALL_LINK }]}>
         <View
           style={[
             tailwind.style('flex-row items-center justify-between'),
@@ -55,7 +53,7 @@ export const CallBanner = ({ duration, isConnected, isRinging, onPress }: CallBa
                 )}
           </Text>
         </View>
-      </GlassSurface>
+      </View>
     </Pressable>
   );
 };

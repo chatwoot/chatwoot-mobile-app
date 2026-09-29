@@ -13,6 +13,7 @@ import { useHaptic } from '@/utils';
 
 import { FullScreenCall } from './FullScreenCall';
 import { useCallSession } from './hooks/useCallSession';
+import { useRecentsScreenshotGuard } from './hooks/useRecentsScreenshotGuard';
 
 // The call screen for the whole call lifecycle inside the app: an inbound ring where the
 // OS has no call screen of its own, a call this device placed, and any call that is up.
@@ -43,6 +44,7 @@ export const InAppCallScreen = () => {
     [placingCall],
   );
   const fullScreenCall = liveFullScreenCall ?? placeholderCall;
+  useRecentsScreenshotGuard(!!fullScreenCall);
 
   const handleOpenConversation = useCallback(() => {
     const conversationId = fullScreenCall?.conversationId;

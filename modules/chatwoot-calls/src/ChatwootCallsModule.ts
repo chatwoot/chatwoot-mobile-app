@@ -36,6 +36,7 @@ declare class ChatwootCallsModule extends NativeModule<ChatwootCallsModuleEvents
   setLockScreenCallSurfaceVisible?(visible: boolean): void;
   openAppFromLockScreen?(): void;
   moveAppToBackground?(): void;
+  setRecentsScreenshotEnabled?(enabled: boolean): void;
   isDeviceLocked?(): boolean;
   isTelecomAvailable?(): boolean;
   setAudioRoute?(route: AudioRoute): void;

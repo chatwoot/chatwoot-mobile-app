@@ -157,6 +157,11 @@ export const addNativeCallActionListener = (listener: (event: NativeCallActionEv
 
 export const moveAppToBackground = () => ChatwootCallsModule?.moveAppToBackground?.();
 
+// Whether Android keeps a picture of the app's last frame to show when it is reopened.
+// Android only; a no-op elsewhere.
+export const setRecentsScreenshotEnabled = (enabled: boolean) =>
+  ChatwootCallsModule?.setRecentsScreenshotEnabled?.(enabled);
+
 // The React component Android's lock-screen call activity renders for a live call
 export const LOCK_SCREEN_CALL_COMPONENT = 'ChatwootLockScreenCall';
 

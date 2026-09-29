@@ -229,6 +229,17 @@ class ChatwootCallsModule : Module() {
       IncomingCallActivity.openApp()
     }
 
+    // Android shows the frame saved when the app last left the foreground until the app
+    // draws again. While a call is up that frame goes stale within a second, so it is
+    // not saved. Needs Android 13; earlier versions keep the saved frame.
+    Function("setRecentsScreenshotEnabled") { enabled: Boolean ->
+      if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+        appContext.currentActivity?.let { activity ->
+          activity.runOnUiThread { activity.setRecentsScreenshotEnabled(enabled) }
+        }
+      }
+    }
+
     // The app was opened by a call and the call is over: step back off the lock screen
     // rather than leaving the app sitting on top of it
     Function("moveAppToBackground") { ->

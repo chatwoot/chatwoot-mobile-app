@@ -166,9 +166,6 @@ importers:
       expo-font:
         specifier: ~57.0.1
         version: 57.0.1(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
-      expo-glass-effect:
-        specifier: ~57.0.3
-        version: 57.0.3(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       expo-haptics:
         specifier: ~57.0.1
         version: 57.0.1(expo@57.0.7)
@@ -3770,13 +3767,6 @@ packages:
 
   expo-font@57.0.1:
     resolution: {integrity: sha512-QyS9L1Kh9sKJg4gfU6rdbpxpmH+DyzBX8z6jVvXMUDoqLr1GqmkO/Wu379KCXjL///kWbhpNlbi7AgBuj4VdIQ==}
-    peerDependencies:
-      expo: '*'
-      react: '*'
-      react-native: '*'
-
-  expo-glass-effect@57.0.3:
-    resolution: {integrity: sha512-aTh2J5eCxf+rSRMBJTnP8Ib5/k8DYFVDuEX1xqesN9F9aqTXocwMv/aQRVBNUs/iogDWhHIJz2pN97IsrrTcoA==}
     peerDependencies:
       expo: '*'
       react: '*'
@@ -10805,12 +10795,6 @@ snapshots:
     dependencies:
       expo: 57.0.7(@babel/core@7.27.1)(@expo/dom-webview@57.0.1)(react-dom@19.2.0(react@19.2.3))(react-native-webview@13.16.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native-worklets@0.10.1(@babel/core@7.27.1)(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       fontfaceobserver: 2.3.0
-      react: 19.2.3
-      react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
-
-  expo-glass-effect@57.0.3(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3):
-    dependencies:
-      expo: 57.0.7(@babel/core@7.27.1)(@expo/dom-webview@57.0.1)(react-dom@19.2.0(react@19.2.3))(react-native-webview@13.16.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native-worklets@0.10.1(@babel/core@7.27.1)(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3))(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       react: 19.2.3
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
 

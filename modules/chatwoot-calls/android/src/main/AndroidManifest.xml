@@ -4,6 +4,8 @@
   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
   <!-- Telecom routes call audio to headsets; the permission is asked for with the microphone -->
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <!-- A headset is optional: calls work on the earpiece and speaker without Bluetooth -->
+  <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
 
   <application>
     <!-- Takes call pushes before JavaScript starts; every other message falls through to

@@ -16,6 +16,9 @@ import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
+import { getChannelIcon } from '@/utils';
+import { Channel } from '@/types';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -32,6 +35,15 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+  const inboxId = conversation?.inboxId;
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
+  const channelIcon = inbox
+    ? getChannelIcon(
+        inbox.channelType as Channel,
+        inbox.medium || '',
+        conversation?.additionalAttributes?.type || '',
+      )
+    : null;
 
   const appliedSla = conversation?.appliedSla;
 
@@ -163,9 +175,12 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       name={name}
       imageSrc={imageSrc}
       isResolved={isResolved}
+      inboxName={inbox?.name}
+      channelIcon={channelIcon}
       dashboardsList={dashboardsList}
       isSlaMissed={slaStatus?.isSlaMissed}
       hasSla={!!appliedSla}
+      slaType={slaStatus?.type?.toUpperCase()}
       slaEvents={conversation?.slaEvents}
       statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
       onBackPress={handleBackPress}

@@ -175,6 +175,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       name={name}
       imageSrc={imageSrc}
       isResolved={isResolved}
+      showDetailsRow={pagerViewIndex === 0}
       inboxName={inbox?.name}
       channelIcon={channelIcon}
       dashboardsList={dashboardsList}

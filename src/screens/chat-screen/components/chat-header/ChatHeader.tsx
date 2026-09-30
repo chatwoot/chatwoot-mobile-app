@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageSourcePropType, Keyboard, Platform, Pressable, StyleSheet } from 'react-native';
+import { ImageSourcePropType, Keyboard, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
@@ -16,6 +16,7 @@ type ChatHeaderProps = {
   name: string;
   imageSrc: ImageSourcePropType;
   isResolved: boolean;
+  showDetailsRow?: boolean;
   inboxName?: string;
   channelIcon?: React.ReactNode;
   isSlaMissed?: boolean;
@@ -33,6 +34,7 @@ export const ChatHeader = ({
   name,
   imageSrc,
   isResolved,
+  showDetailsRow = true,
   inboxName,
   channelIcon,
   slaEvents,
@@ -84,85 +86,69 @@ export const ChatHeader = ({
         )}
       </Animated.View>
 
-      <Animated.View
-        style={tailwind.style(
-          'flex flex-row items-center justify-between gap-3 px-[15px] pb-[13px]',
-        )}>
-        {inboxName ? (
-          <Animated.View
-            style={[
-              tailwind.style(
-                'flex-shrink flex-row items-center gap-1.5 h-8 pl-2 pr-3 rounded-lg bg-white',
-              ),
-              styles.chipShadow,
-            ]}>
-            {channelIcon ? <Icon icon={channelIcon} size={16} /> : null}
-            <Animated.Text
-              numberOfLines={1}
+      {showDetailsRow && (
+        <Animated.View
+          style={tailwind.style(
+            'flex flex-row items-center justify-between gap-3 px-[15px] pb-[13px]',
+          )}>
+          {inboxName ? (
+            <Animated.View
               style={tailwind.style(
-                'flex-shrink max-w-[160px] text-[15px] font-inter-normal-20 tracking-[0.3px] text-gray-950',
+                'flex-shrink flex-row items-center gap-1.5 h-8 pl-2 pr-3 rounded-lg bg-white border border-gray-300',
               )}>
-              {inboxName}
-            </Animated.Text>
-          </Animated.View>
-        ) : (
-          <Animated.View />
-        )}
+              {channelIcon ? <Icon icon={channelIcon} size={16} /> : null}
+              <Animated.Text
+                numberOfLines={1}
+                style={tailwind.style(
+                  'flex-shrink max-w-[160px] text-[15px] font-inter-normal-20 tracking-[0.3px] text-gray-950',
+                )}>
+                {inboxName}
+              </Animated.Text>
+            </Animated.View>
+          ) : (
+            <Animated.View />
+          )}
 
-        <Animated.View style={tailwind.style('flex flex-row items-center gap-[11px]')}>
-          {hasSla && (
+          <Animated.View style={tailwind.style('flex flex-row items-center gap-[11px]')}>
+            {hasSla && (
+              <Pressable
+                hitSlop={4}
+                onPress={toggleSlaEventsSheet}
+                style={tailwind.style(
+                  'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100',
+                )}>
+                <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#858585'} />} size={17} />
+                {slaType ? (
+                  <Animated.Text
+                    style={tailwind.style(
+                      'text-[15px] font-inter-medium-24 tracking-[0.225px]',
+                      isSlaMissed ? 'text-ruby-800' : 'text-gray-950',
+                    )}>
+                    {slaType}
+                  </Animated.Text>
+                ) : null}
+              </Pressable>
+            )}
             <Pressable
               hitSlop={4}
-              onPress={toggleSlaEventsSheet}
+              onPress={onToggleChatStatus}
               style={tailwind.style(
                 'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100',
               )}>
-              <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#858585'} />} size={17} />
-              {slaType ? (
-                <Animated.Text
-                  style={tailwind.style(
-                    'text-[15px] font-inter-medium-24 tracking-[0.225px]',
-                    isSlaMissed ? 'text-ruby-800' : 'text-gray-950',
-                  )}>
-                  {slaType}
-                </Animated.Text>
-              ) : null}
+              <Icon icon={isResolved ? <StatusOpenIcon /> : <StatusResolvedIcon />} size={16} />
+              <Animated.Text
+                style={tailwind.style(
+                  'text-[15px] font-inter-medium-24 tracking-[0.225px] text-gray-950',
+                )}>
+                {isResolved ? i18n.t('CONVERSATION.REOPEN') : i18n.t('CONVERSATION.RESOLVE')}
+              </Animated.Text>
             </Pressable>
-          )}
-          <Pressable
-            hitSlop={4}
-            onPress={onToggleChatStatus}
-            style={tailwind.style(
-              'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100',
-            )}>
-            <Icon icon={isResolved ? <StatusOpenIcon /> : <StatusResolvedIcon />} size={16} />
-            <Animated.Text
-              style={tailwind.style(
-                'text-[15px] font-inter-medium-24 tracking-[0.225px] text-gray-950',
-              )}>
-              {isResolved ? i18n.t('CONVERSATION.REOPEN') : i18n.t('CONVERSATION.RESOLVE')}
-            </Animated.Text>
-          </Pressable>
+          </Animated.View>
         </Animated.View>
-      </Animated.View>
+      )}
       <Sheet ref={slaEventsSheetRef} detents={[0.36]}>
         <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
       </Sheet>
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  chipShadow:
-    Platform.select({
-      ios: {
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 0.15 },
-        shadowRadius: 2,
-        shadowOpacity: 0.25,
-      },
-      android: {
-        elevation: 1,
-      },
-    }) || {},
-});

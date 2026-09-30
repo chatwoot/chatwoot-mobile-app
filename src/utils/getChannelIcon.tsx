@@ -50,6 +50,10 @@ export const getChannelIcon = (channelType: Channel, medium: string, additionalT
     return <WhatsAppFilledIcon />;
   }
 
+  if (channelType === InboxTypes.INSTAGRAM) {
+    return <InstagramFilledIcon />;
+  }
+
   if (channelType === InboxTypes.WEB) {
     return <WebsiteFilledIcon />;
   }

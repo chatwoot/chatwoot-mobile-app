@@ -182,6 +182,8 @@
     "UN_ASSIGN": "Unassign conversation",
     "CONVERSATION_NOT_FOUND": "Could not fetch conversation",
     "MARK_AS_PENDING": "Mark as pending",
+    "RESOLVE": "Resolve",
+    "REOPEN": "Reopen",
     "SNOOZE_UNTIL": "Snooze until",
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",

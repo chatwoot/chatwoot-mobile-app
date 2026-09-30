@@ -46,3 +46,24 @@ export const SLAIcon = ({ color }: { color: string }) => {
     </Svg>
   );
 };
+
+export const StatusResolvedIcon = ({ stroke = '#0D9B8A' }: IconProps): JSX.Element => {
+  return (
+    <Svg width="100%" height="100%" viewBox="0 0 16 16" fill="none">
+      <Path
+        d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z"
+        stroke={stroke}
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M6.19999 7.99997L7.39999 9.19997L9.79999 6.79997"
+        stroke={stroke}
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+};

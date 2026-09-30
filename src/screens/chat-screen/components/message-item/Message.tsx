@@ -61,6 +61,8 @@ const senderAvatarSource = (sender: Message['sender']) => {
   return avatarUrl || thumbnail || null;
 };
 
+const firstName = (name?: string | null) => (name || '').trim().split(/\s+/)[0];
+
 // Upper-cases the first character of each word; caseless scripts and emoji are unchanged.
 const capitalizeWords = (text: string) =>
   text.replace(
@@ -214,17 +216,17 @@ const MessageWrapper = ({
               {!shouldGroupWithPrevious && (
                 <View
                   style={tailwind.style(
-                    'h-[23px] pt-[7px] pb-0.5 flex flex-row items-center',
+                    'h-[27px] pt-[11px] pb-0.5 flex flex-row items-baseline',
                     shouldShowSenderName ? 'justify-between' : 'justify-end',
                   )}>
                   {shouldShowSenderName ? (
                     <Text
                       numberOfLines={1}
                       style={tailwind.style(
-                        'flex-shrink text-[14px] font-inter-420-20 tracking-[0.32px] pr-3',
+                        'flex-shrink text-xs font-inter-420-20 tracking-[0.32px] pr-10 opacity-85',
                         variantTextMap[variant],
                       )}>
-                      {capitalizeWords(avatarInfo.name || '')}
+                      {capitalizeWords(firstName(avatarInfo.name))}
                     </Text>
                   ) : null}
                   <View style={tailwind.style('flex flex-row items-center')}>
@@ -232,6 +234,7 @@ const MessageWrapper = ({
                       style={tailwind.style(
                         'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
                         variantTextMap[variant],
+                        orientation === ORIENTATION.LEFT ? 'opacity-85' : '',
                       )}>
                       {unixTimestampToReadableTime(item.createdAt)}
                     </Text>

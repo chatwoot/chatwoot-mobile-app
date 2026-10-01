@@ -89,8 +89,6 @@
     "HEADER": {
       "TITLE": "Conversations",
       "CLEAR_FILTER": "Clear",
-      "VOICE_CALL": "Start call",
-      "WHATSAPP_CALL": "Start WhatsApp call",
       "VOICE_CALL_FAILED": "Could not start the call.",
       "WHATSAPP_CALL_FAILED": "Could not start the WhatsApp call.",
       "WHATSAPP_CALL_PERMISSION_REQUESTED": "Sent a call permission request to the contact. Try again once they accept.",
@@ -307,16 +305,12 @@
       "HANDLED_BY": "Handled by %{agentName}",
       "NOT_ANSWERED_YET": "Not answered yet",
       "CALLING": "Calling…",
-      "RINGING": "Ringing…",
-      "CONNECTING": "Connecting…",
       "TRANSCRIPT": "Transcript",
       "TRANSCRIPT_SHOW_MORE": "Show more",
       "TRANSCRIPT_SHOW_LESS": "Show less"
     },
     "VOICE_WIDGET": {
       "INCOMING_CALL": "Incoming call",
-      "OUTGOING_CALL": "Outgoing call",
-      "CALL_IN_PROGRESS": "Call in progress",
       "UNKNOWN_CALLER": "Unknown caller",
       "MICROPHONE_BLOCKED_TITLE": "Microphone is off for Chatwoot",
       "MICROPHONE_BLOCKED_BODY": "Calls need the microphone. Turn it on in Settings to place and answer calls from the app.",

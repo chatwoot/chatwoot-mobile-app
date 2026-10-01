@@ -63,6 +63,9 @@ final class CallKitManager: NSObject {
   private var pushRegistry: PKPushRegistry?
   // Calls the system put on hold for another app's call; they resume once that call ends
   private var heldBySystem: Set<UUID> = []
+  // Calls that ended here, by sid, so a push arriving after the end does not ring again
+  private var endedSids: [String: Date] = [:]
+  private static let endedSidMemory: TimeInterval = 120
   private var holdRequestedHere: Set<UUID> = []
 
   // Matches the window the server rings for, so CallKit never ends a live ring early
@@ -226,6 +229,7 @@ final class CallKitManager: NSObject {
     guard let tracked = calls[uuid] else { return }
     tracked.ringTimer?.invalidate()
     calls[uuid] = nil
+    rememberEnded(tracked.callSid)
     heldBySystem.remove(uuid)
     holdRequestedHere.remove(uuid)
     provider.reportCall(with: uuid, endedAt: Date(), reason: reason)
@@ -254,6 +258,17 @@ final class CallKitManager: NSObject {
       CXTransaction(action: CXSetHeldCallAction(call: uuid, onHold: onHold)), completion: completion)
   }
 
+  private func rememberEnded(_ callSid: String) {
+    let now = Date()
+    endedSids = endedSids.filter { now.timeIntervalSince($0.value) < Self.endedSidMemory }
+    endedSids[callSid] = now
+  }
+
+  private func endedRecently(_ callSid: String) -> Bool {
+    guard let at = endedSids[callSid] else { return false }
+    return Date().timeIntervalSince(at) < Self.endedSidMemory
+  }
+
   // Whether a call from another app is still up
   private var otherCallActive: Bool {
     callObserver.calls.contains { !$0.hasEnded && calls[$0.uuid] == nil }
@@ -262,12 +277,17 @@ final class CallKitManager: NSObject {
   // MARK: - Push payloads
 
   private func handleIncomingPush(_ dictionary: [AnyHashable: Any], completion: @escaping () -> Void) {
-    let type = dictionary["type"] as? String ?? "voice_call.incoming"
     let callSid = dictionary["call_id"] as? String ?? UUID().uuidString
     let providerName = dictionary["provider"] as? String ?? "whatsapp"
     let caller = dictionary["caller"] as? [String: Any] ?? [:]
-    let displayName = caller["name"] as? String ?? "Unknown caller"
-    let handle = caller["phone"] as? String ?? displayName
+    let callerName = caller["name"] as? String ?? "Unknown caller"
+    let inboxName = dictionary["inbox_name"] as? String ?? ""
+    // The one line CallKit shows: the caller and the inbox they rang, as the app reports it
+    let displayName = inboxName.isEmpty ? callerName : "\(callerName) · \(inboxName)"
+    let handle = caller["phone"] as? String ?? callerName
+    // A ring for a call that already ended here is reported and ended like a cancel
+    let pushType = dictionary["type"] as? String ?? "voice_call.incoming"
+    let type = endedRecently(callSid) ? "voice_call.cancel" : pushType
 
     if type == "voice_call.cancel" {
       // A VoIP push must always report a call; report it and end it at once. A call this
@@ -287,15 +307,21 @@ final class CallKitManager: NSObject {
       inboxId: Self.intValue(dictionary["inbox_id"]),
       accountId: Self.intValue(dictionary["account_id"])
     ) { [weak self] reported, error in
-      if error == nil, type == "voice_call.cancel" {
-        self?.endCall(uuid: reported, reason: .remoteEnded)
+      guard let self else { return completion() }
+      if error == nil {
+        if self.calls[reported]?.callId == nil {
+          self.calls[reported]?.callId = Self.intValue(dictionary["id"])
+        }
+        if type == "voice_call.cancel" {
+          self.endCall(uuid: reported, reason: .remoteEnded)
+        } else if let tracked = self.calls[reported] {
+          // JavaScript hears of the call only once the system has accepted it
+          self.send("onIncomingCall", tracked.payload)
+        }
       }
       completion()
     }
-    calls[uuid]?.callId = Self.intValue(dictionary["id"])
-    if let tracked = calls[uuid], type != "voice_call.cancel" {
-      send("onIncomingCall", tracked.payload)
-    }
+    if calls[uuid]?.callId == nil { calls[uuid]?.callId = Self.intValue(dictionary["id"]) }
   }
 
   private func cancelReason(_ status: String?) -> CXCallEndedReason {
@@ -320,7 +346,11 @@ final class CallKitManager: NSObject {
 extension CallKitManager: CXProviderDelegate {
   func providerDidReset(_ provider: CXProvider) {
     calls.values.forEach { $0.ringTimer?.invalidate() }
+    Set(calls.values.filter { $0.answered || $0.outgoing }.map { $0.provider }).forEach { endMedia?($0) }
+    calls.values.forEach { rememberEnded($0.callSid) }
     calls = [:]
+    heldBySystem.removeAll()
+    holdRequestedHere.removeAll()
     send("onCallKitAction", ["type": "reset"])
   }
 
@@ -345,6 +375,7 @@ extension CallKitManager: CXProviderDelegate {
     }
     tracked.ringTimer?.invalidate()
     calls[action.callUUID] = nil
+    rememberEnded(tracked.callSid)
     heldBySystem.remove(action.callUUID)
     holdRequestedHere.remove(action.callUUID)
     if tracked.answered { endMedia?(tracked.provider) }

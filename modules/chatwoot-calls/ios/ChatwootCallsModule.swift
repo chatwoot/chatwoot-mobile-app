@@ -4,32 +4,33 @@ import ExpoModulesCore
 import TwilioVoice
 import WebRTC
 
-// Receives Twilio call callbacks and forwards them as a single state event.
+// Receives Twilio call callbacks and forwards them as a single state event, with the call
+// they belong to so a late callback from an ended call can be told apart.
 private final class TwilioCallHandler: NSObject, CallDelegate {
-  var onState: ((String, String?) -> Void)?
+  var onState: ((Call, String, String?) -> Void)?
 
   func callDidStartRinging(call: Call) {
-    onState?("ringing", nil)
+    onState?(call, "ringing", nil)
   }
 
   func callDidConnect(call: Call) {
-    onState?("connected", nil)
+    onState?(call, "connected", nil)
   }
 
   func callIsReconnecting(call: Call, error: Error) {
-    onState?("reconnecting", error.localizedDescription)
+    onState?(call, "reconnecting", error.localizedDescription)
   }
 
   func callDidReconnect(call: Call) {
-    onState?("connected", nil)
+    onState?(call, "connected", nil)
   }
 
   func callDidFailToConnect(call: Call, error: Error) {
-    onState?("failed", error.localizedDescription)
+    onState?(call, "failed", error.localizedDescription)
   }
 
   func callDidDisconnect(call: Call, error: Error?) {
-    onState?("disconnected", error?.localizedDescription)
+    onState?(call, "disconnected", error?.localizedDescription)
   }
 }
 
@@ -108,8 +109,9 @@ public class ChatwootCallsModule: Module {
       let rtcSession = RTCAudioSession.sharedInstance()
       rtcSession.useManualAudio = true
       rtcSession.isAudioEnabled = false
-      self.handler.onState = { [weak self] state, error in
-        guard let self else { return }
+      self.handler.onState = { [weak self] call, state, error in
+        // Only the current call reports; an earlier one ending late must not end this one
+        guard let self, call === self.activeCall else { return }
         if state == "disconnected" || state == "failed" {
           self.activeCall = nil
         }
@@ -189,8 +191,14 @@ public class ChatwootCallsModule: Module {
       self.activeCall?.isMuted = muted
     }
 
-    Function("twilioIsConnected") { () -> Bool in
-      return self.activeCall?.state == .connected
+    // Held: Twilio stops sending and playing audio until the call is resumed
+    Function("twilioSetHold") { (hold: Bool) in
+      self.activeCall?.isOnHold = hold
+    }
+
+    // Audio for a Twilio call with no system call behind it, which CallKit never activates
+    Function("twilioSetAudioEnabled") { (enabled: Bool) in
+      self.audioDevice.isEnabled = enabled
     }
 
     // Speaker routing for whichever engine holds the audio session
@@ -228,11 +236,11 @@ public class ChatwootCallsModule: Module {
 
     // JS is listening; flush anything that happened before it attached
     Function("callKitReady") {
-      self.callKit.markJsReady()
+      DispatchQueue.main.async { self.callKit.markJsReady() }
     }
 
     Function("getPendingCalls") { () -> [[String: Any]] in
-      return self.callKit.pendingCalls()
+      return Self.onMain { self.callKit.pendingCalls() }
     }
 
     Function("getVoipToken") { () -> String? in
@@ -248,7 +256,7 @@ public class ChatwootCallsModule: Module {
       ) { uuid, error in
         if let error { promise.reject("ERR_CALLKIT", error.localizedDescription) } else { promise.resolve(uuid.uuidString) }
       }
-    }
+    }.runOnQueue(.main)
 
     AsyncFunction("callKitStartOutgoing") { (record: ReportCallRecord, promise: Promise) in
       _ = self.callKit.startOutgoingCall(
@@ -257,17 +265,17 @@ public class ChatwootCallsModule: Module {
       ) { uuid, error in
         if let error { promise.reject("ERR_CALLKIT", error.localizedDescription) } else { promise.resolve(uuid.uuidString) }
       }
-    }
+    }.runOnQueue(.main)
 
     Function("callKitReportConnected") { (uuid: String) in
       guard let id = UUID(uuidString: uuid) else { return }
-      self.callKit.reportConnected(uuid: id)
+      DispatchQueue.main.async { self.callKit.reportConnected(uuid: id) }
     }
 
     // Ends the system call for a reason outside the user's action on this device
     Function("callKitEndCall") { (uuid: String, reason: String) in
       guard let id = UUID(uuidString: uuid) else { return }
-      self.callKit.endCall(uuid: id, reason: Self.endReasons[reason] ?? .remoteEnded)
+      DispatchQueue.main.async { self.callKit.endCall(uuid: id, reason: Self.endReasons[reason] ?? .remoteEnded) }
     }
 
     // User actions from our own UI go through CallKit so the system state stays in step
@@ -276,23 +284,23 @@ public class ChatwootCallsModule: Module {
       self.callKit.requestAnswer(uuid: id) { error in
         if let error { promise.reject("ERR_CALLKIT", error.localizedDescription) } else { promise.resolve(nil) }
       }
-    }
+    }.runOnQueue(.main)
 
     AsyncFunction("callKitRequestEnd") { (uuid: String, promise: Promise) in
       guard let id = UUID(uuidString: uuid) else { return promise.reject("ERR_CALLKIT", "Invalid uuid") }
       self.callKit.requestEnd(uuid: id) { error in
         if let error { promise.reject("ERR_CALLKIT", error.localizedDescription) } else { promise.resolve(nil) }
       }
-    }
+    }.runOnQueue(.main)
 
     // Hold and resume for a call CallKit tracks; the held action then applies the change.
     // False when the call is not known to CallKit, so the caller holds the media itself.
     Function("holdCall") { (callSid: String) -> Bool in
-      self.requestHeld(callSid: callSid, onHold: true)
+      Self.onMain { self.requestHeld(callSid: callSid, onHold: true) }
     }
 
     Function("resumeCall") { (callSid: String) -> Bool in
-      self.requestHeld(callSid: callSid, onHold: false)
+      Self.onMain { self.requestHeld(callSid: callSid, onHold: false) }
     }
 
     AsyncFunction("callKitRequestMute") { (uuid: String, muted: Bool, promise: Promise) in
@@ -300,7 +308,13 @@ public class ChatwootCallsModule: Module {
       self.callKit.requestMute(uuid: id, muted: muted) { error in
         if let error { promise.reject("ERR_CALLKIT", error.localizedDescription) } else { promise.resolve(nil) }
       }
-    }
+    }.runOnQueue(.main)
+  }
+
+  // CallKit's state lives on the main queue, where its own callbacks arrive; calls from
+  // JavaScript are moved there so its ring timers run and its state is not shared
+  private static func onMain<T>(_ body: () -> T) -> T {
+    Thread.isMainThread ? body() : DispatchQueue.main.sync(execute: body)
   }
 
   private func requestHeld(callSid: String, onHold: Bool) -> Bool {

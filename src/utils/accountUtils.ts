@@ -14,6 +14,7 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 import { clearAllParticipants } from '@/store/conversation-participant/conversationParticipantSlice';
 import { resetCopilot } from '@/store/copilot/copilotSlice';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
+import { keepOnlyLocalCall } from '@/store/call/callSlice';
 
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllContacts());
@@ -27,6 +28,7 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllParticipants());
   dispatch(resetCopilot());
   dispatch(resetSentMessage());
+  dispatch(keepOnlyLocalCall());
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
 };

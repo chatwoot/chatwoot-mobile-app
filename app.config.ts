@@ -17,10 +17,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           'This app requires access to the camera to upload images and videos.',
         NSPhotoLibraryUsageDescription:
           'This app requires access to the photo library to upload images.',
-        NSMicrophoneUsageDescription: 'This app requires access to the microphone to record audio.',
+        NSMicrophoneUsageDescription:
+          'This app requires access to the microphone for voice calls and voice notes.',
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
-        UIBackgroundModes: ['fetch', 'remote-notification'],
+        UIBackgroundModes: ['fetch', 'remote-notification', 'audio', 'voip'],
         ITSAppUsesNonExemptEncryption: false,
       },
       // Please use the relative path to the google-services.json file
@@ -35,6 +36,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',
         'android.permission.POST_NOTIFICATIONS',
+        'android.permission.USE_FULL_SCREEN_INTENT',
+        'android.permission.FOREGROUND_SERVICE',
+        'android.permission.FOREGROUND_SERVICE_MICROPHONE',
+        'android.permission.MANAGE_OWN_CALLS',
       ],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
@@ -85,7 +90,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       [
         'react-native-permissions',
-        { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] },
+        {
+          iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications', 'Microphone'],
+        },
       ],
       [
         '@sentry/react-native',
@@ -96,6 +103,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       'expo-web-browser',
+      // Purpose strings come from infoPlist above
+      '@config-plugins/react-native-webrtc',
       '@react-native-community/datetimepicker',
       '@react-native-firebase/app',
       '@react-native-firebase/messaging',

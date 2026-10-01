@@ -16,6 +16,10 @@ import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
+import { selectHasActiveCall, selectHasIncomingCall } from '@/store/call/callSelectors';
+import { getVoiceCallProvider } from '@/utils/inboxUtils';
+import { placeOutboundCall } from '@/utils/placeOutboundCall';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -32,6 +36,13 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+  const inbox = useAppSelector(state =>
+    conversation?.inboxId ? selectInboxById(state, conversation.inboxId) : undefined,
+  );
+  const hasActiveCall = useAppSelector(selectHasActiveCall);
+  const hasIncomingCall = useAppSelector(selectHasIncomingCall);
+  const [isStartingCall, setIsStartingCall] = useState(false);
+  const voiceCallProvider = getVoiceCallProvider(inbox);
 
   const appliedSla = conversation?.appliedSla;
 
@@ -132,6 +143,19 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
+  // One call at a time
+  const startCall = async () => {
+    if (!voiceCallProvider || !inbox || isStartingCall) return;
+    setIsStartingCall(true);
+    await placeOutboundCall(dispatch, {
+      provider: voiceCallProvider,
+      conversationId,
+      inboxId: inbox.id,
+      contactId: conversation?.meta?.sender?.id,
+    });
+    setIsStartingCall(false);
+  };
+
   const dashboardRoutes = dashboardApps.map(dashboardApp => ({
     title: dashboardApp.title,
     url: dashboardApp.content[0].url,
@@ -168,6 +192,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       hasSla={!!appliedSla}
       slaEvents={conversation?.slaEvents}
       statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
+      showCallButton={voiceCallProvider !== null}
+      isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
+      onCallPress={startCall}
       onBackPress={handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}

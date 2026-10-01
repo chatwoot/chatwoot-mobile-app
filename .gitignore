@@ -43,3 +43,8 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.local
+
+# The app's own native module lives outside the generated ios/ and android/ trees
+!modules/chatwoot-calls/ios/
+!modules/chatwoot-calls/android/
+modules/chatwoot-calls/android/build/

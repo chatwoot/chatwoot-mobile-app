@@ -40,6 +40,9 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { InAppCallScreen } from '@/screens/call';
+import { runCallReadiness } from '@/screens/call/utils/callReadiness';
+import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 
 const Tab = createBottomTabNavigator();
 
@@ -90,8 +93,9 @@ const Tabs = () => {
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
-    dispatch(settingsActions.saveDeviceDetails());
-    dispatch(inboxActions.fetchInboxes());
+    // The call permissions depend on the inboxes, so they are asked for once those arrive
+    const inboxesLoaded = dispatch(inboxActions.fetchInboxes());
+    askForPermissions(inboxesLoaded);
     initActionCable();
     dispatch(labelActions.fetchLabels());
     dispatch(setCurrentState('none'));
@@ -101,6 +105,23 @@ const Tabs = () => {
     initAnalytics();
     initSentry();
     initPushNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Every prompt the app needs, in one run: notifications first, then what a call will
+  // need on the accounts that can call, so the agent is not asked again while a caller is
+  // ringing. The push token is registered once notifications have been answered.
+  const askForPermissions = useCallback(async (inboxesLoaded: Promise<unknown>) => {
+    try {
+      // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
+      const { status } = await checkNotifications();
+      if (status !== RESULTS.GRANTED) await requestNotifications(['alert', 'sound', 'badge']);
+      await inboxesLoaded;
+      await runCallReadiness();
+    } catch {
+      // A prompt that fails to show still lets the device register for pushes
+    }
+    dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -197,35 +218,38 @@ export const AppTabs = () => {
 
   if (isLoggedIn) {
     return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Tab" component={Tabs} />
-        <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
-          name="ChatScreen"
-          component={ChatScreen}
-        />
-        <Stack.Screen
-          options={{
-            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-            animation: 'slide_from_bottom',
-          }}
-          name="ContactDetails"
-          component={ContactDetailsScreen}
-        />
-        <Stack.Screen
-          options={{
-            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-            animation: 'slide_from_bottom',
-          }}
-          name="Dashboard"
-          component={DashboardScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false, animation: 'slide_from_right' }}
-          name="SearchScreen"
-          component={SearchScreen}
-        />
-      </Stack.Navigator>
+      <React.Fragment>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Tab" component={Tabs} />
+          <Stack.Screen
+            options={{ animation: 'slide_from_right' }}
+            name="ChatScreen"
+            component={ChatScreen}
+          />
+          <Stack.Screen
+            options={{
+              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+              animation: 'slide_from_bottom',
+            }}
+            name="ContactDetails"
+            component={ContactDetailsScreen}
+          />
+          <Stack.Screen
+            options={{
+              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+              animation: 'slide_from_bottom',
+            }}
+            name="Dashboard"
+            component={DashboardScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false, animation: 'slide_from_right' }}
+            name="SearchScreen"
+            component={SearchScreen}
+          />
+        </Stack.Navigator>
+        <InAppCallScreen />
+      </React.Fragment>
     );
   } else {
     return <AuthStack />;

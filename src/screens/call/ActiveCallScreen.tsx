@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -17,22 +17,23 @@ import { IncomingCallActions } from './components/IncomingCallActions';
 import { CARD_SHADOW, callTrayBottom } from './constants/callTheme';
 import { useAudioRoutePicker } from './hooks/useAudioRoutePicker';
 import type { CallerInfo } from './hooks/useCallerInfo';
-import { useDeviceLocked } from './hooks/useDeviceLocked';
 import { useHardwareBackToMinimise } from './hooks/useHardwareBackToMinimise';
 import {
   audioRouteLabel,
   availableAudioRoutes,
-  currentAudioRoute,
   hasHeadsetRoute,
   type AudioRouteState,
 } from './utils/audioRoutes';
-import { callStatusText } from './utils/callStatusText';
 import { callTone } from './utils/callTone';
 
 type ActiveCallScreenProps = {
   call: LiveCall;
   info: CallerInfo;
-  duration: string;
+  // Shown over the lock screen, where nothing else in the app may be reached: there is no
+  // minimise, and the way into the chat asks the phone to unlock first
+  onLockScreen?: boolean;
+  // When this device joined the call, which the timer counts from
+  activeSince?: number;
   // False while an outbound call is still ringing: no media yet, so no mute or speaker
   isConnected: boolean;
   // Answered on this device, with the media still being set up
@@ -53,6 +54,8 @@ type ActiveCallScreenProps = {
   onToggleHold: () => void;
   onEnd: () => void;
   onOpenConversation: () => void;
+  // Told when the audio route list opens or closes, so nothing is drawn over it
+  onRoutePickerOpenChange?: (open: boolean) => void;
 };
 
 // Full-screen view of a call: the inbox in use at the top, the phase and the contact in
@@ -60,7 +63,8 @@ type ActiveCallScreenProps = {
 export const ActiveCallScreen = ({
   call,
   info,
-  duration,
+  onLockScreen = false,
+  activeSince,
   isConnected,
   isConnecting,
   isIncoming,
@@ -78,36 +82,36 @@ export const ActiveCallScreen = ({
   onToggleHold,
   onEnd,
   onOpenConversation,
+  onRoutePickerOpenChange,
 }: ActiveCallScreenProps) => {
   const insets = useSafeAreaInsets();
   // Over a lock screen the call is all the agent may reach: no way back into the app
-  const isLocked = useDeviceLocked();
-  useHardwareBackToMinimise(isLocked, onMinimise);
+  useHardwareBackToMinimise(onLockScreen, onMinimise);
 
   const hasHeadset = hasHeadsetRoute(audioRoute);
-  const currentRoute = currentAudioRoute(audioRoute, isSpeakerOn);
+  const currentRoute = audioRoute.current;
   const routeLabel = (route: AudioRoute) => audioRouteLabel(audioRoute, route);
   const routePicker = useAudioRoutePicker(hasHeadset, isConnected);
+  useEffect(() => {
+    onRoutePickerOpenChange?.(routePicker.isOpen);
+  }, [onRoutePickerOpenChange, routePicker.isOpen]);
 
   const tone = callTone(isOnHold, isConnected);
-  const statusText = callStatusText(call, duration, {
-    isOnHold,
-    isConnected,
-    isConnecting,
-    isIncoming,
-  });
+  const statusFlags = { isOnHold, isConnected, isConnecting, isIncoming };
   const trayBottom = callTrayBottom(insets.bottom);
 
   return (
     <View style={tailwind.style('absolute inset-0')}>
       <CallBackdrop tone={tone} />
-      <CallHeader canMinimise={!isLocked} onMinimise={onMinimise} />
+      <CallHeader canMinimise={!onLockScreen} onMinimise={onMinimise} />
       <CallerIdentity
         info={info}
-        statusText={statusText}
+        call={call}
+        activeSince={activeSince}
+        statusFlags={statusFlags}
         tone={tone}
         aura={!!isIncoming || (!isConnected && !isConnecting && isOutboundCallRinging(call))}
-        onOpenConversation={call.conversationId && !isLocked ? onOpenConversation : undefined}
+        onOpenConversation={call.conversationId ? onOpenConversation : undefined}
       />
 
       {routePicker.isOpen ? (

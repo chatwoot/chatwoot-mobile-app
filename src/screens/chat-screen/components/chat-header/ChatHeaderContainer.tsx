@@ -18,10 +18,8 @@ import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice'
 import { selectUser } from '@/store/auth/authSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectHasActiveCall, selectHasIncomingCall } from '@/store/call/callSelectors';
-import { callActions } from '@/store/call/callActions';
 import { getVoiceCallProvider } from '@/utils/inboxUtils';
-import { reportOutboundFailure } from '@/utils/voiceCallFeedback';
-import { VOICE_CALL_PROVIDERS } from '@/constants';
+import { placeOutboundCall } from '@/utils/placeOutboundCall';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -145,36 +143,17 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
-  // Mirrors the web header button: one call at a time, permission outcomes are
-  // information rather than failures.
+  // One call at a time
   const startCall = async () => {
     if (!voiceCallProvider || !inbox || isStartingCall) return;
-    const isWhatsapp = voiceCallProvider === VOICE_CALL_PROVIDERS.WHATSAPP;
     setIsStartingCall(true);
-    try {
-      const result = await dispatch(
-        callActions.startOutboundCall({
-          provider: voiceCallProvider,
-          conversationId,
-          inboxId: inbox.id,
-          contactId: conversation?.meta?.sender?.id,
-        }),
-      ).unwrap();
-      if (result.status === 'permission_requested') {
-        showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_REQUESTED') });
-      } else if (result.status === 'permission_pending') {
-        showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_PENDING') });
-      }
-    } catch (error) {
-      reportOutboundFailure(
-        error,
-        isWhatsapp
-          ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
-          : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
-      );
-    } finally {
-      setIsStartingCall(false);
-    }
+    await placeOutboundCall(dispatch, {
+      provider: voiceCallProvider,
+      conversationId,
+      inboxId: inbox.id,
+      contactId: conversation?.meta?.sender?.id,
+    });
+    setIsStartingCall(false);
   };
 
   const dashboardRoutes = dashboardApps.map(dashboardApp => ({

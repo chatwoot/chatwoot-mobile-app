@@ -14,12 +14,10 @@ declare class ChatwootCallsModule extends NativeModule<ChatwootCallsModuleEvents
   twilioDisconnect(): void;
   twilioSetMuted(muted: boolean): void;
   twilioSetHold?(hold: boolean): void;
-  twilioIsConnected(): boolean;
   setSpeakerOn(enabled: boolean): void;
   takePendingCallAction?(): string | null;
   cancelCallNotification?(): void;
-  dismissIncomingCallUi?(): void;
-  reportCallState?(state: NativeCallState): void;
+  reportCallState?(state: NativeCallState, callSid: string | null): void;
   startOngoingCall?(
     callSid: string,
     name: string,
@@ -31,18 +29,23 @@ declare class ChatwootCallsModule extends NativeModule<ChatwootCallsModuleEvents
   stopOngoingCall?(callSid: string, reason: string): void;
   endRingingCall?(callSid: string): void;
   markCallAnswering?(callSid: string): void;
+  abandonAnswer?(callSid: string): void;
   holdCall?(callSid: string): boolean;
   resumeCall?(callSid: string): boolean;
   setLockScreenCallSurfaceVisible?(visible: boolean): void;
-  openAppFromLockScreen?(): void;
+  openAppFromLockScreen?(): Promise<boolean>;
   moveAppToBackground?(): void;
+  startAppRinger?(): void;
+  stopAppRinger?(): void;
   setRecentsScreenshotEnabled?(enabled: boolean): void;
   isDeviceLocked?(): boolean;
+  isAppInForeground?(): boolean;
   isTelecomAvailable?(): boolean;
   setAudioRoute?(route: AudioRoute): void;
   currentAudioRoute?(): { current: AudioRoute; available: AudioRoute[]; names?: string[] };
   activateWebrtcAudio(): void;
   deactivateWebrtcAudio(): void;
+  twilioSetAudioEnabled?(enabled: boolean): void;
   callKitReady(): void;
   getPendingCalls(): SystemCall[];
   getVoipToken(): string | null;

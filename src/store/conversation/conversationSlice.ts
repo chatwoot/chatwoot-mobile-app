@@ -3,7 +3,7 @@ import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
 import { findPendingMessageIndex } from '@/utils/conversationUtils';
 
-import { MESSAGE_TYPES } from '@/constants';
+import { CONTENT_TYPES, MESSAGE_TYPES } from '@/constants';
 import { Message } from '@/types/Message';
 import { PendingMessage } from './conversationTypes';
 
@@ -260,13 +260,20 @@ const conversationSlice = createSlice({
           conversation.messages.sort((a, b) => b.createdAt - a.createdAt);
           state.isAllNewerMessagesFetched = messages.length < 20;
         } else {
-          // First load or older pagination: prepend older messages. A message already
-          // in the list is replaced by the fetched copy so the freshest state is shown.
-          const fetchedIds = new Set(messages.map(m => m.id));
-          conversation.messages = [
-            ...messages,
-            ...conversation.messages.filter(m => !fetchedIds.has(m.id)),
-          ];
+          // First load or older pagination: prepend the messages not already held. A
+          // call message already held takes the fetched copy in place, since its call
+          // status may have moved on while the app was not listening.
+          const heldIndex = new Map(conversation.messages.map((m, index) => [m.id, index]));
+          const unseen: Message[] = [];
+          messages.forEach(message => {
+            const index = heldIndex.get(message.id);
+            if (index === undefined) {
+              unseen.push(message);
+            } else if (message.contentType === CONTENT_TYPES.VOICE_CALL) {
+              conversation.messages[index] = message;
+            }
+          });
+          conversation.messages.unshift(...unseen);
           state.isAllMessagesFetched = messages.length < 20 || false;
           // A first load (no beforeId) lands on the latest messages.
           if (beforeId == null) {

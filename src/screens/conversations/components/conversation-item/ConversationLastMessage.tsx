@@ -18,7 +18,7 @@ import i18n from '@/i18n';
 import { getPlainText } from '@/utils/messageFormatterUtils';
 import { getVoiceCallDisplay } from '@/utils/voiceCallUtils';
 
-// A call is previewed by its outcome, the way the web list does: missed calls in red,
+// A call is previewed by its outcome: missed calls in red,
 // live calls in green, everything else in the usual grey
 const VoiceCallPreview = ({ message }: { message: Message }) => {
   const display = getVoiceCallDisplay(message);

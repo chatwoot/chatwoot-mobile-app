@@ -1,11 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import { Image } from 'expo-image';
+import { View } from 'react-native';
 
 import { tailwind } from '@/theme';
-import { removeEmoji } from '@/components-next/common/avatar/Avatar';
 
 import { CALL_TONES, type CallTone } from '../constants/callTheme';
+import { CallerDisc } from './CallerDisc';
 import { SonarDisc } from './SonarDisc';
 
 export const CALL_AVATAR_SIZE = 132;
@@ -23,37 +22,18 @@ type CallAvatarProps = {
 // The caller, large. A photo when there is one, otherwise the initial in the phase colour.
 export const CallAvatar = ({ name, uri, tone, aura }: CallAvatarProps) => {
   const colours = CALL_TONES[tone];
-  const initial = removeEmoji(name).trim().charAt(0).toUpperCase() || '?';
   return (
     <View style={tailwind.style('h-[132px] w-[132px] items-center justify-center')}>
       {aura
         ? [0, 1].map(i => <SonarDisc key={i} colour={colours.sonar} delay={i * SONAR_STAGGER_MS} />)
         : null}
-      <View
-        style={[
-          tailwind.style(
-            'h-[132px] w-[132px] rounded-full overflow-hidden items-center justify-center',
-          ),
-          { backgroundColor: colours.avatarFill },
-        ]}>
-        <Text
-          style={[
-            tailwind.style('font-inter-580-24 text-[56px] leading-[64px]'),
-            { color: colours.avatarInk },
-          ]}>
-          {initial}
-        </Text>
-        {uri ? (
-          // The photo sits over the initial and stays in the image cache across remounts
-          <Image
-            source={{ uri }}
-            cachePolicy="memory-disk"
-            transition={0}
-            style={tailwind.style('absolute inset-0')}
-            contentFit="cover"
-          />
-        ) : null}
-      </View>
+      <CallerDisc
+        name={name}
+        uri={uri}
+        tone={tone}
+        box="h-[132px] w-[132px]"
+        text="text-[56px] leading-[64px]"
+      />
     </View>
   );
 };

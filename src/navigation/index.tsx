@@ -14,8 +14,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import { OngoingCallBar } from '@/screens/call';
-import notifee from '@notifee/react-native';
-import { handleCallNotificationEvent, isCallPush } from '@/utils/callNotifications';
+import { isCallPush } from '@/utils/callNotifications';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
 import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
@@ -39,9 +38,6 @@ setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
   if (isCallPush(remoteMessage.data)) return;
   console.log('Message handled in the background!', remoteMessage);
 });
-
-// Answer and decline can be pressed while the app is not running
-notifee.onBackgroundEvent(handleCallNotificationEvent);
 
 export const AppNavigationContainer = () => {
   const [fontsLoaded] = useFonts(APP_FONTS);

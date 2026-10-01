@@ -1,39 +1,14 @@
-import React, { useEffect } from 'react';
-import { View } from 'react-native';
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
-} from 'react-native-reanimated';
+import React from 'react';
 
-import { tailwind } from '@/theme';
+import { useAppSelector } from '@/hooks';
+import { PulseDot } from '@/screens/call/components/PulseDot';
+import { selectFullScreenCall, selectIsCallMinimised } from '@/store/call/callSelectors';
 
-const SIZE = 8;
-
-// A dot with a ring swelling out of it, marking a call that is live or still ringing
+// The bubble's marker for a call that is live or still ringing. It rests while the call
+// screen covers the chat.
 export const LiveDot = ({ colour, periodMs }: { colour: string; periodMs: number }) => {
-  const progress = useSharedValue(0);
-
-  useEffect(() => {
-    progress.value = withRepeat(
-      withTiming(1, { duration: periodMs, easing: Easing.out(Easing.ease) }),
-      -1,
-      false,
-    );
-  }, [periodMs, progress]);
-
-  const halo = useAnimatedStyle(() => ({
-    transform: [{ scale: 1 + progress.value * 1.6 }],
-    opacity: 0.55 * (1 - progress.value),
-  }));
-  const dot = { width: SIZE, height: SIZE, borderRadius: SIZE / 2, backgroundColor: colour };
-
-  return (
-    <View style={{ width: SIZE, height: SIZE }}>
-      <Animated.View style={[tailwind.style('absolute inset-0'), dot, halo]} />
-      <View style={dot} />
-    </View>
+  const covered = useAppSelector(
+    state => !!selectFullScreenCall(state) && !selectIsCallMinimised(state),
   );
+  return <PulseDot colour={colour} periodMs={periodMs} spread={1.6} paused={covered} />;
 };

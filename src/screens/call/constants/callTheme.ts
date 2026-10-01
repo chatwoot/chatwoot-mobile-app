@@ -1,14 +1,15 @@
 import { Platform } from 'react-native';
 
+import { tailwind } from '@/theme';
+
 // The call screen's palette, from Radix light. Each phase of a call has a colour that
 // washes the backdrop, colours the status line and tints the avatar when there is no photo.
 export type CallTone = 'ringing' | 'live' | 'held';
 
-export const CALL_SCREEN_BACKGROUND = '#F4F4F6';
-export const CALL_INK = 'hsl(0, 0%, 12.5%)';
+export const CALL_INK = tailwind.color('text-gray-950') as string;
 export const CALL_MUTED_TEXT = 'hsl(0, 0%, 45%)';
 export const CALL_LABEL_TEXT = 'hsl(0, 0%, 40%)';
-export const CALL_LINK = 'hsl(208, 93.5%, 47.4%)';
+export const CALL_LINK = tailwind.color('text-blue-800') as string;
 export const CALL_LINK_SOFT = 'hsla(208, 93.5%, 47.4%, 0.1)';
 export const CALL_RING_TEXT = 'hsl(208, 93.5%, 40%)';
 export const CALL_DIVIDER = 'hsl(240, 5%, 93%)';
@@ -19,7 +20,7 @@ export const CALL_ANSWER = '#12a594';
 
 // A control that is off: a pale grey tile with a mid-grey glyph
 export const CONTROL_OFF_FILL = 'hsl(240, 5%, 95%)';
-export const CONTROL_OFF_GLYPH = 'hsl(0, 0%, 39.3%)';
+export const CONTROL_OFF_GLYPH = tailwind.color('text-gray-900') as string;
 // A toggle that is on: Blue 4 with the app's blue glyph
 export const CONTROL_ON_FILL = '#d5efff';
 export const CONTROL_ON_GLYPH = CALL_LINK;

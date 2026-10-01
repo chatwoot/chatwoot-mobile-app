@@ -21,10 +21,6 @@ export const isHeadsetRoute = (route: AudioRoute) => route === 'bluetooth' || ro
 
 export const hasHeadsetRoute = (state: AudioRouteState) => state.available.some(isHeadsetRoute);
 
-// The route in use; an unknown one is read off the speaker flag
-export const currentAudioRoute = (state: AudioRouteState, isSpeakerOn: boolean): AudioRoute =>
-  state.current === 'unknown' ? (isSpeakerOn ? 'speaker' : 'earpiece') : state.current;
-
 export const availableAudioRoutes = (state: AudioRouteState) =>
   ROUTE_ORDER.filter(route => state.available.includes(route));
 

@@ -16,11 +16,9 @@ import {
   type AudioRoute,
 } from '@/services/voice/chatwootCalls';
 
-// Media layer contract. Screens and thunks only talk to this interface, so the native
-// implementation (WebRTC for WhatsApp, Twilio's Voice SDK for Twilio) can land without
-// touching the call UI.
+// Media layer contract. Screens and thunks only talk to this interface; the media itself
+// is WebRTC for WhatsApp and Twilio's Voice SDK for Twilio.
 export type CallEngine = {
-  isAvailable: (provider: VoiceCallProvider) => boolean;
   whatsapp: {
     createOffer: (iceServers?: IceServer[]) => Promise<string>;
     createAnswer: (sdpOffer: string, iceServers?: IceServer[]) => Promise<string>;
@@ -31,6 +29,11 @@ export type CallEngine = {
     connect: (token: string, params: Record<string, string>) => Promise<void>;
     disconnect: () => Promise<void>;
   };
+  // Ends the media for a call on the engine that carries its provider. With a session
+  // number from `session()`, it does nothing if another call's media has started since.
+  hangup: (provider: VoiceCallProvider, session?: number) => Promise<void>;
+  // Increases each time either engine starts media for a call
+  session: () => number;
   setMuted: (muted: boolean) => Promise<void>;
   setSpeaker: (enabled: boolean) => Promise<void>;
   setHold: (hold: boolean) => Promise<void>;
@@ -68,18 +71,23 @@ const unavailable = (provider: VoiceCallProvider) => async () => {
 
 // Which engine currently holds the audio session, so mute and speaker go to the right one
 let activeProvider: VoiceCallProvider | null = null;
+// Counts media starts, so a hangup meant for an earlier call can be recognised
+let session = 0;
+const beginSession = (provider: VoiceCallProvider) => {
+  activeProvider = provider;
+  session += 1;
+};
 
 // WhatsApp media runs on WebRTC in JavaScript; Twilio media runs on Twilio's native Voice
 // SDK inside the in-repo ChatwootCalls module.
 export const callEngine: CallEngine = {
-  isAvailable: provider => (provider === 'whatsapp' ? true : isNativeCallsAvailable()),
   whatsapp: {
     createOffer: async iceServers => {
-      activeProvider = 'whatsapp';
+      beginSession('whatsapp');
       return webrtcEngine.createOffer(iceServers);
     },
     createAnswer: async (sdpOffer, iceServers) => {
-      activeProvider = 'whatsapp';
+      beginSession('whatsapp');
       return webrtcEngine.createAnswer(sdpOffer, iceServers);
     },
     applyAnswer: sdpAnswer => webrtcEngine.applyAnswer(sdpAnswer),
@@ -91,7 +99,7 @@ export const callEngine: CallEngine = {
   twilio: {
     connect: async (token, params) => {
       if (!isNativeCallsAvailable()) return unavailable('twilio')();
-      activeProvider = 'twilio';
+      beginSession('twilio');
       try {
         await twilioConnect(token, params);
       } catch (error) {
@@ -104,6 +112,11 @@ export const callEngine: CallEngine = {
       twilioDisconnect();
     },
   },
+  hangup: async (provider, since) => {
+    if (since !== undefined && since !== session) return;
+    await (provider === 'twilio' ? callEngine.twilio.disconnect() : callEngine.whatsapp.hangup());
+  },
+  session: () => session,
   setMuted: async muted => {
     if (activeProvider === 'twilio') twilioSetMuted(muted);
     else await webrtcEngine.setMuted(muted);

@@ -1,17 +1,22 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
+import type { LiveCall } from '@/store/call/callTypes';
 import { tailwind } from '@/theme';
 
 import { CALL_MUTED_TEXT, CALL_TONES, type CallTone } from '../constants/callTheme';
 import type { CallerInfo } from '../hooks/useCallerInfo';
+import { useCallStatusText } from '../hooks/useCallStatusText';
+import type { CallStatusFlags } from '../utils/callStatusText';
 import { CallAvatar } from './CallAvatar';
 import { GoToConversationButton } from './GoToConversationButton';
 import { InboxChannelIcon } from './InboxChannelIcon';
 
 type CallerIdentityProps = {
   info: CallerInfo;
-  statusText: string;
+  call: LiveCall;
+  activeSince?: number;
+  statusFlags: CallStatusFlags;
   tone: CallTone;
   // Discs swell out from the avatar while the call rings
   aura: boolean;
@@ -22,7 +27,9 @@ type CallerIdentityProps = {
 // way into the chat
 export const CallerIdentity = ({
   info,
-  statusText,
+  call,
+  activeSince,
+  statusFlags,
   tone,
   aura,
   onOpenConversation,
@@ -30,13 +37,7 @@ export const CallerIdentity = ({
   <View
     style={tailwind.style('absolute inset-0 items-center justify-center pb-[110px] px-8')}
     pointerEvents="box-none">
-    <Text
-      style={[
-        tailwind.style('font-inter-medium-24 text-[17px] leading-[22px] mb-6 tabular-nums'),
-        { color: CALL_TONES[tone].status },
-      ]}>
-      {statusText}
-    </Text>
+    <CallStatusLine call={call} activeSince={activeSince} flags={statusFlags} tone={tone} />
     <CallAvatar name={info.name} uri={info.avatar || undefined} tone={tone} aura={aura} />
     <Text
       numberOfLines={1}
@@ -69,3 +70,26 @@ export const CallerIdentity = ({
     {onOpenConversation ? <GoToConversationButton onPress={onOpenConversation} /> : null}
   </View>
 );
+
+const CallStatusLine = ({
+  call,
+  activeSince,
+  flags,
+  tone,
+}: {
+  call: LiveCall;
+  activeSince?: number;
+  flags: CallStatusFlags;
+  tone: CallTone;
+}) => {
+  const text = useCallStatusText(call, activeSince, flags);
+  return (
+    <Text
+      style={[
+        tailwind.style('font-inter-medium-24 text-[17px] leading-[22px] mb-6 tabular-nums'),
+        { color: CALL_TONES[tone].status },
+      ]}>
+      {text}
+    </Text>
+  );
+};

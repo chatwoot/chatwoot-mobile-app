@@ -2,26 +2,30 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import type { LiveCall } from '@/store/call/callTypes';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 
 import { CALL_LINK } from '../constants/callTheme';
+import { useCallStatusText } from '../hooks/useCallStatusText';
+import type { CallStatusFlags } from '../utils/callStatusText';
 
 // Height of the bar's own row, on top of the status bar it covers
 export const CALL_BANNER_ROW_HEIGHT = 46;
 
 type CallBannerProps = {
-  duration: string;
-  isConnected: boolean;
-  isRinging: boolean;
+  call: LiveCall;
+  activeSince?: number;
+  flags: CallStatusFlags;
   onPress: () => void;
 };
 
 // Ongoing-call strip across the top of the app, covering the status bar the way the
 // system's own call indicator does. Screens keep their safe-area padding, which lands
 // directly below the bar, so nothing is hidden underneath it.
-export const CallBanner = ({ duration, isConnected, isRinging, onPress }: CallBannerProps) => {
+export const CallBanner = ({ call, activeSince, flags, onPress }: CallBannerProps) => {
   const insets = useSafeAreaInsets();
+  const statusText = useCallStatusText(call, activeSince, flags);
 
   return (
     <Pressable
@@ -42,15 +46,9 @@ export const CallBanner = ({ duration, isConnected, isRinging, onPress }: CallBa
           <Text
             style={tailwind.style(
               'font-inter-medium-24 text-[15px] text-white',
-              isConnected ? 'tabular-nums' : '',
+              flags.isConnected ? 'tabular-nums' : '',
             )}>
-            {isConnected
-              ? duration
-              : i18n.t(
-                  isRinging
-                    ? 'CONVERSATION.VOICE_WIDGET.RINGING'
-                    : 'CONVERSATION.VOICE_WIDGET.CALLING',
-                )}
+            {statusText}
           </Text>
         </View>
       </View>

@@ -8,13 +8,12 @@ import reducer, {
   clearLocalCall,
   markSystemUiFailed,
   removeCall,
-  removeCallsForConversation,
   setCallActive,
-  setCallAnswer,
   setMinimised,
   setPlacingCall,
   setSystemUuid,
   setAudioRoute,
+  setSpeakerOn,
 } from '../callSlice';
 import type { CallState } from '../callTypes';
 
@@ -39,23 +38,42 @@ describe('callSlice', () => {
       isJoining: false,
       isMuted: false,
       isOnHold: false,
-      isSpeakerOn: false,
       audioRoute: { current: 'earpiece', available: ['earpiece', 'speaker'], names: {} },
       isMinimised: false,
       placingCall: null,
     });
   });
 
-  it('follows the audio route the platform reports, speaker flag included', () => {
-    const state = reducer(
+  it('follows the audio route the platform reports, keeping the last one when unknown', () => {
+    let state = reducer(
       initial(),
-      setAudioRoute({ current: 'bluetooth', available: ['earpiece', 'speaker', 'bluetooth'] }),
+      setAudioRoute({
+        current: 'bluetooth',
+        available: ['earpiece', 'speaker', 'bluetooth'],
+        names: { bluetooth: 'AirPods' },
+      }),
     );
     expect(state.audioRoute.current).toBe('bluetooth');
-    expect(state.isSpeakerOn).toBe(false);
-    expect(reducer(state, setAudioRoute({ current: 'speaker', available: [] })).isSpeakerOn).toBe(
-      true,
+    state = reducer(
+      state,
+      setAudioRoute({ current: 'unknown', available: ['earpiece', 'speaker', 'bluetooth'] }),
     );
+    expect(state.audioRoute).toEqual({
+      current: 'bluetooth',
+      available: ['earpiece', 'speaker', 'bluetooth'],
+      names: { bluetooth: 'AirPods' },
+    });
+  });
+
+  it('turns the speaker off to a headset when one is on offer, else the earpiece', () => {
+    let state = reducer(initial(), setSpeakerOn(true));
+    expect(state.audioRoute.current).toBe('speaker');
+    expect(reducer(state, setSpeakerOn(false)).audioRoute.current).toBe('earpiece');
+    state = reducer(
+      state,
+      setAudioRoute({ current: 'speaker', available: ['earpiece', 'speaker', 'wired'] }),
+    );
+    expect(reducer(state, setSpeakerOn(false)).audioRoute.current).toBe('wired');
   });
 
   it('adds new calls to the front so the newest rings first', () => {
@@ -112,13 +130,8 @@ describe('callSlice', () => {
     expect(state.calls.map(call => call.callSid)).toEqual(['b']);
   });
 
-  it('stores an outbound answer, removes by sid and by conversation', () => {
+  it('removes by sid', () => {
     let state = reducer(initial(), addCall(ringing('a')));
-    state = reducer(state, addCall(ringing('b', { conversationId: 40 })));
-    state = reducer(state, setCallAnswer({ callSid: 'a', sdpAnswer: 'answer' }));
-    expect(state.calls.find(call => call.callSid === 'a')?.sdpAnswer).toBe('answer');
-    state = reducer(state, removeCallsForConversation(40));
-    expect(state.calls.map(call => call.callSid)).toEqual(['a']);
     state = reducer(state, removeCall('a'));
     expect(state.calls).toEqual([]);
   });

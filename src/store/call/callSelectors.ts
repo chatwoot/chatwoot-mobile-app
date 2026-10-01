@@ -20,25 +20,22 @@ export const selectIncomingCalls = createSelector(selectCalls, calls =>
 
 export const selectHasIncomingCall = createSelector(selectIncomingCalls, calls => calls.length > 0);
 
-// The newest ringing call is shown; older ones wait behind it, as on the web
-export const selectPrimaryIncomingCall = createSelector(
-  selectActiveCall,
-  selectIncomingCalls,
-  (activeCall, incomingCalls) => (activeCall ? null : incomingCalls[0] || null),
-);
-
-// The call that owns the full screen: a live call, a call this device placed, and, where
-// the OS has no call screen of its own, an inbound ring as well. On iOS an inbound call
-// rings in CallKit instead, and the sheet only stands in when CallKit refuses.
+// The call the full screen shows: the live one, then one this device is joining, then one
+// it is placing, then an inbound ring the OS is not showing itself
 export const selectFullScreenCall = createSelector(
   selectActiveCall,
   selectIncomingCalls,
-  (activeCall, incomingCalls) => {
+  (state: RootState) => state.calls.localCallSid,
+  (activeCall, incomingCalls, localCallSid) => {
     if (activeCall) return activeCall;
+    const joining = incomingCalls.find(call => call.callSid === localCallSid);
+    if (joining) return joining;
     const outbound = incomingCalls.find(call => call.callDirection === 'outbound');
     if (outbound) return outbound;
-    if (isSystemCallUiAvailable()) return null;
-    return incomingCalls.find(call => call.callDirection === 'inbound') ?? null;
+    const inbound = incomingCalls.filter(call => call.callDirection === 'inbound');
+    if (!isSystemCallUiAvailable()) return inbound[0] ?? null;
+    // The OS refused to show this ring, so the app stands in for it
+    return inbound.find(call => call.systemUiFailed) ?? null;
   },
 );
 
@@ -59,6 +56,9 @@ export const selectIsMuted = createSelector(selectCallsState, state => state.isM
 
 export const selectIsOnHold = createSelector(selectCallsState, state => state.isOnHold);
 
-export const selectIsSpeakerOn = createSelector(selectCallsState, state => state.isSpeakerOn);
+export const selectIsSpeakerOn = createSelector(
+  selectCallsState,
+  state => state.audioRoute.current === 'speaker',
+);
 
 export const selectAudioRoute = createSelector(selectCallsState, state => state.audioRoute);

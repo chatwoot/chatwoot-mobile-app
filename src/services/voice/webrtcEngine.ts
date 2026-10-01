@@ -1,12 +1,6 @@
 import { Platform } from 'react-native';
 import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
-import {
-  MediaStream,
-  RTCPeerConnection,
-  RTCSessionDescription,
-  mediaDevices,
-} from 'react-native-webrtc';
-import InCallManager from 'react-native-incall-manager';
+import type { MediaStream, RTCPeerConnection } from 'react-native-webrtc';
 
 import {
   isTelecomAvailable,
@@ -15,6 +9,15 @@ import {
 import { MicrophoneDeniedError } from '@/services/voice/callEngine';
 
 import type { IceServer } from '@/store/call/callTypes';
+
+// The WebRTC and in-call audio modules start native audio machinery when first loaded, so
+// they are loaded with the first call rather than with the app
+const webrtc = () =>
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  require('react-native-webrtc') as typeof import('react-native-webrtc');
+const inCallManager = () =>
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  (require('react-native-incall-manager') as typeof import('react-native-incall-manager')).default;
 
 // With Telecom tracking the call, the in-call manager's device selection would override
 // the route the system chose, a Bluetooth headset first of all
@@ -34,6 +37,20 @@ type Session = {
   pc: RTCPeerConnection;
   localStream: MediaStream;
   remoteStreams: MediaStream[];
+  // Mute and hold are separate choices; the microphone is live only with neither set
+  muted: boolean;
+  held: boolean;
+};
+
+const applyTrackState = (current: Session) => {
+  current.localStream.getAudioTracks().forEach(track => {
+    track.enabled = !current.muted && !current.held;
+  });
+  current.remoteStreams.forEach(stream =>
+    stream.getAudioTracks().forEach(track => {
+      track.enabled = !current.held;
+    }),
+  );
 };
 
 let session: Session | null = null;
@@ -97,10 +114,10 @@ const teardown = () => {
     localStream.getTracks().forEach(track => track.stop());
     pc.close();
   } finally {
-    if (Platform.OS === 'ios') InCallManager.setForceSpeakerphoneOn(false);
+    if (Platform.OS === 'ios') inCallManager().setForceSpeakerphoneOn(false);
     if (usesInCallManager()) {
-      InCallManager.setForceSpeakerphoneOn(false);
-      InCallManager.stop();
+      inCallManager().setForceSpeakerphoneOn(false);
+      inCallManager().stop();
     }
   }
 };
@@ -113,15 +130,17 @@ const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
   const servers = (iceServers?.length ? iceServers : DEFAULT_ICE_SERVERS).map(server => ({
     ...server,
   }));
-  const pc = new RTCPeerConnection({ iceServers: servers });
-  const localStream = await mediaDevices.getUserMedia({ audio: true, video: false });
+  const pc = new (webrtc().RTCPeerConnection)({ iceServers: servers });
+  const localStream = await webrtc().mediaDevices.getUserMedia({ audio: true, video: false });
   localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
 
-  const next: Session = { pc, localStream, remoteStreams: [] };
-  // Remote audio plays through the active audio session as soon as the track arrives
+  const next: Session = { pc, localStream, remoteStreams: [], muted: false, held: false };
+  // Remote audio plays through the active audio session as soon as the track arrives,
+  // unless the call is on hold
   pc.ontrack = (event: unknown) => {
     const streams = (event as { streams?: MediaStream[] }).streams || [];
     next.remoteStreams.push(...streams);
+    applyTrackState(next);
   };
   pc.oniceconnectionstatechange = () => {
     if (__DEV__) console.log(`[call] ice connection: ${pc.iceConnectionState}`);
@@ -150,7 +169,7 @@ const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
   // iOS leaves the audio session to WebRTC and CallKit. Android needs to be put into
   // communication mode and hold audio focus, or the remote audio is never heard even
   // though the microphone works.
-  if (usesInCallManager()) InCallManager.start({ media: 'audio', auto: false });
+  if (usesInCallManager()) inCallManager().start({ media: 'audio', auto: false });
   session = next;
   return next;
 };
@@ -162,12 +181,12 @@ const localSdp = (pc: RTCPeerConnection) => {
 };
 
 export const webrtcEngine = {
-  isAvailable: () => true,
-
   async createAnswer(sdpOffer: string, iceServers?: IceServer[]) {
     const { pc } = await openSession(iceServers);
     try {
-      await pc.setRemoteDescription(new RTCSessionDescription({ type: 'offer', sdp: sdpOffer }));
+      await pc.setRemoteDescription(
+        new (webrtc().RTCSessionDescription)({ type: 'offer', sdp: sdpOffer }),
+      );
       const answer = await pc.createAnswer();
       await pc.setLocalDescription(answer);
       await waitForIceGatheringComplete(pc);
@@ -194,7 +213,7 @@ export const webrtcEngine = {
   async applyAnswer(sdpAnswer: string) {
     if (!session) throw new Error('No call in progress');
     await session.pc.setRemoteDescription(
-      new RTCSessionDescription({ type: 'answer', sdp: sdpAnswer }),
+      new (webrtc().RTCSessionDescription)({ type: 'answer', sdp: sdpAnswer }),
     );
   },
 
@@ -203,26 +222,23 @@ export const webrtcEngine = {
   },
 
   async setMuted(muted: boolean) {
-    session?.localStream.getAudioTracks().forEach(track => {
-      track.enabled = !muted;
-    });
+    if (!session) return;
+    session.muted = muted;
+    applyTrackState(session);
   },
 
-  // Held: nothing is sent and nothing is played, until the call is taken back
+  // Held: nothing is sent and nothing is played, until the call is taken back. Unmuting
+  // while held keeps the microphone off.
   async setHold(hold: boolean) {
-    session?.localStream.getAudioTracks().forEach(track => {
-      track.enabled = !hold;
-    });
-    session?.remoteStreams.forEach(stream =>
-      stream.getAudioTracks().forEach(track => {
-        track.enabled = !hold;
-      }),
-    );
+    if (!session) return;
+    session.held = hold;
+    applyTrackState(session);
   },
 
   async setSpeaker(enabled: boolean) {
     if (Platform.OS === 'android') nativeSetSpeakerOn(enabled);
-    if (Platform.OS === 'ios' || usesInCallManager()) InCallManager.setForceSpeakerphoneOn(enabled);
+    if (Platform.OS === 'ios' || usesInCallManager())
+      inCallManager().setForceSpeakerphoneOn(enabled);
   },
 
   // Android occasionally starts a call with the route still on the previous one, which
@@ -232,16 +248,14 @@ export const webrtcEngine = {
     if (Platform.OS !== 'android') return;
     const apply = () => {
       if (usesInCallManager()) {
-        InCallManager.start({ media: 'audio', auto: false });
-        InCallManager.setForceSpeakerphoneOn(speakerOn);
+        inCallManager().start({ media: 'audio', auto: false });
+        inCallManager().setForceSpeakerphoneOn(speakerOn);
       }
       nativeSetSpeakerOn(speakerOn);
     };
     apply();
     setTimeout(apply, 800);
   },
-
-  hasSession: () => session !== null,
 
   // Selected candidate pair and audio byte counters, for diagnosing a silent call
   async connectionReport() {

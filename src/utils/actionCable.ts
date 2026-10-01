@@ -32,13 +32,14 @@ import {
   removeCall,
   setCallActive,
   setCallProviderStatus,
-  setCallAnswer,
 } from '@/store/call/callSlice';
 import {
   selectCalls,
   selectDismissedCallSids,
   selectLocalCallSid,
+  selectPlacingCall,
 } from '@/store/call/callSelectors';
+import { holdEarlyAccept, holdEarlyAnswer } from '@/store/call/earlyOutboundEvents';
 import type { VoiceCallIncomingEvent, VoiceCallStatusEvent } from '@/store/call/callTypes';
 import { selectCurrentUserAvailability, selectUserId } from '@/store/auth/authSelectors';
 import {
@@ -50,7 +51,7 @@ import {
   RoutingDecision,
 } from './voiceCallRouting';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
-import { callEngine } from '@/services/voice/callEngine';
+import { activeMediaProvider, callEngine } from '@/services/voice/callEngine';
 import { systemCall, systemEndReason } from '@/services/voice/systemCall';
 
 import { clearActiveCall, clearLocalCall } from '@/store/call/callSlice';
@@ -162,9 +163,12 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   private syncCallVisibility = (conversation: Conversation) => {
     const state = store.getState();
-    callsHiddenByConversationUpdate(conversation, selectCalls(state), selectUserId(state)).forEach(
-      callSid => store.dispatch(removeCall(callSid)),
-    );
+    callsHiddenByConversationUpdate(
+      conversation,
+      selectCalls(state),
+      selectUserId(state),
+      selectLocalCallSid(state),
+    ).forEach(callSid => store.dispatch(removeCall(callSid)));
   };
 
   // WhatsApp rings through this event; Twilio rings through message.created. The server
@@ -182,7 +186,6 @@ class ActionCableConnector extends BaseActionCableConnector {
         provider: VOICE_CALL_PROVIDERS.WHATSAPP,
         sdpOffer: data.sdp_offer,
         iceServers: data.ice_servers,
-        recordingEnabled: data.recording_enabled !== false,
         caller: data.caller,
       }),
     );
@@ -203,8 +206,13 @@ class ActionCableConnector extends BaseActionCableConnector {
   // the handshake completes while ringing; the call only becomes active on pickup.
   onVoiceCallOutboundConnected = (data: VoiceCallStatusEvent) => {
     if (data?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP || !data.sdp_answer) return;
-    store.dispatch(setCallAnswer({ callSid: data.call_id, sdpAnswer: data.sdp_answer }));
-    if (selectLocalCallSid(store.getState()) === data.call_id) {
+    const state = store.getState();
+    // The call this device is placing may not be known yet; the answer waits for it
+    if (!selectCalls(state).some(call => call.callSid === data.call_id)) {
+      if (selectPlacingCall(state)) holdEarlyAnswer(data.call_id, data.sdp_answer);
+      return;
+    }
+    if (selectLocalCallSid(state) === data.call_id) {
       callEngine.whatsapp.applyAnswer(data.sdp_answer).catch(() => {});
     }
   };
@@ -213,15 +221,20 @@ class ActionCableConnector extends BaseActionCableConnector {
   private hangupIfLocal = (callSid: string) => {
     const state = store.getState();
     if (selectLocalCallSid(state) !== callSid) return;
-    callEngine.whatsapp.hangup().catch(() => {});
+    const call = selectCalls(state).find(entry => entry.callSid === callSid);
+    callEngine.hangup(call?.provider ?? activeMediaProvider() ?? 'whatsapp').catch(() => {});
     store.dispatch(clearActiveCall());
     store.dispatch(clearLocalCall(callSid));
   };
 
   onVoiceCallOutboundAccepted = (data: VoiceCallStatusEvent) => {
     if (data?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
-    const exists = selectCalls(store.getState()).some(call => call.callSid === data.call_id);
-    if (!exists) return;
+    const state = store.getState();
+    const exists = selectCalls(state).some(call => call.callSid === data.call_id);
+    if (!exists) {
+      if (selectPlacingCall(state)) holdEarlyAccept(data.call_id);
+      return;
+    }
     store.dispatch(setCallActive(data.call_id));
   };
 

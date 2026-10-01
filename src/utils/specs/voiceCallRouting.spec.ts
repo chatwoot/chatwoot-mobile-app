@@ -201,6 +201,14 @@ describe('routeVoiceCallUpdated', () => {
     expect(decision).toEqual({ action: 'remove', callSid: 'wacid.ring' });
   });
 
+  it('keeps the call this device is on when its conversation moves to another agent', () => {
+    const decision = routeVoiceCallUpdated(
+      message({ conversation: { id: 37, meta: { assignee: { id: OTHER_AGENT_ID } } } }),
+      context({ localCallSid: 'wacid.ring' }),
+    );
+    expect(decision).toEqual({ action: 'ignore' });
+  });
+
   it('re-adds a still ringing call and ignores terminal updates', () => {
     expect(routeVoiceCallUpdated(message(), context()).action).toBe('add');
     expect(
@@ -231,6 +239,16 @@ describe('callsHiddenByConversationUpdate', () => {
       AGENT_ID,
     );
     expect(hidden).toEqual(['in-1']);
+  });
+
+  it('keeps the call this device is on', () => {
+    const hidden = callsHiddenByConversationUpdate(
+      { id: 37, meta: { assignee: { id: OTHER_AGENT_ID } } } as never,
+      calls,
+      AGENT_ID,
+      'in-1',
+    );
+    expect(hidden).toEqual([]);
   });
 
   it('hides nothing when the conversation is assigned to me or unassigned', () => {

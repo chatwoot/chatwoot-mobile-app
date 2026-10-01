@@ -10,13 +10,15 @@ import type { VoiceCallProvider } from '@/types';
 import { callMediaActions } from './callMediaActions';
 import { callSyncActions } from './callSyncActions';
 import { CallService } from './callService';
+import { takeEarlyOutboundEvents } from './earlyOutboundEvents';
 import {
   addCall,
   clearActiveCall,
   clearLocalCall,
-  dismissCall as dismissCallAction,
+  dismissCall,
   markCallDismissed,
   markLocalCall,
+  removeCall,
   setCallActive,
   setIsJoining,
   setMuted,
@@ -29,6 +31,7 @@ import {
   selectHasActiveCall,
   selectHasIncomingCall,
   selectIsJoining,
+  selectLocalCallSid,
 } from './callSelectors';
 
 export type JoinCallResult =
@@ -53,9 +56,12 @@ export type StartOutboundCallResult =
   | { status: 'cancelled' }
   | { status: 'permission_requested' | 'permission_pending' };
 
-// Set when the agent ends a call that is still being placed. The provider request may
-// already be in flight, so the call is torn down as soon as it has an id to tear down.
-let placingCancelled = false;
+// The agent can end a call that is still being placed. The provider request may already
+// be in flight, so the call is torn down as soon as it has an id to tear down. Each
+// placing attempt has a number and cancelling marks the current one, so a late result
+// from an earlier attempt cannot revive it or clear the next one.
+let placingAttempt = 0;
+const cancelledAttempts = new Set<number>();
 
 const findCall = (state: RootState, callSid: string) =>
   selectCalls(state).find(call => call.callSid === callSid);
@@ -67,29 +73,39 @@ export const callActions = {
 
   // Declines for everyone: WhatsApp inbound → reject, WhatsApp outbound still ringing →
   // terminate, Twilio → end the conference so the inbound leg hangs up. The local entry
-  // is dismissed even if the request fails so the sheet never sticks; the backend's
-  // status update will re-add the call if it is genuinely still ringing.
+  // is removed even if the request fails so the sheet never sticks; only a decline that
+  // went through is remembered, so the server can bring back a call that still rings.
   rejectIncomingCall: createAsyncThunk<void, string, { state: RootState }>(
     'calls/rejectIncomingCall',
     async (callSid, { getState, dispatch }) => {
       const call = findCall(getState(), callSid);
+      let declined = false;
       try {
         if (call?.provider === VOICE_CALL_PROVIDERS.WHATSAPP && call.callId) {
           if (call.callDirection === 'outbound') {
-            await CallService.terminateWhatsappCall(call.callId);
+            await CallService.terminateWhatsappCall(call.callId, call.accountId);
           } else {
-            await CallService.rejectWhatsappCall(call.callId);
+            await CallService.rejectWhatsappCall(call.callId, call.accountId);
           }
         } else if (call?.inboxId && call?.conversationId) {
           await CallService.leaveConference({
             inboxId: call.inboxId,
             conversationId: call.conversationId,
             callSid,
+            accountId: call.accountId,
           });
         }
+        declined = true;
       } finally {
-        dispatch(markCallDismissed(callSid));
-        dispatch(dismissCallAction(callSid));
+        // A call this device placed carries media here, which ends with it
+        if (call && selectLocalCallSid(getState()) === callSid) {
+          await callEngine
+            .hangup(call.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
+            .catch(() => {});
+          dispatch(clearLocalCall(callSid));
+        }
+        if (declined) dispatch(markCallDismissed(callSid));
+        dispatch(removeCall(callSid));
       }
     },
   ),
@@ -108,13 +124,15 @@ export const callActions = {
       const state = getState();
       if (selectHasActiveCall(state) || selectHasIncomingCall(state)) return { status: 'locked' };
       const senderId = selectUserId(state) ?? undefined;
-      placingCancelled = false;
+      placingAttempt += 1;
+      const attempt = placingAttempt;
+      const cancelled = () => cancelledAttempts.has(attempt);
       // The call screen opens on this, before the media offer and the provider request
       dispatch(setPlacingCall({ conversationId, inboxId, provider }));
 
       // Ends the call the provider just created, when the agent gave up while it was placed
       const cancelIfAsked = async (callSid: string) => {
-        if (!placingCancelled) return false;
+        if (!cancelled()) return false;
         await dispatch(callActions.rejectIncomingCall(callSid));
         return true;
       };
@@ -122,18 +140,29 @@ export const callActions = {
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
           const sdpOffer = await callEngine.whatsapp.createOffer();
-          if (placingCancelled) {
-            await callEngine.whatsapp.hangup().catch(() => {});
+          const media = callEngine.session();
+          // The offer's microphone and connection are released unless a call comes of it
+          const releaseOffer = () => callEngine.hangup('whatsapp', media).catch(() => {});
+          if (cancelled()) {
+            await releaseOffer();
             return { status: 'cancelled' };
           }
-          const response = await CallService.initiateWhatsappCall({ sdpOffer, conversationId });
+          let response;
+          try {
+            response = await CallService.initiateWhatsappCall({ sdpOffer, conversationId });
+          } catch (error) {
+            await releaseOffer();
+            throw error;
+          }
           if (
             response.status === 'permission_requested' ||
             response.status === 'permission_pending'
           ) {
+            await releaseOffer();
             return { status: response.status };
           }
           if (response.status !== 'calling') {
+            await releaseOffer();
             throw new Error((response as { error?: string }).error || 'WhatsApp call failed');
           }
           dispatch(markLocalCall(response.call_id));
@@ -146,10 +175,15 @@ export const callActions = {
               callDirection: 'outbound',
               provider: VOICE_CALL_PROVIDERS.WHATSAPP,
               senderId,
-              recordingEnabled: response.recording_enabled,
             }),
           );
           if (await cancelIfAsked(response.call_id)) return { status: 'cancelled' };
+          // The contact's side may have answered before the request above returned
+          const early = takeEarlyOutboundEvents(response.call_id);
+          if (early.sdpAnswer) {
+            await callEngine.whatsapp.applyAnswer(early.sdpAnswer).catch(() => {});
+          }
+          if (early.accepted) dispatch(setCallActive(response.call_id));
           return { status: 'calling', callSid: response.call_id };
         }
 
@@ -167,11 +201,23 @@ export const callActions = {
           }),
         );
         if (await cancelIfAsked(response.call_sid)) return { status: 'cancelled' };
-        // The agent leg joins the conference right away; the contact is being dialed meanwhile
-        dispatch(callActions.joinCall(response.call_sid));
+        // The agent leg joins the conference right away; the contact is being dialed
+        // meanwhile. A join that fails ends the call, since nobody would be on it.
+        const joined = await dispatch(callActions.joinCall(response.call_sid))
+          .unwrap()
+          .catch(error => {
+            dispatch(callActions.rejectIncomingCall(response.call_sid));
+            throw error;
+          });
+        if (joined.status !== 'joined') {
+          await dispatch(callActions.rejectIncomingCall(response.call_sid));
+          throw new Error(`Joining the call failed: ${joined.status}`);
+        }
         return { status: 'calling', callSid: response.call_sid };
       } finally {
-        dispatch(setPlacingCall(null));
+        cancelledAttempts.delete(attempt);
+        // A later attempt owns the placing state once it has started
+        if (attempt === placingAttempt) dispatch(setPlacingCall(null));
       }
     },
   ),
@@ -186,21 +232,24 @@ export const callActions = {
       const call = findCall(getState(), callSid);
       if (!call) return { status: 'already_ended' };
 
+      // One call at a time on this device: answering ends the one it is already on. The
+      // answer is under way from here, so nothing rings for the call being taken meanwhile.
       dispatch(setIsJoining(true));
+      await dispatch(callActions.releaseLocalCall(callSid));
       dispatch(markLocalCall(callSid));
       try {
         if (call.provider !== VOICE_CALL_PROVIDERS.WHATSAPP || !call.callId) {
           if (!call.inboxId || !call.conversationId) throw new Error('Call has no inbox');
           const [token, joined] = await Promise.all([
-            CallService.getConferenceToken(call.inboxId),
+            CallService.getConferenceToken(call.inboxId, call.accountId),
             CallService.joinConference({
               inboxId: call.inboxId,
               conversationId: call.conversationId,
               callSid,
+              accountId: call.accountId,
             }).catch(error => {
               if (httpStatus(error) === 409) {
-                dispatch(markCallDismissed(callSid));
-                dispatch(dismissCallAction(callSid));
+                dispatch(dismissCall(callSid));
                 dispatch(clearLocalCall(callSid));
               }
               throw error;
@@ -220,7 +269,7 @@ export const callActions = {
 
         let { sdpOffer, iceServers } = call;
         if (!sdpOffer) {
-          const details = await CallService.getWhatsappCall(call.callId);
+          const details = await CallService.getWhatsappCall(call.callId, call.accountId);
           sdpOffer = details.sdp_offer ?? undefined;
           iceServers = details.ice_servers;
         }
@@ -228,12 +277,11 @@ export const callActions = {
 
         const sdpAnswer = await callEngine.whatsapp.createAnswer(sdpOffer, iceServers);
         try {
-          await CallService.acceptWhatsappCall(call.callId, sdpAnswer);
+          await CallService.acceptWhatsappCall(call.callId, sdpAnswer, call.accountId);
         } catch (error) {
           await callEngine.whatsapp.hangup();
           if (httpStatus(error) === 409) {
-            dispatch(markCallDismissed(callSid));
-            dispatch(dismissCallAction(callSid));
+            dispatch(dismissCall(callSid));
             dispatch(clearLocalCall(callSid));
             const message = (error as { response?: { data?: { error?: string } } }).response?.data
               ?.error;
@@ -270,7 +318,7 @@ export const callActions = {
   cancelPlacingCall: createAsyncThunk<void, void, { state: RootState }>(
     'calls/cancelPlacingCall',
     async (_, { dispatch }) => {
-      placingCancelled = true;
+      cancelledAttempts.add(placingAttempt);
       dispatch(setPlacingCall(null));
       await callEngine.whatsapp.hangup().catch(() => {});
     },
@@ -287,32 +335,50 @@ export const callActions = {
       dispatch(markCallDismissed(call.callSid));
       dispatch(clearActiveCall());
       dispatch(clearLocalCall(call.callSid));
-      try {
-        if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP && call.callId) {
-          await CallService.terminateWhatsappCall(call.callId);
-        } else if (call.inboxId && call.conversationId) {
-          await CallService.leaveConference({
-            inboxId: call.inboxId,
-            conversationId: call.conversationId,
-            callSid: call.callSid,
-          });
-        }
-      } finally {
-        if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
-          await callEngine.whatsapp.hangup().catch(() => {});
-        } else {
-          await callEngine.twilio.disconnect().catch(() => {});
-        }
+      // The microphone is released at once; the server is told after
+      await callEngine
+        .hangup(call.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
+        .catch(() => {});
+      if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP && call.callId) {
+        await CallService.terminateWhatsappCall(call.callId, call.accountId);
+      } else if (call.inboxId && call.conversationId) {
+        await CallService.leaveConference({
+          inboxId: call.inboxId,
+          conversationId: call.conversationId,
+          callSid: call.callSid,
+          accountId: call.accountId,
+        });
       }
     },
   ),
 
-  // Hides the call on this device only; other agents keep ringing.
-  dismissCall: createAsyncThunk<void, string>(
-    'calls/dismissCall',
-    async (callSid, { dispatch }) => {
-      dispatch(markCallDismissed(callSid));
-      dispatch(dismissCallAction(callSid));
+  // Ends the call this device is on, other than keepSid: the live call, or a call it
+  // placed that is still ringing
+  releaseLocalCall: createAsyncThunk<void, string, { state: RootState }>(
+    'calls/releaseLocalCall',
+    async (keepSid, { getState, dispatch }) => {
+      const state = getState();
+      const active = selectActiveCall(state);
+      if (active && active.callSid !== keepSid) {
+        await dispatch(callActions.endCall())
+          .unwrap()
+          .catch(() => {});
+        return;
+      }
+      const localSid = selectLocalCallSid(state);
+      if (!localSid || localSid === keepSid) return;
+      const local = findCall(state, localSid);
+      if (local?.callDirection === 'outbound') {
+        await dispatch(callActions.rejectIncomingCall(localSid))
+          .unwrap()
+          .catch(() => {});
+      }
+      if (local) {
+        await callEngine
+          .hangup(local.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
+          .catch(() => {});
+      }
+      dispatch(clearLocalCall(localSid));
     },
   ),
 };

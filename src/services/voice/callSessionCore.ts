@@ -5,6 +5,8 @@ import {
   addCall,
   clearActiveCall,
   clearLocalCall,
+  dismissCall,
+  markLocalCall,
   setAudioRoute,
   setMinimised,
 } from '@/store/call/callSlice';
@@ -18,7 +20,9 @@ import {
   selectIsSpeakerOn,
   selectLocalCallSid,
 } from '@/store/call/callSelectors';
+import { callEngine } from '@/services/voice/callEngine';
 import { setWebrtcConnectionLostHandler, webrtcEngine } from '@/services/voice/webrtcEngine';
+import type { LiveCall } from '@/store/call/callTypes';
 import { callerInfo, systemCall } from '@/services/voice/systemCall';
 import { takePendingCallAction } from '@/utils/callNotifications';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
@@ -28,13 +32,25 @@ import {
   addNativeCallActionListener,
   addTwilioCallStateListener,
   endRingingNativeCall,
+  endSystemCall,
   isDeviceLocked,
   isTelecomAvailable,
   moveAppToBackground,
   reportNativeCallState,
   startOngoingCallNotification,
   stopOngoingCallNotification,
+  type AudioRoute,
 } from '@/services/voice/chatwootCalls';
+
+// The platform reports its routes as a list with a name beside each, empty where a route
+// has none
+const audioRouteNames = (available: AudioRoute[], names?: string[]) => {
+  const byRoute: Partial<Record<AudioRoute, string>> = {};
+  available.forEach((route, index) => {
+    if (names?.[index]) byRoute[route] = names[index];
+  });
+  return byRoute;
+};
 
 // The part of a call session that needs no React tree: the media engines' end-of-call
 // signals, Android's native call screen, and the choice the agent made on it. The app's
@@ -85,7 +101,7 @@ export const attachCallSessionCore = () => {
 // before it reached the store is created from what the ring carried, so the caller stops
 // ringing as soon as the app can answer.
 export const applyPendingCallAction = async () => {
-  const pending = await takePendingCallAction();
+  const pending = takePendingCallAction();
   if (!pending) return;
   const known = selectCalls(store.getState()).some(call => call.callSid === pending.callSid);
   if (!known && pending.callId) {
@@ -96,11 +112,14 @@ export const applyPendingCallAction = async () => {
         provider: pending.provider ?? VOICE_CALL_PROVIDERS.WHATSAPP,
         conversationId: pending.conversationId,
         inboxId: pending.inboxId,
+        accountId: pending.accountId,
         caller: pending.caller,
         callDirection: 'inbound',
       }),
     );
   }
+  // Taken here: the call screen shows it connecting from the first frame
+  if (pending.action === 'answer') store.dispatch(markLocalCall(pending.callSid));
   const call = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);
   if (pending.action === 'decline') {
     // The server learns of the decline so the caller and the agent's other devices stop
@@ -112,17 +131,18 @@ export const applyPendingCallAction = async () => {
     return;
   }
   if (!call) {
-    reportNativeCallState('failed');
+    store.dispatch(clearLocalCall(pending.callSid));
+    reportNativeCallState('failed', pending.callSid);
     return;
   }
   openedForCall = true;
   try {
     const result = (await systemCall.answer(store, call)) as { status: string } | void;
-    if (!result || result.status !== 'joined') reportNativeCallState('failed');
+    if (!result || result.status !== 'joined') reportNativeCallState('failed', pending.callSid);
   } catch (error) {
     // Answered on the native screen, so the reason is told once the app is in front
     reportAnswerFailure(error);
-    reportNativeCallState('failed');
+    reportNativeCallState('failed', pending.callSid);
   }
 };
 
@@ -135,8 +155,8 @@ const install = () => {
     const active = selectActiveCall(state);
     if (!active || !localCallSid || active.callSid !== localCallSid) return;
     if (active.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
-    store.dispatch(clearActiveCall());
-    store.dispatch(clearLocalCall(active.callSid));
+    // Ended like a hang-up: the server is told and the microphone is released
+    store.dispatch(callActions.endCall());
   });
 
   // A Twilio call can end from the far side or on a network failure
@@ -169,13 +189,24 @@ const install = () => {
         break;
       case 'end': {
         // The screen also stores the end as a decline in case nobody was listening
-        takePendingCallAction().catch(() => {});
-        const call = selectActiveCall(state) ?? selectIncomingCalls(state)[0];
+        takePendingCallAction();
+        // The end names its call; one without a name falls back to what is on screen
+        const named = event.callSid
+          ? selectCalls(state).find(entry => entry.callSid === event.callSid)
+          : undefined;
+        if (event.callSid && !named) break;
+        const call = named ?? selectActiveCall(state) ?? selectIncomingCalls(state)[0];
         if (call) systemCall.end(store, call);
         break;
       }
       case 'pending':
         applyPendingCallAction().catch(() => {});
+        break;
+      case 'dismissed':
+        // The ring is dropped here without declining; a call this device is taking stays
+        if (event.callSid !== selectLocalCallSid(state)) {
+          store.dispatch(dismissCall(event.callSid));
+        }
         break;
       case 'open':
         store.dispatch(setMinimised(false));
@@ -196,9 +227,13 @@ const install = () => {
   let speakerOn = selectIsSpeakerOn(store.getState());
   let carriedSid: string | null = null;
   let carriedActive = false;
+  let carriedCall: LiveCall | null = null;
+  // The call last reported connected, which an end report refers to
+  let connectedSid: string | null = null;
   const reportEnded = () => {
     endReportPending = false;
-    reportNativeCallState('ended');
+    reportNativeCallState('ended', connectedSid);
+    connectedSid = null;
     if (openedForCall) {
       openedForCall = false;
       if (isDeviceLocked()) moveAppToBackground();
@@ -214,6 +249,14 @@ const install = () => {
   const unsubscribe = store.subscribe(() => {
     const state = store.getState();
     const previousCarried = carriedSid;
+    // Signing out clears the store under a live call; its media and system call end too
+    if (!state.auth?.user && carriedCall) {
+      const ended = carriedCall;
+      callEngine
+        .hangup(ended.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
+        .catch(() => {});
+      if (ended.systemUuid) endSystemCall(ended.systemUuid, 'remote');
+    }
     const active = selectActiveCall(state);
     const isSpeakerOn = selectIsSpeakerOn(state);
     const carried =
@@ -234,6 +277,7 @@ const install = () => {
     }
     carriedSid = carried?.callSid ?? null;
     carriedActive = !!carried?.isActive;
+    carriedCall = carried;
     // A ring that left the store without being carried here (answered elsewhere, timed
     // out, or a join that failed) is closed with the platform too
     const sids = new Set(selectCalls(state).map(call => call.callSid));
@@ -253,11 +297,16 @@ const install = () => {
       wasActive = true;
       endReportPending = false;
       switching = false;
-      reportNativeCallState('connected');
+      connectedSid = active.callSid;
+      reportNativeCallState('connected', active.callSid);
       const route = getAudioRoute();
       if (route.available.length) {
         store.dispatch(
-          setAudioRoute({ current: route.current, available: route.available, names: route.names }),
+          setAudioRoute({
+            current: route.current,
+            available: route.available,
+            names: audioRouteNames(route.available, route.names),
+          }),
         );
       }
     } else if (!active && wasActive) {
@@ -272,7 +321,11 @@ const install = () => {
   // A headset or the system changed the route, or the routes on offer changed
   const audioRoute = addAudioRouteListener(event => {
     store.dispatch(
-      setAudioRoute({ current: event.current, available: event.available, names: event.names }),
+      setAudioRoute({
+        current: event.current,
+        available: event.available,
+        names: audioRouteNames(event.available, event.names),
+      }),
     );
   });
 

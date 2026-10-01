@@ -58,12 +58,14 @@ export type AudioSessionEvent = { active: boolean; provider: string };
 export type VoipTokenEvent = { token: string | null };
 
 // What the agent pressed on Android's native call screen or call notification; `pending`
-// means a stored answer or decline is waiting to be applied
+// means a stored answer or decline is waiting to be applied, `dismissed` that a ringing
+// call's notification was swiped away
 export type NativeCallActionEvent =
   | { action: 'mute'; enabled: boolean }
   | { action: 'speaker'; enabled: boolean }
-  | { action: 'end' }
+  | { action: 'end'; callSid?: string }
   | { action: 'pending' }
+  | { action: 'dismissed'; callSid: string }
   | { action: 'open' }
   | { action: 'hold'; enabled: boolean };
 

@@ -63,7 +63,7 @@ describe('callActions.joinCall', () => {
 
     expect(result).toEqual({ status: 'joined' });
     expect(createAnswer).toHaveBeenCalledWith('v=0 offer', [{ urls: 'stun:stun.example' }]);
-    expect(CallService.acceptWhatsappCall).toHaveBeenCalledWith(5, 'v=0 answer');
+    expect(CallService.acceptWhatsappCall).toHaveBeenCalledWith(5, 'v=0 answer', undefined);
     const state = store.getState().calls;
     expect(state.localCallSid).toBe('wacid.1');
     expect(state.calls[0].isActive).toBe(true);
@@ -82,7 +82,7 @@ describe('callActions.joinCall', () => {
 
     await run(store)(callActions.joinCall('wacid.1')).unwrap();
 
-    expect(CallService.getWhatsappCall).toHaveBeenCalledWith(5);
+    expect(CallService.getWhatsappCall).toHaveBeenCalledWith(5, undefined);
     expect(createAnswer).toHaveBeenCalledWith('v=0 fetched', [
       { urls: 'turn:turn.example', username: 'u', credential: 'c' },
     ]);
@@ -127,6 +127,31 @@ describe('callActions.joinCall', () => {
     expect(store.getState().calls.isJoining).toBe(false);
     expect(store.getState().calls.calls[0].isActive).toBe(false);
   });
+  it('ends the call this device is on before answering another', async () => {
+    (CallService.acceptWhatsappCall as jest.Mock).mockResolvedValue({
+      id: 6,
+      status: 'in-progress',
+    });
+    (CallService.terminateWhatsappCall as jest.Mock).mockResolvedValue({
+      id: 5,
+      status: 'completed',
+    });
+    const store = buildStore();
+    store.dispatch(addCall(ringingWhatsapp));
+    store.dispatch(markLocalCall('wacid.1'));
+    store.dispatch(setCallActive('wacid.1'));
+    store.dispatch(addCall({ ...ringingWhatsapp, callSid: 'wacid.2', callId: 6 }));
+
+    await run(store)(callActions.joinCall('wacid.2')).unwrap();
+
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(5, undefined);
+    const terminated = (CallService.terminateWhatsappCall as jest.Mock).mock.invocationCallOrder[0];
+    const accepted = (CallService.acceptWhatsappCall as jest.Mock).mock.invocationCallOrder[0];
+    expect(terminated).toBeLessThan(accepted);
+    const state = store.getState().calls;
+    expect(state.localCallSid).toBe('wacid.2');
+    expect(state.calls.find(call => call.isActive)?.callSid).toBe('wacid.2');
+  });
 });
 
 describe('callActions.endCall and controls', () => {
@@ -162,7 +187,7 @@ describe('callActions.endCall and controls', () => {
 
     await run(store)(callActions.endCall()).unwrap();
 
-    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(5);
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(5, undefined);
     expect(hangup).toHaveBeenCalled();
     const state = store.getState().calls;
     expect(state.calls).toEqual([]);
@@ -191,6 +216,6 @@ describe('callActions.endCall and controls', () => {
 
     expect(await run(store)(callActions.toggleSpeaker()).unwrap()).toBe(true);
     expect(setSpeaker).toHaveBeenLastCalledWith(true);
-    expect(store.getState().calls.isSpeakerOn).toBe(true);
+    expect(store.getState().calls.audioRoute.current).toBe('speaker');
   });
 });

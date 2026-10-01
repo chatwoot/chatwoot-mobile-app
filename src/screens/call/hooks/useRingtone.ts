@@ -1,28 +1,18 @@
-import { useEffect, useState } from 'react';
-import { AppState, Platform } from 'react-native';
+import { useEffect } from 'react';
+import { Platform } from 'react-native';
 
 import { useAppSelector } from '@/hooks';
 import {
   selectHasActiveCall,
   selectIncomingCalls,
   selectIsJoining,
+  selectLocalCallSid,
 } from '@/store/call/callSelectors';
 import { systemCall } from '@/services/voice/systemCall';
 import { isNativeCallsAvailable } from '@/services/voice/chatwootCalls';
 import { startRingtone, stopRingtone } from '@/utils/ringtone';
 
-// Whether the agent is looking at the app, which decides who rings on Android: the app
-// itself while it is in front, its own ring screen once it is not
-const useAppInForeground = () => {
-  const [foreground, setForeground] = useState(AppState.currentState === 'active');
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', next =>
-      setForeground(next === 'active'),
-    );
-    return () => subscription.remove();
-  }, []);
-  return foreground;
-};
+import { useAppInFront } from './useAppInFront';
 
 // iOS rings through the system call UI wherever it is available; Android rings through
 // its own screen and call notification, except while the app is the thing in front.
@@ -37,12 +27,21 @@ export const useRingtone = () => {
   const incomingCalls = useAppSelector(selectIncomingCalls);
   const hasActiveCall = useAppSelector(selectHasActiveCall);
   const isJoining = useAppSelector(selectIsJoining);
-  const appInForeground = useAppInForeground();
+  const localCallSid = useAppSelector(selectLocalCallSid);
+  // Who rings on Android: the app itself while it is in front, its ring screen and call
+  // notification otherwise
+  const appInForeground = useAppInFront();
+  const platformRings = platformRingsForUs(appInForeground);
+  // A ring the OS refused to show rings here instead; a call this device has taken does not
   const shouldRing =
     !hasActiveCall &&
     !isJoining &&
-    !platformRingsForUs(appInForeground) &&
-    incomingCalls.some(call => call.callDirection === 'inbound');
+    incomingCalls.some(
+      call =>
+        call.callDirection === 'inbound' &&
+        call.callSid !== localCallSid &&
+        (!platformRings || call.systemUiFailed),
+    );
 
   useEffect(() => {
     if (shouldRing) {

@@ -1,11 +1,9 @@
 import { useState } from 'react';
 
-import i18n from '@/i18n';
-import { VOICE_CALL_PROVIDERS, VOICE_CALL_STATUS } from '@/constants';
+import { VOICE_CALL_STATUS } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { store } from '@/store';
 import { selectUserId } from '@/store/auth/authSelectors';
-import { callActions } from '@/store/call/callActions';
 import {
   selectActiveCall,
   selectCalls,
@@ -17,19 +15,15 @@ import { addCall } from '@/store/call/callSlice';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { systemCall } from '@/services/voice/systemCall';
 import type { Message } from '@/types';
-import { showToast } from '@/utils/toastUtils';
+import { placeOutboundCall } from '@/utils/placeOutboundCall';
 import type { getVoiceCallDisplay } from '@/utils/voiceCallUtils';
-import {
-  reportAnswerFailure,
-  reportOutboundFailure,
-  toastJoinOutcome,
-} from '@/utils/voiceCallFeedback';
+import { reportAnswerFailure, toastJoinOutcome } from '@/utils/voiceCallFeedback';
 
 type Display = ReturnType<typeof getVoiceCallDisplay>;
 
-// What a call bubble lets the agent do with the call it describes. Same rules as the web
-// bubble: join a ring nobody has taken that is meant for this agent; call back a missed
-// inbound call when no other call is on.
+// What a call bubble lets the agent do with the call it describes: join a ring nobody
+// has taken that is meant for this agent; call back a missed inbound call when no other
+// call is on.
 export const useCallBubbleActions = (item: Message, display: Display) => {
   const dispatch = useAppDispatch();
   const [isCallingBack, setIsCallingBack] = useState(false);
@@ -89,31 +83,13 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
   const callBack = async () => {
     if (!canCallBack || isCallingBack || !call || !inboxId) return;
     setIsCallingBack(true);
-    const isWhatsapp = call.provider === VOICE_CALL_PROVIDERS.WHATSAPP;
-    try {
-      const result = await dispatch(
-        callActions.startOutboundCall({
-          provider: call.provider,
-          conversationId: item.conversationId,
-          inboxId,
-          contactId: conversation?.meta?.sender?.id,
-        }),
-      ).unwrap();
-      if (result.status === 'permission_requested') {
-        showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_REQUESTED') });
-      } else if (result.status === 'permission_pending') {
-        showToast({ message: i18n.t('CONVERSATION.HEADER.WHATSAPP_CALL_PERMISSION_PENDING') });
-      }
-    } catch (error) {
-      reportOutboundFailure(
-        error,
-        isWhatsapp
-          ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
-          : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
-      );
-    } finally {
-      setIsCallingBack(false);
-    }
+    await placeOutboundCall(dispatch, {
+      provider: call.provider,
+      conversationId: item.conversationId,
+      inboxId,
+      contactId: conversation?.meta?.sender?.id,
+    });
+    setIsCallingBack(false);
   };
 
   return { canJoinCall, joinCall, isJoining, canCallBack, callBack, isCallingBack };

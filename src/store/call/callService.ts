@@ -1,4 +1,6 @@
-import { apiService } from '@/services/APIService';
+import type { AxiosRequestConfig } from 'axios';
+
+import { apiService, type AccountScopedRequestConfig } from '@/services/APIService';
 
 import type { IceServer } from './callTypes';
 
@@ -33,7 +35,26 @@ export type ConferenceJoinResponse = {
   using_webrtc: boolean;
 };
 
-type ConferenceParams = { inboxId: number; conversationId: number; callSid: string };
+type ConferenceParams = {
+  inboxId: number;
+  conversationId: number;
+  callSid: string;
+  accountId?: number;
+};
+
+// A call that another agent took or that already ended answers with these; the call
+// actions report them in their own words
+const EXPECTED_CALL_ERRORS = [404, 409, 422];
+
+// Scopes a request to the call's own account when it has one
+const inAccount = (
+  accountId: number | undefined,
+  config: AxiosRequestConfig = {},
+): AccountScopedRequestConfig => ({
+  ...config,
+  quietStatuses: EXPECTED_CALL_ERRORS,
+  ...(accountId ? { accountId } : {}),
+});
 
 export type ContactCallResponse = {
   conversation_id: number;
@@ -61,29 +82,63 @@ export type WhatsappInitiateParams = {
   inboxId?: number;
 };
 
+export type RingingCallResponse = {
+  id: number;
+  call_id: string;
+  provider: 'whatsapp' | 'twilio';
+  status: string;
+  direction: 'inbound' | 'outbound';
+  created_at: number;
+  conversation: { id: number; display_id: number };
+  inbox: { id: number; name: string };
+  contact: {
+    id: number;
+    name: string | null;
+    phone_number: string | null;
+    avatar: string | null;
+  } | null;
+};
+
 export class CallService {
-  static async getWhatsappCall(id: number) {
-    const response = await apiService.get<WhatsappCallResponse>(`whatsapp_calls/${id}`);
-    return response.data;
-  }
-
-  static async acceptWhatsappCall(id: number, sdpAnswer: string) {
-    const response = await apiService.post<WhatsappCallResponse>(`whatsapp_calls/${id}/accept`, {
-      sdp_answer: sdpAnswer,
+  // The calls still ringing for this agent, which a phone that lost its socket catches up on
+  static async getRingingCalls() {
+    const response = await apiService.get<{ payload: RingingCallResponse[] }>('calls', {
+      params: { status: 'ringing' },
     });
-    return response.data;
+    return response.data.payload;
   }
 
-  static async rejectWhatsappCall(id: number) {
-    const response = await apiService.post<{ id: number; status: string }>(
-      `whatsapp_calls/${id}/reject`,
+  static async getWhatsappCall(id: number, accountId?: number) {
+    const response = await apiService.get<WhatsappCallResponse>(
+      `whatsapp_calls/${id}`,
+      inAccount(accountId),
     );
     return response.data;
   }
 
-  static async terminateWhatsappCall(id: number) {
+  static async acceptWhatsappCall(id: number, sdpAnswer: string, accountId?: number) {
+    const response = await apiService.post<WhatsappCallResponse>(
+      `whatsapp_calls/${id}/accept`,
+      { sdp_answer: sdpAnswer },
+      inAccount(accountId),
+    );
+    return response.data;
+  }
+
+  static async rejectWhatsappCall(id: number, accountId?: number) {
+    const response = await apiService.post<{ id: number; status: string }>(
+      `whatsapp_calls/${id}/reject`,
+      undefined,
+      inAccount(accountId),
+    );
+    return response.data;
+  }
+
+  static async terminateWhatsappCall(id: number, accountId?: number) {
     const response = await apiService.post<{ id: number; status: string }>(
       `whatsapp_calls/${id}/terminate`,
+      undefined,
+      inAccount(accountId),
     );
     return response.data;
   }
@@ -126,25 +181,27 @@ export class CallService {
     return response.data;
   }
 
-  static async getConferenceToken(inboxId: number) {
+  static async getConferenceToken(inboxId: number, accountId?: number) {
     const response = await apiService.get<ConferenceTokenResponse>(
       `inboxes/${inboxId}/conference/token`,
+      inAccount(accountId),
     );
     return response.data;
   }
 
-  static async joinConference({ inboxId, conversationId, callSid }: ConferenceParams) {
+  static async joinConference({ inboxId, conversationId, callSid, accountId }: ConferenceParams) {
     const response = await apiService.post<ConferenceJoinResponse>(
       `inboxes/${inboxId}/conference`,
       { conversation_id: conversationId, call_sid: callSid },
+      inAccount(accountId),
     );
     return response.data;
   }
 
-  static async leaveConference({ inboxId, conversationId, callSid }: ConferenceParams) {
+  static async leaveConference({ inboxId, conversationId, callSid, accountId }: ConferenceParams) {
     const response = await apiService.delete<{ status: string; id: number }>(
       `inboxes/${inboxId}/conference`,
-      { params: { conversation_id: conversationId, call_sid: callSid } },
+      inAccount(accountId, { params: { conversation_id: conversationId, call_sid: callSid } }),
     );
     return response.data;
   }

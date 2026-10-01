@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectIncomingCalls } from '@/store/call/callSelectors';
-import { dismissCall, markCallDismissed } from '@/store/call/callSlice';
+import { store } from '@/store';
+import { selectIncomingCalls, selectLocalCallSid } from '@/store/call/callSelectors';
+import { removeCall } from '@/store/call/callSlice';
 
 import { RING_TIMEOUT_MS } from '../constants/ringTimeouts';
 
-// Dismisses each ringing call locally once its provider's ring window has passed; the
-// call is not rejected for everyone
+// Dismisses each inbound ring locally once its provider's ring window has passed; the call
+// is not rejected for everyone. A call this device placed ends with the server's word on
+// it, and a call being answered here is left to the answer. The dismissal is not
+// remembered, so a server that still reports the call ringing can bring it back.
 export const useRingTimeouts = () => {
   const dispatch = useAppDispatch();
   const incomingCalls = useAppSelector(selectIncomingCalls);
@@ -15,17 +18,18 @@ export const useRingTimeouts = () => {
 
   useEffect(() => {
     const timers = timersRef.current;
-    const liveSids = new Set(incomingCalls.map(call => call.callSid));
+    const inbound = incomingCalls.filter(call => call.callDirection === 'inbound');
+    const liveSids = new Set(inbound.map(call => call.callSid));
 
-    incomingCalls.forEach(call => {
+    inbound.forEach(call => {
       if (timers.has(call.callSid)) return;
       const remaining = Math.max(0, call.addedAt + RING_TIMEOUT_MS - Date.now());
       timers.set(
         call.callSid,
         setTimeout(() => {
           timers.delete(call.callSid);
-          dispatch(markCallDismissed(call.callSid));
-          dispatch(dismissCall(call.callSid));
+          if (selectLocalCallSid(store.getState()) === call.callSid) return;
+          dispatch(removeCall(call.callSid));
         }, remaining),
       );
     });

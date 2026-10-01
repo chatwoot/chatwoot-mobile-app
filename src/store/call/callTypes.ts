@@ -23,13 +23,13 @@ export type LiveCall = {
   provider?: VoiceCallProvider;
   conversationId?: number;
   inboxId?: number;
+  // The account the call belongs to, when it may differ from the one the app is showing
+  accountId?: number;
   callDirection: VoiceCallDirection;
   senderId?: number;
   caller?: CallerSnapshot | null;
   sdpOffer?: string;
-  sdpAnswer?: string;
   iceServers?: IceServer[];
-  recordingEnabled?: boolean;
   isActive: boolean;
   addedAt: number;
   // The provider's own last status for a call this device placed
@@ -57,7 +57,6 @@ export type CallState = {
   isMuted: boolean;
   // The system parked the call, typically for a cellular call; nothing flows until resumed
   isOnHold: boolean;
-  isSpeakerOn: boolean;
   // Where the call's audio goes, where it could go, and the devices' names by route
   audioRoute: {
     current: AudioRoute;

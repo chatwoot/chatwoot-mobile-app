@@ -2,7 +2,7 @@ import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 import { isOutboundCallRinging } from '@/utils/voiceCallUtils';
 
-type CallStatusFlags = {
+export type CallStatusFlags = {
   isOnHold?: boolean;
   isConnected: boolean;
   isConnecting?: boolean;

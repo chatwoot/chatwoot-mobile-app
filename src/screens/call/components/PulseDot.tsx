@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated, {
+  cancelAnimation,
   Easing,
   useAnimatedStyle,
   useSharedValue,
@@ -12,23 +13,42 @@ import { tailwind } from '@/theme';
 
 import { CALL_LINK } from '../constants/callTheme';
 
-const PULSE_PERIOD_MS = 2000;
+type PulseDotProps = {
+  colour?: string;
+  size?: number;
+  periodMs?: number;
+  // How far the ring swells, as a multiple of the dot
+  spread?: number;
+  // The ring rests while nobody can see it
+  paused?: boolean;
+};
 
-// A small blue dot with a sonar ring, marking a ring in progress
-export const PulseDot = ({ size = 8 }: { size?: number }) => {
+// A small dot with a sonar ring, marking a call that is ringing or live
+export const PulseDot = ({
+  colour = CALL_LINK,
+  size = 8,
+  periodMs = 2000,
+  spread = 1.1,
+  paused = false,
+}: PulseDotProps) => {
   const progress = useSharedValue(0);
   useEffect(() => {
+    if (paused) {
+      cancelAnimation(progress);
+      progress.value = 0;
+      return;
+    }
     progress.value = withRepeat(
-      withTiming(1, { duration: PULSE_PERIOD_MS, easing: Easing.bezier(0.2, 0.6, 0.3, 1) }),
+      withTiming(1, { duration: periodMs, easing: Easing.bezier(0.2, 0.6, 0.3, 1) }),
       -1,
       false,
     );
-  }, [progress]);
+  }, [paused, periodMs, progress]);
   const halo = useAnimatedStyle(() => ({
-    transform: [{ scale: 1 + progress.value * 1.1 }],
+    transform: [{ scale: 1 + progress.value * spread }],
     opacity: 0.5 * (1 - progress.value),
   }));
-  const dot = { width: size, height: size, borderRadius: size / 2, backgroundColor: CALL_LINK };
+  const dot = { width: size, height: size, borderRadius: size / 2, backgroundColor: colour };
   return (
     <View style={{ width: size, height: size }}>
       <Animated.View style={[tailwind.style('absolute inset-0'), dot, halo]} />

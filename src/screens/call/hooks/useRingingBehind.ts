@@ -3,7 +3,6 @@ import { useCallback, useMemo } from 'react';
 import { useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { store } from '@/store';
-import { callActions } from '@/store/call/callActions';
 import { selectIncomingCalls } from '@/store/call/callSelectors';
 import type { LiveCall } from '@/store/call/callTypes';
 import { beginCallSwitch, endCallSwitch } from '@/services/voice/callSessionCore';
@@ -16,7 +15,6 @@ import { reportAnswerFailure, toastJoinOutcome } from '@/utils/voiceCallFeedback
 type Options = {
   // The call on screen, which the ringing ones queue behind
   call: LiveCall;
-  activeCall: LiveCall | null;
   isJoining: boolean;
 };
 
@@ -25,7 +23,7 @@ type Options = {
 // time and offers no way to pick among them, so the list is still kept, with its actions
 // routed through the OS. The answer and decline handlers resolve false when nothing
 // happened, so a swiped row can spring back.
-export const useRingingBehind = ({ call, activeCall, isJoining }: Options) => {
+export const useRingingBehind = ({ call, isJoining }: Options) => {
   const hapticSelection = useHaptic();
   const incomingCalls = useAppSelector(selectIncomingCalls);
 
@@ -47,7 +45,7 @@ export const useRingingBehind = ({ call, activeCall, isJoining }: Options) => {
       cancelCallNotification();
       beginCallSwitch();
       try {
-        if (activeCall) await store.dispatch(callActions.endCall()).unwrap();
+        // Answering ends the call on screen; a failure to end it does not stop the answer
         const result = await systemCall.answer(store, target);
         if (!result) return false;
         toastJoinOutcome(result.status);
@@ -59,7 +57,7 @@ export const useRingingBehind = ({ call, activeCall, isJoining }: Options) => {
         endCallSwitch();
       }
     },
-    [activeCall, hapticSelection, isJoining],
+    [hapticSelection, isJoining],
   );
 
   const decline = useCallback(

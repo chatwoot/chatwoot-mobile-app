@@ -2,8 +2,8 @@ import { CONTENT_TYPES, MESSAGE_TYPES, VOICE_CALL_STATUS } from '@/constants';
 import type { Conversation, Message } from '@/types';
 import type { CallerSnapshot, LiveCallInput, VoiceCallDirection } from '@/store/call/callTypes';
 
-// Pure rules for turning call messages and conversation updates into call-list changes.
-// They mirror the web dashboard's voice helper so both clients ring the same agents.
+// Pure rules for turning call messages and conversation updates into call-list changes,
+// deciding which agents a call rings for
 
 export type RoutingContext = {
   currentUserId?: number | null;
@@ -137,6 +137,8 @@ export const routeVoiceCallUpdated = (
   if (!isVoiceCallMessage(message)) return { action: 'ignore' };
   const data = extractCallData(message);
   if (!data.callSid) return { action: 'ignore' };
+  // The call this device is on stays until it ends, whoever the conversation moves to
+  if (data.callSid === context.localCallSid) return { action: 'ignore' };
   if (!shouldShowCall({ ...data, currentUserId: context.currentUserId })) {
     return { action: 'remove', callSid: data.callSid };
   }
@@ -153,16 +155,19 @@ export const routeVoiceCallUpdated = (
 };
 
 // When a conversation is handed to another agent, its inbound calls leave this device.
+// The call this device is on stays until it ends.
 export const callsHiddenByConversationUpdate = (
   conversation: Pick<Conversation, 'id'> & Partial<Conversation>,
   calls: LiveCallInput[],
   currentUserId?: number | null,
+  localCallSid?: string | null,
 ): string[] => {
   const assigneeId = extractAssigneeId(conversation);
   if (!isAssignedToAnotherAgent(assigneeId, currentUserId)) return [];
   return calls
     .filter(
       call =>
+        call.callSid !== localCallSid &&
         call.conversationId === conversation.id &&
         !shouldShowCall({
           callDirection: call.callDirection,

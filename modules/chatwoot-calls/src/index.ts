@@ -38,8 +38,7 @@ const noSubscription = { remove: () => {} };
 
 export const isNativeCallsAvailable = () => ChatwootCallsModule !== null;
 
-// The system call UI exists on iOS only until the Android Telecom side lands. The
-// simulator has CallKit but no call service behind it and ends every reported call
+// The system call UI is CallKit, so it exists on iOS only. The simulator has CallKit but no call service behind it and ends every reported call
 // within seconds, so it always uses the app's own ring UI.
 export const isSystemCallUiAvailable = () =>
   Platform.OS === 'ios' && ChatwootCallsModule !== null && !isEmulatorSync();
@@ -94,8 +93,6 @@ export const twilioSetMuted = (muted: boolean) => ChatwootCallsModule?.twilioSet
 
 export const twilioSetHold = (hold: boolean) => ChatwootCallsModule?.twilioSetHold?.(hold);
 
-export const twilioIsConnected = () => ChatwootCallsModule?.twilioIsConnected() ?? false;
-
 export const setSpeakerOn = (enabled: boolean) => ChatwootCallsModule?.setSpeakerOn(enabled);
 
 // Android's call notification is posted natively, so its buttons are read back the same way
@@ -105,10 +102,8 @@ export const cancelNativeCallNotification = () => ChatwootCallsModule?.cancelCal
 
 // Android's native call screen: it shows the state of the call the app carries, and the
 // buttons pressed on it arrive as actions
-export const dismissNativeIncomingCallUi = () => ChatwootCallsModule?.dismissIncomingCallUi?.();
-
-export const reportNativeCallState = (state: NativeCallState) =>
-  ChatwootCallsModule?.reportCallState?.(state);
+export const reportNativeCallState = (state: NativeCallState, callSid?: string | null) =>
+  ChatwootCallsModule?.reportCallState?.(state, callSid ?? null);
 
 // Android's persistent notification for a call in progress
 export const startOngoingCallNotification = (
@@ -132,6 +127,9 @@ export const resumeCallNatively = (callSid: string): boolean =>
 // the platform's record of it
 export const markCallAnswering = (callSid: string) =>
   ChatwootCallsModule?.markCallAnswering?.(callSid);
+
+// Android: the answer did not go through, so Telecom stops treating the call as ringing
+export const abandonAnswer = (callSid: string) => ChatwootCallsModule?.abandonAnswer?.(callSid);
 
 // Closes the platform's record of a ring that never became a call here
 export const endRingingNativeCall = (callSid: string) =>
@@ -157,6 +155,16 @@ export const addNativeCallActionListener = (listener: (event: NativeCallActionEv
 
 export const moveAppToBackground = () => ChatwootCallsModule?.moveAppToBackground?.();
 
+// Android: the phone's ringtone and vibration, played natively. Returns false where the
+// module cannot ring, so the caller can fall back to its own player.
+export const startAppRinger = () => {
+  if (!ChatwootCallsModule?.startAppRinger) return false;
+  ChatwootCallsModule.startAppRinger();
+  return true;
+};
+
+export const stopAppRinger = () => ChatwootCallsModule?.stopAppRinger?.();
+
 // Whether Android keeps a picture of the app's last frame to show when it is reopened.
 // Android only; a no-op elsewhere.
 export const setRecentsScreenshotEnabled = (enabled: boolean) =>
@@ -169,8 +177,10 @@ export const LOCK_SCREEN_CALL_COMPONENT = 'ChatwootLockScreenCall';
 export const setLockScreenCallSurfaceVisible = (visible: boolean) =>
   ChatwootCallsModule?.setLockScreenCallSurfaceVisible?.(visible);
 
-// Leaves the lock-screen call for the app, which the phone asks to unlock first
-export const openAppFromLockScreen = () => ChatwootCallsModule?.openAppFromLockScreen?.();
+// Leaves the lock-screen call for the app, which the phone asks to unlock first; true once
+// the app has been opened, false when the unlock was cancelled
+export const openAppFromLockScreen = async () =>
+  (await ChatwootCallsModule?.openAppFromLockScreen?.()) ?? false;
 
 // Android's Telecom framework tracks calls on this device: it sets the audio mode, holds
 // focus and routes audio, so the app must not fight it for the route
@@ -181,10 +191,16 @@ export const isTelecomAvailable = () =>
 // the app. Always false where the app cannot appear over a lock screen at all.
 export const isDeviceLocked = () => ChatwootCallsModule?.isDeviceLocked?.() ?? false;
 
+// Whether one of the app's own screens is in front, not counting Android's lock-screen
+// call screen; platforms without that screen answer true
+export const isAppInForeground = () => ChatwootCallsModule?.isAppInForeground?.() ?? true;
+
 // WebRTC audio for a call with no system call behind it; with a system call the OS
 // activates the session and the module switches audio on itself
 export const activateWebrtcAudio = () => ChatwootCallsModule?.activateWebrtcAudio?.();
 export const deactivateWebrtcAudio = () => ChatwootCallsModule?.deactivateWebrtcAudio?.();
+export const setTwilioAudioEnabled = (enabled: boolean) =>
+  ChatwootCallsModule?.twilioSetAudioEnabled?.(enabled);
 
 // System call UI (CallKit). The Android half of the module has none of these functions,
 // so every one of them is a no-op wherever the system call UI is unavailable.

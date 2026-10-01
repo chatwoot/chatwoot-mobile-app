@@ -6,6 +6,7 @@ import callReducer, { addCall, setCallActive } from '../callSlice';
 import { callActions } from '../callActions';
 import { CallService } from '../callService';
 import { callEngine } from '@/services/voice/callEngine';
+import { holdEarlyAccept, holdEarlyAnswer } from '../earlyOutboundEvents';
 
 jest.mock('../callService', () => ({
   CallService: {
@@ -16,6 +17,7 @@ jest.mock('../callService', () => ({
     leaveConference: jest.fn(),
     getConferenceToken: jest.fn(),
     joinConference: jest.fn(),
+    getRingingCalls: jest.fn(),
   },
 }));
 
@@ -134,6 +136,37 @@ describe('callActions.startOutboundCall', () => {
     createOffer.mockRestore();
   });
 
+  it('applies an answer that arrived before the call was placed', async () => {
+    const createOffer = jest
+      .spyOn(callEngine.whatsapp, 'createOffer')
+      .mockResolvedValue('v=0 offer');
+    const applyAnswer = jest.spyOn(callEngine.whatsapp, 'applyAnswer').mockResolvedValue(undefined);
+    (CallService.initiateWhatsappCall as jest.Mock).mockImplementation(async () => {
+      holdEarlyAnswer('wacid.early', 'v=0 answer');
+      holdEarlyAccept('wacid.early');
+      return {
+        status: 'calling',
+        call_id: 'wacid.early',
+        id: 14,
+        message_id: 901,
+        conversation_id: 37,
+        recording_enabled: true,
+        provider: 'whatsapp',
+      };
+    });
+    const store = buildStore();
+
+    await run(store)(
+      callActions.startOutboundCall({ provider: 'whatsapp', conversationId: 37, inboxId: 7 }),
+    ).unwrap();
+
+    expect(applyAnswer).toHaveBeenCalledWith('v=0 answer');
+    const call = store.getState().calls.calls.find(entry => entry.callSid === 'wacid.early');
+    expect(call?.isActive).toBe(true);
+    createOffer.mockRestore();
+    applyAnswer.mockRestore();
+  });
+
   it('tracks a WhatsApp call once the offer is accepted', async () => {
     const createOffer = jest
       .spyOn(callEngine.whatsapp, 'createOffer')
@@ -159,7 +192,6 @@ describe('callActions.startOutboundCall', () => {
       callId: 12,
       provider: 'whatsapp',
       callDirection: 'outbound',
-      recordingEnabled: true,
     });
     createOffer.mockRestore();
   });
@@ -208,7 +240,7 @@ describe('callActions.startOutboundCall', () => {
     resolveInitiate({ status: 'calling', call_id: 'wacid.late', id: 13, conversation_id: 37 });
 
     expect(await placing).toEqual({ status: 'cancelled' });
-    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(13);
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(13, undefined);
     expect(store.getState().calls.calls).toHaveLength(0);
     createOffer.mockRestore();
     hangup.mockRestore();
@@ -227,9 +259,27 @@ describe('callActions.rejectIncomingCall', () => {
 
     await run(store)(callActions.rejectIncomingCall('wa')).unwrap();
 
-    expect(CallService.rejectWhatsappCall).toHaveBeenCalledWith(5);
+    expect(CallService.rejectWhatsappCall).toHaveBeenCalledWith(5, undefined);
     expect(store.getState().calls.calls).toEqual([]);
     expect(store.getState().calls.dismissedCallSids).toEqual(['wa']);
+  });
+
+  it('sends the decline to the account the call belongs to', async () => {
+    (CallService.rejectWhatsappCall as jest.Mock).mockResolvedValue({ id: 5, status: 'rejected' });
+    const store = buildStore();
+    store.dispatch(
+      addCall({
+        callSid: 'wa',
+        callId: 5,
+        provider: 'whatsapp',
+        callDirection: 'inbound',
+        accountId: 9,
+      }),
+    );
+
+    await run(store)(callActions.rejectIncomingCall('wa')).unwrap();
+
+    expect(CallService.rejectWhatsappCall).toHaveBeenCalledWith(5, 9);
   });
 
   it('terminates an outbound WhatsApp call that is still ringing', async () => {
@@ -244,7 +294,7 @@ describe('callActions.rejectIncomingCall', () => {
 
     await run(store)(callActions.rejectIncomingCall('wa-out')).unwrap();
 
-    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(6);
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(6, undefined);
     expect(CallService.rejectWhatsappCall).not.toHaveBeenCalled();
   });
 
@@ -269,5 +319,33 @@ describe('callActions.rejectIncomingCall', () => {
       callSid: 'CA1',
     });
     expect(store.getState().calls.calls).toEqual([]);
+  });
+});
+
+describe('callActions.syncRingingCalls', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('surfaces the calls the server says are ringing, by conversation display id', async () => {
+    (CallService.getRingingCalls as jest.Mock).mockResolvedValue([
+      {
+        id: 21,
+        call_id: 'wacid.sync',
+        provider: 'whatsapp',
+        status: 'ringing',
+        direction: 'inbound',
+        created_at: 1_790_000_000,
+        conversation: { id: 812345, display_id: 57 },
+        inbox: { id: 7, name: 'Sales' },
+        contact: { id: 3, name: 'Priya', phone_number: '+15555550142', avatar: null },
+      },
+    ]);
+    const store = buildStore();
+
+    const result = await run(store)(callActions.syncRingingCalls()).unwrap();
+
+    const call = store.getState().calls.calls.find(entry => entry.callSid === 'wacid.sync');
+    expect(call?.conversationId).toBe(57);
+    expect(call?.caller?.name).toBe('Priya');
+    expect(result).toEqual({ found: 1, ended: [] });
   });
 });

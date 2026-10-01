@@ -21,7 +21,6 @@ const initialState: CallState = {
   isJoining: false,
   isMuted: false,
   isOnHold: false,
-  isSpeakerOn: false,
   audioRoute: { current: 'earpiece', available: ['earpiece', 'speaker'], names: {} },
   isMinimised: false,
   placingCall: null,
@@ -63,10 +62,6 @@ const callSlice = createSlice({
       state.calls = state.calls.filter(call => call.callSid !== action.payload);
     },
 
-    removeCallsForConversation: (state, action: PayloadAction<number>) => {
-      state.calls = state.calls.filter(call => call.conversationId !== action.payload);
-    },
-
     setCallActive: {
       reducer: (state, action: PayloadAction<{ callSid: string; activeSince: number }>) => {
         state.calls.forEach(call => {
@@ -90,40 +85,32 @@ const callSlice = createSlice({
       state.isOnHold = action.payload;
     },
 
+    // The platform's report of the route in use and the routes on offer. An unknown route
+    // leaves the last known one in place; names are kept when none are given.
     setAudioRoute: (
       state,
       action: PayloadAction<{
         current: AudioRoute;
         available: AudioRoute[];
-        names?: string[] | Partial<Record<AudioRoute, string>>;
+        names?: Partial<Record<AudioRoute, string>>;
       }>,
     ) => {
-      // Names arrive as a list beside the routes, or as the map already built
-      const given = action.payload.names;
-      const list = Array.isArray(given) ? given : null;
-      const names: Partial<Record<AudioRoute, string>> = list
-        ? {}
-        : {
-            ...((given as Partial<Record<AudioRoute, string>> | undefined) ??
-              state.audioRoute.names),
-          };
-      if (list) {
-        action.payload.available.forEach((route, index) => {
-          const name = list[index];
-          if (name) names[route] = name;
-        });
-      }
+      const { current, available, names } = action.payload;
       state.audioRoute = {
-        current: action.payload.current,
-        available: action.payload.available,
-        names,
+        current: current === 'unknown' ? state.audioRoute.current : current,
+        available,
+        names: names ?? state.audioRoute.names,
       };
-      if (action.payload.current !== 'unknown')
-        state.isSpeakerOn = action.payload.current === 'speaker';
     },
 
+    // Speaker on, or off to the best other route on offer: a headset first, then the
+    // earpiece. The platform's next route report corrects it if it chose otherwise.
     setSpeakerOn: (state, action: PayloadAction<boolean>) => {
-      state.isSpeakerOn = action.payload;
+      const { available } = state.audioRoute;
+      state.audioRoute.current = action.payload
+        ? 'speaker'
+        : ((['bluetooth', 'wired'] as AudioRoute[]).find(route => available.includes(route)) ??
+          'earpiece');
     },
 
     setPlacingCall: (state, action: PayloadAction<PlacingCall | null>) => {
@@ -145,16 +132,11 @@ const callSlice = createSlice({
       if (call) call.systemUiFailed = true;
     },
 
-    setCallAnswer: (state, action: PayloadAction<{ callSid: string; sdpAnswer: string }>) => {
-      const call = state.calls.find(entry => entry.callSid === action.payload.callSid);
-      if (call) call.sdpAnswer = action.payload.sdpAnswer;
-    },
-
     clearActiveCall: state => {
       state.calls = state.calls.filter(call => !call.isActive);
       state.isMuted = false;
-      state.isSpeakerOn = false;
       state.isOnHold = false;
+      state.audioRoute = initialState.audioRoute;
     },
 
     setCallProviderStatus: (
@@ -171,13 +153,11 @@ const callSlice = createSlice({
     ) => {
       const { callSid, status } = action.payload;
       if (!isTerminalCallStatus(status)) return;
-      if (callSid && !state.dismissedCallSids.includes(callSid)) {
-        state.dismissedCallSids.push(callSid);
-      }
-      state.calls = state.calls.filter(call => call.callSid !== callSid);
+      callSlice.caseReducers.dismissCall(state, { type: 'calls/dismissCall', payload: callSid });
     },
 
-    // Hides the call locally without touching the provider
+    // Hides the call on this device and keeps it from being re-added; other agents keep
+    // ringing
     dismissCall: (state, action: PayloadAction<string>) => {
       const callSid = action.payload;
       if (callSid && !state.dismissedCallSids.includes(callSid)) {
@@ -205,14 +185,18 @@ const callSlice = createSlice({
       state.isJoining = action.payload;
     },
 
-    resetCalls: () => initialState,
+    // Another account's rings no longer apply; the call this device is on carries on
+    keepOnlyLocalCall: state => {
+      state.calls = state.calls.filter(
+        call => call.isActive || call.callSid === state.localCallSid,
+      );
+    },
   },
 });
 
 export const {
   addCall,
   removeCall,
-  removeCallsForConversation,
   setCallActive,
   setMuted,
   setOnHold,
@@ -222,7 +206,6 @@ export const {
   setMinimised,
   setPlacingCall,
   markSystemUiFailed,
-  setCallAnswer,
   clearActiveCall,
   handleCallStatusChanged,
   setCallProviderStatus,
@@ -231,7 +214,7 @@ export const {
   markLocalCall,
   clearLocalCall,
   setIsJoining,
-  resetCalls,
+  keepOnlyLocalCall,
 } = callSlice.actions;
 
 export default callSlice.reducer;

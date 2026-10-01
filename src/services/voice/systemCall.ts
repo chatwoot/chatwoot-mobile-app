@@ -3,37 +3,31 @@ import { Platform } from 'react-native';
 import type { AppDispatch, RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
-import {
-  addCall,
-  clearActiveCall,
-  markSystemUiFailed,
-  setMuted,
-  setSystemUuid,
-} from '@/store/call/callSlice';
+import { addCall, markSystemUiFailed, setMuted, setSystemUuid } from '@/store/call/callSlice';
 import {
   selectActiveCall,
   selectCalls,
   selectIsJoining,
   selectLocalCallSid,
 } from '@/store/call/callSelectors';
-import { selectConversationById } from '@/store/conversation/conversationSelectors';
-import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import type { LiveCall } from '@/store/call/callTypes';
-import i18n from '@/i18n';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 
 import { callEngine } from './callEngine';
+import { selectCallerInfo } from './callerInfo';
 import { markLocalEnd } from './callSessionCore';
 import {
   activateWebrtcAudio,
   addAudioSessionListener,
   deactivateWebrtcAudio,
+  setTwilioAudioEnabled,
   addCallKitActionListener,
   addIncomingCallListener,
   callKitReady,
   endSystemCall,
   getPendingSystemCalls,
   isSystemCallUiAvailable,
+  abandonAnswer,
   markCallAnswering,
   reportIncomingSystemCall,
   reportSystemCallConnected,
@@ -85,6 +79,14 @@ const startJoin = (store: Store, callSid: string) => {
   const join = store.dispatch(callActions.joinCall(callSid)).unwrap() as Promise<JoinResult>;
   pendingJoins.set(callSid, join);
   join.finally(() => pendingJoins.delete(callSid)).catch(() => {});
+  // An answer that did not become a call here must not leave the system call ringing
+  join
+    .then(result => {
+      if (result.status === 'answered_elsewhere' || result.status === 'already_ended') {
+        abandonAnswer(callSid);
+      }
+    })
+    .catch(() => abandonAnswer(callSid));
   return join;
 };
 
@@ -110,20 +112,11 @@ const endLocally = (store: Store, call: LiveCall | undefined, callSid: string) =
 // The OS call screen shows one name, so it carries the inbox the call came through:
 // an agent answering needs to know which number rang before they pick up.
 export const callerInfo = (state: RootState, call: LiveCall) => {
-  const conversation = call.conversationId
-    ? selectConversationById(state, call.conversationId)
-    : undefined;
-  const contact = conversation?.meta?.sender;
-  const inbox = call.inboxId ? selectInboxById(state, call.inboxId) : undefined;
-  const name =
-    call.caller?.name || contact?.name || i18n.t('CONVERSATION.VOICE_WIDGET.UNKNOWN_CALLER');
-  const handle = call.caller?.phone || contact?.phoneNumber || name;
+  const info = selectCallerInfo(state, call);
   return {
-    name,
-    handle,
-    avatar: call.caller?.avatar || contact?.thumbnail || '',
-    inboxName: inbox?.name ?? '',
-    displayName: inbox?.name ? `${name} · ${inbox.name}` : name,
+    ...info,
+    handle: info.phone || info.name,
+    displayName: info.inboxName ? `${info.name} · ${info.inboxName}` : info.name,
   };
 };
 
@@ -180,13 +173,14 @@ export const systemCall = {
     }
   },
 
-  // A joined call with a system call behind it is marked connected; without one, WebRTC
-  // audio is switched on directly because no OS activation will come
+  // A joined call with a system call behind it is marked connected; without one, the
+  // call's audio is switched on directly because no OS activation will come
   connected(call: LiveCall) {
     if (call.systemUuid) {
       reportSystemCallConnected(call.systemUuid);
-    } else if (Platform.OS === 'ios' && call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
-      activateWebrtcAudio();
+    } else if (Platform.OS === 'ios') {
+      if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) activateWebrtcAudio();
+      else setTwilioAudioEnabled(true);
     }
   },
 
@@ -200,7 +194,8 @@ export const systemCall = {
     if (call.systemUuid) {
       endSystemCall(call.systemUuid, reason);
     } else if (Platform.OS === 'ios' && call.isActive) {
-      deactivateWebrtcAudio();
+      if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) deactivateWebrtcAudio();
+      else setTwilioAudioEnabled(false);
     }
   },
 
@@ -253,7 +248,8 @@ export const systemCall = {
     const actions = addCallKitActionListener(event => {
       if (__DEV__) console.log('[callkit] action', JSON.stringify(event));
       if (event.type === 'reset') {
-        store.dispatch(clearActiveCall());
+        // CallKit dropped every call it held; the media and the server call end with them
+        store.dispatch(callActions.endCall());
         return;
       }
       const call = selectCalls(store.getState()).find(entry => entry.callSid === event.callSid);
@@ -311,6 +307,7 @@ const adoptSystemCall = (store: Store, system: SystemCall) => {
         provider: system.provider,
         conversationId: system.conversationId,
         inboxId: system.inboxId,
+        accountId: system.accountId,
         callDirection: system.outgoing ? 'outbound' : 'inbound',
         caller: { name: system.displayName, phone: system.handle },
         systemUuid: system.uuid,

@@ -25,19 +25,34 @@ class OngoingCallService : Service() {
     val inboxName = intent?.getStringExtra(EXTRA_INBOX_NAME).orEmpty()
     val avatar = intent?.getStringExtra(EXTRA_AVATAR)
     val calling = intent?.getStringExtra(EXTRA_STATE) == STATE_CALLING
+    val callSid = intent?.getStringExtra(CallNotification.EXTRA_CALL_SID)
     val type = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
       ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE
     } else {
       0
     }
-    ServiceCompat.startForeground(this, NOTIFICATION_ID, notification(name, handle, inboxName, calling, null), type)
+    ServiceCompat.startForeground(this, NOTIFICATION_ID, notification(callSid, name, handle, inboxName, calling, null), type)
+    running = true
     ContactPhoto.fetchAsync(avatar) { photo ->
-      NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notification(name, handle, inboxName, calling, photo))
+      // A call style notification is only allowed while this service holds it in the
+      // foreground, so the photo is dropped once the call has ended
+      if (!running) return@fetchAsync
+      runCatching {
+        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notification(callSid, name, handle, inboxName, calling, photo))
+      }
     }
     return START_NOT_STICKY
   }
 
+  override fun onDestroy() {
+    running = false
+    super.onDestroy()
+  }
+
+  @Volatile private var running = false
+
   private fun notification(
+    callSid: String?,
     name: String,
     handle: String,
     inboxName: String,
@@ -59,15 +74,19 @@ class OngoingCallService : Service() {
       .setCategory(NotificationCompat.CATEGORY_CALL)
       .setOngoing(true)
       .setSilent(true)
+      .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
       .setContentIntent(openCallIntent(this))
-      .setStyle(NotificationCompat.CallStyle.forOngoingCall(person, hangUpIntent(this)))
+      .setStyle(NotificationCompat.CallStyle.forOngoingCall(person, hangUpIntent(this, callSid)))
       .setContentTitle(name)
       .setContentText(text.ifEmpty { "Call in progress" })
       .build()
   }
 
   companion object {
-    const val CHANNEL_ID = "voice_calls_ongoing"
+    // Default importance so the call shows on the lock screen, where silent notifications
+    // are hidden; the channel itself makes no sound
+    const val CHANNEL_ID = "voice_calls_ongoing_visible"
+    private const val RETIRED_CHANNEL_ID = "voice_calls_ongoing"
     const val NOTIFICATION_ID = 4712
     const val EXTRA_NAME = "name"
     const val EXTRA_HANDLE = "handle"
@@ -77,8 +96,17 @@ class OngoingCallService : Service() {
     const val STATE_CALLING = "calling"
     const val EXTRA_OPEN_CALL = "com.chatwoot.calls.OPEN_CALL"
 
-    fun start(context: Context, name: String, handle: String, inboxName: String, avatar: String, state: String) {
+    fun start(context: Context, callSid: String, name: String, handle: String, inboxName: String, avatar: String, state: String) {
+      // From Android 14 a microphone service may only start with the microphone granted;
+      // without it the call carries no audio from this phone anyway
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+        androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.RECORD_AUDIO) !=
+        android.content.pm.PackageManager.PERMISSION_GRANTED
+      ) {
+        return
+      }
       val intent = Intent(context, OngoingCallService::class.java)
+        .putExtra(CallNotification.EXTRA_CALL_SID, callSid)
         .putExtra(EXTRA_NAME, name)
         .putExtra(EXTRA_HANDLE, handle)
         .putExtra(EXTRA_INBOX_NAME, inboxName)
@@ -108,9 +136,10 @@ class OngoingCallService : Service() {
       )
     }
 
-    private fun hangUpIntent(context: Context): PendingIntent {
+    private fun hangUpIntent(context: Context, callSid: String?): PendingIntent {
       val intent = Intent(context, CallActionReceiver::class.java).apply {
         action = CallNotification.ACTION_HANG_UP
+        callSid?.let { putExtra(CallNotification.EXTRA_CALL_SID, it) }
       }
       return PendingIntent.getBroadcast(
         context,
@@ -121,14 +150,22 @@ class OngoingCallService : Service() {
     }
 
     private fun ensureChannel(context: Context) {
+      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
       val manager = context.getSystemService(android.app.NotificationManager::class.java) ?: return
+      if (manager.getNotificationChannel(RETIRED_CHANNEL_ID) != null) {
+        manager.deleteNotificationChannel(RETIRED_CHANNEL_ID)
+      }
       if (manager.getNotificationChannel(CHANNEL_ID) != null) return
       manager.createNotificationChannel(
         android.app.NotificationChannel(
           CHANNEL_ID,
-          "Calls in progress",
-          android.app.NotificationManager.IMPORTANCE_LOW
-        )
+          "Ongoing calls",
+          android.app.NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+          setSound(null, null)
+          enableVibration(false)
+          lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+        }
       )
     }
   }

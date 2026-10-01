@@ -60,6 +60,8 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
   private var callId: String? = null
   private var callDetails = CallNotification.CallDetails(null, null, null)
   private var unlockReceiver: BroadcastReceiver? = null
+  private var visible = false
+  private var handedOver = false
 
   private val tick = object : Runnable {
     override fun run() {
@@ -90,7 +92,8 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       intent.getStringExtra(EXTRA_INBOX_ID),
       callerName,
       callerPhone,
-      callerAvatar
+      callerAvatar,
+      intent.getStringExtra(EXTRA_ACCOUNT_ID)
     )
     val inboxName = intent.getStringExtra(EXTRA_INBOX_NAME).orEmpty()
 
@@ -106,6 +109,12 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     }
     if (callerAvatar.isNotEmpty()) loadAvatar(callerAvatar)
     views.showRingingTray(onDecline = { decline() }, onAnswer = { answer() })
+    watchForUnlock()
+    // Answer pressed on the notification opens this screen already answering
+    if (intent.getBooleanExtra(EXTRA_ANSWER, false)) {
+      answer()
+      return
+    }
     ringer.start()
     handler.postDelayed({
       if (phase == Phase.RINGING) {
@@ -113,11 +122,20 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
         showNextRingOrFinish()
       }
     }, RING_TIMEOUT_MS)
-    watchForUnlock()
   }
 
   // The React host mounts views only while it sees a resumed activity, so this screen
   // reports its own lifecycle for as long as it hosts the app's call screen
+  override fun onStart() {
+    super.onStart()
+    visible = true
+  }
+
+  override fun onStop() {
+    visible = false
+    super.onStop()
+  }
+
   override fun onResume() {
     super.onResume()
     if (callScreen != null) runCatching { reactHost?.onHostResume(this) }
@@ -153,7 +171,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     views.stateLabel?.text = "Connecting…"
     showInCallTray(enabled = false)
     CallNotification.storePendingAction(this, "answer", callSid, callId, callDetails)
-    CallNotification.cancel(this)
+    CallNotification.cancel(this, callSid)
     if (!isKeyguardLocked()) {
       handOverToApp()
       return
@@ -196,7 +214,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     views.stopSonar()
     TelecomCalls.end(callSid, "rejected")
     CallNotification.storePendingAction(this, "decline", callSid, callId, callDetails)
-    CallNotification.cancel(this)
+    CallNotification.cancel(this, callSid)
     // The app applies the stored decline whether it is running or has to be started; the
     // choice is consumed once, so both paths together apply it a single time
     NativeCallBridge.emit("pending")
@@ -208,8 +226,14 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
   private fun showNextRingOrFinish() {
     CallNotification.forgetRing(callSid)
     val next = CallNotification.nextRingingAfter(callSid)
-    if (next != null) startActivity(intent(this, next))
-    finishAndRemoveTask()
+    if (next == null) {
+      finishAndRemoveTask()
+      return
+    }
+    // The screen is rebuilt for the next call in its own task; starting a new screen here
+    // would land in this task and be removed with it
+    setIntent(intent(this, next))
+    recreate()
   }
 
   private fun connected() {
@@ -249,41 +273,39 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
   private fun endFromTray() {
     // The stored choice covers the app not listening yet; the app clears it if it heard
     CallNotification.storePendingAction(this, "decline", callSid, callId, callDetails)
-    NativeCallBridge.emit("end")
+    NativeCallBridge.emit("end", callSid = callSid)
     finishAndRemoveTask()
   }
 
   private fun loadAvatar(url: String) {
-    Thread {
-      val bitmap = runCatching {
-        (java.net.URL(url).openConnection() as java.net.HttpURLConnection).run {
-          connectTimeout = 4000
-          readTimeout = 4000
-          inputStream.use { android.graphics.BitmapFactory.decodeStream(it) }
-        }
-      }.getOrNull() ?: return@Thread
-      runOnUiThread { views.showAvatar(bitmap) }
-    }.start()
+    ContactPhoto.loadAsync(url) { bitmap ->
+      runOnUiThread { if (!isDestroyed) views.showAvatar(bitmap) }
+    }
   }
 
-  // Once the phone is unlocked the app's own call screen takes over
+  // Once the phone is unlocked the app's own call screen takes over. If the agent went home
+  // on the way, this screen closes and the call carries on behind the status bar chip.
+  // The unlock broadcast comes from System UI, which Android treats as another app, so
+  // the receiver is exported; only the system can send this broadcast.
   private fun watchForUnlock() {
     val receiver = object : BroadcastReceiver() {
       override fun onReceive(context: Context, intent: Intent) {
         if (phase == Phase.RINGING) return
-        handOverToApp()
+        if (visible) handOverToApp() else finishAndRemoveTask()
       }
     }
     unlockReceiver = receiver
     val filter = IntentFilter(Intent.ACTION_USER_PRESENT)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-      registerReceiver(receiver, filter, Context.RECEIVER_NOT_EXPORTED)
+      registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED)
     } else {
       registerReceiver(receiver, filter)
     }
   }
 
   private fun handOverToApp() {
+    if (handedOver) return
+    handedOver = true
     packageManager.getLaunchIntentForPackage(packageName)?.let { launch ->
       launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
       startActivity(launch)
@@ -327,21 +349,20 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     const val EXTRA_PROVIDER = "provider"
     const val EXTRA_CONVERSATION_ID = "conversationId"
     const val EXTRA_INBOX_ID = "inboxId"
+    const val EXTRA_ACCOUNT_ID = "accountId"
+    const val EXTRA_ANSWER = "answer"
 
-    // What the app reports about the call it is carrying
-    fun applyState(state: String) {
+    // What the app reports about the call it is carrying; a report for another call
+    // leaves this screen alone
+    fun applyState(state: String, callSid: String?) {
       val activity = current ?: return
+      if (callSid != null && activity.callSid != callSid) return
       activity.runOnUiThread {
         when (state) {
           "connected" -> activity.connected()
           "ended", "failed" -> activity.ended()
         }
       }
-    }
-
-    fun dismiss() {
-      val activity = current ?: return
-      activity.runOnUiThread { activity.finishAndRemoveTask() }
     }
 
     // The app's call screen has a call to draw, or nothing again
@@ -352,9 +373,28 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       }
     }
 
-    fun openApp() {
-      val activity = current ?: return
-      activity.runOnUiThread { activity.handOverToApp() }
+    // Leaves the lock-screen call for the app. The phone shows its unlock screen first,
+    // where the fingerprint and PIN work; true once the app has been opened.
+    fun openApp(onResult: (Boolean) -> Unit) {
+      val activity = current ?: return onResult(false)
+      activity.runOnUiThread {
+        val keyguard = activity.getSystemService(android.app.KeyguardManager::class.java)
+        if (keyguard?.isKeyguardLocked != true || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+          activity.handOverToApp()
+          onResult(true)
+          return@runOnUiThread
+        }
+        keyguard.requestDismissKeyguard(activity, object : android.app.KeyguardManager.KeyguardDismissCallback() {
+          override fun onDismissSucceeded() {
+            activity.handOverToApp()
+            onResult(true)
+          }
+
+          override fun onDismissCancelled() = onResult(false)
+
+          override fun onDismissError() = onResult(false)
+        })
+      }
     }
 
     // An answer or decline from a system surface lands on the screen when it is showing
@@ -376,6 +416,9 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     // Whether the screen is up and still ringing
     fun isRinging(): Boolean = current?.phase == Phase.RINGING
 
+    // Whether the screen is up at all, ringing or carrying a call
+    fun isShowing(): Boolean = current != null
+
     fun intent(context: Context, data: Map<String, String>): Intent {
       val caller = runCatching { JSONObject(data["caller"] ?: "{}") }.getOrNull()
       return Intent(context, IncomingCallActivity::class.java).apply {
@@ -389,6 +432,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
         putExtra(EXTRA_PROVIDER, data["provider"])
         putExtra(EXTRA_CONVERSATION_ID, data["conversation_id"])
         putExtra(EXTRA_INBOX_ID, data["inbox_id"])
+        putExtra(EXTRA_ACCOUNT_ID, data["account_id"])
       }
     }
   }

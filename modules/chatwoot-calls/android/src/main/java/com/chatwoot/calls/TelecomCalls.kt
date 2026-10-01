@@ -25,10 +25,15 @@ import kotlinx.coroutines.launch
 // answered, connected and ended, and asked for audio route changes.
 object TelecomCalls {
   private const val TAG = "TelecomCalls"
-  private const val ROUTE_SETTLE_MS = 700L
+  // Moving onto or off a Bluetooth headset takes Telecom a second or two
+  private const val ROUTE_SETTLE_MS = 3_000L
   private const val AUTO_RESUME_POLL_MS = 1000L
+  // A ring still open with Telecom past the ring window is ended, whatever left it open;
+  // a ringing call there blocks new ones and takes the audio route requests
+  private const val RING_LIMIT_MS = 65_000L
 
   private class Tracked(val callSid: String) {
+    val addedAt = android.os.SystemClock.elapsedRealtime()
     @Volatile var scope: CallControlScope? = null
     @Volatile var active = false
     @Volatile var held = false
@@ -67,6 +72,15 @@ object TelecomCalls {
     appContext = context.applicationContext
     val entry = Tracked(callSid)
     tracked[callSid] = entry
+    if (!outgoing) {
+      mainScope.launch {
+        kotlinx.coroutines.delay(RING_LIMIT_MS)
+        if (tracked[callSid] === entry && !entry.active) {
+          Log.w(TAG, "call $callSid still ringing with Telecom after the ring window; ending it")
+          end(callSid, "missed")
+        }
+      }
+    }
     val attributes = CallAttributesCompat(
       displayName.ifBlank { "Call" },
       Uri.fromParts("tel", handle.ifBlank { callSid }, null),
@@ -135,6 +149,12 @@ object TelecomCalls {
     tracked[callSid]?.active = true
   }
 
+  // An answer that did not go through leaves the call ringing in Telecom; this ends it
+  fun abandonAnswer(callSid: String) {
+    tracked[callSid]?.active = false
+    endRinging(callSid, "failed")
+  }
+
   // Asks Telecom for the call back; succeeds once no other call holds the audio.
   // Returns false when Telecom is not tracking the call
   fun resume(callSid: String): Boolean {
@@ -197,16 +217,16 @@ object TelecomCalls {
     scope.launch { scope.disconnect(cause) }
   }
 
-  fun endAll(reason: String) {
-    tracked.keys.toList().forEach { end(it, reason) }
+  // The call audio requests are for: the live call, otherwise the newest one Telecom holds
+  private fun routeTarget(): Tracked? {
+    val ready = tracked.values.filter { it.scope != null }
+    return ready.firstOrNull { it.active } ?: ready.maxByOrNull { it.addedAt }
   }
-
-  fun tracks(callSid: String): Boolean = tracked.containsKey(callSid)
 
   // Speaker on, or the best non-speaker route available: Bluetooth, then a wired headset,
   // then the earpiece. Returns false when no tracked call can take the request.
   fun setSpeaker(enabled: Boolean): Boolean {
-    val entry = tracked.values.firstOrNull { it.scope != null } ?: return false
+    val entry = routeTarget() ?: return false
     val wanted = if (enabled) {
       entry.endpoints.firstOrNull { it.type == CallEndpointCompat.TYPE_SPEAKER }
     } else {
@@ -218,13 +238,13 @@ object TelecomCalls {
 
   // A specific route by name; false when it is not on offer for the tracked call
   fun setRoute(route: String): Boolean {
-    val entry = tracked.values.firstOrNull { it.scope != null } ?: return false
+    val entry = routeTarget() ?: return false
     val wanted = entry.endpoints.firstOrNull { routeName(it) == route } ?: return false
     return request(entry, wanted)
   }
 
   fun currentRoute(): Triple<String, List<String>, List<String>> {
-    val entry = tracked.values.firstOrNull { it.scope != null } ?: return Triple("unknown", emptyList(), emptyList())
+    val entry = routeTarget() ?: return Triple("unknown", emptyList(), emptyList())
     return Triple(routeName(entry.current), entry.endpoints.map { routeName(it) }, entry.endpoints.map { it.name.toString() })
   }
 
@@ -238,10 +258,13 @@ object TelecomCalls {
         routeDirectly(entry, endpoint)
         return@launch
       }
+      // Telecom reports the route once it has moved, and the screen follows that report.
       // Telecom can accept a request and leave the audio where it was; the route is set
-      // directly when the endpoint has not followed within a moment
+      // directly only when nothing has moved by the time a switch should have finished.
+      val before = entry.current?.type
       kotlinx.coroutines.delay(ROUTE_SETTLE_MS)
-      if (entry.current?.type != endpoint.type) routeDirectly(entry, endpoint)
+      val now = entry.current?.type
+      if (now != endpoint.type && now == before) routeDirectly(entry, endpoint)
     }
     return true
   }

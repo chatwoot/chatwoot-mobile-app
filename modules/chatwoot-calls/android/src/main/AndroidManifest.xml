@@ -35,6 +35,16 @@
       android:name="com.chatwoot.calls.CallSessionService"
       android:exported="false" />
 
+    <!-- Answer on the call notification: draws nothing and routes the answer -->
+    <activity
+      android:name="com.chatwoot.calls.CallAnswerActivity"
+      android:exported="false"
+      android:excludeFromRecents="true"
+      android:noHistory="true"
+      android:showWhenLocked="true"
+      android:taskAffinity=".CallAnswer"
+      android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
     <!-- The ringing screen itself: shown over the keyguard, kept out of recents -->
     <activity
       android:name="com.chatwoot.calls.IncomingCallActivity"
@@ -45,6 +55,8 @@
       android:showWhenLocked="true"
       android:turnScreenOn="true"
       android:taskAffinity=".IncomingCall"
+      android:screenOrientation="portrait"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|density|fontScale|locale|layoutDirection"
       android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
   </application>
 </manifest>

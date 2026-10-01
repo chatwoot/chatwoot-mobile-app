@@ -18,6 +18,8 @@ class ChatwootCallsModule : Module() {
   private val context: Context
     get() = appContext.reactContext ?: throw IllegalStateException("React context is not available")
 
+  private val appRinger by lazy { CallRinger(context.applicationContext) }
+
   private val audioManager: AudioManager
     get() = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -33,24 +35,36 @@ class ChatwootCallsModule : Module() {
     audioManager.isSpeakerphoneOn = false
   }
 
-  // Receives Twilio call callbacks and forwards them as a single state event
+  // Receives Twilio call callbacks and forwards them as a single state event. Only the
+  // current call reports; an earlier one ending late must not end the call that followed.
   private val callListener = object : Call.Listener {
-    override fun onRinging(call: Call) = emitState("ringing")
+    private fun current(call: Call) = call === activeCall
 
-    override fun onConnected(call: Call) = emitState("connected")
+    override fun onRinging(call: Call) {
+      if (current(call)) emitState("ringing")
+    }
 
-    override fun onReconnecting(call: Call, callException: CallException) =
-      emitState("reconnecting", callException.message)
+    override fun onConnected(call: Call) {
+      if (current(call)) emitState("connected")
+    }
 
-    override fun onReconnected(call: Call) = emitState("connected")
+    override fun onReconnecting(call: Call, callException: CallException) {
+      if (current(call)) emitState("reconnecting", callException.message)
+    }
+
+    override fun onReconnected(call: Call) {
+      if (current(call)) emitState("connected")
+    }
 
     override fun onConnectFailure(call: Call, callException: CallException) {
+      if (!current(call)) return
       activeCall = null
       releaseAudio()
       emitState("failed", callException.message)
     }
 
     override fun onDisconnected(call: Call, callException: CallException?) {
+      if (!current(call)) return
       activeCall = null
       releaseAudio()
       emitState("disconnected", callException?.message)
@@ -64,10 +78,11 @@ class ChatwootCallsModule : Module() {
 
     OnCreate {
       AppVisibility.track(context.applicationContext as Application)
-      NativeCallBridge.onAction = { action, enabled ->
+      NativeCallBridge.onAction = { action, enabled, callSid ->
         val payload = Bundle()
         payload.putString("action", action)
         if (enabled != null) payload.putBoolean("enabled", enabled)
+        if (callSid != null) payload.putString("callSid", callSid)
         sendEvent("onNativeCallAction", payload)
       }
       TelecomCalls.onAudioRoute = { callSid, current, available, names ->
@@ -86,7 +101,7 @@ class ChatwootCallsModule : Module() {
       TelecomCalls.onSystemHold = { _, held -> NativeCallBridge.emit("hold", held) }
       TelecomCalls.onSystemDisconnect = { callSid ->
         appContext.reactContext?.let { CallNotification.applySystemAction(it, "decline", callSid) }
-        NativeCallBridge.emit("end")
+        NativeCallBridge.emit("end", callSid = callSid)
       }
     }
 
@@ -95,8 +110,9 @@ class ChatwootCallsModule : Module() {
       TelecomCalls.onAudioRoute = null
     }
 
+    // The lock-screen call screen hosts the app's views too; it is not the app in front
     OnActivityEntersForeground {
-      AppVisibility.foreground = true
+      if (appContext.currentActivity !is IncomingCallActivity) AppVisibility.foreground = true
     }
 
     // The in-progress notification was tapped: the app is up and the call screen is wanted
@@ -107,8 +123,10 @@ class ChatwootCallsModule : Module() {
       }
     }
 
+    // The app left the front with a call still ringing in it: the ring moves to the phone
     OnActivityEntersBackground {
       AppVisibility.foreground = false
+      if (CallNotification.showDeferred(context)) appRinger.stop()
     }
 
     // Dials into the Twilio conference through the TwiML app. `params` become the
@@ -133,10 +151,6 @@ class ChatwootCallsModule : Module() {
 
     Function("twilioSetHold") { hold: Boolean ->
       activeCall?.hold(hold)
-    }
-
-    Function("twilioIsConnected") {
-      activeCall?.state == Call.State.CONNECTED
     }
 
     // Speaker routing: through Telecom while it tracks the call, otherwise directly
@@ -172,25 +186,28 @@ class ChatwootCallsModule : Module() {
     }
 
     // The native call screen follows the call the app is carrying behind it
-    Function("reportCallState") { state: String ->
-      IncomingCallActivity.applyState(state)
-    }
-
-    Function("dismissIncomingCallUi") { ->
-      IncomingCallActivity.dismiss()
+    Function("reportCallState") { state: String, callSid: String? ->
+      IncomingCallActivity.applyState(state, callSid)
     }
 
     // The persistent notification for a call in progress, held by a foreground service,
     // and the call's registration with Telecom
     Function("startOngoingCall") { callSid: String, name: String, handle: String, inboxName: String, avatar: String, state: String ->
-      OngoingCallService.start(context, name, handle, inboxName, avatar, state)
+      CallNotification.forgetRing(callSid)
+      OngoingCallService.start(context, callSid, name, handle, inboxName, avatar, state)
       TelecomCalls.add(context, callSid, name, handle, outgoing = state == OngoingCallService.STATE_CALLING)
       if (state != OngoingCallService.STATE_CALLING) TelecomCalls.setActive(callSid)
     }
 
     // A ring that ended without becoming a call here is dropped from Telecom
     Function("markCallAnswering") { callSid: String ->
+      CallNotification.forgetRing(callSid)
       TelecomCalls.markAnswering(callSid)
+    }
+
+    Function("abandonAnswer") { callSid: String ->
+      CallNotification.forgetRing(callSid)
+      TelecomCalls.abandonAnswer(callSid)
     }
 
     Function("endRingingCall") { callSid: String ->
@@ -214,6 +231,10 @@ class ChatwootCallsModule : Module() {
 
     // While the phone is locked the call screen may show, but nothing behind it may be
     // reached, so the app hides the controls that would navigate into it
+    Function("isAppInForeground") { ->
+      AppVisibility.foreground
+    }
+
     Function("isDeviceLocked") { ->
       val keyguard = context.getSystemService(android.app.KeyguardManager::class.java)
       keyguard?.isKeyguardLocked ?: false
@@ -225,8 +246,8 @@ class ChatwootCallsModule : Module() {
       IncomingCallActivity.setCallScreenVisible(visible)
     }
 
-    Function("openAppFromLockScreen") {
-      IncomingCallActivity.openApp()
+    AsyncFunction("openAppFromLockScreen") { promise: expo.modules.kotlin.Promise ->
+      IncomingCallActivity.openApp { opened -> promise.resolve(opened) }
     }
 
     // Android shows the frame saved when the app last left the foreground until the app
@@ -242,6 +263,17 @@ class ChatwootCallsModule : Module() {
 
     // The app was opened by a call and the call is over: step back off the lock screen
     // rather than leaving the app sitting on top of it
+    // The phone's ringtone while a call rings with the app in front, the same ring the
+    // native call screen uses
+    Function("startAppRinger") { ->
+      appRinger.stop()
+      appRinger.start()
+    }
+
+    Function("stopAppRinger") { ->
+      appRinger.stop()
+    }
+
     Function("moveAppToBackground") { ->
       appContext.currentActivity?.let { activity ->
         activity.runOnUiThread { activity.moveTaskToBack(true) }

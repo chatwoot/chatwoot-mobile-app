@@ -1,3 +1,4 @@
+import { subscribePushRegistration } from '@/utils/pushRegistration';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -90,7 +91,6 @@ const Tabs = () => {
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
-    dispatch(settingsActions.saveDeviceDetails());
     dispatch(inboxActions.fetchInboxes());
     initActionCable();
     dispatch(labelActions.fetchLabels());
@@ -103,6 +103,14 @@ const Tabs = () => {
     initPushNotifications();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(
+    () =>
+      subscribePushRegistration(requestPermission =>
+        dispatch(settingsActions.saveDeviceDetails({ requestPermission })),
+      ),
+    [dispatch],
+  );
 
   const initAnalytics = useCallback(async () => {
     if (user) {

@@ -16,6 +16,7 @@ import { evaluateSLAStatus } from '@chatwoot/utils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -30,6 +31,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const inbox = useAppSelector(state =>
+    conversation?.inboxId ? selectInboxById(state, conversation.inboxId) : undefined,
+  );
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
 
@@ -161,6 +165,8 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   return (
     <ChatHeader
       name={name}
+      inbox={inbox}
+      additionalAttributes={conversation?.additionalAttributes}
       imageSrc={imageSrc}
       isResolved={isResolved}
       dashboardsList={dashboardsList}

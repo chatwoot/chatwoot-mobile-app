@@ -115,6 +115,11 @@ export const conversationActions = {
         const camelCaseMessage = transformMessage(response);
 
         dispatch({
+          type: 'conversation/updateConversationLastActivity',
+          payload: { conversationId, lastActivityAt: camelCaseMessage.createdAt },
+        });
+
+        dispatch({
           type: 'conversation/addOrUpdateMessage',
           payload: {
             ...camelCaseMessage,
@@ -172,6 +177,11 @@ export const conversationActions = {
         }
 
         const camelCaseMessage = transformMessage(response);
+
+        dispatch({
+          type: 'conversation/updateConversationLastActivity',
+          payload: { conversationId, lastActivityAt: camelCaseMessage.createdAt },
+        });
 
         dispatch({
           type: 'conversation/addOrUpdateMessage',
@@ -322,7 +332,11 @@ export const conversationActions = {
     },
   ),
   translateMessage: createAsyncThunk<
-    TranslateMessageAPIResponse & { conversationId: number; messageId: number; targetLanguage: string },
+    TranslateMessageAPIResponse & {
+      conversationId: number;
+      messageId: number;
+      targetLanguage: string;
+    },
     TranslateMessagePayload
   >('conversations/translateMessage', async (payload, { rejectWithValue }) => {
     try {

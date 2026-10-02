@@ -15,9 +15,8 @@ type LastActivityTimeProps = {
 };
 
 export const LastActivityTime = ({ timestamp }: LastActivityTimeProps) => {
-  const [lastActivityTime, setLastActivityTime] = useState(
-    formatTimeToShortForm(formatRelativeTime(timestamp)),
-  );
+  const [, refreshTime] = useState(0);
+  const lastActivityTime = formatTimeToShortForm(formatRelativeTime(timestamp));
 
   useEffect(() => {
     const getRefreshTime = () => {
@@ -27,19 +26,15 @@ export const LastActivityTime = ({ timestamp }: LastActivityTimeProps) => {
       return MINUTE_IN_MS;
     };
 
-    const updateTime = () => {
-      setLastActivityTime(formatTimeToShortForm(formatRelativeTime(timestamp)));
+    let timer: ReturnType<typeof setTimeout>;
+    const refresh = () => {
+      refreshTime(value => value + 1);
+      timer = setTimeout(refresh, getRefreshTime());
     };
-
-    const timer = setTimeout(function refresh() {
-      updateTime();
-      // Set up next refresh
-      setTimeout(refresh, getRefreshTime());
-    }, getRefreshTime());
+    timer = setTimeout(refresh, getRefreshTime());
 
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [timestamp]);
 
   return (
     <NativeView>

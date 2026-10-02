@@ -87,56 +87,56 @@ export const settingsActions = {
     ({ installationUrl }) => SettingsService.getChatwootVersion(installationUrl),
   ),
 
-  saveDeviceDetails: createAsyncThunk<{ fcmToken: string }, void>(
-    'settings/saveDeviceDetails',
-    async (_, { rejectWithValue }) => {
-      try {
-        const deviceId = await getUniqueId();
-        const devicePlatform = getSystemName();
-        const manufacturer = await getManufacturer();
-        const model = await getModel();
-        const apiLevel = await getApiLevel();
-        const deviceName = `${manufacturer} ${model}`;
+  saveDeviceDetails: createAsyncThunk<
+    { fcmToken: string },
+    { requestPermission?: boolean } | undefined
+  >('settings/saveDeviceDetails', async (options, { rejectWithValue }) => {
+    try {
+      const deviceId = await getUniqueId();
+      const devicePlatform = getSystemName();
+      const manufacturer = await getManufacturer();
+      const model = await getModel();
+      const apiLevel = await getApiLevel();
+      const deviceName = `${manufacturer} ${model}`;
 
-        const brandName = await getBrand();
-        const buildNumber = await getBuildNumber();
+      const brandName = await getBrand();
+      const buildNumber = await getBuildNumber();
 
-        // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
-        const { status } = await checkNotifications();
-        if (status !== RESULTS.GRANTED) {
-          await requestNotifications(['alert', 'sound', 'badge']);
-        }
-
-        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-        // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
-        // await messaging().registerDeviceForRemoteMessages();
-        await sleep(1000);
-        const fcmToken = await getToken(getMessaging());
-
-        const pushData: PushPayload = {
-          subscription_type: 'fcm',
-          subscription_attributes: {
-            deviceName,
-            devicePlatform,
-            apiLevel: apiLevel.toString(),
-            brandName,
-            buildNumber,
-            push_token: fcmToken,
-            device_id: deviceId,
-          },
-        };
-        await SettingsService.saveDeviceDetails(pushData);
-        return { fcmToken };
-      } catch (error) {
-        if (!isUnactionablePushError(error)) {
-          Sentry.captureException(error);
-        }
-        return rejectWithValue(
-          error instanceof Error ? error.message : 'Error saving device details',
-        );
+      // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
+      const { status } = await checkNotifications();
+      if (status !== RESULTS.GRANTED && options?.requestPermission !== false) {
+        await requestNotifications(['alert', 'sound', 'badge']);
       }
-    },
-  ),
+
+      const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+      // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
+      // await messaging().registerDeviceForRemoteMessages();
+      await sleep(1000);
+      const fcmToken = await getToken(getMessaging());
+
+      const pushData: PushPayload = {
+        subscription_type: 'fcm',
+        subscription_attributes: {
+          deviceName,
+          devicePlatform,
+          apiLevel: apiLevel.toString(),
+          brandName,
+          buildNumber,
+          push_token: fcmToken,
+          device_id: deviceId,
+        },
+      };
+      await SettingsService.saveDeviceDetails(pushData);
+      return { fcmToken };
+    } catch (error) {
+      if (!isUnactionablePushError(error)) {
+        Sentry.captureException(error);
+      }
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Error saving device details',
+      );
+    }
+  }),
 
   removeDevice: createSettingsThunk<void, { pushToken: string }>(
     'settings/removeDevice',

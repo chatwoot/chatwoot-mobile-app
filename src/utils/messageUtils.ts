@@ -17,7 +17,7 @@ export const createPendingMessage = (data: SendMessagePayload): PendingMessage =
   const timestamp = Math.floor(new Date().getTime() / 1000);
   const tempMessageId = getUuid();
 
-  const { message, file, sender } = data;
+  const { message, files, sender } = data;
   const tempAttachments = [{ id: tempMessageId }];
   const pendingMessage = {
     ...data,
@@ -27,7 +27,7 @@ export const createPendingMessage = (data: SendMessagePayload): PendingMessage =
     status: MESSAGE_STATUS.PROGRESS,
     createdAt: timestamp,
     messageType: MESSAGE_TYPES.OUTGOING,
-    attachments: file ? tempAttachments : null,
+    attachments: files?.length ? tempAttachments : null,
     // The sender in the payload has no type, so the message cannot be attributed to the current
     // user once it leaves the progress state. Stamp it here so a failed message stays on the right.
     senderId: sender?.id,
@@ -35,6 +35,22 @@ export const createPendingMessage = (data: SendMessagePayload): PendingMessage =
   };
 
   return pendingMessage;
+};
+
+/**
+ * Splits a message into one message per attached file, for channels that deliver only the first
+ * attachment of a message. The text is sent with the first file as its caption.
+ */
+export const splitMessagePerAttachment = (data: SendMessagePayload): SendMessagePayload[] => {
+  const { files, message } = data;
+  if (!files || files.length < 2) {
+    return [data];
+  }
+  return files.map((file, index) => ({
+    ...data,
+    message: index === 0 ? message : '',
+    files: [file],
+  }));
 };
 
 /**
@@ -72,7 +88,7 @@ export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload 
   let payload;
   const {
     message,
-    file,
+    files,
     private: isPrivate,
     echoId,
     ccEmails,
@@ -81,18 +97,20 @@ export const buildCreatePayload = (data: PendingMessage): MessageBuilderPayload 
     templateParams,
     toEmails,
   } = data;
-  if (file) {
+  if (files?.length) {
     payload = new FormData();
     if (message) {
       payload.append('content', message);
     }
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    payload.append('attachments[]', {
-      uri: file.uri,
-      name: file.fileName,
-      type: file.type,
-    });
+    for (const file of files) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      payload.append('attachments[]', {
+        uri: file.uri,
+        name: file.fileName,
+        type: file.type,
+      });
+    }
     payload.append('private', isPrivate.toString());
     payload.append('echo_id', echoId);
     payload.append('cc_emails', ccEmails || '');

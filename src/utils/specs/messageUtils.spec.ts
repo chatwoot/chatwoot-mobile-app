@@ -1,7 +1,9 @@
 import {
+  buildCreatePayload,
   canRetryMessage,
   createPendingMessage,
   hasMessageFailedWithExternalError,
+  splitMessagePerAttachment,
 } from '@/utils/messageUtils';
 import { MESSAGE_STATUS, MESSAGE_TYPES, SENDER_TYPES } from '@/constants';
 import type { SendMessagePayload } from '@/store/conversation/conversationTypes';
@@ -21,6 +23,22 @@ const buildMessage = (overrides: Partial<Message> = {}): Message =>
     ...overrides,
   }) as unknown as Message;
 
+const photo = (name: string) =>
+  ({ uri: `file:///tmp/${name}`, fileName: name, type: 'image/jpeg' }) as unknown as File;
+
+const basePayload = (overrides: Partial<SendMessagePayload> = {}): SendMessagePayload => ({
+  conversationId: 1,
+  message: 'Hello',
+  private: false,
+  sender: { id: 7, thumbnail: '' },
+  ...overrides,
+});
+
+// The test environment's FormData stringifies non-Blob values, so the appended parts are read from
+// the append calls instead of from the payload
+const appendedAttachments = (append: jest.SpyInstance) =>
+  append.mock.calls.filter(([name]) => name === 'attachments[]').map(([, value]) => value);
+
 describe('createPendingMessage', () => {
   it('stamps the sender so the message stays attributed once it leaves the progress state', () => {
     const pendingMessage = createPendingMessage({
@@ -33,6 +51,76 @@ describe('createPendingMessage', () => {
     expect(pendingMessage.senderId).toBe(7);
     expect(pendingMessage.senderType).toBe(SENDER_TYPES.USER);
     expect(pendingMessage.messageType).toBe(MESSAGE_TYPES.OUTGOING);
+  });
+
+  it('shows the message as carrying attachments only when files are attached', () => {
+    expect(createPendingMessage(basePayload()).attachments).toBeNull();
+    expect(createPendingMessage(basePayload({ files: [] })).attachments).toBeNull();
+    expect(
+      createPendingMessage(basePayload({ files: [photo('a.jpg'), photo('b.jpg')] })).attachments,
+    ).toHaveLength(1);
+  });
+});
+
+describe('buildCreatePayload', () => {
+  let append: jest.SpyInstance;
+
+  beforeEach(() => {
+    append = jest.spyOn(FormData.prototype, 'append');
+  });
+
+  afterEach(() => {
+    append.mockRestore();
+  });
+
+  it('builds a JSON payload when no files are attached', () => {
+    const payload = buildCreatePayload(createPendingMessage(basePayload({ files: [] })));
+    expect(payload).not.toBeInstanceOf(FormData);
+    expect(payload).toEqual(expect.objectContaining({ content: 'Hello', private: false }));
+  });
+
+  it('appends every attached file to a single multipart payload', () => {
+    // All files go out in one request so an email reply carries them in one email
+    const payload = buildCreatePayload(
+      createPendingMessage(basePayload({ files: [photo('a.jpg'), photo('b.jpg')] })),
+    );
+
+    expect(payload).toBeInstanceOf(FormData);
+    expect(appendedAttachments(append)).toEqual([
+      { uri: 'file:///tmp/a.jpg', name: 'a.jpg', type: 'image/jpeg' },
+      { uri: 'file:///tmp/b.jpg', name: 'b.jpg', type: 'image/jpeg' },
+    ]);
+    expect(append).toHaveBeenCalledWith('content', 'Hello');
+  });
+
+  it('appends a single file, such as a voice recording', () => {
+    buildCreatePayload(
+      createPendingMessage(basePayload({ message: '', files: [photo('voice.wav')] })),
+    );
+
+    expect(appendedAttachments(append)).toHaveLength(1);
+    expect(append).not.toHaveBeenCalledWith('content', expect.anything());
+  });
+});
+
+describe('splitMessagePerAttachment', () => {
+  it('keeps a message with at most one file as it is', () => {
+    const payload = basePayload({ files: [photo('a.jpg')] });
+    expect(splitMessagePerAttachment(payload)).toEqual([payload]);
+    expect(splitMessagePerAttachment(basePayload())).toEqual([basePayload()]);
+  });
+
+  it('sends each file as its own message with the text on the first one', () => {
+    const messages = splitMessagePerAttachment(
+      basePayload({ files: [photo('a.jpg'), photo('b.jpg'), photo('c.jpg')] }),
+    );
+
+    expect(messages.map(({ files }) => files)).toEqual([
+      [photo('a.jpg')],
+      [photo('b.jpg')],
+      [photo('c.jpg')],
+    ]);
+    expect(messages.map(({ message }) => message)).toEqual(['Hello', '', '']);
   });
 });
 

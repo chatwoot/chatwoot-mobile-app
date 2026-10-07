@@ -106,6 +106,53 @@ describe('conversationActions.retryMessage', () => {
     expect(payloads[1].status).toBe(MESSAGE_STATUS.SENT);
   });
 
+  it('creates the message again with every attached file as multipart', async () => {
+    (ConversationService.sendMessage as jest.Mock).mockResolvedValueOnce({
+      id: 14,
+      conversation_id: 1,
+      content: 'Hello',
+      echo_id: 'abcd1234',
+    });
+
+    const files = [
+      { uri: 'file:///tmp/a.jpg', fileName: 'a.jpg', type: 'image/jpeg' },
+      { uri: 'file:///tmp/b.png', fileName: 'b.png', type: 'image/png' },
+    ];
+    await runThunk(
+      failedMessage({ files, attachments: [{ id: 'abcd1234' }] } as unknown as Partial<Message>),
+    );
+
+    expect(ConversationService.sendMessage).toHaveBeenCalledWith(1, expect.any(FormData), {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  });
+
+  it('keeps the attachment of a message stored with a single file', async () => {
+    (ConversationService.sendMessage as jest.Mock).mockResolvedValueOnce({
+      id: 16,
+      conversation_id: 1,
+      content: 'Hello',
+      echo_id: 'abcd1234',
+    });
+    const append = jest.spyOn(FormData.prototype, 'append');
+
+    // Failed messages persisted before multiple attachments were supported carry `file`
+    const file = { uri: 'file:///tmp/a.jpg', fileName: 'a.jpg', type: 'image/jpeg' };
+    await runThunk(
+      failedMessage({ file, attachments: [{ id: 'abcd1234' }] } as unknown as Partial<Message>),
+    );
+
+    expect(ConversationService.sendMessage).toHaveBeenCalledWith(1, expect.any(FormData), {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    expect(append).toHaveBeenCalledWith('attachments[]', {
+      uri: 'file:///tmp/a.jpg',
+      name: 'a.jpg',
+      type: 'image/jpeg',
+    });
+    append.mockRestore();
+  });
+
   it('puts the message back into a failed state when the retry fails', async () => {
     (ConversationService.sendMessage as jest.Mock).mockRejectedValueOnce({
       response: { data: { errors: ['Network unreachable'] } },
@@ -121,5 +168,37 @@ describe('conversationActions.retryMessage', () => {
         meta: { error: 'Network unreachable' },
       }),
     );
+  });
+});
+
+describe('conversationActions.sendMessage', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('sends every attached file in one multipart request', async () => {
+    (ConversationService.sendMessage as jest.Mock).mockResolvedValueOnce({
+      id: 15,
+      conversation_id: 1,
+      content: 'Hello',
+    });
+
+    const dispatch = jest.fn();
+    const thunk = conversationActions.sendMessage({
+      conversationId: 1,
+      message: 'Hello',
+      private: false,
+      sender: { id: 7 },
+      files: [
+        { uri: 'file:///tmp/a.jpg', fileName: 'a.jpg', type: 'image/jpeg' },
+        { uri: 'file:///tmp/b.jpg', fileName: 'b.jpg', type: 'image/jpeg' },
+      ] as unknown as File[],
+    });
+    await thunk(dispatch, () => ({}), undefined);
+
+    expect(ConversationService.sendMessage).toHaveBeenCalledTimes(1);
+    expect(ConversationService.sendMessage).toHaveBeenCalledWith(1, expect.any(FormData), {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   });
 });

@@ -115,6 +115,13 @@
           "ALL": "All"
         }
       },
+      "READ_STATUS": {
+        "TITLE": "Filter by read status",
+        "OPTIONS": {
+          "ALL": "Read & Unread",
+          "UNREAD": "Unread"
+        }
+      },
       "ASSIGNEE_TYPE": {
         "TITLE": "Filter by assignee type",
         "OPTIONS": {

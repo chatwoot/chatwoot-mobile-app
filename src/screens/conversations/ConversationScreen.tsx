@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,6 +11,7 @@ import {
   SortByFilters,
   InboxFilters,
   AssigneeTypeFilters,
+  ReadStatusFilters,
 } from './components';
 
 import { ActionTabs } from '@/components-next';
@@ -48,6 +49,7 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
+import { isUnreadListComplete, shouldFetchNextUnreadPage } from '@/utils/conversationUtils';
 import { useTabBarHeight } from '@/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -72,6 +74,8 @@ const ConversationList = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   // This is used for pagination
   const [pageNumber, setPageNumber] = useState(1);
+  // Set once the unread filter has loaded every unread conversation
+  const [hasAllUnread, setHasAllUnread] = useState(false);
   const userId = useAppSelector(selectUserId);
   const accountId = useAppSelector(selectCurrentUserAccountId);
 
@@ -81,7 +85,7 @@ const ConversationList = () => {
   // This is used to check if the conversations are still loading
   const isConversationsLoading = useAppSelector(selectConversationsLoading);
   // This is used to check if all the conversations are fetched
-  const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
+  const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched) || hasAllUnread;
 
   const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
     return (
@@ -108,8 +112,13 @@ const ConversationList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId, filters]);
 
+  // Bumped on every reset so an unread page chain started for older filters stops
+  const fetchGenerationRef = useRef(0);
+
   const clearAndFetchConversations = useCallback(async (filters: FilterState) => {
+    fetchGenerationRef.current += 1;
     setPageNumber(1);
+    setHasAllUnread(false);
     await dispatch(clearAllConversations());
     await dispatch(clearAllContacts());
     await dispatch(clearAssignableAgents());
@@ -171,15 +180,32 @@ const ConversationList = () => {
 
   const fetchConversations = useCallback(
     async (filters: FilterState, page: number = 1) => {
+      const isUnreadFilter = filters.read_status === 'unread';
+      const generation = fetchGenerationRef.current;
       const conversationFilters = {
         status: filters.status,
         assigneeType: filters.assignee_type,
         page: page,
-        sortBy: filters.sort_by,
+        // Unread conversations come first, so the unread filter needs few pages
+        sortBy: isUnreadFilter ? 'unread' : filters.sort_by,
         inboxId: parseInt(filters.inbox_id),
       } as ConversationPayload;
 
-      dispatch(conversationActions.fetchConversations(conversationFilters));
+      const action = await dispatch(conversationActions.fetchConversations(conversationFilters));
+      if (
+        !isUnreadFilter ||
+        generation !== fetchGenerationRef.current ||
+        !conversationActions.fetchConversations.fulfilled.match(action)
+      ) {
+        return;
+      }
+      const { conversations } = action.payload;
+      if (isUnreadListComplete(conversations)) {
+        setHasAllUnread(true);
+      } else if (shouldFetchNextUnreadPage(conversations, page)) {
+        setPageNumber(page + 1);
+        fetchConversations(filters, page + 1);
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -271,6 +297,8 @@ const ConversationScreen = () => {
         return 200;
       case 'assignee_type':
         return 200;
+      case 'read_status':
+        return 160;
       default:
         return 250;
     }
@@ -303,6 +331,7 @@ const ConversationScreen = () => {
               {currentBottomSheet === 'status' ? <StatusFilters /> : null}
               {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
               {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
+              {currentBottomSheet === 'read_status' ? <ReadStatusFilters /> : null}
             </>
           )}
         </Sheet>

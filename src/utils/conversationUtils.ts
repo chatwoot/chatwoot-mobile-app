@@ -10,17 +10,36 @@ const filterByStatus = (chatStatus: string, filterStatus: string) =>
   filterStatus === 'all' ? true : chatStatus === filterStatus;
 
 export const shouldApplyFilters = (conversation: Conversation, filters: FilterState) => {
-  const { inbox_id: inboxId, status } = filters;
-  const { status: chatStatus, inboxId: chatInboxId } = conversation;
+  const { inbox_id: inboxId, status, read_status: readStatus } = filters;
+  const { status: chatStatus, inboxId: chatInboxId, unreadCount } = conversation;
   let shouldFilter = filterByStatus(chatStatus, status);
   const hasInboxFilter = inboxId && inboxId !== '0';
   if (hasInboxFilter) {
     const filterByInbox = Number(inboxId) === chatInboxId;
     shouldFilter = shouldFilter && filterByInbox;
   }
+  if (readStatus === 'unread') {
+    shouldFilter = shouldFilter && unreadCount > 0;
+  }
 
   return shouldFilter;
 };
+
+const CONVERSATIONS_PAGE_SIZE = 20;
+const MAX_UNREAD_AUTO_PAGES = 5;
+
+/**
+ * With sort_by=unread the server lists unread conversations first, so a page holding a
+ * read one means every unread conversation has been loaded.
+ */
+export const isUnreadListComplete = (pageConversations: Conversation[]) =>
+  pageConversations.some(conversation => !conversation.unreadCount);
+
+// Servers before v4.15 ignore sort_by=unread, hence the page cap
+export const shouldFetchNextUnreadPage = (pageConversations: Conversation[], page: number) =>
+  page < MAX_UNREAD_AUTO_PAGES &&
+  pageConversations.length >= CONVERSATIONS_PAGE_SIZE &&
+  !isUnreadListComplete(pageConversations);
 
 const getLastNonActivityMessage = (
   messageInStore: Message | null,

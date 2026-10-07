@@ -1,6 +1,6 @@
 import { PathProps } from 'react-native-svg';
 
-import { AllStatusTypes, AssigneeTypes, SortTypes } from './common';
+import { AllStatusTypes, AssigneeTypes, ReadStatusTypes, SortTypes } from './common';
 
 export * from './Agent';
 export * from './AgentBot';
@@ -47,12 +47,18 @@ export interface AttributeListType {
  * The types of Filter for Conversation List
  */
 
-export type ConversationFilterOptions = 'assignee_type' | 'status' | 'sort_by' | 'inbox_id';
+export type ConversationFilterOptions =
+  | 'assignee_type'
+  | 'status'
+  | 'read_status'
+  | 'sort_by'
+  | 'inbox_id';
 
 // Defining the specific options for each filter type
 export type AssigneeFilterOptions = Record<AssigneeTypes, string>;
 export type StatusFilterOptions = Record<AllStatusTypes, string>;
 export type SortFilterOptions = Record<SortTypes, string>;
+export type ReadStatusFilterOptions = Record<ReadStatusTypes, string>;
 
 export type FilterOption<T extends ConversationFilterOptions> = {
   type: T;
@@ -60,11 +66,13 @@ export type FilterOption<T extends ConversationFilterOptions> = {
     ? AssigneeFilterOptions
     : T extends 'status'
       ? StatusFilterOptions
-      : T extends 'sort_by'
-        ? SortFilterOptions
-        : T extends 'inbox_id'
-          ? Record<number, string>
-          : never;
+      : T extends 'read_status'
+        ? ReadStatusFilterOptions
+        : T extends 'sort_by'
+          ? SortFilterOptions
+          : T extends 'inbox_id'
+            ? Record<number, string>
+            : never;
   defaultFilter: string;
 };
 

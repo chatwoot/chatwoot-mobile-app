@@ -157,7 +157,6 @@ const BottomSheetContent = () => {
   const [ccEmails, setCCEmails] = useState('');
   const [bccEmails, setBCCEmails] = useState('');
   const [toEmails, setToEmails] = useState('');
-  const [selectedCannedResponse, setSelectedCannedResponse] = useState<string | null>(null);
   const [copilotFollowUpText, setCopilotFollowUpText] = useState('');
 
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
@@ -439,7 +438,6 @@ const BottomSheetContent = () => {
   const sendMessage = (messagePayload: SendMessagePayload) => {
     dispatch(conversationActions.sendMessage(messagePayload));
     dispatch(resetSentMessage());
-    setSelectedCannedResponse(null);
     dispatch(setMessageContent(''));
     setCCEmails('');
     setBCCEmails('');
@@ -491,7 +489,7 @@ const BottomSheetContent = () => {
       variables: messageVariables,
     });
     AnalyticsHelper.track(CONVERSATION_EVENTS.INSERTED_A_CANNED_RESPONSE);
-    setSelectedCannedResponse(updatedContent);
+    dispatch(setMessageContent(updatedContent));
   };
 
   const onPressVoiceRecordIcon = () => {
@@ -583,7 +581,6 @@ const BottomSheetContent = () => {
                 <MessageTextInput
                   maxLength={maxLength()}
                   replyEditorMode={replyEditorMode}
-                  selectedCannedResponse={selectedCannedResponse}
                   agents={agents as Agent[]}
                   messageContent={messageContent}
                 />

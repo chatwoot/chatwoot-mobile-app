@@ -26,7 +26,6 @@ import {
   togglePrivateMessage,
   selectIsPrivateMessage,
   selectQuoteMessage,
-  selectMessageContent,
 } from '@/store/conversation/sendMessageSlice';
 import { REPLY_EDITOR_MODES } from '@/constants';
 import i18n from '@/i18n';
@@ -82,9 +81,9 @@ export const MessageTextInput = ({
   replyEditorMode,
   selectedCannedResponse,
   agents,
+  messageContent,
 }: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
-  const messageContent = useAppSelector(selectMessageContent);
 
   const lockIconAnimatedPosition = useAnimatedStyle(() => {
     return {
@@ -135,7 +134,7 @@ export const MessageTextInput = ({
 
   const onChangeText = (text: string) => {
     startTyping();
-    dispatch(setMessageContent(text));
+    dispatch(setMessageContent({ conversationId, content: text }));
   };
 
   const handleOnFocus = useCallback(
@@ -256,7 +255,6 @@ export const MessageTextInput = ({
               ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
           }
-          onSubmitEditing={() => setMessageContent('')}
           value={messageContent}
           returnKeyType={'default'}
           textAlignVertical="top"

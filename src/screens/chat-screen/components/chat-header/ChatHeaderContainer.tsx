@@ -13,7 +13,6 @@ import { DashboardList } from './DropdownMenu';
 import { ImageSourcePropType } from 'react-native';
 import { SLAStatus } from '@/types/common/SLA';
 import { evaluateSLAStatus } from '@chatwoot/utils';
-import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
 
@@ -88,7 +87,6 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   }, [createTimer, updateSlaStatus]);
 
   const handleBackPress = () => {
-    dispatch(resetSentMessage());
     if (navigation.canGoBack()) {
       navigation.dispatch(StackActions.pop());
     } else {

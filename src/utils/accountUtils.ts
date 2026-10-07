@@ -13,7 +13,7 @@ import { resetFilters } from '@/store/conversation/conversationFilterSlice';
 import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
 import { clearAllParticipants } from '@/store/conversation-participant/conversationParticipantSlice';
 import { resetCopilot } from '@/store/copilot/copilotSlice';
-import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
+import { resetSendMessageState } from '@/store/conversation/sendMessageSlice';
 
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllContacts());
@@ -26,7 +26,7 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAssignableAgents());
   dispatch(clearAllParticipants());
   dispatch(resetCopilot());
-  dispatch(resetSentMessage());
+  dispatch(resetSendMessageState());
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
 };

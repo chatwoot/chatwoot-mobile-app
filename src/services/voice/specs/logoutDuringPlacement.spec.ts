@@ -60,7 +60,10 @@ test('automatic logout cancels an outbound placement awaiting the provider respo
     .unwrap();
   await new Promise(resolve => setTimeout(resolve, 0));
   expect(CallService.initiateWhatsappCall).toHaveBeenCalled();
+  const cancelPlacing = jest.spyOn(callActions, 'cancelPlacingCall');
   store.dispatch({ type: 'auth/logout' });
+  // The sign-out is acted on once, though its own dispatches re-enter the subscriber
+  expect(cancelPlacing).toHaveBeenCalledTimes(1);
   detach();
   await new Promise(resolve => setTimeout(resolve, 0));
   started({ status: 'calling', id: 10, call_id: 'late-outbound', conversation_id: 7 });

@@ -334,15 +334,18 @@ const install = () => {
     // Signing out, a 401's automatic logout included, may come while a call is joining or
     // being placed: its media is released at once and again once the join settles, no join
     // starts meanwhile, and the placement is given up
+    // The flag moves before anything is dispatched, since a dispatch re-enters this
+    // subscriber, which must not see the sign-out again
+    const wasSignedIn = signedIn;
     const nowSignedIn = !!state.auth?.user;
-    if (signedIn && !nowSignedIn) {
+    signedIn = nowSignedIn;
+    if (wasSignedIn && !nowSignedIn) {
       releaseAllMedia();
       // A call still being placed is given up, so its late response does not install it
       // in the next session
       store.dispatch(callActions.cancelPlacingCall());
       closeSession(async () => releaseAllMedia()).catch(() => {});
     }
-    signedIn = nowSignedIn;
     // Signing out clears the store under a live call; its media and system call end too
     if (!state.auth?.user && carriedCall) {
       const ended = carriedCall;

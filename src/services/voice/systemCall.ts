@@ -125,7 +125,7 @@ export const callerInfo = (state: RootState, call: LiveCall) => {
 };
 
 // Resolves once no call is joining
-const whenNotJoining = (store: Store) =>
+export const whenNotJoining = (store: Store) =>
   new Promise<void>(resolve => {
     if (!selectIsJoining(store.getState())) {
       resolve();

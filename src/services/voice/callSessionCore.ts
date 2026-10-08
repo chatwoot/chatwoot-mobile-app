@@ -23,7 +23,7 @@ import {
 import { callEngine } from '@/services/voice/callEngine';
 import { setWebrtcConnectionLostHandler, webrtcEngine } from '@/services/voice/webrtcEngine';
 import type { LiveCall } from '@/store/call/callTypes';
-import { callerInfo, systemCall } from '@/services/voice/systemCall';
+import { callerInfo, systemCall, whenNotJoining } from '@/services/voice/systemCall';
 import { takePendingCallAction, type PendingCallAction } from '@/utils/callNotifications';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
@@ -97,12 +97,18 @@ export const attachCallSessionCore = () => {
   };
 };
 
-// The choices made on the Android call notification or native call screen, oldest first.
-// Each is taken once, so concurrent runs share the queue rather than repeat a choice.
-export const applyPendingCallAction = async () => {
-  for (let pending = takePendingCallAction(); pending; pending = takePendingCallAction()) {
-    await applyCallAction(pending);
-  }
+// The choices made on the Android call notification or native call screen, applied one
+// at a time, oldest first. A run requested while another drains the queue follows it, and
+// resolves once the choices queued by then are applied.
+let draining: Promise<void> = Promise.resolve();
+export const applyPendingCallAction = () => {
+  const run = draining.then(async () => {
+    for (let pending = takePendingCallAction(); pending; pending = takePendingCallAction()) {
+      await applyCallAction(pending);
+    }
+  });
+  draining = run.catch(() => {});
+  return run;
 };
 
 // A call answered before it reached the store is created from what the ring carried, so
@@ -123,8 +129,12 @@ const applyCallAction = async (pending: PendingCallAction) => {
       }),
     );
   }
-  // Taken here: the call screen shows it connecting from the first frame
-  if (pending.action === 'answer') store.dispatch(markLocalCall(pending.callSid));
+  // Taken once no other join is under way, so the call this device is on stays its own
+  // until this one can join; the call screen then shows it connecting from the first frame
+  if (pending.action === 'answer') {
+    await whenNotJoining(store);
+    store.dispatch(markLocalCall(pending.callSid));
+  }
   const call = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);
   if (pending.action === 'decline') {
     // The server learns of the decline so the caller and the agent's other devices stop

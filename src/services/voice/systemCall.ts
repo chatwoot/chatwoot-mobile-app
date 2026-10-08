@@ -15,6 +15,7 @@ import {
   selectActiveCall,
   selectCalls,
   selectIsJoining,
+  selectIsMuted,
   selectLocalCallSid,
 } from '@/store/call/callSelectors';
 import type { LiveCall } from '@/store/call/callTypes';
@@ -201,6 +202,10 @@ export const systemCall = {
         return;
       }
       store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
+      // A mute made while the call was being placed is shown on the OS call screen too
+      if (selectIsMuted(store.getState())) {
+        requestSystemCallMute(systemUuid, true).catch(() => {});
+      }
     } catch (error) {
       console.warn('System call UI could not start the call', error);
     }

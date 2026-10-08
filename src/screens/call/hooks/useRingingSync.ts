@@ -5,14 +5,20 @@ import { getMessaging, onMessage } from '@react-native-firebase/messaging';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { store } from '@/store';
 import { callActions } from '@/store/call/callActions';
-import { dismissCall } from '@/store/call/callSlice';
+import { addCall, dismissCall } from '@/store/call/callSlice';
+import { selectCalls, selectLocalCallSid } from '@/store/call/callSelectors';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { isVoiceCallEnabled } from '@/utils/inboxUtils';
 import { applyPendingCallAction } from '@/services/voice/callSessionCore';
 import { systemCall, systemEndReason } from '@/services/voice/systemCall';
 import actionCableConnector from '@/utils/actionCable';
-import { isCallPush } from '@/utils/callNotifications';
+import {
+  type CallPushPayload,
+  callFromPush,
+  isCallCancelPush,
+  isCallPush,
+} from '@/utils/callNotifications';
 
 let syncing = false;
 let syncAgain = false;
@@ -75,15 +81,36 @@ export const useRingingSync = () => {
   }, [accountId, hasCallingInbox, syncRinging]);
 
   // A call push arriving while the app is in front: the socket may have dropped, so the
-  // ringing call is fetched rather than waited for
+  // ringing call is fetched rather than waited for. A ring for another account is taken
+  // from the push, since the fetch only sees the account on screen. A ring that is over
+  // leaves the app's ring UI, unless it is the call this device is on.
   useEffect(
     () =>
       onMessage(getMessaging(), async message => {
-        if (!isCallPush(message.data)) return;
+        const data = message.data as CallPushPayload | undefined;
+        if (isCallCancelPush(data) && data?.call_id) {
+          const state = store.getState();
+          const call = selectCalls(state).find(entry => entry.callSid === data.call_id);
+          if (!call || call.isActive || selectLocalCallSid(state) === call.callSid) return;
+          systemCall.endedBySid(
+            store,
+            call.callSid,
+            systemEndReason(store, call.callSid, data.reason),
+          );
+          dispatch(dismissCall(call.callSid));
+          return;
+        }
+        if (!isCallPush(data) || !data) return;
         actionCableConnector.ensureConnected();
+        const pushed = callFromPush(data);
+        const currentAccountId = selectCurrentUserAccountId(store.getState());
+        if (pushed?.accountId && pushed.accountId !== currentAccountId) {
+          dispatch(addCall(pushed));
+          return;
+        }
         syncRinging();
       }),
-    [syncRinging],
+    [dispatch, syncRinging],
   );
 
   return syncRinging;

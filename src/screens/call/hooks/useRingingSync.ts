@@ -15,6 +15,7 @@ import actionCableConnector from '@/utils/actionCable';
 import { isCallPush } from '@/utils/callNotifications';
 
 let syncing = false;
+let syncAgain = false;
 
 // Reconciles this device's ringing calls with the server whenever the socket may have
 // missed something: on launch, on every return to the foreground, and when a call push
@@ -28,9 +29,14 @@ export const useRingingSync = () => {
   // rang while the socket was down and end system calls the server has moved on from
   const syncRinging = useCallback(() => {
     applyPendingCallAction().catch(() => {});
-    // Only accounts with an inbox that can call have anything to sync, and one sync at a
-    // time is enough
-    if (syncing || !selectAllInboxes(store.getState()).some(isVoiceCallEnabled)) return;
+    // Only accounts with an inbox that can call have anything to sync. One sync runs at a
+    // time; a request made during it runs once it finishes, since the account may have
+    // changed under it
+    if (!selectAllInboxes(store.getState()).some(isVoiceCallEnabled)) return;
+    if (syncing) {
+      syncAgain = true;
+      return;
+    }
     syncing = true;
     dispatch(callActions.syncRingingCalls())
       .unwrap()
@@ -44,6 +50,10 @@ export const useRingingSync = () => {
       .catch(() => {})
       .finally(() => {
         syncing = false;
+        if (syncAgain) {
+          syncAgain = false;
+          syncRinging();
+        }
       });
   }, [dispatch]);
 

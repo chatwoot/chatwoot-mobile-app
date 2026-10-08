@@ -70,10 +70,10 @@ object TelecomCalls {
 
   private fun systemDisconnect(context: Context, callSid: String) {
     val handler = onSystemDisconnect
-    if (handler != null) {
-      handler(callSid)
-    } else if (CallNotification.isRinging(callSid)) {
-      CallNotification.applySystemAction(context, "decline", callSid)
+    when {
+      handler != null -> handler(callSid)
+      CallNotification.isRinging(callSid) -> CallNotification.applySystemAction(context, "decline", callSid)
+      else -> CallNotification.storeEnd(context, callSid)
     }
   }
   // The audio route changed, or the set of routes did; names are the devices' own

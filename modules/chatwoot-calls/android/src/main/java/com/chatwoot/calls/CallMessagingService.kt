@@ -311,6 +311,14 @@ object CallNotification {
     }
   }
 
+  // A call in progress was hung up from a system surface with no app to tell: the choice
+  // waits for the app, which a call session is started to run
+  fun storeEnd(context: Context, callSid: String) {
+    val callId = callIdFor(callSid)
+    storePendingAction(context, "end", callSid, callId, detailsFor(callSid) ?: CallDetails(null, null, null))
+    CallSessionService.start(context, callSid, callId)
+  }
+
   // What the app needs to answer a call it has not yet seen over the socket
   data class CallDetails(
     val provider: String?,

@@ -23,7 +23,8 @@ export type CallPushPayload = {
 };
 
 export type PendingCallAction = {
-  action: 'answer' | 'decline';
+  // `end`: a call in progress was hung up from a system surface while the app was not running
+  action: 'answer' | 'decline' | 'end';
   callSid: string;
   callId?: number;
   provider?: 'whatsapp' | 'twilio';

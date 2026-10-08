@@ -1,6 +1,7 @@
 import { store } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
+import { CallService } from '@/store/call/callService';
 import {
   addCall,
   clearLocalCall,
@@ -113,9 +114,39 @@ export const applyPendingCallAction = () => {
   return run;
 };
 
+// A call in progress hung up from a headset, watch or other system surface while the app
+// was not running: the app's call ends as if hung up here, or, when the app no longer has
+// it, the server is told from what the ring carried
+const applyEnd = async (pending: PendingCallAction) => {
+  const state = store.getState();
+  const active = selectActiveCall(state);
+  if (active?.callSid === pending.callSid) {
+    await store
+      .dispatch(callActions.endCall())
+      .unwrap()
+      .catch(() => {});
+  } else if (pending.provider === VOICE_CALL_PROVIDERS.TWILIO) {
+    if (pending.inboxId && pending.conversationId) {
+      await CallService.leaveConference({
+        inboxId: pending.inboxId,
+        conversationId: pending.conversationId,
+        callSid: pending.callSid,
+        accountId: pending.accountId,
+      }).catch(() => {});
+    }
+  } else if (pending.callId) {
+    await CallService.terminateWhatsappCall(pending.callId, pending.accountId).catch(() => {});
+  }
+  reportNativeCallState('ended', pending.callSid);
+};
+
 // A call answered before it reached the store is created from what the ring carried, so
 // the caller stops ringing as soon as the app can answer
 const applyCallAction = async (pending: PendingCallAction) => {
+  if (pending.action === 'end') {
+    await applyEnd(pending);
+    return;
+  }
   const known = selectCalls(store.getState()).some(call => call.callSid === pending.callSid);
   if (!known && pending.callId) {
     store.dispatch(

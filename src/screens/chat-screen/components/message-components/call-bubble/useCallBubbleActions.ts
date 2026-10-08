@@ -73,8 +73,8 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
     const entry = selectCalls(store.getState()).find(candidate => candidate.callSid === callSid);
     if (!entry) return;
     try {
-      const result = (await systemCall.answer(store, entry)) as { status?: string } | void;
-      toastJoinOutcome(result?.status);
+      const { status } = await systemCall.answer(store, entry);
+      toastJoinOutcome(status);
     } catch (error) {
       reportAnswerFailure(error);
     }

@@ -16,6 +16,7 @@ import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import { callEngine } from './callEngine';
 import { selectCallerInfo } from './callerInfo';
 import { markLocalEnd } from './callSessionCore';
+import { type JoinResult, pendingJoin, trackJoin } from './pendingJoins';
 import {
   activateWebrtcAudio,
   addAudioSessionListener,
@@ -50,8 +51,6 @@ type Store = {
   subscribe: (listener: () => void) => () => void;
 };
 
-type JoinResult = { status: string };
-
 // How the OS call UI should explain a call that ended without this device's action
 export const systemEndReason = (
   store: Store,
@@ -74,15 +73,12 @@ export const systemEndReason = (
   }
 };
 
-// Joins in flight, so an end that lands mid-join settles after the join and ends the
-// call that was actually established instead of rejecting a call already accepted
-const pendingJoins = new Map<string, Promise<JoinResult>>();
-
 const startJoin = (store: Store, callSid: string) => {
   markCallAnswering(callSid);
-  const join = store.dispatch(callActions.joinCall(callSid)).unwrap() as Promise<JoinResult>;
-  pendingJoins.set(callSid, join);
-  join.finally(() => pendingJoins.delete(callSid)).catch(() => {});
+  const join = trackJoin(
+    callSid,
+    store.dispatch(callActions.joinCall(callSid)).unwrap() as Promise<JoinResult>,
+  );
   // An answer that did not become a call here must not leave the system call ringing
   join
     .then(result => {
@@ -95,7 +91,7 @@ const startJoin = (store: Store, callSid: string) => {
 };
 
 const endLocally = (store: Store, call: LiveCall | undefined, callSid: string) => {
-  const pending = pendingJoins.get(callSid);
+  const pending = pendingJoin(callSid);
   if (pending) {
     pending
       .then(result => {
@@ -231,8 +227,12 @@ export const systemCall = {
 
   // Our sheet's buttons: go through the OS so its UI updates and audio is activated,
   // then the matching action event performs the real work
-  answer(store: Store, call: LiveCall) {
-    if (call.systemUuid) return requestSystemCallAnswer(call.systemUuid);
+  // The OS taking the answer resolves as 'requested'; the join follows on its action event
+  async answer(store: Store, call: LiveCall): Promise<JoinResult> {
+    if (call.systemUuid) {
+      await requestSystemCallAnswer(call.systemUuid);
+      return { status: 'requested' };
+    }
     return startJoin(store, call.callSid);
   },
 

@@ -46,10 +46,9 @@ export const useRingingBehind = ({ call, isJoining }: Options) => {
       beginCallSwitch();
       try {
         // Answering ends the call on screen; a failure to end it does not stop the answer
-        const result = await systemCall.answer(store, target);
-        if (!result) return false;
-        toastJoinOutcome(result.status);
-        return true;
+        const { status } = await systemCall.answer(store, target);
+        toastJoinOutcome(status);
+        return status === 'joined' || status === 'requested';
       } catch (error) {
         reportAnswerFailure(error);
         return false;

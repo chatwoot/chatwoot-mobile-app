@@ -152,8 +152,10 @@ const applyCallAction = async (pending: PendingCallAction) => {
   }
   openedForCall = true;
   try {
-    const result = (await systemCall.answer(store, call)) as { status: string } | void;
-    if (!result || result.status !== 'joined') reportNativeCallState('failed', pending.callSid);
+    const { status } = await systemCall.answer(store, call);
+    if (status !== 'joined' && status !== 'requested') {
+      reportNativeCallState('failed', pending.callSid);
+    }
   } catch (error) {
     // Answered on the native screen, so the reason is told once the app is in front
     reportAnswerFailure(error);

@@ -103,6 +103,11 @@ const startJoin = (store: Store, callSid: string) => {
 const endLocally = (store: Store, call: LiveCall | undefined, callSid: string) => {
   const pending = pendingJoin(callSid);
   if (pending) {
+    // The microphone is released now; the server is told once the join settles
+    if (selectLocalCallSid(store.getState()) === callSid) {
+      const provider = call?.provider === VOICE_CALL_PROVIDERS.TWILIO ? 'twilio' : 'whatsapp';
+      callEngine.hangup(provider).catch(() => {});
+    }
     pending
       .then(result => {
         if (result.status === 'joined') return store.dispatch(callActions.endCall()).unwrap();

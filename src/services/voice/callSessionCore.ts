@@ -24,6 +24,7 @@ import { callEngine } from '@/services/voice/callEngine';
 import { setWebrtcConnectionLostHandler, webrtcEngine } from '@/services/voice/webrtcEngine';
 import type { LiveCall } from '@/store/call/callTypes';
 import { callerInfo, systemCall, whenNotJoining } from '@/services/voice/systemCall';
+import { isSessionClosing, trackActionDrain } from '@/services/voice/pendingJoins';
 import { takePendingCallAction, type PendingCallAction } from '@/utils/callNotifications';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
@@ -108,6 +109,7 @@ export const applyPendingCallAction = () => {
     }
   });
   draining = run.catch(() => {});
+  trackActionDrain(run);
   return run;
 };
 
@@ -131,9 +133,19 @@ const applyCallAction = async (pending: PendingCallAction) => {
   }
   // Taken once no other join is under way and only when this device is on no other call,
   // so the call screen shows it connecting from the first frame; otherwise the join
-  // releases the call this device is on and takes this one itself
+  // releases the call this device is on and takes this one itself. An answer reached
+  // while the session's calls are ending, on logout, is a decline instead: the agent is
+  // leaving, and the caller stops ringing for them.
   if (pending.action === 'answer') {
     await whenNotJoining(store);
+    if (isSessionClosing()) {
+      await store
+        .dispatch(callActions.rejectIncomingCall(pending.callSid))
+        .unwrap()
+        .catch(() => {});
+      reportNativeCallState('failed', pending.callSid);
+      return;
+    }
     if (!selectLocalCallSid(store.getState())) store.dispatch(markLocalCall(pending.callSid));
   }
   const call = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);

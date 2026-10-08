@@ -16,17 +16,27 @@ export const trackJoin = (callSid: string, join: Promise<JoinResult>) => {
 
 export const pendingJoin = (callSid: string) => pendingJoins.get(callSid);
 
+// Runs of the queue of choices made on the native call screen or notification, which
+// can start joins of their own
+const actionDrains = new Set<Promise<unknown>>();
+
+export const trackActionDrain = (run: Promise<unknown>) => {
+  actionDrains.add(run);
+  run.finally(() => actionDrains.delete(run)).catch(() => {});
+};
+
 // While the session's calls are being ended, no new join starts
 let closing = 0;
 export const isSessionClosing = () => closing > 0;
 
-// Runs `close` with new joins held off, once every join already in flight has settled
+// Runs `close` with new joins held off, once every join already in flight and every run
+// of the queued choices has settled
 export const closeSession = async (close: () => Promise<unknown>) => {
   closing += 1;
   try {
-    while (pendingJoins.size) {
+    while (pendingJoins.size || actionDrains.size) {
       // eslint-disable-next-line no-await-in-loop
-      await Promise.allSettled([...pendingJoins.values()]);
+      await Promise.allSettled([...pendingJoins.values(), ...actionDrains]);
     }
     await close();
   } finally {

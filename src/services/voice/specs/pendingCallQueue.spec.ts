@@ -4,6 +4,7 @@ import { takePendingCallAction } from '@/utils/callNotifications';
 import { callEngine } from '../callEngine';
 import { CallService } from '@/store/call/callService';
 import { reportNativeCallState } from '@/services/voice/chatwootCalls';
+import { closeSession } from '@/services/voice/pendingJoins';
 import { addCall, markLocalCall, removeCall } from '@/store/call/callSlice';
 
 jest.mock('@/store', () => {
@@ -49,6 +50,7 @@ jest.mock('@/store/call/callService', () => ({
     getWhatsappCall: jest.fn(async () => ({ sdp_offer: 'offer' })),
     acceptWhatsappCall: jest.fn(async () => ({})),
     terminateWhatsappCall: jest.fn(async () => ({})),
+    rejectWhatsappCall: jest.fn(async () => ({})),
   },
 }));
 
@@ -101,4 +103,38 @@ test('an answer releases the outbound call this device is placing before taking 
   expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(9, undefined);
   expect(store.getState().calls.calls.map(call => call.callSid)).toEqual(['in']);
   expect(store.getState().calls.localCallSid).toBe('in');
+});
+
+test('ending the session waits for queued answers and declines those it reaches', async () => {
+  store.getState().calls.calls.forEach(call => store.dispatch(removeCall(call.callSid)));
+  store.dispatch(markLocalCall(null));
+  (CallService.acceptWhatsappCall as jest.Mock).mockClear();
+  (CallService.rejectWhatsappCall as jest.Mock).mockClear();
+  const queue = [
+    { action: 'answer', callSid: 'first', callId: 11, provider: 'whatsapp' },
+    { action: 'answer', callSid: 'second', callId: 12, provider: 'whatsapp' },
+  ];
+  (takePendingCallAction as jest.Mock).mockImplementation(() => queue.shift() ?? null);
+  let finishFirst!: (sdp: string) => void;
+  (callEngine.whatsapp.createAnswer as jest.Mock).mockImplementationOnce(
+    () =>
+      new Promise(resolve => {
+        finishFirst = resolve;
+      }),
+  );
+  const draining = applyPendingCallAction();
+  await new Promise(resolve => setTimeout(resolve, 0));
+  let closed = false;
+  const closing = closeSession(async () => {
+    closed = true;
+  });
+  finishFirst('answer-first');
+  await Promise.all([draining, closing]);
+
+  expect(closed).toBe(true);
+  expect(CallService.acceptWhatsappCall).toHaveBeenCalledTimes(1);
+  expect(CallService.rejectWhatsappCall).toHaveBeenCalledWith(12, undefined);
+  expect(
+    store.getState().calls.calls.some(call => call.callSid === 'second' && call.isActive),
+  ).toBe(false);
 });

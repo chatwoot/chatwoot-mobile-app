@@ -188,8 +188,8 @@ const SettingsScreen = () => {
   // };
 
   const onClickLogout = useCallback(async () => {
-    // A call in progress is hung up while the session can still tell the server
-    await dispatch(callActions.endCall()).catch(() => {});
+    // Calls are ended while the session can still tell the server
+    await dispatch(callActions.endLocalCalls()).catch(() => {});
     await AsyncStorage.removeItem('cwCookie');
     await RecentSearches.clearAll();
     await dispatch(settingsActions.removeDevice({ pushToken }));

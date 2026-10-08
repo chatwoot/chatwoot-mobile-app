@@ -11,8 +11,12 @@ import android.content.Intent
 class CallActionReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action == CallNotification.ACTION_HANG_UP) {
-      // Hang up on the in-progress notification; the app is running whenever it shows
-      NativeCallBridge.emit("end", callSid = intent.getStringExtra(CallNotification.EXTRA_CALL_SID))
+      // Hang up on the in-progress notification. The app is running whenever it shows, but
+      // its bridge can be away while the app reloads; the hang-up then waits for the app.
+      val hungUpSid = intent.getStringExtra(CallNotification.EXTRA_CALL_SID)
+      if (!NativeCallBridge.emit("end", callSid = hungUpSid) && hungUpSid != null) {
+        CallNotification.storeEnd(context, hungUpSid)
+      }
       OngoingCallService.stop(context)
       return
     }

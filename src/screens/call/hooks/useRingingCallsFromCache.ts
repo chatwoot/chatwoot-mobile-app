@@ -49,7 +49,12 @@ export const useRingingCallsFromCache = () => {
         if (message.call?.status !== VOICE_CALL_STATUS.RINGING) return;
         const startedAt = Number(message.createdAt) * 1000;
         if (!Number.isFinite(startedAt) || Date.now() - startedAt > RING_TIMEOUT_MS) return;
-        const decision = routeVoiceCallCreated(message, context);
+        // Messages fetched over HTTP carry no conversation; the cached one holds the
+        // assignment that decides who the call rings for
+        const decision = routeVoiceCallCreated(
+          { ...message, conversation: message.conversation ?? conversation },
+          context,
+        );
         if (decision.action === 'add') dispatch(addCall({ ...decision.call, addedAt: startedAt }));
       });
     });

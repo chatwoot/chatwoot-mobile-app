@@ -16,6 +16,7 @@ import {
   setLockScreenCallSurfaceVisible,
 } from '@/services/voice/chatwootCalls';
 import { navigationRef } from '@/utils/navigationUtils';
+import { resolveAccountSwitch, switchAccount } from '@/utils/accountUtils';
 
 import { FullScreenCall } from './FullScreenCall';
 
@@ -40,11 +41,14 @@ const openConversationWhenReady = (conversationId: number) => {
 };
 
 // Opening the chat from the lock-screen call unlocks the phone first; the call then
-// carries on minimised in the app with the chat open
-const openConversationInApp = async (conversationId: number) => {
+// carries on minimised in the app with the chat open, in the call's account since
+// conversation ids are per account
+const openConversationInApp = async (conversationId: number, accountId?: number) => {
   const opened = await openAppFromLockScreen();
   if (!opened) return;
   store.dispatch(setMinimised(true));
+  const targetAccountId = resolveAccountSwitch(accountId);
+  if (targetAccountId) switchAccount(store.dispatch, targetAccountId);
   openConversationWhenReady(conversationId);
 };
 
@@ -63,9 +67,10 @@ const LockScreenCall = () => {
   }, [ready]);
 
   const conversationId = call?.conversationId;
+  const accountId = call?.accountId;
   const openConversation = useCallback(() => {
-    if (conversationId) openConversationInApp(conversationId).catch(() => {});
-  }, [conversationId]);
+    if (conversationId) openConversationInApp(conversationId, accountId).catch(() => {});
+  }, [accountId, conversationId]);
 
   if (!call || !ready) return null;
   return (

@@ -180,10 +180,14 @@ public class ChatwootCallsModule: Module {
 
     // Dials into the Twilio conference through the TwiML app. `params` become the
     // TwiML request parameters (To, is_agent, conversation_id, call_sid).
+    // A call CallKit tracks is connected with its CallKit UUID, so Twilio leaves the audio
+    // session to CallKit and this module
     AsyncFunction("twilioConnect") { (token: String, params: [String: String]) in
       self.activeCall?.disconnect()
+      let callKitUuid = params["call_sid"].flatMap { sid in Self.onMain { self.callKit.call(forSid: sid)?.uuid } }
       let options = ConnectOptions(accessToken: token) { builder in
         builder.params = params
+        if let callKitUuid { builder.uuid = callKitUuid }
       }
       self.activeCall = TwilioVoiceSDK.connect(options: options, delegate: self.handler)
       self.sendEvent("onTwilioCallState", ["state": "connecting"])

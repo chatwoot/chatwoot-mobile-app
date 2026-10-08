@@ -12,7 +12,8 @@ import { ChatHeader } from './ChatHeader';
 import { DashboardList } from './DropdownMenu';
 import { ImageSourcePropType } from 'react-native';
 import { SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus } from '@chatwoot/utils';
+import { evaluateSLAStatus as evaluateLegacySLAStatus } from '@chatwoot/utils';
+import { evaluateSLAStatus, hasSLADueTimes } from '@/utils/slaUtils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
@@ -54,30 +55,49 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const conversationStatus = conversation?.status;
   const isResolved = conversationStatus === CONVERSATION_STATUS.RESOLVED;
 
+  const slaEvents = conversation?.slaEvents;
+
   const updateSlaStatus = useCallback(() => {
-    if (appliedSla) {
-      const status = evaluateSLAStatus({
-        appliedSla: {
-          id: appliedSla.id,
-          name: appliedSla.slaName,
-          description: appliedSla.slaDescription,
-          sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
-          sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
-          sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
-          only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
-          created_at: appliedSla.createdAt,
-        },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        chat: {
-          first_reply_created_at: conversation?.firstReplyCreatedAt,
-          waiting_since: conversation?.waitingSince,
-          status: conversation?.status,
-        },
-      });
-      setSlaStatus(status);
+    if (!appliedSla) {
+      setSlaStatus(null);
+      return;
     }
-  }, [appliedSla, conversation]);
+    if (hasSLADueTimes(appliedSla)) {
+      setSlaStatus(
+        evaluateSLAStatus({
+          appliedSla,
+          chat: {
+            status: conversation?.status,
+            firstReplyCreatedAt: conversation?.firstReplyCreatedAt,
+            waitingSince: conversation?.waitingSince,
+          },
+          slaEvents,
+        }),
+      );
+      return;
+    }
+    // Servers without due-at timestamps are evaluated from the policy thresholds.
+    const status = evaluateLegacySLAStatus({
+      appliedSla: {
+        id: appliedSla.id,
+        name: appliedSla.slaName,
+        description: appliedSla.slaDescription,
+        sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
+        sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
+        sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
+        only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
+        created_at: appliedSla.createdAt,
+      },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      chat: {
+        first_reply_created_at: conversation?.firstReplyCreatedAt,
+        waiting_since: conversation?.waitingSince,
+        status: conversation?.status,
+      },
+    });
+    setSlaStatus(status);
+  }, [appliedSla, conversation, slaEvents]);
 
   const { chatPagerView } = useRefsContext();
   const { pagerViewIndex } = useChatWindowContext();
@@ -163,12 +183,15 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagerViewIndex]);
 
-  const sLAStatusText = () => {
-    const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT
-    const statusKey = slaStatus?.isSlaMissed ? 'MISSED' : 'DUE';
-    return i18n.t(`SLA.STATUS.${upperCaseType}`, {
-      status: i18n.t(`SLA.STATUS.${statusKey}`),
+  const slaType = slaStatus?.type?.toUpperCase();
+  const isSlaMissed = !!slaStatus?.isSlaMissed;
+
+  const slaStatusText = () => {
+    if (!slaType) return '';
+    const label = i18n.t(`SLA.STATUS.${slaType}`, {
+      status: i18n.t(`SLA.STATUS.${isSlaMissed ? 'MISSED' : 'DUE'}`),
     });
+    return slaStatus?.threshold ? `${label}: ${slaStatus.threshold}` : label;
   };
   return (
     <ChatHeader
@@ -179,11 +202,11 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       inboxName={inbox?.name}
       channelIcon={channelIcon}
       dashboardsList={dashboardsList}
-      isSlaMissed={slaStatus?.isSlaMissed}
-      hasSla={!!appliedSla}
-      slaType={slaStatus?.type?.toUpperCase()}
-      slaEvents={conversation?.slaEvents}
-      statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
+      isSlaMissed={isSlaMissed}
+      hasSla={!!appliedSla && !!slaType}
+      slaType={slaType}
+      slaEvents={slaEvents}
+      statusText={slaStatusText()}
       onBackPress={handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}

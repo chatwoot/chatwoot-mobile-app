@@ -50,10 +50,8 @@ export const ChatHeader = ({
   const { slaEventsSheetRef } = useRefsContext();
 
   const toggleSlaEventsSheet = () => {
-    if (slaEvents?.length) {
-      Keyboard.dismiss();
-      slaEventsSheetRef.current?.present();
-    }
+    Keyboard.dismiss();
+    slaEventsSheetRef.current?.present();
   };
 
   return (
@@ -117,7 +115,7 @@ export const ChatHeader = ({
                 style={tailwind.style(
                   'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100',
                 )}>
-                <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#858585'} />} size={17} />
+                <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#858585'} />} size={16} />
                 {slaType ? (
                   <Animated.Text
                     style={tailwind.style(

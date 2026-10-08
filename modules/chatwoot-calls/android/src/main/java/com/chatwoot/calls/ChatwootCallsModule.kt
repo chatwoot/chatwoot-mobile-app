@@ -174,11 +174,8 @@ class ChatwootCallsModule : Module() {
     }
 
     // Answer or decline pressed on the call notification before the app was running
-    Function("takePendingCallAction") { ->
-      val prefs = context.getSharedPreferences(CallNotification.PREFS, Context.MODE_PRIVATE)
-      val pending = prefs.getString(CallNotification.PENDING_ACTION_KEY, null)
-      prefs.edit().remove(CallNotification.PENDING_ACTION_KEY).apply()
-      pending
+    Function("takePendingCallAction") { callSid: String? ->
+      CallNotification.takePendingAction(context, callSid)
     }
 
     Function("cancelCallNotification") { ->

@@ -39,10 +39,10 @@ export const cancelCallNotification = () => {
 };
 
 // What the agent chose on the native call notification or screen, read once the app is
-// running
-export const takePendingCallAction = (): PendingCallAction | null => {
+// running: the oldest choice waiting, or the one for the named call
+export const takePendingCallAction = (callSid?: string): PendingCallAction | null => {
   if (Platform.OS !== 'android') return null;
-  const native = takeNativeCallAction();
+  const native = takeNativeCallAction(callSid);
   if (!native) return null;
   try {
     return JSON.parse(native) as PendingCallAction;

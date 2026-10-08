@@ -24,7 +24,7 @@ import { callEngine } from '@/services/voice/callEngine';
 import { setWebrtcConnectionLostHandler, webrtcEngine } from '@/services/voice/webrtcEngine';
 import type { LiveCall } from '@/store/call/callTypes';
 import { callerInfo, systemCall } from '@/services/voice/systemCall';
-import { takePendingCallAction } from '@/utils/callNotifications';
+import { takePendingCallAction, type PendingCallAction } from '@/utils/callNotifications';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
   addAudioRouteListener,
@@ -97,12 +97,17 @@ export const attachCallSessionCore = () => {
   };
 };
 
-// The choice made on the Android call notification or native call screen. A call answered
-// before it reached the store is created from what the ring carried, so the caller stops
-// ringing as soon as the app can answer.
+// The choices made on the Android call notification or native call screen, oldest first.
+// Each is taken once, so concurrent runs share the queue rather than repeat a choice.
 export const applyPendingCallAction = async () => {
-  const pending = takePendingCallAction();
-  if (!pending) return;
+  for (let pending = takePendingCallAction(); pending; pending = takePendingCallAction()) {
+    await applyCallAction(pending);
+  }
+};
+
+// A call answered before it reached the store is created from what the ring carried, so
+// the caller stops ringing as soon as the app can answer
+const applyCallAction = async (pending: PendingCallAction) => {
   const known = selectCalls(store.getState()).some(call => call.callSid === pending.callSid);
   if (!known && pending.callId) {
     store.dispatch(
@@ -189,7 +194,7 @@ const install = () => {
         break;
       case 'end': {
         // The screen also stores the end as a decline in case nobody was listening
-        takePendingCallAction();
+        if (event.callSid) takePendingCallAction(event.callSid);
         // The end names its call; one without a name falls back to what is on screen
         const named = event.callSid
           ? selectCalls(state).find(entry => entry.callSid === event.callSid)

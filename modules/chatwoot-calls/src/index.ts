@@ -96,7 +96,9 @@ export const twilioSetHold = (hold: boolean) => ChatwootCallsModule?.twilioSetHo
 export const setSpeakerOn = (enabled: boolean) => ChatwootCallsModule?.setSpeakerOn(enabled);
 
 // Android's call notification is posted natively, so its buttons are read back the same way
-export const takeNativeCallAction = () => ChatwootCallsModule?.takePendingCallAction?.() ?? null;
+// The oldest choice waiting, or the one for the named call
+export const takeNativeCallAction = (callSid?: string | null) =>
+  ChatwootCallsModule?.takePendingCallAction?.(callSid ?? null) ?? null;
 
 export const cancelNativeCallNotification = () => ChatwootCallsModule?.cancelCallNotification?.();
 

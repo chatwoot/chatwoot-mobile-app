@@ -15,7 +15,7 @@ declare class ChatwootCallsModule extends NativeModule<ChatwootCallsModuleEvents
   twilioSetMuted(muted: boolean): void;
   twilioSetHold?(hold: boolean): void;
   setSpeakerOn(enabled: boolean): void;
-  takePendingCallAction?(): string | null;
+  takePendingCallAction?(callSid: string | null): string | null;
   cancelCallNotification?(): void;
   reportCallState?(state: NativeCallState, callSid: string | null): void;
   startOngoingCall?(

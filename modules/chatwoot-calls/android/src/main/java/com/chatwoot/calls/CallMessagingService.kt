@@ -8,6 +8,7 @@ import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import com.google.firebase.messaging.RemoteMessage
 import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService
+import org.json.JSONArray
 import org.json.JSONObject
 
 // Rings for an incoming call straight from the push, without waiting for JavaScript to
@@ -61,7 +62,9 @@ object CallNotification {
   const val EXTRA_CALL_SID = "callSid"
   const val EXTRA_CALL_ID = "callId"
   const val PREFS = "chatwoot_calls"
-  const val PENDING_ACTION_KEY = "pendingCallAction"
+  // The agent's choices on calls, kept until the app applies them, oldest first
+  const val PENDING_ACTIONS_KEY = "pendingCallActions"
+  private val pendingLock = Any()
   // Keeps the call out of the app's message notification group, which would otherwise
   // hide the app name from the call's own header
   const val GROUP_CALLS = "chatwoot_calls"
@@ -266,7 +269,8 @@ object CallNotification {
     val accountId: String? = null
   )
 
-  // The agent's choice, kept until the app is running and can act on it
+  // The agent's choice, kept until the app is running and can act on it. A newer choice on
+  // the same call replaces the older one; choices on other calls wait their turn.
   fun storePendingAction(
     context: Context,
     action: String,
@@ -289,10 +293,31 @@ object CallNotification {
         details.callerAvatar?.takeIf { it.isNotBlank() }?.let { caller.put("avatar", it) }
         if (caller.length() > 0) put("caller", caller)
       }
-    context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-      .edit()
-      .putString(PENDING_ACTION_KEY, pending.toString())
-      .apply()
+    synchronized(pendingLock) {
+      val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+      val queue = readPendingActions(prefs).filterNot { it.optString("callSid") == callSid } + pending
+      writePendingActions(prefs, queue)
+    }
+  }
+
+  // The oldest choice waiting, or the one for the named call; removed once taken
+  fun takePendingAction(context: Context, callSid: String?): String? = synchronized(pendingLock) {
+    val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+    val queue = readPendingActions(prefs).toMutableList()
+    val index = if (callSid == null) 0 else queue.indexOfFirst { it.optString("callSid") == callSid }
+    if (index !in queue.indices) return null
+    val taken = queue.removeAt(index)
+    writePendingActions(prefs, queue)
+    taken.toString()
+  }
+
+  private fun readPendingActions(prefs: android.content.SharedPreferences): List<JSONObject> {
+    val queued = runCatching { JSONArray(prefs.getString(PENDING_ACTIONS_KEY, "[]")) }.getOrNull() ?: JSONArray()
+    return (0 until queued.length()).mapNotNull { queued.optJSONObject(it) }
+  }
+
+  private fun writePendingActions(prefs: android.content.SharedPreferences, queue: List<JSONObject>) {
+    prefs.edit().putString(PENDING_ACTIONS_KEY, JSONArray(queue).toString()).apply()
   }
 
   private fun openAppIntent(context: Context, callSid: String, data: Map<String, String>): PendingIntent {

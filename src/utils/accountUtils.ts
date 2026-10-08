@@ -15,6 +15,7 @@ import { clearAllParticipants } from '@/store/conversation-participant/conversat
 import { resetCopilot } from '@/store/copilot/copilotSlice';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { keepOnlyLocalCall } from '@/store/call/callSlice';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllContacts());
@@ -28,7 +29,8 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllParticipants());
   dispatch(resetCopilot());
   dispatch(resetSentMessage());
-  dispatch(keepOnlyLocalCall());
+  // The account being left, read before it changes
+  dispatch((keep, getState) => keep(keepOnlyLocalCall(selectCurrentUserAccountId(getState()))));
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
 };

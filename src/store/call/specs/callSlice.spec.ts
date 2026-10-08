@@ -14,6 +14,7 @@ import reducer, {
   setSystemUuid,
   setAudioRoute,
   setSpeakerOn,
+  keepOnlyLocalCall,
 } from '../callSlice';
 import type { CallState } from '../callTypes';
 
@@ -128,6 +129,21 @@ describe('callSlice', () => {
     expect(state.calls.find(call => call.callSid === 'b')?.isActive).toBe(false);
     state = reducer(state, clearActiveCall());
     expect(state.calls.map(call => call.callSid)).toEqual(['b']);
+  });
+
+  it('keeps only the local call across an account switch, recording the account it belongs to', () => {
+    let state = reducer(initial(), addCall(ringing('a')));
+    state = reducer(state, addCall(ringing('b')));
+    state = reducer(state, addCall(ringing('c', { accountId: 9 })));
+    state = reducer(state, markLocalCall('a'));
+    state = reducer(state, setCallActive('c'));
+
+    state = reducer(state, keepOnlyLocalCall(4));
+
+    expect(state.calls.map(call => [call.callSid, call.accountId])).toEqual([
+      ['c', 9],
+      ['a', 4],
+    ]);
   });
 
   it('removes by sid', () => {

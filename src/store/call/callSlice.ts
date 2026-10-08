@@ -185,11 +185,15 @@ const callSlice = createSlice({
       state.isJoining = action.payload;
     },
 
-    // Another account's rings no longer apply; the call this device is on carries on
-    keepOnlyLocalCall: state => {
+    // Another account's rings no longer apply; the call this device is on carries on, and
+    // keeps the account it belongs to so its later requests still go there
+    keepOnlyLocalCall: (state, action: PayloadAction<number | null | undefined>) => {
       state.calls = state.calls.filter(
         call => call.isActive || call.callSid === state.localCallSid,
       );
+      state.calls.forEach(call => {
+        if (call.accountId == null && action.payload) call.accountId = action.payload;
+      });
     },
   },
 });

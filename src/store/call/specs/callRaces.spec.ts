@@ -10,6 +10,11 @@ import { callActions } from '../callActions';
 import { selectFullScreenCall, selectIsSpeakerOn } from '../callSelectors';
 import { CallService } from '../callService';
 
+jest.mock('expo-crypto', () => ({
+  CryptoDigestAlgorithm: { SHA256: 'SHA-256' },
+  digestStringAsync: jest.fn(async (_algorithm: string, value: string) => `sha256:${value}`),
+}));
+
 jest.mock('react-native-incall-manager', () => ({
   default: { setForceSpeakerphoneOn: jest.fn(), start: jest.fn(), stop: jest.fn() },
 }));
@@ -233,8 +238,9 @@ describe('media opening', () => {
   });
 
   describe('an answer whose response was lost', () => {
-    const answerLost = async (acceptedBy: number) => {
+    const answerLost = async (answerDigest: string | null) => {
       const store = build();
+      jest.spyOn(callEngine.whatsapp, 'createAnswer').mockResolvedValue('v=0 mine');
       store.dispatch(
         addCall({ callSid: 'lost', callId: 21, provider: 'whatsapp', callDirection: 'inbound' }),
       );
@@ -243,7 +249,8 @@ describe('media opening', () => {
       );
       (CallService.getWhatsappCall as jest.Mock).mockResolvedValue({
         sdp_offer: 'v=0 offer',
-        accepted_by_agent_id: acceptedBy,
+        accepted_by_agent_id: 1,
+        answer_digest: answerDigest,
       });
       (CallService.terminateWhatsappCall as jest.Mock).mockClear();
       await dispatch(store, callActions.joinCall('lost'))
@@ -252,13 +259,18 @@ describe('media opening', () => {
       (CallService.getWhatsappCall as jest.Mock).mockResolvedValue({ sdp_offer: 'v=0 offer' });
     };
 
-    it('ends the call when the server recorded this agent as answering', async () => {
-      await answerLost(1);
+    it('ends the call when the server accepted this device’s own answer', async () => {
+      await answerLost('sha256:v=0 mine');
       expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(21, 1);
     });
 
-    it("leaves another agent's call alone", async () => {
-      await answerLost(99);
+    it('leaves a call answered from another device of the same agent alone', async () => {
+      await answerLost('sha256:v=0 other');
+      expect(CallService.terminateWhatsappCall).not.toHaveBeenCalled();
+    });
+
+    it('leaves the call alone when the server does not say which answer it took', async () => {
+      await answerLost(null);
       expect(CallService.terminateWhatsappCall).not.toHaveBeenCalled();
     });
   });

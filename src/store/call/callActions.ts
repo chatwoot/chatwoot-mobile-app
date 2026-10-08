@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import * as Crypto from 'expo-crypto';
 
 import type { RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
@@ -42,6 +43,9 @@ export type JoinCallResult =
   | { status: 'locked' }
   | { status: 'answered_elsewhere' }
   | { status: 'already_ended' };
+
+const digest = (value: string) =>
+  Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, value);
 
 const httpStatus = (error: unknown) =>
   (error as { response?: { status?: number } })?.response?.status;
@@ -359,15 +363,14 @@ export const callActions = {
               : { status: 'answered_elsewhere' };
           }
           // With no response the server may have taken the answer while this device has no
-          // media; a call it recorded as answered by this agent is ended rather than left
-          // connected to nobody. Another agent's answer, or a response that refused this
-          // one, leaves the call alone.
+          // media; a call it recorded as answered with this device's own answer is ended
+          // rather than left connected to nobody. An answer from another device or agent,
+          // or a response that refused this one, leaves the call alone.
           if (httpStatus(error) === undefined) {
-            const userId = selectUserId(getState());
             const current = await CallService.getWhatsappCall(call.callId, call.accountId).catch(
               () => null,
             );
-            if (userId && current?.accepted_by_agent_id === userId) {
+            if (current?.answer_digest && current.answer_digest === (await digest(sdpAnswer))) {
               await CallService.terminateWhatsappCall(call.callId, call.accountId).catch(() => {});
             }
           }

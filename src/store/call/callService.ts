@@ -14,6 +14,8 @@ export type WhatsappCallResponse = {
   inbox_id: number;
   message_id: number;
   accepted_by_agent_id: number | null;
+  // SHA-256 of the SDP answer the server accepted
+  answer_digest?: string | null;
   elapsed_seconds: number | null;
   sdp_offer: string | null;
   ice_servers: IceServer[];

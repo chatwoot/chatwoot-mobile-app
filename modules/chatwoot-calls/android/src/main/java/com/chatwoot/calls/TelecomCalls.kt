@@ -28,9 +28,11 @@ object TelecomCalls {
   // Moving onto or off a Bluetooth headset takes Telecom a second or two
   private const val ROUTE_SETTLE_MS = 3_000L
   private const val AUTO_RESUME_POLL_MS = 1000L
-  // A ring still open with Telecom past the ring window is ended, whatever left it open;
-  // a ringing call there blocks new ones and takes the audio route requests
-  private const val RING_LIMIT_MS = 65_000L
+  // A ring still open with Telecom past the ring window, and this margin, is ended,
+  // whatever left it open; a ringing call there blocks new ones and takes the audio route
+  // requests. The window counts from when the call began ringing, a ring posted again
+  // included.
+  private const val RING_LIMIT_MARGIN_MS = 5_000L
 
   private class Tracked(val callSid: String) {
     val addedAt = android.os.SystemClock.elapsedRealtime()
@@ -90,7 +92,7 @@ object TelecomCalls {
     tracked[callSid] = entry
     if (!outgoing) {
       mainScope.launch {
-        kotlinx.coroutines.delay(RING_LIMIT_MS)
+        kotlinx.coroutines.delay(CallNotification.ringRemainingMs(callSid) + RING_LIMIT_MARGIN_MS)
         if (tracked[callSid] === entry && !entry.active) {
           Log.w(TAG, "call $callSid still ringing with Telecom after the ring window; ending it")
           end(callSid, "missed")

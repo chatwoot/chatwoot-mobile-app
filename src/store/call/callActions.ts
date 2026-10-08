@@ -33,6 +33,7 @@ import {
   selectHasIncomingCall,
   selectIsJoining,
   selectIsMuted,
+  selectIsOnHold,
   selectIsSpeakerOn,
   selectLocalCallSid,
   selectPlacingCall,
@@ -74,12 +75,14 @@ const findCall = (state: RootState, callSid: string) =>
   selectCalls(state).find(call => call.callSid === callSid);
 
 // Placing, answering, ending and dismissing calls, plus the media and sync actions
-// A call joins with the mute and speaker the agent chose while it connected, from the
-// call screen or the OS; with no choice made it starts unmuted, on the route the system
+// A call joins with the mute, speaker and hold chosen while it connected, from the call
+// screen or the OS; with none made it starts unmuted and live, on the route the system
 // picked, as each new call's state does
 const keepAudioChoices = async (getState: () => RootState) => {
   await callEngine.setMuted(selectIsMuted(getState())).catch(() => {});
   if (selectIsSpeakerOn(getState())) await callEngine.setSpeaker(true).catch(() => {});
+  // A hold the OS placed while the call connected, for another app's call
+  if (selectIsOnHold(getState())) await callEngine.setHold(true).catch(() => {});
 };
 
 export const callActions = {

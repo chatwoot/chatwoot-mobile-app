@@ -103,7 +103,7 @@ const MessageContent = ({
 
   const isMessageSticker = message?.contentType === ('sticker' as Message['contentType']);
 
-  if (message?.contentType === CONTENT_TYPES.VOICE_CALL && message.call) {
+  if (message?.contentType === CONTENT_TYPES.VOICE_CALL) {
     return <VoiceCallPreview message={message} />;
   }
 

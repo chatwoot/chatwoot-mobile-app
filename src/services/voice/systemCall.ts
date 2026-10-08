@@ -137,6 +137,12 @@ export const systemCall = {
         inboxId: call.inboxId,
       });
       if (__DEV__) console.log('[callkit] reported incoming', systemUuid);
+      // The call can end, taken by another agent or hung up, while CallKit shows it; its
+      // ring is ended here, since the removal found no system call to end
+      if (!selectCalls(store.getState()).some(entry => entry.callSid === call.callSid)) {
+        endSystemCall(systemUuid, 'answered_elsewhere');
+        return;
+      }
       store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
     } catch (error) {
       console.warn('System call UI could not show the call', error);
@@ -248,8 +254,9 @@ export const systemCall = {
     const actions = addCallKitActionListener(event => {
       if (__DEV__) console.log('[callkit] action', JSON.stringify(event));
       if (event.type === 'reset') {
-        // CallKit dropped every call it held; the media and the server call end with them
-        store.dispatch(callActions.endCall());
+        // CallKit dropped every call it held; the media and the server call end with them,
+        // a call still ringing out included
+        store.dispatch(callActions.endLocalCalls());
         return;
       }
       const call = selectCalls(store.getState()).find(entry => entry.callSid === event.callSid);

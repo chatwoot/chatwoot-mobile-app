@@ -106,13 +106,19 @@ const waitForIceGatheringComplete = (pc: RTCPeerConnection) =>
     };
   });
 
-const teardown = () => {
-  if (!session) return;
-  const { pc, localStream } = session;
+const release = ({ pc, localStream }: Pick<Session, 'pc' | 'localStream'>) => {
+  localStream.getTracks().forEach(track => track.stop());
+  pc.close();
+};
+
+// Ends the current session, or only `only` when given, so a call's cleanup never ends the
+// session of a call started after it
+const teardown = (only?: Session) => {
+  if (!session || (only && session !== only)) return;
+  const current = session;
   session = null;
   try {
-    localStream.getTracks().forEach(track => track.stop());
-    pc.close();
+    release(current);
   } finally {
     if (Platform.OS === 'ios') inCallManager().setForceSpeakerphoneOn(false);
     if (usesInCallManager()) {
@@ -122,7 +128,12 @@ const teardown = () => {
   }
 };
 
+// Counts session opens; an open overtaken by a newer one while it waited is abandoned
+let opening = 0;
+
 const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
+  opening += 1;
+  const attempt = opening;
   teardown();
   await ensureMicrophonePermission();
   // The library strips the urls key off each server it is given, so it must never see
@@ -132,6 +143,10 @@ const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
   }));
   const pc = new (webrtc().RTCPeerConnection)({ iceServers: servers });
   const localStream = await webrtc().mediaDevices.getUserMedia({ audio: true, video: false });
+  if (attempt !== opening) {
+    release({ pc, localStream });
+    throw new Error('Superseded by a newer call');
+  }
   localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
 
   const next: Session = { pc, localStream, remoteStreams: [], muted: false, held: false };
@@ -182,7 +197,8 @@ const localSdp = (pc: RTCPeerConnection) => {
 
 export const webrtcEngine = {
   async createAnswer(sdpOffer: string, iceServers?: IceServer[]) {
-    const { pc } = await openSession(iceServers);
+    const opened = await openSession(iceServers);
+    const { pc } = opened;
     try {
       await pc.setRemoteDescription(
         new (webrtc().RTCSessionDescription)({ type: 'offer', sdp: sdpOffer }),
@@ -192,20 +208,21 @@ export const webrtcEngine = {
       await waitForIceGatheringComplete(pc);
       return localSdp(pc);
     } catch (error) {
-      teardown();
+      teardown(opened);
       throw error;
     }
   },
 
   async createOffer(iceServers?: IceServer[]) {
-    const { pc } = await openSession(iceServers);
+    const opened = await openSession(iceServers);
+    const { pc } = opened;
     try {
       const offer = await pc.createOffer({ offerToReceiveAudio: true, offerToReceiveVideo: false });
       await pc.setLocalDescription(offer);
       await waitForIceGatheringComplete(pc);
       return localSdp(pc);
     } catch (error) {
-      teardown();
+      teardown(opened);
       throw error;
     }
   },

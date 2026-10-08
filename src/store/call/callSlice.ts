@@ -26,6 +26,14 @@ const initialState: CallState = {
   placingCall: null,
 };
 
+// Mute and hold belong to the call carrying media: with no answered call and no call
+// being placed out, nothing is muted or held
+const resetMediaWhenIdle = (state: CallState) => {
+  if (state.calls.some(call => call.isActive || call.callDirection === 'outbound')) return;
+  state.isMuted = false;
+  state.isOnHold = false;
+};
+
 const callSlice = createSlice({
   name: 'calls',
   initialState,
@@ -60,6 +68,7 @@ const callSlice = createSlice({
 
     removeCall: (state, action: PayloadAction<string>) => {
       state.calls = state.calls.filter(call => call.callSid !== action.payload);
+      resetMediaWhenIdle(state);
     },
 
     setCallActive: {
@@ -115,7 +124,12 @@ const callSlice = createSlice({
 
     setPlacingCall: (state, action: PayloadAction<PlacingCall | null>) => {
       state.placingCall = action.payload;
-      if (action.payload) state.isMinimised = false;
+      // A new call's media starts unmuted and off hold
+      if (action.payload) {
+        state.isMinimised = false;
+        state.isMuted = false;
+        state.isOnHold = false;
+      }
     },
 
     setMinimised: (state, action: PayloadAction<boolean>) => {
@@ -164,6 +178,7 @@ const callSlice = createSlice({
         state.dismissedCallSids.push(callSid);
       }
       state.calls = state.calls.filter(call => call.callSid !== callSid);
+      resetMediaWhenIdle(state);
     },
 
     markCallDismissed: (state, action: PayloadAction<string | undefined>) => {

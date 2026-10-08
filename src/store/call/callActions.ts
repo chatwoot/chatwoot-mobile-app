@@ -139,8 +139,10 @@ export const callActions = {
 
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
-          const sdpOffer = await callEngine.whatsapp.createOffer();
+          const offer = callEngine.whatsapp.createOffer();
+          // Read as the offer starts, so a call placed while this one waits has its own
           const media = callEngine.session();
+          const sdpOffer = await offer;
           // The offer's microphone and connection are released unless a call comes of it
           const releaseOffer = () => callEngine.hangup('whatsapp', media).catch(() => {});
           if (cancelled()) {

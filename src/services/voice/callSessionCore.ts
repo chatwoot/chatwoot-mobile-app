@@ -331,12 +331,15 @@ const install = () => {
   const unsubscribe = store.subscribe(() => {
     const state = store.getState();
     const previousCarried = carriedSid;
-    // Signing out, a 401's automatic logout included, may come while a call is joining: its
-    // media is released at once and again once the join settles, and no join starts
-    // meanwhile
+    // Signing out, a 401's automatic logout included, may come while a call is joining or
+    // being placed: its media is released at once and again once the join settles, no join
+    // starts meanwhile, and the placement is given up
     const nowSignedIn = !!state.auth?.user;
     if (signedIn && !nowSignedIn) {
       releaseAllMedia();
+      // A call still being placed is given up, so its late response does not install it
+      // in the next session
+      store.dispatch(callActions.cancelPlacingCall());
       closeSession(async () => releaseAllMedia()).catch(() => {});
     }
     signedIn = nowSignedIn;

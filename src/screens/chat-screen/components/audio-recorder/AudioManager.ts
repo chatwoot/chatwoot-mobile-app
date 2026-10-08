@@ -108,7 +108,10 @@ export const resumePlayer = async () => {
   currentCallback({ status: AudioStatus.RESUMED });
 };
 
+// The position is taken from the seek at once, so a seek close to the end is not taken for
+// a cut-off when the end arrives before the next progress report
 export const seekTo = async (position: number) => {
+  currentPosition = position;
   await audioRecorderPlayer?.seekToPlayer(position);
   currentCallback({ status: AudioStatus.PLAYING });
 };

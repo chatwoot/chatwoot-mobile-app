@@ -277,8 +277,9 @@ object CallNotification {
   // What the push carried, kept for an answer or decline that comes from a system surface
   private val remembered = java.util.concurrent.ConcurrentHashMap<String, Map<String, String>>()
 
+  // A later report adds to what is known, so the app's details do not drop the push's
   fun remember(callSid: String, data: Map<String, String>) {
-    remembered[callSid] = data
+    remembered[callSid] = (remembered[callSid] ?: emptyMap()) + data
   }
 
   fun detailsFor(callSid: String): CallDetails? {

@@ -31,6 +31,7 @@ import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
   addAudioRouteListener,
   addTelecomUnavailableListener,
+  rememberNativeCall,
   getAudioRoute,
   addNativeCallActionListener,
   addTwilioCallStateListener,
@@ -138,6 +139,9 @@ const applyEnd = async (pending: PendingCallAction) => {
   } else if (pending.callId) {
     await CallService.terminateWhatsappCall(pending.callId, pending.accountId).catch(() => {});
   }
+  // The app no longer had the call, so nothing here saw it end; its in-progress
+  // notification and Telecom call are ended directly
+  if (active?.callSid !== pending.callSid) stopOngoingCallNotification(pending.callSid, 'local');
   reportNativeCallState('ended', pending.callSid);
 };
 
@@ -343,6 +347,13 @@ const install = () => {
       active ?? selectIncomingCalls(state).find(call => call.callDirection === 'outbound') ?? null;
     if (carried && (carried.callSid !== carriedSid || !!carried.isActive !== carriedActive)) {
       const info = callerInfo(state, carried);
+      rememberNativeCall(carried.callSid, {
+        callId: carried.callId,
+        provider: carried.provider,
+        conversationId: carried.conversationId,
+        inboxId: carried.inboxId,
+        accountId: carried.accountId,
+      });
       startOngoingCallNotification(
         carried.callSid,
         info.name,

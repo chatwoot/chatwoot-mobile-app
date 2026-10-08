@@ -27,6 +27,7 @@ declare class ChatwootCallsModule extends NativeModule<ChatwootCallsModuleEvents
     state: OngoingCallState,
   ): void;
   stopOngoingCall?(callSid: string, reason: string): void;
+  rememberCall?(callSid: string, details: Record<string, string>): void;
   endRingingCall?(callSid: string): void;
   markCallAnswering?(callSid: string): void;
   abandonAnswer?(callSid: string): void;

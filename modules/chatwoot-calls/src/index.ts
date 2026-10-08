@@ -118,6 +118,31 @@ export const startOngoingCallNotification = (
   state: OngoingCallState,
 ) => ChatwootCallsModule?.startOngoingCall?.(callSid, name, handle, inboxName, avatar, state);
 
+// Android only: what the native side needs to end a call with the server should the app
+// reload while the call is on, in the same shape a ring push carries
+export const rememberNativeCall = (
+  callSid: string,
+  details: {
+    callId?: number;
+    provider?: string;
+    conversationId?: number;
+    inboxId?: number;
+    accountId?: number;
+  },
+) => {
+  const entries: [string, unknown][] = [
+    ['id', details.callId],
+    ['provider', details.provider],
+    ['conversation_id', details.conversationId],
+    ['inbox_id', details.inboxId],
+    ['account_id', details.accountId],
+  ];
+  const data = Object.fromEntries(
+    entries.filter(([, value]) => value != null).map(([key, value]) => [key, String(value)]),
+  );
+  ChatwootCallsModule?.rememberCall?.(callSid, data);
+};
+
 // Hold and resume through the platform's call service. True means the platform owns the
 // change and reports it back through the hold action; false means it is not tracking the call
 export const holdCallNatively = (callSid: string): boolean =>

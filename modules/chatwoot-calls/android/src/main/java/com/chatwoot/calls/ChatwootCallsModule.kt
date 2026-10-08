@@ -120,7 +120,16 @@ class ChatwootCallsModule : Module() {
 
     // Without the module, Telecom's answer and decline are kept as pending actions until
     // the next module attaches
+    OnStartObserving("onNativeCallAction") {
+      NativeCallBridge.listening = true
+    }
+
+    OnStopObserving("onNativeCallAction") {
+      NativeCallBridge.listening = false
+    }
+
     OnDestroy {
+      NativeCallBridge.listening = false
       NativeCallBridge.onAction = null
       TelecomCalls.onAudioRoute = null
       TelecomCalls.onSystemAnswer = null
@@ -216,6 +225,10 @@ class ChatwootCallsModule : Module() {
       OngoingCallService.start(context, callSid, name, handle, inboxName, avatar, state)
       TelecomCalls.add(context, callSid, name, handle, outgoing = state == OngoingCallService.STATE_CALLING)
       if (state != OngoingCallService.STATE_CALLING) TelecomCalls.setActive(callSid)
+    }
+
+    Function("rememberCall") { callSid: String, details: Map<String, String> ->
+      CallNotification.remember(callSid, details)
     }
 
     // A ring that ended without becoming a call here is dropped from Telecom

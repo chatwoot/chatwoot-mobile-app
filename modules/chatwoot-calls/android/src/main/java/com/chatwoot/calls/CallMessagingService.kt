@@ -242,7 +242,9 @@ object CallNotification {
     if (IncomingCallActivity.applySystemAction(callSid, action)) return
     val details = detailsFor(callSid) ?: return
     storePendingAction(context, action, callSid, callIdFor(callSid), details)
-    cancel(context)
+    // Only the call acted on; other waiting calls keep their notifications
+    forgetRing(callSid)
+    cancel(context, callSid)
     NativeCallBridge.emit("pending")
     CallSessionService.start(context, callSid, callIdFor(callSid))
     if (action == "answer") {

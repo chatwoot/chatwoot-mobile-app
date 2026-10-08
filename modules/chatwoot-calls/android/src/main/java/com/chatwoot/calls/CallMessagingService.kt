@@ -151,6 +151,14 @@ object CallNotification {
   private val ringing = java.util.Collections.synchronizedMap(LinkedHashMap<String, Map<String, String>>())
   private val ringStarted = java.util.concurrent.ConcurrentHashMap<String, Long>()
 
+  // What is left of the ring's window, counted from when it began ringing, so a ring
+  // posted again keeps its original end
+  fun ringRemainingMs(callSid: String): Long {
+    val started = ringStarted[callSid] ?: return RING_TIMEOUT_MS
+    val elapsed = android.os.SystemClock.elapsedRealtime() - started
+    return (RING_TIMEOUT_MS - elapsed).coerceAtLeast(1L)
+  }
+
   fun forgetRing(callSid: String) {
     ringing.remove(callSid)
     deferred.remove(callSid)
@@ -192,7 +200,7 @@ object CallNotification {
       .setOngoing(true)
       .setAutoCancel(false)
       .setOnlyAlertOnce(true)
-      .setTimeoutAfter(RING_TIMEOUT_MS)
+      .setTimeoutAfter(ringRemainingMs(callSid))
       // Swiped away: the ring stops on this phone only
       .setDeleteIntent(actionIntent(context, ACTION_DISMISS, callSid, data))
     val decline = actionIntent(context, ACTION_DECLINE, callSid, data)

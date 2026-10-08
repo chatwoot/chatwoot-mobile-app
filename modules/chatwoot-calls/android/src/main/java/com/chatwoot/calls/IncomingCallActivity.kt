@@ -121,7 +121,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
         TelecomCalls.end(callSid, "missed")
         showNextRingOrFinish()
       }
-    }, RING_TIMEOUT_MS)
+    }, CallNotification.ringRemainingMs(callSid))
   }
 
   // The React host mounts views only while it sees a resumed activity, so this screen
@@ -337,7 +337,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     private var current: IncomingCallActivity? = null
 
     private const val MATCH = FrameLayout.LayoutParams.MATCH_PARENT
-    private const val RING_TIMEOUT_MS = 60_000L
     private const val CONNECT_TIMEOUT_MS = 30_000L
     private const val TAP_GUARD_MS = 800L
     private const val CALL_SCREEN_COMPONENT = "ChatwootLockScreenCall"

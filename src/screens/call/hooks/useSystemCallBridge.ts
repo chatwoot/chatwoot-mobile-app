@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import { useAppSelector } from '@/hooks';
 import { store } from '@/store';
-import { selectCalls } from '@/store/call/callSelectors';
+import { selectCalls, selectLocalCallSid } from '@/store/call/callSelectors';
 import type { LiveCall } from '@/store/call/callTypes';
 import { systemCall } from '@/services/voice/systemCall';
 import actionCableConnector from '@/utils/actionCable';
@@ -31,13 +31,17 @@ export const useSystemCallBridge = (syncRinging: () => void) => {
     const reported = reportedRef.current;
     const known = knownRef.current;
     const present = new Set(calls.map(call => call.callSid));
+    const localCallSid = selectLocalCallSid(store.getState());
 
     calls.forEach(call => {
       const previous = known.get(call.callSid);
       if (!call.systemUuid && !reported.has(call.callSid)) {
         reported.add(call.callSid);
         if (call.callDirection === 'inbound') {
-          systemCall.reportRinging(store, call);
+          // A call this device is already joining or on, such as one joined from its chat
+          // bubble, is not a ring; its audio is switched on directly once it connects
+          if (!call.isActive && call.callSid !== localCallSid)
+            systemCall.reportRinging(store, call);
         } else {
           systemCall.startOutgoing(store, call);
         }

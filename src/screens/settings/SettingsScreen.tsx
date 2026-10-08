@@ -161,7 +161,7 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    switchAccount(dispatch, accountId);
+    if (!switchAccount(dispatch, accountId)) return;
     navigation.dispatch(StackActions.replace('Tab'));
   };
 

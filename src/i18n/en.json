@@ -312,6 +312,7 @@
     "VOICE_WIDGET": {
       "INCOMING_CALL": "Incoming call",
       "UNKNOWN_CALLER": "Unknown caller",
+      "END_CALL_TO_SWITCH_ACCOUNT": "End the call to switch accounts",
       "MICROPHONE_BLOCKED_TITLE": "Microphone is off for Chatwoot",
       "MICROPHONE_BLOCKED_BODY": "Calls need the microphone. Turn it on in Settings to place and answer calls from the app.",
       "OPEN_SETTINGS": "Open settings",

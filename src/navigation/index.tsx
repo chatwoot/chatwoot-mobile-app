@@ -96,10 +96,10 @@ export const AppNavigationContainer = () => {
         accountId = (params as { accountId?: number })?.accountId;
       }
 
+      // The conversation belongs to the target account; with the switch refused during a
+      // call, it is not opened in the account on screen
       const targetAccountId = resolveAccountSwitch(accountId);
-      if (targetAccountId) {
-        switchAccount(dispatch, targetAccountId);
-      }
+      if (targetAccountId && !switchAccount(dispatch, targetAccountId)) return undefined;
 
       return {
         routes: [

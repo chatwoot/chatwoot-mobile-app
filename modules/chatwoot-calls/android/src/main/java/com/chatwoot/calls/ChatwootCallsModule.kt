@@ -111,9 +111,14 @@ class ChatwootCallsModule : Module() {
       }
     }
 
+    // Without the module, Telecom's answer and decline are kept as pending actions until
+    // the next module attaches
     OnDestroy {
       NativeCallBridge.onAction = null
       TelecomCalls.onAudioRoute = null
+      TelecomCalls.onSystemAnswer = null
+      TelecomCalls.onSystemDisconnect = null
+      TelecomCalls.onSystemHold = null
     }
 
     // The lock-screen call screen hosts the app's views too; it is not the app in front

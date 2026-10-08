@@ -140,8 +140,13 @@ export const callActions = {
     'calls/startOutboundCall',
     async ({ provider, conversationId, inboxId, contactId }, { getState, dispatch }) => {
       const state = getState();
-      // One call at a time, a call still being placed included
-      if (selectHasActiveCall(state) || selectHasIncomingCall(state) || selectPlacingCall(state)) {
+      // One call at a time, a call still being placed or joined included
+      if (
+        selectHasActiveCall(state) ||
+        selectHasIncomingCall(state) ||
+        selectPlacingCall(state) ||
+        selectIsJoining(state)
+      ) {
         return { status: 'locked' };
       }
       const senderId = selectUserId(state) ?? undefined;
@@ -309,6 +314,8 @@ export const callActions = {
       }
       await dispatch(callActions.releaseLocalCall(callSid));
       dispatch(markLocalCall(callSid));
+      // The WhatsApp media session this answer opens, so its cleanup never ends another's
+      let media: number | undefined;
       // The server's acceptance of a Twilio join, kept so a later setup failure can undo it
       let conferenceJoin: ReturnType<typeof CallService.joinConference> | null = null;
       let conference: Parameters<typeof CallService.leaveConference>[0] | null = null;
@@ -351,11 +358,13 @@ export const callActions = {
         }
         if (!sdpOffer) throw new Error('Call has no offer to answer');
 
-        const sdpAnswer = await callEngine.whatsapp.createAnswer(sdpOffer, iceServers);
+        const answering = callEngine.whatsapp.createAnswer(sdpOffer, iceServers);
+        media = callEngine.session();
+        const sdpAnswer = await answering;
         try {
           await CallService.acceptWhatsappCall(call.callId, sdpAnswer, call.accountId);
         } catch (error) {
-          await callEngine.whatsapp.hangup();
+          await callEngine.hangup('whatsapp', media);
           if (httpStatus(error) === 409) {
             dispatch(dismissCall(callSid));
             dispatch(clearLocalCall(callSid));
@@ -388,7 +397,7 @@ export const callActions = {
         }
         console.error('Failed to join call:', error);
         if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
-          await callEngine.whatsapp.hangup().catch(() => {});
+          if (media !== undefined) await callEngine.hangup('whatsapp', media).catch(() => {});
         } else {
           await callEngine.twilio.disconnect().catch(() => {});
           // The server may have taken the join, even after the token request failed, while

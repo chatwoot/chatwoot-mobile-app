@@ -39,6 +39,7 @@ jest.mock('@/services/voice/callEngine', () => ({
     whatsapp: { createAnswer: jest.fn(), hangup: jest.fn(async () => {}) },
     hangup: jest.fn(async () => {}),
     setMuted: jest.fn(async () => {}),
+    session: jest.fn(() => 1),
   },
 }));
 jest.mock('@/services/voice/webrtcEngine', () => ({

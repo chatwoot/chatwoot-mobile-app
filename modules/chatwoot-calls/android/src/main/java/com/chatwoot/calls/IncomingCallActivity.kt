@@ -244,6 +244,12 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     handler.post(tick)
   }
 
+  private fun followCall(nextCallSid: String) {
+    callSid = nextCallSid
+    phase = Phase.CONNECTING
+    connected()
+  }
+
   private fun ended() {
     finishAndRemoveTask()
   }
@@ -352,10 +358,16 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     const val EXTRA_ANSWER = "answer"
 
     // What the app reports about the call it is carrying; a report for another call
-    // leaves this screen alone
+    // leaves this screen alone, unless the app switched to that call while this screen
+    // held one in progress, which the screen then follows
     fun applyState(state: String, callSid: String?) {
       val activity = current ?: return
-      if (callSid != null && activity.callSid != callSid) return
+      if (callSid != null && activity.callSid != callSid) {
+        if (state == "connected" && activity.phase != Phase.RINGING) {
+          activity.runOnUiThread { activity.followCall(callSid) }
+        }
+        return
+      }
       activity.runOnUiThread {
         when (state) {
           "connected" -> activity.connected()

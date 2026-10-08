@@ -37,15 +37,14 @@ export function SearchEmptyState({
           style={tailwind.style(
             'text-sm font-inter-420-20 tracking-[0.32px] text-gray-800 text-center',
           )}>
-          {errorMessage || i18n.t('SEARCH.NO_RESULTS', { sectionLabel: sectionLabel.toLowerCase(), searchQuery })}
+          {errorMessage ||
+            i18n.t('SEARCH.NO_RESULTS', { sectionLabel: sectionLabel.toLowerCase(), searchQuery })}
         </Animated.Text>
       </Animated.View>
       {onRetry && (
         <Pressable onPress={onRetry}>
           <Animated.Text
-            style={tailwind.style(
-              'text-sm font-inter-420-20 tracking-[0.32px] text-blue-800',
-            )}>
+            style={tailwind.style('text-sm font-inter-420-20 tracking-[0.32px] text-blue-800')}>
             {i18n.t('SEARCH.TAP_TO_RETRY')}
           </Animated.Text>
         </Pressable>

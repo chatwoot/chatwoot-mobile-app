@@ -34,7 +34,7 @@ interface SearchContentProps {
   expandedSections: Record<SearchSectionType, boolean>;
   searchQuery: string;
   allSectionsData: Record<SearchSectionType, SearchItem[]>;
-  listRefs: Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem>>>;
+  listRefs: Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem> | null>>;
   getItemsToShow: (items: SearchItem[], sectionId: SearchSectionType) => SearchItem[];
   onRecentSearchSelect: (query: string) => void;
   onClearRecentSearches: () => void;

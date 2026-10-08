@@ -87,7 +87,7 @@ export const QuoteReply = () => {
 
   const handleScrollToMessage = useCallback(() => {
     const messageIndex = messageListRef.current?.props.data?.findIndex(
-      (item: Message) => item.id === quoteMessage?.id,
+      (item: Message | { date: string }) => 'id' in item && item.id === quoteMessage?.id,
     );
     const shouldScrollToMessage = messageIndex !== -1 && messageIndex !== undefined;
 
@@ -162,8 +162,7 @@ export const QuoteReply = () => {
               </Text>
             )
           ) : (
-            <Text
-              style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px]')}>
+            <Text style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px]')}>
               {quoteMessage?.attachments?.[0]?.fileType}
             </Text>
           )}

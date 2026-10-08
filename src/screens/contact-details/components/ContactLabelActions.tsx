@@ -37,4 +37,3 @@ export const ContactLabelActions = (props: ContactLabelActionsProps) => {
     />
   );
 };
-

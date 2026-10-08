@@ -34,7 +34,11 @@ const ThinkingText = () => {
   );
 };
 
-export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextChange }: CopilotInputBarProps) => {
+export const CopilotInputBar = ({
+  isGenerating,
+  onSendFollowUp,
+  onFollowUpTextChange,
+}: CopilotInputBarProps) => {
   const [followUpText, setFollowUpText] = useState('');
 
   useEffect(() => {
@@ -58,9 +62,15 @@ export const CopilotInputBar = ({ isGenerating, onSendFollowUp, onFollowUpTextCh
   };
 
   return (
-    <View style={tailwind.style('flex-1 bg-[#E0E0FD] rounded-[20px] min-h-9 max-h-[76px] px-3 py-2 justify-center')}>
+    <View
+      style={tailwind.style(
+        'flex-1 bg-[#E0E0FD] rounded-[20px] min-h-9 max-h-[76px] px-3 py-2 justify-center',
+      )}>
       {isGenerating ? (
-        <Animated.View key="thinking" entering={FadeIn.duration(200)} exiting={FadeOut.duration(150)}>
+        <Animated.View
+          key="thinking"
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(150)}>
           <ThinkingText />
         </Animated.View>
       ) : (

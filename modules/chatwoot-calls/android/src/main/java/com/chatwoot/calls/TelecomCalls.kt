@@ -54,6 +54,22 @@ object TelecomCalls {
   @Volatile var onSystemDisconnect: ((callSid: String) -> Unit)? = null
   // The system put the call on hold, or took it back: a cellular call was answered or ended
   @Volatile var onSystemHold: ((callSid: String, held: Boolean) -> Unit)? = null
+
+  // Before the module has set its handlers, while a push is still starting the app, the
+  // choice is kept as a pending action for the app to apply once it is running
+  private fun systemAnswer(context: Context, callSid: String) {
+    val handler = onSystemAnswer
+    if (handler != null) handler(callSid) else CallNotification.applySystemAction(context, "answer", callSid)
+  }
+
+  private fun systemDisconnect(context: Context, callSid: String) {
+    val handler = onSystemDisconnect
+    if (handler != null) {
+      handler(callSid)
+    } else if (CallNotification.isRinging(callSid)) {
+      CallNotification.applySystemAction(context, "decline", callSid)
+    }
+  }
   // The audio route changed, or the set of routes did; names are the devices' own
   @Volatile var onAudioRoute: ((callSid: String, current: String, available: List<String>, names: List<String>) -> Unit)? = null
 
@@ -88,12 +104,13 @@ object TelecomCalls {
       CallAttributesCompat.CALL_TYPE_AUDIO_CALL,
       CallAttributesCompat.SUPPORTS_SET_INACTIVE
     )
+    val appContext = context.applicationContext
     mainScope.launch {
       try {
         manager(context).addCall(
           attributes,
-          onAnswer = { onSystemAnswer?.invoke(callSid) },
-          onDisconnect = { if (!entry.endingLocally) onSystemDisconnect?.invoke(callSid) },
+          onAnswer = { systemAnswer(appContext, callSid) },
+          onDisconnect = { if (!entry.endingLocally) systemDisconnect(appContext, callSid) },
           onSetActive = { markHeld(entry, false) },
           onSetInactive = {
             markHeld(entry, true)

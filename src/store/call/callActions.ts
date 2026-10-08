@@ -32,6 +32,7 @@ import {
   selectHasIncomingCall,
   selectIsJoining,
   selectLocalCallSid,
+  selectPlacingCall,
 } from './callSelectors';
 
 export type JoinCallResult =
@@ -130,13 +131,6 @@ export const callActions = {
       // The call screen opens on this, before the media offer and the provider request
       dispatch(setPlacingCall({ conversationId, inboxId, provider }));
 
-      // Ends the call the provider just created, when the agent gave up while it was placed
-      const cancelIfAsked = async (callSid: string) => {
-        if (!cancelled()) return false;
-        await dispatch(callActions.rejectIncomingCall(callSid));
-        return true;
-      };
-
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
           const sdpOffer = await callEngine.whatsapp.createOffer();
@@ -165,6 +159,14 @@ export const callActions = {
             await releaseOffer();
             throw new Error((response as { error?: string }).error || 'WhatsApp call failed');
           }
+          // The agent gave up while the call was placed: the provider's call is ended by its
+          // id and only this attempt's media is released, without touching the store, which
+          // may already hold a newer call
+          if (cancelled()) {
+            await releaseOffer();
+            await CallService.terminateWhatsappCall(response.id).catch(() => {});
+            return { status: 'cancelled' };
+          }
           dispatch(markLocalCall(response.call_id));
           dispatch(
             addCall({
@@ -177,7 +179,6 @@ export const callActions = {
               senderId,
             }),
           );
-          if (await cancelIfAsked(response.call_id)) return { status: 'cancelled' };
           // The contact's side may have answered before the request above returned
           const early = takeEarlyOutboundEvents(response.call_id);
           if (early.sdpAnswer) {
@@ -189,6 +190,14 @@ export const callActions = {
 
         if (!contactId) throw new Error('contactId is required for a Twilio call');
         const response = await CallService.startContactCall({ contactId, inboxId, conversationId });
+        if (cancelled()) {
+          await CallService.leaveConference({
+            inboxId,
+            conversationId: response.conversation_id ?? conversationId,
+            callSid: response.call_sid,
+          }).catch(() => {});
+          return { status: 'cancelled' };
+        }
         dispatch(markLocalCall(response.call_sid));
         dispatch(
           addCall({
@@ -200,7 +209,6 @@ export const callActions = {
             senderId,
           }),
         );
-        if (await cancelIfAsked(response.call_sid)) return { status: 'cancelled' };
         // The agent leg joins the conference right away; the contact is being dialed
         // meanwhile. A join that fails ends the call, since nobody would be on it.
         const joined = await dispatch(callActions.joinCall(response.call_sid))
@@ -232,9 +240,13 @@ export const callActions = {
       const call = findCall(getState(), callSid);
       if (!call) return { status: 'already_ended' };
 
-      // One call at a time on this device: answering ends the one it is already on. The
-      // answer is under way from here, so nothing rings for the call being taken meanwhile.
+      // One call at a time on this device: answering ends the one it is already on, and
+      // gives up a call still being placed. The answer is under way from here, so nothing
+      // rings for the call being taken meanwhile.
       dispatch(setIsJoining(true));
+      if (call.callDirection === 'inbound' && selectPlacingCall(getState())) {
+        await dispatch(callActions.cancelPlacingCall());
+      }
       await dispatch(callActions.releaseLocalCall(callSid));
       dispatch(markLocalCall(callSid));
       // The server's acceptance of a Twilio join, kept so a later setup failure can undo it
@@ -360,6 +372,16 @@ export const callActions = {
           accountId: call.accountId,
         });
       }
+    },
+  ),
+
+  // Everything this device has going, before the session ends: a call still being placed
+  // is given up, and the call this device is on, live or still ringing out, is ended
+  endLocalCalls: createAsyncThunk<void, void, { state: RootState }>(
+    'calls/endLocalCalls',
+    async (_, { getState, dispatch }) => {
+      if (selectPlacingCall(getState())) await dispatch(callActions.cancelPlacingCall());
+      await dispatch(callActions.releaseLocalCall(''));
     },
   ),
 

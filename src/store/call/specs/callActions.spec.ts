@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import type { AppDispatch } from '@/store';
 
-import callReducer, { addCall, setCallActive } from '../callSlice';
+import callReducer, { addCall, markLocalCall, setCallActive, setPlacingCall } from '../callSlice';
 import { callActions } from '../callActions';
 import { CallService } from '../callService';
 import { callEngine } from '@/services/voice/callEngine';
@@ -270,10 +270,66 @@ describe('callActions.startOutboundCall', () => {
     resolveInitiate({ status: 'calling', call_id: 'wacid.late', id: 13, conversation_id: 37 });
 
     expect(await placing).toEqual({ status: 'cancelled' });
-    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(13, undefined);
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(13);
     expect(store.getState().calls.calls).toHaveLength(0);
     createOffer.mockRestore();
     hangup.mockRestore();
+  });
+
+  it("leaves a newer call alone when a cancelled call's response arrives late", async () => {
+    const store = buildStore();
+    const createOffer = jest
+      .spyOn(callEngine.whatsapp, 'createOffer')
+      .mockResolvedValue('v=0 offer');
+    let resolveInitiate: (value: unknown) => void = () => {};
+    (CallService.initiateWhatsappCall as jest.Mock).mockImplementation(
+      () => new Promise(resolve => (resolveInitiate = resolve)),
+    );
+    (CallService.terminateWhatsappCall as jest.Mock).mockResolvedValue({});
+
+    const placing = run(store)(
+      callActions.startOutboundCall({ provider: 'whatsapp', conversationId: 37, inboxId: 7 }),
+    ).unwrap();
+    await new Promise(resolve => setTimeout(resolve, 0));
+    await run(store)(callActions.cancelPlacingCall());
+    store.dispatch(markLocalCall('wacid.newer'));
+    resolveInitiate({ status: 'calling', call_id: 'wacid.late', id: 13, conversation_id: 37 });
+
+    expect(await placing).toEqual({ status: 'cancelled' });
+    expect(store.getState().calls.localCallSid).toBe('wacid.newer');
+    createOffer.mockRestore();
+  });
+});
+
+describe('callActions.endLocalCalls', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('ends an outbound call that is still ringing out', async () => {
+    (CallService.terminateWhatsappCall as jest.Mock).mockResolvedValue({});
+    const store = buildStore();
+    store.dispatch(markLocalCall('wacid.out'));
+    store.dispatch(
+      addCall({
+        callSid: 'wacid.out',
+        callId: 21,
+        provider: 'whatsapp',
+        callDirection: 'outbound',
+      }),
+    );
+
+    await run(store)(callActions.endLocalCalls());
+
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(21, undefined);
+    expect(store.getState().calls.calls).toEqual([]);
+  });
+
+  it('gives up a call still being placed', async () => {
+    const store = buildStore();
+    store.dispatch(setPlacingCall({ conversationId: 37, inboxId: 7, provider: 'whatsapp' }));
+
+    await run(store)(callActions.endLocalCalls());
+
+    expect(store.getState().calls.placingCall).toBeNull();
   });
 });
 

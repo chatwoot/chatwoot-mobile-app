@@ -23,7 +23,7 @@ import { callEngine } from '@/services/voice/callEngine';
 import { setWebrtcConnectionLostHandler, webrtcEngine } from '@/services/voice/webrtcEngine';
 import type { LiveCall } from '@/store/call/callTypes';
 import { callerInfo, systemCall, whenNotJoining } from '@/services/voice/systemCall';
-import { isSessionClosing, trackActionDrain } from '@/services/voice/pendingJoins';
+import { closeSession, isSessionClosing, trackActionDrain } from '@/services/voice/pendingJoins';
 import { takePendingCallAction, type PendingCallAction } from '@/utils/callNotifications';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
@@ -275,9 +275,23 @@ const install = () => {
     }
   };
   let knownSids = new Set(selectCalls(store.getState()).map(call => call.callSid));
+  let signedIn = !!store.getState().auth?.user;
+  const releaseAllMedia = () => {
+    callEngine.whatsapp.hangup().catch(() => {});
+    callEngine.twilio.disconnect().catch(() => {});
+  };
   const unsubscribe = store.subscribe(() => {
     const state = store.getState();
     const previousCarried = carriedSid;
+    // Signing out, a 401's automatic logout included, may come while a call is joining: its
+    // media is released at once and again once the join settles, and no join starts
+    // meanwhile
+    const nowSignedIn = !!state.auth?.user;
+    if (signedIn && !nowSignedIn) {
+      releaseAllMedia();
+      closeSession(async () => releaseAllMedia()).catch(() => {});
+    }
+    signedIn = nowSignedIn;
     // Signing out clears the store under a live call; its media and system call end too
     if (!state.auth?.user && carriedCall) {
       const ended = carriedCall;

@@ -42,10 +42,12 @@ export const trackActionDrain = (run: Promise<unknown>) => {
 let closing = 0;
 export const isSessionClosing = () => closing > 0;
 
-// Runs `close` with new joins held off, once every join already in flight and every run
-// of the queued choices has settled
+// Runs `close` with new joins held off and joins in flight given up, once every join and
+// every run of the queued choices has settled
 export const closeSession = async (close: () => Promise<unknown>) => {
   closing += 1;
+  // Joins already under way stop at their next step rather than open media or accept
+  pendingJoins.forEach((_, callSid) => cancelledJoins.add(callSid));
   try {
     while (pendingJoins.size || actionDrains.size) {
       // eslint-disable-next-line no-await-in-loop

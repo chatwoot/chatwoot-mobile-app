@@ -106,7 +106,7 @@ test('an answer releases the outbound call this device is placing before taking 
   expect(store.getState().calls.localCallSid).toBe('in');
 });
 
-test('ending the session waits for queued answers and declines those it reaches', async () => {
+test('ending the session stops the answer in flight before it accepts, and declines the answers queued after it', async () => {
   store.getState().calls.calls.forEach(call => store.dispatch(removeCall(call.callSid)));
   store.dispatch(markLocalCall(null));
   (CallService.acceptWhatsappCall as jest.Mock).mockClear();
@@ -133,7 +133,7 @@ test('ending the session waits for queued answers and declines those it reaches'
   await Promise.all([draining, closing]);
 
   expect(closed).toBe(true);
-  expect(CallService.acceptWhatsappCall).toHaveBeenCalledTimes(1);
+  expect(CallService.acceptWhatsappCall).not.toHaveBeenCalled();
   expect(CallService.rejectWhatsappCall).toHaveBeenCalledWith(12, undefined);
   expect(
     store.getState().calls.calls.some(call => call.callSid === 'second' && call.isActive),

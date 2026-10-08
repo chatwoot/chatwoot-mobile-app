@@ -4,6 +4,7 @@ import type { RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 
 import { callEngine } from '@/services/voice/callEngine';
+import { trackJoin } from '@/services/voice/pendingJoins';
 import { selectCurrentUserAccountId, selectUserId } from '@/store/auth/authSelectors';
 import type { VoiceCallProvider } from '@/types';
 
@@ -230,13 +231,15 @@ export const callActions = {
           }),
         );
         // The agent leg joins the conference right away; the contact is being dialed
-        // meanwhile. A join that fails ends the call, since nobody would be on it.
-        const joined = await dispatch(callActions.joinCall(response.call_sid))
-          .unwrap()
-          .catch(error => {
-            dispatch(callActions.rejectIncomingCall(response.call_sid));
-            throw error;
-          });
+        // meanwhile. A join that fails ends the call, since nobody would be on it. The join
+        // is tracked so an end made meanwhile waits for it and ends what it established.
+        const joined = await trackJoin(
+          response.call_sid,
+          dispatch(callActions.joinCall(response.call_sid)).unwrap(),
+        ).catch(error => {
+          dispatch(callActions.rejectIncomingCall(response.call_sid));
+          throw error;
+        });
         if (joined.status !== 'joined') {
           await dispatch(callActions.rejectIncomingCall(response.call_sid));
           throw new Error(`Joining the call failed: ${joined.status}`);

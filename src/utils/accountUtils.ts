@@ -30,7 +30,11 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(resetCopilot());
   dispatch(resetSentMessage());
   // The account being left, read before it changes
-  dispatch((keep, getState) => keep(keepOnlyLocalCall(selectCurrentUserAccountId(getState()))));
+  dispatch((keep, getState) =>
+    keep(
+      keepOnlyLocalCall({ leaving: selectCurrentUserAccountId(getState()), entering: accountId }),
+    ),
+  );
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
 };

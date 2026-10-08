@@ -8,6 +8,7 @@ import { setMinimised } from '@/store/call/callSlice';
 import { selectIsCallMinimised } from '@/store/call/callSelectors';
 import { applyPendingCallAction } from '@/services/voice/callSessionCore';
 import { useHaptic } from '@/utils';
+import { resolveAccountSwitch, switchAccount } from '@/utils/accountUtils';
 
 import { FullScreenCall } from './FullScreenCall';
 import { useCallSession } from './hooks/useCallSession';
@@ -51,6 +52,13 @@ export const InAppCallScreen = () => {
     if (!conversationId) return;
     hapticSelection?.();
     dispatch(setMinimised(true));
+    // Conversation ids are per account, so a call from another account opens there
+    const targetAccountId = resolveAccountSwitch(fullScreenCall?.accountId);
+    if (targetAccountId) {
+      switchAccount(dispatch, targetAccountId);
+      navigation.dispatch(StackActions.push('ChatScreen', { conversationId }));
+      return;
+    }
     // The chat already on top is the one asked for
     const state = navigation.getState();
     const top = state?.routes[state.index ?? 0];

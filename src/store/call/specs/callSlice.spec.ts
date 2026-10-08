@@ -138,12 +138,21 @@ describe('callSlice', () => {
     state = reducer(state, markLocalCall('a'));
     state = reducer(state, setCallActive('c'));
 
-    state = reducer(state, keepOnlyLocalCall(4));
+    state = reducer(state, keepOnlyLocalCall({ leaving: 4 }));
 
     expect(state.calls.map(call => [call.callSid, call.accountId])).toEqual([
       ['c', 9],
       ['a', 4],
     ]);
+  });
+
+  it('keeps calls of the account entered on a switch', () => {
+    let state = reducer(initial(), addCall(ringing('a', { accountId: 4 })));
+    state = reducer(state, addCall(ringing('b', { accountId: 9 })));
+
+    state = reducer(state, keepOnlyLocalCall({ leaving: 4, entering: 9 }));
+
+    expect(state.calls.map(call => call.callSid)).toEqual(['b']);
   });
 
   it('removes by sid', () => {

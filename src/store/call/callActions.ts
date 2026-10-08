@@ -4,7 +4,7 @@ import type { RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 
 import { callEngine } from '@/services/voice/callEngine';
-import { settlePendingJoins, trackJoin } from '@/services/voice/pendingJoins';
+import { closeSession, isSessionClosing, trackJoin } from '@/services/voice/pendingJoins';
 import { selectCurrentUserAccountId, selectUserId } from '@/store/auth/authSelectors';
 import type { VoiceCallProvider } from '@/types';
 
@@ -272,6 +272,7 @@ export const callActions = {
     'calls/joinCall',
     async (callSid, { getState, dispatch }) => {
       if (selectIsJoining(getState())) return { status: 'locked' };
+      if (isSessionClosing()) return { status: 'already_ended' };
       const call = findCall(getState(), callSid);
       if (!call) return { status: 'already_ended' };
 
@@ -417,9 +418,8 @@ export const callActions = {
     async (_, { getState, dispatch }) => {
       if (selectPlacingCall(getState())) await dispatch(callActions.cancelPlacingCall());
       // A join still in flight would otherwise connect after the release; the release
-      // waits for it and ends whatever it established
-      await settlePendingJoins();
-      await dispatch(callActions.releaseLocalCall(''));
+      // waits for it and ends whatever it established, and no new join starts meanwhile
+      await closeSession(() => dispatch(callActions.releaseLocalCall('')));
     },
   ),
 

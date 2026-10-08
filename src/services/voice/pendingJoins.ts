@@ -16,7 +16,20 @@ export const trackJoin = (callSid: string, join: Promise<JoinResult>) => {
 
 export const pendingJoin = (callSid: string) => pendingJoins.get(callSid);
 
-// Resolves once every join in flight has settled, however it ended
-export const settlePendingJoins = async () => {
-  await Promise.allSettled([...pendingJoins.values()]);
+// While the session's calls are being ended, no new join starts
+let closing = 0;
+export const isSessionClosing = () => closing > 0;
+
+// Runs `close` with new joins held off, once every join already in flight has settled
+export const closeSession = async (close: () => Promise<unknown>) => {
+  closing += 1;
+  try {
+    while (pendingJoins.size) {
+      // eslint-disable-next-line no-await-in-loop
+      await Promise.allSettled([...pendingJoins.values()]);
+    }
+    await close();
+  } finally {
+    closing -= 1;
+  }
 };

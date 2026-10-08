@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { MediaStream, mediaDevices, RTCPeerConnection } from 'react-native-webrtc';
 
-import { trackJoin } from '@/services/voice/pendingJoins';
+import { closeSession, trackJoin } from '@/services/voice/pendingJoins';
 import { webrtcEngine } from '@/services/voice/webrtcEngine';
 
 import reducer, { addCall } from '../callSlice';
@@ -186,6 +186,21 @@ describe('media opening', () => {
     const stream = await lastStream();
     expect(store.getState().calls.calls.some(call => call.isActive)).toBe(false);
     expect(stream.getTracks()[0].stop).toHaveBeenCalled();
+  });
+
+  it('starts no join while the session’s calls are being ended', async () => {
+    const store = build();
+    store.dispatch(
+      addCall({ callSid: 'late', callId: 8, provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+    let result: unknown;
+    await closeSession(async () => {
+      result = await dispatch(store, callActions.joinCall('late')).unwrap();
+    });
+    expect(result).toEqual({ status: 'already_ended' });
+    expect(CallService.acceptWhatsappCall).not.toHaveBeenCalledWith(
+      expect.objectContaining({ id: 8 }),
+    );
   });
 
   it('releases a microphone that opens after its session was abandoned', async () => {

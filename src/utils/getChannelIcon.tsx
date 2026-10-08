@@ -10,6 +10,7 @@ import {
   InstagramFilledIcon,
   MessengerFilledIcon,
   SMSFilledIcon,
+  TiktokFilledIcon,
 } from '@/svg-icons';
 
 import { Channel, InboxTypes } from '@/types';
@@ -76,6 +77,10 @@ export const getChannelIcon = (channelType: Channel, medium: string, additionalT
 
   if (channelType === InboxTypes.TWITTER) {
     return <XFilledIcon />;
+  }
+
+  if (channelType === InboxTypes.TIKTOK) {
+    return <TiktokFilledIcon />;
   }
 
   return <ChatwootIcon />;

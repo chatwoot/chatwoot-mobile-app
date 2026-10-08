@@ -286,7 +286,11 @@ export const webrtcEngine = {
   // moment later, covers the race with the system taking the route back.
   ensureAudioRoute(speakerOn: boolean) {
     if (Platform.OS !== 'android') return;
+    // The retry applies only to the session it was made for, so one that ended meanwhile
+    // does not have its audio mode started again
+    const forSession = session;
     const apply = () => {
+      if (session !== forSession) return;
       if (usesInCallManager()) {
         inCallManager().start({ media: 'audio', auto: false });
         inCallManager().setForceSpeakerphoneOn(speakerOn);

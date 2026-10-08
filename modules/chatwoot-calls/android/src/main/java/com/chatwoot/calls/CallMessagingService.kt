@@ -27,7 +27,7 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
     when (data["type"]) {
       "voice_call.incoming" -> {
         // A cancel can arrive before the ring it ends; that ring is not shown
-        if (CallNotification.wasCancelled(callSid)) return
+        if (CallNotification.wasCancelled(applicationContext, callSid)) return
         if (AppVisibility.foreground) {
           // The app rings for it; the phone takes over if the app leaves the front
           CallNotification.defer(data)
@@ -39,7 +39,7 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
       }
       // The ring is over: answered elsewhere, declined, dropped or timed out
       "voice_call.cancel" -> {
-        CallNotification.rememberCancelled(callSid)
+        CallNotification.rememberCancelled(applicationContext, callSid)
         CallNotification.forgetRing(callSid)
         CallNotification.cancel(applicationContext, callSid)
         IncomingCallActivity.cancelRinging(callSid)
@@ -155,19 +155,29 @@ object CallNotification {
   private val ringStarted = java.util.concurrent.ConcurrentHashMap<String, Long>()
 
   // Calls whose ring was cancelled, with when, so a ring push arriving after its cancel is
-  // ignored; kept for longer than any ring lasts
-  private val cancelled = java.util.concurrent.ConcurrentHashMap<String, Long>()
+  // ignored; kept in preferences with the wall-clock time, since a new process can take the
+  // late ring, and for longer than any ring lasts
+  private const val CANCELLED_KEY = "cancelledCalls"
   private const val CANCELLED_MEMORY_MS = 120_000L
 
-  fun rememberCancelled(callSid: String) {
-    val now = android.os.SystemClock.elapsedRealtime()
-    cancelled.entries.removeIf { now - it.value > CANCELLED_MEMORY_MS }
-    cancelled[callSid] = now
+  fun rememberCancelled(context: Context, callSid: String) = synchronized(pendingLock) {
+    val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+    val now = System.currentTimeMillis()
+    val kept = JSONObject()
+    val stored = runCatching { JSONObject(prefs.getString(CANCELLED_KEY, "{}") ?: "{}") }.getOrDefault(JSONObject())
+    stored.keys().forEach { sid ->
+      val at = stored.optLong(sid)
+      if (now - at <= CANCELLED_MEMORY_MS) kept.put(sid, at)
+    }
+    kept.put(callSid, now)
+    prefs.edit().putString(CANCELLED_KEY, kept.toString()).apply()
   }
 
-  fun wasCancelled(callSid: String): Boolean {
-    val at = cancelled[callSid] ?: return false
-    return android.os.SystemClock.elapsedRealtime() - at <= CANCELLED_MEMORY_MS
+  fun wasCancelled(context: Context, callSid: String): Boolean {
+    val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+    val stored = runCatching { JSONObject(prefs.getString(CANCELLED_KEY, "{}") ?: "{}") }.getOrNull() ?: return false
+    if (!stored.has(callSid)) return false
+    return System.currentTimeMillis() - stored.optLong(callSid) <= CANCELLED_MEMORY_MS
   }
 
   // What is left of the ring's window, counted from when it began ringing, so a ring

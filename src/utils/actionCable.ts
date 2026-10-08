@@ -219,21 +219,28 @@ class ActionCableConnector extends BaseActionCableConnector {
     }
   };
 
-  // Releases the microphone when the call this device is on ends from the other side. A
-  // join still in flight is let finish first, so the media it connects is released too.
+  // Releases the microphone when the call this device is on ends from the other side. With
+  // a join still in flight the media is released at once and again once the join settles,
+  // so whatever the join connects meanwhile is released too.
   private hangupIfLocal = (callSid: string) => {
     const pending = pendingJoin(callSid);
     if (pending) {
+      this.releaseMediaIfLocal(callSid);
       const release = () => this.hangupIfLocal(callSid);
       pending.then(release, release);
       return;
     }
-    const state = store.getState();
-    if (selectLocalCallSid(state) !== callSid) return;
-    const call = selectCalls(state).find(entry => entry.callSid === callSid);
-    callEngine.hangup(call?.provider ?? activeMediaProvider() ?? 'whatsapp').catch(() => {});
+    if (!this.releaseMediaIfLocal(callSid)) return;
     store.dispatch(clearActiveCall());
     store.dispatch(clearLocalCall(callSid));
+  };
+
+  private releaseMediaIfLocal = (callSid: string) => {
+    const state = store.getState();
+    if (selectLocalCallSid(state) !== callSid) return false;
+    const call = selectCalls(state).find(entry => entry.callSid === callSid);
+    callEngine.hangup(call?.provider ?? activeMediaProvider() ?? 'whatsapp').catch(() => {});
+    return true;
   };
 
   onVoiceCallOutboundAccepted = (data: VoiceCallStatusEvent) => {

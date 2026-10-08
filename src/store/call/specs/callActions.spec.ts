@@ -63,6 +63,7 @@ describe('callActions.startOutboundCall', () => {
       contactId: 55,
       inboxId: 3,
       conversationId: 37,
+      accountId: 1,
     });
     expect(connect).toHaveBeenCalledWith('jwt', {
       To: 'conf_1',

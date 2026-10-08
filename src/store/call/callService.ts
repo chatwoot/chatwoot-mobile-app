@@ -80,6 +80,7 @@ export type WhatsappInitiateParams = {
   conversationId?: number;
   contactId?: number;
   inboxId?: number;
+  accountId?: number;
 };
 
 export type RingingCallResponse = {
@@ -148,15 +149,22 @@ export class CallService {
     contactId,
     inboxId,
     conversationId,
+    accountId,
   }: {
     contactId: number;
     inboxId: number;
     conversationId?: number;
+    accountId?: number;
   }) {
-    const response = await apiService.post<ContactCallResponse>(`contacts/${contactId}/call`, {
-      inbox_id: inboxId,
-      ...(conversationId ? { conversation_id: conversationId } : {}),
-    });
+    const config: AccountScopedRequestConfig = accountId ? { accountId } : {};
+    const response = await apiService.post<ContactCallResponse>(
+      `contacts/${contactId}/call`,
+      {
+        inbox_id: inboxId,
+        ...(conversationId ? { conversation_id: conversationId } : {}),
+      },
+      config,
+    );
     return response.data;
   }
 
@@ -167,7 +175,12 @@ export class CallService {
     conversationId,
     contactId,
     inboxId,
+    accountId,
   }: WhatsappInitiateParams) {
+    const config: AccountScopedRequestConfig = {
+      validateStatus: status => (status >= 200 && status < 300) || status === 422,
+      ...(accountId ? { accountId } : {}),
+    };
     const response = await apiService.post<WhatsappInitiateResponse>(
       'whatsapp_calls/initiate',
       {
@@ -176,7 +189,7 @@ export class CallService {
           ? { conversation_id: conversationId }
           : { contact_id: contactId, inbox_id: inboxId }),
       },
-      { validateStatus: status => (status >= 200 && status < 300) || status === 422 },
+      config,
     );
     return response.data;
   }

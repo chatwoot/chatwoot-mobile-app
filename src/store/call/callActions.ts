@@ -149,7 +149,11 @@ export const callActions = {
           }
           let response;
           try {
-            response = await CallService.initiateWhatsappCall({ sdpOffer, conversationId });
+            response = await CallService.initiateWhatsappCall({
+              sdpOffer,
+              conversationId,
+              accountId,
+            });
           } catch (error) {
             await releaseOffer();
             throw error;
@@ -196,7 +200,12 @@ export const callActions = {
         }
 
         if (!contactId) throw new Error('contactId is required for a Twilio call');
-        const response = await CallService.startContactCall({ contactId, inboxId, conversationId });
+        const response = await CallService.startContactCall({
+          contactId,
+          inboxId,
+          conversationId,
+          accountId,
+        });
         if (cancelled()) {
           await CallService.leaveConference({
             inboxId,

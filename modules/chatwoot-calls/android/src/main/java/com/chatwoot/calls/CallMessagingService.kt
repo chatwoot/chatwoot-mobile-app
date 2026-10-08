@@ -336,14 +336,18 @@ object CallNotification {
         details.callerAvatar?.takeIf { it.isNotBlank() }?.let { caller.put("avatar", it) }
         if (caller.length() > 0) put("caller", caller)
       }
-    synchronized(pendingLock) {
+    val replacedAnswer = synchronized(pendingLock) {
       val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-      val queue = readPendingActions(prefs).filterNot { it.optString("callSid") == callSid } + pending
-      writePendingActions(prefs, queue)
+      val existing = readPendingActions(prefs)
+      val replaced = existing.any { it.optString("callSid") == callSid && it.optString("action") == "answer" }
+      writePendingActions(prefs, existing.filterNot { it.optString("callSid") == callSid } + pending)
+      replaced
     }
     // Answered from now on, so Telecom's ring deadline leaves the call to the app however
-    // long the app takes to start
+    // long the app takes to start; an answer taken back before the app applied it ends the
+    // call in Telecom too
     if (action == "answer") TelecomCalls.markAnswering(callSid)
+    else if (replacedAnswer) TelecomCalls.abandonAnswer(callSid)
   }
 
   // The oldest choice waiting, or the one for the named call; removed once taken

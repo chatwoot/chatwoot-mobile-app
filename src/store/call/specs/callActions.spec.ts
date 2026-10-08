@@ -270,7 +270,7 @@ describe('callActions.startOutboundCall', () => {
     resolveInitiate({ status: 'calling', call_id: 'wacid.late', id: 13, conversation_id: 37 });
 
     expect(await placing).toEqual({ status: 'cancelled' });
-    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(13);
+    expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(13, 1);
     expect(store.getState().calls.calls).toHaveLength(0);
     createOffer.mockRestore();
     hangup.mockRestore();
@@ -298,6 +298,19 @@ describe('callActions.startOutboundCall', () => {
     expect(await placing).toEqual({ status: 'cancelled' });
     expect(store.getState().calls.localCallSid).toBe('wacid.newer');
     createOffer.mockRestore();
+  });
+});
+
+describe('callActions.startOutboundCall while another call is being placed', () => {
+  it('refuses a second call', async () => {
+    const store = buildStore();
+    store.dispatch(setPlacingCall({ conversationId: 37, inboxId: 7, provider: 'whatsapp' }));
+
+    const result = await run(store)(
+      callActions.startOutboundCall({ provider: 'whatsapp', conversationId: 40, inboxId: 7 }),
+    ).unwrap();
+
+    expect(result).toEqual({ status: 'locked' });
   });
 });
 

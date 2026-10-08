@@ -4,7 +4,7 @@ import type { RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 
 import { callEngine } from '@/services/voice/callEngine';
-import { selectUserId } from '@/store/auth/authSelectors';
+import { selectCurrentUserAccountId, selectUserId } from '@/store/auth/authSelectors';
 import type { VoiceCallProvider } from '@/types';
 
 import { callMediaActions } from './callMediaActions';
@@ -123,8 +123,14 @@ export const callActions = {
     'calls/startOutboundCall',
     async ({ provider, conversationId, inboxId, contactId }, { getState, dispatch }) => {
       const state = getState();
-      if (selectHasActiveCall(state) || selectHasIncomingCall(state)) return { status: 'locked' };
+      // One call at a time, a call still being placed included
+      if (selectHasActiveCall(state) || selectHasIncomingCall(state) || selectPlacingCall(state)) {
+        return { status: 'locked' };
+      }
       const senderId = selectUserId(state) ?? undefined;
+      // The account the call is placed in, kept for its later requests should the agent
+      // switch accounts while it is being placed
+      const accountId = selectCurrentUserAccountId(state) ?? undefined;
       placingAttempt += 1;
       const attempt = placingAttempt;
       const cancelled = () => cancelledAttempts.has(attempt);
@@ -164,7 +170,7 @@ export const callActions = {
           // may already hold a newer call
           if (cancelled()) {
             await releaseOffer();
-            await CallService.terminateWhatsappCall(response.id).catch(() => {});
+            await CallService.terminateWhatsappCall(response.id, accountId).catch(() => {});
             return { status: 'cancelled' };
           }
           dispatch(markLocalCall(response.call_id));
@@ -177,6 +183,7 @@ export const callActions = {
               callDirection: 'outbound',
               provider: VOICE_CALL_PROVIDERS.WHATSAPP,
               senderId,
+              accountId,
             }),
           );
           // The contact's side may have answered before the request above returned
@@ -195,6 +202,7 @@ export const callActions = {
             inboxId,
             conversationId: response.conversation_id ?? conversationId,
             callSid: response.call_sid,
+            accountId,
           }).catch(() => {});
           return { status: 'cancelled' };
         }
@@ -207,6 +215,7 @@ export const callActions = {
             callDirection: 'outbound',
             provider: VOICE_CALL_PROVIDERS.TWILIO,
             senderId,
+            accountId,
           }),
         );
         // The agent leg joins the conference right away; the contact is being dialed

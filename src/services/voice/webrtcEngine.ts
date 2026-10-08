@@ -69,7 +69,7 @@ export const setWebrtcConnectionLostHandler = (handler: (() => void) | null) => 
 
 // Asks where the agent has not decided yet, and reports a refusal the call screen can
 // explain. Where the permission was granted at login this returns at once.
-const ensureMicrophonePermission = async () => {
+export const ensureMicrophonePermission = async () => {
   const microphone =
     Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO;
   const status = await request(microphone);

@@ -4,6 +4,7 @@ import { twilioDisconnect } from '@/services/voice/chatwootCalls';
 
 jest.mock('../webrtcEngine', () => ({
   webrtcEngine: { hangup: jest.fn(() => Promise.resolve()), abandonOpening: jest.fn() },
+  ensureMicrophonePermission: jest.fn(() => Promise.resolve()),
 }));
 
 jest.mock('@/services/voice/chatwootCalls', () => ({

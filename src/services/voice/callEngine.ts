@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import type { VoiceCallProvider } from '@/types';
 import type { IceServer } from '@/store/call/callTypes';
 
-import { webrtcEngine } from './webrtcEngine';
+import { ensureMicrophonePermission, webrtcEngine } from './webrtcEngine';
 import {
   isNativeCallsAvailable,
   isTelecomAvailable,
@@ -99,6 +99,8 @@ export const callEngine: CallEngine = {
   twilio: {
     connect: async (token, params) => {
       if (!isNativeCallsAvailable()) return unavailable('twilio')();
+      // Asked here as for WhatsApp, so a call in an account opened after launch still prompts
+      await ensureMicrophonePermission();
       beginSession('twilio');
       webrtcEngine.abandonOpening();
       try {

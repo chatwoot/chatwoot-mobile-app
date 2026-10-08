@@ -29,8 +29,10 @@ const usesInCallManager = () => Platform.OS === 'android' && !isTelecomAvailable
 // candidate has arrived and a short grace period has passed. The cap is the long stop.
 const ICE_GATHER_TIMEOUT_MS = 6_000;
 const ICE_GATHER_EARLY_EXIT_MS = 1_500;
-// How long a dead connection has to stay dead before the call is given up on
+// How long a dead connection has to stay dead before the call is given up on. A dropped
+// network usually shows as 'disconnected', and may never reach 'failed'.
 const CONNECTION_LOST_GRACE_MS = 4_000;
+const LOST_STATES: string[] = ['disconnected', 'failed', 'closed'];
 const DEFAULT_ICE_SERVERS: IceServer[] = [{ urls: 'stun:stun.l.google.com:19302' }];
 
 type Session = {
@@ -183,12 +185,12 @@ const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
       lostTimer = null;
       return;
     }
-    if (state !== 'failed' && state !== 'closed') return;
+    if (!LOST_STATES.includes(state)) return;
     if (lostTimer) return;
     lostTimer = setTimeout(() => {
       lostTimer = null;
       if (session?.pc !== pc) return;
-      if (pc.connectionState === 'failed' || pc.connectionState === 'closed') onConnectionLost?.();
+      if (LOST_STATES.includes(pc.connectionState)) onConnectionLost?.();
     }, CONNECTION_LOST_GRACE_MS);
   };
   // iOS leaves the audio session to WebRTC and CallKit. Android needs to be put into

@@ -105,6 +105,7 @@ class OngoingCallService : Service() {
       ) {
         return
       }
+      currentCallSid = callSid
       val intent = Intent(context, OngoingCallService::class.java)
         .putExtra(CallNotification.EXTRA_CALL_SID, callSid)
         .putExtra(EXTRA_NAME, name)
@@ -119,7 +120,16 @@ class OngoingCallService : Service() {
       }
     }
 
-    fun stop(context: Context) {
+    // The call the service was last started for; there is one service for whichever call
+    // this phone carries
+    @Volatile private var currentCallSid: String? = null
+
+    // Stops the service, unless it is stopped for an earlier call and now carries another,
+    // so ending an old call does not take down a newer one's notification
+    fun stop(context: Context, callSid: String? = null) {
+      val current = currentCallSid
+      if (callSid != null && current != null && current != callSid) return
+      currentCallSid = null
       context.stopService(Intent(context, OngoingCallService::class.java))
     }
 

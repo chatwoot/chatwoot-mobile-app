@@ -62,6 +62,11 @@ export const addAudioSessionListener = (listener: (event: AudioSessionEvent) => 
 
 // Resolves once the call is connected; rejects on failure, disconnect before connect,
 // or timeout. State events keep flowing to listeners for the rest of the call.
+// The connect still waiting for Twilio's answer. A local disconnect settles it at once:
+// the native side drops its call before Twilio's own terminal report, which then never
+// reaches the waiting connect.
+let settlePendingConnect: ((error?: Error) => void) | null = null;
+
 export const twilioConnect = (token: string, params: Record<string, string>) =>
   new Promise<void>((resolve, reject) => {
     const native = ChatwootCallsModule;
@@ -78,16 +83,24 @@ export const twilioConnect = (token: string, params: Record<string, string>) =>
         finish(new Error(event.error || `Call ${event.state}`));
       }
     });
+    let settled = false;
     function finish(error?: Error) {
+      if (settled) return;
+      settled = true;
+      if (settlePendingConnect === finish) settlePendingConnect = null;
       clearTimeout(timer);
       subscription.remove();
       if (error) reject(error);
       else resolve();
     }
+    settlePendingConnect = finish;
     native.twilioConnect(token, params).catch(finish);
   });
 
-export const twilioDisconnect = () => ChatwootCallsModule?.twilioDisconnect();
+export const twilioDisconnect = () => {
+  settlePendingConnect?.(new Error('Call disconnected'));
+  return ChatwootCallsModule?.twilioDisconnect();
+};
 
 export const twilioSetMuted = (muted: boolean) => ChatwootCallsModule?.twilioSetMuted(muted);
 
@@ -142,6 +155,10 @@ export const rememberNativeCall = (
   );
   ChatwootCallsModule?.rememberCall?.(callSid, data);
 };
+
+// Android only: keeps an end for a call the app no longer has, with the details the native
+// side remembered for it, as a pending action for the app to apply
+export const queueNativeEnd = (callSid: string) => ChatwootCallsModule?.queueEnd?.(callSid);
 
 // Hold and resume through the platform's call service. True means the platform owns the
 // change and reports it back through the hold action; false means it is not tracking the call

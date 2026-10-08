@@ -17,7 +17,7 @@ class CallActionReceiver : BroadcastReceiver() {
       if (!NativeCallBridge.emit("end", callSid = hungUpSid) && hungUpSid != null) {
         CallNotification.storeEnd(context, hungUpSid)
       }
-      OngoingCallService.stop(context)
+      OngoingCallService.stop(context, hungUpSid)
       return
     }
     val callSid = intent.getStringExtra(CallNotification.EXTRA_CALL_SID) ?: return

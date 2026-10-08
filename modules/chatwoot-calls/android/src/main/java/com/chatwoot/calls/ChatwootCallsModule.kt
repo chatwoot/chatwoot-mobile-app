@@ -107,13 +107,13 @@ class ChatwootCallsModule : Module() {
       }
       TelecomCalls.onSystemHold = { _, held -> NativeCallBridge.emit("hold", held) }
       // A ring still on this phone is declined through the pending action; any other call
-      // is ended by the app
+      // is ended by the app, or, before JavaScript listens, kept as an end for it
       TelecomCalls.onSystemDisconnect = { callSid ->
         val context = appContext.reactContext
         if (context != null && CallNotification.isRinging(callSid)) {
           CallNotification.applySystemAction(context, "decline", callSid)
-        } else {
-          NativeCallBridge.emit("end", callSid = callSid)
+        } else if (!NativeCallBridge.emit("end", callSid = callSid) && context != null) {
+          CallNotification.storeEnd(context, callSid)
         }
       }
     }
@@ -231,6 +231,15 @@ class ChatwootCallsModule : Module() {
       CallNotification.remember(callSid, details)
     }
 
+    // An end for a call the app no longer has, after it reloaded: kept as a pending action
+    // with the details remembered for the call, for the app to end it with the server
+    Function("queueEnd") { callSid: String ->
+      CallNotification.storePendingAction(
+        context, "end", callSid, CallNotification.callIdFor(callSid),
+        CallNotification.detailsFor(callSid) ?: CallNotification.CallDetails(null, null, null)
+      )
+    }
+
     // A ring that ended without becoming a call here is dropped from Telecom
     Function("markCallAnswering") { callSid: String ->
       CallNotification.forgetRing(callSid)
@@ -257,7 +266,7 @@ class ChatwootCallsModule : Module() {
     }
 
     Function("stopOngoingCall") { callSid: String, reason: String ->
-      OngoingCallService.stop(context)
+      OngoingCallService.stop(context, callSid)
       TelecomCalls.end(callSid, reason)
     }
 

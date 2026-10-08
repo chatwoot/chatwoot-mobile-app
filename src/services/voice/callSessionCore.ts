@@ -31,6 +31,7 @@ import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
   addAudioRouteListener,
   addTelecomUnavailableListener,
+  queueNativeEnd,
   rememberNativeCall,
   getAudioRoute,
   addNativeCallActionListener,
@@ -258,13 +259,19 @@ const install = () => {
         }
         break;
       case 'end': {
-        // The screen also stores the end as a decline in case nobody was listening
+        // Anything kept natively for this call is superseded by the end handled here
         if (event.callSid) takePendingCallAction(event.callSid);
         // The end names its call; one without a name falls back to what is on screen
         const named = event.callSid
           ? selectCalls(state).find(entry => entry.callSid === event.callSid)
           : undefined;
-        if (event.callSid && !named) break;
+        // A call the app no longer has, as after it reloaded during the call, is ended from
+        // the details the native side remembered for it
+        if (event.callSid && !named) {
+          queueNativeEnd(event.callSid);
+          applyPendingCallAction().catch(() => {});
+          break;
+        }
         const call = named ?? selectActiveCall(state) ?? selectIncomingCalls(state)[0];
         if (call) systemCall.end(store, call);
         break;

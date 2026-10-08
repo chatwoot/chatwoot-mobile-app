@@ -30,6 +30,8 @@ const initialState: CallState = {
 // Mute and hold belong to the call carrying media: with no answered call and no call
 // being placed out, nothing is muted or held
 const resetMediaWhenIdle = (state: CallState) => {
+  // A call this device owns or is joining keeps the choices made while it connects
+  if (state.localCallSid || state.isJoining) return;
   if (state.calls.some(call => call.isActive || call.callDirection === 'outbound')) return;
   state.isMuted = false;
   state.isOnHold = false;

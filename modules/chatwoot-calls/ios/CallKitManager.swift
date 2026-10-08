@@ -74,7 +74,9 @@ final class CallKitManager: NSObject {
   private override init() {
     let configuration = CXProviderConfiguration()
     configuration.supportsVideo = false
-    configuration.maximumCallGroups = 1
+    // A second call is shown as call waiting while one is ringing or live; with one group
+    // CallKit refuses to report it at all
+    configuration.maximumCallGroups = 2
     configuration.maximumCallsPerCallGroup = 1
     configuration.supportedHandleTypes = [.generic, .phoneNumber]
     configuration.includesCallsInRecents = true

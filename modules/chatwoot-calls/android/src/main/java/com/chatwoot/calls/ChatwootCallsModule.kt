@@ -184,7 +184,10 @@ class ChatwootCallsModule : Module() {
       CallNotification.takePendingAction(context, callSid)
     }
 
-    Function("cancelCallNotification") { ->
+    // The app's own call UI replaces the ring notifications; the rings it shows are kept to
+    // be posted again should it leave the front
+    Function("cancelCallNotification") { keepRinging: List<String>? ->
+      CallNotification.deferRinging(keepRinging.orEmpty())
       CallNotification.cancel(context)
     }
 

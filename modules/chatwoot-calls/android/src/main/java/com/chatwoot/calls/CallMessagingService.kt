@@ -80,6 +80,7 @@ object CallNotification {
     CallNotificationChannel.ensure(context)
     remember(callSid, data)
     ringing[callSid] = data
+    ringStarted.putIfAbsent(callSid, android.os.SystemClock.elapsedRealtime())
     TelecomCalls.add(context, callSid, name, caller?.optString("phone").orEmpty(), outgoing = false)
     // The ring screen keeps the call it is showing, ringing or in progress; a further ring
     // waits its turn there. Exactly one thing rings: the ring screen where it is up or about
@@ -122,7 +123,18 @@ object CallNotification {
 
   fun defer(data: Map<String, String>) {
     val callSid = data["call_id"] ?: return
-    deferred[callSid] = data to android.os.SystemClock.elapsedRealtime()
+    val started = ringStarted.getOrPut(callSid) { android.os.SystemClock.elapsedRealtime() }
+    deferred[callSid] = data to started
+  }
+
+  // The app took over these rings from their notifications; they are posted again if it
+  // leaves the front while they still ring
+  fun deferRinging(callSids: List<String>) {
+    callSids.forEach { callSid ->
+      val data = ringing[callSid] ?: return@forEach
+      val started = ringStarted[callSid] ?: android.os.SystemClock.elapsedRealtime()
+      deferred.putIfAbsent(callSid, data to started)
+    }
   }
 
   // The app left the front: rings it took that are still within their ring window are
@@ -135,12 +147,14 @@ object CallNotification {
     return live.isNotEmpty()
   }
 
-  // The calls still ringing on this phone, oldest first
+  // The calls still ringing on this phone, oldest first, and when each began ringing
   private val ringing = java.util.Collections.synchronizedMap(LinkedHashMap<String, Map<String, String>>())
+  private val ringStarted = java.util.concurrent.ConcurrentHashMap<String, Long>()
 
   fun forgetRing(callSid: String) {
     ringing.remove(callSid)
     deferred.remove(callSid)
+    ringStarted.remove(callSid)
   }
 
   fun isRinging(callSid: String): Boolean = ringing.containsKey(callSid)

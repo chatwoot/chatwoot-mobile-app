@@ -100,7 +100,8 @@ export const setSpeakerOn = (enabled: boolean) => ChatwootCallsModule?.setSpeake
 export const takeNativeCallAction = (callSid?: string | null) =>
   ChatwootCallsModule?.takePendingCallAction?.(callSid ?? null) ?? null;
 
-export const cancelNativeCallNotification = () => ChatwootCallsModule?.cancelCallNotification?.();
+export const cancelNativeCallNotification = (keepRinging: string[] = []) =>
+  ChatwootCallsModule?.cancelCallNotification?.(keepRinging);
 
 // Android's native call screen: it shows the state of the call the app carries, and the
 // buttons pressed on it arrive as actions

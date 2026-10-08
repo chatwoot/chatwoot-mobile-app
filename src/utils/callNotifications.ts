@@ -33,9 +33,11 @@ export type PendingCallAction = {
 export const isCallPush = (data?: Record<string, unknown>) =>
   Platform.OS === 'android' && data?.type === 'voice_call.incoming' && !!data?.call_id;
 
-export const cancelCallNotification = () => {
+// Takes down the ring notifications; the rings named in `keepRinging` are the app's to
+// show while it is in front, and go back to notifications if it leaves the front
+export const cancelCallNotification = (keepRinging: string[] = []) => {
   if (Platform.OS !== 'android') return;
-  cancelNativeCallNotification();
+  cancelNativeCallNotification(keepRinging);
 };
 
 // What the agent chose on the native call notification or screen, read once the app is

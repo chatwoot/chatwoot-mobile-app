@@ -358,6 +358,12 @@ export const callActions = {
               ? { status: 'already_ended' }
               : { status: 'answered_elsewhere' };
           }
+          // With no response the server may have taken the answer while this device has no
+          // media, so the call is ended rather than left connected to nobody; a response
+          // that refused the answer leaves the call ringing for the other agents
+          if (httpStatus(error) === undefined) {
+            await CallService.terminateWhatsappCall(call.callId, call.accountId).catch(() => {});
+          }
           throw error;
         }
         dispatch(setCallActive(callSid));

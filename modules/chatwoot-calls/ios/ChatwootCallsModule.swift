@@ -101,6 +101,10 @@ public class ChatwootCallsModule: Module {
 
     Events("onTwilioCallState", "onCallKitAction", "onIncomingCall", "onVoipToken", "onAudioSession", "onAudioRoute")
 
+    OnDestroy {
+      self.callKit.markJsUnready()
+    }
+
     OnCreate {
       TwilioVoiceSDK.audioDevice = self.audioDevice
       // CallKit owns the audio session: neither media engine starts audio on its own, each

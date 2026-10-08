@@ -128,6 +128,12 @@ final class CallKitManager: NSObject {
     audioSessionDidActivate?(session, providerName)
   }
 
+  // The module is going away: events wait for the next one, which marks itself ready
+  func markJsUnready() {
+    jsReady = false
+    emit = nil
+  }
+
   func markJsReady() {
     jsReady = true
     let pending = bufferedEvents

@@ -26,6 +26,8 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
     }
     when (data["type"]) {
       "voice_call.incoming" -> {
+        // A cancel can arrive before the ring it ends; that ring is not shown
+        if (CallNotification.wasCancelled(callSid)) return
         if (AppVisibility.foreground) {
           // The app rings for it; the phone takes over if the app leaves the front
           CallNotification.defer(data)
@@ -37,6 +39,7 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
       }
       // The ring is over: answered elsewhere, declined, dropped or timed out
       "voice_call.cancel" -> {
+        CallNotification.rememberCancelled(callSid)
         CallNotification.forgetRing(callSid)
         CallNotification.cancel(applicationContext, callSid)
         IncomingCallActivity.cancelRinging(callSid)
@@ -150,6 +153,22 @@ object CallNotification {
   // The calls still ringing on this phone, oldest first, and when each began ringing
   private val ringing = java.util.Collections.synchronizedMap(LinkedHashMap<String, Map<String, String>>())
   private val ringStarted = java.util.concurrent.ConcurrentHashMap<String, Long>()
+
+  // Calls whose ring was cancelled, with when, so a ring push arriving after its cancel is
+  // ignored; kept for longer than any ring lasts
+  private val cancelled = java.util.concurrent.ConcurrentHashMap<String, Long>()
+  private const val CANCELLED_MEMORY_MS = 120_000L
+
+  fun rememberCancelled(callSid: String) {
+    val now = android.os.SystemClock.elapsedRealtime()
+    cancelled.entries.removeIf { now - it.value > CANCELLED_MEMORY_MS }
+    cancelled[callSid] = now
+  }
+
+  fun wasCancelled(callSid: String): Boolean {
+    val at = cancelled[callSid] ?: return false
+    return android.os.SystemClock.elapsedRealtime() - at <= CANCELLED_MEMORY_MS
+  }
 
   // What is left of the ring's window, counted from when it began ringing, so a ring
   // posted again keeps its original end

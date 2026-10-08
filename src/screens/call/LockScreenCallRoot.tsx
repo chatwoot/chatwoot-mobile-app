@@ -48,7 +48,7 @@ const openConversationInApp = async (conversationId: number, accountId?: number)
   if (!opened) return;
   store.dispatch(setMinimised(true));
   const targetAccountId = resolveAccountSwitch(accountId);
-  if (targetAccountId) switchAccount(store.dispatch, targetAccountId);
+  if (targetAccountId && !switchAccount(store.dispatch, targetAccountId)) return;
   openConversationWhenReady(conversationId);
 };
 

@@ -51,14 +51,16 @@ export const InAppCallScreen = () => {
     const conversationId = fullScreenCall?.conversationId;
     if (!conversationId) return;
     hapticSelection?.();
-    dispatch(setMinimised(true));
-    // Conversation ids are per account, so a call from another account opens there
+    // Conversation ids are per account, so a call from another account opens there; with
+    // the switch refused, as while another call is on this device, nothing is opened
     const targetAccountId = resolveAccountSwitch(fullScreenCall?.accountId);
     if (targetAccountId) {
-      switchAccount(dispatch, targetAccountId);
+      if (!switchAccount(dispatch, targetAccountId)) return;
+      dispatch(setMinimised(true));
       navigation.dispatch(StackActions.push('ChatScreen', { conversationId }));
       return;
     }
+    dispatch(setMinimised(true));
     // The chat already on top is the one asked for
     const state = navigation.getState();
     const top = state?.routes[state.index ?? 0];

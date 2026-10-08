@@ -107,6 +107,36 @@ describe('callActions.startOutboundCall', () => {
     connect.mockRestore();
   });
 
+  it('leaves the conference the server accepted when the Twilio token request fails', async () => {
+    (CallService.getConferenceToken as jest.Mock).mockRejectedValue(new Error('token failed'));
+    (CallService.joinConference as jest.Mock).mockResolvedValue({ conference_sid: 'conf_1' });
+    (CallService.leaveConference as jest.Mock).mockResolvedValue({ status: 'ok' });
+    const store = buildStore();
+    store.dispatch(
+      addCall({
+        callSid: 'CA10',
+        provider: 'twilio',
+        callDirection: 'inbound',
+        inboxId: 3,
+        conversationId: 37,
+        accountId: 2,
+      }),
+    );
+
+    await expect(run(store)(callActions.joinCall('CA10')).unwrap()).rejects.toMatchObject({
+      message: 'token failed',
+    });
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    expect(CallService.leaveConference).toHaveBeenCalledWith({
+      inboxId: 3,
+      conversationId: 37,
+      callSid: 'CA10',
+      accountId: 2,
+    });
+    expect(store.getState().calls.localCallSid).toBeNull();
+  });
+
   it('refuses to place a call while another call is ringing or active', async () => {
     const store = buildStore();
     store.dispatch(addCall({ callSid: 'ringing', callDirection: 'inbound' }));

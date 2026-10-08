@@ -237,17 +237,22 @@ export const callActions = {
       dispatch(setIsJoining(true));
       await dispatch(callActions.releaseLocalCall(callSid));
       dispatch(markLocalCall(callSid));
+      // The server's acceptance of a Twilio join, kept so a later setup failure can undo it
+      let conferenceJoin: ReturnType<typeof CallService.joinConference> | null = null;
+      let conference: Parameters<typeof CallService.leaveConference>[0] | null = null;
       try {
         if (call.provider !== VOICE_CALL_PROVIDERS.WHATSAPP || !call.callId) {
           if (!call.inboxId || !call.conversationId) throw new Error('Call has no inbox');
+          conference = {
+            inboxId: call.inboxId,
+            conversationId: call.conversationId,
+            callSid,
+            accountId: call.accountId,
+          };
+          conferenceJoin = CallService.joinConference(conference);
           const [token, joined] = await Promise.all([
             CallService.getConferenceToken(call.inboxId, call.accountId),
-            CallService.joinConference({
-              inboxId: call.inboxId,
-              conversationId: call.conversationId,
-              callSid,
-              accountId: call.accountId,
-            }).catch(error => {
+            conferenceJoin.catch(error => {
               if (httpStatus(error) === 409) {
                 dispatch(dismissCall(callSid));
                 dispatch(clearLocalCall(callSid));
@@ -304,6 +309,12 @@ export const callActions = {
           await callEngine.whatsapp.hangup().catch(() => {});
         } else {
           await callEngine.twilio.disconnect().catch(() => {});
+          // The server may have taken the join, even after the token request failed, while
+          // this device has no media: the conference is left so the caller is not stranded
+          const joinedConference = conference;
+          conferenceJoin
+            ?.then(() => joinedConference && CallService.leaveConference(joinedConference))
+            .catch(() => {});
         }
         dispatch(clearLocalCall(callSid));
         throw error;

@@ -8,7 +8,7 @@ import {
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 import {
   selectHasActiveCall,
-  selectIncomingCalls,
+  selectLocalCallSid,
   selectIsJoining,
 } from '@/store/call/callSelectors';
 import actionCableConnector from '@/utils/actionCable';
@@ -58,11 +58,9 @@ const waitForCallToEnd = () =>
   new Promise<void>(resolve => {
     const settled = () => {
       const state = store.getState();
-      return (
-        !selectHasActiveCall(state) &&
-        !selectIsJoining(state) &&
-        selectIncomingCalls(state).length === 0
-      );
+      // Over once this device carries no call: nothing live, joining or owned here. A ring
+      // this device did not take is left to its own timeout and events.
+      return !selectHasActiveCall(state) && !selectIsJoining(state) && !selectLocalCallSid(state);
     };
     const timer = setTimeout(finish, SESSION_LIMIT_MS);
     const unsubscribe = store.subscribe(() => {

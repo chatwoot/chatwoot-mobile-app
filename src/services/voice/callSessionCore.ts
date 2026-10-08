@@ -6,6 +6,7 @@ import {
   clearLocalCall,
   dismissCall,
   markLocalCall,
+  removeCall,
   setAudioRoute,
   setMinimised,
 } from '@/store/call/callSlice';
@@ -169,9 +170,13 @@ const applyCallAction = async (pending: PendingCallAction) => {
       reportNativeCallState('failed', pending.callSid);
     }
   } catch (error) {
-    // Answered on the native screen, so the reason is told once the app is in front
+    // Answered on the native screen, so the reason is told once the app is in front. The
+    // ring is dropped here: the agent's answer is over, and it would otherwise ring again
+    // once the app opens.
     reportAnswerFailure(error);
     reportNativeCallState('failed', pending.callSid);
+    const failed = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);
+    if (failed && !failed.isActive) store.dispatch(removeCall(pending.callSid));
   }
 };
 

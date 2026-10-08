@@ -100,6 +100,7 @@ export const callEngine: CallEngine = {
     connect: async (token, params) => {
       if (!isNativeCallsAvailable()) return unavailable('twilio')();
       beginSession('twilio');
+      webrtcEngine.abandonOpening();
       try {
         await twilioConnect(token, params);
       } catch (error) {

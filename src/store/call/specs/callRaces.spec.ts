@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { mediaDevices, RTCPeerConnection } from 'react-native-webrtc';
+import { MediaStream, mediaDevices, RTCPeerConnection } from 'react-native-webrtc';
 
 import { webrtcEngine } from '@/services/voice/webrtcEngine';
 
@@ -113,6 +113,48 @@ describe('call media races', () => {
     await old;
     expect(store.getState().calls.localCallSid).toBe('newest');
     expect(newerStream.getTracks()[0].stop).not.toHaveBeenCalled();
+  });
+});
+
+describe('media opening', () => {
+  const deferStream = () => {
+    let release!: () => void;
+    (mediaDevices.getUserMedia as jest.Mock).mockImplementationOnce(
+      () =>
+        new Promise(resolve => {
+          release = () => resolve(new MediaStream());
+        }),
+    );
+    return () => release();
+  };
+
+  it('applies a mute made while the microphone is still opening', async () => {
+    const store = build();
+    (CallService.initiateWhatsappCall as jest.Mock).mockResolvedValueOnce({
+      status: 'calling',
+      call_id: 'muted-early',
+      id: 5,
+    });
+    const releaseStream = deferStream();
+    const placing = start(store);
+    await flush();
+    await dispatch(store, callActions.toggleMute());
+    releaseStream();
+    await placing;
+    const stream = await lastStream();
+    expect(store.getState().calls.isMuted).toBe(true);
+    expect(stream.getAudioTracks()[0].enabled).toBe(false);
+  });
+
+  it('releases a microphone that opens after its session was abandoned', async () => {
+    const releaseStream = deferStream();
+    const offer = webrtcEngine.createOffer().catch((error: unknown) => error);
+    await flush();
+    webrtcEngine.abandonOpening();
+    releaseStream();
+    expect(await offer).toBeInstanceOf(Error);
+    const stream = await lastStream();
+    expect(stream.getTracks()[0].stop).toHaveBeenCalled();
   });
 });
 

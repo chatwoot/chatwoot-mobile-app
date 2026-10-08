@@ -143,7 +143,14 @@ export const callActions = {
           const offer = callEngine.whatsapp.createOffer();
           // Read as the offer starts, so a call placed while this one waits has its own
           const media = callEngine.session();
-          const sdpOffer = await offer;
+          let sdpOffer: string;
+          try {
+            sdpOffer = await offer;
+          } catch (error) {
+            // A cancelled placement's media can be abandoned while it opens
+            if (cancelled()) return { status: 'cancelled' };
+            throw error;
+          }
           // The offer's microphone and connection are released unless a call comes of it
           const releaseOffer = () => callEngine.hangup('whatsapp', media).catch(() => {});
           if (cancelled()) {

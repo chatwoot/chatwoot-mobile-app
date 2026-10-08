@@ -54,6 +54,8 @@ const applyTrackState = (current: Session) => {
 };
 
 let session: Session | null = null;
+// A mute asked for while the session is still opening, applied once it is up
+let pendingMuted = false;
 
 // Told when the peer connection drops, so the call screen can close without waiting for
 // the server to say the call ended
@@ -128,12 +130,18 @@ const teardown = (only?: Session) => {
   }
 };
 
-// Counts session opens; an open overtaken by a newer one while it waited is abandoned
+// Counts session opens; an open overtaken by a newer one, or abandoned, while it waited
+// releases what it opened instead of becoming the session
 let opening = 0;
+const abandonOpening = () => {
+  opening += 1;
+  pendingMuted = false;
+};
 
 const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
   opening += 1;
   const attempt = opening;
+  pendingMuted = false;
   teardown();
   await ensureMicrophonePermission();
   // The library strips the urls key off each server it is given, so it must never see
@@ -149,7 +157,9 @@ const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
   }
   localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
 
-  const next: Session = { pc, localStream, remoteStreams: [], muted: false, held: false };
+  const next: Session = { pc, localStream, remoteStreams: [], muted: pendingMuted, held: false };
+  pendingMuted = false;
+  applyTrackState(next);
   // Remote audio plays through the active audio session as soon as the track arrives,
   // unless the call is on hold
   pc.ontrack = (event: unknown) => {
@@ -234,12 +244,23 @@ export const webrtcEngine = {
     );
   },
 
+  // Ends the session, and any session still opening, whose microphone is released as it
+  // arrives
   async hangup() {
+    abandonOpening();
     teardown();
   },
 
+  // Another engine is taking the call: a session still opening is not installed
+  abandonOpening() {
+    abandonOpening();
+  },
+
   async setMuted(muted: boolean) {
-    if (!session) return;
+    if (!session) {
+      pendingMuted = muted;
+      return;
+    }
     session.muted = muted;
     applyTrackState(session);
   },

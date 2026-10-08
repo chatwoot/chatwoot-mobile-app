@@ -3,7 +3,7 @@ import { webrtcEngine } from '../webrtcEngine';
 import { twilioDisconnect } from '@/services/voice/chatwootCalls';
 
 jest.mock('../webrtcEngine', () => ({
-  webrtcEngine: { hangup: jest.fn(() => Promise.resolve()) },
+  webrtcEngine: { hangup: jest.fn(() => Promise.resolve()), abandonOpening: jest.fn() },
 }));
 
 jest.mock('@/services/voice/chatwootCalls', () => ({

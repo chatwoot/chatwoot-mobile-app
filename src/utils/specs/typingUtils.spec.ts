@@ -82,4 +82,21 @@ describe('#getTypingUsersText', () => {
       }),
     ).toEqual('John and 3 others are typing');
   });
+
+  it('falls back to an empty name when a typing user has none', () => {
+    expect(
+      getTypingUsersText({
+        users: [
+          {
+            name: null,
+            type: 'user',
+            email: 'john@example.com',
+            id: 1,
+            phoneNumber: '1234567890',
+            thumbnail: 'https://example.com/thumbnail.jpg',
+          },
+        ],
+      } as unknown as Parameters<typeof getTypingUsersText>[0]),
+    ).toEqual(' is typing');
+  });
 });

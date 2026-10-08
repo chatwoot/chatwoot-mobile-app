@@ -13,6 +13,7 @@ import {
 import { appReducer } from '@/store/reducers';
 import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
+import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
 
 // Disable this in testing environment
 const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
@@ -34,7 +35,7 @@ const persistConfig = {
         ...initialState,
       };
     }
-    return state;
+    return repairPersistedWebSocketUrl(state);
   },
 };
 

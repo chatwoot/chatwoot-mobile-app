@@ -22,6 +22,7 @@ export * from './LabelTag';
 export * from './Linked';
 export * from './Loading';
 export * from './Lock';
+export * from './LockKeyhole';
 export * from './Macros';
 export * from './Mail';
 export * from './Overflow';

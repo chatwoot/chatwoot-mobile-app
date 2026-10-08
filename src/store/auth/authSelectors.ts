@@ -54,4 +54,9 @@ export const selectMfaToken = createSelector(selectAuth, auth => auth.mfaToken);
 
 export const selectIsMfaRequired = createSelector(selectAuth, auth => auth.mfaToken !== null);
 
+export const selectVerificationChannel = createSelector(
+  selectAuth,
+  auth => auth.verificationChannel,
+);
+
 export const selectIsVerifyingMfa = createSelector(selectAuth, auth => auth.uiFlags.isVerifyingMfa);

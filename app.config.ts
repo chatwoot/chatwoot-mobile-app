@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.9.2',
+    version: '4.9.6',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -31,7 +31,11 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     android: {
       adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'com.chatwoot.app',
-      permissions: ['android.permission.CAMERA', 'android.permission.RECORD_AUDIO'],
+      permissions: [
+        'android.permission.CAMERA',
+        'android.permission.RECORD_AUDIO',
+        'android.permission.POST_NOTIFICATIONS',
+      ],
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_ANDROID_GOOGLE_SERVICES_FILE,
       intentFilters: [
@@ -79,7 +83,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           enableFullScreenImage_legacy: true,
         },
       ],
-      ['react-native-permissions', { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary'] }],
+      [
+        'react-native-permissions',
+        { iosPermissions: ['Camera', 'PhotoLibrary', 'MediaLibrary', 'Notifications'] },
+      ],
       [
         '@sentry/react-native',
         {
@@ -106,6 +113,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       './with-ffmpeg-pod.js',
+      './with-android-notification-channel.js',
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',
     ],

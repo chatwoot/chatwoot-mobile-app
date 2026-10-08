@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
 
-import messaging from '@react-native-firebase/messaging';
-import { Platform, PermissionsAndroid } from 'react-native';
+import { getMessaging, getToken } from '@react-native-firebase/messaging';
+import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 import {
   getSystemName,
   getManufacturer,
@@ -22,7 +22,7 @@ import type {
 } from './settingsTypes';
 import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
-import { checkValidUrl, extractDomain, handleApiError } from './settingsUtils';
+import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { isUnactionablePushError } from '@/utils/sentryUtils';
 
@@ -45,13 +45,14 @@ export const settingsActions = {
     'settings/setInstallationUrl',
     async (url, { rejectWithValue }) => {
       try {
-        if (!checkValidUrl({ url })) {
+        const installationUrl = extractDomain({ url });
+        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
+        const WEB_SOCKET_URL = buildWebSocketUrl(installationUrl);
+
+        if (!checkValidUrl({ url: INSTALLATION_URL })) {
           throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
         }
 
-        const installationUrl = extractDomain({ url });
-        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
-        const WEB_SOCKET_URL = `wss://${url}/cable`;
         const isValid = await SettingsService.verifyInstallationUrl(INSTALLATION_URL);
 
         if (!isValid) {
@@ -90,7 +91,6 @@ export const settingsActions = {
     'settings/saveDeviceDetails',
     async (_, { rejectWithValue }) => {
       try {
-        const permissionEnabled = await messaging().hasPermission();
         const deviceId = await getUniqueId();
         const devicePlatform = getSystemName();
         const manufacturer = await getManufacturer();
@@ -98,22 +98,20 @@ export const settingsActions = {
         const apiLevel = await getApiLevel();
         const deviceName = `${manufacturer} ${model}`;
 
-        const isAndroidAPILevelGreater32 = apiLevel > 32 && Platform.OS === 'android';
         const brandName = await getBrand();
         const buildNumber = await getBuildNumber();
 
-        if (!permissionEnabled || permissionEnabled === -1) {
-          if (isAndroidAPILevelGreater32) {
-            await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
-          }
-          await messaging().requestPermission();
+        // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
+        const { status } = await checkNotifications();
+        if (status !== RESULTS.GRANTED) {
+          await requestNotifications(['alert', 'sound', 'badge']);
         }
 
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
         // await messaging().registerDeviceForRemoteMessages();
         await sleep(1000);
-        const fcmToken = await messaging().getToken();
+        const fcmToken = await getToken(getMessaging());
 
         const pushData: PushPayload = {
           subscription_type: 'fcm',

@@ -15,11 +15,11 @@ import { Dimensions } from 'react-native';
 type InboxItemProps = {
   isRead: boolean;
   conversationId: number;
-  sender: {
+  sender?: {
     name: string;
     thumbnail: string;
   };
-  assignee: {
+  assignee?: {
     name: string;
     thumbnail: string;
   };
@@ -62,7 +62,7 @@ export const InboxItemComponent = (props: InboxItemProps) => {
                 'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
                 `max-w-[${width - 250}px]`,
               )}>
-              {sender.name || ''}
+              {sender?.name || ''}
             </Animated.Text>
             <NativeView style={tailwind.style('flex flex-row items-center gap-0.5')}>
               <Animated.Text style={tailwind.style('text-sm font-inter-420-20 text-gray-700')}>
@@ -93,7 +93,7 @@ export const InboxItemComponent = (props: InboxItemProps) => {
           <Animated.View style={tailwind.style('flex flex-row items-center gap-1.5 flex-1')}>
             {hasAssignee && (
               <Avatar
-                src={assignee.thumbnail ? { uri: assignee.thumbnail } : undefined}
+                src={assignee?.thumbnail ? { uri: assignee.thumbnail } : undefined}
                 size="md"
                 name={assignee?.name || ''}
               />

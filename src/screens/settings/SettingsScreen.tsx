@@ -7,7 +7,6 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import DeviceInfo from 'react-native-device-info';
-import * as WebBrowser from 'expo-web-browser';
 import ChatWootWidget from '@chatwoot/react-native-widget';
 import { useSelector } from 'react-redux';
 import * as Application from 'expo-application';
@@ -17,6 +16,7 @@ import { switchAccount } from '@/utils/accountUtils';
 import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
+import { openURL } from '@/utils/urlUtils';
 import { tailwind } from '@/theme';
 
 import {
@@ -173,8 +173,8 @@ const SettingsScreen = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLocale]);
 
-  const openURL = async () => {
-    await WebBrowser.openBrowserAsync(HELP_URL);
+  const openHelpCenter = () => {
+    openURL({ URL: HELP_URL });
   };
 
   // const openSystemSettings = () => {
@@ -240,7 +240,7 @@ const SettingsScreen = () => {
       icon: <SwitchIcon />,
       subtitle: '',
       subtitleType: 'light',
-      onPressListItem: openURL,
+      onPressListItem: openHelpCenter,
     },
     {
       hasChevron: true,

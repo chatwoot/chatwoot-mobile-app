@@ -1,5 +1,7 @@
 {
   "react-native": {
-    "messaging_ios_auto_register_for_remote_messages": true
+    "messaging_ios_auto_register_for_remote_messages": true,
+    "messaging_max_stored_notifications": 20,
+    "messaging_android_notification_channel_id": "default"
   }
 }

@@ -341,6 +341,9 @@ object CallNotification {
       val queue = readPendingActions(prefs).filterNot { it.optString("callSid") == callSid } + pending
       writePendingActions(prefs, queue)
     }
+    // Answered from now on, so Telecom's ring deadline leaves the call to the app however
+    // long the app takes to start
+    if (action == "answer") TelecomCalls.markAnswering(callSid)
   }
 
   // The oldest choice waiting, or the one for the named call; removed once taken

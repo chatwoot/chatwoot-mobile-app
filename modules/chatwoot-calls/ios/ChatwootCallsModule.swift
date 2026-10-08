@@ -128,11 +128,14 @@ public class ChatwootCallsModule: Module {
         self.activeCall?.disconnect()
         self.activeCall = nil
       }
+      // The session goes to one media engine at a time: the call's provider's
       self.callKit.audioSessionDidActivate = { [weak self] session, provider in
+        let rtcSession = RTCAudioSession.sharedInstance()
         if provider == "twilio" {
+          rtcSession.isAudioEnabled = false
           self?.audioDevice.isEnabled = true
         } else {
-          let rtcSession = RTCAudioSession.sharedInstance()
+          self?.audioDevice.isEnabled = false
           rtcSession.audioSessionDidActivate(session)
           rtcSession.isAudioEnabled = true
         }

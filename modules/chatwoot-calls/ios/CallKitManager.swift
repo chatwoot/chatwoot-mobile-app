@@ -366,6 +366,9 @@ extension CallKitManager: CXProviderDelegate {
     tracked.ringTimer = nil
     calls[action.callUUID] = tracked
     prepareAudioSession?(tracked.provider)
+    // A call answered while another holds the session gets no activation of its own, so
+    // the session is handed to this call's media engine here
+    if let session = activeAudioSession { audioSessionDidActivate?(session, tracked.provider) }
     send("onCallKitAction", ["type": "answer", "uuid": action.callUUID.uuidString, "callSid": tracked.callSid])
     action.fulfill()
   }

@@ -439,7 +439,15 @@ describe('callActions.syncRingingCalls', () => {
         contact: { id: 3, name: 'Priya', phone_number: '+15555550142', avatar: null },
       },
     ]);
-    const store = buildStore();
+    const store = configureStore({
+      reducer: combineReducers({ calls: callReducer, auth: authReducer }),
+      preloadedState: {
+        auth: {
+          ...buildStore().getState().auth,
+          user: { id: 1, account_id: 1, accounts: [{ id: 1, availability: 'online' }] },
+        },
+      } as never,
+    });
 
     const result = await run(store)(callActions.syncRingingCalls()).unwrap();
 

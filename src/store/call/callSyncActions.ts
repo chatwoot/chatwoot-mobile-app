@@ -6,6 +6,7 @@ import { ConversationService } from '@/store/conversation/conversationService';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { addConversation, addOrUpdateMessage } from '@/store/conversation/conversationSlice';
 import { extractCallData } from '@/utils/voiceCallRouting';
+import { selectCurrentUserAvailability } from '@/store/auth/authSelectors';
 
 import { CallService, type RingingCallResponse } from './callService';
 import { addCall } from './callSlice';
@@ -31,8 +32,11 @@ export const callSyncActions = {
         return syncFromConversations(getState, dispatch);
       }
       const dismissed = selectDismissedCallSids(getState());
+      // Only inbound rings are surfaced, and only to an agent who is online, as over the
+      // socket; an outbound call belongs to the device that placed it, which already has it
+      const online = selectCurrentUserAvailability(getState()) === 'online';
       ringing
-        .filter(call => !dismissed.includes(call.call_id))
+        .filter(call => online && call.direction === 'inbound' && !dismissed.includes(call.call_id))
         .forEach(call =>
           dispatch(
             addCall({

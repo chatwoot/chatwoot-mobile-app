@@ -26,8 +26,9 @@ export const useSystemCallBridge = (syncRinging: () => void) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Runs without the OS call UI too, as on the iOS simulator: reporting rings and starting
+  // outbound calls are skipped there, but a joined call's audio is still switched on
   useEffect(() => {
-    if (!systemCall.isAvailable()) return;
     const reported = reportedRef.current;
     const known = knownRef.current;
     const present = new Set(calls.map(call => call.callSid));

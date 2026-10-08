@@ -15,3 +15,8 @@ export const trackJoin = (callSid: string, join: Promise<JoinResult>) => {
 };
 
 export const pendingJoin = (callSid: string) => pendingJoins.get(callSid);
+
+// Resolves once every join in flight has settled, however it ended
+export const settlePendingJoins = async () => {
+  await Promise.allSettled([...pendingJoins.values()]);
+};

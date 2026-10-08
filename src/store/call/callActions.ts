@@ -4,7 +4,7 @@ import type { RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 
 import { callEngine } from '@/services/voice/callEngine';
-import { trackJoin } from '@/services/voice/pendingJoins';
+import { settlePendingJoins, trackJoin } from '@/services/voice/pendingJoins';
 import { selectCurrentUserAccountId, selectUserId } from '@/store/auth/authSelectors';
 import type { VoiceCallProvider } from '@/types';
 
@@ -416,6 +416,9 @@ export const callActions = {
     'calls/endLocalCalls',
     async (_, { getState, dispatch }) => {
       if (selectPlacingCall(getState())) await dispatch(callActions.cancelPlacingCall());
+      // A join still in flight would otherwise connect after the release; the release
+      // waits for it and ends whatever it established
+      await settlePendingJoins();
       await dispatch(callActions.releaseLocalCall(''));
     },
   ),

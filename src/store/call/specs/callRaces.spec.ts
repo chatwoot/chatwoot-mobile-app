@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { MediaStream, mediaDevices, RTCPeerConnection } from 'react-native-webrtc';
 
+import { trackJoin } from '@/services/voice/pendingJoins';
 import { webrtcEngine } from '@/services/voice/webrtcEngine';
 
 import reducer, { addCall } from '../callSlice';
@@ -162,6 +163,29 @@ describe('media opening', () => {
     const stream = await lastStream();
     expect(store.getState().calls.isMuted).toBe(true);
     expect(stream.getAudioTracks()[0].enabled).toBe(false);
+  });
+
+  it('ends a call whose join was still in flight when the session ended', async () => {
+    const store = build();
+    store.dispatch(
+      addCall({ callSid: 'joining', callId: 7, provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+    let accept!: () => void;
+    (CallService.acceptWhatsappCall as jest.Mock).mockImplementationOnce(
+      () =>
+        new Promise(resolve => {
+          accept = () => resolve({});
+        }),
+    );
+    const joining = trackJoin('joining', dispatch(store, callActions.joinCall('joining')).unwrap());
+    await flush();
+    const ending = dispatch(store, callActions.endLocalCalls());
+    accept();
+    await joining;
+    await ending;
+    const stream = await lastStream();
+    expect(store.getState().calls.calls.some(call => call.isActive)).toBe(false);
+    expect(stream.getTracks()[0].stop).toHaveBeenCalled();
   });
 
   it('releases a microphone that opens after its session was abandoned', async () => {

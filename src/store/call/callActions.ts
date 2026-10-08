@@ -5,7 +5,12 @@ import type { RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 
 import { callEngine } from '@/services/voice/callEngine';
-import { closeSession, isSessionClosing, trackJoin } from '@/services/voice/pendingJoins';
+import {
+  closeSession,
+  isJoinCancelled,
+  isSessionClosing,
+  trackJoin,
+} from '@/services/voice/pendingJoins';
 import { selectCurrentUserAccountId, selectUserId } from '@/store/auth/authSelectors';
 import type { VoiceCallProvider } from '@/types';
 
@@ -98,6 +103,14 @@ export const callActions = {
     async (callSid, { getState, dispatch }) => {
       const call = findCall(getState(), callSid);
       let declined = false;
+      // A call this device placed carries media here; it is released before the server is
+      // told, so a slow request does not keep the microphone open
+      const ownsMedia = !!call && selectLocalCallSid(getState()) === callSid;
+      if (ownsMedia) {
+        await callEngine
+          .hangup(call.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
+          .catch(() => {});
+      }
       try {
         if (call?.provider === VOICE_CALL_PROVIDERS.WHATSAPP && call.callId) {
           if (call.callDirection === 'outbound') {
@@ -115,13 +128,7 @@ export const callActions = {
         }
         declined = true;
       } finally {
-        // A call this device placed carries media here, which ends with it
-        if (call && selectLocalCallSid(getState()) === callSid) {
-          await callEngine
-            .hangup(call.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
-            .catch(() => {});
-          dispatch(clearLocalCall(callSid));
-        }
+        if (ownsMedia) dispatch(clearLocalCall(callSid));
         if (declined) dispatch(markCallDismissed(callSid));
         dispatch(removeCall(callSid));
       }
@@ -339,6 +346,12 @@ export const callActions = {
               throw error;
             }),
           ]);
+          // Given up while the conference was joined: this device leaves it unconnected
+          if (isJoinCancelled(callSid)) {
+            await CallService.leaveConference(conference).catch(() => {});
+            dispatch(clearLocalCall(callSid));
+            return { status: 'already_ended' };
+          }
           await callEngine.twilio.connect(token.token, {
             To: joined.conference_sid,
             is_agent: 'true',
@@ -357,10 +370,20 @@ export const callActions = {
           iceServers = details.ice_servers;
         }
         if (!sdpOffer) throw new Error('Call has no offer to answer');
+        if (isJoinCancelled(callSid)) {
+          dispatch(clearLocalCall(callSid));
+          return { status: 'already_ended' };
+        }
 
         const answering = callEngine.whatsapp.createAnswer(sdpOffer, iceServers);
         media = callEngine.session();
         const sdpAnswer = await answering;
+        // Given up while the microphone opened: it is released and the call not accepted
+        if (isJoinCancelled(callSid)) {
+          await callEngine.hangup('whatsapp', media).catch(() => {});
+          dispatch(clearLocalCall(callSid));
+          return { status: 'already_ended' };
+        }
         try {
           await CallService.acceptWhatsappCall(call.callId, sdpAnswer, call.accountId);
         } catch (error) {

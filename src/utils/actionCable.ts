@@ -52,7 +52,7 @@ import {
 } from './voiceCallRouting';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { activeMediaProvider, callEngine } from '@/services/voice/callEngine';
-import { pendingJoin } from '@/services/voice/pendingJoins';
+import { cancelJoin, pendingJoin } from '@/services/voice/pendingJoins';
 import { systemCall, systemEndReason } from '@/services/voice/systemCall';
 
 import { clearActiveCall, clearLocalCall } from '@/store/call/callSlice';
@@ -225,6 +225,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   private hangupIfLocal = (callSid: string) => {
     const pending = pendingJoin(callSid);
     if (pending) {
+      cancelJoin(callSid);
       this.releaseMediaIfLocal(callSid);
       const release = () => this.hangupIfLocal(callSid);
       pending.then(release, release);

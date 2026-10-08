@@ -25,7 +25,7 @@ import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import { callEngine } from './callEngine';
 import { selectCallerInfo } from './callerInfo';
 import { markLocalEnd } from './callSessionCore';
-import { type JoinResult, pendingJoin, trackJoin } from './pendingJoins';
+import { cancelJoin, type JoinResult, pendingJoin, trackJoin } from './pendingJoins';
 import {
   activateWebrtcAudio,
   addAudioSessionListener,
@@ -103,7 +103,9 @@ const startJoin = (store: Store, callSid: string) => {
 const endLocally = (store: Store, call: LiveCall | undefined, callSid: string) => {
   const pending = pendingJoin(callSid);
   if (pending) {
-    // The microphone is released now; the server is told once the join settles
+    // The join stops at its next step; the microphone is released now, and the server is
+    // told once the join settles
+    cancelJoin(callSid);
     if (selectLocalCallSid(store.getState()) === callSid) {
       const provider = call?.provider === VOICE_CALL_PROVIDERS.TWILIO ? 'twilio' : 'whatsapp';
       callEngine.hangup(provider).catch(() => {});

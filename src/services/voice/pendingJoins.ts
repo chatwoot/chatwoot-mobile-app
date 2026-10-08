@@ -4,17 +4,30 @@ export type JoinResult = { status: string };
 // ends the call that was actually established instead of one already accepted
 const pendingJoins = new Map<string, Promise<JoinResult>>();
 
+// Joins the agent gave up on while they ran; each stops at its next step rather than
+// opening media or accepting the call
+const cancelledJoins = new Set<string>();
+
 export const trackJoin = (callSid: string, join: Promise<JoinResult>) => {
   pendingJoins.set(callSid, join);
   join
     .finally(() => {
-      if (pendingJoins.get(callSid) === join) pendingJoins.delete(callSid);
+      if (pendingJoins.get(callSid) === join) {
+        pendingJoins.delete(callSid);
+        cancelledJoins.delete(callSid);
+      }
     })
     .catch(() => {});
   return join;
 };
 
 export const pendingJoin = (callSid: string) => pendingJoins.get(callSid);
+
+export const cancelJoin = (callSid: string) => {
+  if (pendingJoins.has(callSid)) cancelledJoins.add(callSid);
+};
+
+export const isJoinCancelled = (callSid: string) => cancelledJoins.has(callSid);
 
 // Runs of the queue of choices made on the native call screen or notification, which
 // can start joins of their own

@@ -53,6 +53,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const conversationStatus = conversation?.status;
+  const isOpen = conversationStatus === CONVERSATION_STATUS.OPEN;
   const isResolved = conversationStatus === CONVERSATION_STATUS.RESOLVED;
 
   const slaEvents = conversation?.slaEvents;
@@ -149,9 +150,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
 
   const toggleChatStatus = async () => {
     const updatedStatus =
-      conversationStatus === CONVERSATION_STATUS.RESOLVED
-        ? CONVERSATION_STATUS.OPEN
-        : CONVERSATION_STATUS.RESOLVED;
+      conversationStatus === CONVERSATION_STATUS.OPEN
+        ? CONVERSATION_STATUS.RESOLVED
+        : CONVERSATION_STATUS.OPEN;
     await dispatch(
       conversationActions.toggleConversationStatus({
         conversationId,
@@ -197,6 +198,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     <ChatHeader
       name={name}
       imageSrc={imageSrc}
+      isOpen={isOpen}
       isResolved={isResolved}
       showDetailsRow={pagerViewIndex === 0}
       inboxName={inbox?.name}

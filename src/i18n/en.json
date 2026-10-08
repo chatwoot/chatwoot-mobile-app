@@ -184,6 +184,7 @@
     "MARK_AS_PENDING": "Mark as pending",
     "RESOLVE": "Resolve",
     "REOPEN": "Reopen",
+    "OPEN": "Open",
     "SNOOZE_UNTIL": "Snooze until",
     "SNOOZE_UNTIL_NEXT_REPLY": "Until next reply",
     "SNOOZE_UNTIL_TOMORROW": "Until tomorrow",

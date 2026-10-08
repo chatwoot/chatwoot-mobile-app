@@ -15,6 +15,7 @@ import { SlaEvents } from './SlaEvents';
 type ChatHeaderProps = {
   name: string;
   imageSrc: ImageSourcePropType;
+  isOpen?: boolean;
   isResolved: boolean;
   showDetailsRow?: boolean;
   inboxName?: string;
@@ -34,6 +35,7 @@ export const ChatHeader = ({
   name,
   imageSrc,
   isResolved,
+  isOpen = !isResolved,
   showDetailsRow = true,
   inboxName,
   channelIcon,
@@ -133,12 +135,16 @@ export const ChatHeader = ({
               style={tailwind.style(
                 'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100',
               )}>
-              <Icon icon={isResolved ? <StatusOpenIcon /> : <StatusResolvedIcon />} size={16} />
+              <Icon icon={isOpen ? <StatusResolvedIcon /> : <StatusOpenIcon />} size={16} />
               <Animated.Text
                 style={tailwind.style(
                   'text-[15px] font-inter-medium-24 tracking-[0.225px] text-gray-950',
                 )}>
-                {isResolved ? i18n.t('CONVERSATION.REOPEN') : i18n.t('CONVERSATION.RESOLVE')}
+                {isOpen
+                  ? i18n.t('CONVERSATION.RESOLVE')
+                  : isResolved
+                    ? i18n.t('CONVERSATION.REOPEN')
+                    : i18n.t('CONVERSATION.OPEN')}
               </Animated.Text>
             </Pressable>
           </Animated.View>

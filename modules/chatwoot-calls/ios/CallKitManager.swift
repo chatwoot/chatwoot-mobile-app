@@ -384,10 +384,11 @@ extension CallKitManager: CXProviderDelegate {
     heldBySystem.remove(action.callUUID)
     holdRequestedHere.remove(action.callUUID)
     if tracked.answered { endMedia?(tracked.provider) }
-    send("onCallKitAction", [
-      "type": "end", "uuid": action.callUUID.uuidString, "callSid": tracked.callSid,
-      "answered": tracked.answered,
-    ])
+    // The call's details travel with the end, so a call declined before the app adopted it
+    // can still be declined with the server
+    var event = tracked.payload
+    event["type"] = "end"
+    send("onCallKitAction", event)
     action.fulfill()
   }
 

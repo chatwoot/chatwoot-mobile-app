@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import type { AppDispatch, RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
+import { CallService } from '@/store/call/callService';
 import {
   addCall,
   clearSystemCalls,
@@ -44,6 +45,7 @@ import {
   requestSystemCallEnd,
   requestSystemCallMute,
   startOutgoingSystemCall,
+  type CallKitActionEvent,
   type SystemCall,
   type SystemCallEndReason,
 } from '@/services/voice/chatwootCalls';
@@ -114,6 +116,22 @@ const endLocally = (store: Store, call: LiveCall | undefined, callSid: string) =
     store.dispatch(callActions.endCall());
   } else if (call) {
     store.dispatch(callActions.rejectIncomingCall(callSid));
+  }
+};
+
+// A ring declined on the OS call screen before the app adopted it, as on a cold start: the
+// server is told from the details the end carried, so the caller and the agent's other
+// devices stop ringing
+const declineUnadopted = (event: Extract<CallKitActionEvent, { type: 'end' }>) => {
+  if (event.provider === VOICE_CALL_PROVIDERS.WHATSAPP && event.callId) {
+    CallService.rejectWhatsappCall(event.callId, event.accountId).catch(() => {});
+  } else if (event.inboxId && event.conversationId) {
+    CallService.leaveConference({
+      inboxId: event.inboxId,
+      conversationId: event.conversationId,
+      callSid: event.callSid,
+      accountId: event.accountId,
+    }).catch(() => {});
   }
 };
 
@@ -324,7 +342,11 @@ export const systemCall = {
           }
           break;
         case 'end':
-          endLocally(store, call, event.callSid);
+          if (call || event.answered || event.outgoing) {
+            endLocally(store, call, event.callSid);
+          } else {
+            declineUnadopted(event);
+          }
           break;
         case 'ended':
           // CallKit ended a ring itself, on a cancel push or its own ring timeout; the app's

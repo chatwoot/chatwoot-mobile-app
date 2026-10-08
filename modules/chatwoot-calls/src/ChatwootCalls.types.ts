@@ -46,7 +46,18 @@ export type SystemCallEndReason =
 
 export type CallKitActionEvent =
   | { type: 'answer'; uuid: string; callSid: string }
-  | { type: 'end'; uuid: string; callSid: string; answered: boolean }
+  | {
+      type: 'end';
+      uuid: string;
+      callSid: string;
+      answered: boolean;
+      outgoing?: boolean;
+      provider?: string;
+      callId?: number;
+      conversationId?: number;
+      inboxId?: number;
+      accountId?: number;
+    }
   | { type: 'ended'; uuid: string; callSid: string }
   | { type: 'start'; uuid: string; callSid: string }
   | { type: 'mute'; uuid: string; callSid: string; muted: boolean }

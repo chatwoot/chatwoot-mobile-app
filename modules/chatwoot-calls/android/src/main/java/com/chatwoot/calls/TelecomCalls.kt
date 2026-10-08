@@ -54,6 +54,9 @@ object TelecomCalls {
   // The last call could not be registered with Telecom; the app then manages the call's
   // audio itself until a registration succeeds
   @Volatile var registrationFailed = false
+  // Told when a registration fails, so a call already under way switches to the app's own
+  // audio handling
+  @Volatile var onRegistrationFailed: ((callSid: String) -> Unit)? = null
 
   // The agent acted on a system surface such as a headset button or a watch
   @Volatile var onSystemAnswer: ((callSid: String) -> Unit)? = null
@@ -144,6 +147,7 @@ object TelecomCalls {
       } catch (e: Exception) {
         Log.w(TAG, "call $callSid could not be tracked: ${e.message}")
         registrationFailed = true
+        onRegistrationFailed?.invoke(callSid)
       } finally {
         tracked.remove(callSid)
       }

@@ -106,4 +106,5 @@ export type ChatwootCallsModuleEvents = {
   onIncomingCall: (event: SystemCall) => void;
   onVoipToken: (event: VoipTokenEvent) => void;
   onAudioSession: (event: AudioSessionEvent) => void;
+  onTelecomUnavailable: (event: { callSid: string }) => void;
 };

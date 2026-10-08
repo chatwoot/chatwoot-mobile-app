@@ -145,6 +145,10 @@ export const stopOngoingCallNotification = (callSid: string, reason: 'local' | '
 export const addAudioRouteListener = (listener: (event: AudioRouteEvent) => void) =>
   ChatwootCallsModule?.addListener('onAudioRoute', listener) ?? noSubscription;
 
+// Android only: Telecom could not take a call, so the app handles its audio itself
+export const addTelecomUnavailableListener = (listener: (event: { callSid: string }) => void) =>
+  ChatwootCallsModule?.addListener('onTelecomUnavailable', listener) ?? noSubscription;
+
 export const setAudioRoute = (route: AudioRoute) => ChatwootCallsModule?.setAudioRoute?.(route);
 
 export const getAudioRoute = (): {

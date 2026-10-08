@@ -30,6 +30,7 @@ import { takePendingCallAction, type PendingCallAction } from '@/utils/callNotif
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
   addAudioRouteListener,
+  addTelecomUnavailableListener,
   getAudioRoute,
   addNativeCallActionListener,
   addTwilioCallStateListener,
@@ -408,11 +409,22 @@ const install = () => {
     );
   });
 
+  // Telecom could not take the call: a WhatsApp call already live takes the app's own audio
+  // handling now, and one still connecting takes it as it goes live
+  const telecomUnavailable = addTelecomUnavailableListener(() => {
+    const state = store.getState();
+    const active = selectActiveCall(state);
+    if (active?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
+    if (active.callSid !== selectLocalCallSid(state)) return;
+    webrtcEngine.ensureAudioRoute(selectIsSpeakerOn(state));
+  });
+
   return () => {
     setWebrtcConnectionLostHandler(null);
     twilio.remove();
     native.remove();
     audioRoute.remove();
+    telecomUnavailable.remove();
     unsubscribe();
   };
 };

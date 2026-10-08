@@ -74,7 +74,7 @@ class ChatwootCallsModule : Module() {
   override fun definition() = ModuleDefinition {
     Name("ChatwootCalls")
 
-    Events("onTwilioCallState", "onNativeCallAction", "onAudioRoute")
+    Events("onTwilioCallState", "onNativeCallAction", "onAudioRoute", "onTelecomUnavailable")
 
     OnCreate {
       AppVisibility.track(context.applicationContext as Application)
@@ -93,6 +93,13 @@ class ChatwootCallsModule : Module() {
           )
         } catch (e: Exception) {
           android.util.Log.w("ChatwootCalls", "audio route event not delivered: ${e.message}")
+        }
+      }
+      TelecomCalls.onRegistrationFailed = { callSid ->
+        try {
+          sendEvent("onTelecomUnavailable", mapOf("callSid" to callSid))
+        } catch (e: Exception) {
+          android.util.Log.w("ChatwootCalls", "Telecom failure not delivered: ${e.message}")
         }
       }
       TelecomCalls.onSystemAnswer = { callSid ->
@@ -119,6 +126,7 @@ class ChatwootCallsModule : Module() {
       TelecomCalls.onSystemAnswer = null
       TelecomCalls.onSystemDisconnect = null
       TelecomCalls.onSystemHold = null
+      TelecomCalls.onRegistrationFailed = null
     }
 
     // The lock-screen call screen hosts the app's views too; it is not the app in front

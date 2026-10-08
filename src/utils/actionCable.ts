@@ -173,6 +173,8 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   // WhatsApp rings through this event; Twilio rings through message.created. The server
   // already targets online agents, so the availability check only guards wider streams.
+  // The event's conversation id is the database one, not the display id the app opens
+  // conversations by, so the call's conversation comes from its message or push instead.
   onVoiceCallIncoming = (data: VoiceCallIncomingEvent) => {
     if (data?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
     if (selectCurrentUserAvailability(store.getState()) !== 'online') return;
@@ -180,7 +182,6 @@ class ActionCableConnector extends BaseActionCableConnector {
       addCall({
         callSid: data.call_id,
         callId: data.id,
-        conversationId: data.conversation_id,
         inboxId: data.inbox_id,
         callDirection: 'inbound',
         provider: VOICE_CALL_PROVIDERS.WHATSAPP,

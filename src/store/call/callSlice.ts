@@ -50,7 +50,10 @@ const callSlice = createSlice({
 
       const existing = state.calls.find(call => call.callSid === incoming.callSid);
       if (existing) {
-        const next: Partial<LiveCall> = { ...incoming };
+        // Fields the event does not carry keep what an earlier one said
+        const next = Object.fromEntries(
+          Object.entries(incoming).filter(([, value]) => value !== undefined),
+        ) as Partial<LiveCall>;
         if (existing.caller && !next.caller) delete next.caller;
         delete next.isActive;
         delete next.addedAt;

@@ -52,6 +52,7 @@ import {
 } from './voiceCallRouting';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { activeMediaProvider, callEngine } from '@/services/voice/callEngine';
+import { pendingJoin } from '@/services/voice/pendingJoins';
 import { systemCall, systemEndReason } from '@/services/voice/systemCall';
 
 import { clearActiveCall, clearLocalCall } from '@/store/call/callSlice';
@@ -218,8 +219,15 @@ class ActionCableConnector extends BaseActionCableConnector {
     }
   };
 
-  // Releases the microphone when the call this device is on ends from the other side
+  // Releases the microphone when the call this device is on ends from the other side. A
+  // join still in flight is let finish first, so the media it connects is released too.
   private hangupIfLocal = (callSid: string) => {
+    const pending = pendingJoin(callSid);
+    if (pending) {
+      const release = () => this.hangupIfLocal(callSid);
+      pending.then(release, release);
+      return;
+    }
     const state = store.getState();
     if (selectLocalCallSid(state) !== callSid) return;
     const call = selectCalls(state).find(entry => entry.callSid === callSid);

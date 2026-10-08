@@ -486,9 +486,17 @@ export const callActions = {
     'calls/endLocalCalls',
     async (_, { getState, dispatch }) => {
       if (selectPlacingCall(getState())) await dispatch(callActions.cancelPlacingCall());
-      // A join still in flight would otherwise connect after the release; the release
-      // waits for it and ends whatever it established, and no new join starts meanwhile
-      await closeSession(() => dispatch(callActions.releaseLocalCall('')));
+      // This device's media goes at once. A join still in flight would otherwise connect
+      // after the release; the release waits for it and ends whatever it established, and
+      // no new join starts meanwhile.
+      await closeSession(
+        () => dispatch(callActions.releaseLocalCall('')),
+        () =>
+          Promise.all([
+            callEngine.whatsapp.hangup().catch(() => {}),
+            callEngine.twilio.disconnect().catch(() => {}),
+          ]),
+      );
     },
   ),
 

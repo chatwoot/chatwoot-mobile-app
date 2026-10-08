@@ -43,12 +43,17 @@ let closing = 0;
 export const isSessionClosing = () => closing > 0;
 
 // Runs `close` with new joins held off and joins in flight given up, once every join and
-// every run of the queued choices has settled
-export const closeSession = async (close: () => Promise<unknown>) => {
+// every run of the queued choices has settled. `releaseNow` runs before that wait, so this
+// device's media goes at once rather than after a slow request a join is waiting on.
+export const closeSession = async (
+  close: () => Promise<unknown>,
+  releaseNow?: () => Promise<unknown>,
+) => {
   closing += 1;
   // Joins already under way stop at their next step rather than open media or accept
   pendingJoins.forEach((_, callSid) => cancelledJoins.add(callSid));
   try {
+    await releaseNow?.();
     while (pendingJoins.size || actionDrains.size) {
       // eslint-disable-next-line no-await-in-loop
       await Promise.allSettled([...pendingJoins.values(), ...actionDrains]);

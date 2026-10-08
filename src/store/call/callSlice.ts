@@ -141,6 +141,15 @@ const callSlice = createSlice({
       if (call) call.systemUuid = action.payload.systemUuid;
     },
 
+    // The OS dropped every system call: none is left behind any call, and calls still
+    // ringing in ring in the app instead
+    clearSystemCalls: state => {
+      state.calls.forEach(call => {
+        delete call.systemUuid;
+        if (call.callDirection === 'inbound' && !call.isActive) call.systemUiFailed = true;
+      });
+    },
+
     markSystemUiFailed: (state, action: PayloadAction<string>) => {
       const call = state.calls.find(entry => entry.callSid === action.payload);
       if (call) call.systemUiFailed = true;
@@ -233,6 +242,7 @@ export const {
   setMinimised,
   setPlacingCall,
   markSystemUiFailed,
+  clearSystemCalls,
   clearActiveCall,
   handleCallStatusChanged,
   setCallProviderStatus,

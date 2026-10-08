@@ -3,7 +3,13 @@ import { Platform } from 'react-native';
 import type { AppDispatch, RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
-import { addCall, markSystemUiFailed, setMuted, setSystemUuid } from '@/store/call/callSlice';
+import {
+  addCall,
+  clearSystemCalls,
+  markSystemUiFailed,
+  setMuted,
+  setSystemUuid,
+} from '@/store/call/callSlice';
 import {
   selectActiveCall,
   selectCalls,
@@ -261,7 +267,6 @@ export const systemCall = {
   adoptPendingCalls(store: Store) {
     const pending = getPendingSystemCalls();
     pending.forEach(system => adoptSystemCall(store, system));
-    callKitReady();
   },
 
   // Wires the OS events for the lifetime of the app session. `onIncoming` runs after a
@@ -279,8 +284,10 @@ export const systemCall = {
       if (__DEV__) console.log('[callkit] action', JSON.stringify(event));
       if (event.type === 'reset') {
         // CallKit dropped every call it held; the media and the server call end with them,
-        // a call still ringing out included
+        // a call still ringing out included. Calls still ringing in lose their system call
+        // and ring in the app instead.
         store.dispatch(callActions.endLocalCalls());
+        store.dispatch(clearSystemCalls());
         return;
       }
       const call = selectCalls(store.getState()).find(entry => entry.callSid === event.callSid);
@@ -329,6 +336,10 @@ export const systemCall = {
     const audio = addAudioSessionListener(event => {
       if (__DEV__) console.log('[callkit] audio session', JSON.stringify(event));
     });
+
+    // The events the OS buffered until now, such as a mute made on the lock screen before
+    // the app was up, arrive once the listeners above are in place
+    callKitReady();
 
     return () => {
       incoming.remove();

@@ -15,6 +15,7 @@ import reducer, {
   setAudioRoute,
   setSpeakerOn,
   keepOnlyLocalCall,
+  clearSystemCalls,
 } from '../callSlice';
 import type { CallState } from '../callTypes';
 
@@ -153,6 +154,21 @@ describe('callSlice', () => {
     state = reducer(state, keepOnlyLocalCall({ leaving: 4, entering: 9 }));
 
     expect(state.calls.map(call => call.callSid)).toEqual(['b']);
+  });
+
+  it('drops every system call on a reset, leaving rings to the app', () => {
+    let state = reducer(initial(), addCall(ringing('a', { systemUuid: 'uuid-a' })));
+    state = reducer(state, addCall(ringing('b', { systemUuid: 'uuid-b' })));
+    state = reducer(state, setCallActive('b'));
+
+    state = reducer(state, clearSystemCalls());
+
+    expect(state.calls.map(call => [call.callSid, call.systemUuid, !!call.systemUiFailed])).toEqual(
+      [
+        ['b', undefined, false],
+        ['a', undefined, true],
+      ],
+    );
   });
 
   it('removes by sid', () => {

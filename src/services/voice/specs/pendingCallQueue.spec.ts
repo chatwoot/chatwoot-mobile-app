@@ -4,6 +4,7 @@ import { takePendingCallAction } from '@/utils/callNotifications';
 import { callEngine } from '../callEngine';
 import { CallService } from '@/store/call/callService';
 import { reportNativeCallState } from '@/services/voice/chatwootCalls';
+import { addCall, markLocalCall, removeCall } from '@/store/call/callSlice';
 
 jest.mock('@/store', () => {
   /* eslint-disable @typescript-eslint/no-require-imports */
@@ -46,6 +47,7 @@ jest.mock('@/store/call/callService', () => ({
   CallService: {
     getWhatsappCall: jest.fn(async () => ({ sdp_offer: 'offer' })),
     acceptWhatsappCall: jest.fn(async () => ({})),
+    terminateWhatsappCall: jest.fn(async () => ({})),
   },
 }));
 
@@ -79,4 +81,23 @@ test('applies queued answers one at a time, keeping the joining call this device
   expect(reportNativeCallState).not.toHaveBeenCalledWith('failed', 'B');
   expect(CallService.acceptWhatsappCall).toHaveBeenCalledTimes(2);
   expect(store.getState().calls.localCallSid).toBe('B');
+});
+
+test('an answer releases the outbound call this device is placing before taking over', async () => {
+  (CallService.terminateWhatsappCall as jest.Mock).mockClear();
+  // The calls the previous test left behind
+  store.getState().calls.calls.forEach(call => store.dispatch(removeCall(call.callSid)));
+  store.dispatch(
+    addCall({ callSid: 'out', callId: 9, provider: 'whatsapp', callDirection: 'outbound' }),
+  );
+  store.dispatch(markLocalCall('out'));
+  const queue = [{ action: 'answer', callSid: 'in', callId: 3, provider: 'whatsapp' }];
+  (takePendingCallAction as jest.Mock).mockImplementation(() => queue.shift() ?? null);
+  (callEngine.whatsapp.createAnswer as jest.Mock).mockResolvedValue('answer-in');
+
+  await applyPendingCallAction();
+
+  expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(9, undefined);
+  expect(store.getState().calls.calls.map(call => call.callSid)).toEqual(['in']);
+  expect(store.getState().calls.localCallSid).toBe('in');
 });

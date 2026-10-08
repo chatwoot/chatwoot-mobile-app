@@ -129,11 +129,12 @@ const applyCallAction = async (pending: PendingCallAction) => {
       }),
     );
   }
-  // Taken once no other join is under way, so the call this device is on stays its own
-  // until this one can join; the call screen then shows it connecting from the first frame
+  // Taken once no other join is under way and only when this device is on no other call,
+  // so the call screen shows it connecting from the first frame; otherwise the join
+  // releases the call this device is on and takes this one itself
   if (pending.action === 'answer') {
     await whenNotJoining(store);
-    store.dispatch(markLocalCall(pending.callSid));
+    if (!selectLocalCallSid(store.getState())) store.dispatch(markLocalCall(pending.callSid));
   }
   const call = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);
   if (pending.action === 'decline') {

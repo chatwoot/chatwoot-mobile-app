@@ -229,12 +229,13 @@ object TelecomCalls {
   fun end(callSid: String, reason: String) {
     val entry = tracked[callSid] ?: return
     entry.endingLocally = true
+    // Telecom accepts only these four causes from an app; a call that failed here ended on
+    // this side, so it counts as local
     val cause = DisconnectCause(
       when (reason) {
         "rejected", "declined" -> DisconnectCause.REJECTED
         "missed", "no_answer", "unanswered" -> DisconnectCause.MISSED
-        "local" -> DisconnectCause.LOCAL
-        "failed", "error" -> DisconnectCause.ERROR
+        "local", "failed", "error" -> DisconnectCause.LOCAL
         else -> DisconnectCause.REMOTE
       }
     )

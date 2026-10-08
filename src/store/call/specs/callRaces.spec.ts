@@ -3,7 +3,7 @@ import { MediaStream, mediaDevices, RTCPeerConnection } from 'react-native-webrt
 
 import { webrtcEngine } from '@/services/voice/webrtcEngine';
 
-import reducer from '../callSlice';
+import reducer, { addCall } from '../callSlice';
 import { callActions } from '../callActions';
 import { selectFullScreenCall } from '../callSelectors';
 import { CallService } from '../callService';
@@ -15,6 +15,8 @@ jest.mock('react-native-incall-manager', () => ({
 jest.mock('../callService', () => ({
   CallService: {
     initiateWhatsappCall: jest.fn(),
+    getWhatsappCall: jest.fn(async () => ({ sdp_offer: 'v=0 offer' })),
+    acceptWhatsappCall: jest.fn(async () => ({})),
     terminateWhatsappCall: jest.fn(async () => ({})),
     getRingingCalls: jest.fn(),
   },
@@ -141,6 +143,22 @@ describe('media opening', () => {
     await dispatch(store, callActions.toggleMute());
     releaseStream();
     await placing;
+    const stream = await lastStream();
+    expect(store.getState().calls.isMuted).toBe(true);
+    expect(stream.getAudioTracks()[0].enabled).toBe(false);
+  });
+
+  it('keeps a mute made while an answered call connects', async () => {
+    const store = build();
+    store.dispatch(
+      addCall({ callSid: 'in', callId: 6, provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+    const releaseStream = deferStream();
+    const joining = dispatch(store, callActions.joinCall('in')).unwrap();
+    await flush();
+    await dispatch(store, callActions.toggleMute());
+    releaseStream();
+    expect(await joining).toEqual({ status: 'joined' });
     const stream = await lastStream();
     expect(store.getState().calls.isMuted).toBe(true);
     expect(stream.getAudioTracks()[0].enabled).toBe(false);

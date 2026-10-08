@@ -22,7 +22,6 @@ import {
   removeCall,
   setCallActive,
   setIsJoining,
-  setMuted,
   setSpeakerOn,
   setPlacingCall,
 } from './callSlice';
@@ -32,6 +31,7 @@ import {
   selectHasActiveCall,
   selectHasIncomingCall,
   selectIsJoining,
+  selectIsMuted,
   selectLocalCallSid,
   selectPlacingCall,
 } from './callSelectors';
@@ -69,6 +69,11 @@ const findCall = (state: RootState, callSid: string) =>
   selectCalls(state).find(call => call.callSid === callSid);
 
 // Placing, answering, ending and dismissing calls, plus the media and sync actions
+// A call joins with the mute the agent chose while it connected, from the call screen or
+// the OS; with no choice made the call starts unmuted, as each new call's state does
+const keepMuteChoice = (getState: () => RootState) =>
+  callEngine.setMuted(selectIsMuted(getState())).catch(() => {});
+
 export const callActions = {
   ...callMediaActions,
   ...callSyncActions,
@@ -309,7 +314,7 @@ export const callActions = {
             call_sid: callSid,
           });
           dispatch(setCallActive(callSid));
-          dispatch(setMuted(false));
+          await keepMuteChoice(getState);
           dispatch(setSpeakerOn(false));
           return { status: 'joined' };
         }
@@ -339,7 +344,7 @@ export const callActions = {
           throw error;
         }
         dispatch(setCallActive(callSid));
-        dispatch(setMuted(false));
+        await keepMuteChoice(getState);
         dispatch(setSpeakerOn(false));
         return { status: 'joined' };
       } catch (error) {

@@ -429,8 +429,12 @@ extension CallKitManager: CXProviderDelegate {
       return
     }
     if action.isOnHold {
-      // A hold nobody here asked for is the system's, made room for another app's call
-      if holdRequestedHere.remove(action.callUUID) == nil { heldBySystem.insert(action.callUUID) }
+      // A hold nobody here asked for, made while another app's call is up, is the system's
+      // making room for it and is undone when that call ends. One the agent chose on the
+      // system call screen, with no other call up, stays until they resume it.
+      if holdRequestedHere.remove(action.callUUID) == nil && otherCallActive {
+        heldBySystem.insert(action.callUUID)
+      }
     } else {
       heldBySystem.remove(action.callUUID)
       holdRequestedHere.remove(action.callUUID)

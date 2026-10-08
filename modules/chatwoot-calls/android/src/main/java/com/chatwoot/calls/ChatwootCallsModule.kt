@@ -171,7 +171,7 @@ class ChatwootCallsModule : Module() {
 
     // Telecom owns audio mode, focus and routing for the calls it tracks
     Function("isTelecomAvailable") { ->
-      TelecomCalls.supported
+      TelecomCalls.supported && !TelecomCalls.registrationFailed
     }
 
     // A named route: speaker, earpiece, bluetooth or wired

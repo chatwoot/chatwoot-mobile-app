@@ -51,6 +51,10 @@ object TelecomCalls {
   private var manager: CallsManager? = null
   @Volatile private var appContext: Context? = null
 
+  // The last call could not be registered with Telecom; the app then manages the call's
+  // audio itself until a registration succeeds
+  @Volatile var registrationFailed = false
+
   // The agent acted on a system surface such as a headset button or a watch
   @Volatile var onSystemAnswer: ((callSid: String) -> Unit)? = null
   @Volatile var onSystemDisconnect: ((callSid: String) -> Unit)? = null
@@ -120,6 +124,7 @@ object TelecomCalls {
           }
         ) {
           entry.scope = this
+          registrationFailed = false
           // Marked active before the scope existed: catch up now
           if (entry.active) launch { setActive() }
           launch {
@@ -138,6 +143,7 @@ object TelecomCalls {
         }
       } catch (e: Exception) {
         Log.w(TAG, "call $callSid could not be tracked: ${e.message}")
+        registrationFailed = true
       } finally {
         tracked.remove(callSid)
       }

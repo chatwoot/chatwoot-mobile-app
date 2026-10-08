@@ -1,22 +1,18 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { Keyboard } from 'react-native';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { TrueSheet } from '@lodev09/react-native-true-sheet';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setMinimised } from '@/store/call/callSlice';
-import {
-  selectFullScreenCall,
-  selectIsCallMinimised,
-  selectPlacingCall,
-} from '@/store/call/callSelectors';
-import type { LiveCall } from '@/store/call/callTypes';
+import { selectIsCallMinimised } from '@/store/call/callSelectors';
 import { applyPendingCallAction } from '@/services/voice/callSessionCore';
 import { useHaptic } from '@/utils';
 
 import { FullScreenCall } from './FullScreenCall';
 import { useCallSession } from './hooks/useCallSession';
 import { useRecentsScreenshotGuard } from './hooks/useRecentsScreenshotGuard';
+import { useScreenCall } from './hooks/useScreenCall';
 
 // Screens the system presents as sheets over the app
 const MODAL_ROUTES = ['ContactDetails', 'Dashboard'];
@@ -35,26 +31,7 @@ export const InAppCallScreen = () => {
     applyPendingCallAction().catch(() => {});
   }, []);
   const isMinimised = useAppSelector(selectIsCallMinimised);
-  const liveFullScreenCall = useAppSelector(selectFullScreenCall);
-  const placingCall = useAppSelector(selectPlacingCall);
-  // A call being placed fills the screen straight away, before the provider answers with
-  // its call id, so the button press has something to show
-  const placeholderCall: LiveCall | null = useMemo(
-    () =>
-      placingCall
-        ? {
-            callSid: '',
-            provider: placingCall.provider,
-            conversationId: placingCall.conversationId,
-            inboxId: placingCall.inboxId,
-            callDirection: 'outbound',
-            isActive: false,
-            addedAt: Date.now(),
-          }
-        : null,
-    [placingCall],
-  );
-  const fullScreenCall = liveFullScreenCall ?? placeholderCall;
+  const fullScreenCall = useScreenCall();
   useRecentsScreenshotGuard(!!fullScreenCall);
   const showing = !!fullScreenCall && !isMinimised;
 

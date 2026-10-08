@@ -418,7 +418,9 @@ export const callActions = {
         if (httpStatus(error) === 409) {
           return { status: 'answered_elsewhere' };
         }
-        console.error('Failed to join call:', error);
+        // A join the agent ended fails on the way; that is the end, not an error to report
+        const abandoned = isJoinCancelled(callSid);
+        if (!abandoned) console.error('Failed to join call:', error);
         if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
           if (media !== undefined) await callEngine.hangup('whatsapp', media).catch(() => {});
         } else {
@@ -431,6 +433,7 @@ export const callActions = {
             .catch(() => {});
         }
         dispatch(clearLocalCall(callSid));
+        if (abandoned) return { status: 'already_ended' };
         throw error;
       } finally {
         dispatch(setIsJoining(false));

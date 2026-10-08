@@ -73,6 +73,16 @@ const unavailable = (provider: VoiceCallProvider) => async () => {
 let activeProvider: VoiceCallProvider | null = null;
 // Counts media starts, so a hangup meant for an earlier call can be recognised
 let session = 0;
+// Counts Twilio connects and disconnects, so a connect still asking for the microphone
+// when the call is ended does not go on to connect
+let twilioStarts = 0;
+
+export class ConnectAbandonedError extends Error {
+  constructor() {
+    super('The call ended while it was connecting');
+    this.name = 'ConnectAbandonedError';
+  }
+}
 const beginSession = (provider: VoiceCallProvider) => {
   activeProvider = provider;
   session += 1;
@@ -99,8 +109,11 @@ export const callEngine: CallEngine = {
   twilio: {
     connect: async (token, params) => {
       if (!isNativeCallsAvailable()) return unavailable('twilio')();
+      const attempt = ++twilioStarts;
       // Asked here as for WhatsApp, so a call in an account opened after launch still prompts
       await ensureMicrophonePermission();
+      // Ended while the permission was asked for: nothing is connected
+      if (attempt !== twilioStarts) throw new ConnectAbandonedError();
       beginSession('twilio');
       webrtcEngine.abandonOpening();
       try {
@@ -111,6 +124,7 @@ export const callEngine: CallEngine = {
       }
     },
     disconnect: async () => {
+      twilioStarts += 1;
       if (activeProvider === 'twilio') activeProvider = null;
       twilioDisconnect();
     },

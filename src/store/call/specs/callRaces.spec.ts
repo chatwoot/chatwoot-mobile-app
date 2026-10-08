@@ -5,6 +5,8 @@ import { closeSession, trackJoin } from '@/services/voice/pendingJoins';
 import { callEngine } from '@/services/voice/callEngine';
 import { webrtcEngine } from '@/services/voice/webrtcEngine';
 
+import conversationReducer, { addConversation } from '@/store/conversation/conversationSlice';
+
 import reducer, { addCall, markCallDismissed } from '../callSlice';
 import { callActions } from '../callActions';
 import { selectFullScreenCall, selectIsSpeakerOn } from '../callSelectors';
@@ -33,6 +35,7 @@ const build = (availability = 'online') =>
   configureStore({
     reducer: {
       calls: reducer,
+      conversations: conversationReducer,
       auth: (
         state = {
           user: { id: 1, account_id: 1, accounts: [{ id: 1, availability }] },
@@ -298,6 +301,16 @@ describe('syncRingingCalls', () => {
     conversation: { id: 100, display_id: 37 },
     inbox: { id: 7, name: 'Sales' },
     contact: null,
+  });
+
+  it('leaves out a ring whose conversation is now assigned to another agent', async () => {
+    const store = build();
+    store.dispatch(
+      addConversation({ id: 37, meta: { assignee: { id: 99 } }, messages: [] } as never),
+    );
+    (CallService.getRingingCalls as jest.Mock).mockResolvedValue([ringing('inbound')]);
+    await dispatch(store, callActions.syncRingingCalls());
+    expect(store.getState().calls.calls).toHaveLength(0);
   });
 
   it('leaves out an outbound call placed on another device', async () => {

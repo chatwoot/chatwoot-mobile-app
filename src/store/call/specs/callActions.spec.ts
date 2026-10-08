@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import conversationReducer from '@/store/conversation/conversationSlice';
 
 import type { AppDispatch } from '@/store';
 
@@ -24,7 +25,13 @@ jest.mock('../callService', () => ({
 const authReducer = (state = { user: { id: 1, account_id: 1, accounts: [] } }) => state;
 
 const buildStore = () =>
-  configureStore({ reducer: combineReducers({ calls: callReducer, auth: authReducer }) });
+  configureStore({
+    reducer: combineReducers({
+      calls: callReducer,
+      auth: authReducer,
+      conversations: conversationReducer,
+    }),
+  });
 
 type Store = ReturnType<typeof buildStore>;
 // The thunks are typed against the app's RootState; this store only carries the slices they read
@@ -440,7 +447,11 @@ describe('callActions.syncRingingCalls', () => {
       },
     ]);
     const store = configureStore({
-      reducer: combineReducers({ calls: callReducer, auth: authReducer }),
+      reducer: combineReducers({
+        calls: callReducer,
+        auth: authReducer,
+        conversations: conversationReducer,
+      }),
       preloadedState: {
         auth: {
           ...buildStore().getState().auth,

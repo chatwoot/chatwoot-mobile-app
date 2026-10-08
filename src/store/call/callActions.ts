@@ -359,10 +359,17 @@ export const callActions = {
               : { status: 'answered_elsewhere' };
           }
           // With no response the server may have taken the answer while this device has no
-          // media, so the call is ended rather than left connected to nobody; a response
-          // that refused the answer leaves the call ringing for the other agents
+          // media; a call it recorded as answered by this agent is ended rather than left
+          // connected to nobody. Another agent's answer, or a response that refused this
+          // one, leaves the call alone.
           if (httpStatus(error) === undefined) {
-            await CallService.terminateWhatsappCall(call.callId, call.accountId).catch(() => {});
+            const userId = selectUserId(getState());
+            const current = await CallService.getWhatsappCall(call.callId, call.accountId).catch(
+              () => null,
+            );
+            if (userId && current?.accepted_by_agent_id === userId) {
+              await CallService.terminateWhatsappCall(call.callId, call.accountId).catch(() => {});
+            }
           }
           throw error;
         }

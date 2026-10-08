@@ -232,6 +232,37 @@ describe('media opening', () => {
     expect(stream.getTracks()[0].stop).toHaveBeenCalled();
   });
 
+  describe('an answer whose response was lost', () => {
+    const answerLost = async (acceptedBy: number) => {
+      const store = build();
+      store.dispatch(
+        addCall({ callSid: 'lost', callId: 21, provider: 'whatsapp', callDirection: 'inbound' }),
+      );
+      (CallService.acceptWhatsappCall as jest.Mock).mockRejectedValueOnce(
+        new Error('Network Error'),
+      );
+      (CallService.getWhatsappCall as jest.Mock).mockResolvedValue({
+        sdp_offer: 'v=0 offer',
+        accepted_by_agent_id: acceptedBy,
+      });
+      (CallService.terminateWhatsappCall as jest.Mock).mockClear();
+      await dispatch(store, callActions.joinCall('lost'))
+        .unwrap()
+        .catch(() => {});
+      (CallService.getWhatsappCall as jest.Mock).mockResolvedValue({ sdp_offer: 'v=0 offer' });
+    };
+
+    it('ends the call when the server recorded this agent as answering', async () => {
+      await answerLost(1);
+      expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(21, 1);
+    });
+
+    it("leaves another agent's call alone", async () => {
+      await answerLost(99);
+      expect(CallService.terminateWhatsappCall).not.toHaveBeenCalled();
+    });
+  });
+
   it('releases a microphone that opens after its session was abandoned', async () => {
     const releaseStream = deferStream();
     const offer = webrtcEngine.createOffer().catch((error: unknown) => error);

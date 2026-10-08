@@ -12,13 +12,18 @@ import { routeVoiceCallCreated } from '@/utils/voiceCallRouting';
 
 import { RING_TIMEOUT_MS } from '../constants/ringTimeouts';
 
-// The ringing calls in the conversation cache, as one string that only changes when they do
+// The ringing calls in the conversation cache and who their conversations are assigned to,
+// as one string that only changes when either does; a reassignment can make a ring this
+// agent's
 const selectRingingKey = createSelector(selectAllConversations, conversations =>
   conversations
     .flatMap(conversation =>
       (conversation.messages || [])
         .filter(message => message.call?.status === VOICE_CALL_STATUS.RINGING)
-        .map(message => `${conversation.id}:${message.call?.providerCallId}`),
+        .map(
+          message =>
+            `${conversation.id}:${message.call?.providerCallId}:${conversation.meta?.assignee?.id ?? ''}`,
+        ),
     )
     .sort()
     .join('|'),

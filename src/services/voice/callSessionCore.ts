@@ -3,7 +3,6 @@ import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
 import {
   addCall,
-  clearActiveCall,
   clearLocalCall,
   dismissCall,
   markLocalCall,
@@ -189,7 +188,8 @@ const install = () => {
     store.dispatch(callActions.endCall());
   });
 
-  // A Twilio call can end from the far side or on a network failure
+  // A Twilio call can end from the far side or on a network failure; either way it is
+  // ended like a hang-up, so the server ends the conference and the contact's leg with it
   const twilio = addTwilioCallStateListener(event => {
     if (event.state !== 'disconnected' && event.state !== 'failed') return;
     const state = store.getState();
@@ -201,8 +201,7 @@ const install = () => {
     ) {
       return;
     }
-    store.dispatch(clearActiveCall());
-    store.dispatch(clearLocalCall(active.callSid));
+    store.dispatch(callActions.endCall());
   });
 
   // Buttons pressed on Android's native call screen

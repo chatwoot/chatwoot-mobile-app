@@ -108,10 +108,11 @@ describe('messageVariableUtils', () => {
     it('should convert camelCase contact custom attribute keys to snake_case', () => {
       const conversation = buildConversation();
       // Override sender customAttributes
-      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes = {
-        userName: 'testuser',
-        accountType: 'business',
-      };
+      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes =
+        {
+          userName: 'testuser',
+          accountType: 'business',
+        };
       const variables = allMessageVariables({ conversation });
 
       expect(variables['contact.custom_attribute.user_name']).toBe('testuser');
@@ -132,10 +133,11 @@ describe('messageVariableUtils', () => {
       const conversation = buildConversation({
         customAttributes: { addressLine1: '123 Main St', field2Value: 'test' },
       });
-      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes = {
-        phone2Type: 'mobile',
-        line1Address: 'home',
-      };
+      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes =
+        {
+          phone2Type: 'mobile',
+          line1Address: 'home',
+        };
       const variables = allMessageVariables({ conversation });
 
       expect(variables['conversation.custom_attribute.address_line_1']).toBe('123 Main St');
@@ -177,9 +179,10 @@ describe('messageVariableUtils', () => {
 
     it('should replace contact custom attribute variables in message', () => {
       const conversation = buildConversation();
-      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes = {
-        userName: 'testuser',
-      };
+      (conversation.meta.sender as { customAttributes: Record<string, string> }).customAttributes =
+        {
+          userName: 'testuser',
+        };
       const variables = allMessageVariables({ conversation });
 
       const result = replaceMessageVariables({

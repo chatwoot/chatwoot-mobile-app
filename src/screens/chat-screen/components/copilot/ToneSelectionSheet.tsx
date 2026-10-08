@@ -50,9 +50,7 @@ export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
             <Pressable
               key={option.key}
               onPress={() => handleSelectTone(option.key as CopilotActionKey)}
-              style={tailwind.style(
-                'h-[60px] justify-center pl-4 pr-3 border-b border-slate-200',
-              )}>
+              style={tailwind.style('h-[60px] justify-center pl-4 pr-3 border-b border-slate-200')}>
               <Text
                 style={tailwind.style(
                   'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-950',
@@ -66,3 +64,5 @@ export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
     );
   },
 );
+
+ToneSelectionSheet.displayName = 'ToneSelectionSheet';

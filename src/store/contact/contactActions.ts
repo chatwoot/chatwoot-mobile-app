@@ -13,7 +13,7 @@ export const contactActions = {
   >('contact/getContactLabels', async (payload, { rejectWithValue }) => {
     try {
       const response = await ContactService.getContactLabels(payload);
-      const { payload: labels } = response.data;
+      const { payload: labels } = response;
       return { contactId: payload.contactId, labels };
     } catch (error) {
       const message = error instanceof Error ? error.message : '';

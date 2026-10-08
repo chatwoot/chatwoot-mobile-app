@@ -17,12 +17,14 @@ export function transformSearchConversation(conversation: unknown): Conversation
     transformed.lastNonActivityMessage = null;
   }
 
+  const inbox = transformed.inbox as { id?: number; channelType?: string } | undefined;
+
   const meta: Record<string, unknown> = {
     sender: transformed.contact ? transformContact(transformed.contact) : null,
     assignee: transformed.agent ? camelcaseKeys(transformed.agent, { deep: true }) : null,
     team: null,
     hmacVerified: null,
-    channel: transformed.inbox?.channelType || null,
+    channel: inbox?.channelType || null,
   };
 
   if (transformed.meta) {
@@ -38,9 +40,9 @@ export function transformSearchConversation(conversation: unknown): Conversation
     transformed.messages = [];
   }
 
-  if (transformed.inbox?.id && !transformed.inboxId) {
-    transformed.inboxId = transformed.inbox.id;
+  if (inbox?.id && !transformed.inboxId) {
+    transformed.inboxId = inbox.id;
   }
 
-  return transformed as Conversation;
+  return transformed as unknown as Conversation;
 }

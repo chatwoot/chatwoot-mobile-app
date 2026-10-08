@@ -12,7 +12,7 @@ export type Inbox = {
   additionalAttributes?: {
     agentReplyTimeWindowMessage?: string;
   };
-  provider: string;
+  provider?: string;
   messageTemplates?: WhatsAppMessageTemplate[];
   contentTemplates?: TwilioContentTemplates;
 };

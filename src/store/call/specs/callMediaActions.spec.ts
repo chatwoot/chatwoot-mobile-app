@@ -63,7 +63,7 @@ describe('callActions.joinCall', () => {
 
     expect(result).toEqual({ status: 'joined' });
     expect(createAnswer).toHaveBeenCalledWith('v=0 offer', [{ urls: 'stun:stun.example' }]);
-    expect(CallService.acceptWhatsappCall).toHaveBeenCalledWith(5, 'v=0 answer', undefined);
+    expect(CallService.acceptWhatsappCall).toHaveBeenCalledWith(5, 'v=0 answer', 1);
     const state = store.getState().calls;
     expect(state.localCallSid).toBe('wacid.1');
     expect(state.calls[0].isActive).toBe(true);
@@ -82,7 +82,7 @@ describe('callActions.joinCall', () => {
 
     await run(store)(callActions.joinCall('wacid.1')).unwrap();
 
-    expect(CallService.getWhatsappCall).toHaveBeenCalledWith(5, undefined);
+    expect(CallService.getWhatsappCall).toHaveBeenCalledWith(5, 1);
     expect(createAnswer).toHaveBeenCalledWith('v=0 fetched', [
       { urls: 'turn:turn.example', username: 'u', credential: 'c' },
     ]);

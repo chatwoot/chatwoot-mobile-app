@@ -273,13 +273,19 @@ export const callActions = {
     async (callSid, { getState, dispatch }) => {
       if (selectIsJoining(getState())) return { status: 'locked' };
       if (isSessionClosing()) return { status: 'already_ended' };
-      const call = findCall(getState(), callSid);
-      if (!call) return { status: 'already_ended' };
+      const found = findCall(getState(), callSid);
+      if (!found) return { status: 'already_ended' };
+      // The account the call rang in, kept for its requests should the agent switch
+      // accounts while it joins
+      const call = {
+        ...found,
+        accountId: found.accountId ?? selectCurrentUserAccountId(getState()) ?? undefined,
+      };
 
       // One call at a time on this device: answering ends the one it is already on, and
       // gives up a call still being placed. The answer is under way from here, so nothing
-      // rings for the call being taken meanwhile.
-      dispatch(setIsJoining(true));
+      // rings for the call being taken meanwhile, and an account switch keeps it.
+      dispatch(setIsJoining(callSid));
       if (call.callDirection === 'inbound' && selectPlacingCall(getState())) {
         await dispatch(callActions.cancelPlacingCall());
       }

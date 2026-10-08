@@ -54,6 +54,8 @@ export type CallState = {
   // Call this device is answering or owns, set before the accept request is sent
   localCallSid: string | null;
   isJoining: boolean;
+  // The call being joined, kept through an account switch made while it joins
+  joiningCallSid: string | null;
   isMuted: boolean;
   // The system parked the call, typically for a cellular call; nothing flows until resumed
   isOnHold: boolean;

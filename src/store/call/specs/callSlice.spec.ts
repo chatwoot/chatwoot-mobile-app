@@ -16,6 +16,7 @@ import reducer, {
   setSpeakerOn,
   keepOnlyLocalCall,
   clearSystemCalls,
+  setIsJoining,
 } from '../callSlice';
 import type { CallState } from '../callTypes';
 
@@ -38,6 +39,7 @@ describe('callSlice', () => {
       dismissedCallSids: [],
       localCallSid: null,
       isJoining: false,
+      joiningCallSid: null,
       isMuted: false,
       isOnHold: false,
       audioRoute: { current: 'earpiece', available: ['earpiece', 'speaker'], names: {} },
@@ -169,6 +171,15 @@ describe('callSlice', () => {
         ['a', undefined, true],
       ],
     );
+  });
+
+  it('keeps the call being joined through an account switch', () => {
+    let state = reducer(initial(), addCall(ringing('a')));
+    state = reducer(state, setIsJoining('a'));
+
+    state = reducer(state, keepOnlyLocalCall({ leaving: 4, entering: 9 }));
+
+    expect(state.calls.map(call => [call.callSid, call.accountId])).toEqual([['a', 4]]);
   });
 
   it('removes by sid', () => {

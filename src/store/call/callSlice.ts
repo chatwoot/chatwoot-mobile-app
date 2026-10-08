@@ -19,6 +19,7 @@ const initialState: CallState = {
   dismissedCallSids: [],
   localCallSid: null,
   isJoining: false,
+  joiningCallSid: null,
   isMuted: false,
   isOnHold: false,
   audioRoute: { current: 'earpiece', available: ['earpiece', 'speaker'], names: {} },
@@ -205,8 +206,10 @@ const callSlice = createSlice({
       if (state.localCallSid === action.payload) state.localCallSid = null;
     },
 
-    setIsJoining: (state, action: PayloadAction<boolean>) => {
-      state.isJoining = action.payload;
+    // True or the sid of the call being joined while a join runs, false once it is over
+    setIsJoining: (state, action: PayloadAction<boolean | string>) => {
+      state.isJoining = !!action.payload;
+      state.joiningCallSid = typeof action.payload === 'string' ? action.payload : null;
     },
 
     // On an account switch the account left's rings no longer apply; the call this device
@@ -221,6 +224,7 @@ const callSlice = createSlice({
         call =>
           call.isActive ||
           call.callSid === state.localCallSid ||
+          call.callSid === state.joiningCallSid ||
           (entering != null && call.accountId === entering),
       );
       state.calls.forEach(call => {

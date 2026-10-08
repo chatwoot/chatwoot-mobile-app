@@ -6,6 +6,7 @@ import { callActions } from '@/store/call/callActions';
 import {
   addCall,
   clearSystemCalls,
+  dismissCall,
   markSystemUiFailed,
   setMuted,
   setSystemUuid,
@@ -319,6 +320,13 @@ export const systemCall = {
           break;
         case 'end':
           endLocally(store, call, event.callSid);
+          break;
+        case 'ended':
+          // CallKit ended a ring itself, on a cancel push or its own ring timeout; the app's
+          // copy goes with it unless it is the call this device is on
+          if (call && !call.isActive && call.callSid !== selectLocalCallSid(store.getState())) {
+            store.dispatch(dismissCall(call.callSid));
+          }
           break;
         case 'mute':
           callEngine.setMuted(event.muted).catch(() => {});

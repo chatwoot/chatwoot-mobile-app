@@ -22,16 +22,17 @@ import {
   removeCall,
   setCallActive,
   setIsJoining,
-  setSpeakerOn,
   setPlacingCall,
 } from './callSlice';
 import {
   selectActiveCall,
   selectCalls,
+  selectDismissedCallSids,
   selectHasActiveCall,
   selectHasIncomingCall,
   selectIsJoining,
   selectIsMuted,
+  selectIsSpeakerOn,
   selectLocalCallSid,
   selectPlacingCall,
 } from './callSelectors';
@@ -69,10 +70,13 @@ const findCall = (state: RootState, callSid: string) =>
   selectCalls(state).find(call => call.callSid === callSid);
 
 // Placing, answering, ending and dismissing calls, plus the media and sync actions
-// A call joins with the mute the agent chose while it connected, from the call screen or
-// the OS; with no choice made the call starts unmuted, as each new call's state does
-const keepMuteChoice = (getState: () => RootState) =>
-  callEngine.setMuted(selectIsMuted(getState())).catch(() => {});
+// A call joins with the mute and speaker the agent chose while it connected, from the
+// call screen or the OS; with no choice made it starts unmuted, on the route the system
+// picked, as each new call's state does
+const keepAudioChoices = async (getState: () => RootState) => {
+  await callEngine.setMuted(selectIsMuted(getState())).catch(() => {});
+  if (selectIsSpeakerOn(getState())) await callEngine.setSpeaker(true).catch(() => {});
+};
 
 export const callActions = {
   ...callMediaActions,
@@ -190,6 +194,13 @@ export const callActions = {
           if (cancelled()) {
             await releaseOffer();
             await CallService.terminateWhatsappCall(response.id, accountId).catch(() => {});
+            return { status: 'cancelled' };
+          }
+          // The call ended before the request above returned, the contact declining at once;
+          // there is no call to show, so only its media is released
+          if (selectDismissedCallSids(getState()).includes(response.call_id)) {
+            takeEarlyOutboundEvents(response.call_id);
+            await releaseOffer();
             return { status: 'cancelled' };
           }
           dispatch(markLocalCall(response.call_id));
@@ -321,8 +332,7 @@ export const callActions = {
             call_sid: callSid,
           });
           dispatch(setCallActive(callSid));
-          await keepMuteChoice(getState);
-          dispatch(setSpeakerOn(false));
+          await keepAudioChoices(getState);
           return { status: 'joined' };
         }
 
@@ -351,8 +361,7 @@ export const callActions = {
           throw error;
         }
         dispatch(setCallActive(callSid));
-        await keepMuteChoice(getState);
-        dispatch(setSpeakerOn(false));
+        await keepAudioChoices(getState);
         return { status: 'joined' };
       } catch (error) {
         if (httpStatus(error) === 409) {

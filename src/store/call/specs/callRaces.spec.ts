@@ -2,11 +2,12 @@ import { configureStore } from '@reduxjs/toolkit';
 import { MediaStream, mediaDevices, RTCPeerConnection } from 'react-native-webrtc';
 
 import { closeSession, trackJoin } from '@/services/voice/pendingJoins';
+import { callEngine } from '@/services/voice/callEngine';
 import { webrtcEngine } from '@/services/voice/webrtcEngine';
 
-import reducer, { addCall } from '../callSlice';
+import reducer, { addCall, markCallDismissed } from '../callSlice';
 import { callActions } from '../callActions';
-import { selectFullScreenCall } from '../callSelectors';
+import { selectFullScreenCall, selectIsSpeakerOn } from '../callSelectors';
 import { CallService } from '../callService';
 
 jest.mock('react-native-incall-manager', () => ({
@@ -201,6 +202,34 @@ describe('media opening', () => {
     expect(CallService.acceptWhatsappCall).not.toHaveBeenCalledWith(
       expect.objectContaining({ id: 8 }),
     );
+  });
+
+  it('keeps a speaker choice made while an answered call connects', async () => {
+    const store = build();
+    const setSpeaker = jest.spyOn(callEngine, 'setSpeaker').mockResolvedValue(undefined);
+    store.dispatch(
+      addCall({ callSid: 'loud', callId: 9, provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+    const releaseStream = deferStream();
+    const joining = dispatch(store, callActions.joinCall('loud')).unwrap();
+    await flush();
+    await dispatch(store, callActions.toggleSpeaker());
+    releaseStream();
+    await joining;
+    expect(selectIsSpeakerOn(store.getState() as never)).toBe(true);
+    expect(setSpeaker).toHaveBeenLastCalledWith(true);
+  });
+
+  it('releases the media of a call that ended before its placement returned', async () => {
+    const store = build();
+    (CallService.initiateWhatsappCall as jest.Mock).mockImplementationOnce(async () => {
+      store.dispatch(markCallDismissed('early-end'));
+      return { status: 'calling', call_id: 'early-end', id: 20 };
+    });
+    expect(await start(store)).toEqual({ status: 'cancelled' });
+    const stream = await lastStream();
+    expect(store.getState().calls.localCallSid).toBeNull();
+    expect(stream.getTracks()[0].stop).toHaveBeenCalled();
   });
 
   it('releases a microphone that opens after its session was abandoned', async () => {

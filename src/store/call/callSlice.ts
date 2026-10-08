@@ -27,11 +27,12 @@ const initialState: CallState = {
   placingCall: null,
 };
 
-// Mute and hold belong to the call carrying media: with no answered call and no call
-// being placed out, nothing is muted or held
+// Mute and hold belong to the call carrying media: once this device has no call it owns,
+// is joining or is placing, and no answered call, nothing is muted or held. Each place a
+// call can stop being this device's runs this, so a choice never outlives its call.
 const resetMediaWhenIdle = (state: CallState) => {
-  // A call this device owns or is joining keeps the choices made while it connects
-  if (state.localCallSid || state.isJoining) return;
+  // A call this device owns, is joining or is placing keeps the choices made as it connects
+  if (state.localCallSid || state.isJoining || state.placingCall) return;
   if (state.calls.some(call => call.isActive || call.callDirection === 'outbound')) return;
   state.isMuted = false;
   state.isOnHold = false;
@@ -135,6 +136,8 @@ const callSlice = createSlice({
         state.isMinimised = false;
         state.isMuted = false;
         state.isOnHold = false;
+      } else {
+        resetMediaWhenIdle(state);
       }
     },
 
@@ -209,12 +212,14 @@ const callSlice = createSlice({
 
     clearLocalCall: (state, action: PayloadAction<string>) => {
       if (state.localCallSid === action.payload) state.localCallSid = null;
+      resetMediaWhenIdle(state);
     },
 
     // True or the sid of the call being joined while a join runs, false once it is over
     setIsJoining: (state, action: PayloadAction<boolean | string>) => {
       state.isJoining = !!action.payload;
       state.joiningCallSid = typeof action.payload === 'string' ? action.payload : null;
+      if (!state.isJoining) resetMediaWhenIdle(state);
     },
 
     // On an account switch the account left's rings no longer apply; the call this device

@@ -143,6 +143,8 @@ object CallNotification {
     deferred.remove(callSid)
   }
 
+  fun isRinging(callSid: String): Boolean = ringing.containsKey(callSid)
+
   fun nextRingingAfter(callSid: String): Map<String, String>? = synchronized(ringing) {
     ringing.entries.firstOrNull { it.key != callSid }?.value
   }

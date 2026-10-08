@@ -99,9 +99,15 @@ class ChatwootCallsModule : Module() {
         appContext.reactContext?.let { CallNotification.applySystemAction(it, "answer", callSid) }
       }
       TelecomCalls.onSystemHold = { _, held -> NativeCallBridge.emit("hold", held) }
+      // A ring still on this phone is declined through the pending action; any other call
+      // is ended by the app
       TelecomCalls.onSystemDisconnect = { callSid ->
-        appContext.reactContext?.let { CallNotification.applySystemAction(it, "decline", callSid) }
-        NativeCallBridge.emit("end", callSid = callSid)
+        val context = appContext.reactContext
+        if (context != null && CallNotification.isRinging(callSid)) {
+          CallNotification.applySystemAction(context, "decline", callSid)
+        } else {
+          NativeCallBridge.emit("end", callSid = callSid)
+        }
       }
     }
 

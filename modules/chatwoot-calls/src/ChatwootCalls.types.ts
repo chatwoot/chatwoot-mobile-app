@@ -19,6 +19,8 @@ export type SystemCall = {
   callId?: number;
   provider: 'whatsapp' | 'twilio';
   displayName: string;
+  // The caller's own name, for a call that arrived by push; displayName also names the inbox
+  callerName?: string;
   handle: string;
   outgoing: boolean;
   answered: boolean;

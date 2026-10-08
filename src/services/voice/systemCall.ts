@@ -398,7 +398,7 @@ const adoptSystemCall = (store: Store, system: SystemCall) => {
         inboxId: system.inboxId,
         accountId: system.accountId,
         callDirection: system.outgoing ? 'outbound' : 'inbound',
-        caller: { name: system.displayName, phone: system.handle },
+        caller: { name: system.callerName ?? system.displayName, phone: system.handle },
         systemUuid: system.uuid,
       }),
     );

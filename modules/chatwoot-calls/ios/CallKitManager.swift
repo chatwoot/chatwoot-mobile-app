@@ -22,6 +22,8 @@ final class CallKitManager: NSObject {
     var outgoing: Bool
     var answered: Bool
     var ringTimer: Timer?
+    // The caller's own name, apart from the display name CallKit shows with the inbox
+    var callerName: String? = nil
 
     var payload: [String: Any] {
       var result: [String: Any] = [
@@ -37,6 +39,7 @@ final class CallKitManager: NSObject {
       if let conversationId { result["conversationId"] = conversationId }
       if let inboxId { result["inboxId"] = inboxId }
       if let accountId { result["accountId"] = accountId }
+      if let callerName { result["callerName"] = callerName }
       return result
     }
   }
@@ -149,7 +152,7 @@ final class CallKitManager: NSObject {
 
   func reportIncomingCall(
     callSid: String, provider providerName: String, displayName: String, handle: String,
-    conversationId: Int?, inboxId: Int?, accountId: Int?,
+    conversationId: Int?, inboxId: Int?, accountId: Int?, callerName: String? = nil,
     completion: @escaping (UUID, Error?) -> Void
   ) -> UUID {
     if let existing = call(forSid: callSid) {
@@ -160,7 +163,7 @@ final class CallKitManager: NSObject {
     var tracked = TrackedCall(
       uuid: uuid, callSid: callSid, provider: providerName, conversationId: conversationId,
       inboxId: inboxId, accountId: accountId, displayName: displayName, handle: handle,
-      outgoing: false, answered: false, ringTimer: nil)
+      outgoing: false, answered: false, ringTimer: nil, callerName: callerName)
     let timeout = Self.ringTimeout
     tracked.ringTimer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false) { [weak self] _ in
       self?.endCall(uuid: uuid, reason: .unanswered)
@@ -307,7 +310,8 @@ final class CallKitManager: NSObject {
       callSid: callSid, provider: providerName, displayName: displayName, handle: handle,
       conversationId: Self.intValue(dictionary["conversation_id"]),
       inboxId: Self.intValue(dictionary["inbox_id"]),
-      accountId: Self.intValue(dictionary["account_id"])
+      accountId: Self.intValue(dictionary["account_id"]),
+      callerName: caller["name"] as? String
     ) { [weak self] reported, error in
       guard let self else { return completion() }
       if error == nil {

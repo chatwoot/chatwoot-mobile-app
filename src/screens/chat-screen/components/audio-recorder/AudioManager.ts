@@ -70,6 +70,11 @@ export const startPlayer = async (path: string, callback: Callback) => {
   } else if (currentPath !== path) {
     if (audioRecorderPlayer !== undefined) {
       await stopPlayer();
+    } else {
+      // A note that was cut off keeps its position but has no player; playing another
+      // note ends it, so neither starts from the other's position
+      currentPosition = 0;
+      currentCallback({ status: AudioStatus.STOPPED });
     }
     currentPath = path;
     currentCallback = callback;

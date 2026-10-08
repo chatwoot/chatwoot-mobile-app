@@ -73,6 +73,8 @@ export type PlacingCall = {
   conversationId: number;
   inboxId?: number;
   provider?: VoiceCallProvider;
+  // The account the call is placed in, kept should the agent switch accounts meanwhile
+  accountId?: number;
 };
 
 export type VoiceCallIncomingEvent = {

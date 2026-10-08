@@ -141,7 +141,7 @@ export const callActions = {
       const attempt = placingAttempt;
       const cancelled = () => cancelledAttempts.has(attempt);
       // The call screen opens on this, before the media offer and the provider request
-      dispatch(setPlacingCall({ conversationId, inboxId, provider }));
+      dispatch(setPlacingCall({ conversationId, inboxId, provider, accountId }));
 
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {

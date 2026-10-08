@@ -289,6 +289,7 @@ export const webrtcEngine = {
     // The retry applies only to the session it was made for, so one that ended meanwhile
     // does not have its audio mode started again
     const forSession = session;
+    if (!forSession) return;
     const apply = () => {
       if (session !== forSession) return;
       if (usesInCallManager()) {

@@ -12,10 +12,14 @@ import { ChatHeader } from './ChatHeader';
 import { DashboardList } from './DropdownMenu';
 import { ImageSourcePropType } from 'react-native';
 import { SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus } from '@chatwoot/utils';
+import { evaluateSLAStatus as evaluateLegacySLAStatus } from '@chatwoot/utils';
+import { evaluateSLAStatus, hasSLADueTimes } from '@/utils/slaUtils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
+import { selectInboxById } from '@/store/inbox/inboxSelectors';
+import { getChannelIcon } from '@/utils';
+import { Channel } from '@/types';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -32,6 +36,15 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const currentUser = useAppSelector(selectUser);
   const dashboardApps = useAppSelector(selectAllDashboardApps);
+  const inboxId = conversation?.inboxId;
+  const inbox = useAppSelector(state => (inboxId ? selectInboxById(state, inboxId) : undefined));
+  const channelIcon = inbox
+    ? getChannelIcon(
+        inbox.channelType as Channel,
+        inbox.medium || '',
+        conversation?.additionalAttributes?.type || '',
+      )
+    : null;
 
   const appliedSla = conversation?.appliedSla;
 
@@ -40,32 +53,52 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const conversationStatus = conversation?.status;
+  const isOpen = conversationStatus === CONVERSATION_STATUS.OPEN;
   const isResolved = conversationStatus === CONVERSATION_STATUS.RESOLVED;
 
+  const slaEvents = conversation?.slaEvents;
+
   const updateSlaStatus = useCallback(() => {
-    if (appliedSla) {
-      const status = evaluateSLAStatus({
-        appliedSla: {
-          id: appliedSla.id,
-          name: appliedSla.slaName,
-          description: appliedSla.slaDescription,
-          sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
-          sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
-          sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
-          only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
-          created_at: appliedSla.createdAt,
-        },
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        chat: {
-          first_reply_created_at: conversation?.firstReplyCreatedAt,
-          waiting_since: conversation?.waitingSince,
-          status: conversation?.status,
-        },
-      });
-      setSlaStatus(status);
+    if (!appliedSla) {
+      setSlaStatus(null);
+      return;
     }
-  }, [appliedSla, conversation]);
+    if (hasSLADueTimes(appliedSla)) {
+      setSlaStatus(
+        evaluateSLAStatus({
+          appliedSla,
+          chat: {
+            status: conversation?.status,
+            firstReplyCreatedAt: conversation?.firstReplyCreatedAt,
+            waitingSince: conversation?.waitingSince,
+          },
+          slaEvents,
+        }),
+      );
+      return;
+    }
+    // Servers without due-at timestamps are evaluated from the policy thresholds.
+    const status = evaluateLegacySLAStatus({
+      appliedSla: {
+        id: appliedSla.id,
+        name: appliedSla.slaName,
+        description: appliedSla.slaDescription,
+        sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
+        sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
+        sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
+        only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
+        created_at: appliedSla.createdAt,
+      },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      chat: {
+        first_reply_created_at: conversation?.firstReplyCreatedAt,
+        waiting_since: conversation?.waitingSince,
+        status: conversation?.status,
+      },
+    });
+    setSlaStatus(status);
+  }, [appliedSla, conversation, slaEvents]);
 
   const { chatPagerView } = useRefsContext();
   const { pagerViewIndex } = useChatWindowContext();
@@ -117,9 +150,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
 
   const toggleChatStatus = async () => {
     const updatedStatus =
-      conversationStatus === CONVERSATION_STATUS.RESOLVED
-        ? CONVERSATION_STATUS.OPEN
-        : CONVERSATION_STATUS.RESOLVED;
+      conversationStatus === CONVERSATION_STATUS.OPEN
+        ? CONVERSATION_STATUS.RESOLVED
+        : CONVERSATION_STATUS.OPEN;
     await dispatch(
       conversationActions.toggleConversationStatus({
         conversationId,
@@ -151,23 +184,31 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagerViewIndex]);
 
-  const sLAStatusText = () => {
-    const upperCaseType = slaStatus?.type?.toUpperCase(); // FRT, NRT, or RT
-    const statusKey = slaStatus?.isSlaMissed ? 'MISSED' : 'DUE';
-    return i18n.t(`SLA.STATUS.${upperCaseType}`, {
-      status: i18n.t(`SLA.STATUS.${statusKey}`),
+  const slaType = slaStatus?.type?.toUpperCase();
+  const isSlaMissed = !!slaStatus?.isSlaMissed;
+
+  const slaStatusText = () => {
+    if (!slaType) return '';
+    const label = i18n.t(`SLA.STATUS.${slaType}`, {
+      status: i18n.t(`SLA.STATUS.${isSlaMissed ? 'MISSED' : 'DUE'}`),
     });
+    return slaStatus?.threshold ? `${label}: ${slaStatus.threshold}` : label;
   };
   return (
     <ChatHeader
       name={name}
       imageSrc={imageSrc}
+      isOpen={isOpen}
       isResolved={isResolved}
+      showDetailsRow={pagerViewIndex === 0}
+      inboxName={inbox?.name}
+      channelIcon={channelIcon}
       dashboardsList={dashboardsList}
-      isSlaMissed={slaStatus?.isSlaMissed}
-      hasSla={!!appliedSla}
-      slaEvents={conversation?.slaEvents}
-      statusText={`${sLAStatusText()}: ${slaStatus?.threshold}`}
+      isSlaMissed={isSlaMissed}
+      hasSla={!!appliedSla && !!slaType}
+      slaType={slaType}
+      slaEvents={slaEvents}
+      statusText={slaStatusText()}
       onBackPress={handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}

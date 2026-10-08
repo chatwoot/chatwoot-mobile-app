@@ -276,10 +276,10 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     )
   }
 
+  // The call is in progress, so the app ends it; with the app not listening, as while it
+  // reloads, the hang-up waits for it as an end
   private fun endFromTray() {
-    // The stored choice covers the app not listening yet; the app clears it if it heard
-    CallNotification.storePendingAction(this, "decline", callSid, callId, callDetails)
-    NativeCallBridge.emit("end", callSid = callSid)
+    if (!NativeCallBridge.emit("end", callSid = callSid)) CallNotification.storeEnd(this, callSid)
     finishAndRemoveTask()
   }
 

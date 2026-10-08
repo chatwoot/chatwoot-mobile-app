@@ -5,7 +5,7 @@ import { getMessaging, onMessage } from '@react-native-firebase/messaging';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { store } from '@/store';
 import { callActions } from '@/store/call/callActions';
-import { addCall, dismissCall } from '@/store/call/callSlice';
+import { addCall, dismissCall, markCallDismissed } from '@/store/call/callSlice';
 import { selectCalls, selectLocalCallSid } from '@/store/call/callSelectors';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
@@ -91,7 +91,12 @@ export const useRingingSync = () => {
         if (isCallCancelPush(data) && data?.call_id) {
           const state = store.getState();
           const call = selectCalls(state).find(entry => entry.callSid === data.call_id);
-          if (!call || call.isActive || selectLocalCallSid(state) === call.callSid) return;
+          // A cancel can arrive before the ring it ends; the ring is kept from showing
+          if (!call) {
+            dispatch(markCallDismissed(data.call_id));
+            return;
+          }
+          if (call.isActive || selectLocalCallSid(state) === call.callSid) return;
           systemCall.endedBySid(
             store,
             call.callSid,

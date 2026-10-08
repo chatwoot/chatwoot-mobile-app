@@ -44,7 +44,11 @@ import {
 // through the system UI first so both stay consistent and the audio session is managed
 // by the OS. Without the native module every function is a no-op.
 
-type Store = { dispatch: AppDispatch; getState: () => RootState };
+type Store = {
+  dispatch: AppDispatch;
+  getState: () => RootState;
+  subscribe: (listener: () => void) => () => void;
+};
 
 type JoinResult = { status: string };
 
@@ -120,6 +124,20 @@ export const callerInfo = (state: RootState, call: LiveCall) => {
   };
 };
 
+// Resolves once no call is joining
+const whenNotJoining = (store: Store) =>
+  new Promise<void>(resolve => {
+    if (!selectIsJoining(store.getState())) {
+      resolve();
+      return;
+    }
+    const unsubscribe = store.subscribe(() => {
+      if (selectIsJoining(store.getState())) return;
+      unsubscribe();
+      resolve();
+    });
+  });
+
 export const systemCall = {
   isAvailable: () => isSystemCallUiAvailable(),
 
@@ -173,6 +191,12 @@ export const systemCall = {
         conversationId: call.conversationId,
         inboxId: call.inboxId,
       });
+      // The call can end while CallKit starts it; its record is ended here, since the
+      // removal found no system call to end
+      if (!selectCalls(store.getState()).some(entry => entry.callSid === call.callSid)) {
+        endSystemCall(systemUuid, 'remote');
+        return;
+      }
       store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
     } catch (error) {
       console.warn('System call UI could not start the call', error);
@@ -262,10 +286,22 @@ export const systemCall = {
       const call = selectCalls(store.getState()).find(entry => entry.callSid === event.callSid);
       switch (event.type) {
         case 'answer':
-          if (call && !call.isActive && !selectIsJoining(store.getState())) {
-            startJoin(store, call.callSid)
-              .then(result => {
-                if (result.status !== 'joined') endSystemCall(event.uuid, 'answered_elsewhere');
+          if (call && !call.isActive) {
+            // CallKit has already fulfilled the answer, so one made while another call is
+            // joining waits for that join and is then joined or ended
+            whenNotJoining(store)
+              .then(() => {
+                const current = selectCalls(store.getState()).find(
+                  entry => entry.callSid === event.callSid,
+                );
+                if (!current) {
+                  endSystemCall(event.uuid, 'answered_elsewhere');
+                  return undefined;
+                }
+                if (current.isActive) return undefined;
+                return startJoin(store, event.callSid).then(result => {
+                  if (result.status !== 'joined') endSystemCall(event.uuid, 'answered_elsewhere');
+                });
               })
               .catch(error => {
                 // Answered from the OS call screen, so the reason has nowhere else to go

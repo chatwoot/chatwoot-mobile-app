@@ -9,6 +9,7 @@ import reducer, {
   markSystemUiFailed,
   removeCall,
   setCallActive,
+  setCallProviderStatus,
   setMinimised,
   setPlacingCall,
   setSystemUuid,
@@ -132,6 +133,21 @@ describe('callSlice', () => {
     expect(state.calls.find(call => call.callSid === 'b')?.isActive).toBe(false);
     state = reducer(state, clearActiveCall());
     expect(state.calls.map(call => call.callSid)).toEqual(['b']);
+  });
+
+  it('records when the contact answers a call through Twilio, once', () => {
+    let state = reducer(
+      initial(),
+      addCall(ringing('a', { provider: 'twilio', callDirection: 'outbound' })),
+    );
+    state = reducer(state, setCallActive('a'));
+    state = reducer(state, setCallProviderStatus({ callSid: 'a', providerStatus: 'ringing' }));
+    expect(state.calls[0].answeredAt).toBeUndefined();
+    state = reducer(state, setCallProviderStatus({ callSid: 'a', providerStatus: 'in-progress' }));
+    const answeredAt = state.calls[0].answeredAt;
+    expect(answeredAt).toEqual(expect.any(Number));
+    state = reducer(state, setCallProviderStatus({ callSid: 'a', providerStatus: 'answered' }));
+    expect(state.calls[0].answeredAt).toBe(answeredAt);
   });
 
   it('keeps only the local call across an account switch, recording the account it belongs to', () => {

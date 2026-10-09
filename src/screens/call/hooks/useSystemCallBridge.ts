@@ -50,6 +50,9 @@ export const useSystemCallBridge = (syncRinging: () => void) => {
       const becameActive = call.isActive && !previous?.isActive;
       const gainedSystemCall = call.isActive && call.systemUuid && !previous?.systemUuid;
       if (becameActive || gainedSystemCall) systemCall.connected(call);
+      else if (call.isActive && call.answeredAt && !previous?.answeredAt) {
+        systemCall.contactAnswered(call);
+      }
       known.set(call.callSid, call);
     });
 

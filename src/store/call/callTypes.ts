@@ -36,6 +36,9 @@ export type LiveCall = {
   providerStatus?: string | null;
   // Set when this device joined the call; the in-call timer counts from here
   activeSince?: number;
+  // Set when the contact answers a Twilio call this device placed; until then the agent
+  // waits in the conference while the contact's phone rings, and the timer counts from here
+  answeredAt?: number;
   // Identifier of the matching system call (CallKit) when the OS call UI is in use
   systemUuid?: string;
   // The OS declined to show this call, so the app's own ring UI stands in

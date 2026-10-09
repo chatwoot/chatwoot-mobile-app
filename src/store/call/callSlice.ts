@@ -2,6 +2,7 @@ import type { AudioRoute } from '@/services/voice/chatwootCalls';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { VOICE_CALL_STATUS } from '@/constants';
+import { isTwilioAnswerStatus } from '@/utils/voiceCallUtils';
 import type { CallState, LiveCall, LiveCallInput, PlacingCall } from './callTypes';
 
 const TERMINAL_STATUSES: string[] = [
@@ -176,7 +177,11 @@ const callSlice = createSlice({
       action: PayloadAction<{ callSid: string; providerStatus: string | null | undefined }>,
     ) => {
       const call = state.calls.find(entry => entry.callSid === action.payload.callSid);
-      if (call) call.providerStatus = action.payload.providerStatus ?? null;
+      if (!call) return;
+      call.providerStatus = action.payload.providerStatus ?? null;
+      if (!call.answeredAt && isTwilioAnswerStatus(call.providerStatus)) {
+        call.answeredAt = Date.now();
+      }
     },
 
     handleCallStatusChanged: (

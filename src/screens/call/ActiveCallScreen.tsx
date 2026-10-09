@@ -6,7 +6,7 @@ import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 import type { AudioRoute } from '@/services/voice/chatwootCalls';
-import { isOutboundCallRinging } from '@/utils/voiceCallUtils';
+import { isAwaitingTwilioContact, isOutboundCallRinging } from '@/utils/voiceCallUtils';
 
 import { AudioRoutePicker } from './components/AudioRoutePicker';
 import { CallBackdrop } from './components/CallBackdrop';
@@ -110,7 +110,12 @@ export const ActiveCallScreen = ({
         activeSince={activeSince}
         statusFlags={statusFlags}
         tone={tone}
-        aura={!!isIncoming || (!isConnected && !isConnecting && isOutboundCallRinging(call))}
+        aura={
+          !!isIncoming ||
+          (!isConnecting &&
+            (!isConnected || isAwaitingTwilioContact(call)) &&
+            isOutboundCallRinging(call))
+        }
         onOpenConversation={call.conversationId ? onOpenConversation : undefined}
       />
 

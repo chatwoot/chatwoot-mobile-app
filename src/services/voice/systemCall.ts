@@ -21,6 +21,7 @@ import {
 } from '@/store/call/callSelectors';
 import type { LiveCall } from '@/store/call/callTypes';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
+import { isAwaitingTwilioContact } from '@/utils/voiceCallUtils';
 
 import { callEngine } from './callEngine';
 import { selectCallerInfo } from './callerInfo';
@@ -236,15 +237,21 @@ export const systemCall = {
     }
   },
 
-  // A joined call with a system call behind it is marked connected; without one, the
-  // call's audio is switched on directly because no OS activation will come
+  // A joined call with a system call behind it is marked connected, which starts the OS
+  // call timer, so a Twilio call this device placed waits for the contact's answer; without
+  // a system call, the call's audio is switched on directly because no OS activation will come
   connected(call: LiveCall) {
     if (call.systemUuid) {
-      reportSystemCallConnected(call.systemUuid);
+      if (!isAwaitingTwilioContact(call)) reportSystemCallConnected(call.systemUuid);
     } else if (Platform.OS === 'ios') {
       if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) activateWebrtcAudio();
       else setTwilioAudioEnabled(true);
     }
+  },
+
+  // The contact picked up a Twilio call this device placed and joined earlier
+  contactAnswered(call: LiveCall) {
+    if (call.systemUuid) reportSystemCallConnected(call.systemUuid);
   },
 
   // A socket event says the call finished elsewhere; the system call ends with that reason

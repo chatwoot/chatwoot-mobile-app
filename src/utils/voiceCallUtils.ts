@@ -103,6 +103,33 @@ const getRecording = (message: Message, recordingUrl: string | null): VoiceCallR
   return recordingUrl ? { dataUrl: recordingUrl, extension: 'wav' } : null;
 };
 
+const TWILIO_ANSWER_STATUSES = ['in-progress', 'inprogress', 'answered'];
+
+// Whether Twilio's own status says the contact picked up
+export const isTwilioAnswerStatus = (providerStatus?: string | null) =>
+  !!providerStatus && TWILIO_ANSWER_STATUSES.includes(providerStatus.toLowerCase());
+
+// A Twilio call this device placed whose contact has not picked up yet. The agent's own leg
+// is connected to the conference meanwhile, so the call counts as connected on the device.
+export const isAwaitingTwilioContact = (call: {
+  provider?: string;
+  callDirection?: string;
+  answeredAt?: number;
+}) =>
+  call.provider === VOICE_CALL_PROVIDERS.TWILIO &&
+  call.callDirection === 'outbound' &&
+  !call.answeredAt;
+
+// When the in-call timer starts: the contact's answer for a Twilio call this device placed,
+// the moment this device joined otherwise
+export const callTimerStart = (
+  call: { provider?: string; callDirection?: string; answeredAt?: number },
+  activeSince: number | undefined,
+) =>
+  call.provider === VOICE_CALL_PROVIDERS.TWILIO && call.callDirection === 'outbound'
+    ? call.answeredAt
+    : activeSince;
+
 // Whether a call this device placed has reached the far handset. Twilio says so through
 // its own status; WhatsApp has no such event, so the call id Meta hands back stands in.
 export const isOutboundCallRinging = (call: {

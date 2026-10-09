@@ -1,0 +1,62 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+  <!-- Telecom routes call audio to headsets; the permission is asked for with the microphone -->
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <!-- A headset is optional: calls work on the earpiece and speaker without Bluetooth -->
+  <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+
+  <application>
+    <!-- Takes call pushes before JavaScript starts; every other message falls through to
+         the React Native Firebase service this one extends. -->
+    <service
+      android:name="com.chatwoot.calls.CallMessagingService"
+      android:exported="false"
+      tools:node="merge">
+      <intent-filter android:priority="1">
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+
+    <receiver
+      android:name="com.chatwoot.calls.CallActionReceiver"
+      android:exported="false" />
+
+    <!-- Holds a call in progress: microphone access in the background and the
+         persistent notification with Hang up -->
+    <service
+      android:name="com.chatwoot.calls.OngoingCallService"
+      android:exported="false"
+      android:foregroundServiceType="microphone" />
+
+    <!-- Carries a call answered over the keyguard without showing the app -->
+    <service
+      android:name="com.chatwoot.calls.CallSessionService"
+      android:exported="false" />
+
+    <!-- Answer on the call notification: draws nothing and routes the answer -->
+    <activity
+      android:name="com.chatwoot.calls.CallAnswerActivity"
+      android:exported="false"
+      android:excludeFromRecents="true"
+      android:noHistory="true"
+      android:showWhenLocked="true"
+      android:taskAffinity=".CallAnswer"
+      android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+    <!-- The ringing screen itself: shown over the keyguard, kept out of recents -->
+    <activity
+      android:name="com.chatwoot.calls.IncomingCallActivity"
+      android:exported="false"
+      android:launchMode="singleInstance"
+      android:excludeFromRecents="true"
+      android:showOnLockScreen="true"
+      android:showWhenLocked="true"
+      android:turnScreenOn="true"
+      android:taskAffinity=".IncomingCall"
+      android:screenOrientation="portrait"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|density|fontScale|locale|layoutDirection"
+      android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+  </application>
+</manifest>

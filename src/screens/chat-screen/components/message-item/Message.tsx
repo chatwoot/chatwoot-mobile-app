@@ -9,6 +9,7 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { unixTimestampToReadableTime, useHaptic } from '@/utils';
 import {
   ComposedBubble,
+  CallBubble,
   DeliveryStatus,
   TextBubble,
   ActivityBubble,
@@ -486,6 +487,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     if (isUnsupported) {
       messageContent = <UnsupportedBubble />;
+    } else if (contentType === CONTENT_TYPES.VOICE_CALL) {
+      messageContent = <CallBubble item={item} variant={variant()} />;
     } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
       messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     } else if (isEmailInbox && !item.private) {

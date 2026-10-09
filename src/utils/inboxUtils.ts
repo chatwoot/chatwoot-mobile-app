@@ -1,4 +1,4 @@
-import { INBOX_TYPES, INBOX_FEATURES } from '@/constants';
+import { INBOX_TYPES, INBOX_FEATURES, VOICE_CALL_PROVIDERS } from '@/constants';
 import { Inbox } from '@/types/Inbox';
 
 // This is a single source of truth for inbox features
@@ -100,3 +100,13 @@ export const inboxSupportsReplyTo = (inbox: Inbox | undefined) => {
     !is360DialogWhatsAppChannel(inbox);
   return { incoming, outgoing };
 };
+
+export const getVoiceCallProvider = (inbox: Inbox | undefined) => {
+  if (!inbox?.voiceEnabled) return null;
+  if (inbox.channelType === INBOX_TYPES.TWILIO) return VOICE_CALL_PROVIDERS.TWILIO;
+  if (inbox.channelType === INBOX_TYPES.WHATSAPP) return VOICE_CALL_PROVIDERS.WHATSAPP;
+  return null;
+};
+
+export const isVoiceCallEnabled = (inbox: Inbox | undefined) =>
+  getVoiceCallProvider(inbox) !== null;

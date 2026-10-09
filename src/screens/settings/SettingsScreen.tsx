@@ -59,6 +59,8 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { getVoipToken } from '@/services/voice/chatwootCalls';
+import { callActions } from '@/store/call/callActions';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -159,7 +161,7 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    switchAccount(dispatch, accountId);
+    if (!switchAccount(dispatch, accountId)) return;
     navigation.dispatch(StackActions.replace('Tab'));
   };
 
@@ -186,9 +188,13 @@ const SettingsScreen = () => {
   // };
 
   const onClickLogout = useCallback(async () => {
+    // Calls are ended while the session can still tell the server
+    await dispatch(callActions.endLocalCalls()).catch(() => {});
     await AsyncStorage.removeItem('cwCookie');
     await RecentSearches.clearAll();
     await dispatch(settingsActions.removeDevice({ pushToken }));
+    const voipToken = getVoipToken();
+    if (voipToken) await dispatch(settingsActions.removeDevice({ pushToken: voipToken }));
     dispatch(logout());
   }, [dispatch, pushToken]);
 

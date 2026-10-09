@@ -88,7 +88,12 @@
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Conversations",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "Clear",
+      "VOICE_CALL_FAILED": "Could not start the call.",
+      "WHATSAPP_CALL_FAILED": "Could not start the WhatsApp call.",
+      "WHATSAPP_CALL_PERMISSION_REQUESTED": "Sent a call permission request to the contact. Try again once they accept.",
+      "WHATSAPP_CALL_PERMISSION_PENDING": "Call permission request already sent recently. Try again once the contact accepts.",
+      "CALL_UNAVAILABLE": "Calling from the app is not available yet. Start the call from the web app."
     },
     "FILTERS": {
       "AGENT": {
@@ -284,9 +289,70 @@
         "EMPTY": "No priority added",
         "EDIT": "Edit"
       }
+    },
+    "VOICE_CALL": {
+      "INCOMING_CALL": "Incoming call",
+      "OUTGOING_CALL": "Outgoing call",
+      "CALL_IN_PROGRESS": "Call in progress",
+      "NO_ANSWER_OUTBOUND_LABEL": "No answer",
+      "NO_ANSWER_OUTBOUND_SUBTEXT": "Contact didn't pick up",
+      "MISSED_CALL": "Missed call",
+      "JOIN_CALL": "Join call",
+      "CALL_BACK": "Call back",
+      "MISSED_CALL_INBOUND_SUBTEXT": "No agent picked up",
+      "MISSED_CALL_DECLINED_BY": "Declined by %{agentName}",
+      "CALL_ENDED": "Call ended",
+      "HANDLED_BY": "Handled by %{agentName}",
+      "NOT_ANSWERED_YET": "Not answered yet",
+      "CALLING": "Calling…",
+      "TRANSCRIPT": "Transcript",
+      "TRANSCRIPT_SHOW_MORE": "Show more",
+      "TRANSCRIPT_SHOW_LESS": "Show less"
+    },
+    "VOICE_WIDGET": {
+      "INCOMING_CALL": "Incoming call",
+      "UNKNOWN_CALLER": "Unknown caller",
+      "END_CALL_TO_SWITCH_ACCOUNT": "End the call to switch accounts",
+      "MICROPHONE_BLOCKED_TITLE": "Microphone is off for Chatwoot",
+      "MICROPHONE_BLOCKED_BODY": "Calls need the microphone. Turn it on in Settings to place and answer calls from the app.",
+      "OPEN_SETTINGS": "Open settings",
+      "NOT_NOW": "Not now",
+      "REJECT_CALL": "Decline",
+      "JOIN_CALL": "Answer",
+      "END_CALL": "End call",
+      "GO_TO_CONVERSATION": "Open conversation",
+      "ANSWER_UNAVAILABLE": "Answering from the app is not available yet. Answer from the web app.",
+      "REJECT_FAILED": "Couldn't decline the call",
+      "CALLING": "Calling…",
+      "RINGING": "Ringing…",
+      "CONNECTING": "Connecting…",
+      "MUTE": "Mute",
+      "UNMUTE": "Unmute",
+      "SPEAKER": "Speaker",
+      "AUDIO_ROUTE": "Audio",
+      "ON_HOLD": "On hold",
+      "RESUME": "Resume",
+      "INCOMING_CALLS_COUNT": "%{count} incoming calls",
+      "END_AND_ANSWER": "End & answer",
+      "DECLINE_ALL": "Decline all",
+      "ANSWERING_ENDS_CURRENT": "Answering ends your ongoing call",
+      "SWIPE_HINT": "Swipe right to answer, left to decline.",
+      "SWIPE_HINT_ENDS_CURRENT": "Answering ends your ongoing call.\nSwipe right to answer, left to decline.",
+      "RINGING_FOR": "Ringing for %{duration}",
+      "CALL_SCREEN_TITLE": "Chatwoot Audio",
+      "VIEW": "View",
+      "HOLD": "Hold",
+      "ROUTE_EARPIECE": "Earpiece",
+      "ROUTE_SPEAKER": "Speaker",
+      "ROUTE_BLUETOOTH": "Bluetooth",
+      "ROUTE_WIRED": "Wired headset",
+      "ANSWERED_ELSEWHERE": "This call was answered by another agent.",
+      "CALL_ALREADY_ENDED": "The caller hung up before you could answer.",
+      "JOIN_FAILED": "Couldn't connect the call.",
+      "MINIMISE": "Minimise call",
+      "RETURN_TO_CALL": "Return to call"
     }
   },
-
   "FILTER": {
     "ALL_INBOXES": "All inboxes",
     "FILTER_BY_ASSIGNEE_TYPE": "Filter by assignee type",
@@ -338,7 +404,8 @@
       "PARTICIPATING_CONVERSATION_NEW_MESSAGE": "New message in a conversation you are participating in",
       "SLA_MISSED_FIRST_RESPONSE": "SLA target first response missed for conversation",
       "SLA_MISSED_NEXT_RESPONSE": "SLA target next response missed for conversation",
-      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation"
+      "SLA_MISSED_RESOLUTION": "SLA target resolution missed for conversation",
+      "VOICE_CALL_MISSED": "Missed call"
     },
     "FILTERS": {
       "SORT_BY": {

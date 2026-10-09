@@ -43,3 +43,4 @@ export * from './SelfAssign';
 export * from './Company';
 export * from './SocialIcons';
 export * from './Error';
+export * from './PhoneOutline';

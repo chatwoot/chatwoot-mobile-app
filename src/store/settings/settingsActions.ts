@@ -121,6 +121,7 @@ export const settingsActions = {
             apiLevel: apiLevel.toString(),
             brandName,
             buildNumber,
+            supportsGroupedNotifications: true,
             push_token: fcmToken,
             device_id: deviceId,
           },

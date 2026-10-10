@@ -45,6 +45,7 @@ export interface PushPayload {
     apiLevel: string;
     brandName: string;
     buildNumber: string;
+    supportsGroupedNotifications: boolean;
     push_token: string;
     device_id: string;
   };

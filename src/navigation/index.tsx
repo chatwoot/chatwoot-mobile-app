@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { ActivityIndicator, Linking, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, AppState, Linking, Platform, StyleSheet, View } from 'react-native';
 import {
   getMessaging,
   getInitialNotification,
@@ -28,6 +28,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { SsoUtils } from '@/utils/ssoUtils';
 import { useAppDispatch } from '@/hooks';
+import notifee, { EventType } from '@notifee/react-native';
+import {
+  consumePendingAndroidNotificationPress,
+  displayAndroidPushNotification,
+} from '@/utils/androidPushNotifications';
 import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
 import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
 import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
@@ -35,7 +40,7 @@ import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
 import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
 
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
-  console.log('Message handled in the background!', remoteMessage);
+  await displayAndroidPushNotification(remoteMessage);
 });
 
 export const AppNavigationContainer = () => {
@@ -135,6 +140,38 @@ export const AppNavigationContainer = () => {
         return url;
       }
 
+      if (Platform.OS === 'android') {
+        const pendingPayload = await consumePendingAndroidNotificationPress();
+        if (pendingPayload) {
+          const notification = findNotificationFromFCM({
+            message: { data: { payload: pendingPayload } },
+          });
+          if (notification) {
+            const conversationLink = findConversationLinkFromPush({
+              notification: transformNotification(notification),
+              installationUrl,
+              currentAccountId,
+            });
+            if (conversationLink) return conversationLink;
+          }
+        }
+
+        const initialNotification = await notifee.getInitialNotification();
+        const payload = initialNotification?.notification.data?.payload;
+        if (typeof payload === 'string') {
+          const notification = findNotificationFromFCM({ message: { data: { payload } } });
+          if (notification) {
+            const camelCaseNotification = transformNotification(notification);
+            const conversationLink = findConversationLinkFromPush({
+              notification: camelCaseNotification,
+              installationUrl,
+              currentAccountId,
+            });
+            if (conversationLink) return conversationLink;
+          }
+        }
+      }
+
       // getInitialNotification: When the application is opened from a quit state.
       const message = await getInitialNotification(getMessaging());
       if (message) {
@@ -188,9 +225,50 @@ export const AppNavigationContainer = () => {
         }
       });
 
+      const unsubscribeNotifee = notifee.onForegroundEvent(({ type, detail }) => {
+        if (type !== EventType.PRESS) return;
+
+        const payload = detail.notification?.data?.payload;
+        if (typeof payload !== 'string') return;
+
+        const notification = findNotificationFromFCM({ message: { data: { payload } } });
+        if (!notification) return;
+
+        const conversationLink = findConversationLinkFromPush({
+          notification: transformNotification(notification),
+          installationUrl,
+          currentAccountId,
+        });
+        if (conversationLink) listener(conversationLink);
+      });
+
+      const openPendingAndroidNotification = async () => {
+        if (Platform.OS !== 'android') return;
+
+        const payload = await consumePendingAndroidNotificationPress();
+        if (!payload) return;
+
+        const notification = findNotificationFromFCM({ message: { data: { payload } } });
+        if (!notification) return;
+
+        const conversationLink = findConversationLinkFromPush({
+          notification: transformNotification(notification),
+          installationUrl,
+          currentAccountId,
+        });
+        if (conversationLink) listener(conversationLink);
+      };
+
+      void openPendingAndroidNotification();
+      const appStateSubscription = AppState.addEventListener('change', nextState => {
+        if (nextState === 'active') void openPendingAndroidNotification();
+      });
+
       return () => {
         subscription.remove();
         unsubscribeNotification();
+        unsubscribeNotifee();
+        appStateSubscription.remove();
       };
     },
   };

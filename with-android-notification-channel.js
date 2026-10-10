@@ -8,7 +8,7 @@ const MARKER = 'CW-3883 default notification channel';
 // `messaging_android_notification_channel_id` key in firebase.json, which
 // @react-native-firebase reads into its own manifest entry.
 
-// notifee is not autolinked on Android, so create the channel with the platform API.
+// Create the channel with the platform API before JavaScript and Notifee start.
 // A high-importance channel with vibration enabled plays the default notification sound and
 // vibrates (Android 8+ ties both to the channel; vibration is off unless enabled explicitly).
 function withChannelCreation(config) {

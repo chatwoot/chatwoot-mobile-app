@@ -2,23 +2,28 @@ import { Platform } from 'react-native';
 import { NOTIFICATION_TYPES } from '@/constants';
 import { Notification } from '@/types/Notification';
 
-let notifee: typeof import('@notifee/react-native').default | undefined;
-
-if (Platform.OS === 'ios') {
+const getNotifee = () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  notifee = require('@notifee/react-native')
-    .default as typeof import('@notifee/react-native').default;
-}
+  return require('@notifee/react-native').default as typeof import('@notifee/react-native').default;
+};
+
+/* eslint-disable @typescript-eslint/no-require-imports */
+const getAndroidNotifications = () =>
+  require('@/utils/androidPushNotifications') as typeof import('@/utils/androidPushNotifications');
+/* eslint-enable @typescript-eslint/no-require-imports */
 
 export const clearAllDeliveredNotifications = async () => {
-  if (Platform.OS === 'ios' && notifee) {
-    await notifee.cancelAllNotifications();
+  const notifee = getNotifee();
+  await notifee.cancelAllNotifications();
+  if (Platform.OS === 'android') {
+    const { clearAndroidMessageNotificationState } = getAndroidNotifications();
+    await clearAndroidMessageNotificationState();
   }
 };
 
 export const updateBadgeCount = async ({ count = 0 }) => {
-  if (Platform.OS === 'ios' && count >= 0 && notifee) {
-    await notifee.setBadgeCount(count);
+  if (Platform.OS === 'ios' && count >= 0) {
+    await getNotifee().setBadgeCount(count);
   }
 };
 

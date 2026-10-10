@@ -18,6 +18,10 @@ export type Notification = {
   accountId?: number;
   notificationType: NotificationType;
   pushMessageTitle: string;
+  pushMessageBody?: string;
+  senderName?: string;
+  messagePreview?: string;
+  conversationId?: number;
   primaryActorType: PrimaryActorType;
   primaryActorId: number;
   primaryActor: PrimaryActor;

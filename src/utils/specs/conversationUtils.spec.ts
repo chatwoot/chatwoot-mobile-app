@@ -1,4 +1,8 @@
-import { getLastMessage } from '@/utils/conversationUtils';
+import {
+  getLastMessage,
+  isUnreadListComplete,
+  shouldFetchNextUnreadPage,
+} from '@/utils/conversationUtils';
 import { ContentType, Conversation, MessageStatus } from '@/types';
 
 export const conversation: Conversation = {
@@ -160,5 +164,46 @@ describe('getLastMessage', () => {
       lastNonActivityMessage: null,
     } as unknown as Conversation;
     expect(getLastMessage(testConversation)).toBeNull();
+  });
+});
+
+describe('shouldFetchNextUnreadPage', () => {
+  const unreadPage = Array.from({ length: 20 }, (_, index) => ({
+    ...conversation,
+    id: index + 1,
+    unreadCount: 1,
+  }));
+
+  it('fetches on while the whole page is unread', () => {
+    expect(shouldFetchNextUnreadPage(unreadPage, 1)).toBe(true);
+  });
+
+  it('stops at the first page holding a read conversation', () => {
+    const page = [...unreadPage.slice(1), { ...conversation, unreadCount: 0 }];
+
+    expect(shouldFetchNextUnreadPage(page, 1)).toBe(false);
+  });
+
+  it('stops at the last page', () => {
+    expect(shouldFetchNextUnreadPage(unreadPage.slice(1), 1)).toBe(false);
+    expect(shouldFetchNextUnreadPage([], 1)).toBe(false);
+  });
+
+  it('stops after five pages', () => {
+    expect(shouldFetchNextUnreadPage(unreadPage, 4)).toBe(true);
+    expect(shouldFetchNextUnreadPage(unreadPage, 5)).toBe(false);
+  });
+});
+
+describe('isUnreadListComplete', () => {
+  it('is complete once a page holds a read conversation', () => {
+    const read = { ...conversation, id: 2, unreadCount: 0 };
+
+    expect(isUnreadListComplete([conversation, read])).toBe(true);
+  });
+
+  it('is not complete while every conversation on the page is unread', () => {
+    expect(isUnreadListComplete([conversation])).toBe(false);
+    expect(isUnreadListComplete([])).toBe(false);
   });
 });

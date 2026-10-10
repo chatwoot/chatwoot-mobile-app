@@ -38,7 +38,7 @@ export interface ConversationPayload {
   page: number;
   status: ConversationStatus;
   assigneeType: AssigneeTypes;
-  sortBy: SortTypes;
+  sortBy: SortTypes | 'unread';
   inboxId?: number;
 }
 

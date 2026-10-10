@@ -29,6 +29,16 @@ describe('conversationFilter reducer', () => {
       expect(nextState.filters.sort_by).toBe(defaultFilterState.sort_by);
       expect(nextState.filters.inbox_id).toBe(defaultFilterState.inbox_id);
     });
+
+    it('should set the read status filter', () => {
+      const nextState = conversationFilterReducer(
+        { filters: defaultFilterState },
+        setFilters({ key: 'read_status', value: 'unread' }),
+      );
+
+      expect(defaultFilterState.read_status).toBe('all');
+      expect(nextState.filters.read_status).toBe('unread');
+    });
   });
 
   describe('resetFilters', () => {
@@ -56,6 +66,30 @@ describe('conversationFilter reducer', () => {
       } as RootState;
 
       expect(selectFilters(mockState)).toEqual(defaultFilterState);
+    });
+
+    it('fills filters missing from an older persisted state with their defaults', () => {
+      const { read_status: _readStatus, ...persistedFilters } = {
+        ...defaultFilterState,
+        status: 'resolved',
+      };
+      const mockState = {
+        conversationFilter: { filters: persistedFilters },
+      } as unknown as RootState;
+
+      expect(selectFilters(mockState)).toEqual({
+        ...defaultFilterState,
+        status: 'resolved',
+        read_status: 'all',
+      });
+    });
+
+    it('returns the same object while the filters are unchanged', () => {
+      const mockState = {
+        conversationFilter: { filters: { ...defaultFilterState } },
+      } as RootState;
+
+      expect(selectFilters(mockState)).toBe(selectFilters(mockState));
     });
   });
 });

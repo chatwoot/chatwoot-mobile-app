@@ -169,6 +169,11 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       spacing={27}
       leftElement={unreadCount > 0 ? <ReadComponent /> : <UnreadComponent />}
       rightElement={<StatusComponent />}
+      leftActionAccessibilityLabel={
+        unreadCount > 0
+          ? i18n.t('CONVERSATION.ACTIONS.MARK_AS_READ')
+          : i18n.t('CONVERSATION.ACTIONS.MARK_AS_UNREAD')
+      }
       handleLeftElementPress={markMessageReadOrUnread}
       handleOnLeftOverswiped={markMessageReadOrUnread}
       handleRightElementPress={onStatusAction}

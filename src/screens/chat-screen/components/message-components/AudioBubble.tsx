@@ -9,6 +9,7 @@ import {
 } from '@/store/conversation/audioPlayerSlice';
 
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
 import { FileErrorIcon } from '@/svg-icons';
@@ -57,6 +58,7 @@ type AudioPlayerProps = AudioBubbleProps;
 
 // eslint-disable-next-line react/display-name
 export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
+  useTheme();
   const { audioSrc, contentType, extension, variant } = props;
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
@@ -179,7 +181,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   const sliderProps = useMemo(
     () => ({
-      trackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500',
+      trackColor:
+        variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500 dark:bg-grayDark-500',
       filledTrackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-blue-700',
       knobStyle: variant === MESSAGE_VARIANTS.USER ? 'border-blue-300' : 'border-blue-700',
       manualSeekTo,
@@ -191,7 +194,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   if (hasConversionFailed) {
-    const failureColor = variant === MESSAGE_VARIANTS.USER ? 'text-white' : 'text-gray-900';
+    const failureColor =
+      variant === MESSAGE_VARIANTS.USER ? 'text-white' : 'text-gray-900 dark:text-grayDark-900';
     // Tapping the failure row runs the preparation again.
     return (
       <Pressable
@@ -211,7 +215,14 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
         {isSoundLoading ? (
           <Animated.View>
-            <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
+            <Spinner
+              size={13}
+              stroke={
+                variant === MESSAGE_VARIANTS.USER
+                  ? 'white'
+                  : tailwind.color('text-black dark:text-grayDark-950')
+              }
+            />
           </Animated.View>
         ) : isCurrentAudioSrcPlaying ? (
           <Animated.View
@@ -222,7 +233,11 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
               icon={
                 <PauseIcon
                   fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+                  fill={
+                    variant === MESSAGE_VARIANTS.USER
+                      ? 'white'
+                      : tailwind.color('text-black dark:text-grayDark-950')
+                  }
                 />
               }
               size={13}
@@ -235,7 +250,11 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
             exiting={FadeOut}>
             <PlayIcon
               fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
+              fill={
+                variant === MESSAGE_VARIANTS.USER
+                  ? 'white'
+                  : tailwind.color('text-black dark:text-grayDark-950')
+              }
             />
           </Animated.View>
         )}

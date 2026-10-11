@@ -6,6 +6,7 @@ import { isEqual } from 'lodash';
 import { Avatar, AvatarStatusType } from '@/components-next/common';
 import { AnimatedNativeView } from '@/components-next/native-components';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { AvailabilityStatus } from '@/types';
 
 type ConversationAvatarProps = {
@@ -20,6 +21,7 @@ const checkIfPropsAreSame = (prev: ConversationAvatarProps, next: ConversationAv
 };
 
 export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
+  useTheme();
   const { src, name, status } = props;
   return (
     <AnimatedNativeView

@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     version: '4.9.6',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     scheme: 'chatwootapp',
     ios: {
       supportsTablet: true,
@@ -80,6 +80,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           image: './assets/splash.png',
           resizeMode: 'contain',
           backgroundColor: '#ffffff',
+          dark: { backgroundColor: '#1b1b1b' },
           enableFullScreenImage_legacy: true,
         },
       ],

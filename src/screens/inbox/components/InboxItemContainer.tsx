@@ -12,6 +12,7 @@ import { InboxItem } from './InboxItem';
 import { formatRelativeTime } from '@/utils/dateTimeUtils';
 import { formatTimeToShortForm } from '@/utils/dateTimeUtils';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { Icon, Swipeable } from '@/components-next';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
@@ -26,6 +27,7 @@ type InboxItemContainerProps = {
 };
 
 const UnreadComponent = React.memo(() => {
+  useTheme();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsRead />} size={24} />
@@ -34,6 +36,7 @@ const UnreadComponent = React.memo(() => {
 });
 
 const ReadComponent = React.memo(() => {
+  useTheme();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsUnRead />} size={24} />
@@ -42,6 +45,7 @@ const ReadComponent = React.memo(() => {
 });
 
 const DeleteComponent = React.memo(() => {
+  useTheme();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<DeleteIcon />} size={24} />
@@ -53,6 +57,7 @@ const DeleteComponent = React.memo(() => {
 });
 
 export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
+  useTheme();
   const { index, item, openedRowIndex } = props;
   const dispatch = useAppDispatch();
 

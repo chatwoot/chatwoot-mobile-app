@@ -35,7 +35,7 @@ export function SearchEmptyState({
         <Icon icon={<InfoIcon />} size={20} />
         <Animated.Text
           style={tailwind.style(
-            'text-sm font-inter-420-20 tracking-[0.32px] text-gray-800 text-center',
+            'text-sm font-inter-420-20 tracking-[0.32px] text-gray-800 dark:text-grayDark-800 text-center',
           )}>
           {errorMessage ||
             i18n.t('SEARCH.NO_RESULTS', { sectionLabel: sectionLabel.toLowerCase(), searchQuery })}

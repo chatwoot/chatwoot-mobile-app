@@ -22,7 +22,8 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   };
 
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px] border-b-blackA-A3')]}>
+    <Animated.View
+      style={[tailwind.style('border-b-[1px] border-b-blackA-A3 dark:border-b-whiteA-A3')]}>
       <Animated.View
         style={[tailwind.style('flex flex-row justify-between items-center px-4 pt-2 pb-[12px]')]}>
         <Animated.View style={tailwind.style('flex-1')}>
@@ -33,7 +34,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
         <Animated.View style={tailwind.style('flex-1')}>
           <Animated.Text
             style={tailwind.style(
-              'text-[17px] text-center leading-[17px] tracking-[0.32px] font-inter-medium-24 text-gray-950',
+              'text-[17px] text-center leading-[17px] tracking-[0.32px] font-inter-medium-24 text-gray-950 dark:text-grayDark-950',
             )}>
             {i18n.t('NOTIFICATION.INBOX')}
           </Animated.Text>

@@ -5,6 +5,7 @@ import Animated, { type AnimatedStyle } from 'react-native-reanimated';
 import type { ViewStyle } from 'react-native';
 
 import { IconProps } from '../../types';
+import { tailwind } from '@/theme';
 
 type SparkleIconProps = IconProps & {
   filled?: boolean;
@@ -23,7 +24,7 @@ const PATHS = {
 };
 
 export const SparkleIcon = ({
-  stroke = 'black',
+  stroke = tailwind.color('text-black dark:text-grayDark-950'),
   filled = false,
 }: SparkleIconProps): JSX.Element => {
   if (filled) {

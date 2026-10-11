@@ -72,13 +72,13 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
         ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={tailwind.style('bg-gray-50 rounded-lg grow-0 overflow-hidden')}
+        style={tailwind.style('bg-gray-50 dark:bg-grayDark-50 rounded-lg grow-0 overflow-hidden')}
         contentContainerStyle={tailwind.style('items-center')}
         onLayout={e => (containerWidthRef.current = e.nativeEvent.layout.width)}>
         <Animated.View
           style={[
             tailwind.style(
-              'absolute top-0 bottom-0 bg-white rounded-lg shadow-sm border border-gray-200 z-0',
+              'absolute top-0 bottom-0 bg-white dark:bg-grayDark-50 rounded-lg shadow-sm border border-gray-200 dark:border-grayDark-200 z-0',
             ),
             indicatorStyle,
           ]}
@@ -112,14 +112,19 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
                 <Text
                   style={tailwind.style(
                     'text-sm font-medium',
-                    isActive ? 'text-blue-800' : 'text-gray-800',
+                    isActive ? 'text-blue-800' : 'text-gray-800 dark:text-grayDark-800',
                   )}>
                   {item.label}
                   {!!item.count && ` (${item.count})`}
                 </Text>
               </Pressable>
 
-              <View style={tailwind.style('w-px h-4 bg-gray-300', !showDivider && 'opacity-0')} />
+              <View
+                style={tailwind.style(
+                  'w-px h-4 bg-gray-300 dark:bg-grayDark-300',
+                  !showDivider && 'opacity-0',
+                )}
+              />
             </View>
           );
         })}

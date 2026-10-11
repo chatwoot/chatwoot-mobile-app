@@ -37,18 +37,18 @@ const AccountCell = ({
         <Animated.View
           style={tailwind.style(
             'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-            !isLastItem && 'border-b-[1px] border-blackA-A3',
+            !isLastItem && 'border-b-[1px] border-blackA-A3 dark:border-whiteA-A3',
           )}>
           <View>
             <Text
               style={tailwind.style(
-                'text-base capitalize text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
+                'text-base capitalize text-gray-950 dark:text-grayDark-950 font-inter-420-20 leading-[21px] tracking-[0.16px]',
               )}>
               {item.name}
             </Text>
             <Text
               style={tailwind.style(
-                'text-sm text-gray-900 font-inter-420-20 leading-[18px] tracking-[0.16px] capitalize',
+                'text-sm text-gray-900 dark:text-grayDark-900 font-inter-420-20 leading-[18px] tracking-[0.16px] capitalize',
               )}>
               {item.role}
             </Text>

@@ -37,7 +37,7 @@ const AvatarStatus = ({
     <View
       style={[
         tailwind.style(
-          'absolute border-[1.5px] border-white bg-white rounded-full bottom-[2px] right-[2px]',
+          'absolute border-[1.5px] border-white dark:border-grayDark-50 bg-white dark:bg-grayDark-50 rounded-full bottom-[2px] right-[2px]',
         ),
         { borderColor: tailwind.color(parentsBackground) },
       ]}>
@@ -97,7 +97,9 @@ export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
   return (
     <View
       style={[
-        tailwind.style('relative items-center justify-center bg-gray-100 rounded-full h-24 w-24'),
+        tailwind.style(
+          'relative items-center justify-center bg-gray-100 dark:bg-grayDark-100 rounded-full h-24 w-24',
+        ),
         styleAdapter(style),
       ]}
       {...boxProps}>
@@ -106,7 +108,9 @@ export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
       ) : name ? (
         <Text
           style={[
-            tailwind.style('text-center uppercase text-gray-800 font-inter-medium-24 text-3xl'),
+            tailwind.style(
+              'text-center uppercase text-gray-800 dark:text-grayDark-800 font-inter-medium-24 text-3xl',
+            ),
           ]}
           adjustsFontSizeToFit
           allowFontScaling={false}>

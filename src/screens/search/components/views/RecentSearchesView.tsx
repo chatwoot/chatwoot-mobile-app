@@ -20,7 +20,7 @@ export function RecentSearchesView({
       <View style={tailwind.style('flex-row items-center justify-between px-6 pb-2 pt-6 mb-2')}>
         <Text
           style={tailwind.style(
-            'text-md font-inter-medium-24 leading-[17px] tracking-[0.16px] text-gray-700',
+            'text-md font-inter-medium-24 leading-[17px] tracking-[0.16px] text-gray-700 dark:text-grayDark-700',
           )}>
           {i18n.t('SEARCH.RECENT_SEARCHES')}
         </Text>
@@ -40,7 +40,7 @@ export function RecentSearchesView({
           style={tailwind.style('px-6 py-2 mb-2')}>
           <Text
             style={tailwind.style(
-              'text-md font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
+              'text-md font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950 dark:text-grayDark-950',
             )}>
             {item}
           </Text>

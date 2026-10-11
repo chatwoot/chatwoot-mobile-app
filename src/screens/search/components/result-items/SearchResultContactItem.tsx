@@ -72,8 +72,8 @@ export const SearchResultContactItem = ({
       style={({ pressed }) => [
         tailwind.style(
           'flex-row items-start px-4 py-3',
-          !isLast && 'border-b border-b-blackA-A3',
-          pressed ? 'bg-gray-50' : '',
+          !isLast && 'border-b border-b-blackA-A3 dark:border-b-whiteA-A3',
+          pressed ? 'bg-gray-50 dark:bg-grayDark-50' : '',
         ),
       ]}
       {...handlers}>
@@ -90,7 +90,7 @@ export const SearchResultContactItem = ({
             text={contact.name || ''}
             searchQuery={searchQuery}
             style={tailwind.style(
-              'text-sm font-inter-medium-24 leading-[17px] text-gray-950 flex-1',
+              'text-sm font-inter-medium-24 leading-[17px] text-gray-950 dark:text-grayDark-950 flex-1',
             )}
             numberOfLines={1}
           />
@@ -101,12 +101,12 @@ export const SearchResultContactItem = ({
               return (
                 <Animated.View
                   key={`separator-${index}`}
-                  style={tailwind.style('w-px h-3 bg-gray-300')}
+                  style={tailwind.style('w-px h-3 bg-gray-300 dark:bg-grayDark-300')}
                 />
               );
             }
             const textStyle = tailwind.style(
-              'text-sm font-inter-420-20 leading-[17px] text-gray-800',
+              'text-sm font-inter-420-20 leading-[17px] text-gray-800 dark:text-grayDark-800',
             );
             return item.isHighlighted ? (
               <HighlightedText

@@ -19,10 +19,16 @@ export const SendMessageButton = (props: SendMessageButtonProps) => {
     if (variant === 'copilot') {
       return disabled ? 'bg-[#9B9EF0]' : 'bg-[#5B5BD6]';
     }
-    if (disabled) return 'bg-gray-400';
-    if (isPrivateMessage) return 'bg-amber-700';
-    return 'bg-gray-950';
+    if (disabled) return 'bg-gray-400 dark:bg-grayDark-400';
+    if (isPrivateMessage) return 'bg-amber-700 dark:bg-amber-800';
+    return 'bg-gray-950 dark:bg-grayDark-950';
   };
+
+  // The default button inverts with the theme, so its arrow has to invert too.
+  const isInvertedSurface = variant !== 'copilot' && !disabled && !isPrivateMessage;
+  const iconColor = isInvertedSurface
+    ? (tailwind.color('text-white dark:text-grayDark-50') as string)
+    : 'white';
 
   return (
     <Pressable {...restProps} disabled={disabled} {...(disabled ? {} : handlers)}>
@@ -39,7 +45,7 @@ export const SendMessageButton = (props: SendMessageButtonProps) => {
             'flex items-center justify-center h-7 w-7 rounded-full',
             getBgColor(),
           )}>
-          <Icon icon={<SendIcon />} size={16} />
+          <Icon icon={<SendIcon stroke={iconColor} />} size={16} />
         </Animated.View>
       </Animated.View>
     </Pressable>

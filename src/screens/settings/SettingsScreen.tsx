@@ -27,6 +27,7 @@ import {
   NotificationPreferences,
   SwitchAccount,
   SettingsList,
+  ThemeList,
 } from '@/components-next';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { UserAvatar } from './components/UserAvatar';
@@ -34,6 +35,7 @@ import { UserAvatar } from './components/UserAvatar';
 import { LANGUAGES } from '@/constants';
 import { useRefsContext } from '@/context';
 import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import { useTheme } from '@/context/ThemeContext';
 import { GenericListType } from '@/types';
 
 import { useHaptic, useTabBarHeight } from '@/utils';
@@ -128,12 +130,14 @@ const SettingsScreen = () => {
   const enableAccountSwitch = accounts.length > 1;
 
   const activeLocale = useSelector(selectLocale);
+  const { theme, isDark, changeTheme } = useTheme();
   const {
     userAvailabilityStatusSheetRef,
     languagesModalSheetRef,
     notificationPreferencesSheetRef,
     switchAccountSheetRef,
     debugActionsSheetRef,
+    themeSheetRef,
   } = useRefsContext();
 
   const hapticSelection = useHaptic();
@@ -172,6 +176,11 @@ const SettingsScreen = () => {
     languagesModalSheetRef.current?.dismiss();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLocale]);
+
+  useEffect(() => {
+    themeSheetRef.current?.dismiss();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme]);
 
   const openHelpCenter = () => {
     openURL({ URL: HELP_URL });
@@ -220,6 +229,14 @@ const SettingsScreen = () => {
       onPressListItem: () => languagesModalSheetRef.current?.present(),
     },
     {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.CHANGE_THEME'),
+      icon: <SwitchIcon />,
+      subtitle: i18n.t(`SETTINGS.THEME.${theme.toUpperCase()}`),
+      subtitleType: 'light',
+      onPressListItem: () => themeSheetRef.current?.present(),
+    },
+    {
       hasChevron: enableAccountSwitch,
       title: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
       icon: <SwitchIcon />,
@@ -253,11 +270,12 @@ const SettingsScreen = () => {
   ];
 
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
+    <SafeAreaView
+      style={tailwind.style('flex-1 bg-white dark:bg-grayDark-50 font-inter-normal-20')}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={tailwind.color('bg-white dark:bg-grayDark-50')}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
       />
       <SettingsHeader />
       <Animated.ScrollView
@@ -268,16 +286,19 @@ const SettingsScreen = () => {
             <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />
             <Animated.View
               style={tailwind.style(
-                'absolute border-[2px] border-white rounded-full -bottom-[2px] right-[10px]',
+                'absolute border-[2px] border-white dark:border-grayDark-50 rounded-full -bottom-[2px] right-[10px]',
               )}></Animated.View>
           </Animated.View>
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
-            <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
+            <Animated.Text
+              style={tailwind.style(
+                'text-[22px] font-inter-580-24 text-gray-950 dark:text-grayDark-950',
+              )}>
               {name}
             </Animated.Text>
             <Animated.Text
               style={tailwind.style(
-                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900',
+                'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900 dark:text-grayDark-900',
               )}>
               {email}
             </Animated.Text>
@@ -300,7 +321,7 @@ const SettingsScreen = () => {
         <Pressable
           style={tailwind.style('p-4 items-center')}
           onLongPress={() => debugActionsSheetRef.current?.present()}>
-          <Text style={tailwind.style('text-sm text-gray-700 ')}>
+          <Text style={tailwind.style('text-sm text-gray-700 dark:text-grayDark-700')}>
             {`${chatwootInstance} ${appVersionDetails}`}
           </Text>
         </Pressable>
@@ -317,6 +338,10 @@ const SettingsScreen = () => {
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </ScrollView>
+      </Sheet>
+      <Sheet ref={themeSheetRef} autoSize>
+        <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_THEME')} />
+        <ThemeList currentTheme={theme} changeTheme={changeTheme} />
       </Sheet>
       <Sheet ref={notificationPreferencesSheetRef} detents={[0.52]}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />

@@ -25,6 +25,7 @@ import { useHaptic, useScaleAnimation, useTabBarHeight } from '@/utils';
 
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
+import { useTheme } from '@/context/ThemeContext';
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
@@ -75,7 +76,12 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
   // only an absolute-fill background behind the tab items.
   return Platform.OS === 'ios' ? (
     <Animated.View style={[style, animatedTabBarStyle]}>
-      <BlurView {...{ blurAmount, blurType }} style={tailwind.style('absolute inset-0 bg-white')} />
+      {/* The native blur view keeps its old effect when blurType changes, so remount it. */}
+      <BlurView
+        key={blurType}
+        {...{ blurAmount, blurType }}
+        style={tailwind.style('absolute inset-0 bg-white dark:bg-grayDark-50')}
+      />
       {children}
     </Animated.View>
   ) : (
@@ -119,6 +125,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
   const { bottom } = useSafeAreaInsets();
+  const { isDark } = useTheme();
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -155,7 +162,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   return (
     <TabBarBackground
       blurAmount={25}
-      blurType="light"
+      blurType={isDark ? 'dark' : 'light'}
       style={Platform.select({
         ios: [
           tailwind.style(
@@ -165,12 +172,14 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
         ],
         android: [
           tailwind.style(
-            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] bg-white',
+            'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] bg-white dark:bg-grayDark-50',
             `h-[${tabBarHeight}px] pb-[${bottom + 11}px]`,
           ),
         ],
       })}>
-      <Animated.View style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3')} />
+      <Animated.View
+        style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3 dark:bg-whiteA-A3')}
+      />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;

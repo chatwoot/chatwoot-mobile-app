@@ -2,9 +2,11 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 import { IconProps } from '../../types';
+import { tailwind } from '@/theme';
 
 export const VoiceNote = (props: IconProps) => {
-  const { stroke = 'black', strokeOpacity = '0.565' } = props;
+  const { stroke = tailwind.color('text-black dark:text-grayDark-950'), strokeOpacity = '0.565' } =
+    props;
   return (
     <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
       <Path

@@ -59,8 +59,8 @@ export const SearchResultConversationItem = ({
       style={({ pressed }) => [
         tailwind.style(
           'px-4 py-3',
-          !isLast && 'border-b border-b-blackA-A3',
-          pressed ? 'bg-gray-50' : '',
+          !isLast && 'border-b border-b-blackA-A3 dark:border-b-whiteA-A3',
+          pressed ? 'bg-gray-50 dark:bg-grayDark-50' : '',
         ),
       ]}
       {...handlers}>
@@ -70,12 +70,14 @@ export const SearchResultConversationItem = ({
             <ConversationId id={conversation.id} />
             {inboxName && (
               <>
-                <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
+                <Animated.View
+                  style={tailwind.style('w-px h-3 bg-gray-300 dark:bg-grayDark-300')}
+                />
                 <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
                   {inbox && channelType && (
                     <Animated.View
                       style={tailwind.style(
-                        'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
+                        'h-4 w-4 rounded-full bg-gray-100 dark:bg-grayDark-100 items-center justify-center',
                       )}>
                       <Icon icon={getChannelIcon(channelType, medium, additionalType)} size={10} />
                     </Animated.View>
@@ -83,7 +85,7 @@ export const SearchResultConversationItem = ({
                   <Animated.Text
                     numberOfLines={1}
                     style={tailwind.style(
-                      'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
+                      'text-sm font-inter-420-20 leading-[17px] text-gray-950 dark:text-grayDark-950 flex-shrink',
                     )}>
                     {inboxName}
                   </Animated.Text>
@@ -100,7 +102,7 @@ export const SearchResultConversationItem = ({
                 <Animated.View style={tailwind.style('flex-row items-center flex-shrink')}>
                   <Animated.Text
                     style={tailwind.style(
-                      'text-sm font-inter-420-20 leading-[17px] text-gray-600',
+                      'text-sm font-inter-420-20 leading-[17px] text-gray-600 dark:text-grayDark-600',
                     )}>
                     {item.label}:
                   </Animated.Text>
@@ -108,13 +110,15 @@ export const SearchResultConversationItem = ({
                     text={item.value}
                     searchQuery={searchQuery}
                     style={tailwind.style(
-                      'text-sm font-inter-420-20 leading-[17px] text-gray-800 ml-1 flex-shrink',
+                      'text-sm font-inter-420-20 leading-[17px] text-gray-800 dark:text-grayDark-800 ml-1 flex-shrink',
                     )}
                     numberOfLines={1}
                   />
                 </Animated.View>
                 {index < infoItems.length - 1 && (
-                  <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
+                  <Animated.View
+                    style={tailwind.style('w-px h-3 bg-gray-300 dark:bg-grayDark-300')}
+                  />
                 )}
               </React.Fragment>
             ))}

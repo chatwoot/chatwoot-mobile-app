@@ -6,7 +6,7 @@ import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
-import { useRefsContext } from '@/context';
+import { useRefsContext, useTheme } from '@/context';
 
 export type FlashListRenderProps = {
   item: { date: string } | Message;
@@ -20,10 +20,11 @@ type DateSectionProps = { item: { date: string } };
 const DateSection = ({ item }: DateSectionProps) => {
   return (
     <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
-      <Animated.View style={tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3')}>
+      <Animated.View
+        style={tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3 dark:bg-whiteA-A3')}>
         <Animated.Text
           style={tailwind.style(
-            'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 leading-[15px]',
+            'text-cxs font-inter-420-20 tracking-[0.32px] text-blackA-A11 dark:text-whiteA-A11 leading-[15px]',
           )}>
           {item.date}
         </Animated.Text>
@@ -57,6 +58,7 @@ export const MessagesList = ({
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
+  const { colorScheme } = useTheme();
   const typedMessageListRef = messageListRef as React.RefObject<
     FlashListRef<Message | { date: string }>
   >;
@@ -112,6 +114,7 @@ export const MessagesList = ({
         drawDistance={500}
         showsVerticalScrollIndicator={false}
         renderItem={handleRender}
+        extraData={colorScheme}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.2}
         onStartReached={onStartReached}

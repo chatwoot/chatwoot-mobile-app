@@ -6,6 +6,7 @@ import { Icon } from '@/components-next/common';
 import { AnimatedNativeView } from '@/components-next/native-components';
 import { CheckedIcon, UncheckedIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 
 type ConversationSelectProps = {
   isSelected: boolean;
@@ -13,6 +14,7 @@ type ConversationSelectProps = {
 };
 
 export const ConversationSelect = memo((props: ConversationSelectProps) => {
+  useTheme();
   const { isSelected, currentState } = props;
 
   return currentState === 'Select' ? (

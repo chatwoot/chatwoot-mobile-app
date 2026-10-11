@@ -4,6 +4,7 @@ import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
 
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { MESSAGE_VARIANTS } from '@/constants';
 
 // Shared parser instance; the options are static.
@@ -15,13 +16,13 @@ type MarkdownBubbleProps = {
 };
 
 const variantTextMap = {
-  [MESSAGE_VARIANTS.AGENT]: 'text-gray-950',
+  [MESSAGE_VARIANTS.AGENT]: 'text-gray-950 dark:text-grayDark-950',
   [MESSAGE_VARIANTS.USER]: 'text-white',
-  [MESSAGE_VARIANTS.BOT]: 'text-gray-950',
-  [MESSAGE_VARIANTS.TEMPLATE]: 'text-gray-950',
+  [MESSAGE_VARIANTS.BOT]: 'text-gray-950 dark:text-grayDark-950',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'text-gray-950 dark:text-grayDark-950',
   [MESSAGE_VARIANTS.ERROR]: 'text-white',
-  [MESSAGE_VARIANTS.PRIVATE]: 'text-amber-950 font-inter-medium-24',
-  [MESSAGE_VARIANTS.EMAIL]: 'text-gray-950',
+  [MESSAGE_VARIANTS.PRIVATE]: 'text-amber-950 dark:text-amberDark-950 font-inter-medium-24',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-gray-950 dark:text-grayDark-950',
 };
 
 const handleURL = (url: string) => {
@@ -84,22 +85,24 @@ const buildStyles = (variant: string) => {
 // Markdown compares its props by identity, and on a miss it re-tokenises the
 // message and rebuilds the Text tree beneath it. A fresh tree is a new
 // attributed string on the native side, which iOS lays out again on the main
-// thread. Styles are built once per variant so a re-render of the surrounding
+// thread. Styles are built once per variant and colour scheme so a re-render of the surrounding
 // row does not invalidate the whole tree.
 const stylesByVariant = new Map<string, ReturnType<typeof buildStyles>>();
 
-const getStyles = (variant: string) => {
-  const cachedStyles = stylesByVariant.get(variant);
+const getStyles = (variant: string, colorScheme: string) => {
+  const cacheKey = `${colorScheme}:${variant}`;
+  const cachedStyles = stylesByVariant.get(cacheKey);
   if (cachedStyles) {
     return cachedStyles;
   }
 
   const styles = buildStyles(variant);
-  stylesByVariant.set(variant, styles);
+  stylesByVariant.set(cacheKey, styles);
   return styles;
 };
 
 export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
+  const { colorScheme } = useTheme();
   const { messageContent, variant } = props;
 
   return (
@@ -107,7 +110,7 @@ export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
       mergeStyle
       markdownit={markdownItInstance}
       onLinkPress={handleURL}
-      style={getStyles(variant)}>
+      style={getStyles(variant, colorScheme)}>
       {messageContent}
     </Markdown>
   );

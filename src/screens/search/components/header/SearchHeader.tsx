@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/ThemeContext';
 import React from 'react';
 import { StatusBar, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -23,14 +24,18 @@ export function SearchHeader({
   onClear,
   onBackPress,
 }: SearchHeaderProps) {
+  const { isDark } = useTheme();
   return (
     <>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={tailwind.color('bg-white dark:bg-grayDark-50')}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
       />
-      <Animated.View style={tailwind.style('pt-2 pb-[12px] border-b border-b-blackA-A3')}>
+      <Animated.View
+        style={tailwind.style(
+          'pt-2 pb-[12px] border-b border-b-blackA-A3 dark:border-b-whiteA-A3',
+        )}>
         <Animated.View style={tailwind.style('flex flex-row items-center gap-2 pl-4 pr-2')}>
           <Pressable
             hitSlop={8}

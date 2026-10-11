@@ -15,7 +15,7 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
         <Image
           source={{ uri: imageSrc }}
           contentFit="contain"
-          style={[tailwind.style('bg-gray-100 overflow-hidden'), imageStyle]}
+          style={[tailwind.style('bg-gray-100 dark:bg-grayDark-100 overflow-hidden'), imageStyle]}
         />
       </Galeria.Image>
     </Galeria>
@@ -32,7 +32,9 @@ export const ImageThumbnail = (props: ImageCellProps) => {
         <Image
           source={{ uri: imageSrc }}
           contentFit="cover"
-          style={tailwind.style('h-[72px] w-[72px] rounded-xl bg-gray-100 overflow-hidden')}
+          style={tailwind.style(
+            'h-[72px] w-[72px] rounded-xl bg-gray-100 dark:bg-grayDark-100 overflow-hidden',
+          )}
         />
       </Galeria.Image>
     </Galeria>

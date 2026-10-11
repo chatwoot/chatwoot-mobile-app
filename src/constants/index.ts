@@ -16,13 +16,13 @@ export const TEXT_INPUT_CONTAINER_HEIGHT = 57;
 export const userStatusList = [
   { statusColor: 'bg-green-800', status: 'online' },
   { statusColor: 'bg-yellow-800', status: 'busy' },
-  { statusColor: 'bg-gray-800', status: 'offline' },
+  { statusColor: 'bg-gray-800 dark:bg-grayDark-800', status: 'offline' },
 ];
 
 export const AVAILABILITY_STATUS_LIST = [
   { statusColor: 'bg-green-800', status: 'online' },
   { statusColor: 'bg-yellow-800', status: 'busy' },
-  { statusColor: 'bg-gray-800', status: 'offline' },
+  { statusColor: 'bg-gray-800 dark:bg-grayDark-800', status: 'offline' },
 ];
 
 export const AUDIO_FORMATS = {

@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/ThemeContext';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useAppSelector, useAppDispatch } from '@/hooks';
 import { useChatWindowContext, useRefsContext } from '@/context';
@@ -18,7 +19,7 @@ import { Animated } from 'react-native';
 import { getGroupedMessages, isAnEmailChannel } from '@/utils';
 import { MessagesList } from './MessagesList';
 import { useScrollToMessage } from './useScrollToMessage';
-import tailwind from 'twrnc';
+import { tailwind } from '@/theme';
 import { conversationParticipantActions } from '@/store/conversation-participant/conversationParticipantActions';
 import { MESSAGE_TYPES, SCREENS } from '@/constants';
 import { Message } from '@/types';
@@ -72,6 +73,7 @@ const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
 
 export const MessagesListContainer = () => {
+  useTheme();
   const [appState, setAppState] = useState(AppState.currentState);
   const { conversationId, messageId, scrollToMessageId, setScrollToMessageId } =
     useChatWindowContext();
@@ -308,7 +310,8 @@ export const MessagesListContainer = () => {
   // target lands on a recoverable empty state instead of a permanent spinner.
   if (messageId && isSearchLoading) {
     return (
-      <View style={tailwind.style('flex-1 bg-white justify-center items-center')}>
+      <View
+        style={tailwind.style('flex-1 bg-white dark:bg-grayDark-50 justify-center items-center')}>
         <ActivityIndicator />
       </View>
     );
@@ -316,7 +319,7 @@ export const MessagesListContainer = () => {
 
   return (
     <PlatformSpecificKeyboardWrapperComponent
-      style={tailwind.style('flex-1 bg-white')}
+      style={tailwind.style('flex-1 bg-white dark:bg-grayDark-50')}
       interpolator="linear">
       <View style={[tailwind.style('flex-1'), !isListVisible && messageId ? { opacity: 0 } : {}]}>
         <MessagesList
@@ -336,7 +339,9 @@ export const MessagesListContainer = () => {
       {!isListVisible && messageId && (
         <View
           pointerEvents="none"
-          style={tailwind.style('flex-1 bg-white justify-center items-center absolute inset-0')}>
+          style={tailwind.style(
+            'flex-1 bg-white dark:bg-grayDark-50 justify-center items-center absolute inset-0',
+          )}>
           <ActivityIndicator />
         </View>
       )}

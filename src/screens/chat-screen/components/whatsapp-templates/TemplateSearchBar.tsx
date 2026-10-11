@@ -15,18 +15,18 @@ const TemplateSearchBar = ({ value, onChangeText }: TemplateSearchBarProps) => (
   <View style={tailwind.style('px-3 pb-1')}>
     <View
       style={tailwind.style(
-        'h-9 flex-row items-center gap-[6px] px-[10px] rounded-[11px] bg-blackA-A3',
+        'h-9 flex-row items-center gap-[6px] px-[10px] rounded-[11px] bg-blackA-A3 dark:bg-whiteA-A3',
       )}>
       <Icon icon={<SearchIcon />} size={18} />
       <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder={i18n.t('CONTENT_TEMPLATE.SEARCH_PLACEHOLDER')}
-        placeholderTextColor={tailwind.color('text-gray-600')}
+        placeholderTextColor={tailwind.color('text-gray-600 dark:text-grayDark-600')}
         autoCapitalize="none"
         autoCorrect={false}
         style={tailwind.style(
-          'flex-1 text-base font-inter-420-20 tracking-[0.24px] text-gray-950 p-0',
+          'flex-1 text-base font-inter-420-20 tracking-[0.24px] text-gray-950 dark:text-grayDark-950 p-0',
         )}
       />
     </View>

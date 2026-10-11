@@ -2,6 +2,7 @@ import React from 'react';
 import Animated from 'react-native-reanimated';
 import { Avatar } from '@/components-next';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import type { NotificationType } from '@/types/Notification';
 import { ConversationPriority } from '@/types/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
@@ -34,6 +35,7 @@ type InboxItemProps = {
 const { width } = Dimensions.get('screen');
 
 export const InboxItemComponent = (props: InboxItemProps) => {
+  useTheme();
   const {
     isRead,
     inbox,
@@ -50,7 +52,10 @@ export const InboxItemComponent = (props: InboxItemProps) => {
   const hasAssignee = assignee?.name || assignee?.thumbnail;
 
   return (
-    <Animated.View style={tailwind.style('ml-3 py-3 pr-4 border-b-[1px] border-b-blackA-A3')}>
+    <Animated.View
+      style={tailwind.style(
+        'ml-3 py-3 pr-4 border-b-[1px] border-b-blackA-A3 dark:border-b-whiteA-A3',
+      )}>
       <Animated.View style={tailwind.style('')}>
         <AnimatedNativeView
           style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
@@ -59,16 +64,22 @@ export const InboxItemComponent = (props: InboxItemProps) => {
             <Animated.Text
               numberOfLines={1}
               style={tailwind.style(
-                'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
+                'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 dark:text-grayDark-950 capitalize',
                 `max-w-[${width - 250}px]`,
               )}>
               {sender?.name || ''}
             </Animated.Text>
             <NativeView style={tailwind.style('flex flex-row items-center gap-0.5')}>
-              <Animated.Text style={tailwind.style('text-sm font-inter-420-20 text-gray-700')}>
+              <Animated.Text
+                style={tailwind.style(
+                  'text-sm font-inter-420-20 text-gray-700 dark:text-grayDark-700',
+                )}>
                 #
               </Animated.Text>
-              <Animated.Text style={tailwind.style('text-sm font-inter-420-20 text-gray-700')}>
+              <Animated.Text
+                style={tailwind.style(
+                  'text-sm font-inter-420-20 text-gray-700 dark:text-grayDark-700',
+                )}>
                 {conversationId}
               </Animated.Text>
             </NativeView>
@@ -81,7 +92,7 @@ export const InboxItemComponent = (props: InboxItemProps) => {
             <NativeView>
               <Animated.Text
                 style={tailwind.style(
-                  'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
+                  'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700 dark:text-grayDark-700',
                 )}>
                 {lastActivityAt()}
               </Animated.Text>
@@ -101,7 +112,7 @@ export const InboxItemComponent = (props: InboxItemProps) => {
 
             <Animated.Text
               style={tailwind.style(
-                'font-inter-420-20 text-md text-gray-900 leading-[17px] tracking-[0.32px] flex-shrink',
+                'font-inter-420-20 text-md text-gray-900 dark:text-grayDark-900 leading-[17px] tracking-[0.32px] flex-shrink',
               )}
               numberOfLines={1}
               ellipsizeMode="tail">
@@ -112,7 +123,9 @@ export const InboxItemComponent = (props: InboxItemProps) => {
         </Animated.View>
       </Animated.View>
       {isRead && (
-        <Animated.View style={tailwind.style('absolute bg-white opacity-50 inset-0 z-20')} />
+        <Animated.View
+          style={tailwind.style('absolute bg-white dark:bg-grayDark-50 opacity-50 inset-0 z-20')}
+        />
       )}
     </Animated.View>
   );

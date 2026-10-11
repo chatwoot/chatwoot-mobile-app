@@ -41,7 +41,7 @@ export const QuoteReply = () => {
 
   const { messageListRef } = useRefsContext();
 
-  const textStyle = tailwind.style('text-gray-950');
+  const textStyle = tailwind.style('text-gray-950 dark:text-grayDark-950');
 
   const styles = StyleSheet.create({
     text: {
@@ -104,7 +104,9 @@ export const QuoteReply = () => {
   return (
     <Pressable
       onPress={handleScrollToMessage}
-      style={tailwind.style('flex flex-row items-center px-2.5 pb-[14px] bg-white -z-10')}>
+      style={tailwind.style(
+        'flex flex-row items-center px-2.5 pb-[14px] bg-white dark:bg-grayDark-50 -z-10',
+      )}>
       {quoteMessage?.attachments?.length && quoteMessage?.attachments?.length > 0 ? (
         <Animated.View style={tailwind.style('h-9.5 w-9.5 mr-3 rounded-lg overflow-hidden')}>
           {quoteMessage?.attachments?.length > 0 &&
@@ -133,7 +135,7 @@ export const QuoteReply = () => {
         <Animated.View>
           <Animated.Text
             style={tailwind.style(
-              'text-cxs tracking-[0.32px] leading-[15px] font-inter-420-20 text-blackA-A11',
+              'text-cxs tracking-[0.32px] leading-[15px] font-inter-420-20 text-blackA-A11 dark:text-grayDark-900',
             )}>
             Replying to {quoteMessage?.sender?.name}
           </Animated.Text>

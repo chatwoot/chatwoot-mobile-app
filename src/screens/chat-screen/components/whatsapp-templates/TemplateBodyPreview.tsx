@@ -15,7 +15,7 @@ const TemplateBodyPreview = ({ body, values }: TemplateBodyPreviewProps) => {
   return (
     <Animated.Text
       style={tailwind.style(
-        'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
+        'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950 dark:text-grayDark-950',
       )}>
       {segments.map((segment, index) => (
         <Animated.Text

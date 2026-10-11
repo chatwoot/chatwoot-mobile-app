@@ -147,7 +147,9 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
         icon={
           <MessagePendingIcon
             stroke={
-              isOutgoing ? tailwind.color('text-blackA-A12') : tailwind.color('text-whiteA-A12')
+              isOutgoing
+                ? tailwind.color('text-blackA-A12 dark:text-whiteA-A12')
+                : tailwind.color('text-whiteA-A12')
             }
           />
         }

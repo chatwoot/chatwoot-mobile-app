@@ -33,7 +33,7 @@ export const MessageError = ({
       )}>
       <Text
         style={tailwind.style(
-          'text-xs text-ruby-900 font-inter-420-20 tracking-[0.32px] leading-[14px]',
+          'text-xs text-ruby-900 dark:text-rubyDark-900 font-inter-420-20 tracking-[0.32px] leading-[14px]',
         )}>
         {i18n.t('CONVERSATION.FAILED_TO_SEND')}
       </Text>
@@ -43,8 +43,13 @@ export const MessageError = ({
           accessibilityLabel={i18n.t('CONVERSATION.RETRY_MESSAGE')}
           hitSlop={8}
           onPress={onRetry}
-          style={tailwind.style('h-5 w-5 items-center justify-center rounded-md bg-blackA-A3')}>
-          <Icon icon={<RetryIcon stroke={tailwind.color('text-ruby-900')} />} size={14} />
+          style={tailwind.style(
+            'h-5 w-5 items-center justify-center rounded-md bg-blackA-A3 dark:bg-whiteA-A3',
+          )}>
+          <Icon
+            icon={<RetryIcon stroke={tailwind.color('text-ruby-900 dark:text-rubyDark-900')} />}
+            size={14}
+          />
         </Pressable>
       ) : null}
     </Animated.View>

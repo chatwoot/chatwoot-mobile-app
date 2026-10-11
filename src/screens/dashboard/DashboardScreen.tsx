@@ -9,10 +9,12 @@ import { StackActions, useNavigation, useRoute } from '@react-navigation/native'
 import { Icon } from '@/components-next';
 import { CloseIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { Conversation } from '@/types';
 import { User } from '@/types/User';
 
 const DashboardScreen = () => {
+  useTheme();
   const route = useRoute();
   const navigation = useNavigation();
   const webviewRef = useRef<WebView>(null);
@@ -54,7 +56,7 @@ const DashboardScreen = () => {
     <Animated.View style={tailwind.style('flex-1')}>
       <Animated.View
         style={tailwind.style(
-          'flex flex-row items-center justify-between px-4 border-b-[1px] border-b-blackA-A3 py-[12px] bg-white',
+          'flex flex-row items-center justify-between px-4 border-b-[1px] border-b-blackA-A3 dark:border-b-whiteA-A3 py-[12px] bg-white dark:bg-grayDark-50',
         )}>
         <Pressable hitSlop={16} onPress={handleBackPress}>
           <Animated.View>
@@ -64,7 +66,7 @@ const DashboardScreen = () => {
         <Animated.View>
           <Animated.Text
             style={tailwind.style(
-              'text-[17px] font-inter-medium-24 tracking-[0.32px] text-gray-950',
+              'text-[17px] font-inter-medium-24 tracking-[0.32px] text-gray-950 dark:text-grayDark-950',
             )}>
             {title}
           </Animated.Text>

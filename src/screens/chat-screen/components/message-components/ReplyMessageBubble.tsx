@@ -17,7 +17,7 @@ type ReplyMessageBubbleProps = {
 };
 
 const variantBaseMap = {
-  [MESSAGE_VARIANTS.AGENT]: 'bg-white',
+  [MESSAGE_VARIANTS.AGENT]: 'bg-white dark:bg-grayDark-50',
   [MESSAGE_VARIANTS.USER]: 'bg-blackA-A7',
 };
 
@@ -64,11 +64,13 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
         ),
       ]}>
       <Animated.View style={tailwind.style('flex flex-row')}>
-        <Animated.View style={tailwind.style('w-[3px] bg-gray-300 h-auto rounded-[4px]')} />
+        <Animated.View
+          style={tailwind.style('w-[3px] bg-gray-300 dark:bg-grayDark-300 h-auto rounded-[4px]')}
+        />
         <Animated.View style={tailwind.style('pl-2.5')}>
           <Animated.Text
             style={tailwind.style(
-              'text-cxs font-inter-420-20 leading-[14.95px] tracking-[0.32px] text-blackA-A11',
+              'text-cxs font-inter-420-20 leading-[14.95px] tracking-[0.32px] text-blackA-A11 dark:text-whiteA-A11',
             )}>
             Replying to {replyMessageItem?.sender?.name}
           </Animated.Text>
@@ -77,7 +79,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
               {renderAttachmentSection()}
               <Animated.Text
                 style={tailwind.style(
-                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 pl-1.5',
+                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 dark:text-grayDark-950 pl-1.5',
                 )}>
                 {replyMessageItem?.attachments[0].fileType}
               </Animated.Text>
@@ -94,7 +96,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
               <Animated.Text
                 numberOfLines={1}
                 style={tailwind.style(
-                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950',
+                  'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950 dark:text-grayDark-950',
                 )}>
                 {replyMessageItem?.content}
               </Animated.Text>

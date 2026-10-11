@@ -2,8 +2,11 @@ import React from 'react';
 import { Path, Svg } from 'react-native-svg';
 
 import { IconProps } from '../../types';
+import { tailwind } from '@/theme';
 
-export const MacrosIcon = ({ stroke = 'black' }: IconProps): JSX.Element => {
+export const MacrosIcon = ({
+  stroke = tailwind.color('text-black dark:text-grayDark-950'),
+}: IconProps): JSX.Element => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 22 22" fill="none">
       <Path

@@ -6,7 +6,7 @@ import {
   onNotificationOpenedApp,
   setBackgroundMessageHandler,
 } from '@react-native-firebase/messaging';
-import { getStateFromPath } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -23,7 +23,8 @@ import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { resolveAccountSwitch, switchAccount } from '@/utils/accountUtils';
 import { SSO_CALLBACK_URL } from '@/constants';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { RefsProvider } from '@/context';
+import { RefsProvider, useTheme } from '@/context';
+import { tailwind } from '@/theme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { SsoUtils } from '@/utils/ssoUtils';
@@ -48,6 +49,7 @@ export const AppNavigationContainer = () => {
   });
 
   const routeNameRef = useRef<string | undefined>(undefined);
+  const { isDark } = useTheme();
   const dispatch = useAppDispatch();
 
   const installationUrl = useAppSelector(selectInstallationUrl);
@@ -207,8 +209,17 @@ export const AppNavigationContainer = () => {
     return null;
   }
 
+  const darkBackground = tailwind.color('bg-grayDark-50') as string;
+  const navigationTheme = isDark
+    ? {
+        ...DarkTheme,
+        colors: { ...DarkTheme.colors, background: darkBackground, card: darkBackground },
+      }
+    : DefaultTheme;
+
   return (
     <NavigationContainer
+      theme={navigationTheme}
       linking={linking}
       ref={navigationRef}
       onReady={() => {

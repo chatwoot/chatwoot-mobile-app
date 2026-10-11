@@ -47,12 +47,12 @@ const MacroItem = (props: MacroItemProps) => {
         <Animated.View
           style={tailwind.style(
             'flex-1 ml-3 flex-row items-center justify-between py-[11px]',
-            !isLastItem ? ' border-b-[1px] border-b-blackA-A3' : '',
+            !isLastItem ? ' border-b-[1px] border-b-blackA-A3 dark:border-b-whiteA-A3' : '',
           )}>
           <Animated.View>
             <Animated.Text
               style={tailwind.style(
-                'text-gray-950 font-inter-420-20 leading-[22px] tracking-[0.16px]',
+                'text-gray-950 dark:text-grayDark-950 font-inter-420-20 leading-[22px] tracking-[0.16px]',
               )}>
               {macro.name}
             </Animated.Text>

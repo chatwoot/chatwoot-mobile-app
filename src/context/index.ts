@@ -2,3 +2,5 @@ export * from './RefsContext';
 export * from './ConversationListContext';
 export * from './InboxListContext';
 export * from './useChatWindowContext';
+export * from './ThemeContext';
+export * from './ThemeProvider';

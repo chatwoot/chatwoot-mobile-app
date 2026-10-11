@@ -3,7 +3,7 @@ import React, { memo, useCallback, useMemo } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import Animated, { SharedValue } from 'react-native-reanimated';
 
-import { useRefsContext } from '@/context';
+import { useRefsContext, useTheme } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { Conversation } from '@/types';
 import {
@@ -36,6 +36,7 @@ type ConversationItemContainerProps = {
 };
 
 const ReadComponent = React.memo(() => {
+  useTheme();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsRead />} size={24} />
@@ -44,6 +45,7 @@ const ReadComponent = React.memo(() => {
 });
 
 const UnreadComponent = React.memo(() => {
+  useTheme();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsUnRead />} size={24} />
@@ -52,6 +54,7 @@ const UnreadComponent = React.memo(() => {
 });
 
 const StatusComponent = React.memo(() => {
+  useTheme();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center ')}>
       <Icon icon={<StatusIcon />} size={24} />
@@ -63,6 +66,7 @@ const StatusComponent = React.memo(() => {
 });
 
 export const ConversationItemContainer = memo((props: ConversationItemContainerProps) => {
+  useTheme();
   const { conversationItem, index, openedRowIndex } = props;
   const {
     meta: {

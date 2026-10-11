@@ -40,7 +40,7 @@ const InboxCell = (props: InboxCellProps) => {
       <Animated.View
         style={tailwind.style(
           'flex-1 ml-3 flex-row justify-between py-[11px] pr-3',
-          !isLastItem ? 'border-b-[1px] border-blackA-A3' : '',
+          !isLastItem ? 'border-b-[1px] border-blackA-A3 dark:border-whiteA-A3' : '',
         )}>
         <Animated.View style={tailwind.style('flex-row items-center')}>
           <Icon
@@ -51,7 +51,7 @@ const InboxCell = (props: InboxCellProps) => {
 
           <Animated.Text
             style={tailwind.style(
-              'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize ml-2',
+              'text-base text-gray-950 dark:text-grayDark-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize ml-2',
             )}>
             {value.name}
           </Animated.Text>
@@ -88,7 +88,7 @@ export const InboxFilters = () => {
       contentContainerStyle={tailwind.style('pb-4')}
       stickyHeaderIndices={[0]}
       showsVerticalScrollIndicator={true}>
-      <Animated.View style={tailwind.style('bg-white pb-3')}>
+      <Animated.View style={tailwind.style('bg-white dark:bg-grayDark-50 pb-3')}>
         <BottomSheetHeader headerText={i18n.t('CONVERSATION.FILTERS.INBOX.TITLE')} />
       </Animated.View>
       <Animated.View style={tailwind.style('pl-3')}>

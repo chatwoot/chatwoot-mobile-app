@@ -1,4 +1,7 @@
 import React from 'react';
+import { getChannelIcon } from '@/utils/getChannelIcon';
+import type { Inbox } from '@/types/Inbox';
+import type { ConversationAdditionalAttributes } from '@/types/Conversation';
 import { ImageSourcePropType, Keyboard, Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -13,6 +16,8 @@ import { SlaEvents } from './SlaEvents';
 
 type ChatHeaderProps = {
   name: string;
+  inbox?: Inbox;
+  additionalAttributes?: ConversationAdditionalAttributes;
   imageSrc: ImageSourcePropType;
   isResolved: boolean;
   isSlaMissed?: boolean;
@@ -27,6 +32,8 @@ type ChatHeaderProps = {
 
 export const ChatHeader = ({
   name,
+  inbox,
+  additionalAttributes,
   imageSrc,
   isResolved,
   slaEvents,
@@ -59,9 +66,9 @@ export const ChatHeader = ({
           </Pressable>
           <Pressable
             onPress={onContactDetailsPress}
-            style={tailwind.style('flex flex-row items-center flex-1')}>
+            style={tailwind.style('flex flex-row items-center flex-1 min-w-0')}>
             <Avatar size="xl" src={imageSrc} name={name} />
-            <Animated.View style={tailwind.style('pl-2')}>
+            <Animated.View style={tailwind.style('pl-2 flex-1')}>
               <Animated.Text
                 numberOfLines={1}
                 style={tailwind.style(
@@ -69,6 +76,24 @@ export const ChatHeader = ({
                 )}>
                 {name}
               </Animated.Text>
+              {inbox && (
+                <Animated.View style={tailwind.style('flex-row items-center gap-1')}>
+                  <Icon
+                    icon={getChannelIcon(
+                      inbox.channelType,
+                      inbox.medium,
+                      additionalAttributes?.type ?? '',
+                    )}
+                    size={12}
+                  />
+                  <Animated.Text
+                    testID="chat.header.inbox-name"
+                    numberOfLines={1}
+                    style={tailwind.style('text-xs text-gray-900 flex-shrink')}>
+                    {inbox.name}
+                  </Animated.Text>
+                </Animated.View>
+              )}
             </Animated.View>
           </Pressable>
         </Animated.View>

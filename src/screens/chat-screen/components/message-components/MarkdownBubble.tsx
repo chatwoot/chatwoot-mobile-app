@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
+import { expandTabs } from '@/utils/messageFormatterUtils';
 
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -101,8 +102,7 @@ const getStyles = (variant: string) => {
 
 export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
   const { variant } = props;
-  // iOS text layout hangs the main thread on a tab inside Arabic-script text.
-  const messageContent = props.messageContent.replace(/\t/g, '    ');
+  const messageContent = expandTabs(props.messageContent);
 
   return (
     <Markdown

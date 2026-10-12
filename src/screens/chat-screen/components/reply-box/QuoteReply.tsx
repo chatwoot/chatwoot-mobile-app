@@ -8,6 +8,7 @@ import { useRefsContext } from '@/context';
 import { CloseIcon, FileIcon, VoiceNote } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { isMarkdown } from '@/utils';
+import { expandTabs } from '@/utils/messageFormatterUtils';
 import { Icon } from '@/components-next/common';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -151,14 +152,14 @@ export const QuoteReply = () => {
                 //   onLinkPress={handleURL}
                 style={styles}>
                 {quoteMessage?.content.split('\n').length > 0
-                  ? `${quoteMessage?.content.split('\n')[0]}`
+                  ? expandTabs(quoteMessage.content.split('\n')[0])
                   : ''}
               </Markdown>
             ) : (
               <Text
                 numberOfLines={1}
                 style={tailwind.style('text-md font-inter-normal-20 tracking-[0.32px]')}>
-                {quoteMessage?.content}
+                {expandTabs(quoteMessage.content)}
               </Text>
             )
           ) : (

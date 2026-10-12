@@ -10,6 +10,7 @@ import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { errorMessage } from '@/utils/errorUtils';
+import i18n from '@/i18n';
 
 const generateUniqueFileName = (url: string, originalFileName: string) => {
   const hash = url.split('').reduce((acc, char) => {
@@ -27,12 +28,13 @@ const generateUniqueFileName = (url: string, originalFileName: string) => {
 };
 
 type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
+  fileSize?: number;
   isComposed?: boolean;
   variant: string;
 };
 
 export const FileBubblePreview = (props: FilePreviewProps) => {
-  const { fileSrc, isComposed = false, variant } = props;
+  const { fileSrc, fileSize, isComposed = false, variant } = props;
   const dirs = ReactNativeBlobUtil.fs.dirs;
 
   const [fileDownload, setFileDownload] = useState(false);
@@ -43,34 +45,46 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
   const previewFile = () => {
     try {
       FileViewer.open(localFilePath).catch(e =>
-        Alert.alert('Not able to preview file', errorMessage(e)),
+        Alert.alert(i18n.t('CONVERSATION.FILE_PREVIEW_ERROR'), errorMessage(e)),
       );
     } catch (e) {
-      Alert.alert('Not able to preview file', errorMessage(e));
+      Alert.alert(i18n.t('CONVERSATION.FILE_PREVIEW_ERROR'), errorMessage(e));
     }
   };
 
   useEffect(() => {
-    const asyncFileDownload = () => {
-      ReactNativeBlobUtil.fs.exists(localFilePath).then(res => {
-        if (res) {
+    const { fs } = ReactNativeBlobUtil;
+
+    const isCachedFileComplete = async () => {
+      if (!(await fs.exists(localFilePath))) {
+        return false;
+      }
+      if (!fileSize) {
+        return true;
+      }
+      // Android reports stat size as a string.
+      const { size } = await fs.stat(localFilePath);
+      return Number(size) === fileSize;
+    };
+
+    const asyncFileDownload = async () => {
+      try {
+        if (await isCachedFileComplete()) {
           setFileDownload(false);
-        } else {
-          setFileDownload(true);
-          ReactNativeBlobUtil.config({
-            overwrite: true,
-            path: localFilePath,
-            fileCache: true,
-          })
-            .fetch('GET', fileSrc)
-            .then(_result => {
-              setFileDownload(false);
-            })
-            .catch(() => {
-              Alert.alert('File load error');
-            });
+          return;
         }
-      });
+        setFileDownload(true);
+        await ReactNativeBlobUtil.config({
+          overwrite: true,
+          path: localFilePath,
+          fileCache: true,
+        }).fetch('GET', fileSrc);
+      } catch (e) {
+        await fs.unlink(localFilePath).catch(() => {});
+        Alert.alert(i18n.t('CONVERSATION.FILE_LOAD_ERROR'), errorMessage(e));
+      } finally {
+        setFileDownload(false);
+      }
     };
     asyncFileDownload();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -95,3 +95,44 @@ test('an end made while a CallKit answer waits for another join cancels that ans
   expect(store.getState().calls.calls).toEqual([]);
   detach();
 });
+
+test('ending a placed WhatsApp call on CallKit after the app lost it ends it on the server', async () => {
+  const { detach, listener } = attach(build());
+  listener({
+    type: 'end',
+    uuid: 'uuid',
+    callSid: 'wacid.1',
+    answered: false,
+    outgoing: true,
+    provider: 'whatsapp',
+    callId: 9,
+    accountId: 2,
+  });
+  await flush();
+  expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(9, 2);
+  expect(CallService.rejectWhatsappCall).not.toHaveBeenCalled();
+  detach();
+});
+
+test('ending a placed Twilio call on CallKit after the app lost it leaves the conference', async () => {
+  const { detach, listener } = attach(build());
+  listener({
+    type: 'end',
+    uuid: 'uuid',
+    callSid: 'CA1',
+    answered: false,
+    outgoing: true,
+    provider: 'twilio',
+    inboxId: 3,
+    conversationId: 7,
+    accountId: 2,
+  });
+  await flush();
+  expect(CallService.leaveConference).toHaveBeenCalledWith({
+    inboxId: 3,
+    conversationId: 7,
+    callSid: 'CA1',
+    accountId: 2,
+  });
+  detach();
+});

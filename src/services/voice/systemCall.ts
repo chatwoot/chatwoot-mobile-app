@@ -149,6 +149,21 @@ const declineUnadopted = (event: Extract<CallKitActionEvent, { type: 'end' }>) =
   }
 };
 
+// A call that was live here, answered or placed, ended on the OS call screen after the
+// app lost it
+const endUnadopted = (event: Extract<CallKitActionEvent, { type: 'end' }>) => {
+  if (event.provider === VOICE_CALL_PROVIDERS.WHATSAPP && event.callId) {
+    CallService.terminateWhatsappCall(event.callId, event.accountId).catch(() => {});
+  } else if (event.inboxId && event.conversationId) {
+    CallService.leaveConference({
+      inboxId: event.inboxId,
+      conversationId: event.conversationId,
+      callSid: event.callSid,
+      accountId: event.accountId,
+    }).catch(() => {});
+  }
+};
+
 // The OS call screen shows one name, so it carries the inbox the call came through:
 // an agent answering needs to know which number rang before they pick up.
 export const callerInfo = (state: RootState, call: LiveCall) => {
@@ -226,6 +241,8 @@ export const systemCall = {
         handle,
         conversationId: call.conversationId,
         inboxId: call.inboxId,
+        accountId: call.accountId,
+        callId: call.callId,
       });
       // The call can end while CallKit starts it; its record is ended here, since the
       // removal found no system call to end
@@ -366,10 +383,16 @@ export const systemCall = {
           }
           break;
         case 'end':
-          if (call || event.answered || event.outgoing) {
+          if (call || pendingJoin(event.callSid)) {
+            endLocally(store, call, event.callSid);
+          } else if (!event.answered && !event.outgoing) {
+            declineUnadopted(event);
+          } else if (selectActiveCall(store.getState())) {
             endLocally(store, call, event.callSid);
           } else {
-            declineUnadopted(event);
+            // A call live on CallKit that the app lost, as when JavaScript restarted
+            // mid-call: the server ends it from the details CallKit kept
+            endUnadopted(event);
           }
           break;
         case 'ended':

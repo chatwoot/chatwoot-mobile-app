@@ -196,13 +196,17 @@ final class CallKitManager: NSObject {
 
   func startOutgoingCall(
     callSid: String, provider providerName: String, displayName: String, handle: String,
-    conversationId: Int?, inboxId: Int?, completion: @escaping (UUID, Error?) -> Void
+    conversationId: Int?, inboxId: Int?, accountId: Int?, callId: Int?,
+    completion: @escaping (UUID, Error?) -> Void
   ) -> UUID {
     let uuid = UUID()
-    calls[uuid] = TrackedCall(
+    // The details an end needs to reach the server if JavaScript loses the call meanwhile
+    var tracked = TrackedCall(
       uuid: uuid, callSid: callSid, provider: providerName, conversationId: conversationId,
-      inboxId: inboxId, accountId: nil, displayName: displayName, handle: handle,
+      inboxId: inboxId, accountId: accountId, displayName: displayName, handle: handle,
       outgoing: true, answered: false, ringTimer: nil)
+    tracked.callId = callId
+    calls[uuid] = tracked
     let cxHandle = CXHandle(type: handle.hasPrefix("+") ? .phoneNumber : .generic, value: handle)
     let action = CXStartCallAction(call: uuid, handle: cxHandle)
     action.contactIdentifier = displayName

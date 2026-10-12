@@ -37,6 +37,8 @@ export type SystemCallReport = {
   conversationId?: number;
   inboxId?: number;
   accountId?: number;
+  // The WhatsApp call's id, so a call placed here can be ended from CallKit alone
+  callId?: number;
 };
 
 export type SystemCallEndReason =

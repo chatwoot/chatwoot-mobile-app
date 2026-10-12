@@ -42,6 +42,7 @@ private struct ReportCallRecord: Record {
   @Field var conversationId: Int?
   @Field var inboxId: Int?
   @Field var accountId: Int?
+  @Field var callId: Int?
 }
 
 public class ChatwootCallsModule: Module {
@@ -398,7 +399,8 @@ public class ChatwootCallsModule: Module {
     AsyncFunction("callKitStartOutgoing") { (record: ReportCallRecord, promise: Promise) in
       _ = self.callKit.startOutgoingCall(
         callSid: record.callSid, provider: record.provider, displayName: record.displayName,
-        handle: record.handle, conversationId: record.conversationId, inboxId: record.inboxId
+        handle: record.handle, conversationId: record.conversationId, inboxId: record.inboxId,
+        accountId: record.accountId, callId: record.callId
       ) { uuid, error in
         if let error { promise.reject("ERR_CALLKIT", error.localizedDescription) } else { promise.resolve(uuid.uuidString) }
       }

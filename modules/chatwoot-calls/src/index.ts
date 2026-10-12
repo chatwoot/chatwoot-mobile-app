@@ -108,6 +108,11 @@ export const twilioSetHold = (hold: boolean) => ChatwootCallsModule?.twilioSetHo
 
 export const setSpeakerOn = (enabled: boolean) => ChatwootCallsModule?.setSpeakerOn(enabled);
 
+// A ringback for a call this device placed, played into the call's audio
+export const startRingback = () => ChatwootCallsModule?.startRingback?.();
+
+export const stopRingback = () => ChatwootCallsModule?.stopRingback?.();
+
 // Android's call notification is posted natively, so its buttons are read back the same way
 // The oldest choice waiting, or the one for the named call
 export const takeNativeCallAction = (callSid?: string | null) =>

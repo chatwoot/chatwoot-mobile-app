@@ -1,7 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 
 import type { RootState } from '@/store';
+import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { isSystemCallUiAvailable } from '@/services/voice/chatwootCalls';
+import { isOutboundCallRinging } from '@/utils/voiceCallUtils';
 
 export const selectCallsState = (state: RootState) => state.calls;
 
@@ -62,3 +64,18 @@ export const selectIsSpeakerOn = createSelector(
 );
 
 export const selectAudioRoute = createSelector(selectCallsState, state => state.audioRoute);
+
+// A WhatsApp call this device placed is ringing at the contact's end, unanswered. Twilio
+// carries the contact network's own ringback.
+export const selectIsRingingBack = createSelector(
+  [selectCalls, selectLocalCallSid],
+  (calls, localCallSid) =>
+    calls.some(
+      call =>
+        call.callSid === localCallSid &&
+        call.provider === VOICE_CALL_PROVIDERS.WHATSAPP &&
+        call.callDirection === 'outbound' &&
+        !call.isActive &&
+        isOutboundCallRinging(call),
+    ),
+);

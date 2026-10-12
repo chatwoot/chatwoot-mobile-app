@@ -182,6 +182,11 @@ class ChatwootCallsModule : Module() {
     }
 
     // Speaker routing: through Telecom while it tracks the call, otherwise directly
+    // A ringback for a call this device placed, while the contact's phone rings
+    Function("startRingback") { -> Ringback.start() }
+
+    Function("stopRingback") { -> Ringback.stop() }
+
     Function("setSpeakerOn") { enabled: Boolean ->
       if (!TelecomCalls.setSpeaker(enabled)) audioManager.isSpeakerphoneOn = enabled
     }

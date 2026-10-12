@@ -48,6 +48,28 @@ public class ChatwootCallsModule: Module {
   private let audioDevice = DefaultAudioDevice()
   private let handler = TwilioCallHandler()
   private var activeCall: Call?
+  private var ringbackPlayer: AVAudioPlayer?
+  private var ringbackWanted = false
+  // The audio session is active with WebRTC as the call's media engine
+  private var webrtcSessionActive = false
+
+  // WebRTC's audio stays off while the ringback plays: its voice processing turns other
+  // audio down to almost nothing, and before the contact answers there is nothing to send
+  // or hear. The ringback waits for the session to be active.
+  private func applyRingback() {
+    let rtcSession = RTCAudioSession.sharedInstance()
+    if ringbackWanted && webrtcSessionActive {
+      rtcSession.isAudioEnabled = false
+      guard ringbackPlayer == nil, let player = try? AVAudioPlayer(data: Self.ringbackWav()) else { return }
+      player.numberOfLoops = -1
+      player.play()
+      ringbackPlayer = player
+    } else {
+      ringbackPlayer?.stop()
+      ringbackPlayer = nil
+      if webrtcSessionActive { rtcSession.isAudioEnabled = true }
+    }
+  }
   private let callKit = CallKitManager.shared
 
   private static let endReasons: [String: CXCallEndedReason] = [
@@ -109,6 +131,42 @@ public class ChatwootCallsModule: Module {
     return ["current": current, "available": available, "names": names]
   }
 
+  // The double ring heard while the far end rings, as a WAV: 400 Hz and 450 Hz together,
+  // on 0.4 s, off 0.2 s, on 0.4 s, then 2 s of silence. Each burst fades in and out over
+  // 10 ms so it starts and stops without a click.
+  static func ringbackWav() -> Data {
+    let rate = 8000
+    let fadeSamples = 80
+    let pattern: [(Double, Bool)] = [(0.4, true), (0.2, false), (0.4, true), (2.0, false)]
+    var samples: [Int16] = []
+    var t = 0
+    for (seconds, on) in pattern {
+      let count = Int(seconds * Double(rate))
+      for i in 0..<count {
+        var value = 0.0
+        if on {
+          let time = Double(t) / Double(rate)
+          let fade = min(1.0, Double(min(i, count - i)) / Double(fadeSamples))
+          value = (sin(2 * .pi * 400 * time) + sin(2 * .pi * 450 * time)) * 0.25 * fade
+        }
+        samples.append(Int16(value * Double(Int16.max)))
+        t += 1
+      }
+    }
+    var data = Data()
+    func append<T: FixedWidthInteger>(_ value: T) {
+      withUnsafeBytes(of: value.littleEndian) { data.append(contentsOf: $0) }
+    }
+    let byteCount = samples.count * 2
+    data.append(contentsOf: Array("RIFF".utf8)); append(UInt32(36 + byteCount))
+    data.append(contentsOf: Array("WAVEfmt ".utf8)); append(UInt32(16))
+    append(UInt16(1)); append(UInt16(1)); append(UInt32(rate)); append(UInt32(rate * 2))
+    append(UInt16(2)); append(UInt16(16))
+    data.append(contentsOf: Array("data".utf8)); append(UInt32(byteCount))
+    samples.forEach { append($0) }
+    return data
+  }
+
   private func emitAudioRoute() {
     sendEvent("onAudioRoute", Self.audioRouteInfo())
   }
@@ -161,17 +219,24 @@ public class ChatwootCallsModule: Module {
       self.callKit.audioSessionDidActivate = { [weak self] session, provider in
         let rtcSession = RTCAudioSession.sharedInstance()
         if provider == "twilio" {
+          self?.webrtcSessionActive = false
           rtcSession.isAudioEnabled = false
           self?.audioDevice.isEnabled = true
         } else {
-          self?.audioDevice.isEnabled = false
+          guard let self else { return }
+          self.audioDevice.isEnabled = false
           rtcSession.audioSessionDidActivate(session)
-          rtcSession.isAudioEnabled = true
+          self.webrtcSessionActive = true
+          rtcSession.isAudioEnabled = !self.ringbackWanted
+          self.applyRingback()
         }
       }
       self.callKit.audioSessionDidDeactivate = { [weak self] session, _ in
         // The next call starts with a connected headset on offer again
         Self.allowBluetooth(true)
+        self?.webrtcSessionActive = false
+        self?.ringbackPlayer?.stop()
+        self?.ringbackPlayer = nil
         self?.audioDevice.isEnabled = false
         let rtcSession = RTCAudioSession.sharedInstance()
         rtcSession.isAudioEnabled = false
@@ -193,10 +258,20 @@ public class ChatwootCallsModule: Module {
       try? session.setActive(true)
       let rtcSession = RTCAudioSession.sharedInstance()
       rtcSession.audioSessionDidActivate(session)
-      rtcSession.isAudioEnabled = true
+      // The ringback state lives on the main queue
+      DispatchQueue.main.async {
+        self.webrtcSessionActive = true
+        rtcSession.isAudioEnabled = !self.ringbackWanted
+        self.applyRingback()
+      }
     }
 
     Function("deactivateWebrtcAudio") {
+      DispatchQueue.main.async {
+        self.webrtcSessionActive = false
+        self.ringbackPlayer?.stop()
+        self.ringbackPlayer = nil
+      }
       let rtcSession = RTCAudioSession.sharedInstance()
       rtcSession.isAudioEnabled = false
       rtcSession.audioSessionDidDeactivate(AVAudioSession.sharedInstance())
@@ -237,6 +312,23 @@ public class ChatwootCallsModule: Module {
     // Audio for a Twilio call with no system call behind it, which CallKit never activates
     Function("twilioSetAudioEnabled") { (enabled: Bool) in
       self.audioDevice.isEnabled = enabled
+    }
+
+    // A ringback for a WhatsApp call this device placed, while the contact's phone rings.
+    // It plays into the call's audio session, so it follows the call's route.
+    Function("startRingback") {
+      DispatchQueue.main.async {
+        self.ringbackWanted = true
+        self.applyRingback()
+      }
+    }
+
+    Function("stopRingback") {
+      DispatchQueue.main.async {
+        guard self.ringbackWanted else { return }
+        self.ringbackWanted = false
+        self.applyRingback()
+      }
     }
 
     // Speaker routing for whichever engine holds the audio session

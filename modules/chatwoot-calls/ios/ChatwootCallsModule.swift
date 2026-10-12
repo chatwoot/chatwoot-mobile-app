@@ -98,6 +98,11 @@ public class ChatwootCallsModule: Module {
       if let headset { heldBackBluetooth = headset.portName }
       options.remove(.allowBluetooth)
     }
+    // WebRTC applies its own configuration again whenever its audio starts, as when the
+    // ringback ends, so the choice is kept there too
+    let webrtc = RTCAudioSessionConfiguration.webRTC()
+    if allowed { webrtc.categoryOptions.insert(.allowBluetooth) } else { webrtc.categoryOptions.remove(.allowBluetooth) }
+    RTCAudioSessionConfiguration.setWebRTC(webrtc)
     guard options != session.categoryOptions else { return }
     try? session.setCategory(session.category, mode: session.mode, options: options)
   }

@@ -26,7 +26,13 @@ import { isAwaitingTwilioContact } from '@/utils/voiceCallUtils';
 import { callEngine } from './callEngine';
 import { selectCallerInfo } from './callerInfo';
 import { markLocalEnd } from './callSessionCore';
-import { cancelJoin, type JoinResult, pendingJoin, trackJoin } from './pendingJoins';
+import {
+  cancelJoin,
+  isJoinCancelled,
+  type JoinResult,
+  pendingJoin,
+  trackJoin,
+} from './pendingJoins';
 import {
   activateWebrtcAudio,
   addAudioSessionListener,
@@ -333,26 +339,30 @@ export const systemCall = {
         case 'answer':
           if (call && !call.isActive) {
             // CallKit has already fulfilled the answer, so one made while another call is
-            // joining waits for that join and is then joined or ended
-            whenNotJoining(store)
-              .then(() => {
+            // joining waits for that join and is then joined or ended. It counts as a join
+            // from the moment it is made, so an end that arrives while it waits cancels it.
+            trackJoin(
+              event.callSid,
+              whenNotJoining(store).then((): Promise<JoinResult> | JoinResult => {
+                if (isJoinCancelled(event.callSid)) return { status: 'cancelled' };
                 const current = selectCalls(store.getState()).find(
                   entry => entry.callSid === event.callSid,
                 );
                 if (!current) {
                   endSystemCall(event.uuid, 'answered_elsewhere');
-                  return undefined;
+                  return { status: 'already_ended' };
                 }
-                if (current.isActive) return undefined;
+                if (current.isActive) return { status: 'joined' };
                 return startJoin(store, event.callSid).then(result => {
                   if (result.status !== 'joined') endSystemCall(event.uuid, 'answered_elsewhere');
+                  return result;
                 });
-              })
-              .catch(error => {
-                // Answered from the OS call screen, so the reason has nowhere else to go
-                reportAnswerFailure(error);
-                endSystemCall(event.uuid, 'failed');
-              });
+              }),
+            ).catch(error => {
+              // Answered from the OS call screen, so the reason has nowhere else to go
+              reportAnswerFailure(error);
+              endSystemCall(event.uuid, 'failed');
+            });
           }
           break;
         case 'end':

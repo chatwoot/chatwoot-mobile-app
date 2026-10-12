@@ -239,7 +239,15 @@ export const callActions = {
           // The contact's side may have answered before the request above returned
           const early = takeEarlyOutboundEvents(response.call_id);
           if (early.sdpAnswer) {
-            await callEngine.whatsapp.applyAnswer(early.sdpAnswer).catch(() => {});
+            const applied = await callEngine.whatsapp.applyAnswer(early.sdpAnswer).then(
+              () => true,
+              () => false,
+            );
+            // Without the contact's answer the call would go live with no media
+            if (!applied) {
+              await dispatch(callActions.rejectIncomingCall(response.call_id));
+              throw new Error('The contact answer could not be applied');
+            }
           }
           if (early.accepted) dispatch(setCallActive(response.call_id));
           return { status: 'calling', callSid: response.call_id };

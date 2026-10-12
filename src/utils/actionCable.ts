@@ -59,6 +59,7 @@ import { activeMediaProvider, callEngine } from '@/services/voice/callEngine';
 import { cancelJoin, pendingJoin } from '@/services/voice/pendingJoins';
 import { systemCall, systemEndReason } from '@/services/voice/systemCall';
 
+import { callActions } from '@/store/call/callActions';
 import { clearActiveCall, clearLocalCall } from '@/store/call/callSlice';
 
 interface ActionCableConfig {
@@ -225,7 +226,10 @@ class ActionCableConnector extends BaseActionCableConnector {
       return;
     }
     if (selectLocalCallSid(state) === data.call_id) {
-      callEngine.whatsapp.applyAnswer(data.sdp_answer).catch(() => {});
+      // Without the contact's answer the call would go live with no media, so it is ended
+      callEngine.whatsapp
+        .applyAnswer(data.sdp_answer)
+        .catch(() => store.dispatch(callActions.rejectIncomingCall(data.call_id)));
     }
   };
 

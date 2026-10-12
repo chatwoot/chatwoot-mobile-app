@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { callEngine } from '@/services/voice/callEngine';
 import actionCableConnector from '@/utils/actionCable';
 import { callTimerStart } from '@/utils/voiceCallUtils';
-import reducer from '../callSlice';
+import reducer, { addCall, markLocalCall } from '../callSlice';
 import { callActions } from '../callActions';
 import { CallService } from '../callService';
 
@@ -96,4 +96,34 @@ test('a Twilio answer that arrives before the dial response still starts the tim
   expect(call.providerStatus).toBe('in-progress');
   expect(callTimerStart(call, call.activeSince)).toEqual(expect.any(Number));
   twilioConnect.mockRestore();
+});
+
+test('a WhatsApp answer that cannot be applied ends the placed call', async () => {
+  mockStore = build();
+  mockStore.dispatch(markLocalCall('wacid.1'));
+  mockStore.dispatch(
+    addCall({
+      callSid: 'wacid.1',
+      callId: 9,
+      provider: 'whatsapp',
+      callDirection: 'outbound',
+      conversationId: 37,
+      inboxId: 3,
+    }),
+  );
+  jest.spyOn(callEngine.whatsapp, 'applyAnswer').mockRejectedValueOnce(new Error('bad sdp'));
+
+  connect().onVoiceCallOutboundConnected({
+    account_id: 1,
+    id: 9,
+    call_id: 'wacid.1',
+    provider: 'whatsapp',
+    status: 'ringing',
+    sdp_answer: 'v=0 answer',
+  } as never);
+  await flush();
+  await flush();
+
+  expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(9, undefined);
+  expect(mockStore.getState().calls.calls).toEqual([]);
 });

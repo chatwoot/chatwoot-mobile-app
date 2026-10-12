@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
-import { expandTabs } from '@/utils/messageFormatterUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';

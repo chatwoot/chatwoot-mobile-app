@@ -5,7 +5,7 @@ import i18n from '@/i18n';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageContentAttributes } from '@/types';
-import { expandTabs } from '@/utils/messageFormatterUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type EmailMetaProps = {
   contentAttributes: MessageContentAttributes;

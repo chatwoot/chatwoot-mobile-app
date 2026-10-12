@@ -8,7 +8,7 @@ import { useRefsContext } from '@/context';
 import { CloseIcon, FileIcon, VoiceNote } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { isMarkdown } from '@/utils';
-import { expandTabs } from '@/utils/messageFormatterUtils';
+import { expandTabs } from '@/utils/expandTabs';
 import { Icon } from '@/components-next/common';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';

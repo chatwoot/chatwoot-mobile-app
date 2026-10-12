@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, type TextStyle, type StyleProp } from 'react-native';
 import { highlightText } from '@/utils/highlightText';
 import { tailwind } from '@/theme';
-import { expandTabs } from '@/utils/messageFormatterUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type HighlightedTextProps = {
   text: string;

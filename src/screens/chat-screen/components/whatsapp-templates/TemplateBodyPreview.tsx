@@ -3,6 +3,7 @@ import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
 import { buildPreviewSegments } from '@/utils/messageTemplateUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type TemplateBodyPreviewProps = {
   body: string;
@@ -21,7 +22,7 @@ const TemplateBodyPreview = ({ body, values }: TemplateBodyPreviewProps) => {
         <Animated.Text
           key={`${index}-${segment.text}`}
           style={tailwind.style(segment.filled ? 'font-inter-medium-24' : 'font-inter-420-20')}>
-          {segment.text}
+          {expandTabs(segment.text)}
         </Animated.Text>
       ))}
     </Animated.Text>

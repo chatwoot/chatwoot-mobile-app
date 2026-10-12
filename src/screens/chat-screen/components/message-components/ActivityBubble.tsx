@@ -3,7 +3,7 @@ import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
 import { unixTimestampToReadableTime } from '@/utils/dateTimeUtils';
-import { expandTabs } from '@/utils/messageFormatterUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type ActivityBubbleProps = {
   text: string;

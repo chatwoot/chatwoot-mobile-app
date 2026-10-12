@@ -96,7 +96,8 @@ export const ActiveCallScreen = ({
     onRoutePickerOpenChange?.(routePicker.isOpen);
   }, [onRoutePickerOpenChange, routePicker.isOpen]);
 
-  const tone = callTone(isOnHold, isConnected);
+  // A placed Twilio call keeps the ringing colours until the contact picks up
+  const tone = callTone(isOnHold, isConnected && !isAwaitingTwilioContact(call));
   const statusFlags = { isOnHold, isConnected, isConnecting, isIncoming };
   const trayBottom = callTrayBottom(insets.bottom);
 

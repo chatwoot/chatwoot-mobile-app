@@ -58,6 +58,28 @@ public class ChatwootCallsModule: Module {
     "failed": .failed,
   ]
 
+  // The Bluetooth headset taken off the session while the earpiece is chosen, by name, so
+  // it stays on offer
+  static var heldBackBluetooth: String?
+
+  // During a call iOS keeps a connected Bluetooth headset over the input the app prefers,
+  // so choosing the earpiece takes Bluetooth off the session's routes and choosing the
+  // headset puts it back
+  static func allowBluetooth(_ allowed: Bool) {
+    let session = AVAudioSession.sharedInstance()
+    var options = session.categoryOptions
+    if allowed {
+      heldBackBluetooth = nil
+      options.insert(.allowBluetooth)
+    } else {
+      let headset = session.availableInputs?.first { [.bluetoothHFP, .bluetoothLE].contains($0.portType) }
+      if let headset { heldBackBluetooth = headset.portName }
+      options.remove(.allowBluetooth)
+    }
+    guard options != session.categoryOptions else { return }
+    try? session.setCategory(session.category, mode: session.mode, options: options)
+  }
+
   // The session's output as one of the app's route names, and the routes on offer
   static func audioRouteInfo() -> [String: Any] {
     let session = AVAudioSession.sharedInstance()
@@ -76,6 +98,9 @@ public class ChatwootCallsModule: Module {
     if let bluetooth = inputs.first(where: { [.bluetoothHFP, .bluetoothLE].contains($0.portType) }) {
       available.append("bluetooth")
       names.append(bluetooth.portName)
+    } else if let heldBack = heldBackBluetooth {
+      available.append("bluetooth")
+      names.append(heldBack)
     }
     if let wired = inputs.first(where: { $0.portType == .headsetMic }) {
       available.append("wired")
@@ -145,6 +170,8 @@ public class ChatwootCallsModule: Module {
         }
       }
       self.callKit.audioSessionDidDeactivate = { [weak self] session, _ in
+        // The next call starts with a connected headset on offer again
+        Self.allowBluetooth(true)
         self?.audioDevice.isEnabled = false
         let rtcSession = RTCAudioSession.sharedInstance()
         rtcSession.isAudioEnabled = false
@@ -226,12 +253,14 @@ public class ChatwootCallsModule: Module {
       case "speaker":
         try? session.overrideOutputAudioPort(.speaker)
       case "bluetooth", "wired":
+        Self.allowBluetooth(true)
         try? session.overrideOutputAudioPort(.none)
         let wanted: Set<AVAudioSession.Port> = route == "bluetooth" ? [.bluetoothHFP, .bluetoothLE] : [.headsetMic]
         if let input = session.availableInputs?.first(where: { wanted.contains($0.portType) }) {
           try? session.setPreferredInput(input)
         }
       default:
+        Self.allowBluetooth(false)
         try? session.overrideOutputAudioPort(.none)
         if let input = session.availableInputs?.first(where: { $0.portType == .builtInMic }) {
           try? session.setPreferredInput(input)

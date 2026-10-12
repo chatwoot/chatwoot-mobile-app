@@ -39,7 +39,11 @@ import {
   selectLocalCallSid,
   selectPlacingCall,
 } from '@/store/call/callSelectors';
-import { holdEarlyAccept, holdEarlyAnswer } from '@/store/call/earlyOutboundEvents';
+import {
+  holdEarlyAccept,
+  holdEarlyAnswer,
+  holdEarlyProviderStatus,
+} from '@/store/call/earlyOutboundEvents';
 import type { VoiceCallIncomingEvent, VoiceCallStatusEvent } from '@/store/call/callTypes';
 import { selectCurrentUserAvailability, selectUserId } from '@/store/auth/authSelectors';
 import {
@@ -126,6 +130,12 @@ class ActionCableConnector extends BaseActionCableConnector {
       }
       if (callSid) store.dispatch(handleCallStatusChanged({ callSid, status }));
       if (callSid && message.call) {
+        const state = store.getState();
+        const known = selectCalls(state).some(call => call.callSid === callSid);
+        // The call this device is placing may not be known yet; its status waits for it
+        if (!known && selectPlacingCall(state) && message.call.providerStatus) {
+          holdEarlyProviderStatus(callSid, message.call.providerStatus);
+        }
         store.dispatch(
           setCallProviderStatus({ callSid, providerStatus: message.call.providerStatus }),
         );

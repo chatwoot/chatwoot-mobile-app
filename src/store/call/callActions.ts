@@ -27,6 +27,7 @@ import {
   markLocalCall,
   removeCall,
   setCallActive,
+  setCallProviderStatus,
   setIsJoining,
   setPlacingCall,
 } from './callSlice';
@@ -272,6 +273,16 @@ export const callActions = {
             accountId,
           }),
         );
+        // Twilio's status may have arrived before the request above returned
+        const early = takeEarlyOutboundEvents(response.call_sid);
+        if (early.providerStatus) {
+          dispatch(
+            setCallProviderStatus({
+              callSid: response.call_sid,
+              providerStatus: early.providerStatus,
+            }),
+          );
+        }
         // The agent leg joins the conference right away; the contact is being dialed
         // meanwhile. A join that fails ends the call, since nobody would be on it. The join
         // is tracked so an end made meanwhile waits for it and ends what it established.

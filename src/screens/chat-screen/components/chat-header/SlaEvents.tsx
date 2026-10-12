@@ -18,19 +18,23 @@ export const SlaEvents = ({ slaEvents, statusText }: SlaEventsProps) => {
 
   return (
     <Animated.View style={tailwind.style('py-6 px-6 gap-3')}>
-      <Text
-        style={tailwind.style(
-          'text-[17px]  text-gray-950 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
-        )}>
-        {statusText}
-      </Text>
+      {statusText ? (
+        <Text
+          style={tailwind.style(
+            'text-[17px]  text-gray-950 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
+          )}>
+          {statusText}
+        </Text>
+      ) : null}
 
-      <Text
-        style={tailwind.style(
-          'text-md  text-gray-900 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
-        )}>
-        {i18n.t('SLA.MISSES.TITLE')}
-      </Text>
+      {slaEvents?.length ? (
+        <Text
+          style={tailwind.style(
+            'text-md  text-gray-900 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
+          )}>
+          {i18n.t('SLA.MISSES.TITLE')}
+        </Text>
+      ) : null}
 
       {frtMisses && frtMisses.length > 0 && (
         <SlaEventItem label={i18n.t('SLA.MISSES.FRT')} items={frtMisses} />

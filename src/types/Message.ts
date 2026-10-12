@@ -37,6 +37,7 @@ export type ImageMetadata = {
   contentType?: string | null;
   dataUrl: string;
   thumbUrl: string;
+  fileSize?: number;
   fallbackTitle: string;
   coordinatesLat: number;
   coordinatesLong: number;

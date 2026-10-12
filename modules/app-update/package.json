@@ -1,0 +1,10 @@
+{
+  "name": "app-update",
+  "version": "1.0.0",
+  "description": "Store update checks and in-app update flows for the Chatwoot app",
+  "license": "MIT",
+  "author": "Chatwoot",
+  "homepage": "https://github.com/chatwoot/chatwoot-mobile-app",
+  "main": "index.ts",
+  "private": true
+}

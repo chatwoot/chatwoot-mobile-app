@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar, Text, Platform, Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import DeviceInfo from 'react-native-device-info';
 import ChatWootWidget from '@chatwoot/react-native-widget';
@@ -13,7 +12,6 @@ import * as Application from 'expo-application';
 import { Account, AvailabilityStatus } from '@/types';
 import { switchAccount } from '@/utils/accountUtils';
 
-import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
 import { openURL } from '@/utils/urlUtils';
@@ -44,13 +42,8 @@ import {
   selectUser,
   selectAccounts,
 } from '@/store/auth/authSelectors';
-import { logout } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
-import {
-  selectLocale,
-  selectIsChatwootCloud,
-  selectPushToken,
-} from '@/store/settings/settingsSelectors';
+import { selectLocale, selectIsChatwootCloud } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { setLocale } from '@/store/settings/settingsSlice';
 
@@ -59,6 +52,7 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useLogout } from '@/hooks/useLogout';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -89,8 +83,6 @@ const SettingsScreen = () => {
   useEffect(() => {
     dispatch(settingsActions.getNotificationSettings());
   }, [dispatch, activeAccountId]);
-
-  const pushToken = useAppSelector(selectPushToken);
 
   const userPermissions = getUserPermissions(user, activeAccountId);
 
@@ -185,12 +177,7 @@ const SettingsScreen = () => {
   //   }
   // };
 
-  const onClickLogout = useCallback(async () => {
-    await AsyncStorage.removeItem('cwCookie');
-    await RecentSearches.clearAll();
-    await dispatch(settingsActions.removeDevice({ pushToken }));
-    dispatch(logout());
-  }, [dispatch, pushToken]);
+  const onClickLogout = useLogout();
 
   const preferencesList: GenericListType[] = [
     {

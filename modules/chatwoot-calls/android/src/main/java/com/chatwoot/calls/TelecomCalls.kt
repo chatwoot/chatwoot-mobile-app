@@ -44,6 +44,9 @@ object TelecomCalls {
     @Volatile var endingLocally = false
     @Volatile var endpoints: List<CallEndpointCompat> = emptyList()
     @Volatile var current: CallEndpointCompat? = null
+    // Counts the agent's route choices, so a fallback still waiting on an earlier one
+    // gives way to the newest
+    @Volatile var routeRequests = 0
   }
 
   private val tracked = ConcurrentHashMap<String, Tracked>()
@@ -282,8 +285,10 @@ object TelecomCalls {
   // directly, which is what the system would have done for the request
   private fun request(entry: Tracked, endpoint: CallEndpointCompat): Boolean {
     val scope = entry.scope ?: return false
+    val request = ++entry.routeRequests
     scope.launch {
       val result = scope.requestEndpointChange(endpoint)
+      if (request != entry.routeRequests) return@launch
       if (result !is CallControlResult.Success) {
         routeDirectly(entry, endpoint)
         return@launch
@@ -293,6 +298,7 @@ object TelecomCalls {
       // directly only when nothing has moved by the time a switch should have finished.
       val before = entry.current?.type
       kotlinx.coroutines.delay(ROUTE_SETTLE_MS)
+      if (request != entry.routeRequests) return@launch
       val now = entry.current?.type
       if (now != endpoint.type && now == before) routeDirectly(entry, endpoint)
     }

@@ -8,7 +8,12 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next';
-import { OpenIcon, ResolvedFilledIcon, PendingFilledIcon, SnoozedFilledIcon } from '@/svg-icons';
+import {
+  StatusOpenIcon,
+  StatusResolvedIcon,
+  PendingFilledIcon,
+  SnoozedFilledIcon,
+} from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useHaptic, useScaleAnimation } from '@/utils';
@@ -32,7 +37,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionColor: 'bg-gray-100',
     backgroundActionPressedColor: 'bg-gray-200',
     borderActionColor: 'bg-gray-700',
-    actionIcon: <OpenIcon stroke={tailwind.color('text-gray-700') as string} />,
+    actionIcon: <StatusOpenIcon />,
     actionStatus: 'open',
   },
   {
@@ -53,7 +58,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionColor: 'bg-green-100',
     backgroundActionPressedColor: 'bg-green-200',
     borderActionColor: 'bg-green-700',
-    actionIcon: <ResolvedFilledIcon />,
+    actionIcon: <StatusResolvedIcon />,
     actionStatus: 'resolved',
   },
 ];

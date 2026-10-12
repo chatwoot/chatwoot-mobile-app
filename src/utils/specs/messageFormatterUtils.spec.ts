@@ -50,6 +50,11 @@ describe('#expandTabs', () => {
     expect(expandTabs('abc\n\ty')).toBe('abc\n    y');
   });
 
+  it('restarts columns after carriage-return line endings', () => {
+    expect(expandTabs('ab\r\tx')).toBe('ab\r    x');
+    expect(expandTabs('ab\r\n\tx')).toBe('ab\r\n    x');
+  });
+
   it('removes tabs from Arabic text', () => {
     expect(expandTabs('شكرا لك\tعلى تواصلك معنا')).not.toContain('\t');
   });

@@ -9,16 +9,13 @@ export const expandTabs = (text: string) => {
     return text;
   }
 
-  return text
-    .split('\n')
-    .map(line => {
-      let expanded = '';
-      for (const char of line) {
-        expanded += char === '\t' ? ' '.repeat(TAB_STOP - (expanded.length % TAB_STOP)) : char;
-      }
-      return expanded;
-    })
-    .join('\n');
+  return text.replace(/[^\r\n]+/g, line => {
+    let expanded = '';
+    for (const char of line) {
+      expanded += char === '\t' ? ' '.repeat(TAB_STOP - (expanded.length % TAB_STOP)) : char;
+    }
+    return expanded;
+  });
 };
 
 export const getPlainText = (message: string) => {

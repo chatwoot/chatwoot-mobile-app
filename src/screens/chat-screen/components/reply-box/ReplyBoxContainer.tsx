@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Keyboard, TextInput } from 'react-native';
-import { KeyboardStickyView } from 'react-native-keyboard-controller';
+import {
+  KeyboardStickyView,
+  useReanimatedKeyboardAnimation,
+} from 'react-native-keyboard-controller';
 import Animated, {
   FadeIn,
   FadeOut,
@@ -101,6 +104,7 @@ const BottomSheetContent = () => {
   const hapticSelection = useHaptic();
   const dispatch = useAppDispatch();
   const { bottom } = useSafeAreaInsets();
+  const { progress: keyboardProgress } = useReanimatedKeyboardAnimation();
   const { messageListRef } = useRefsContext();
 
   // Selectors
@@ -117,7 +121,6 @@ const BottomSheetContent = () => {
     isAddMenuOptionSheetOpen,
     setAddMenuOptionSheetState,
     textInputRef,
-    isTextInputFocused,
     conversationId,
     isVoiceRecorderOpen,
     setIsVoiceRecorderOpen,
@@ -238,11 +241,13 @@ const BottomSheetContent = () => {
       : withSpring(0, SHEET_APPEAR_SPRING_CONFIG);
   });
 
+  // The bottom inset gives way to the keyboard as it opens, since the keyboard height
+  // already covers the home indicator or navigation bar.
   const animatedInputWrapperStyle = useAnimatedStyle(
     () => ({
-      marginBottom: isTextInputFocused ? 0 : bottom,
+      marginBottom: bottom * (1 - keyboardProgress.value),
     }),
-    [isTextInputFocused],
+    [bottom],
   );
 
   const handleShowAddMenuOption = () => {

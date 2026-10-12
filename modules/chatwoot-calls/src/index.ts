@@ -188,7 +188,7 @@ export const endRingingNativeCall = (callSid: string) =>
 export const stopOngoingCallNotification = (callSid: string, reason: 'local' | 'remote') =>
   ChatwootCallsModule?.stopOngoingCall?.(callSid, reason);
 
-// The audio route of the call in progress: Telecom's on Android, the audio session's on iOS
+// The observed audio route of the call in progress.
 export const addAudioRouteListener = (listener: (event: AudioRouteEvent) => void) =>
   ChatwootCallsModule?.addListener('onAudioRoute', listener) ?? noSubscription;
 
@@ -240,6 +240,14 @@ export const openAppFromLockScreen = async () =>
 // focus and routes audio, so the app must not fight it for the route
 export const isTelecomAvailable = () =>
   Platform.OS === 'android' && (ChatwootCallsModule?.isTelecomAvailable?.() ?? false);
+
+// Android route reports come from Telecom or the app's native communication session.
+export const hasNativeAudioRouting = () =>
+  Platform.OS === 'android' &&
+  (ChatwootCallsModule?.hasNativeAudioRouting?.() ?? isTelecomAvailable());
+
+export const startAppCallAudio = () => ChatwootCallsModule?.startAppCallAudio?.() ?? null;
+export const stopAppCallAudio = (token: string) => ChatwootCallsModule?.stopAppCallAudio?.(token);
 
 // True while the phone is locked, so the call screen can hide anything that leads into
 // the app. Always false where the app cannot appear over a lock screen at all.

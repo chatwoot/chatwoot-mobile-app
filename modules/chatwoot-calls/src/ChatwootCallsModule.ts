@@ -45,6 +45,9 @@ declare class ChatwootCallsModule extends NativeModule<ChatwootCallsModuleEvents
   isDeviceLocked?(): boolean;
   isAppInForeground?(): boolean;
   isTelecomAvailable?(): boolean;
+  hasNativeAudioRouting?(): boolean;
+  startAppCallAudio?(): string | null;
+  stopAppCallAudio?(token: string): void;
   setAudioRoute?(route: AudioRoute): void;
   currentAudioRoute?(): { current: AudioRoute; available: AudioRoute[]; names?: string[] };
   activateWebrtcAudio(): void;

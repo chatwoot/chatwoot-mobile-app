@@ -9,7 +9,7 @@ jest.mock('../webrtcEngine', () => ({
 
 jest.mock('@/services/voice/chatwootCalls', () => ({
   isNativeCallsAvailable: jest.fn(() => true),
-  isTelecomAvailable: jest.fn(() => false),
+  hasNativeAudioRouting: jest.fn(() => false),
   setAudioRoute: jest.fn(),
   setSpeakerOn: jest.fn(),
   stopRingback: jest.fn(),

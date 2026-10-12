@@ -2,8 +2,9 @@
           xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-  <!-- Telecom routes call audio to headsets; the permission is asked for with the microphone -->
+  <!-- Call audio can use headsets; the permission is asked for with the microphone -->
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
   <!-- A headset is optional: calls work on the earpiece and speaker without Bluetooth -->
   <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
 

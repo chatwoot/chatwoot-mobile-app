@@ -1,9 +1,17 @@
 import { store } from '@/store';
 import { applyPendingCallAction, attachCallSessionCore } from '../callSessionCore';
-import { addCall, markLocalCall, setCallActive, removeCall } from '@/store/call/callSlice';
+import {
+  addCall,
+  clearLocalCall,
+  markLocalCall,
+  setCallActive,
+  removeCall,
+  setAudioRoute,
+} from '@/store/call/callSlice';
 import { takePendingCallAction } from '@/utils/callNotifications';
 import { CallService } from '@/store/call/callService';
 import {
+  addAudioRouteListener,
   addNativeCallActionListener,
   addTelecomUnavailableListener,
   queueNativeEnd,
@@ -35,7 +43,7 @@ jest.mock('../systemCall', () => ({
 jest.mock('@/utils/callNotifications', () => ({ takePendingCallAction: jest.fn() }));
 jest.mock('@/utils/voiceCallFeedback', () => ({ reportAnswerFailure: jest.fn() }));
 jest.mock('@/services/voice/chatwootCalls', () => ({
-  isTelecomAvailable: jest.fn(() => true),
+  hasNativeAudioRouting: jest.fn(() => true),
   addAudioRouteListener: jest.fn(() => ({ remove() {} })),
   addNativeCallActionListener: jest.fn(() => ({ remove() {} })),
   addTwilioCallStateListener: jest.fn(() => ({ remove() {} })),
@@ -62,6 +70,32 @@ jest.mock('@/store/call/callService', () => ({
 }));
 
 beforeEach(() => jest.clearAllMocks());
+
+test('route reports from an ended call cannot overwrite the current call', () => {
+  const detach = attachCallSessionCore();
+  store.dispatch(
+    addCall({ callSid: 'audio-current', provider: 'whatsapp', callDirection: 'outbound' }),
+  );
+  store.dispatch(markLocalCall('audio-current'));
+  store.dispatch(setCallActive('audio-current'));
+  const listener = (addAudioRouteListener as jest.Mock).mock.calls[0][0];
+  try {
+    listener({ callSid: 'audio-current', current: 'speaker', available: ['speaker', 'earpiece'] });
+    expect(store.getState().calls.audioRoute.current).toBe('speaker');
+    listener({
+      callSid: 'audio-ended',
+      current: 'bluetooth',
+      available: ['bluetooth', 'earpiece'],
+    });
+    expect(store.getState().calls.audioRoute.current).toBe('speaker');
+    expect(store.getState().calls.audioRoute.available).toEqual(['speaker', 'earpiece']);
+  } finally {
+    store.dispatch(removeCall('audio-current'));
+    store.dispatch(clearLocalCall('audio-current'));
+    store.dispatch(setAudioRoute({ current: 'earpiece', available: ['earpiece', 'speaker'] }));
+    detach();
+  }
+});
 
 test('a kept end with no call details has nothing to tell the server and only closes the native screen', async () => {
   const detach = attachCallSessionCore();
@@ -178,6 +212,8 @@ test('a Telecom failure after the call is live starts the fallback audio', () =>
   store.dispatch(setCallActive('incoming'));
   expect(webrtcEngine.ensureAudioRoute).not.toHaveBeenCalled();
   const listener = (addTelecomUnavailableListener as jest.Mock).mock.calls[0][0];
+  listener({ callSid: 'other-incoming-call' });
+  expect(webrtcEngine.ensureAudioRoute).not.toHaveBeenCalled();
   listener({ callSid: 'incoming' });
   expect(webrtcEngine.ensureAudioRoute).toHaveBeenCalledWith(false);
   detach();

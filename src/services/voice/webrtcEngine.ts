@@ -3,7 +3,9 @@ import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
 import type { MediaStream, RTCPeerConnection } from 'react-native-webrtc';
 
 import {
-  isTelecomAvailable,
+  hasNativeAudioRouting,
+  startAppCallAudio,
+  stopAppCallAudio,
   setSpeakerOn as nativeSetSpeakerOn,
 } from '@/services/voice/chatwootCalls';
 import { MicrophoneDeniedError } from '@/services/voice/callEngine';
@@ -19,9 +21,8 @@ const inCallManager = () =>
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   (require('react-native-incall-manager') as typeof import('react-native-incall-manager')).default;
 
-// With Telecom tracking the call, the in-call manager's device selection would override
-// the route the system chose, a Bluetooth headset first of all
-const usesInCallManager = () => Platform.OS === 'android' && !isTelecomAvailable();
+// Native audio routing owns device selection without a second manager overriding it.
+const usesInCallManager = () => Platform.OS === 'android' && !hasNativeAudioRouting();
 
 // Meta's calling API exchanges one SDP each way with no trickle ICE, so the local
 // description must carry its candidates before it is sent. The caller is still ringing
@@ -42,6 +43,7 @@ type Session = {
   // Mute and hold are separate choices; the microphone is live only with neither set
   muted: boolean;
   held: boolean;
+  audioToken: string | null;
 };
 
 const applyTrackState = (current: Session) => {
@@ -74,7 +76,7 @@ export const ensureMicrophonePermission = async () => {
     Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO;
   const status = await request(microphone);
   if (status !== RESULTS.GRANTED) throw new MicrophoneDeniedError();
-  // Telecom needs this to offer Bluetooth headsets as a route; a refusal only loses that
+  // Bluetooth routing needs this permission; other routes remain available after a refusal.
   if (Platform.OS === 'android' && Number(Platform.Version) >= 31) {
     await request(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT).catch(() => {});
   }
@@ -124,6 +126,7 @@ const teardown = (only?: Session) => {
   try {
     release(current);
   } finally {
+    if (current.audioToken) stopAppCallAudio(current.audioToken);
     if (Platform.OS === 'ios') inCallManager().setForceSpeakerphoneOn(false);
     if (usesInCallManager()) {
       inCallManager().setForceSpeakerphoneOn(false);
@@ -135,9 +138,15 @@ const teardown = (only?: Session) => {
 // Counts session opens; an open overtaken by a newer one, or abandoned, while it waited
 // releases what it opened instead of becoming the session
 let opening = 0;
+let openingAudioToken: string | null = null;
+const releaseOpeningAudio = () => {
+  if (openingAudioToken) stopAppCallAudio(openingAudioToken);
+  openingAudioToken = null;
+};
 const abandonOpening = () => {
   opening += 1;
   pendingMuted = false;
+  releaseOpeningAudio();
 };
 
 const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
@@ -145,60 +154,79 @@ const openSession = async (iceServers?: IceServer[]): Promise<Session> => {
   const attempt = opening;
   pendingMuted = false;
   teardown();
+  releaseOpeningAudio();
   await ensureMicrophonePermission();
+  if (attempt !== opening) throw new Error('Superseded by a newer call');
   // The library strips the urls key off each server it is given, so it must never see
   // the frozen store objects or the shared default
   const servers = (iceServers?.length ? iceServers : DEFAULT_ICE_SERVERS).map(server => ({
     ...server,
   }));
   const pc = new (webrtc().RTCPeerConnection)({ iceServers: servers });
-  const localStream = await webrtc().mediaDevices.getUserMedia({ audio: true, video: false });
-  if (attempt !== opening) {
-    release({ pc, localStream });
-    throw new Error('Superseded by a newer call');
-  }
-  localStream.getTracks().forEach(track => pc.addTrack(track, localStream));
+  const audioToken = Platform.OS === 'android' ? startAppCallAudio() : null;
+  openingAudioToken = audioToken;
+  let localStream: MediaStream | undefined;
+  try {
+    const stream = await webrtc().mediaDevices.getUserMedia({ audio: true, video: false });
+    localStream = stream;
+    if (attempt !== opening) throw new Error('Superseded by a newer call');
+    stream.getTracks().forEach(track => pc.addTrack(track, stream));
 
-  const next: Session = { pc, localStream, remoteStreams: [], muted: pendingMuted, held: false };
-  pendingMuted = false;
-  applyTrackState(next);
-  // Remote audio plays through the active audio session as soon as the track arrives,
-  // unless the call is on hold
-  pc.ontrack = (event: unknown) => {
-    const streams = (event as { streams?: MediaStream[] }).streams || [];
-    next.remoteStreams.push(...streams);
+    const next: Session = {
+      pc,
+      localStream,
+      remoteStreams: [],
+      muted: pendingMuted,
+      held: false,
+      audioToken,
+    };
+    pendingMuted = false;
     applyTrackState(next);
-  };
-  pc.oniceconnectionstatechange = () => {
-    if (__DEV__) console.log(`[call] ice connection: ${pc.iceConnectionState}`);
-  };
-  // A call is only treated as lost once the connection has stayed down: WebRTC passes
-  // through 'failed' while it retries, and dropping the call on the first blip would end
-  // calls that were about to recover.
-  let lostTimer: ReturnType<typeof setTimeout> | null = null;
-  pc.onconnectionstatechange = () => {
-    if (__DEV__) console.log(`[call] connection: ${pc.connectionState}`);
-    if (session?.pc !== pc) return;
-    const state = pc.connectionState;
-    if (state === 'connected' || state === 'connecting') {
-      if (lostTimer) clearTimeout(lostTimer);
-      lostTimer = null;
-      return;
-    }
-    if (!LOST_STATES.includes(state)) return;
-    if (lostTimer) return;
-    lostTimer = setTimeout(() => {
-      lostTimer = null;
+    // Remote audio plays through the active audio session as soon as the track arrives,
+    // unless the call is on hold
+    pc.ontrack = (event: unknown) => {
+      const streams = (event as { streams?: MediaStream[] }).streams || [];
+      next.remoteStreams.push(...streams);
+      applyTrackState(next);
+    };
+    pc.oniceconnectionstatechange = () => {
+      if (__DEV__) console.log(`[call] ice connection: ${pc.iceConnectionState}`);
+    };
+    // A call is only treated as lost once the connection has stayed down: WebRTC passes
+    // through 'failed' while it retries, and dropping the call on the first blip would end
+    // calls that were about to recover.
+    let lostTimer: ReturnType<typeof setTimeout> | null = null;
+    pc.onconnectionstatechange = () => {
+      if (__DEV__) console.log(`[call] connection: ${pc.connectionState}`);
       if (session?.pc !== pc) return;
-      if (LOST_STATES.includes(pc.connectionState)) onConnectionLost?.();
-    }, CONNECTION_LOST_GRACE_MS);
-  };
-  // iOS leaves the audio session to WebRTC and CallKit. Android needs to be put into
-  // communication mode and hold audio focus, or the remote audio is never heard even
-  // though the microphone works.
-  if (usesInCallManager()) inCallManager().start({ media: 'audio', auto: false });
-  session = next;
-  return next;
+      const state = pc.connectionState;
+      if (state === 'connected' || state === 'connecting') {
+        if (lostTimer) clearTimeout(lostTimer);
+        lostTimer = null;
+        return;
+      }
+      if (!LOST_STATES.includes(state)) return;
+      if (lostTimer) return;
+      lostTimer = setTimeout(() => {
+        lostTimer = null;
+        if (session?.pc !== pc) return;
+        if (LOST_STATES.includes(pc.connectionState)) onConnectionLost?.();
+      }, CONNECTION_LOST_GRACE_MS);
+    };
+    // iOS leaves the audio session to WebRTC and CallKit. Android needs to be put into
+    // communication mode and hold audio focus, or the remote audio is never heard even
+    // though the microphone works.
+    if (usesInCallManager()) inCallManager().start({ media: 'audio', auto: false });
+    session = next;
+    if (openingAudioToken === audioToken) openingAudioToken = null;
+    return next;
+  } catch (error) {
+    if (audioToken) stopAppCallAudio(audioToken);
+    if (openingAudioToken === audioToken) openingAudioToken = null;
+    localStream?.getTracks().forEach(track => track.stop());
+    pc.close();
+    throw error;
+  }
 };
 
 const localSdp = (pc: RTCPeerConnection) => {
@@ -285,7 +313,7 @@ export const webrtcEngine = {
   // sounds like a dead line. Re-asserting it when the call goes live, and once more a
   // moment later, covers the race with the system taking the route back.
   ensureAudioRoute(speakerOn: boolean) {
-    if (Platform.OS !== 'android') return;
+    if (Platform.OS !== 'android' || hasNativeAudioRouting()) return;
     // The retry applies only to the session it was made for, so one that ended meanwhile
     // does not have its audio mode started again
     const forSession = session;

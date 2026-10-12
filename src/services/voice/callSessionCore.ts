@@ -14,6 +14,7 @@ import {
 import {
   selectActiveCall,
   selectCalls,
+  selectFullScreenCall,
   selectHasActiveCall,
   selectIncomingCalls,
   selectIsJoining,
@@ -39,7 +40,7 @@ import {
   endRingingNativeCall,
   endSystemCall,
   isDeviceLocked,
-  isTelecomAvailable,
+  hasNativeAudioRouting,
   moveAppToBackground,
   reportNativeCallState,
   startOngoingCallNotification,
@@ -389,9 +390,8 @@ const install = () => {
       if (sid && !sids.has(sid) && sid !== previousCarried) endRingingNativeCall(sid);
     });
     knownSids = sids;
-    // Where Telecom routes the audio, re-asserting the speaker flag would override a
-    // route the agent just chose, so the route is left to Telecom there
-    if (active && (!wasActive || isSpeakerOn !== speakerOn) && !isTelecomAvailable()) {
+    // Native routing reports the active device; the speaker flag must not override it
+    if (active && (!wasActive || isSpeakerOn !== speakerOn) && !hasNativeAudioRouting()) {
       if (active.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
         webrtcEngine.ensureAudioRoute(isSpeakerOn);
       }
@@ -424,6 +424,9 @@ const install = () => {
 
   // A headset or the system changed the route, or the routes on offer changed
   const audioRoute = addAudioRouteListener(event => {
+    const state = store.getState();
+    const callSid = selectLocalCallSid(state) ?? selectFullScreenCall(state)?.callSid;
+    if (event.callSid && event.callSid !== callSid) return;
     store.dispatch(
       setAudioRoute({
         current: event.current,
@@ -435,11 +438,12 @@ const install = () => {
 
   // Telecom could not take the call: a WhatsApp call already live takes the app's own audio
   // handling now, and one still connecting takes it as it goes live
-  const telecomUnavailable = addTelecomUnavailableListener(() => {
+  const telecomUnavailable = addTelecomUnavailableListener(event => {
     const state = store.getState();
     const active = selectActiveCall(state);
     if (active?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
     if (active.callSid !== selectLocalCallSid(state)) return;
+    if (event.callSid !== active.callSid) return;
     webrtcEngine.ensureAudioRoute(selectIsSpeakerOn(state));
   });
 

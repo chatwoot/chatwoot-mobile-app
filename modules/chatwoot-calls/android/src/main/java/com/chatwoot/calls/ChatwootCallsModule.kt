@@ -19,6 +19,8 @@ class ChatwootCallsModule : Module() {
     get() = appContext.reactContext ?: throw IllegalStateException("React context is not available")
 
   private val appRinger by lazy { CallRinger(context.applicationContext) }
+  private val appAudio by lazy { AppCallAudio(context.applicationContext) }
+  private var twilioAudioToken: String? = null
 
   private val audioManager: AudioManager
     get() = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -31,8 +33,15 @@ class ChatwootCallsModule : Module() {
   }
 
   private fun releaseAudio() {
+    if (AppCallAudio.supported) {
+      twilioAudioToken?.let { appAudio.stop(it) }
+      twilioAudioToken = null
+      return
+    }
     audioManager.mode = AudioManager.MODE_NORMAL
-    audioManager.isSpeakerphoneOn = false
+    if (!TelecomCalls.available) {
+      audioManager.isSpeakerphoneOn = false
+    }
   }
 
   // Receives Twilio call callbacks and forwards them as a single state event. Only the
@@ -95,6 +104,13 @@ class ChatwootCallsModule : Module() {
           android.util.Log.w("ChatwootCalls", "audio route event not delivered: ${e.message}")
         }
       }
+      if (AppCallAudio.supported) appAudio.onRoute = { current, available, names ->
+        try {
+          sendEvent("onAudioRoute", mapOf("current" to current, "available" to available, "names" to names))
+        } catch (e: Exception) {
+          android.util.Log.w("ChatwootCalls", "audio route event not delivered: ${e.message}")
+        }
+      }
       TelecomCalls.onRegistrationFailed = { callSid ->
         try {
           sendEvent("onTelecomUnavailable", mapOf("callSid" to callSid))
@@ -129,6 +145,10 @@ class ChatwootCallsModule : Module() {
     }
 
     OnDestroy {
+      if (AppCallAudio.supported) {
+        appAudio.onRoute = null
+        appAudio.destroy()
+      }
       NativeCallBridge.listening = false
       NativeCallBridge.onAction = null
       TelecomCalls.onAudioRoute = null
@@ -161,9 +181,15 @@ class ChatwootCallsModule : Module() {
     // TwiML request parameters (To, is_agent, conversation_id, call_sid).
     AsyncFunction("twilioConnect") { token: String, params: Map<String, String> ->
       activeCall?.disconnect()
-      audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
+      if (AppCallAudio.supported) twilioAudioToken = appAudio.start()
+      else audioManager.mode = AudioManager.MODE_IN_COMMUNICATION
       val options = ConnectOptions.Builder(token).params(params).build()
-      activeCall = Voice.connect(context, options, callListener)
+      try {
+        activeCall = Voice.connect(context, options, callListener)
+      } catch (e: Exception) {
+        if (AppCallAudio.supported) releaseAudio()
+        throw e
+      }
       emitState("connecting")
     }
 
@@ -181,28 +207,38 @@ class ChatwootCallsModule : Module() {
       activeCall?.hold(hold)
     }
 
-    // Speaker routing: through Telecom while it tracks the call, otherwise directly
     // A ringback for a call this device placed, while the contact's phone rings
     Function("startRingback") { -> Ringback.start() }
 
     Function("stopRingback") { -> Ringback.stop() }
 
     Function("setSpeakerOn") { enabled: Boolean ->
-      if (!TelecomCalls.setSpeaker(enabled)) audioManager.isSpeakerphoneOn = enabled
+      // A registering Telecom call keeps the choice until its endpoints arrive.
+      if (AppCallAudio.supported) appAudio.setRoute(if (enabled) "speaker" else "default")
+      else if (!TelecomCalls.setSpeaker(enabled)) audioManager.isSpeakerphoneOn = enabled
+    }
+
+    Function("hasNativeAudioRouting") { -> AppCallAudio.supported || TelecomCalls.available }
+
+    Function("startAppCallAudio") { -> if (AppCallAudio.supported) appAudio.start() else null }
+
+    Function("stopAppCallAudio") { token: String ->
+      if (AppCallAudio.supported) appAudio.stop(token)
     }
 
     // Telecom owns audio mode, focus and routing for the calls it tracks
     Function("isTelecomAvailable") { ->
-      TelecomCalls.supported && !TelecomCalls.registrationFailed
+      TelecomCalls.available
     }
 
     // A named route: speaker, earpiece, bluetooth or wired
     Function("setAudioRoute") { route: String ->
-      if (!TelecomCalls.setRoute(route)) audioManager.isSpeakerphoneOn = route == "speaker"
+      if (AppCallAudio.supported) appAudio.setRoute(route)
+      else if (!TelecomCalls.setRoute(route)) audioManager.isSpeakerphoneOn = route == "speaker"
     }
 
     Function("currentAudioRoute") { ->
-      val (current, available, names) = TelecomCalls.currentRoute()
+      val (current, available, names) = if (AppCallAudio.supported) appAudio.currentRoute() else TelecomCalls.currentRoute()
       mapOf("current" to current, "available" to available, "names" to names)
     }
 

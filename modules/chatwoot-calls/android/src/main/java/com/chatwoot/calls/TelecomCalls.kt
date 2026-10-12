@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Build
 import android.telecom.DisconnectCause
 import android.util.Log
-import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import androidx.core.telecom.CallAttributesCompat
 import androidx.core.telecom.CallControlResult
@@ -14,8 +13,11 @@ import androidx.core.telecom.CallEndpointCompat
 import androidx.core.telecom.CallsManager
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 // Registers each call with Android's Telecom framework, the counterpart of CallKit. The
@@ -25,8 +27,6 @@ import kotlinx.coroutines.launch
 // answered, connected and ended, and asked for audio route changes.
 object TelecomCalls {
   private const val TAG = "TelecomCalls"
-  // Moving onto or off a Bluetooth headset takes Telecom a second or two
-  private const val ROUTE_SETTLE_MS = 3_000L
   private const val AUTO_RESUME_POLL_MS = 1000L
   // A ring still open with Telecom past the ring window, and this margin, is ended,
   // whatever left it open; a ringing call there blocks new ones and takes the audio route
@@ -36,7 +36,10 @@ object TelecomCalls {
 
   private class Tracked(val callSid: String) {
     val addedAt = android.os.SystemClock.elapsedRealtime()
+    // Endpoint flows can remain open after the platform disconnects the call.
+    val work = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     @Volatile var scope: CallControlScope? = null
+    @Volatile var ended = false
     @Volatile var active = false
     @Volatile var held = false
     @Volatile var userHeld = false
@@ -44,9 +47,8 @@ object TelecomCalls {
     @Volatile var endingLocally = false
     @Volatile var endpoints: List<CallEndpointCompat> = emptyList()
     @Volatile var current: CallEndpointCompat? = null
-    // Counts the agent's route choices, so a fallback still waiting on an earlier one
-    // gives way to the newest
-    @Volatile var routeRequests = 0
+    var requestedRoute: String? = null
+    var routeJob: Job? = null
   }
 
   private val tracked = ConcurrentHashMap<String, Tracked>()
@@ -85,10 +87,14 @@ object TelecomCalls {
   // The audio route changed, or the set of routes did; names are the devices' own
   @Volatile var onAudioRoute: ((callSid: String, current: String, available: List<String>, names: List<String>) -> Unit)? = null
 
-  // Telecom needs Android 8. The debug property lets a tester run without it:
+  // Android 14+ uses Telecom; older devices use AppCallAudio.
+  // The debug property lets a tester run without Telecom:
   // adb shell setprop debug.chatwoot.telecom 0
   val supported: Boolean
-    get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && debugProperty("debug.chatwoot.telecom") != "0"
+    get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && debugProperty("debug.chatwoot.telecom") != "0"
+
+  val available: Boolean
+    get() = supported && (!registrationFailed || routeTarget() != null)
 
   private fun debugProperty(name: String): String? = runCatching {
     val clazz = Class.forName("android.os.SystemProperties")
@@ -98,8 +104,10 @@ object TelecomCalls {
   fun add(context: Context, callSid: String, displayName: String, handle: String, outgoing: Boolean) {
     if (!supported || tracked.containsKey(callSid)) return
     appContext = context.applicationContext
+    if (tracked.values.none { !it.ended }) clearRouteOverride()
     val entry = Tracked(callSid)
     tracked[callSid] = entry
+    Log.i(TAG, "tracking call=$callSid sdk=${Build.VERSION.SDK_INT} outgoing=$outgoing")
     if (!outgoing) {
       mainScope.launch {
         kotlinx.coroutines.delay(CallNotification.ringRemainingMs(callSid) + RING_LIMIT_MARGIN_MS)
@@ -122,7 +130,10 @@ object TelecomCalls {
         manager(context).addCall(
           attributes,
           onAnswer = { systemAnswer(appContext, callSid) },
-          onDisconnect = { if (!entry.endingLocally) systemDisconnect(appContext, callSid) },
+          onDisconnect = {
+            finishRouting(entry)
+            if (!entry.endingLocally) systemDisconnect(appContext, callSid)
+          },
           onSetActive = { markHeld(entry, false) },
           onSetInactive = {
             markHeld(entry, true)
@@ -132,33 +143,41 @@ object TelecomCalls {
           entry.scope = this
           registrationFailed = false
           // Marked active before the scope existed: catch up now
-          if (entry.active) launch { setActive() }
-          launch {
+          if (entry.active && !entry.ended) launch { setActive() }
+          entry.work.launch {
             availableEndpoints.collect { list ->
               entry.endpoints = list
               emitRoute(entry)
+              requestPendingRoute(entry)
             }
           }
-          launch {
+          entry.work.launch {
             currentCallEndpoint.collect { endpoint ->
               entry.current = endpoint
               emitRoute(entry)
             }
           }
+          requestPendingRoute(entry)
           entry.endPending?.let { cause -> launch { disconnect(cause) } }
         }
+      } catch (e: CancellationException) {
+        throw e
       } catch (e: Exception) {
         Log.w(TAG, "call $callSid could not be tracked: ${e.message}")
+        finishRouting(entry)
+        tracked.remove(callSid, entry)
         registrationFailed = true
         onRegistrationFailed?.invoke(callSid)
       } finally {
-        tracked.remove(callSid)
+        finishRouting(entry)
+        tracked.remove(callSid, entry)
       }
     }
   }
 
   fun setActive(callSid: String) {
     val entry = tracked[callSid] ?: return
+    if (entry.ended) return
     entry.active = true
     val scope = entry.scope ?: return
     scope.launch { scope.setActive() }
@@ -210,7 +229,7 @@ object TelecomCalls {
   // is in the audio mode
   private fun autoResume(entry: Tracked) {
     val scope = entry.scope ?: return
-    scope.launch {
+    entry.work.launch {
       while (entry.held && !entry.userHeld) {
         kotlinx.coroutines.delay(AUTO_RESUME_POLL_MS)
         if (!entry.held || entry.userHeld) break
@@ -232,6 +251,7 @@ object TelecomCalls {
   fun end(callSid: String, reason: String) {
     val entry = tracked[callSid] ?: return
     entry.endingLocally = true
+    finishRouting(entry)
     // Telecom accepts only these four causes from an app; a call that failed here ended on
     // this side, so it counts as local
     val cause = DisconnectCause(
@@ -250,30 +270,47 @@ object TelecomCalls {
     scope.launch { scope.disconnect(cause) }
   }
 
-  // The call audio requests are for: the live call, otherwise the newest one Telecom holds
+  private fun finishRouting(entry: Tracked) {
+    if (entry.ended) return
+    entry.ended = true
+    entry.active = false
+    entry.work.cancel()
+    Log.i(TAG, "routing ended call=${entry.callSid}")
+    if (tracked.values.none { !it.ended }) clearRouteOverride()
+  }
+
+  private fun clearRouteOverride() {
+    val audio = appContext?.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) audio.clearCommunicationDevice()
+    else {
+      @Suppress("DEPRECATION")
+      audio.stopBluetoothSco()
+      @Suppress("DEPRECATION")
+      audio.isSpeakerphoneOn = false
+    }
+  }
+
+  // A registering call can keep a route choice until its endpoints arrive.
   private fun routeTarget(): Tracked? {
-    val ready = tracked.values.filter { it.scope != null }
-    return ready.firstOrNull { it.active } ?: ready.maxByOrNull { it.addedAt }
+    val live = tracked.values.filter { !it.ended }
+    return live.filter { it.active }.maxByOrNull { it.addedAt } ?: live.maxByOrNull { it.addedAt }
   }
 
   // Speaker on, or the best non-speaker route available: Bluetooth, then a wired headset,
-  // then the earpiece. Returns false when no tracked call can take the request.
-  fun setSpeaker(enabled: Boolean): Boolean {
-    val entry = routeTarget() ?: return false
-    val wanted = if (enabled) {
-      entry.endpoints.firstOrNull { it.type == CallEndpointCompat.TYPE_SPEAKER }
-    } else {
-      listOf(CallEndpointCompat.TYPE_BLUETOOTH, CallEndpointCompat.TYPE_WIRED_HEADSET, CallEndpointCompat.TYPE_EARPIECE)
-        .firstNotNullOfOrNull { type -> entry.endpoints.firstOrNull { it.type == type } }
-    } ?: return false
-    return request(entry, wanted)
-  }
+  // then the earpiece. False means the app must manage audio without Telecom.
+  fun setSpeaker(enabled: Boolean): Boolean = setRoute(if (enabled) "speaker" else "default")
 
-  // A specific route by name; false when it is not on offer for the tracked call
+  // Telecom owns the request even while the call or endpoint is not ready.
   fun setRoute(route: String): Boolean {
-    val entry = routeTarget() ?: return false
-    val wanted = entry.endpoints.firstOrNull { routeName(it) == route } ?: return false
-    return request(entry, wanted)
+    if (!available) return false
+    val entry = routeTarget()
+    Log.i(TAG, "route requested=$route call=${entry?.callSid} ready=${entry?.scope != null}")
+    if (entry != null) entry.work.launch {
+      entry.requestedRoute = route
+      entry.routeJob?.cancel()
+      requestPendingRoute(entry)
+    }
+    return true
   }
 
   fun currentRoute(): Triple<String, List<String>, List<String>> {
@@ -281,61 +318,32 @@ object TelecomCalls {
     return Triple(routeName(entry.current), entry.endpoints.map { routeName(it) }, entry.endpoints.map { it.name.toString() })
   }
 
-  // Telecom is asked first; when it declines, the route is set on the audio manager
-  // directly, which is what the system would have done for the request
-  private fun request(entry: Tracked, endpoint: CallEndpointCompat): Boolean {
-    val scope = entry.scope ?: return false
-    val request = ++entry.routeRequests
-    scope.launch {
-      val result = scope.requestEndpointChange(endpoint)
-      if (request != entry.routeRequests) return@launch
-      if (result !is CallControlResult.Success) {
-        routeDirectly(entry, endpoint)
-        return@launch
+  private fun requestPendingRoute(entry: Tracked) {
+    if (entry.ended) return
+    val scope = entry.scope ?: return
+    val route = entry.requestedRoute ?: return
+    if (entry.endpoints.isEmpty()) return
+    val endpoint = if (route == "default") {
+      listOf("bluetooth", "wired", "earpiece").firstNotNullOfOrNull { name ->
+        entry.endpoints.firstOrNull { routeName(it) == name }
       }
-      // Telecom reports the route once it has moved, and the screen follows that report.
-      // Telecom can accept a request and leave the audio where it was; the route is set
-      // directly only when nothing has moved by the time a switch should have finished.
-      val before = entry.current?.type
-      kotlinx.coroutines.delay(ROUTE_SETTLE_MS)
-      if (request != entry.routeRequests) return@launch
-      val now = entry.current?.type
-      if (now != endpoint.type && now == before) routeDirectly(entry, endpoint)
-    }
-    return true
-  }
-
-  private fun routeDirectly(entry: Tracked, endpoint: CallEndpointCompat) {
-    routeDirectly(endpoint.type)
-    // Telecom will not report a route it did not set itself
-    entry.current = endpoint
-    emitRoute(entry)
-  }
-
-  private fun routeDirectly(type: Int) {
-    val audio = appContext?.getSystemService(Context.AUDIO_SERVICE) as? AudioManager ?: return
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-      val wanted = when (type) {
-        CallEndpointCompat.TYPE_SPEAKER -> listOf(AudioDeviceInfo.TYPE_BUILTIN_SPEAKER)
-        CallEndpointCompat.TYPE_BLUETOOTH -> listOf(AudioDeviceInfo.TYPE_BLUETOOTH_SCO, AudioDeviceInfo.TYPE_BLE_HEADSET)
-        CallEndpointCompat.TYPE_WIRED_HEADSET -> listOf(AudioDeviceInfo.TYPE_WIRED_HEADSET, AudioDeviceInfo.TYPE_WIRED_HEADPHONES, AudioDeviceInfo.TYPE_USB_HEADSET)
-        else -> listOf(AudioDeviceInfo.TYPE_BUILTIN_EARPIECE)
-      }
-      val device = audio.availableCommunicationDevices.firstOrNull { it.type in wanted }
-      device?.let { audio.setCommunicationDevice(it) }
+    } else entry.endpoints.firstOrNull { routeName(it) == route }
+    entry.requestedRoute = null
+    if (endpoint == null) {
+      Log.w(TAG, "route unavailable=$route call=${entry.callSid}")
+      emitRoute(entry)
       return
     }
-    @Suppress("DEPRECATION")
-    when (type) {
-      CallEndpointCompat.TYPE_SPEAKER -> {
-        audio.stopBluetoothSco(); audio.isBluetoothScoOn = false; audio.isSpeakerphoneOn = true
+    entry.routeJob = entry.work.launch {
+      try {
+        val result = scope.requestEndpointChange(endpoint)
+        Log.i(TAG, "route result=$result requested=$route current=${routeName(entry.current)} call=${entry.callSid}")
+      } catch (e: CancellationException) {
+        throw e
+      } catch (e: Exception) {
+        Log.w(TAG, "route failed=$route call=${entry.callSid}: ${e.message}")
       }
-      CallEndpointCompat.TYPE_BLUETOOTH -> {
-        audio.isSpeakerphoneOn = false; audio.startBluetoothSco(); audio.isBluetoothScoOn = true
-      }
-      else -> {
-        audio.stopBluetoothSco(); audio.isBluetoothScoOn = false; audio.isSpeakerphoneOn = false
-      }
+      emitRoute(entry)
     }
   }
 
@@ -346,8 +354,10 @@ object TelecomCalls {
     }
 
   private fun emitRoute(entry: Tracked) {
+    if (routeTarget() !== entry) return
     val available = entry.endpoints.map { routeName(it) }
     val names = entry.endpoints.map { it.name.toString() }
+    Log.d(TAG, "route current=${routeName(entry.current)} available=$available call=${entry.callSid}")
     onAudioRoute?.invoke(entry.callSid, routeName(entry.current), available, names)
   }
 

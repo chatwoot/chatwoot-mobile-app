@@ -4,6 +4,7 @@ import type { RootState } from '@/store';
 import { callEngine } from '@/services/voice/callEngine';
 import {
   holdCallNatively,
+  hasNativeAudioRouting,
   resumeCallNatively,
   type AudioRoute,
 } from '@/services/voice/chatwootCalls';
@@ -56,10 +57,13 @@ export const callMediaActions = {
     'calls/selectAudioRoute',
     async (route, { dispatch, getState }) => {
       await callEngine.setAudioRoute(route);
-      const current = selectAudioRoute(getState());
-      dispatch(
-        setAudioRoute({ current: route, available: current.available, names: current.names }),
-      );
+      // The selected route follows the native route report.
+      if (!hasNativeAudioRouting()) {
+        const current = selectAudioRoute(getState());
+        dispatch(
+          setAudioRoute({ current: route, available: current.available, names: current.names }),
+        );
+      }
       return route;
     },
   ),
@@ -68,7 +72,7 @@ export const callMediaActions = {
     async (_, { getState, dispatch }) => {
       const next = !selectIsSpeakerOn(getState());
       await callEngine.setSpeaker(next);
-      dispatch(setSpeakerOn(next));
+      if (!hasNativeAudioRouting()) dispatch(setSpeakerOn(next));
       return next;
     },
   ),

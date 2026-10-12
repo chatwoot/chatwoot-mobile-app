@@ -6,7 +6,7 @@ import type { IceServer } from '@/store/call/callTypes';
 import { ensureMicrophonePermission, webrtcEngine } from './webrtcEngine';
 import {
   isNativeCallsAvailable,
-  isTelecomAvailable,
+  hasNativeAudioRouting,
   setAudioRoute as nativeSetAudioRoute,
   setSpeakerOn as nativeSetSpeakerOn,
   stopRingback,
@@ -152,7 +152,7 @@ export const callEngine: CallEngine = {
   // A named route; where the platform cannot pick one, speaker on or off is the fallback
   setAudioRoute: async route => {
     nativeSetAudioRoute(route);
-    if (Platform.OS === 'android' && !isTelecomAvailable() && activeProvider !== 'twilio') {
+    if (Platform.OS === 'android' && !hasNativeAudioRouting() && activeProvider !== 'twilio') {
       await webrtcEngine.setSpeaker(route === 'speaker');
     }
   },

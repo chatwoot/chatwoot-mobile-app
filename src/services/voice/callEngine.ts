@@ -9,6 +9,7 @@ import {
   isTelecomAvailable,
   setAudioRoute as nativeSetAudioRoute,
   setSpeakerOn as nativeSetSpeakerOn,
+  stopRingback,
   twilioSetHold,
   twilioConnect,
   twilioDisconnect,
@@ -103,6 +104,8 @@ export const callEngine: CallEngine = {
     applyAnswer: sdpAnswer => webrtcEngine.applyAnswer(sdpAnswer),
     hangup: async () => {
       if (activeProvider === 'whatsapp') activeProvider = null;
+      // The ringback goes with the media, before any request to the server
+      stopRingback();
       return webrtcEngine.hangup();
     },
   },

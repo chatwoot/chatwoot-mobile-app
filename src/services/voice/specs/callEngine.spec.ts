@@ -12,6 +12,7 @@ jest.mock('@/services/voice/chatwootCalls', () => ({
   isTelecomAvailable: jest.fn(() => false),
   setAudioRoute: jest.fn(),
   setSpeakerOn: jest.fn(),
+  stopRingback: jest.fn(),
   twilioConnect: jest.fn(() => Promise.resolve()),
   twilioDisconnect: jest.fn(),
   twilioSetHold: jest.fn(),

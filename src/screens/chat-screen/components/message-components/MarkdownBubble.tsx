@@ -100,7 +100,9 @@ const getStyles = (variant: string) => {
 };
 
 export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
-  const { messageContent, variant } = props;
+  const { variant } = props;
+  // iOS text layout hangs the main thread on a tab inside Arabic-script text.
+  const messageContent = props.messageContent.replace(/\t/g, '    ');
 
   return (
     <Markdown

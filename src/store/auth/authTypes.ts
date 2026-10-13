@@ -57,9 +57,7 @@ export interface AvailabilityPayload {
   };
 }
 
-export interface ProfileResponse {
-  user: User;
-}
+export type ProfileResponse = User;
 
 export interface ApiErrorResponse {
   success: boolean;

@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
+import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
 import { MESSAGE_VARIANTS, ORIENTATION } from '@/constants';
 import { useChatWindowContext } from '@/context';
 import { useAppSelector } from '@/hooks';
@@ -103,6 +104,7 @@ export const WhatsAppInteractiveBubble = ({
   variant,
   orientation = ORIENTATION.LEFT,
 }: WhatsAppInteractiveBubbleProps) => {
+  const listSheetRef = useRef<SheetRef>(null);
   const presentation = getWhatsAppInteractivePresentation(item);
   if (!presentation) {
     return null;
@@ -156,6 +158,55 @@ export const WhatsAppInteractiveBubble = ({
             </Pressable>
           ))}
         </Animated.View>
+      ) : presentation.kind === 'list' ? (
+        <>
+          <Pressable
+            accessibilityLabel={presentation.button}
+            accessibilityRole="button"
+            onPress={() => listSheetRef.current?.present()}
+            style={tailwind.style('mt-2 border border-gray-300 rounded-lg px-3 py-2')}>
+            <Animated.Text
+              style={tailwind.style('text-center font-inter-medium-24', textColor(variant))}>
+              {presentation.button}
+            </Animated.Text>
+          </Pressable>
+          <Sheet
+            ref={listSheetRef}
+            detents={[0.7]}
+            scrollable
+            contentStyle={tailwind.style('px-4 pb-6')}>
+            {presentation.sections.map(section => (
+              <Animated.View key={section.rows[0].deliveryId} style={tailwind.style('mb-4')}>
+                {section.title ? (
+                  <Animated.Text
+                    style={tailwind.style(
+                      'text-base font-inter-semibold-20 text-gray-950 mb-1 px-1',
+                    )}>
+                    {section.title}
+                  </Animated.Text>
+                ) : null}
+                {section.rows.map((row, index) => (
+                  <Animated.View
+                    key={row.deliveryId}
+                    style={tailwind.style(
+                      'px-3 py-3',
+                      index !== section.rows.length - 1 ? 'border-b-[1px] border-b-blackA-A3' : '',
+                    )}>
+                    <Animated.Text
+                      style={tailwind.style('text-sm font-inter-medium-24 text-gray-950')}>
+                      {row.title}
+                    </Animated.Text>
+                    {row.description ? (
+                      <Animated.Text style={tailwind.style('text-xs text-gray-700 mt-1')}>
+                        {row.description}
+                      </Animated.Text>
+                    ) : null}
+                  </Animated.View>
+                ))}
+              </Animated.View>
+            ))}
+          </Sheet>
+        </>
       ) : (
         <Animated.View style={tailwind.style('mt-2 border border-gray-300 rounded-lg px-3 py-2')}>
           <Animated.Text

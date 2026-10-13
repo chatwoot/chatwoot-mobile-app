@@ -120,6 +120,39 @@ export const listMessageEnvelope = {
   attachments: [],
 };
 
+export const listOptionalFieldsMessageEnvelope = {
+  ...listMessageEnvelope,
+  content_attributes: {
+    whatsapp_interactive: {
+      ...listMessageEnvelope.content_attributes.whatsapp_interactive,
+      action: {
+        ...listMessageEnvelope.content_attributes.whatsapp_interactive.action,
+        sections: [
+          ...listMessageEnvelope.content_attributes.whatsapp_interactive.action.sections,
+          {
+            rows: [
+              {
+                delivery_id: 'row_00000000-0000-4000-8000-000000000003',
+                title: 'Soup',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+};
+
+export const malformedListMessageEnvelope = {
+  ...listMessageEnvelope,
+  content_attributes: {
+    whatsapp_interactive: {
+      ...listMessageEnvelope.content_attributes.whatsapp_interactive,
+      action: { button: 'View meals', sections: [{ title: 'Empty', rows: [] }] },
+    },
+  },
+};
+
 export const carouselQuickReplyMessageEnvelope = {
   id: 2005,
   content: 'Choose a destination.',
@@ -371,6 +404,5 @@ export const buttonHeaderVariants = {
 };
 
 export const reservedTypeEnvelopes = {
-  list: listMessageEnvelope,
   carousel: carouselQuickReplyMessageEnvelope,
 };

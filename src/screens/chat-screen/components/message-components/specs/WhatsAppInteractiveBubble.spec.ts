@@ -22,6 +22,8 @@ import {
   inboundCarouselReplyEnvelope,
   inboundListReplyEnvelope,
   listMessageEnvelope,
+  listOptionalFieldsMessageEnvelope,
+  malformedListMessageEnvelope,
   reservedTypeEnvelopes,
   unknownInboundReplyEnvelope,
 } from './whatsappInteractiveHandoffFixtures';
@@ -50,6 +52,24 @@ jest.mock('../MarkdownBubble', () => {
 
 jest.mock('../MessageAttachments', () => ({ MessageAttachments: () => null }));
 jest.mock('../ReplyMessageBubble', () => ({ ReplyMessageBubble: () => null }));
+
+const mockPresentSheet = jest.fn();
+jest.mock('@/components-next/common/sheet/Sheet', () => {
+  const ReactModule = jest.requireActual('react');
+  const { View } = jest.requireActual('react-native');
+  return {
+    Sheet: ReactModule.forwardRef(
+      ({ children }: { children: React.ReactNode }, ref: React.Ref<unknown>) => {
+        ReactModule.useImperativeHandle(ref, () => ({
+          present: mockPresentSheet,
+          dismiss: jest.fn(),
+          resize: jest.fn(),
+        }));
+        return ReactModule.createElement(View, { testID: 'whatsapp-list-sheet' }, children);
+      },
+    ),
+  };
+});
 
 const storeMessage = (message: ReturnType<typeof transformMessage>) => {
   let state = conversationReducer(
@@ -140,6 +160,76 @@ describe('WhatsAppInteractiveBubble presentation', () => {
       footer: 'Secure link',
       button: 'View details',
       url: 'https://example.test/details',
+    });
+  });
+
+  it('presents every list section and row in stored order', () => {
+    const presentation = getWhatsAppInteractivePresentation(
+      transformMessage(listOptionalFieldsMessageEnvelope),
+    );
+
+    expect(presentation).toEqual({
+      kind: 'list',
+      header: { type: 'text', text: 'Available meals' },
+      body: 'Choose a meal.',
+      footer: 'One selection per order.',
+      button: 'View meals',
+      sections: [
+        {
+          title: 'Lunch',
+          rows: [
+            expect.objectContaining({ title: 'Pasta', description: 'Tomato and basil' }),
+            expect.objectContaining({ title: 'Salad' }),
+          ],
+        },
+        {
+          rows: [expect.objectContaining({ title: 'Soup' })],
+        },
+      ],
+    });
+  });
+
+  it('opens a read-only list sheet with optional text omitted and no row controls', () => {
+    let tree: TestRenderer.ReactTestRenderer;
+    act(() => {
+      tree = TestRenderer.create(
+        React.createElement(WhatsAppInteractiveBubble, {
+          item: transformMessage(listOptionalFieldsMessageEnvelope),
+          variant: MESSAGE_VARIANTS.AGENT,
+        }),
+      );
+    });
+
+    const opener = tree!.root.findByProps({ accessibilityLabel: 'View meals' });
+    act(() => opener.props.onPress());
+    expect(mockPresentSheet).toHaveBeenCalledTimes(1);
+
+    const sheet = tree!.root.findByProps({ testID: 'whatsapp-list-sheet' });
+    ['Lunch', 'Pasta', 'Tomato and basil', 'Salad', 'Soup'].forEach(text => {
+      expect(sheet.findAll(node => node.children.includes(text)).length).toBeGreaterThan(0);
+    });
+    expect(sheet.findAll(node => node.props.accessibilityRole === 'button')).toHaveLength(0);
+    expect(sheet.findAll(node => node.props.onPress !== undefined)).toHaveLength(0);
+  });
+
+  it.each([
+    ['empty sections', malformedListMessageEnvelope],
+    [
+      'future schema',
+      {
+        ...listMessageEnvelope,
+        content_attributes: {
+          whatsapp_interactive: {
+            ...listMessageEnvelope.content_attributes.whatsapp_interactive,
+            schema_version: 2,
+          },
+        },
+      },
+    ],
+  ])('falls back to readable content for a list with %s', (_name, envelope) => {
+    expect(getWhatsAppInteractivePresentation(transformMessage(envelope))).toEqual({
+      kind: 'fallback',
+      content: 'Choose a meal.',
     });
   });
 

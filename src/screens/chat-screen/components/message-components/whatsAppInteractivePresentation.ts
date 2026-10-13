@@ -3,6 +3,7 @@ import type {
   Message,
   WhatsAppInteractiveButton,
   WhatsAppInteractiveHeader,
+  WhatsAppInteractiveListAction,
 } from '@/types';
 
 export type PresentationHeader = WhatsAppInteractiveHeader & {
@@ -16,6 +17,14 @@ export type WhatsAppInteractivePresentation =
       body: string;
       footer?: string;
       buttons: (WhatsAppInteractiveButton & { disabled: true })[];
+    }
+  | {
+      kind: 'list';
+      header?: PresentationHeader;
+      body: string;
+      footer?: string;
+      button: string;
+      sections: WhatsAppInteractiveListAction['sections'];
     }
   | {
       kind: 'cta_url';
@@ -50,6 +59,68 @@ const isCtaAction = (
 ): action is { button: string; url: string } => {
   const candidate = action as { button?: unknown; url?: unknown } | undefined;
   return typeof candidate?.button === 'string' && typeof candidate.url === 'string';
+};
+
+const isListAction = (
+  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
+): action is WhatsAppInteractiveListAction => {
+  const candidate = action as
+    | {
+        button?: unknown;
+        sections?: unknown;
+      }
+    | undefined;
+
+  if (
+    typeof candidate?.button !== 'string' ||
+    candidate.button.length === 0 ||
+    !Array.isArray(candidate.sections) ||
+    candidate.sections.length === 0
+  ) {
+    return false;
+  }
+
+  let rowCount = 0;
+  const sectionsAreUsable = candidate.sections.every(section => {
+    if (!section || typeof section !== 'object') {
+      return false;
+    }
+
+    const { title, rows } = section as { title?: unknown; rows?: unknown };
+    if (
+      (title !== undefined && typeof title !== 'string') ||
+      !Array.isArray(rows) ||
+      rows.length === 0
+    ) {
+      return false;
+    }
+
+    rowCount += rows.length;
+    return rows.every(row => {
+      if (!row || typeof row !== 'object') {
+        return false;
+      }
+
+      const {
+        deliveryId,
+        title: rowTitle,
+        description,
+      } = row as {
+        deliveryId?: unknown;
+        title?: unknown;
+        description?: unknown;
+      };
+      return (
+        typeof deliveryId === 'string' &&
+        deliveryId.length > 0 &&
+        typeof rowTitle === 'string' &&
+        rowTitle.length > 0 &&
+        (description === undefined || typeof description === 'string')
+      );
+    });
+  });
+
+  return sectionsAreUsable && rowCount > 0;
 };
 
 const resolveHeader = (
@@ -102,6 +173,17 @@ export const getWhatsAppInteractivePresentation = (
       body,
       footer: interactive.footer?.text,
       buttons: interactive.action.buttons.map(button => ({ ...button, disabled: true as const })),
+    };
+  }
+
+  if (interactive.type === 'list' && isListAction(interactive.action)) {
+    return {
+      kind: 'list',
+      header,
+      body,
+      footer: interactive.footer?.text,
+      button: interactive.action.button,
+      sections: interactive.action.sections,
     };
   }
 

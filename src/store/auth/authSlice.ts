@@ -15,6 +15,22 @@ export interface AuthState {
   mfaToken: string | null;
   verificationChannel: VerificationChannel | null;
 }
+
+// Keep the locally selected account if a profile response resolves with a stale account_id
+// (an account switch raced it), but only while it's still a member account; otherwise adopt
+// the refreshed active account (e.g. access to the previous account was removed).
+const mergeProfile = (current: User | null, incoming: User): User => {
+  const activeAccountId = current?.account_id;
+  const mergedUser = { ...current, ...incoming } as User;
+  const keepLocalAccount =
+    activeAccountId != null &&
+    (mergedUser.accounts ?? []).some(account => Number(account.id) === Number(activeAccountId));
+  return {
+    ...mergedUser,
+    ...(keepLocalAccount ? { account_id: activeAccountId } : {}),
+  };
+};
+
 const initialState: AuthState = {
   user: null,
   accessToken: null,
@@ -130,20 +146,7 @@ export const authSlice = createSlice({
         }
       })
       .addCase(authActions.getProfile.fulfilled, (state, action) => {
-        // Keep the locally selected account if a switch's profile refresh resolves with a
-        // stale account_id, but only while it's still a member account; otherwise adopt the
-        // refreshed active account (e.g. access to the previous account was removed).
-        const activeAccountId = state.user?.account_id;
-        const mergedUser = { ...state.user, ...action.payload } as User;
-        const keepLocalAccount =
-          activeAccountId != null &&
-          (mergedUser.accounts ?? []).some(
-            account => Number(account.id) === Number(activeAccountId),
-          );
-        state.user = {
-          ...mergedUser,
-          ...(keepLocalAccount ? { account_id: activeAccountId } : {}),
-        };
+        state.user = mergeProfile(state.user, action.payload);
       })
       .addCase(authActions.login.rejected, (state, action) => {
         state.uiFlags.isLoggingIn = false;
@@ -161,10 +164,7 @@ export const authSlice = createSlice({
         state.uiFlags.isResettingPassword = false;
       })
       .addCase(authActions.updateAvailability.fulfilled, (state, action) => {
-        state.user = {
-          ...state.user,
-          ...action.payload,
-        };
+        state.user = mergeProfile(state.user, action.payload);
       })
       .addCase(authActions.verifyMfa.pending, state => {
         state.uiFlags.isVerifyingMfa = true;

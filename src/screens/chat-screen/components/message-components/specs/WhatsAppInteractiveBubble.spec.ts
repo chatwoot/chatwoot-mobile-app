@@ -27,6 +27,7 @@ import {
   listOptionalFieldsMessageEnvelope,
   malformedCarouselEnvelopes,
   malformedListMessageEnvelope,
+  malformedTopLevelEnvelopes,
   unknownInboundReplyEnvelope,
 } from './whatsappInteractiveHandoffFixtures';
 
@@ -94,12 +95,147 @@ const storeMessage = (message: ReturnType<typeof transformMessage>) => {
 const expectedHeaders: Record<string, object | undefined> = {
   absent: undefined,
   text: { type: 'text', text: 'Choose an action' },
-  image: { type: 'image', attachmentId: 501, attachment: { id: 501 } },
-  video: { type: 'video', attachmentId: 601, attachment: { id: 601 } },
-  document: { type: 'document', attachmentId: 602, attachment: { id: 602 } },
+  image: { type: 'image', attachment: { id: 501 } },
+  video: { type: 'video', attachment: { id: 601 } },
+  document: { type: 'document', attachment: { id: 602 } },
 };
 
+const outgoingAcceptanceCases = [
+  {
+    name: 'button',
+    envelope: buttonMessageEnvelope,
+    kind: 'button',
+    labels: ['Confirm', 'Change'],
+    disabledControls: 2,
+    attachmentIds: [501],
+    readableUrls: [],
+  },
+  {
+    name: 'list',
+    envelope: listMessageEnvelope,
+    kind: 'list',
+    labels: ['View meals'],
+    disabledControls: 0,
+    attachmentIds: [],
+    readableUrls: [],
+  },
+  {
+    name: 'CTA URL',
+    envelope: ctaUrlMessageEnvelope,
+    kind: 'cta_url',
+    labels: ['View details'],
+    disabledControls: 0,
+    attachmentIds: [],
+    readableUrls: ['https://example.test/details'],
+  },
+  {
+    name: 'URL carousel',
+    envelope: carouselUrlMessageEnvelope,
+    kind: 'carousel',
+    labels: ['View mountain', 'View beach'],
+    disabledControls: 0,
+    attachmentIds: [502, 503],
+    readableUrls: ['https://example.test/mountain', 'https://example.test/beach'],
+  },
+  {
+    name: 'quick-reply carousel',
+    envelope: carouselQuickReplyMessageEnvelope,
+    kind: 'carousel',
+    labels: ['Choose', 'Details'],
+    disabledControls: 4,
+    attachmentIds: [504, 505],
+    readableUrls: [],
+  },
+];
+
 describe('WhatsAppInteractiveBubble presentation', () => {
+  describe('SCN-16 final acceptance matrix', () => {
+    it.each(outgoingAcceptanceCases)(
+      'retains and mounts the canonical $name handoff as read-only',
+      ({ envelope, kind, labels, disabledControls, attachmentIds, readableUrls }) => {
+        const message = transformMessage(envelope);
+        expect(storeMessage(message)?.contentAttributes?.whatsappInteractive).toEqual(
+          message.contentAttributes?.whatsappInteractive,
+        );
+        expect(getWhatsAppInteractivePresentation(message)).toMatchObject({ kind });
+
+        let tree: TestRenderer.ReactTestRenderer;
+        act(() => {
+          tree = TestRenderer.create(
+            React.createElement(WhatsAppInteractiveBubble, {
+              item: message,
+              variant: MESSAGE_VARIANTS.AGENT,
+            }),
+          );
+        });
+
+        labels.forEach(label => {
+          expect(tree!.root.findAll(node => node.children.includes(label)).length).toBeGreaterThan(
+            0,
+          );
+        });
+        attachmentIds.forEach(id => {
+          expect(
+            tree!.root.findAllByProps({ testID: `message-attachment-${id}` }).length,
+          ).toBeGreaterThan(0);
+        });
+        readableUrls.forEach(url => {
+          expect(tree!.root.find(node => node.children.includes(url)).props.selectable).toBe(true);
+        });
+
+        const activeControls = tree!.root.findAll(node => node.props.onPress !== undefined);
+        expect(activeControls).toHaveLength(kind === 'list' ? 1 : 0);
+        const disabled = tree!.root.findAll(
+          node =>
+            node.props.accessibilityRole === 'button' &&
+            node.props.disabled === true &&
+            node.parent?.props.accessibilityRole !== 'button',
+        );
+        expect(disabled).toHaveLength(disabledControls);
+      },
+    );
+
+    it.each([
+      ['button selection', inboundButtonReplyEnvelope, 'Confirm', undefined],
+      ['list selection', inboundListReplyEnvelope, 'Pasta', 'Tomato and basil'],
+      ['carousel selection', inboundCarouselReplyEnvelope, 'Choose', undefined],
+      [
+        'unknown provider selection',
+        unknownInboundReplyEnvelope,
+        'A provider-only choice',
+        undefined,
+      ],
+    ])(
+      'retains and mounts the canonical %s without response actions',
+      (_name, envelope, title, description) => {
+        const message = transformMessage(envelope);
+        const storedReply = storeMessage(message)?.contentAttributes?.whatsappInteractiveReply;
+        expect(storedReply).toEqual(message.contentAttributes?.whatsappInteractiveReply);
+        expect(getWhatsAppInteractivePresentation(message)).toEqual({
+          kind: 'reply',
+          title,
+          description,
+        });
+
+        let tree: TestRenderer.ReactTestRenderer;
+        act(() => {
+          tree = TestRenderer.create(
+            React.createElement(WhatsAppInteractiveBubble, {
+              item: message,
+              variant: MESSAGE_VARIANTS.USER,
+            }),
+          );
+        });
+
+        expect(tree!.root.findAll(node => node.children.includes(title)).length).toBeGreaterThan(0);
+        expect(tree!.root.findAll(node => node.props.onPress !== undefined)).toHaveLength(0);
+        expect(tree!.root.findAll(node => node.props.accessibilityRole === 'button')).toHaveLength(
+          0,
+        );
+      },
+    );
+  });
+
   it('deeply transforms the frozen button envelope and retains it through the store', () => {
     const message = transformMessage(buttonMessageEnvelope);
     expect(message.contentAttributes?.whatsappInteractive).toMatchObject({
@@ -142,10 +278,7 @@ describe('WhatsAppInteractiveBubble presentation', () => {
         header: expectedHeaders[name],
         body: 'Please choose one option.',
         footer: 'Reply once',
-        buttons: [
-          { title: 'Confirm', disabled: true },
-          { title: 'Change', disabled: true },
-        ],
+        buttons: [{ title: 'Confirm' }, { title: 'Change' }],
       });
     },
   );
@@ -157,7 +290,7 @@ describe('WhatsAppInteractiveBubble presentation', () => {
 
     expect(presentation).toMatchObject({
       kind: 'button',
-      header: { type: 'image', attachmentId: 501, attachment: undefined },
+      header: { type: 'image', attachment: undefined },
       body: 'Please choose one option.',
       buttons: [{ title: 'Confirm' }, { title: 'Change' }],
     });
@@ -182,7 +315,7 @@ describe('WhatsAppInteractiveBubble presentation', () => {
       body: 'Choose a destination.',
       cards: [
         {
-          cardIndex: 0,
+          key: 0,
           body: 'Mountain escape',
           attachment: expect.objectContaining({ id: 502, fileType: 'image' }),
           actionMode: 'url',
@@ -190,7 +323,7 @@ describe('WhatsAppInteractiveBubble presentation', () => {
           url: 'https://example.test/mountain',
         },
         {
-          cardIndex: 1,
+          key: 1,
           body: 'Beach escape',
           attachment: expect.objectContaining({ id: 503, fileType: 'image' }),
           actionMode: 'url',
@@ -210,22 +343,16 @@ describe('WhatsAppInteractiveBubble presentation', () => {
       kind: 'carousel',
       cards: [
         {
-          cardIndex: 0,
+          key: 0,
           attachment: { id: 504 },
           actionMode: 'quick_reply',
-          buttons: [
-            { title: 'Choose', disabled: true },
-            { title: 'Details', disabled: true },
-          ],
+          buttons: [{ title: 'Choose' }, { title: 'Details' }],
         },
         {
-          cardIndex: 1,
+          key: 1,
           attachment: { id: 505 },
           actionMode: 'quick_reply',
-          buttons: [
-            { title: 'Choose', disabled: true },
-            { title: 'Details', disabled: true },
-          ],
+          buttons: [{ title: 'Choose' }, { title: 'Details' }],
         },
       ],
     });
@@ -349,14 +476,31 @@ describe('WhatsAppInteractiveBubble presentation', () => {
       button: 'View meals',
       sections: [
         {
+          key: 'row_00000000-0000-4000-8000-000000000001',
           title: 'Lunch',
           rows: [
-            expect.objectContaining({ title: 'Pasta', description: 'Tomato and basil' }),
-            expect.objectContaining({ title: 'Salad' }),
+            {
+              key: 'row_00000000-0000-4000-8000-000000000001',
+              title: 'Pasta',
+              description: 'Tomato and basil',
+            },
+            {
+              key: 'row_00000000-0000-4000-8000-000000000002',
+              title: 'Salad',
+              description: undefined,
+            },
           ],
         },
         {
-          rows: [expect.objectContaining({ title: 'Soup' })],
+          key: 'row_00000000-0000-4000-8000-000000000003',
+          title: undefined,
+          rows: [
+            {
+              key: 'row_00000000-0000-4000-8000-000000000003',
+              title: 'Soup',
+              description: undefined,
+            },
+          ],
         },
       ],
     });
@@ -405,6 +549,33 @@ describe('WhatsAppInteractiveBubble presentation', () => {
       content: 'Choose a meal.',
     });
   });
+
+  it.each(Object.entries(malformedTopLevelEnvelopes))(
+    'falls back without partial controls or unstable identities for malformed %s data',
+    (_name, envelope) => {
+      const message = transformMessage(envelope);
+      expect(getWhatsAppInteractivePresentation(message)).toEqual({
+        kind: 'fallback',
+        content: message.content,
+      });
+
+      let tree: TestRenderer.ReactTestRenderer;
+      act(() => {
+        tree = TestRenderer.create(
+          React.createElement(WhatsAppInteractiveBubble, {
+            item: message,
+            variant: MESSAGE_VARIANTS.AGENT,
+          }),
+        );
+      });
+
+      expect(
+        tree!.root.findAll(node => node.children.includes(message.content)).length,
+      ).toBeGreaterThan(0);
+      expect(tree!.root.findAll(node => node.props.onPress !== undefined)).toHaveLength(0);
+      expect(tree!.root.findAll(node => node.props.accessibilityRole === 'button')).toHaveLength(0);
+    },
+  );
 
   it('falls back to readable content for a future schema version with a current type', () => {
     const futureSchemaButton = {
@@ -568,14 +739,21 @@ describe('WhatsAppInteractiveBubble presentation', () => {
         kind: 'reply',
         title,
         description,
+      });
+      expect(presentation).not.toHaveProperty('deliveryId');
+      expect(presentation).not.toHaveProperty('contextId');
+      expect(presentation).not.toHaveProperty('originatingMessageId');
+      expect(presentation).not.toHaveProperty('presetOptionId');
+      expect(presentation).not.toHaveProperty('cardIndex');
+      expect(storedReply).toEqual(message.contentAttributes?.whatsappInteractiveReply);
+      expect(storedReply).toMatchObject({
         deliveryId: envelope.content_attributes.whatsapp_interactive_reply.delivery_id,
         contextId: envelope.content_attributes.whatsapp_interactive_reply.context_id,
         originatingMessageId:
           envelope.content_attributes.whatsapp_interactive_reply.originating_message_id,
         presetOptionId: envelope.content_attributes.whatsapp_interactive_reply.preset_option_id,
-        cardIndex,
       });
-      expect(storedReply).toEqual(message.contentAttributes?.whatsappInteractiveReply);
+      expect(storedReply?.cardIndex).toBe(cardIndex);
     },
   );
 

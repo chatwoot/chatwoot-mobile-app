@@ -160,7 +160,7 @@ export const WhatsAppInteractiveBubble = ({
       {presentation.kind === 'button' ? (
         <Animated.View style={tailwind.style('mt-2 gap-1')}>
           {presentation.buttons.map(button => (
-            <DisabledButton key={button.deliveryId} label={button.title} variant={variant} />
+            <DisabledButton key={button.key} label={button.title} variant={variant} />
           ))}
         </Animated.View>
       ) : presentation.kind === 'list' ? (
@@ -181,7 +181,7 @@ export const WhatsAppInteractiveBubble = ({
             scrollable
             contentStyle={tailwind.style('px-4 pb-6')}>
             {presentation.sections.map(section => (
-              <Animated.View key={section.rows[0].deliveryId} style={tailwind.style('mb-4')}>
+              <Animated.View key={section.key} style={tailwind.style('mb-4')}>
                 {section.title ? (
                   <Animated.Text
                     style={tailwind.style(
@@ -192,7 +192,7 @@ export const WhatsAppInteractiveBubble = ({
                 ) : null}
                 {section.rows.map((row, index) => (
                   <Animated.View
-                    key={row.deliveryId}
+                    key={row.key}
                     style={tailwind.style(
                       'px-3 py-3',
                       index !== section.rows.length - 1 ? 'border-b-[1px] border-b-blackA-A3' : '',
@@ -232,8 +232,8 @@ export const WhatsAppInteractiveBubble = ({
           contentContainerStyle={tailwind.style('mt-2 gap-2')}>
           {presentation.cards.map(card => (
             <Animated.View
-              key={card.cardIndex}
-              testID={`whatsapp-carousel-card-${card.cardIndex}`}
+              key={card.key}
+              testID={`whatsapp-carousel-card-${card.key}`}
               style={tailwind.style(
                 'w-[300px] shrink-0 border border-gray-300 rounded-lg p-2 overflow-hidden',
               )}>
@@ -246,11 +246,7 @@ export const WhatsAppInteractiveBubble = ({
               {card.actionMode === 'quick_reply' ? (
                 <Animated.View style={tailwind.style('mt-2 gap-1')}>
                   {card.buttons.map(button => (
-                    <DisabledButton
-                      key={button.deliveryId}
-                      label={button.title}
-                      variant={variant}
-                    />
+                    <DisabledButton key={button.key} label={button.title} variant={variant} />
                   ))}
                 </Animated.View>
               ) : (

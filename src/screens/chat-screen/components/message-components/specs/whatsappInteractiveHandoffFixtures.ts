@@ -12,6 +12,29 @@ const buttonAttachment = {
   height: 360,
 };
 
+const outgoingSender = {
+  id: 81,
+  name: 'Fixture Agent',
+  available_name: 'Fixture Agent',
+  avatar_url: null,
+  type: 'user',
+  availability_status: 'online',
+  thumbnail: null,
+};
+
+const incomingSender = {
+  additional_attributes: {},
+  custom_attributes: {},
+  email: null,
+  id: 91,
+  identifier: null,
+  name: 'Fixture Contact',
+  phone_number: null,
+  thumbnail: null,
+  blocked: false,
+  type: 'contact',
+};
+
 export const buttonMessageEnvelope = {
   id: 2001,
   content: 'Please choose one option.',
@@ -47,6 +70,7 @@ export const buttonMessageEnvelope = {
   created_at: 1791763201,
   private: false,
   source_id: 'wamid.handoff.button',
+  sender: outgoingSender,
   attachments: [buttonAttachment],
 };
 
@@ -72,7 +96,7 @@ export const ctaUrlMessageEnvelope = {
   created_at: 1791763203,
   private: false,
   source_id: 'wamid.handoff.cta-url',
-  attachments: [],
+  sender: outgoingSender,
 };
 
 export const listMessageEnvelope = {
@@ -117,7 +141,7 @@ export const listMessageEnvelope = {
   created_at: 1791763202,
   private: false,
   source_id: 'wamid.handoff.list',
-  attachments: [],
+  sender: outgoingSender,
 };
 
 export const listOptionalFieldsMessageEnvelope = {
@@ -190,6 +214,7 @@ export const carouselUrlMessageEnvelope = {
   created_at: 1791763204,
   private: false,
   source_id: 'wamid.handoff.carousel-url',
+  sender: outgoingSender,
   attachments: [
     {
       ...buttonAttachment,
@@ -281,6 +306,7 @@ export const carouselQuickReplyMessageEnvelope = {
   created_at: 1791763205,
   private: false,
   source_id: 'wamid.handoff.carousel-quick-reply',
+  sender: outgoingSender,
   attachments: [
     {
       ...buttonAttachment,
@@ -547,7 +573,7 @@ export const inboundButtonReplyEnvelope = {
   created_at: 1791763301,
   private: false,
   source_id: 'wamid.handoff.inbound-button',
-  attachments: [],
+  sender: incomingSender,
 };
 
 export const inboundListReplyEnvelope = {
@@ -574,7 +600,7 @@ export const inboundListReplyEnvelope = {
   created_at: 1791763302,
   private: false,
   source_id: 'wamid.handoff.inbound-list',
-  attachments: [],
+  sender: incomingSender,
 };
 
 export const inboundCarouselReplyEnvelope = {
@@ -601,7 +627,7 @@ export const inboundCarouselReplyEnvelope = {
   created_at: 1791763303,
   private: false,
   source_id: 'wamid.handoff.inbound-carousel',
-  attachments: [],
+  sender: incomingSender,
 };
 
 export const unknownInboundReplyEnvelope = {
@@ -626,7 +652,7 @@ export const unknownInboundReplyEnvelope = {
   created_at: 1791763304,
   private: false,
   source_id: 'wamid.handoff.inbound-unknown',
-  attachments: [],
+  sender: incomingSender,
 };
 
 const mediaAttachment = (id: number, fileType: 'image' | 'video' | 'file') => ({
@@ -685,4 +711,142 @@ export const buttonHeaderVariants = {
 
 export const reservedTypeEnvelopes = {
   carousel: carouselQuickReplyMessageEnvelope,
+};
+
+// Synthetic mutations below are deliberately separate from the canonical Story 20 envelopes.
+export const malformedTopLevelEnvelopes = {
+  emptyButtonTitle: {
+    ...buttonMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...buttonMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          buttons: [
+            {
+              ...buttonMessageEnvelope.content_attributes.whatsapp_interactive.action.buttons[0],
+              title: '',
+            },
+          ],
+        },
+      },
+    },
+  },
+  duplicateButtons: {
+    ...buttonMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...buttonMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          buttons: [
+            buttonMessageEnvelope.content_attributes.whatsapp_interactive.action.buttons[0],
+            {
+              ...buttonMessageEnvelope.content_attributes.whatsapp_interactive.action.buttons[1],
+              delivery_id:
+                buttonMessageEnvelope.content_attributes.whatsapp_interactive.action.buttons[0]
+                  .delivery_id,
+            },
+          ],
+        },
+      },
+    },
+  },
+  emptyHeader: {
+    ...ctaUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...ctaUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        header: { type: 'text', text: '' },
+      },
+    },
+  },
+  emptyBody: {
+    ...ctaUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...ctaUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        body: { text: '' },
+      },
+    },
+  },
+  missingBodyText: {
+    ...ctaUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...ctaUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        body: {},
+      },
+    },
+  },
+  missingBody: {
+    ...ctaUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...ctaUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        body: undefined,
+      },
+    },
+  },
+  listMediaHeader: {
+    ...listMessageEnvelope,
+    attachments: [buttonAttachment],
+    content_attributes: {
+      whatsapp_interactive: {
+        ...listMessageEnvelope.content_attributes.whatsapp_interactive,
+        header: { type: 'image', attachment_id: 501 },
+      },
+    },
+  },
+  emptyFooter: {
+    ...ctaUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...ctaUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        footer: { text: '' },
+      },
+    },
+  },
+  emptyCtaUrl: {
+    ...ctaUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...ctaUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: { button: 'View details', url: '' },
+      },
+    },
+  },
+  duplicateListRows: {
+    ...listOptionalFieldsMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...listOptionalFieldsMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          ...listOptionalFieldsMessageEnvelope.content_attributes.whatsapp_interactive.action,
+          sections: [
+            listOptionalFieldsMessageEnvelope.content_attributes.whatsapp_interactive.action
+              .sections[0],
+            {
+              rows: [
+                {
+                  delivery_id:
+                    listMessageEnvelope.content_attributes.whatsapp_interactive.action.sections[0]
+                      .rows[0].delivery_id,
+                  title: 'Duplicate pasta',
+                },
+              ],
+            },
+          ],
+        },
+      },
+    },
+  },
+  incompleteReply: {
+    ...inboundButtonReplyEnvelope,
+    content_attributes: {
+      ...inboundButtonReplyEnvelope.content_attributes,
+      whatsapp_interactive_reply: {
+        ...inboundButtonReplyEnvelope.content_attributes.whatsapp_interactive_reply,
+        delivery_id: '',
+      },
+    },
+  },
 };

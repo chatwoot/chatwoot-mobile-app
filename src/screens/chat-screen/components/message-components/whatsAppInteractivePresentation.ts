@@ -1,24 +1,35 @@
-import type {
-  ImageMetadata,
-  Message,
-  WhatsAppInteractiveButton,
-  WhatsAppInteractiveCarouselCard,
-  WhatsAppInteractiveHeader,
-  WhatsAppInteractiveListAction,
-} from '@/types';
+import type { ImageMetadata, Message } from '@/types';
 
-export type PresentationHeader = WhatsAppInteractiveHeader & {
-  attachment?: ImageMetadata;
+type PresentationButton = {
+  key: string;
+  title: string;
 };
 
+type PresentationListSection = {
+  key: string;
+  title?: string;
+  rows: {
+    key: string;
+    title: string;
+    description?: string;
+  }[];
+};
+
+export type PresentationHeader =
+  | { type: 'text'; text: string }
+  | {
+      type: 'image' | 'video' | 'document';
+      attachment?: ImageMetadata;
+    };
+
 type PresentationCarouselCard = {
-  cardIndex: number;
+  key: number;
   body?: string;
   attachment: ImageMetadata;
 } & (
   | {
       actionMode: 'quick_reply';
-      buttons: (WhatsAppInteractiveButton & { disabled: true })[];
+      buttons: PresentationButton[];
     }
   | {
       actionMode: 'url';
@@ -33,7 +44,7 @@ export type WhatsAppInteractivePresentation =
       header?: PresentationHeader;
       body: string;
       footer?: string;
-      buttons: (WhatsAppInteractiveButton & { disabled: true })[];
+      buttons: PresentationButton[];
     }
   | {
       kind: 'list';
@@ -41,7 +52,7 @@ export type WhatsAppInteractivePresentation =
       body: string;
       footer?: string;
       button: string;
-      sections: WhatsAppInteractiveListAction['sections'];
+      sections: PresentationListSection[];
     }
   | {
       kind: 'cta_url';
@@ -62,69 +73,210 @@ export type WhatsAppInteractivePresentation =
       kind: 'reply';
       title: string;
       description?: string;
-      deliveryId: string;
-      contextId?: string;
-      originatingMessageId?: number;
-      presetOptionId?: string | null;
-      cardIndex?: number;
     }
   | {
       kind: 'fallback';
       content: string;
     };
 
-const isButtonAction = (
-  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
-): action is { buttons: WhatsAppInteractiveButton[] } =>
-  !!action && Array.isArray((action as { buttons?: unknown }).buttons);
+type OptionalText = { valid: true; text?: string } | { valid: false };
 
-const isCtaAction = (
-  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
-): action is { button: string; url: string } => {
-  const candidate = action as { button?: unknown; url?: unknown } | undefined;
-  return typeof candidate?.button === 'string' && typeof candidate.url === 'string';
-};
-
-const isUsableCtaAction = (
-  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
-): action is { button: string; url: string } =>
-  isCtaAction(action) && action.button.length > 0 && action.url.length > 0;
-
-const isUsableButton = (button: unknown): button is WhatsAppInteractiveButton => {
-  if (!button || typeof button !== 'object') {
-    return false;
+const optionalText = (value: unknown): OptionalText => {
+  if (value === undefined) {
+    return { valid: true };
   }
 
-  const candidate = button as { deliveryId?: unknown; title?: unknown };
-  return (
-    typeof candidate.deliveryId === 'string' &&
-    candidate.deliveryId.length > 0 &&
-    typeof candidate.title === 'string' &&
-    candidate.title.length > 0
-  );
+  return typeof value === 'string' && value.length > 0
+    ? { valid: true, text: value }
+    : { valid: false };
 };
 
-const isExclusiveButtonAction = (
-  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
-): action is { buttons: WhatsAppInteractiveButton[] } =>
-  isButtonAction(action) && !('button' in action) && !('url' in action);
+const optionalTextContainer = (value: unknown): OptionalText => {
+  if (value === undefined) {
+    return { valid: true };
+  }
+  if (!value || typeof value !== 'object') {
+    return { valid: false };
+  }
 
-const isExclusiveCtaAction = (
-  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
-): action is { button: string; url: string } => isUsableCtaAction(action) && !('buttons' in action);
+  const text = (value as { text?: unknown }).text;
+  return requiredString(text) ? { valid: true, text } : { valid: false };
+};
 
-const resolveCarousel = (
-  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
+const requiredString = (value: unknown): value is string =>
+  typeof value === 'string' && value.length > 0;
+
+const isNonNegativeInteger = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isInteger(value) && value >= 0;
+
+const normalizeHeader = (
+  value: unknown,
+  attachments: ImageMetadata[],
+): { valid: true; header?: PresentationHeader } | { valid: false } => {
+  if (value === undefined) {
+    return { valid: true };
+  }
+  if (!value || typeof value !== 'object') {
+    return { valid: false };
+  }
+
+  const header = value as { type?: unknown; text?: unknown; attachmentId?: unknown };
+  if (header.type === 'text') {
+    return requiredString(header.text)
+      ? { valid: true, header: { type: 'text', text: header.text } }
+      : { valid: false };
+  }
+
+  if (
+    !['image', 'video', 'document'].includes(header.type as string) ||
+    !isNonNegativeInteger(header.attachmentId)
+  ) {
+    return { valid: false };
+  }
+
+  const type = header.type as 'image' | 'video' | 'document';
+  const expectedFileType = type === 'document' ? 'file' : type;
+  return {
+    valid: true,
+    header: {
+      type,
+      attachment: attachments.find(
+        attachment =>
+          attachment?.id === header.attachmentId && attachment.fileType === expectedFileType,
+      ),
+    },
+  };
+};
+
+const normalizeButtons = (value: unknown, knownKeys?: Set<string>): PresentationButton[] | null => {
+  if (!Array.isArray(value) || value.length === 0) {
+    return null;
+  }
+
+  const keys = knownKeys ?? new Set<string>();
+  const buttons: PresentationButton[] = [];
+  for (const valueButton of value) {
+    if (!valueButton || typeof valueButton !== 'object') {
+      return null;
+    }
+
+    const button = valueButton as { deliveryId?: unknown; title?: unknown };
+    if (
+      !requiredString(button.deliveryId) ||
+      !requiredString(button.title) ||
+      keys.has(button.deliveryId)
+    ) {
+      return null;
+    }
+
+    keys.add(button.deliveryId);
+    buttons.push({ key: button.deliveryId, title: button.title });
+  }
+
+  return buttons;
+};
+
+const hasAny = (value: object, keys: string[]) => keys.some(key => key in value);
+
+const normalizeButtonAction = (value: unknown, knownKeys?: Set<string>) => {
+  if (
+    !value ||
+    typeof value !== 'object' ||
+    hasAny(value, ['button', 'url', 'sections', 'cards'])
+  ) {
+    return null;
+  }
+
+  return normalizeButtons((value as { buttons?: unknown }).buttons, knownKeys);
+};
+
+const normalizeCtaAction = (value: unknown): { button: string; url: string } | null => {
+  if (!value || typeof value !== 'object' || hasAny(value, ['buttons', 'sections', 'cards'])) {
+    return null;
+  }
+
+  const action = value as { button?: unknown; url?: unknown };
+  return requiredString(action.button) && requiredString(action.url)
+    ? { button: action.button, url: action.url }
+    : null;
+};
+
+const normalizeListAction = (
+  value: unknown,
+): { button: string; sections: PresentationListSection[] } | null => {
+  if (!value || typeof value !== 'object' || hasAny(value, ['buttons', 'url', 'cards'])) {
+    return null;
+  }
+
+  const action = value as { button?: unknown; sections?: unknown };
+  if (
+    !requiredString(action.button) ||
+    !Array.isArray(action.sections) ||
+    !action.sections.length
+  ) {
+    return null;
+  }
+
+  const rowKeys = new Set<string>();
+  const sections: PresentationListSection[] = [];
+  for (const rawSection of action.sections) {
+    if (!rawSection || typeof rawSection !== 'object') {
+      return null;
+    }
+
+    const section = rawSection as { title?: unknown; rows?: unknown };
+    const title = optionalText(section.title);
+    if (!title.valid || !Array.isArray(section.rows) || !section.rows.length) {
+      return null;
+    }
+
+    const rows: PresentationListSection['rows'] = [];
+    for (const rawRow of section.rows) {
+      if (!rawRow || typeof rawRow !== 'object') {
+        return null;
+      }
+
+      const row = rawRow as { deliveryId?: unknown; title?: unknown; description?: unknown };
+      const description = optionalText(row.description);
+      if (
+        !requiredString(row.deliveryId) ||
+        !requiredString(row.title) ||
+        !description.valid ||
+        rowKeys.has(row.deliveryId)
+      ) {
+        return null;
+      }
+
+      rowKeys.add(row.deliveryId);
+      rows.push({ key: row.deliveryId, title: row.title, description: description.text });
+    }
+
+    sections.push({ key: rows[0].key, title: title.text, rows });
+  }
+
+  return { button: action.button, sections };
+};
+
+const normalizeCarousel = (
+  value: unknown,
   attachments: ImageMetadata[],
 ): PresentationCarouselCard[] | null => {
-  const cards = (action as { cards?: unknown } | undefined)?.cards;
+  if (
+    !value ||
+    typeof value !== 'object' ||
+    hasAny(value, ['buttons', 'button', 'url', 'sections'])
+  ) {
+    return null;
+  }
+
+  const cards = (value as { cards?: unknown }).cards;
   if (!Array.isArray(cards) || cards.length < 2 || cards.length > 10) {
     return null;
   }
 
   let actionMode: PresentationCarouselCard['actionMode'] | undefined;
   let quickReplyCount: number | undefined;
-  const deliveryIds = new Set<string>();
+  const buttonKeys = new Set<string>();
   const presentationCards: PresentationCarouselCard[] = [];
 
   for (const [index, rawCard] of cards.entries()) {
@@ -132,68 +284,63 @@ const resolveCarousel = (
       return null;
     }
 
-    const card = rawCard as WhatsAppInteractiveCarouselCard;
+    const card = rawCard as {
+      cardIndex?: unknown;
+      type?: unknown;
+      header?: unknown;
+      body?: unknown;
+      action?: unknown;
+    };
+    const body = optionalTextContainer(card.body);
+    const header = card.header as { type?: unknown; attachmentId?: unknown } | undefined;
     const attachment = attachments.find(
-      candidate => candidate.id === card.header?.attachmentId && candidate.fileType === 'image',
+      candidate => candidate?.id === header?.attachmentId && candidate.fileType === 'image',
     );
-    const body = card.body?.text;
-
     if (
       card.cardIndex !== index ||
-      card.header?.type !== 'image' ||
+      header?.type !== 'image' ||
+      !isNonNegativeInteger(header.attachmentId) ||
       !attachment ||
-      (body !== undefined && typeof body !== 'string')
+      !body.valid
     ) {
       return null;
     }
 
-    if (card.type === 'button' && isExclusiveButtonAction(card.action)) {
-      const buttons = card.action.buttons;
-      if (buttons.length === 0 || !buttons.every(isUsableButton)) {
-        return null;
-      }
-
-      const currentDeliveryIds = new Set(buttons.map(button => button.deliveryId));
+    if (card.type === 'button') {
+      const buttons = normalizeButtonAction(card.action, buttonKeys);
       if (
-        currentDeliveryIds.size !== buttons.length ||
-        buttons.some(button => deliveryIds.has(button.deliveryId))
+        !buttons ||
+        (actionMode !== undefined && actionMode !== 'quick_reply') ||
+        (quickReplyCount !== undefined && quickReplyCount !== buttons.length)
       ) {
-        return null;
-      }
-
-      if (actionMode && actionMode !== 'quick_reply') {
-        return null;
-      }
-      if (quickReplyCount !== undefined && quickReplyCount !== buttons.length) {
         return null;
       }
 
       actionMode = 'quick_reply';
       quickReplyCount = buttons.length;
-      buttons.forEach(button => deliveryIds.add(button.deliveryId));
       presentationCards.push({
-        cardIndex: card.cardIndex,
-        body,
+        key: index,
+        body: body.text,
         attachment,
         actionMode,
-        buttons: buttons.map(button => ({ ...button, disabled: true as const })),
+        buttons,
       });
       continue;
     }
 
-    if (card.type === 'cta_url' && isExclusiveCtaAction(card.action)) {
-      if (actionMode && actionMode !== 'url') {
+    if (card.type === 'cta_url') {
+      const action = normalizeCtaAction(card.action);
+      if (!action || (actionMode !== undefined && actionMode !== 'url')) {
         return null;
       }
 
       actionMode = 'url';
       presentationCards.push({
-        cardIndex: card.cardIndex,
-        body,
+        key: index,
+        body: body.text,
         attachment,
         actionMode,
-        button: card.action.button,
-        url: card.action.url,
+        ...action,
       });
       continue;
     }
@@ -204,151 +351,118 @@ const resolveCarousel = (
   return presentationCards;
 };
 
-const isListAction = (
-  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
-): action is WhatsAppInteractiveListAction => {
-  const candidate = action as
-    | {
-        button?: unknown;
-        sections?: unknown;
-      }
-    | undefined;
-
-  if (
-    typeof candidate?.button !== 'string' ||
-    candidate.button.length === 0 ||
-    !Array.isArray(candidate.sections) ||
-    candidate.sections.length === 0
-  ) {
-    return false;
+const normalizeReply = (
+  value: unknown,
+): Extract<WhatsAppInteractivePresentation, { kind: 'reply' }> | null => {
+  if (!value || typeof value !== 'object') {
+    return null;
   }
 
-  let rowCount = 0;
-  const sectionsAreUsable = candidate.sections.every(section => {
-    if (!section || typeof section !== 'object') {
-      return false;
-    }
-
-    const { title, rows } = section as { title?: unknown; rows?: unknown };
-    if (
-      (title !== undefined && typeof title !== 'string') ||
-      !Array.isArray(rows) ||
-      rows.length === 0
-    ) {
-      return false;
-    }
-
-    rowCount += rows.length;
-    return rows.every(row => {
-      if (!row || typeof row !== 'object') {
-        return false;
-      }
-
-      const {
-        deliveryId,
-        title: rowTitle,
-        description,
-      } = row as {
-        deliveryId?: unknown;
-        title?: unknown;
-        description?: unknown;
-      };
-      return (
-        typeof deliveryId === 'string' &&
-        deliveryId.length > 0 &&
-        typeof rowTitle === 'string' &&
-        rowTitle.length > 0 &&
-        (description === undefined || typeof description === 'string')
-      );
-    });
-  });
-
-  return sectionsAreUsable && rowCount > 0;
-};
-
-const resolveHeader = (
-  header: WhatsAppInteractiveHeader | undefined,
-  attachments: ImageMetadata[],
-): PresentationHeader | undefined => {
-  if (!header || header.type === 'text') {
-    return header;
-  }
-
-  return {
-    ...header,
-    attachment: attachments.find(attachment => attachment.id === header.attachmentId),
+  const reply = value as {
+    type?: unknown;
+    deliveryId?: unknown;
+    title?: unknown;
+    description?: unknown;
+    contextId?: unknown;
+    originatingMessageId?: unknown;
+    presetOptionId?: unknown;
+    cardIndex?: unknown;
   };
+  const description = optionalText(reply.description);
+  const contextId = optionalText(reply.contextId);
+  const presetOptionIdIsValid =
+    reply.presetOptionId === undefined ||
+    reply.presetOptionId === null ||
+    requiredString(reply.presetOptionId);
+  if (
+    !['button_reply', 'list_reply'].includes(reply.type as string) ||
+    !requiredString(reply.deliveryId) ||
+    !requiredString(reply.title) ||
+    !description.valid ||
+    !contextId.valid ||
+    (reply.originatingMessageId !== undefined &&
+      !isNonNegativeInteger(reply.originatingMessageId)) ||
+    !presetOptionIdIsValid ||
+    (reply.cardIndex !== undefined && !isNonNegativeInteger(reply.cardIndex))
+  ) {
+    return null;
+  }
+
+  return { kind: 'reply', title: reply.title, description: description.text };
 };
 
 export const getWhatsAppInteractivePresentation = (
   message: Message,
 ): WhatsAppInteractivePresentation | null => {
-  const reply = message.contentAttributes?.whatsappInteractiveReply;
-  if (reply) {
-    return {
-      kind: 'reply',
-      title: reply.title || message.content,
-      description: reply.description,
-      deliveryId: reply.deliveryId,
-      contextId: reply.contextId,
-      originatingMessageId: reply.originatingMessageId,
-      presetOptionId: reply.presetOptionId,
-      cardIndex: reply.cardIndex,
-    };
+  const replyValue = message.contentAttributes?.whatsappInteractiveReply;
+  if (replyValue !== undefined) {
+    return normalizeReply(replyValue) ?? { kind: 'fallback', content: message.content };
   }
 
   const interactive = message.contentAttributes?.whatsappInteractive;
   if (!interactive) {
     return null;
   }
-
   if (interactive.schemaVersion !== 1) {
     return { kind: 'fallback', content: message.content };
   }
 
-  const header = resolveHeader(interactive.header, message.attachments ?? []);
-  const body = interactive.body?.text || message.content;
-
-  if (interactive.type === 'button' && isButtonAction(interactive.action)) {
-    return {
-      kind: 'button',
-      header,
-      body,
-      footer: interactive.footer?.text,
-      buttons: interactive.action.buttons.map(button => ({ ...button, disabled: true as const })),
-    };
+  const attachments = Array.isArray(message.attachments) ? message.attachments : [];
+  const header = normalizeHeader(interactive.header, attachments);
+  const body = optionalTextContainer(interactive.body);
+  const footer = optionalTextContainer(interactive.footer);
+  if (!header.valid || !body.valid || !footer.valid) {
+    return { kind: 'fallback', content: message.content };
+  }
+  const bodyText = body.text;
+  if (!requiredString(bodyText)) {
+    return { kind: 'fallback', content: message.content };
   }
 
-  if (interactive.type === 'list' && isListAction(interactive.action)) {
-    return {
-      kind: 'list',
-      header,
-      body,
-      footer: interactive.footer?.text,
-      button: interactive.action.button,
-      sections: interactive.action.sections,
-    };
+  if (interactive.type === 'button') {
+    const buttons = normalizeButtonAction(interactive.action);
+    return buttons
+      ? { kind: 'button', header: header.header, body: bodyText, footer: footer.text, buttons }
+      : { kind: 'fallback', content: message.content };
   }
 
-  if (interactive.type === 'cta_url' && isCtaAction(interactive.action)) {
-    return {
-      kind: 'cta_url',
-      header,
-      body,
-      footer: interactive.footer?.text,
-      button: interactive.action.button,
-      url: interactive.action.url,
-    };
+  if (interactive.type === 'list') {
+    if (header.header && header.header.type !== 'text') {
+      return { kind: 'fallback', content: message.content };
+    }
+    const action = normalizeListAction(interactive.action);
+    return action
+      ? {
+          kind: 'list',
+          header: header.header,
+          body: bodyText,
+          footer: footer.text,
+          ...action,
+        }
+      : { kind: 'fallback', content: message.content };
   }
 
-  if (interactive.type === 'carousel') {
-    const cards = resolveCarousel(interactive.action, message.attachments ?? []);
+  if (interactive.type === 'cta_url') {
+    const action = normalizeCtaAction(interactive.action);
+    return action
+      ? {
+          kind: 'cta_url',
+          header: header.header,
+          body: bodyText,
+          footer: footer.text,
+          ...action,
+        }
+      : { kind: 'fallback', content: message.content };
+  }
+
+  if (
+    interactive.type === 'carousel' &&
+    interactive.header === undefined &&
+    interactive.footer === undefined
+  ) {
+    const cards = normalizeCarousel(interactive.action, attachments);
     if (cards) {
-      return {
-        kind: 'carousel',
-        body,
-        cards,
-      };
+      return { kind: 'carousel', body: bodyText, cards };
     }
   }
 

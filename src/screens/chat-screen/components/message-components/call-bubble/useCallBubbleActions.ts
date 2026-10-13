@@ -13,6 +13,7 @@ import {
 } from '@/store/call/callSelectors';
 import { addCall } from '@/store/call/callSlice';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { isStillRinging } from '@/services/voice/ringCheck';
 import { systemCall } from '@/services/voice/systemCall';
 import type { Message } from '@/types';
 import { placeOutboundCall } from '@/utils/placeOutboundCall';
@@ -59,6 +60,16 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
 
   const joinCall = async () => {
     if (!canJoinCall || isJoining || !call || !callSid || !inboxId) return;
+    // Checked when pressed, as the bubble can stay on screen past the ring; with another call
+    // on, which the answer would end, the server confirms the call still rings
+    const target = { callSid, callId: call.id, provider: call.provider, createdAt: item.createdAt };
+    const stillRinging = selectHasActiveCall(store.getState())
+      ? await isStillRinging(target)
+      : isRingStillOpen(call.provider, item.createdAt);
+    if (!stillRinging) {
+      toastJoinOutcome('already_ended');
+      return;
+    }
     // A ring that arrived while the agent was away is not in the store yet
     if (!selectCalls(store.getState()).some(entry => entry.callSid === callSid)) {
       dispatch(

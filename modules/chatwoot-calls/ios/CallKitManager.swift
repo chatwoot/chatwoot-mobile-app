@@ -272,8 +272,14 @@ final class CallKitManager: NSObject {
   // itself around another app's call, and both arrive as the same held action
   func requestHold(uuid: UUID, onHold: Bool, completion: @escaping (Error?) -> Void) {
     if onHold { holdRequestedHere.insert(uuid) }
-    callController.request(
-      CXTransaction(action: CXSetHeldCallAction(call: uuid, onHold: onHold)), completion: completion)
+    callController.request(CXTransaction(action: CXSetHeldCallAction(call: uuid, onHold: onHold))) { [weak self] error in
+      // A hold CallKit refused never arrives as an action, so its marker is dropped here rather
+      // than taken by a later hold the system makes
+      if error != nil, onHold {
+        DispatchQueue.main.async { self?.holdRequestedHere.remove(uuid) }
+      }
+      completion(error)
+    }
   }
 
   private func rememberEnded(_ callSid: String) {

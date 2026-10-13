@@ -54,6 +54,7 @@ jest.mock('@/services/voice/chatwootCalls', () => ({
   startOngoingCallNotification: jest.fn(),
   stopOngoingCallNotification: jest.fn(),
   rememberNativeCall: jest.fn(),
+  setNativeSignedIn: jest.fn(),
   queueNativeEnd: jest.fn(),
   endRingingNativeCall: jest.fn(),
   isSystemCallUiAvailable: jest.fn(() => false),

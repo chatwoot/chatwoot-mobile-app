@@ -70,6 +70,14 @@ final class CallKitManager: NSObject {
   // Calls that ended here, by sid, so a push arriving after the end does not ring again
   private var endedSids: [String: Date] = [:]
   private static let endedSidMemory: TimeInterval = 120
+  private static let signedInKey = "chatwoot.calls.signedIn"
+
+  // Whether an agent is signed in to the app, as it last reported; one that never reported
+  // counts as signed in. Read when a call push arrives, which may be before JavaScript runs.
+  var signedIn: Bool {
+    get { UserDefaults.standard.object(forKey: Self.signedInKey) as? Bool ?? true }
+    set { UserDefaults.standard.set(newValue, forKey: Self.signedInKey) }
+  }
   private var holdRequestedHere: Set<UUID> = []
 
   // Matches the window the server rings for, so CallKit never ends a live ring early
@@ -303,15 +311,17 @@ final class CallKitManager: NSObject {
   private func handleIncomingPush(_ dictionary: [AnyHashable: Any], completion: @escaping () -> Void) {
     let callSid = dictionary["call_id"] as? String ?? UUID().uuidString
     let providerName = dictionary["provider"] as? String ?? "whatsapp"
-    let caller = dictionary["caller"] as? [String: Any] ?? [:]
-    let callerName = caller["name"] as? String ?? "Unknown caller"
-    let inboxName = dictionary["inbox_name"] as? String ?? ""
+    // A phone with nobody signed in still has to report the push as a call, and ends it at
+    // once without the caller's details
+    let caller = signedIn ? dictionary["caller"] as? [String: Any] ?? [:] : [:]
+    let callerName = caller["name"] as? String ?? (signedIn ? "Unknown caller" : "Chatwoot")
+    let inboxName = signedIn ? dictionary["inbox_name"] as? String ?? "" : ""
     // The one line CallKit shows: the caller and the inbox they rang, as the app reports it
     let displayName = inboxName.isEmpty ? callerName : "\(callerName) · \(inboxName)"
     let handle = caller["phone"] as? String ?? callerName
     // A ring for a call that already ended here is reported and ended like a cancel
     let pushType = dictionary["type"] as? String ?? "voice_call.incoming"
-    let type = endedRecently(callSid) ? "voice_call.cancel" : pushType
+    let type = endedRecently(callSid) || !signedIn ? "voice_call.cancel" : pushType
 
     if type == "voice_call.cancel" {
       // A VoIP push must always report a call; report it and end it at once. A call this

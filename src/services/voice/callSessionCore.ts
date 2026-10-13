@@ -48,6 +48,7 @@ import {
   hasNativeAudioRouting,
   moveAppToBackground,
   reportNativeCallState,
+  setNativeSignedIn,
   startOngoingCallNotification,
   stopOngoingCallNotification,
   type AudioRoute,
@@ -356,6 +357,7 @@ const install = () => {
   });
   let knownSids = new Set(selectCalls(store.getState()).map(call => call.callSid));
   let signedIn = !!store.getState().auth?.user;
+  setNativeSignedIn(signedIn);
   const releaseAllMedia = () => {
     callEngine.whatsapp.hangup().catch(() => {});
     callEngine.twilio.disconnect().catch(() => {});
@@ -371,6 +373,7 @@ const install = () => {
     const wasSignedIn = signedIn;
     const nowSignedIn = !!state.auth?.user;
     signedIn = nowSignedIn;
+    if (wasSignedIn !== nowSignedIn) setNativeSignedIn(nowSignedIn);
     if (wasSignedIn && !nowSignedIn) {
       releaseAllMedia();
       // A call still being placed is given up, so its late response does not install it

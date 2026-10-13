@@ -268,6 +268,10 @@ class ChatwootCallsModule : Module() {
       if (state != OngoingCallService.STATE_CALLING) TelecomCalls.setActive(callSid)
     }
 
+    Function("setSignedIn") { signedIn: Boolean ->
+      CallSession.setSignedIn(context, signedIn)
+    }
+
     Function("rememberCall") { callSid: String, details: Map<String, String> ->
       CallNotification.remember(callSid, details)
     }

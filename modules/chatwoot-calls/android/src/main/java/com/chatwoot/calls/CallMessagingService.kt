@@ -26,6 +26,8 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
     }
     when (data["type"]) {
       "voice_call.incoming" -> {
+        // A phone with nobody signed in does not ring, nor show the caller
+        if (!CallSession.isSignedIn(applicationContext)) return
         // A cancel can arrive before the ring it ends; that ring is not shown
         if (CallNotification.wasCancelled(applicationContext, callSid)) return
         if (AppVisibility.foreground) {

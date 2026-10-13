@@ -293,3 +293,8 @@ export const requestSystemCallEnd = (uuid: string) =>
 
 export const requestSystemCallMute = (uuid: string, muted: boolean) =>
   systemCallUi()?.callKitRequestMute(uuid, muted) ?? Promise.resolve();
+
+// Whether an agent is signed in, kept by the native side so a call push that arrives while
+// nobody is does not ring or show the caller
+export const setNativeSignedIn = (signedIn: boolean) =>
+  ChatwootCallsModule?.setSignedIn?.(signedIn);

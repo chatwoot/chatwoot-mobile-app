@@ -391,6 +391,10 @@ public class ChatwootCallsModule: Module {
       return self.callKit.voipToken
     }
 
+    Function("setSignedIn") { (signedIn: Bool) in
+      self.callKit.signedIn = signedIn
+    }
+
     // Shows the system incoming-call UI for a call that reached the app over the socket
     AsyncFunction("callKitReportIncoming") { (record: ReportCallRecord, promise: Promise) in
       _ = self.callKit.reportIncomingCall(

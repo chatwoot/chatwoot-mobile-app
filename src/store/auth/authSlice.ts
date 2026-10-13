@@ -163,7 +163,7 @@ export const authSlice = createSlice({
       .addCase(authActions.updateAvailability.fulfilled, (state, action) => {
         state.user = {
           ...state.user,
-          ...action.payload.user,
+          ...action.payload,
         };
       })
       .addCase(authActions.verifyMfa.pending, state => {

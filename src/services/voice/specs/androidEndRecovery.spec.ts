@@ -71,6 +71,51 @@ jest.mock('@/store/call/callService', () => ({
 
 beforeEach(() => jest.clearAllMocks());
 
+test('an answered inbound call is carried as an ongoing call while it connects', () => {
+  const detach = attachCallSessionCore();
+  try {
+    store.dispatch(
+      addCall({ callSid: 'answering', provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+    expect(startOngoingCallNotification).not.toHaveBeenCalled();
+
+    store.dispatch(markLocalCall('answering'));
+    expect(startOngoingCallNotification).toHaveBeenCalledTimes(1);
+    expect(startOngoingCallNotification).toHaveBeenLastCalledWith(
+      'answering',
+      'Caller',
+      '123',
+      'Inbox',
+      '',
+      'active',
+    );
+
+    // Started again once connected, for a start the microphone permission held back
+    store.dispatch(setCallActive('answering'));
+    expect(startOngoingCallNotification).toHaveBeenCalledTimes(2);
+
+    store.dispatch(removeCall('answering'));
+    expect(stopOngoingCallNotification).toHaveBeenCalledWith('answering', 'remote');
+  } finally {
+    detach();
+    store.dispatch(clearLocalCall('answering'));
+  }
+});
+
+test('an inbound call whose answer fails is no longer carried', () => {
+  const detach = attachCallSessionCore();
+  try {
+    store.dispatch(addCall({ callSid: 'failing', provider: 'whatsapp', callDirection: 'inbound' }));
+    store.dispatch(markLocalCall('failing'));
+    store.dispatch(clearLocalCall('failing'));
+
+    expect(stopOngoingCallNotification).toHaveBeenCalledWith('failing', 'remote');
+  } finally {
+    detach();
+    store.dispatch(removeCall('failing'));
+  }
+});
+
 test('route reports from an ended call cannot overwrite the current call', () => {
   const detach = attachCallSessionCore();
   store.dispatch(

@@ -299,8 +299,10 @@ const install = () => {
 
   // The native call screen follows the call's state; the audio route is held for as long
   // as the call is up; a call that took the agent out of the lock screen steps back off it.
-  // Android's in-progress notification covers a call from the moment it is placed or
-  // answered, so the agent can always get back to it.
+  // Android's in-progress notification, and the foreground service that keeps the
+  // microphone, cover a call from the moment it is placed or answered, before it connects,
+  // so the agent can always get back to it. It is started again once the call connects,
+  // which covers a start the microphone permission held back.
   let wasActive = selectHasActiveCall(store.getState());
   let speakerOn = selectIsSpeakerOn(store.getState());
   let carriedSid: string | null = null;
@@ -357,8 +359,13 @@ const install = () => {
     }
     const active = selectActiveCall(state);
     const isSpeakerOn = selectIsSpeakerOn(state);
+    const localCallSid = selectLocalCallSid(state);
+    const incoming = selectIncomingCalls(state);
     const carried =
-      active ?? selectIncomingCalls(state).find(call => call.callDirection === 'outbound') ?? null;
+      active ??
+      incoming.find(call => call.callSid === localCallSid) ??
+      incoming.find(call => call.callDirection === 'outbound') ??
+      null;
     if (carried && (carried.callSid !== carriedSid || !!carried.isActive !== carriedActive)) {
       const info = callerInfo(state, carried);
       rememberNativeCall(carried.callSid, {
@@ -374,7 +381,7 @@ const install = () => {
         info.handle === info.name ? '' : info.handle,
         info.inboxName,
         info.avatar,
-        carried.isActive ? 'active' : 'calling',
+        carried.isActive || carried.callDirection === 'inbound' ? 'active' : 'calling',
       );
     } else if (!carried && carriedSid) {
       stopOngoingCallNotification(carriedSid, locallyEndedSid === carriedSid ? 'local' : 'remote');

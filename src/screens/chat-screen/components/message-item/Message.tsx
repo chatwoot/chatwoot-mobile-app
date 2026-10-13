@@ -20,6 +20,7 @@ import {
   EmailBubble,
   UnsupportedBubble,
   MessageError,
+  WhatsAppInteractiveBubble,
 } from '../message-components';
 import { showToast } from '@/utils/toastUtils';
 import {
@@ -482,6 +483,9 @@ export const MessageComponent = (props: MessageComponentProps) => {
     const attachments = item.attachments;
     const isReplyMessage = item.contentAttributes?.inReplyTo;
     const isUnsupported = item.contentAttributes?.isUnsupported;
+    const hasWhatsAppInteractiveContent =
+      !!item.contentAttributes?.whatsappInteractive ||
+      !!item.contentAttributes?.whatsappInteractiveReply;
     let messageContent;
 
     if (isUnsupported) {
@@ -490,6 +494,10 @@ export const MessageComponent = (props: MessageComponentProps) => {
       messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     } else if (isEmailInbox && !item.private) {
       messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
+    } else if (hasWhatsAppInteractiveContent) {
+      messageContent = (
+        <WhatsAppInteractiveBubble item={item} variant={variant()} orientation={orientation()} />
+      );
     }
     // TODO: Add this once we have a proper way to render single attachments
     // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {

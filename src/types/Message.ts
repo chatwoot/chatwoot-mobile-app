@@ -42,9 +42,90 @@ export type ImageMetadata = {
   coordinatesLong: number;
 };
 
+export type WhatsAppInteractiveTextHeader = {
+  type: 'text';
+  text: string;
+};
+
+export type WhatsAppInteractiveMediaHeader = {
+  type: 'image' | 'video' | 'document';
+  attachmentId: number;
+};
+
+export type WhatsAppInteractiveHeader =
+  | WhatsAppInteractiveTextHeader
+  | WhatsAppInteractiveMediaHeader;
+
+export type WhatsAppInteractiveButton = {
+  deliveryId: string;
+  title: string;
+  presetOptionId?: string | null;
+};
+
+export type WhatsAppInteractiveButtonAction = {
+  buttons: WhatsAppInteractiveButton[];
+};
+
+export type WhatsAppInteractiveCtaAction = {
+  button: string;
+  url: string;
+};
+
+export type WhatsAppInteractiveListRow = WhatsAppInteractiveButton & {
+  description?: string;
+};
+
+export type WhatsAppInteractiveListAction = {
+  button: string;
+  sections: {
+    title?: string;
+    rows: WhatsAppInteractiveListRow[];
+  }[];
+};
+
+export type WhatsAppInteractiveCarouselCard = {
+  cardIndex: number;
+  type: 'button' | 'cta_url';
+  header: WhatsAppInteractiveMediaHeader;
+  body?: { text: string };
+  action: WhatsAppInteractiveButtonAction | WhatsAppInteractiveCtaAction;
+};
+
+export type WhatsAppInteractiveCarouselAction = {
+  cards: WhatsAppInteractiveCarouselCard[];
+};
+
+export type WhatsAppInteractiveSnapshot = {
+  schemaVersion: 1;
+  type: 'button' | 'cta_url' | 'list' | 'carousel' | string;
+  header?: WhatsAppInteractiveHeader;
+  body?: { text: string };
+  footer?: { text: string };
+  action?:
+    | WhatsAppInteractiveButtonAction
+    | WhatsAppInteractiveCtaAction
+    | WhatsAppInteractiveListAction
+    | WhatsAppInteractiveCarouselAction
+    | Record<string, unknown>;
+  source?: {
+    presetId?: number | null;
+  };
+};
+
+export type WhatsAppInteractiveReply = {
+  type: 'button_reply' | 'list_reply' | string;
+  deliveryId: string;
+  title: string;
+  description?: string;
+  contextId?: string;
+  originatingMessageId?: number;
+  presetOptionId?: string | null;
+  cardIndex?: number;
+};
+
 export type MessageContentAttributes = {
   inReplyTo: number;
-  inReplyToExternalId: null;
+  inReplyToExternalId: string | null;
   deleted?: boolean;
   email?: {
     subject: string;
@@ -66,6 +147,8 @@ export type MessageContentAttributes = {
   contentType: ContentType;
   isUnsupported: boolean;
   translations?: Record<string, string>;
+  whatsappInteractive?: WhatsAppInteractiveSnapshot;
+  whatsappInteractiveReply?: WhatsAppInteractiveReply;
 };
 
 export interface Message {

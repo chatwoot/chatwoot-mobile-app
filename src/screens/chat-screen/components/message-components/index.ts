@@ -12,3 +12,4 @@ export * from './EmailBubble';
 export * from './UnsupportedBubble';
 export * from './DeliveryStatus';
 export * from './MessageError';
+export * from './WhatsAppInteractiveBubble';

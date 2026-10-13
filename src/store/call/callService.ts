@@ -42,6 +42,9 @@ type ConferenceParams = {
   conversationId: number;
   callSid: string;
   accountId?: number;
+  // Names the connection this join opens, which carries the same id to Twilio, so the server
+  // can tell it from an earlier one of the same agent
+  attemptId?: string;
 };
 
 // A call that another agent took or that already ended answers with these; the call
@@ -204,10 +207,16 @@ export class CallService {
     return response.data;
   }
 
-  static async joinConference({ inboxId, conversationId, callSid, accountId }: ConferenceParams) {
+  static async joinConference({
+    inboxId,
+    conversationId,
+    callSid,
+    accountId,
+    attemptId,
+  }: ConferenceParams) {
     const response = await apiService.post<ConferenceJoinResponse>(
       `inboxes/${inboxId}/conference`,
-      { conversation_id: conversationId, call_sid: callSid },
+      { conversation_id: conversationId, call_sid: callSid, attempt_id: attemptId },
       inAccount(accountId),
     );
     return response.data;

@@ -355,7 +355,8 @@ export const callActions = {
             callSid,
             accountId: call.accountId,
           };
-          conferenceJoin = CallService.joinConference(conference);
+          const attemptId = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+          conferenceJoin = CallService.joinConference({ ...conference, attemptId });
           const [token, joined] = await Promise.all([
             CallService.getConferenceToken(call.inboxId, call.accountId),
             conferenceJoin.catch(error => {
@@ -377,6 +378,7 @@ export const callActions = {
             is_agent: 'true',
             conversation_id: String(call.conversationId),
             call_sid: callSid,
+            attempt_id: attemptId,
           });
           dispatch(setCallActive(callSid));
           await keepAudioChoices(getState);

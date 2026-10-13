@@ -32,6 +32,10 @@
     "PASSWORD_ERROR": "Digite uma senha válida",
     "LOGIN": "Entrar",
     "LOGIN_LOADING": "Entrar...",
+    "LOGIN_VIA_SSO": "Entrar com SSO",
+    "SSO_AUTH_FAILED": "A autenticação por SSO falhou. Confira suas credenciais e tente de novo.",
+    "SSO_INVALID_RESPONSE": "Resposta de SSO inválida. Tente de novo.",
+    "SSO_UNEXPECTED_ERROR": "Algo deu errado durante o login por SSO. Tente de novo.",
     "FORGOT_PASSWORD": "Esqueceu sua senha?",
     "RESET_HERE": "Redefinir aqui",
     "NO_ACCOUNT": "Não possui uma conta?",
@@ -39,7 +43,13 @@
     "SETTINGS": "Configurações",
     "CHANGE_LANGUAGE": "Alterar idioma",
     "TERMS": "Termos & Condições",
-    "CHANGE_URL": "Alterar URL"
+    "CHANGE_URL": "Alterar URL",
+    "MFA_SETUP_REQUIRED": {
+      "TITLE": "Autenticação de dois fatores obrigatória",
+      "MESSAGE": "Sua conta exige autenticação de dois fatores. Entre no Chatwoot pelo navegador para configurar e volte aqui depois.",
+      "OPEN_WEB": "Abrir no navegador",
+      "DISMISS": "OK"
+    }
   },
   "FORGOT_PASSWORD": {
     "EMAIL": "Por favor, digite seu e-mail",
@@ -49,6 +59,31 @@
     "TITLE": "Esqueceu a Senha?",
     "SUB_TITLE": "Não se preocupe! Nós te protegemos",
     "API_SUCCESS": "O link de redefinição de senha foi enviado para o seu endereço de e-mail"
+  },
+  "MFA": {
+    "TITLE": "Autenticação de dois fatores",
+    "CANCEL": "Cancelar e voltar ao login",
+    "EMAIL": {
+      "TITLE": "Veja seu e-mail",
+      "DESCRIPTION": "Você está entrando de um aparelho novo.",
+      "INSTRUCTIONS": "Digite o código de 6 dígitos que enviamos por e-mail",
+      "REMEMBER_DEVICE": "Não perguntar de novo neste aparelho por 30 dias"
+    },
+    "TABS": {
+      "AUTHENTICATOR_APP": "App autenticador",
+      "BACKUP_CODE": "Código de backup"
+    },
+    "INSTRUCTIONS": {
+      "AUTHENTICATOR": "Digite o código de 6 dígitos do seu app autenticador",
+      "BACKUP": "Digite um dos seus códigos de backup"
+    },
+    "PLACEHOLDERS": {
+      "BACKUP_CODE": "Digite o código de backup"
+    },
+    "BUTTONS": {
+      "VERIFY": "Verificar",
+      "VERIFYING": "Verificando..."
+    }
   },
   "CONVERSATION": {
     "HEADER": {
@@ -147,6 +182,9 @@
     "UN_ASSIGN": "Desassociar conversa",
     "CONVERSATION_NOT_FOUND": "Não foi possível obter a conversa",
     "MARK_AS_PENDING": "Marcar como pendente",
+    "RESOLVE": "Resolver",
+    "REOPEN": "Reabrir",
+    "OPEN": "Abrir",
     "SNOOZE_UNTIL": "Adiar até",
     "SNOOZE_UNTIL_NEXT_REPLY": "Até a próxima resposta",
     "SNOOZE_UNTIL_TOMORROW": "Até amanhã",
@@ -160,6 +198,9 @@
     "DELETE_MESSAGE_SUB_TITLE": "Esta ação não pode ser desfeita.",
     "COPY_MESSAGE": "Mensagem copiada para área de transferência",
     "STORY_NOT_AVAILABLE": "Esta história não está mais disponível",
+    "AUDIO_NOT_AVAILABLE": "Não foi possível carregar este áudio",
+    "FILE_LOAD_ERROR": "Não foi possível baixar este arquivo",
+    "FILE_PREVIEW_ERROR": "Não foi possível abrir este arquivo",
     "DELETE_MESSAGE_SUCCESS": "Mensagem excluída com sucesso",
     "NO_CONTENT": "Nenhum conteúdo disponível",
     "ASSIGN_CHANGE": "Responsável da conversa alterado",
@@ -216,8 +257,16 @@
     "LONG_PRESS_ACTIONS": {
       "COPY": "Copiar",
       "REPLY": "Responder",
-      "DELETE_MESSAGE": "Apagar mensagem"
+      "DELETE_MESSAGE": "Apagar mensagem",
+      "TRANSLATE": "Traduzir"
     },
+    "FAILED_TO_SEND": "Não enviada",
+    "RETRY_MESSAGE": "Tentar de novo",
+    "RETRY_MESSAGE_ERROR": "Não foi possível reenviar a mensagem",
+    "TRANSLATE_SUCCESS": "Mensagem traduzida",
+    "TRANSLATE_ERROR": "Não foi possível traduzir a mensagem",
+    "VIEW_ORIGINAL": "Ver original",
+    "VIEW_TRANSLATED": "Ver tradução",
     "EMAIL_HEADER": {
       "FROM": "De",
       "TO": "Para",
@@ -384,7 +433,8 @@
       "PHOTOS": "Fotos",
       "CAMERA": "Câmera",
       "ATTACH_FILE": "Documento",
-      "MACROS": "Macros"
+      "MACROS": "Macros",
+      "WHATSAPP_TEMPLATES": "Modelos do WhatsApp"
     }
   },
   "CONVERSATION_TEAMS": {
@@ -427,10 +477,14 @@
   },
   "ERRORS": {
     "COMMON_ERROR": "Não foi possível conectar ao servidor Woot, por favor tente novamente mais tarde",
+    "UNABLE_TO_OPEN_LINK": "Não foi possível abrir este link",
     "OfFLINE": "Você precisa se conectar ao Wi-Fi ou a uma rede celular para ficar online novamente",
     "CANNOT_FETCH": "Ocorreu um erro ao buscar as informações, por favor, tente novamente",
     "AUTH": "Nome de usuário / senha incorreta. Por favor, tente novamente",
-    "NO_ACCOUNTS_MESSAGE": "Você não tem acesso a nenhuma conta no chatwoot"
+    "NO_ACCOUNTS_MESSAGE": "Você não tem acesso a nenhuma conta no chatwoot",
+    "UNEXPECTED_TITLE": "Algo deu errado",
+    "UNEXPECTED_DESCRIPTION": "O app encontrou um problema inesperado. Você pode tentar de novo sem reiniciar.",
+    "TRY_AGAIN": "Tentar de novo"
   },
   "SUCCESS": {
     "AUTH": "Acesso bem sucedido"
@@ -481,5 +535,58 @@
     "EXECUTION_SUCCESS": "Macro executada com sucesso",
     "EXECUTION_ERROR": "Falha ao executar macro",
     "NO_MACROS": "Nenhuma macro encontrada"
+  },
+  "CONTENT_TEMPLATE": {
+    "TITLE": "Modelos",
+    "SELECT_TEMPLATE": "Escolha um modelo do WhatsApp",
+    "VARIABLES": "Variáveis",
+    "SEND": "Enviar",
+    "NO_TEMPLATES": "Nenhum modelo disponível",
+    "NO_RESULTS": "Nenhum modelo corresponde à sua busca",
+    "SEARCH_PLACEHOLDER": "Busque o modelo que você quer enviar",
+    "IMAGE_URL": "URL da imagem",
+    "VIDEO_URL": "URL do vídeo",
+    "DOCUMENT_URL": "URL do documento",
+    "MEDIA_URL": "URL da mídia",
+    "IMAGE_URL_PLACEHOLDER": "https://...",
+    "MEDIA_URL_PLACEHOLDER": "https://...",
+    "IMAGE_PREVIEW_FAILED": "Não foi possível carregar a imagem desta URL",
+    "DOCUMENT_NAME": "Nome do documento",
+    "DOCUMENT_NAME_PLACEHOLDER": "Nome do arquivo (opcional)",
+    "BUTTON_PARAMETERS": "Parâmetros dos botões"
+  },
+  "SEARCH": {
+    "PLACEHOLDER": "Digite 2 ou mais caracteres para buscar",
+    "HINT": "Busque por número da conversa, e-mail, telefone ou mensagens para encontrar melhor.",
+    "ALL_RESULTS": "Todos os resultados",
+    "RECENT_SEARCHES": "Buscas recentes",
+    "CLEAR_ALL": "Limpar tudo",
+    "VIEW_MORE": "Ver mais",
+    "TAP_TO_RETRY": "Toque para tentar de novo",
+    "NO_RESULTS": "Nenhum resultado em {{sectionLabel}} para '{{searchQuery}}'",
+    "ERROR_CANCELLED": "Não foi possível carregar os resultados.",
+    "ERROR_GENERIC": "Algo deu errado. Tente de novo.",
+    "SECTIONS": {
+      "CONTACTS": "Contatos",
+      "CONVERSATIONS": "Conversas",
+      "MESSAGES": "Mensagens"
+    }
+  },
+  "COPILOT": {
+    "IMPROVE_REPLY": "Melhorar resposta",
+    "CHANGE_TONE": "Mudar o tom",
+    "FIX_GRAMMAR": "Corrigir a escrita",
+    "SUGGEST_REPLY": "Sugerir resposta",
+    "SUMMARIZE": "Resumir a conversa",
+    "THINKING": "O Copilot está pensando",
+    "FOLLOW_UP_PLACEHOLDER": "Envie mais instruções e perguntas de acompanhamento",
+    "SELECT_TONE": "Escolha o tom",
+    "TONE_PROFESSIONAL": "Profissional",
+    "TONE_FRIENDLY": "Amigável",
+    "TONE_STRAIGHTFORWARD": "Direto",
+    "TONE_CASUAL": "Informal",
+    "TONE_CONFIDENT": "Confiante",
+    "GENERATION_FAILED": "Não foi possível gerar o conteúdo. Tente de novo.",
+    "FOLLOW_UP_FAILED": "Não foi possível enviar o acompanhamento. Tente de novo."
   }
 }

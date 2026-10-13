@@ -89,3 +89,10 @@ export const takePendingCallAction = (callSid?: string): PendingCallAction | nul
     return null;
   }
 };
+
+// Drops every choice waiting, for a phone with no session to act on them in
+export const discardPendingCallActions = () => {
+  while (takePendingCallAction()) {
+    // each choice is taken and dropped
+  }
+};

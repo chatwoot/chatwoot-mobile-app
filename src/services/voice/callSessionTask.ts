@@ -14,6 +14,7 @@ import {
 import actionCableConnector from '@/utils/actionCable';
 import { reportNativeCallState } from '@/services/voice/chatwootCalls';
 
+import { discardPendingCallActions } from '@/utils/callNotifications';
 import { applyPendingCallAction, attachCallSessionCore } from './callSessionCore';
 
 // Carries a call the agent answered on Android's native call screen while the phone was
@@ -77,6 +78,9 @@ const waitForCallToEnd = () =>
 export const runCallSessionTask = async () => {
   await waitForRehydration();
   if (!selectLoggedIn(store.getState())) {
+    // An answer or decline made on a ring that reached a signed-out phone has no session to
+    // act in, and is dropped so a later sign-in does not replay it
+    discardPendingCallActions();
     reportNativeCallState('failed');
     return;
   }

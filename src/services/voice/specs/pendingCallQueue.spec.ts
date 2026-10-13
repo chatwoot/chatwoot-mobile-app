@@ -45,6 +45,7 @@ jest.mock('@/services/voice/callEngine', () => ({
 jest.mock('@/services/voice/webrtcEngine', () => ({
   webrtcEngine: {},
   setWebrtcConnectionLostHandler: jest.fn(),
+  setMicrophoneGrantedHandler: jest.fn(),
 }));
 jest.mock('@/store/call/callService', () => ({
   CallService: {

@@ -23,7 +23,12 @@ import {
   selectLocalCallSid,
 } from '@/store/call/callSelectors';
 import { callEngine } from '@/services/voice/callEngine';
-import { setWebrtcConnectionLostHandler, webrtcEngine } from '@/services/voice/webrtcEngine';
+import {
+  setMicrophoneGrantedHandler,
+  setWebrtcConnectionLostHandler,
+  webrtcEngine,
+} from '@/services/voice/webrtcEngine';
+import type { RootState } from '@/store';
 import type { LiveCall } from '@/store/call/callTypes';
 import { callerInfo, systemCall, whenNotJoining } from '@/services/voice/systemCall';
 import { closeSession, isSessionClosing, trackActionDrain } from '@/services/voice/pendingJoins';
@@ -325,6 +330,22 @@ const install = () => {
       reportEnded();
     }
   };
+  const startCarried = (state: RootState, carried: LiveCall) => {
+    const info = callerInfo(state, carried);
+    startOngoingCallNotification(
+      carried.callSid,
+      info.name,
+      info.handle === info.name ? '' : info.handle,
+      info.inboxName,
+      info.avatar,
+      carried.isActive || carried.callDirection === 'inbound' ? 'active' : 'calling',
+    );
+  };
+  // A start the missing microphone permission held back is made again once it is granted,
+  // while the answer is still on screen
+  setMicrophoneGrantedHandler(() => {
+    if (carriedCall && !carriedActive) startCarried(store.getState(), carriedCall);
+  });
   let knownSids = new Set(selectCalls(store.getState()).map(call => call.callSid));
   let signedIn = !!store.getState().auth?.user;
   const releaseAllMedia = () => {
@@ -367,7 +388,6 @@ const install = () => {
       incoming.find(call => call.callDirection === 'outbound') ??
       null;
     if (carried && (carried.callSid !== carriedSid || !!carried.isActive !== carriedActive)) {
-      const info = callerInfo(state, carried);
       rememberNativeCall(carried.callSid, {
         callId: carried.callId,
         provider: carried.provider,
@@ -375,14 +395,7 @@ const install = () => {
         inboxId: carried.inboxId,
         accountId: carried.accountId,
       });
-      startOngoingCallNotification(
-        carried.callSid,
-        info.name,
-        info.handle === info.name ? '' : info.handle,
-        info.inboxName,
-        info.avatar,
-        carried.isActive || carried.callDirection === 'inbound' ? 'active' : 'calling',
-      );
+      startCarried(state, carried);
     } else if (!carried && carriedSid) {
       stopOngoingCallNotification(carriedSid, locallyEndedSid === carriedSid ? 'local' : 'remote');
       if (locallyEndedSid === carriedSid) locallyEndedSid = null;
@@ -456,6 +469,7 @@ const install = () => {
 
   return () => {
     setWebrtcConnectionLostHandler(null);
+    setMicrophoneGrantedHandler(null);
     twilio.remove();
     native.remove();
     audioRoute.remove();

@@ -20,7 +20,7 @@ import {
   reportNativeCallState,
   stopOngoingCallNotification,
 } from '@/services/voice/chatwootCalls';
-import { webrtcEngine } from '../webrtcEngine';
+import { setMicrophoneGrantedHandler, webrtcEngine } from '../webrtcEngine';
 
 jest.mock('@/store', () => {
   /* eslint-disable @typescript-eslint/no-require-imports */
@@ -61,6 +61,7 @@ jest.mock('@/services/voice/callEngine', () => ({ callEngine: {} }));
 jest.mock('@/services/voice/webrtcEngine', () => ({
   webrtcEngine: { ensureAudioRoute: jest.fn() },
   setWebrtcConnectionLostHandler: jest.fn(),
+  setMicrophoneGrantedHandler: jest.fn(),
 }));
 jest.mock('@/store/call/callService', () => ({
   CallService: {
@@ -99,6 +100,34 @@ test('an answered inbound call is carried as an ongoing call while it connects',
   } finally {
     detach();
     store.dispatch(clearLocalCall('answering'));
+  }
+});
+
+test('the ongoing call starts again once the microphone is granted during the answer', () => {
+  const detach = attachCallSessionCore();
+  try {
+    store.dispatch(
+      addCall({ callSid: 'granting', provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+    store.dispatch(markLocalCall('granting'));
+    expect(startOngoingCallNotification).toHaveBeenCalledTimes(1);
+
+    const granted = (setMicrophoneGrantedHandler as jest.Mock).mock.calls.at(-1)[0];
+    granted();
+
+    expect(startOngoingCallNotification).toHaveBeenCalledTimes(2);
+    expect(startOngoingCallNotification).toHaveBeenLastCalledWith(
+      'granting',
+      'Caller',
+      '123',
+      'Inbox',
+      '',
+      'active',
+    );
+  } finally {
+    detach();
+    store.dispatch(clearLocalCall('granting'));
+    store.dispatch(removeCall('granting'));
   }
 });
 

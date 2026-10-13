@@ -69,6 +69,14 @@ export const setWebrtcConnectionLostHandler = (handler: (() => void) | null) => 
   onConnectionLost = handler;
 };
 
+// Told once the microphone is available, while the visible answer still runs, so what
+// needed it can start before the call's connection work
+let onMicrophoneGranted: (() => void) | null = null;
+
+export const setMicrophoneGrantedHandler = (handler: (() => void) | null) => {
+  onMicrophoneGranted = handler;
+};
+
 // Asks where the agent has not decided yet, and reports a refusal the call screen can
 // explain. Where the permission was granted at login this returns at once.
 export const ensureMicrophonePermission = async () => {
@@ -76,6 +84,7 @@ export const ensureMicrophonePermission = async () => {
     Platform.OS === 'ios' ? PERMISSIONS.IOS.MICROPHONE : PERMISSIONS.ANDROID.RECORD_AUDIO;
   const status = await request(microphone);
   if (status !== RESULTS.GRANTED) throw new MicrophoneDeniedError();
+  onMicrophoneGranted?.();
   // Bluetooth routing needs this permission; other routes remain available after a refusal.
   if (Platform.OS === 'android' && Number(Platform.Version) >= 31) {
     await request(PERMISSIONS.ANDROID.BLUETOOTH_CONNECT).catch(() => {});

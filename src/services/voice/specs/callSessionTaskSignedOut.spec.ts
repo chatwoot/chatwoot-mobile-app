@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import { runCallSessionTask } from '../callSessionTask';
-import { takeNativeCallAction } from '@/services/voice/chatwootCalls';
+import { abandonAnswer, takeNativeCallAction } from '@/services/voice/chatwootCalls';
 
 jest.mock('@/store', () => ({
   store: { getState: () => ({ auth: { user: null } }), subscribe: jest.fn() },
@@ -9,6 +9,7 @@ jest.mock('@/store', () => ({
 jest.mock('@/services/voice/chatwootCalls', () => ({
   reportNativeCallState: jest.fn(),
   takeNativeCallAction: jest.fn(),
+  abandonAnswer: jest.fn(),
 }));
 jest.mock('../callSessionCore', () => ({
   applyPendingCallAction: jest.fn(),
@@ -27,4 +28,6 @@ test('a signed-out phone drops the answers and declines waiting for it', async (
   await runCallSessionTask();
 
   expect(waiting).toEqual([]);
+  expect(abandonAnswer).toHaveBeenCalledTimes(1);
+  expect(abandonAnswer).toHaveBeenCalledWith('a');
 });

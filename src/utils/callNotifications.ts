@@ -1,6 +1,10 @@
 import { Platform } from 'react-native';
 
-import { cancelNativeCallNotification, takeNativeCallAction } from '@/services/voice/chatwootCalls';
+import {
+  abandonAnswer,
+  cancelNativeCallNotification,
+  takeNativeCallAction,
+} from '@/services/voice/chatwootCalls';
 import type { LiveCallInput } from '@/store/call/callTypes';
 
 // Android rings through a native call notification posted by the module's messaging
@@ -90,9 +94,10 @@ export const takePendingCallAction = (callSid?: string): PendingCallAction | nul
   }
 };
 
-// Drops every choice waiting, for a phone with no session to act on them in
+// Drops every choice waiting, for a phone with no session to act on them in. An answer
+// already held its call with the platform as answering, which is given up too.
 export const discardPendingCallActions = () => {
-  while (takePendingCallAction()) {
-    // each choice is taken and dropped
+  for (let pending = takePendingCallAction(); pending; pending = takePendingCallAction()) {
+    if (pending.action === 'answer') abandonAnswer(pending.callSid);
   }
 };

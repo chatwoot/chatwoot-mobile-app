@@ -2,6 +2,7 @@ import type {
   ImageMetadata,
   Message,
   WhatsAppInteractiveButton,
+  WhatsAppInteractiveCarouselCard,
   WhatsAppInteractiveHeader,
   WhatsAppInteractiveListAction,
 } from '@/types';
@@ -9,6 +10,22 @@ import type {
 export type PresentationHeader = WhatsAppInteractiveHeader & {
   attachment?: ImageMetadata;
 };
+
+type PresentationCarouselCard = {
+  cardIndex: number;
+  body?: string;
+  attachment: ImageMetadata;
+} & (
+  | {
+      actionMode: 'quick_reply';
+      buttons: (WhatsAppInteractiveButton & { disabled: true })[];
+    }
+  | {
+      actionMode: 'url';
+      button: string;
+      url: string;
+    }
+);
 
 export type WhatsAppInteractivePresentation =
   | {
@@ -35,6 +52,13 @@ export type WhatsAppInteractivePresentation =
       url: string;
     }
   | {
+      kind: 'carousel';
+      header?: undefined;
+      body: string;
+      footer?: undefined;
+      cards: PresentationCarouselCard[];
+    }
+  | {
       kind: 'reply';
       title: string;
       description?: string;
@@ -59,6 +83,125 @@ const isCtaAction = (
 ): action is { button: string; url: string } => {
   const candidate = action as { button?: unknown; url?: unknown } | undefined;
   return typeof candidate?.button === 'string' && typeof candidate.url === 'string';
+};
+
+const isUsableCtaAction = (
+  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
+): action is { button: string; url: string } =>
+  isCtaAction(action) && action.button.length > 0 && action.url.length > 0;
+
+const isUsableButton = (button: unknown): button is WhatsAppInteractiveButton => {
+  if (!button || typeof button !== 'object') {
+    return false;
+  }
+
+  const candidate = button as { deliveryId?: unknown; title?: unknown };
+  return (
+    typeof candidate.deliveryId === 'string' &&
+    candidate.deliveryId.length > 0 &&
+    typeof candidate.title === 'string' &&
+    candidate.title.length > 0
+  );
+};
+
+const isExclusiveButtonAction = (
+  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
+): action is { buttons: WhatsAppInteractiveButton[] } =>
+  isButtonAction(action) && !('button' in action) && !('url' in action);
+
+const isExclusiveCtaAction = (
+  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
+): action is { button: string; url: string } => isUsableCtaAction(action) && !('buttons' in action);
+
+const resolveCarousel = (
+  action: NonNullable<NonNullable<Message['contentAttributes']>['whatsappInteractive']>['action'],
+  attachments: ImageMetadata[],
+): PresentationCarouselCard[] | null => {
+  const cards = (action as { cards?: unknown } | undefined)?.cards;
+  if (!Array.isArray(cards) || cards.length < 2 || cards.length > 10) {
+    return null;
+  }
+
+  let actionMode: PresentationCarouselCard['actionMode'] | undefined;
+  let quickReplyCount: number | undefined;
+  const deliveryIds = new Set<string>();
+  const presentationCards: PresentationCarouselCard[] = [];
+
+  for (const [index, rawCard] of cards.entries()) {
+    if (!rawCard || typeof rawCard !== 'object') {
+      return null;
+    }
+
+    const card = rawCard as WhatsAppInteractiveCarouselCard;
+    const attachment = attachments.find(
+      candidate => candidate.id === card.header?.attachmentId && candidate.fileType === 'image',
+    );
+    const body = card.body?.text;
+
+    if (
+      card.cardIndex !== index ||
+      card.header?.type !== 'image' ||
+      !attachment ||
+      (body !== undefined && typeof body !== 'string')
+    ) {
+      return null;
+    }
+
+    if (card.type === 'button' && isExclusiveButtonAction(card.action)) {
+      const buttons = card.action.buttons;
+      if (buttons.length === 0 || !buttons.every(isUsableButton)) {
+        return null;
+      }
+
+      const currentDeliveryIds = new Set(buttons.map(button => button.deliveryId));
+      if (
+        currentDeliveryIds.size !== buttons.length ||
+        buttons.some(button => deliveryIds.has(button.deliveryId))
+      ) {
+        return null;
+      }
+
+      if (actionMode && actionMode !== 'quick_reply') {
+        return null;
+      }
+      if (quickReplyCount !== undefined && quickReplyCount !== buttons.length) {
+        return null;
+      }
+
+      actionMode = 'quick_reply';
+      quickReplyCount = buttons.length;
+      buttons.forEach(button => deliveryIds.add(button.deliveryId));
+      presentationCards.push({
+        cardIndex: card.cardIndex,
+        body,
+        attachment,
+        actionMode,
+        buttons: buttons.map(button => ({ ...button, disabled: true as const })),
+      });
+      continue;
+    }
+
+    if (card.type === 'cta_url' && isExclusiveCtaAction(card.action)) {
+      if (actionMode && actionMode !== 'url') {
+        return null;
+      }
+
+      actionMode = 'url';
+      presentationCards.push({
+        cardIndex: card.cardIndex,
+        body,
+        attachment,
+        actionMode,
+        button: card.action.button,
+        url: card.action.url,
+      });
+      continue;
+    }
+
+    return null;
+  }
+
+  return presentationCards;
 };
 
 const isListAction = (
@@ -196,6 +339,17 @@ export const getWhatsAppInteractivePresentation = (
       button: interactive.action.button,
       url: interactive.action.url,
     };
+  }
+
+  if (interactive.type === 'carousel') {
+    const cards = resolveCarousel(interactive.action, message.attachments ?? []);
+    if (cards) {
+      return {
+        kind: 'carousel',
+        body,
+        cards,
+      };
+    }
   }
 
   return { kind: 'fallback', content: message.content };

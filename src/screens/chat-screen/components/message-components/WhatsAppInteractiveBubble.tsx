@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
@@ -72,6 +72,18 @@ const SupportingText = ({ children, variant }: { children?: string; variant: str
     </Animated.Text>
   ) : null;
 
+const DisabledButton = ({ label, variant }: { label: string; variant: string }) => (
+  <Pressable
+    accessibilityRole="button"
+    accessibilityState={{ disabled: true }}
+    disabled
+    style={tailwind.style('border border-gray-300 rounded-lg px-3 py-2 opacity-70')}>
+    <Animated.Text style={tailwind.style('text-center font-inter-medium-24', textColor(variant))}>
+      {label}
+    </Animated.Text>
+  </Pressable>
+);
+
 const ReplyContext = ({
   children,
   item,
@@ -111,12 +123,15 @@ export const WhatsAppInteractiveBubble = ({
   }
 
   if (presentation.kind === 'fallback') {
+    const isCarouselFallback = item.contentAttributes?.whatsappInteractive?.type === 'carousel';
     return (
       <ReplyContext item={item} variant={variant}>
         {presentation.content ? (
           <MarkdownBubble messageContent={presentation.content} variant={variant} />
         ) : null}
-        <MessageAttachments item={item} variant={variant} orientation={orientation} />
+        {isCarouselFallback ? null : (
+          <MessageAttachments item={item} variant={variant} orientation={orientation} />
+        )}
       </ReplyContext>
     );
   }
@@ -145,17 +160,7 @@ export const WhatsAppInteractiveBubble = ({
       {presentation.kind === 'button' ? (
         <Animated.View style={tailwind.style('mt-2 gap-1')}>
           {presentation.buttons.map(button => (
-            <Pressable
-              key={button.deliveryId}
-              accessibilityRole="button"
-              accessibilityState={{ disabled: true }}
-              disabled
-              style={tailwind.style('border border-gray-300 rounded-lg px-3 py-2 opacity-70')}>
-              <Animated.Text
-                style={tailwind.style('text-center font-inter-medium-24', textColor(variant))}>
-                {button.title}
-              </Animated.Text>
-            </Pressable>
+            <DisabledButton key={button.deliveryId} label={button.title} variant={variant} />
           ))}
         </Animated.View>
       ) : presentation.kind === 'list' ? (
@@ -207,7 +212,7 @@ export const WhatsAppInteractiveBubble = ({
             ))}
           </Sheet>
         </>
-      ) : (
+      ) : presentation.kind === 'cta_url' ? (
         <Animated.View style={tailwind.style('mt-2 border border-gray-300 rounded-lg px-3 py-2')}>
           <Animated.Text
             style={tailwind.style('text-center font-inter-medium-24', textColor(variant))}>
@@ -219,6 +224,52 @@ export const WhatsAppInteractiveBubble = ({
             {presentation.url}
           </Animated.Text>
         </Animated.View>
+      ) : (
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          testID="whatsapp-carousel"
+          contentContainerStyle={tailwind.style('mt-2 gap-2')}>
+          {presentation.cards.map(card => (
+            <Animated.View
+              key={card.cardIndex}
+              testID={`whatsapp-carousel-card-${card.cardIndex}`}
+              style={tailwind.style(
+                'w-[300px] shrink-0 border border-gray-300 rounded-lg p-2 overflow-hidden',
+              )}>
+              <MessageAttachments
+                item={{ ...item, attachments: [card.attachment] }}
+                variant={variant}
+                orientation={orientation}
+              />
+              <SupportingText variant={variant}>{card.body}</SupportingText>
+              {card.actionMode === 'quick_reply' ? (
+                <Animated.View style={tailwind.style('mt-2 gap-1')}>
+                  {card.buttons.map(button => (
+                    <DisabledButton
+                      key={button.deliveryId}
+                      label={button.title}
+                      variant={variant}
+                    />
+                  ))}
+                </Animated.View>
+              ) : (
+                <Animated.View
+                  style={tailwind.style('mt-2 border border-gray-300 rounded-lg px-3 py-2')}>
+                  <Animated.Text
+                    style={tailwind.style('text-center font-inter-medium-24', textColor(variant))}>
+                    {card.button}
+                  </Animated.Text>
+                  <Animated.Text
+                    selectable
+                    style={tailwind.style('text-center text-xs mt-1', textColor(variant))}>
+                    {card.url}
+                  </Animated.Text>
+                </Animated.View>
+              )}
+            </Animated.View>
+          ))}
+        </ScrollView>
       )}
     </ReplyContext>
   );

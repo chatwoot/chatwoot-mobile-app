@@ -17,14 +17,16 @@ import {
   buttonHeaderVariants,
   buttonMessageEnvelope,
   carouselQuickReplyMessageEnvelope,
+  carouselUrlOptionalBodyMessageEnvelope,
+  carouselUrlMessageEnvelope,
   ctaUrlMessageEnvelope,
   inboundButtonReplyEnvelope,
   inboundCarouselReplyEnvelope,
   inboundListReplyEnvelope,
   listMessageEnvelope,
   listOptionalFieldsMessageEnvelope,
+  malformedCarouselEnvelopes,
   malformedListMessageEnvelope,
-  reservedTypeEnvelopes,
   unknownInboundReplyEnvelope,
 } from './whatsappInteractiveHandoffFixtures';
 
@@ -50,7 +52,16 @@ jest.mock('../MarkdownBubble', () => {
   };
 });
 
-jest.mock('../MessageAttachments', () => ({ MessageAttachments: () => null }));
+jest.mock('../MessageAttachments', () => {
+  const ReactModule = jest.requireActual('react');
+  const { View } = jest.requireActual('react-native');
+  return {
+    MessageAttachments: ({ item }: { item: { attachments?: { id?: number }[] } }) =>
+      ReactModule.createElement(View, {
+        testID: `message-attachment-${item.attachments?.[0]?.id ?? 'none'}`,
+      }),
+  };
+});
 jest.mock('../ReplyMessageBubble', () => ({ ReplyMessageBubble: () => null }));
 
 const mockPresentSheet = jest.fn();
@@ -161,6 +172,168 @@ describe('WhatsAppInteractiveBubble presentation', () => {
       button: 'View details',
       url: 'https://example.test/details',
     });
+  });
+
+  it('derives URL carousel cards in stored order with exact matched images', () => {
+    expect(
+      getWhatsAppInteractivePresentation(transformMessage(carouselUrlMessageEnvelope)),
+    ).toEqual({
+      kind: 'carousel',
+      body: 'Choose a destination.',
+      cards: [
+        {
+          cardIndex: 0,
+          body: 'Mountain escape',
+          attachment: expect.objectContaining({ id: 502, fileType: 'image' }),
+          actionMode: 'url',
+          button: 'View mountain',
+          url: 'https://example.test/mountain',
+        },
+        {
+          cardIndex: 1,
+          body: 'Beach escape',
+          attachment: expect.objectContaining({ id: 503, fileType: 'image' }),
+          actionMode: 'url',
+          button: 'View beach',
+          url: 'https://example.test/beach',
+        },
+      ],
+    });
+  });
+
+  it('derives uniform quick-reply carousel cards with every label disabled', () => {
+    const presentation = getWhatsAppInteractivePresentation(
+      transformMessage(carouselQuickReplyMessageEnvelope),
+    );
+
+    expect(presentation).toMatchObject({
+      kind: 'carousel',
+      cards: [
+        {
+          cardIndex: 0,
+          attachment: { id: 504 },
+          actionMode: 'quick_reply',
+          buttons: [
+            { title: 'Choose', disabled: true },
+            { title: 'Details', disabled: true },
+          ],
+        },
+        {
+          cardIndex: 1,
+          attachment: { id: 505 },
+          actionMode: 'quick_reply',
+          buttons: [
+            { title: 'Choose', disabled: true },
+            { title: 'Details', disabled: true },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('accepts an omitted optional card body', () => {
+    const presentation = getWhatsAppInteractivePresentation(
+      transformMessage(carouselUrlOptionalBodyMessageEnvelope),
+    );
+
+    expect(presentation).toMatchObject({ kind: 'carousel' });
+    if (presentation?.kind === 'carousel') {
+      expect(presentation.cards[1].body).toBeUndefined();
+    }
+  });
+
+  it.each([
+    ['URL', carouselUrlMessageEnvelope, ['View mountain', 'View beach']],
+    ['quick-reply', carouselQuickReplyMessageEnvelope, ['Choose', 'Details', 'Choose', 'Details']],
+  ])('renders the %s carousel as ordered horizontal read-only cards', (_mode, envelope, labels) => {
+    let tree: TestRenderer.ReactTestRenderer;
+    act(() => {
+      tree = TestRenderer.create(
+        React.createElement(WhatsAppInteractiveBubble, {
+          item: transformMessage(envelope),
+          variant: MESSAGE_VARIANTS.AGENT,
+        }),
+      );
+    });
+
+    const carousel = tree!.root.findByProps({ testID: 'whatsapp-carousel' });
+    expect(carousel.props.horizontal).toBe(true);
+    expect(carousel.props.showsHorizontalScrollIndicator).toBe(false);
+
+    const cards = [0, 1].map(index =>
+      tree!.root.findByProps({ testID: `whatsapp-carousel-card-${index}` }),
+    );
+    expect(
+      carousel
+        .findAll(node => node.props.testID?.startsWith('whatsapp-carousel-card-'))
+        .map(node => node.props.testID)
+        .filter((testID, index, testIDs) => testIDs.indexOf(testID) === index),
+    ).toEqual(['whatsapp-carousel-card-0', 'whatsapp-carousel-card-1']);
+    const expectedAttachmentIds = _mode === 'URL' ? [502, 503] : [504, 505];
+    cards.forEach((card, index) => {
+      expect(
+        card.findAllByProps({ testID: `message-attachment-${expectedAttachmentIds[index]}` })
+          .length,
+      ).toBeGreaterThan(0);
+      expect(
+        card.findAllByProps({
+          testID: `message-attachment-${expectedAttachmentIds[index === 0 ? 1 : 0]}`,
+        }),
+      ).toHaveLength(0);
+      expect(card.findAll(node => node.props.onPress !== undefined)).toHaveLength(0);
+    });
+
+    labels.forEach(label => {
+      expect(tree!.root.findAll(node => node.children.includes(label)).length).toBeGreaterThan(0);
+    });
+
+    const controls = tree!.root.findAll(
+      node =>
+        node.props.accessibilityRole === 'button' &&
+        node.parent?.props.accessibilityRole !== 'button',
+    );
+    if (_mode === 'URL') {
+      expect(controls).toHaveLength(0);
+      ['https://example.test/mountain', 'https://example.test/beach'].forEach(url => {
+        expect(tree!.root.find(node => node.children.includes(url)).props.selectable).toBe(true);
+      });
+    } else {
+      expect(controls).toHaveLength(4);
+      controls.forEach(control => {
+        expect(control.props.disabled).toBe(true);
+        expect(control.props.accessibilityState).toEqual({ disabled: true });
+        expect(control.props.onPress).toBeUndefined();
+      });
+    }
+  });
+
+  it.each(Object.entries(malformedCarouselEnvelopes))(
+    'falls back without partially rendering a carousel with %s',
+    (_name, envelope) => {
+      expect(getWhatsAppInteractivePresentation(transformMessage(envelope))).toEqual({
+        kind: 'fallback',
+        content: 'Choose a destination.',
+      });
+    },
+  );
+
+  it('keeps unmatched carousel media out of the generic readable fallback', () => {
+    let tree: TestRenderer.ReactTestRenderer;
+    act(() => {
+      tree = TestRenderer.create(
+        React.createElement(WhatsAppInteractiveBubble, {
+          item: transformMessage(malformedCarouselEnvelopes.unmatchedAttachment),
+          variant: MESSAGE_VARIANTS.AGENT,
+        }),
+      );
+    });
+
+    expect(
+      tree!.root.findAll(node => node.props.testID?.startsWith('message-attachment-')),
+    ).toHaveLength(0);
+    expect(
+      tree!.root.findAll(node => node.children.includes('Choose a destination.')).length,
+    ).toBeGreaterThan(0);
   });
 
   it('presents every list section and row in stored order', () => {
@@ -423,14 +596,4 @@ describe('WhatsAppInteractiveBubble presentation', () => {
       title: 'A provider-only choice',
     });
   });
-
-  it.each(Object.entries(reservedTypeEnvelopes))(
-    'keeps the readable fallback for future %s snapshots',
-    (_name, envelope) => {
-      expect(getWhatsAppInteractivePresentation(transformMessage(envelope))).toEqual({
-        kind: 'fallback',
-        content: envelope.content,
-      });
-    },
-  );
 });

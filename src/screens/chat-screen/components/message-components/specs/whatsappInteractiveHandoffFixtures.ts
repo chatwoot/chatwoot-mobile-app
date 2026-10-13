@@ -153,6 +153,71 @@ export const malformedListMessageEnvelope = {
   },
 };
 
+export const carouselUrlMessageEnvelope = {
+  id: 2004,
+  content: 'Choose a destination.',
+  inbox_id: 31,
+  conversation_id: 401,
+  message_type: 1,
+  content_type: 'text',
+  status: 'delivered',
+  content_attributes: {
+    whatsapp_interactive: {
+      schema_version: 1,
+      type: 'carousel',
+      body: { text: 'Choose a destination.' },
+      action: {
+        cards: [
+          {
+            card_index: 0,
+            type: 'cta_url',
+            header: { type: 'image', attachment_id: 502 },
+            body: { text: 'Mountain escape' },
+            action: { button: 'View mountain', url: 'https://example.test/mountain' },
+          },
+          {
+            card_index: 1,
+            type: 'cta_url',
+            header: { type: 'image', attachment_id: 503 },
+            body: { text: 'Beach escape' },
+            action: { button: 'View beach', url: 'https://example.test/beach' },
+          },
+        ],
+      },
+      source: { preset_id: 9004 },
+    },
+  },
+  created_at: 1791763204,
+  private: false,
+  source_id: 'wamid.handoff.carousel-url',
+  attachments: [
+    {
+      ...buttonAttachment,
+      id: 502,
+      message_id: 2004,
+      extension: 'jpg',
+      content_type: 'image/jpeg',
+      file_size: 4096,
+      width: 800,
+      height: 800,
+      data_url: 'https://example.test/rails/active_storage/blobs/mountain.jpg',
+      thumb_url: 'https://example.test/rails/active_storage/representations/mountain.jpg',
+    },
+    {
+      ...buttonAttachment,
+      id: 503,
+      message_id: 2004,
+      extension: 'jpg',
+      content_type: 'image/jpeg',
+      file_size: 4096,
+      width: 800,
+      height: 800,
+      data_url: 'https://example.test/rails/active_storage/blobs/beach.jpg',
+      thumb_url: 'https://example.test/rails/active_storage/representations/beach.jpg',
+    },
+  ],
+};
+
 export const carouselQuickReplyMessageEnvelope = {
   id: 2005,
   content: 'Choose a destination.',
@@ -242,6 +307,221 @@ export const carouselQuickReplyMessageEnvelope = {
       thumb_url: 'https://example.test/rails/active_storage/representations/quick-beach.jpg',
     },
   ],
+};
+
+export const carouselUrlOptionalBodyMessageEnvelope = {
+  ...carouselUrlMessageEnvelope,
+  content_attributes: {
+    whatsapp_interactive: {
+      ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+      action: {
+        cards: [
+          carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[0],
+          {
+            card_index: 1,
+            type: 'cta_url',
+            header: { type: 'image', attachment_id: 503 },
+            action: { button: 'View beach', url: 'https://example.test/beach' },
+          },
+        ],
+      },
+    },
+  },
+};
+
+export const malformedCarouselEnvelopes = {
+  futureSchema: {
+    ...carouselUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        schema_version: 2,
+      },
+    },
+  },
+  emptyCards: {
+    ...carouselUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: { cards: [] },
+      },
+    },
+  },
+  mixedActions: {
+    ...carouselUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[0],
+            carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+              .cards[1],
+          ],
+        },
+      },
+    },
+  },
+  invalidAction: {
+    ...carouselUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            {
+              ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[0],
+              action: { button: 'View mountain', url: '' },
+            },
+            carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[1],
+          ],
+        },
+      },
+    },
+  },
+  inconsistentQuickReplies: {
+    ...carouselQuickReplyMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+              .cards[0],
+            {
+              ...carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+                .cards[1],
+              action: {
+                buttons: [
+                  carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+                    .cards[1].action.buttons[0],
+                ],
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+  duplicateRepliesWithinCard: {
+    ...carouselQuickReplyMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            {
+              ...carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+                .cards[0],
+              action: {
+                buttons: [
+                  carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+                    .cards[0].action.buttons[0],
+                  {
+                    ...carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive
+                      .action.cards[0].action.buttons[1],
+                    delivery_id:
+                      carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive
+                        .action.cards[0].action.buttons[0].delivery_id,
+                  },
+                ],
+              },
+            },
+            carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+              .cards[1],
+          ],
+        },
+      },
+    },
+  },
+  nullQuickReply: {
+    ...carouselQuickReplyMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            {
+              ...carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+                .cards[0],
+              action: {
+                buttons: [
+                  carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+                    .cards[0].action.buttons[0],
+                  null,
+                ],
+              },
+            },
+            carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+              .cards[1],
+          ],
+        },
+      },
+    },
+  },
+  ambiguousActionShape: {
+    ...carouselUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            {
+              ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[0],
+              action: {
+                ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action
+                  .cards[0].action,
+                buttons: [
+                  carouselQuickReplyMessageEnvelope.content_attributes.whatsapp_interactive.action
+                    .cards[0].action.buttons[0],
+                ],
+              },
+            },
+            carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[1],
+          ],
+        },
+      },
+    },
+  },
+  nonImageHeader: {
+    ...carouselUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            {
+              ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[0],
+              header: { type: 'video', attachment_id: 502 },
+            },
+            carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[1],
+          ],
+        },
+      },
+    },
+  },
+  unmatchedAttachment: {
+    ...carouselUrlMessageEnvelope,
+    attachments: [carouselUrlMessageEnvelope.attachments[0]],
+  },
+  invalidCardIndex: {
+    ...carouselUrlMessageEnvelope,
+    content_attributes: {
+      whatsapp_interactive: {
+        ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive,
+        action: {
+          cards: [
+            carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[0],
+            {
+              ...carouselUrlMessageEnvelope.content_attributes.whatsapp_interactive.action.cards[1],
+              card_index: 2,
+            },
+          ],
+        },
+      },
+    },
+  },
 };
 
 export const inboundButtonReplyEnvelope = {

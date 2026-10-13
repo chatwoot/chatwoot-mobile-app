@@ -97,8 +97,9 @@ export const callActions = {
 
   // Declines for everyone: WhatsApp inbound → reject, WhatsApp outbound still ringing →
   // terminate, Twilio → end the conference so the inbound leg hangs up. The local entry
-  // is removed even if the request fails so the sheet never sticks; only a decline that
-  // went through is remembered, so the server can bring back a call that still rings.
+  // is removed before the request, so the ring stops at once and never sticks on a slow
+  // or failed one; only a decline that went through is remembered, so the server can
+  // bring back a call that still rings.
   rejectIncomingCall: createAsyncThunk<void, string, { state: RootState }>(
     'calls/rejectIncomingCall',
     async (callSid, { getState, dispatch }) => {
@@ -112,6 +113,8 @@ export const callActions = {
           .hangup(call.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
           .catch(() => {});
       }
+      if (ownsMedia) dispatch(clearLocalCall(callSid));
+      dispatch(removeCall(callSid));
       try {
         if (call?.provider === VOICE_CALL_PROVIDERS.WHATSAPP && call.callId) {
           if (call.callDirection === 'outbound') {
@@ -129,9 +132,7 @@ export const callActions = {
         }
         declined = true;
       } finally {
-        if (ownsMedia) dispatch(clearLocalCall(callSid));
         if (declined) dispatch(markCallDismissed(callSid));
-        dispatch(removeCall(callSid));
       }
     },
   ),

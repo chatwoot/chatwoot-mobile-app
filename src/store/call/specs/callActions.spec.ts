@@ -371,6 +371,20 @@ describe('callActions.rejectIncomingCall', () => {
     expect(store.getState().calls.dismissedCallSids).toEqual(['wa']);
   });
 
+  it('stops the ring before the decline request settles', async () => {
+    (CallService.rejectWhatsappCall as jest.Mock).mockReturnValue(new Promise(() => {}));
+    const store = buildStore();
+    store.dispatch(
+      addCall({ callSid: 'wa', callId: 5, provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+
+    run(store)(callActions.rejectIncomingCall('wa'));
+    await new Promise(resolve => setImmediate(resolve));
+
+    expect(store.getState().calls.calls).toEqual([]);
+    expect(store.getState().calls.dismissedCallSids).toEqual([]);
+  });
+
   it('sends the decline to the account the call belongs to', async () => {
     (CallService.rejectWhatsappCall as jest.Mock).mockResolvedValue({ id: 5, status: 'rejected' });
     const store = buildStore();

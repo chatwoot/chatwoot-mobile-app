@@ -29,7 +29,11 @@ contactListenerMiddleware.startListening({
 contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversation.fulfilled),
   effect: (action, listenerApi) => {
-    const conversation = action.payload as Conversation;
+    // The thunk resolves to `{ conversation }` — the same shape the
+    // conversation slice reducer destructures. Reading `payload.meta` here
+    // was always undefined, so the contact was never refreshed when a
+    // conversation was opened.
+    const { conversation } = action.payload as { conversation: Conversation };
     const contact = conversation?.meta?.sender;
     if (contact) {
       listenerApi.dispatch(addContact(contact));

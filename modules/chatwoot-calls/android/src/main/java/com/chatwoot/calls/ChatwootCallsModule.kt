@@ -356,8 +356,9 @@ class ChatwootCallsModule : Module() {
       appRinger.stop()
     }
 
+    // The lock-screen call screen closes itself or shows the next ring, so it is left alone
     Function("moveAppToBackground") { ->
-      appContext.currentActivity?.let { activity ->
+      appContext.currentActivity?.takeUnless { it is IncomingCallActivity }?.let { activity ->
         activity.runOnUiThread { activity.moveTaskToBack(true) }
       }
     }

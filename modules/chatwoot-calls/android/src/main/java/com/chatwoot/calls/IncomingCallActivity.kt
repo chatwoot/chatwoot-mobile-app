@@ -250,8 +250,9 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     connected()
   }
 
+  // A call that rang while this one was up and is still ringing takes the screen
   private fun ended() {
-    finishAndRemoveTask()
+    showNextRingOrFinish()
   }
 
   private fun showInCallTray(enabled: Boolean) {
@@ -280,7 +281,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
   // reloads, the hang-up waits for it as an end
   private fun endFromTray() {
     if (!NativeCallBridge.emit("end", callSid = callSid)) CallNotification.storeEnd(this, callSid)
-    finishAndRemoveTask()
+    showNextRingOrFinish()
   }
 
   private fun loadAvatar(url: String) {

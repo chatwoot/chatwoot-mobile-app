@@ -1,4 +1,5 @@
 import { store } from '@/store';
+import { callActions } from '@/store/call/callActions';
 import { applyPendingCallAction, attachCallSessionCore } from '../callSessionCore';
 import {
   addCall,
@@ -142,6 +143,28 @@ test('an inbound call whose answer fails is no longer carried', () => {
   } finally {
     detach();
     store.dispatch(removeCall('failing'));
+  }
+});
+
+test('a Telecom hold for a call this device no longer carries is left alone', () => {
+  const detach = attachCallSessionCore();
+  try {
+    store.dispatch(addCall({ callSid: 'current', provider: 'twilio', callDirection: 'inbound' }));
+    store.dispatch(markLocalCall('current'));
+    const listener = (addNativeCallActionListener as jest.Mock).mock.calls.at(-1)[0];
+
+    const setHold = jest.spyOn(callActions, 'setHold');
+
+    listener({ action: 'hold', enabled: true, callSid: 'earlier' });
+    expect(setHold).not.toHaveBeenCalled();
+
+    listener({ action: 'hold', enabled: true, callSid: 'current' });
+    expect(setHold).toHaveBeenCalledWith(true);
+    setHold.mockRestore();
+  } finally {
+    detach();
+    store.dispatch(clearLocalCall('current'));
+    store.dispatch(removeCall('current'));
   }
 });
 

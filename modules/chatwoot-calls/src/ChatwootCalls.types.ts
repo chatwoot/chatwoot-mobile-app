@@ -82,7 +82,7 @@ export type NativeCallActionEvent =
   | { action: 'pending' }
   | { action: 'dismissed'; callSid: string }
   | { action: 'open' }
-  | { action: 'hold'; enabled: boolean };
+  | { action: 'hold'; enabled: boolean; callSid?: string };
 
 export type NativeCallState = 'connected' | 'ended' | 'failed';
 

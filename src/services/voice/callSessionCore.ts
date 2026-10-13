@@ -295,6 +295,14 @@ const install = () => {
         store.dispatch(setMinimised(false));
         break;
       case 'hold':
+        // Telecom names the call it holds; one for a call this device no longer carries,
+        // delivered late after a switch, is left alone
+        if (
+          event.callSid &&
+          event.callSid !== (selectLocalCallSid(state) ?? selectActiveCall(state)?.callSid)
+        ) {
+          break;
+        }
         store.dispatch(callActions.setHold(event.enabled));
         break;
       default:

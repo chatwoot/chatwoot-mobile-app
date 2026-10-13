@@ -5,6 +5,7 @@ import {
   VOICE_CALL_STATUS,
 } from '@/constants';
 import { Message, MessageType, VoiceCallStatus } from '@/types';
+import { RING_TIMEOUT_MS } from '@/screens/call/constants/ringTimeouts';
 
 export type VoiceCallRecording = {
   dataUrl: string;
@@ -208,3 +209,11 @@ export const getVoiceCallDisplay = (message: Message): VoiceCallDisplay => {
     transcript: facts.transcript,
   };
 };
+
+// A Twilio caller waits on hold until someone joins; a WhatsApp ring ends after its window,
+// so a call message still showing it ringing past that missed the update that ended it
+export const isRingStillOpen = (
+  provider: string | undefined,
+  createdAt: unknown,
+  now = Date.now(),
+) => provider === VOICE_CALL_PROVIDERS.TWILIO || now - Number(createdAt) * 1000 <= RING_TIMEOUT_MS;

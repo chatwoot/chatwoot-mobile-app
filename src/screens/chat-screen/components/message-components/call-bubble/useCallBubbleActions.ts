@@ -16,7 +16,7 @@ import { selectConversationById } from '@/store/conversation/conversationSelecto
 import { systemCall } from '@/services/voice/systemCall';
 import type { Message } from '@/types';
 import { placeOutboundCall } from '@/utils/placeOutboundCall';
-import type { getVoiceCallDisplay } from '@/utils/voiceCallUtils';
+import { isRingStillOpen, type getVoiceCallDisplay } from '@/utils/voiceCallUtils';
 import { reportAnswerFailure, toastJoinOutcome } from '@/utils/voiceCallFeedback';
 
 type Display = ReturnType<typeof getVoiceCallDisplay>;
@@ -37,9 +37,11 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
   const callSid = call?.providerCallId;
   const inboxId = item.inboxId ?? conversation?.inboxId;
   const assigneeId = conversation?.meta?.assignee?.id;
+  const ringStillOpen = isRingStillOpen(call?.provider, item.createdAt);
 
   const canJoinCall =
     display.status === VOICE_CALL_STATUS.RINGING &&
+    ringStillOpen &&
     !display.isOutbound &&
     !call?.acceptedByAgentId &&
     !!callSid &&

@@ -1,6 +1,7 @@
 import { Message, MessageCall } from '@/types';
 import { transformMessage } from '../camelCaseKeys';
-import { formatCallDuration, getVoiceCallDisplay } from '../voiceCallUtils';
+import { formatCallDuration, getVoiceCallDisplay, isRingStillOpen } from '../voiceCallUtils';
+import { RING_TIMEOUT_MS } from '@/screens/call/constants/ringTimeouts';
 
 // Captured from GET /api/v1/accounts/1/conversations/37/messages on a WhatsApp Cloud inbox
 const completedInboundPayload = {
@@ -202,5 +203,19 @@ describe('getVoiceCallDisplay', () => {
     delete (message as Partial<Message>).call;
     delete message.contentAttributes?.data?.callDirection;
     expect(getVoiceCallDisplay(message).isOutbound).toBe(true);
+  });
+});
+
+describe('isRingStillOpen', () => {
+  const now = 1_800_000_000_000;
+  const secondsAgo = (ms: number) => (now - ms) / 1000;
+
+  it('closes a WhatsApp ring past its window', () => {
+    expect(isRingStillOpen('whatsapp', secondsAgo(RING_TIMEOUT_MS + 1000), now)).toBe(false);
+    expect(isRingStillOpen('whatsapp', secondsAgo(10_000), now)).toBe(true);
+  });
+
+  it('keeps a Twilio caller on hold joinable however long they have waited', () => {
+    expect(isRingStillOpen('twilio', secondsAgo(10 * 60_000), now)).toBe(true);
   });
 });

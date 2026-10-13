@@ -44,6 +44,7 @@ import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 import { useMessageEntrance } from './useMessageEntrance';
 import { BubbleTail } from './BubbleTail';
+import { getMessageOrientation, shouldShowSenderAvatar } from './messageOrientation';
 
 // import { ImageMetadata } from '@/types';
 
@@ -161,6 +162,9 @@ const MessageWrapper = ({
   const BubbleContainer = isTargetMessage ? Animated.View : View;
 
   const hasAvatar = !shouldGroupWithPrevious && shouldShowAvatar;
+  // Another agent's or a bot's bubble sits on the right with its avatar on the outside edge.
+  const isRight = orientation === ORIENTATION.RIGHT;
+  const avatar = <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />;
   const shouldShowSenderName = hasAvatar && !!avatarInfo.name;
   const shouldShowTail = hasAvatar && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
 
@@ -170,15 +174,13 @@ const MessageWrapper = ({
       style={tailwind.style(
         'my-[1px]',
         flexOrientationClass(),
-        shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-8' : '',
+        shouldGroupWithPrevious && shouldShowAvatar ? (isRight ? 'mr-8' : 'ml-8') : '',
         !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
         item.private ? 'my-1' : '',
       )}>
       <View style={tailwind.style('flex flex-row')}>
-        {hasAvatar ? (
-          <View style={tailwind.style('flex items-end justify-end mr-2')}>
-            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
-          </View>
+        {hasAvatar && !isRight ? (
+          <View style={tailwind.style('flex items-end justify-end mr-2')}>{avatar}</View>
         ) : null}
         <MessageMenu menuOptions={getMenuOptions(item)}>
           <BubbleContainer style={[tailwind.style('relative'), isTargetMessage && zoomStyle]}>
@@ -203,7 +205,7 @@ const MessageWrapper = ({
                     ? 'rounded-bl-none'
                     : 'rounded-br-none'
                   : '',
-                shouldShowTail ? 'rounded-bl-none' : '',
+                shouldShowTail ? (isRight ? 'rounded-br-none' : 'rounded-bl-none') : '',
               )}>
               {children}
               {/* Highlight overlay for target message */}
@@ -253,10 +255,16 @@ const MessageWrapper = ({
               )}
             </View>
             {shouldShowTail ? (
-              <BubbleTail color={tailwind.color(variantBaseMap[variant]) as string} />
+              <BubbleTail
+                color={tailwind.color(variantBaseMap[variant]) as string}
+                side={isRight ? 'right' : 'left'}
+              />
             ) : null}
           </BubbleContainer>
         </MessageMenu>
+        {hasAvatar && isRight ? (
+          <View style={tailwind.style('flex items-end justify-end ml-2')}>{avatar}</View>
+        ) : null}
       </View>
       {item.status === MESSAGE_STATUS.FAILED ? (
         <MessageError
@@ -423,11 +431,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     return menuOptions;
   };
 
-  const shouldShowAvatar = () => {
-    if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
-    if (orientation() === ORIENTATION.RIGHT) return false;
-    return true;
-  };
+  const shouldShowAvatar = () => shouldShowSenderAvatar(messageType, isMyMessage());
 
   const isMyMessage = () => {
     if (status === MESSAGE_STATUS.PROGRESS && messageType === MESSAGE_TYPES.OUTGOING) {
@@ -447,13 +451,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     );
   };
 
-  const orientation = () => {
-    if (isMyMessage()) {
-      return ORIENTATION.RIGHT;
-    }
-    if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
-    return ORIENTATION.LEFT;
-  };
+  const orientation = () => getMessageOrientation(messageType);
 
   const shouldGroupWithNext = () => {
     if (status === MESSAGE_STATUS.FAILED) return false;

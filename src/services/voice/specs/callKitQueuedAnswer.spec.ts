@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Platform } from 'react-native';
 import reducer, { addCall, markLocalCall, setIsJoining } from '@/store/call/callSlice';
 import { systemCall } from '../systemCall';
+import { pendingJoin, trackJoin } from '../pendingJoins';
 import { CallService } from '@/store/call/callService';
 import native from '../../../../modules/chatwoot-calls/src/ChatwootCallsModule';
 
@@ -189,5 +190,28 @@ test('a CallKit mute or hold for another call leaves the call this device carrie
   listener({ type: 'mute', uuid: 'uuid-new', callSid: 'new', muted: true });
   await flush();
   expect(store.getState().calls.isMuted).toBe(true);
+  detach();
+});
+
+test('an answer CallKit replays for a call already being joined shares that join', async () => {
+  const store = build();
+  store.dispatch(
+    addCall({
+      callSid: 'cold',
+      provider: 'twilio',
+      callDirection: 'inbound',
+      inboxId: 3,
+      conversationId: 7,
+      systemUuid: 'uuid-cold',
+    }),
+  );
+  const adopted = trackJoin('cold', new Promise(() => {}));
+  const { detach, listener } = attach(store);
+
+  listener({ type: 'answer', uuid: 'uuid-cold', callSid: 'cold' });
+  await flush();
+
+  expect(pendingJoin('cold')).toBe(adopted);
+  expect(CallService.joinConference).not.toHaveBeenCalled();
   detach();
 });

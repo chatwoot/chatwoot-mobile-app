@@ -361,7 +361,9 @@ export const systemCall = {
       const call = selectCalls(store.getState()).find(entry => entry.callSid === event.callSid);
       switch (event.type) {
         case 'answer':
-          if (call && !call.isActive) {
+          // An answer CallKit replays at launch for a call the app already took up on
+          // adoption shares that join
+          if (call && !call.isActive && !pendingJoin(event.callSid)) {
             // CallKit has already fulfilled the answer, so one made while another call is
             // joining waits for that join and is then joined or ended. It counts as a join
             // from the moment it is made, so an end that arrives while it waits cancels it.

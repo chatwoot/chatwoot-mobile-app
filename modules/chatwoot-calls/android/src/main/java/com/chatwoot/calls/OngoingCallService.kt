@@ -33,10 +33,12 @@ class OngoingCallService : Service() {
     }
     ServiceCompat.startForeground(this, NOTIFICATION_ID, notification(callSid, name, handle, inboxName, calling, null), type)
     running = true
+    latestStartId = startId
     ContactPhoto.fetchAsync(avatar) { photo ->
       // A call style notification is only allowed while this service holds it in the
-      // foreground, so the photo is dropped once the call has ended
-      if (!running) return@fetchAsync
+      // foreground, so the photo is dropped once the call has ended. A photo for an
+      // earlier start, such as a previous call, is dropped too.
+      if (!running || latestStartId != startId) return@fetchAsync
       runCatching {
         NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notification(callSid, name, handle, inboxName, calling, photo))
       }
@@ -50,6 +52,7 @@ class OngoingCallService : Service() {
   }
 
   @Volatile private var running = false
+  @Volatile private var latestStartId = 0
 
   private fun notification(
     callSid: String?,

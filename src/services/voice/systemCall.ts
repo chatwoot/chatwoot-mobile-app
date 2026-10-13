@@ -204,6 +204,8 @@ export const systemCall = {
         handle,
         conversationId: call.conversationId,
         inboxId: call.inboxId,
+        accountId: call.accountId,
+        callId: call.callId,
       });
       if (__DEV__) console.log('[callkit] reported incoming', systemUuid);
       // The call can end, taken by another agent or hung up, while CallKit shows it; its
@@ -387,11 +389,10 @@ export const systemCall = {
             endLocally(store, call, event.callSid);
           } else if (!event.answered && !event.outgoing) {
             declineUnadopted(event);
-          } else if (selectActiveCall(store.getState())) {
-            endLocally(store, call, event.callSid);
           } else {
             // A call live on CallKit that the app lost, as when JavaScript restarted
-            // mid-call: the server ends it from the details CallKit kept
+            // mid-call: the server ends it from the details CallKit kept. Another call
+            // live here is left alone.
             endUnadopted(event);
           }
           break;

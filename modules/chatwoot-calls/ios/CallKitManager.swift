@@ -50,7 +50,8 @@ final class CallKitManager: NSObject {
   var prepareAudioSession: ((String) -> Void)?
   // Drops the native media leg for the provider when the system ends the call, so the
   // far side hangs up even if JavaScript is not running at that moment
-  var endMedia: ((String) -> Void)?
+  // Ends a provider's media; with a call sid, only that call's
+  var endMedia: ((String, String?) -> Void)?
   var audioSessionDidActivate: ((AVAudioSession, String) -> Void)?
   var audioSessionDidDeactivate: ((AVAudioSession, String) -> Void)?
 
@@ -159,7 +160,7 @@ final class CallKitManager: NSObject {
   func reportIncomingCall(
     callSid: String, provider providerName: String, displayName: String, handle: String,
     conversationId: Int?, inboxId: Int?, accountId: Int?, callerName: String? = nil,
-    completion: @escaping (UUID, Error?) -> Void
+    callId: Int? = nil, completion: @escaping (UUID, Error?) -> Void
   ) -> UUID {
     if let existing = call(forSid: callSid) {
       completion(existing.uuid, nil)
@@ -170,6 +171,8 @@ final class CallKitManager: NSObject {
       uuid: uuid, callSid: callSid, provider: providerName, conversationId: conversationId,
       inboxId: inboxId, accountId: accountId, displayName: displayName, handle: handle,
       outgoing: false, answered: false, ringTimer: nil, callerName: callerName)
+    // The details an end needs to reach the server if JavaScript loses the call meanwhile
+    if tracked.callId == nil { tracked.callId = callId }
     let timeout = Self.ringTimeout
     tracked.ringTimer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false) { [weak self] _ in
       self?.endCall(uuid: uuid, reason: .unanswered)
@@ -362,7 +365,7 @@ final class CallKitManager: NSObject {
 extension CallKitManager: CXProviderDelegate {
   func providerDidReset(_ provider: CXProvider) {
     calls.values.forEach { $0.ringTimer?.invalidate() }
-    Set(calls.values.filter { $0.answered || $0.outgoing }.map { $0.provider }).forEach { endMedia?($0) }
+    Set(calls.values.filter { $0.answered || $0.outgoing }.map { $0.provider }).forEach { endMedia?($0, nil) }
     calls.values.forEach { rememberEnded($0.callSid) }
     calls = [:]
     heldBySystem.removeAll()
@@ -397,7 +400,9 @@ extension CallKitManager: CXProviderDelegate {
     rememberEnded(tracked.callSid)
     heldBySystem.remove(action.callUUID)
     holdRequestedHere.remove(action.callUUID)
-    if tracked.answered { endMedia?(tracked.provider) }
+    // A call placed here carries media before the contact answers, so its end releases
+    // it too, without waiting for JavaScript
+    if tracked.answered || tracked.outgoing { endMedia?(tracked.provider, tracked.callSid) }
     // The call's details travel with the end, so a call declined before the app adopted it
     // can still be declined with the server
     var event = tracked.payload

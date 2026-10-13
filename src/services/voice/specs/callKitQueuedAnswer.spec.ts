@@ -136,3 +136,32 @@ test('ending a placed Twilio call on CallKit after the app lost it leaves the co
   });
   detach();
 });
+
+test('a CallKit end for a call the app lost leaves another live call alone', async () => {
+  const store = build();
+  store.dispatch(
+    addCall({
+      callSid: 'wacid.live',
+      callId: 20,
+      provider: 'whatsapp',
+      callDirection: 'inbound',
+      accountId: 1,
+      isActive: true,
+    }),
+  );
+  const { detach, listener } = attach(store);
+  listener({
+    type: 'end',
+    uuid: 'old-uuid',
+    callSid: 'wacid.lost',
+    answered: true,
+    provider: 'whatsapp',
+    callId: 10,
+    accountId: 1,
+  });
+  await flush();
+  expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(10, 1);
+  expect(CallService.terminateWhatsappCall).not.toHaveBeenCalledWith(20, 1);
+  expect(store.getState().calls.calls.map(call => call.callSid)).toEqual(['wacid.live']);
+  detach();
+});

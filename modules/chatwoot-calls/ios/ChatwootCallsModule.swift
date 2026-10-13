@@ -49,6 +49,8 @@ public class ChatwootCallsModule: Module {
   private let audioDevice = DefaultAudioDevice()
   private let handler = TwilioCallHandler()
   private var activeCall: Call?
+  // The Chatwoot call sid the current Twilio leg belongs to
+  private var activeCallSid: String?
   private var ringbackPlayer: AVAudioPlayer?
   private var ringbackWanted = false
   // The audio session is active with WebRTC as the call's media engine
@@ -216,10 +218,13 @@ public class ChatwootCallsModule: Module {
       self.callKit.prepareAudioSession = { provider in
         if provider == "whatsapp" { Self.configureWebrtcAudioSession() }
       }
-      self.callKit.endMedia = { [weak self] provider in
+      self.callKit.endMedia = { [weak self] provider, callSid in
         guard provider == "twilio", let self else { return }
+        // An end for another call leaves the current Twilio leg alone
+        if let callSid, let current = self.activeCallSid, current != callSid { return }
         self.activeCall?.disconnect()
         self.activeCall = nil
+        self.activeCallSid = nil
       }
       // The session goes to one media engine at a time: the call's provider's
       self.callKit.audioSessionDidActivate = { [weak self] session, provider in
@@ -297,6 +302,7 @@ public class ChatwootCallsModule: Module {
         builder.params = params
         if let callKitUuid { builder.uuid = callKitUuid }
       }
+      self.activeCallSid = params["call_sid"]
       self.activeCall = TwilioVoiceSDK.connect(options: options, delegate: self.handler)
       self.sendEvent("onTwilioCallState", ["state": "connecting"])
     }
@@ -390,7 +396,7 @@ public class ChatwootCallsModule: Module {
       _ = self.callKit.reportIncomingCall(
         callSid: record.callSid, provider: record.provider, displayName: record.displayName,
         handle: record.handle, conversationId: record.conversationId, inboxId: record.inboxId,
-        accountId: record.accountId
+        accountId: record.accountId, callId: record.callId
       ) { uuid, error in
         if let error { promise.reject("ERR_CALLKIT", error.localizedDescription) } else { promise.resolve(uuid.uuidString) }
       }

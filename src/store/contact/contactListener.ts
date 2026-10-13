@@ -29,7 +29,7 @@ contactListenerMiddleware.startListening({
 contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversation.fulfilled),
   effect: (action, listenerApi) => {
-    const conversation = action.payload as Conversation;
+    const { conversation } = action.payload as { conversation: Conversation };
     const contact = conversation?.meta?.sender;
     if (contact) {
       listenerApi.dispatch(addContact(contact));

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { Platform } from 'react-native';
-import reducer, { addCall, setIsJoining } from '@/store/call/callSlice';
+import reducer, { addCall, markLocalCall, setIsJoining } from '@/store/call/callSlice';
 import { systemCall } from '../systemCall';
 import { CallService } from '@/store/call/callService';
 import native from '../../../../modules/chatwoot-calls/src/ChatwootCallsModule';
@@ -163,5 +163,31 @@ test('a CallKit end for a call the app lost leaves another live call alone', asy
   expect(CallService.terminateWhatsappCall).toHaveBeenCalledWith(10, 1);
   expect(CallService.terminateWhatsappCall).not.toHaveBeenCalledWith(20, 1);
   expect(store.getState().calls.calls.map(call => call.callSid)).toEqual(['wacid.live']);
+  detach();
+});
+
+test('a CallKit mute or hold for another call leaves the call this device carries alone', async () => {
+  const store = build();
+  store.dispatch(
+    addCall({
+      callSid: 'new',
+      provider: 'whatsapp',
+      callDirection: 'inbound',
+      systemUuid: 'uuid-new',
+    }),
+  );
+  store.dispatch(markLocalCall('new'));
+  const { detach, listener } = attach(store);
+
+  listener({ type: 'hold', uuid: 'uuid-old', callSid: 'old', onHold: true });
+  listener({ type: 'mute', uuid: 'uuid-old', callSid: 'old', muted: true });
+  await flush();
+
+  expect(store.getState().calls.isOnHold).toBe(false);
+  expect(store.getState().calls.isMuted).toBe(false);
+
+  listener({ type: 'mute', uuid: 'uuid-new', callSid: 'new', muted: true });
+  await flush();
+  expect(store.getState().calls.isMuted).toBe(true);
   detach();
 });

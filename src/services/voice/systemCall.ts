@@ -189,6 +189,11 @@ export const whenNotJoining = (store: Store) =>
     });
   });
 
+const carriesMedia = (store: Store, callSid: string) => {
+  const state = store.getState();
+  return callSid === (selectLocalCallSid(state) ?? selectActiveCall(state)?.callSid);
+};
+
 export const systemCall = {
   isAvailable: () => isSystemCallUiAvailable(),
 
@@ -403,11 +408,15 @@ export const systemCall = {
             store.dispatch(dismissCall(call.callSid));
           }
           break;
+        // Mute and hold apply to the call whose media this device carries, connecting or
+        // live; one made on another call and delivered after a switch is left alone
         case 'mute':
+          if (!carriesMedia(store, event.callSid)) break;
           callEngine.setMuted(event.muted).catch(() => {});
           store.dispatch(setMuted(event.muted));
           break;
         case 'hold':
+          if (!carriesMedia(store, event.callSid)) break;
           store.dispatch(callActions.setHold(event.onHold));
           break;
         default:

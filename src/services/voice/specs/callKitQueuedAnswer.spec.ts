@@ -215,3 +215,35 @@ test('an answer CallKit replays for a call already being joined shares that join
   expect(CallService.joinConference).not.toHaveBeenCalled();
   detach();
 });
+
+test('a second answer for a call still being joined shares the first join', async () => {
+  jest.replaceProperty(Platform, 'OS', 'android');
+  const store = build();
+  store.dispatch(
+    addCall({
+      callSid: 'tapped',
+      provider: 'twilio',
+      callDirection: 'inbound',
+      inboxId: 3,
+      conversationId: 7,
+    }),
+  );
+  let failToken: (error: Error) => void = () => {};
+  (CallService.getConferenceToken as jest.Mock).mockImplementationOnce(
+    () => new Promise((_, reject) => (failToken = reject)),
+  );
+  const call = store.getState().calls.calls[0];
+
+  const first = systemCall.answer(store as never, call);
+  await flush();
+  const tracked = pendingJoin('tapped');
+  const second = systemCall.answer(store as never, call);
+  await flush();
+
+  expect(tracked).toBeDefined();
+  expect(pendingJoin('tapped')).toBe(tracked);
+  expect(CallService.getConferenceToken).toHaveBeenCalledTimes(1);
+  failToken(new Error('offline'));
+  const outcomes = await Promise.allSettled([first, second]);
+  expect(outcomes[1]).toEqual(outcomes[0]);
+});

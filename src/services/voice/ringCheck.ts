@@ -22,7 +22,8 @@ export const isStillRinging = async (target: RingTarget) => {
     }
     const ringing = await CallService.getRingingCalls();
     return ringing.some(call => call.call_id === target.callSid);
-  } catch {
-    return true;
+  } catch (error) {
+    // A call the server no longer has is not ringing; any other failure leaves it to the join
+    return (error as { response?: { status?: number } })?.response?.status !== 404;
   }
 };

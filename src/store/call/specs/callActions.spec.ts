@@ -3,7 +3,13 @@ import conversationReducer from '@/store/conversation/conversationSlice';
 
 import type { AppDispatch } from '@/store';
 
-import callReducer, { addCall, markLocalCall, setCallActive, setPlacingCall } from '../callSlice';
+import callReducer, {
+  addCall,
+  markCallDismissed,
+  markLocalCall,
+  setCallActive,
+  setPlacingCall,
+} from '../callSlice';
 import { callActions } from '../callActions';
 import { CallService } from '../callService';
 import { callEngine } from '@/services/voice/callEngine';
@@ -49,6 +55,19 @@ const startTwilio = (store: Store) =>
 
 describe('callActions.startOutboundCall', () => {
   beforeEach(() => jest.clearAllMocks());
+
+  it('does not carry a Twilio call that ended before its placement returned', async () => {
+    const store = buildStore();
+    (CallService.startContactCall as jest.Mock).mockImplementation(async () => {
+      store.dispatch(markCallDismissed('CA-ended'));
+      return { conversation_id: 37, inbox_id: 3, call_sid: 'CA-ended', conference_sid: 'conf_1' };
+    });
+
+    const result = await startTwilio(store);
+
+    expect(result).toEqual({ status: 'cancelled' });
+    expect(store.getState().calls.localCallSid).toBeNull();
+  });
 
   it("dials a Twilio contact and joins the conference as this device's outbound call", async () => {
     (CallService.startContactCall as jest.Mock).mockResolvedValue({

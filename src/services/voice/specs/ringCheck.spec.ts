@@ -47,3 +47,11 @@ test('a check that cannot be made leaves the decision to the join', async () => 
     true,
   );
 });
+
+test('a call the server no longer has is not ringing', async () => {
+  (CallService.getWhatsappCall as jest.Mock).mockRejectedValue({ response: { status: 404 } });
+
+  await expect(
+    isStillRinging({ callSid: 'wa', callId: 5, provider: 'whatsapp', createdAt: recent() }),
+  ).resolves.toBe(false);
+});

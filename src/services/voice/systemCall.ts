@@ -90,7 +90,7 @@ export const systemEndReason = (
   }
 };
 
-const startJoin = (store: Store, callSid: string) => {
+const joinNow = (store: Store, callSid: string) => {
   markCallAnswering(callSid);
   const join = trackJoin(
     callSid,
@@ -106,6 +106,11 @@ const startJoin = (store: Store, callSid: string) => {
     .catch(() => abandonAnswer(callSid));
   return join;
 };
+
+// A second answer for a call already being joined shares that join, so an end or a
+// sign-out still finds and cancels it
+const startJoin = (store: Store, callSid: string) =>
+  pendingJoin(callSid) ?? joinNow(store, callSid);
 
 const endLocally = (store: Store, call: LiveCall | undefined, callSid: string) => {
   const pending = pendingJoin(callSid);
@@ -379,7 +384,7 @@ export const systemCall = {
                   return { status: 'already_ended' };
                 }
                 if (current.isActive) return { status: 'joined' };
-                return startJoin(store, event.callSid).then(result => {
+                return joinNow(store, event.callSid).then(result => {
                   if (result.status !== 'joined') endSystemCall(event.uuid, 'answered_elsewhere');
                   return result;
                 });

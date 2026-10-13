@@ -270,6 +270,11 @@ export const callActions = {
           }).catch(() => {});
           return { status: 'cancelled' };
         }
+        // The call ended before the request above returned; there is no call to carry
+        if (selectDismissedCallSids(getState()).includes(response.call_sid)) {
+          takeEarlyOutboundEvents(response.call_sid);
+          return { status: 'cancelled' };
+        }
         dispatch(markLocalCall(response.call_sid));
         dispatch(
           addCall({

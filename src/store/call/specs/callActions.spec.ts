@@ -386,6 +386,24 @@ describe('callActions.rejectIncomingCall', () => {
     await new Promise(resolve => setImmediate(resolve));
 
     expect(store.getState().calls.calls).toEqual([]);
+    // A sync while the decline is in flight does not bring the call back
+    store.dispatch(
+      addCall({ callSid: 'wa', callId: 5, provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+    expect(store.getState().calls.calls).toEqual([]);
+  });
+
+  it('lets a call ring again when the server refuses the decline', async () => {
+    (CallService.rejectWhatsappCall as jest.Mock).mockRejectedValue(new Error('server down'));
+    const store = buildStore();
+    store.dispatch(
+      addCall({ callSid: 'wa', callId: 5, provider: 'whatsapp', callDirection: 'inbound' }),
+    );
+
+    await run(store)(callActions.rejectIncomingCall('wa'))
+      .unwrap()
+      .catch(() => {});
+
     expect(store.getState().calls.dismissedCallSids).toEqual([]);
   });
 

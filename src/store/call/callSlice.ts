@@ -211,6 +211,14 @@ const callSlice = createSlice({
       }
     },
 
+    // A dismissal that did not hold, such as a decline the server refused, so the call can
+    // ring here again
+    forgetCallDismissed: (state, action: PayloadAction<string>) => {
+      state.dismissedCallSids = state.dismissedCallSids.filter(
+        callSid => callSid !== action.payload,
+      );
+    },
+
     markLocalCall: (state, action: PayloadAction<string | null>) => {
       state.localCallSid = action.payload || null;
     },
@@ -267,6 +275,7 @@ export const {
   setCallProviderStatus,
   dismissCall,
   markCallDismissed,
+  forgetCallDismissed,
   markLocalCall,
   clearLocalCall,
   setIsJoining,

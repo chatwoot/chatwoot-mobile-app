@@ -23,9 +23,9 @@ import {
   clearActiveCall,
   clearLocalCall,
   dismissCall,
+  forgetCallDismissed,
   markCallDismissed,
   markLocalCall,
-  removeCall,
   setCallActive,
   setCallProviderStatus,
   setIsJoining,
@@ -97,9 +97,9 @@ export const callActions = {
 
   // Declines for everyone: WhatsApp inbound → reject, WhatsApp outbound still ringing →
   // terminate, Twilio → end the conference so the inbound leg hangs up. The local entry
-  // is removed before the request, so the ring stops at once and never sticks on a slow
-  // or failed one; only a decline that went through is remembered, so the server can
-  // bring back a call that still rings.
+  // is dismissed before the request, so the ring stops at once, never sticks on a slow
+  // request and is not brought back by a sync meanwhile; a decline the server refused is
+  // forgotten, so the server can bring back a call that still rings.
   rejectIncomingCall: createAsyncThunk<void, string, { state: RootState }>(
     'calls/rejectIncomingCall',
     async (callSid, { getState, dispatch }) => {
@@ -114,7 +114,7 @@ export const callActions = {
           .catch(() => {});
       }
       if (ownsMedia) dispatch(clearLocalCall(callSid));
-      dispatch(removeCall(callSid));
+      dispatch(dismissCall(callSid));
       try {
         if (call?.provider === VOICE_CALL_PROVIDERS.WHATSAPP && call.callId) {
           if (call.callDirection === 'outbound') {
@@ -132,7 +132,7 @@ export const callActions = {
         }
         declined = true;
       } finally {
-        if (declined) dispatch(markCallDismissed(callSid));
+        if (!declined) dispatch(forgetCallDismissed(callSid));
       }
     },
   ),

@@ -3,6 +3,8 @@ import {
   checkValidUrl,
   extractDomain,
   extractScheme,
+  extractUrlDetails,
+  isLocalOrPrivateHost,
   repairPersistedWebSocketUrl,
 } from '../settingsUtils';
 
@@ -166,5 +168,82 @@ describe('checkValidUrl', () => {
 
   it('rejects an empty URL', () => {
     expect(checkValidUrl({ url: '' })).toBe(false);
+  });
+});
+
+describe('isLocalOrPrivateHost', () => {
+  it.each([
+    ['localhost', true],
+    ['chatwoot.localhost', true],
+    ['chatwoot.local', true],
+    ['chatwoot.lan', true],
+    ['chatwoot.internal', true],
+    ['127.0.0.1', true],
+    ['10.0.2.2', true],
+    ['172.20.10.2', true],
+    ['192.168.0.71', true],
+    ['169.254.1.1', true],
+    ['::1', true],
+    ['[::1]', true],
+    ['app.chatwoot.com', false],
+    ['chatwoot.example.com', false],
+    ['8.8.8.8', false],
+    ['', false],
+  ])('returns %s for host %s', (host, expected) => {
+    expect(isLocalOrPrivateHost(host)).toBe(expected);
+  });
+});
+
+describe('extractUrlDetails', () => {
+  it('preserves explicit port 443 on bare host', () => {
+    const details = extractUrlDetails({ url: '192.168.0.71:443' });
+    expect(details).toEqual({
+      hostname: '192.168.0.71',
+      port: '443',
+      scheme: null,
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('preserves explicit port 80 on bare host', () => {
+    const details = extractUrlDetails({ url: '192.168.0.71:80' });
+    expect(details).toEqual({
+      hostname: '192.168.0.71',
+      port: '80',
+      scheme: null,
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts complete pasted URL with path and fragment', () => {
+    const details = extractUrlDetails({ url: 'https://app.chatwoot.com/#/app' });
+    expect(details).toEqual({
+      hostname: 'app.chatwoot.com',
+      port: '',
+      scheme: 'https://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts URL with query string', () => {
+    const details = extractUrlDetails({
+      url: 'https://app.chatwoot.com/app/accounts/1?token=abc%20123',
+    });
+    expect(details).toEqual({
+      hostname: 'app.chatwoot.com',
+      port: '',
+      scheme: 'https://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('rejects input with whitespace', () => {
+    const details = extractUrlDetails({ url: 'app chatwoot com' });
+    expect(details.isValid).toBe(false);
+    expect(details.hasWhitespace).toBe(true);
   });
 });

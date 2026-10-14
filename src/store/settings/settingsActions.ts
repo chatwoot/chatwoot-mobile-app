@@ -23,8 +23,8 @@ import type {
 import I18n from '@/i18n';
 import {
   checkValidUrl,
-  extractDomain,
-  extractScheme,
+  extractUrlDetails,
+  isLocalOrPrivateHost,
   handleApiError,
   buildWebSocketUrl,
 } from './settingsUtils';
@@ -50,66 +50,83 @@ export const settingsActions = {
     'settings/setInstallationUrl',
     async (url, { rejectWithValue }) => {
       try {
-        const host = extractDomain({ url });
-        const scheme = extractScheme({ url });
-
-        if (!host || /\s/.test(host)) {
+        const details = extractUrlDetails({ url });
+        if (!details.isValid || details.hasWhitespace || !details.hostname) {
           throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
         }
 
+        const { hostname, port, scheme } = details;
+        const isLocal = isLocalOrPrivateHost(hostname);
+
+        const formatCandidate = (protocol: 'http' | 'https') => {
+          const portPart = port ? `:${port}` : '';
+          return new URL(`${protocol}://${hostname}${portPart}/`);
+        };
+
         let verifiedInstallationUrl = '';
         let verifiedWebSocketUrl = '';
+        let baseUrl = '';
 
         if (scheme === 'http://') {
-          const testUrl = `http://${host}/`;
-          if (!checkValidUrl({ url: testUrl })) {
+          const httpUrl = formatCandidate('http');
+          if (!checkValidUrl({ url: httpUrl.href })) {
             throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
           }
-          const isValid = await SettingsService.verifyInstallationUrl(testUrl);
+          const isValid = await SettingsService.verifyInstallationUrl(httpUrl.href);
           if (!isValid) {
             throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
           }
-          verifiedInstallationUrl = testUrl;
-          verifiedWebSocketUrl = buildWebSocketUrl(host, 'ws');
+          verifiedInstallationUrl = httpUrl.href;
+          verifiedWebSocketUrl = buildWebSocketUrl(httpUrl.host, 'ws');
+          baseUrl = httpUrl.host;
         } else if (scheme === 'https://') {
-          const testUrl = `https://${host}/`;
-          if (!checkValidUrl({ url: testUrl })) {
+          const httpsUrl = formatCandidate('https');
+          if (!checkValidUrl({ url: httpsUrl.href })) {
             throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
           }
-          const isValid = await SettingsService.verifyInstallationUrl(testUrl);
+          const isValid = await SettingsService.verifyInstallationUrl(httpsUrl.href);
           if (!isValid) {
             throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
           }
-          verifiedInstallationUrl = testUrl;
-          verifiedWebSocketUrl = buildWebSocketUrl(host, 'wss');
+          verifiedInstallationUrl = httpsUrl.href;
+          verifiedWebSocketUrl = buildWebSocketUrl(httpsUrl.host, 'wss');
+          baseUrl = httpsUrl.host;
         } else {
-          // No scheme provided. Try https first; fallback to http if https fails.
-          const httpsUrl = `https://${host}/`;
-          const httpUrl = `http://${host}/`;
-
-          if (!checkValidUrl({ url: httpsUrl })) {
+          // No scheme provided. Probe HTTPS first.
+          const httpsUrl = formatCandidate('https');
+          if (!checkValidUrl({ url: httpsUrl.href })) {
             throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
           }
 
-          const isHttpsValid = await SettingsService.verifyInstallationUrl(httpsUrl);
+          const isHttpsValid = await SettingsService.verifyInstallationUrl(httpsUrl.href);
           if (isHttpsValid) {
-            verifiedInstallationUrl = httpsUrl;
-            verifiedWebSocketUrl = buildWebSocketUrl(host, 'wss');
-          } else {
-            const isHttpValid = await SettingsService.verifyInstallationUrl(httpUrl);
+            verifiedInstallationUrl = httpsUrl.href;
+            verifiedWebSocketUrl = buildWebSocketUrl(httpsUrl.host, 'wss');
+            baseUrl = httpsUrl.host;
+          } else if (isLocal) {
+            // Only allow cleartext HTTP fallback for local / private addresses (prevent captive portal / MITM downgrade).
+            const httpUrl = formatCandidate('http');
+            if (!checkValidUrl({ url: httpUrl.href })) {
+              throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+            }
+            const isHttpValid = await SettingsService.verifyInstallationUrl(httpUrl.href);
             if (isHttpValid) {
-              verifiedInstallationUrl = httpUrl;
-              verifiedWebSocketUrl = buildWebSocketUrl(host, 'ws');
+              verifiedInstallationUrl = httpUrl.href;
+              verifiedWebSocketUrl = buildWebSocketUrl(httpUrl.host, 'ws');
+              baseUrl = httpUrl.host;
             } else {
               throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
             }
+          } else {
+            // Bare public host failed HTTPS: do not silently downgrade to cleartext HTTP.
+            throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
           }
         }
 
         return {
           installationUrl: verifiedInstallationUrl,
           webSocketUrl: verifiedWebSocketUrl,
-          baseUrl: host,
+          baseUrl,
         };
       } catch (error) {
         const message = error instanceof Error ? error.message : I18n.t('CONFIGURE_URL.ERROR');

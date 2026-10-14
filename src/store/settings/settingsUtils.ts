@@ -99,3 +99,98 @@ export const checkValidUrl = ({ url }: { url: string }): boolean => {
     return false;
   }
 };
+
+/**
+ * Checks whether a hostname refers to a local or private network address (RFC 1918 / RFC 3927 / localhost / loopback).
+ */
+export const isLocalOrPrivateHost = (hostname: string): boolean => {
+  if (!hostname) {
+    return false;
+  }
+  const clean = hostname.replace(/^\[|\]$/g, '').toLowerCase();
+  if (
+    clean === 'localhost' ||
+    clean.endsWith('.localhost') ||
+    clean.endsWith('.local') ||
+    clean.endsWith('.lan') ||
+    clean.endsWith('.internal')
+  ) {
+    return true;
+  }
+
+  const ipv4Match = clean.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (ipv4Match) {
+    const [, a, b, c, d] = ipv4Match.map(Number);
+    if ([a, b, c, d].some(n => n < 0 || n > 255)) {
+      return false;
+    }
+    if (a === 127) return true; // 127.0.0.0/8
+    if (a === 10) return true; // 10.0.0.0/8
+    if (a === 172 && b >= 16 && b <= 31) return true; // 172.16.0.0/12
+    if (a === 192 && b === 168) return true; // 192.168.0.0/16
+    if (a === 169 && b === 254) return true; // 169.254.0.0/16
+    return false;
+  }
+
+  if (clean === '::1' || clean === '0:0:0:0:0:0:0:1') {
+    return true;
+  }
+  if (/^(fc|fd)[0-9a-f]{2}:/i.test(clean)) {
+    return true;
+  }
+  if (/^fe[89ab][0-9a-f]:/i.test(clean)) {
+    return true;
+  }
+
+  return false;
+};
+
+export interface UrlDetails {
+  hostname: string;
+  port: string;
+  scheme: 'http://' | 'https://' | null;
+  hasWhitespace: boolean;
+  isValid: boolean;
+}
+
+/**
+ * Parses raw field input without stripping explicit ports like 443 before protocol selection.
+ */
+export const extractUrlDetails = ({ url }: { url: string }): UrlDetails => {
+  const trimmedUrl = url.trim();
+  const hasWhitespace = /\s/.test(trimmedUrl);
+  const scheme = extractScheme({ url: trimmedUrl });
+
+  if (!trimmedUrl || hasWhitespace) {
+    return {
+      hostname: '',
+      port: '',
+      scheme: null,
+      hasWhitespace,
+      isValid: false,
+    };
+  }
+
+  try {
+    const rawWithoutScheme = trimmedUrl.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
+    const parsed = new URL(`chatwoot://${rawWithoutScheme}`);
+    const hostname = parsed.hostname;
+    const port = parsed.port;
+
+    return {
+      hostname,
+      port,
+      scheme,
+      hasWhitespace: false,
+      isValid: Boolean(hostname),
+    };
+  } catch {
+    return {
+      hostname: '',
+      port: '',
+      scheme: null,
+      hasWhitespace: false,
+      isValid: false,
+    };
+  }
+};

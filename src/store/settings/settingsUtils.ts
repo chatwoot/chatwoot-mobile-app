@@ -229,3 +229,29 @@ export const checkValidInstallationUrl = (input: string): boolean => {
     Boolean(details.port)
   );
 };
+
+/**
+ * Resolves the initial URL to display in the URL configuration editor.
+ * Retains explicit http:// scheme when present to prevent public HTTP setups
+ * from losing their scheme and being rejected on resubmission.
+ */
+export const getInitialUrl = ({
+  baseUrl,
+  installationUrl,
+  appName,
+}: {
+  baseUrl?: string | null;
+  installationUrl?: string | null;
+  appName?: string | null;
+}): string => {
+  if (installationUrl?.startsWith('http://')) {
+    return installationUrl.replace(/\/$/, '');
+  }
+  if (baseUrl) {
+    return baseUrl;
+  }
+  if (installationUrl) {
+    return installationUrl.replace(/\/$/, '');
+  }
+  return appName === 'Chatwoot' ? 'app.chatwoot.com' : '';
+};

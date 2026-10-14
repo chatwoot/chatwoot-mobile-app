@@ -36,7 +36,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     android: {
       adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'com.chatwoot.app',
-      usesCleartextTraffic: true,
       permissions: [
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',
@@ -111,6 +110,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           // compileSdk/targetSdk 36 = Expo SDK 54 / RN 0.81 default (Android 16).
           // notifee (issue #808) needs compileSdk >= 35, satisfied by 36.
           android: {
+            usesCleartextTraffic: true,
             minSdkVersion: 24,
             compileSdkVersion: 36,
             targetSdkVersion: 36,

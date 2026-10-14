@@ -5,6 +5,7 @@ import {
   extractDomain,
   extractScheme,
   extractUrlDetails,
+  getInitialUrl,
   isLocalOrPrivateHost,
   repairPersistedWebSocketUrl,
 } from '../settingsUtils';
@@ -317,5 +318,67 @@ describe('checkValidInstallationUrl', () => {
     ['random-string-no-dot-no-port', false],
   ])('returns %s for input %s', (input, expected) => {
     expect(checkValidInstallationUrl(input)).toBe(expected);
+  });
+});
+
+describe('getInitialUrl', () => {
+  it('retains explicit http scheme for public installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot.example.com',
+        installationUrl: 'http://chatwoot.example.com/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('http://chatwoot.example.com');
+  });
+
+  it('retains explicit http scheme for local IP installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '192.168.0.71:9668',
+        installationUrl: 'http://192.168.0.71:9668/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('http://192.168.0.71:9668');
+  });
+
+  it('returns bare baseUrl for standard cloud Chatwoot', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'app.chatwoot.com',
+        installationUrl: 'https://app.chatwoot.com/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('app.chatwoot.com');
+  });
+
+  it('returns bare baseUrl for standard HTTPS custom domain', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot.mycompany.com',
+        installationUrl: 'https://chatwoot.mycompany.com/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('chatwoot.mycompany.com');
+  });
+
+  it('falls back to default app name for fresh Chatwoot install', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '',
+        installationUrl: '',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('app.chatwoot.com');
+  });
+
+  it('returns empty string for white-labeled fresh install', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '',
+        installationUrl: '',
+        appName: 'CustomApp',
+      }),
+    ).toBe('');
   });
 });

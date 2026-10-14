@@ -194,6 +194,10 @@ export const whenNotJoining = (store: Store) =>
     });
   });
 
+// Incoming reports CallKit has not finished, by call sid. An answer made meanwhile waits
+// for the report, so the system call is answered rather than left ringing over the join.
+const pendingReports = new Map<string, Promise<void>>();
+
 const carriesMedia = (store: Store, callSid: string) => {
   const state = store.getState();
   return callSid === (selectLocalCallSid(state) ?? selectActiveCall(state)?.callSid);
@@ -205,6 +209,16 @@ export const systemCall = {
   // Shows the OS incoming-call UI for a call that arrived over the socket
   async reportRinging(store: Store, call: LiveCall) {
     if (!isSystemCallUiAvailable() || call.systemUuid || !call.provider) return;
+    if (pendingReports.has(call.callSid)) return pendingReports.get(call.callSid);
+    const report = systemCall.reportRingingNow(store, call).finally(() => {
+      pendingReports.delete(call.callSid);
+    });
+    pendingReports.set(call.callSid, report);
+    return report;
+  },
+
+  async reportRingingNow(store: Store, call: LiveCall) {
+    if (!call.provider) return;
     const { displayName, handle } = callerInfo(store.getState(), call);
     try {
       const systemUuid = await reportIncomingSystemCall({
@@ -308,11 +322,17 @@ export const systemCall = {
   // then the matching action event performs the real work
   // The OS taking the answer resolves as 'requested'; the join follows on its action event
   async answer(store: Store, call: LiveCall): Promise<JoinResult> {
-    if (call.systemUuid) {
-      await requestSystemCallAnswer(call.systemUuid);
+    const report = call.systemUuid ? undefined : pendingReports.get(call.callSid);
+    if (report) await report;
+    const current = report
+      ? selectCalls(store.getState()).find(entry => entry.callSid === call.callSid)
+      : call;
+    if (!current) return { status: 'already_ended' };
+    if (current.systemUuid) {
+      await requestSystemCallAnswer(current.systemUuid);
       return { status: 'requested' };
     }
-    return startJoin(store, call.callSid);
+    return startJoin(store, current.callSid);
   },
 
   // The OS may no longer know the call (ended by a cancel push, or a provider reset);

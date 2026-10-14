@@ -43,7 +43,7 @@ const initialState = conversationAdapter.getInitialState<ConversationState>({
   isChangingConversationStatus: false,
 });
 
-const isOutdatedConversationUpdate = (
+export const isOutdatedConversationUpdate = (
   existingConversation: Conversation | undefined,
   incomingConversation: Conversation,
 ) => {

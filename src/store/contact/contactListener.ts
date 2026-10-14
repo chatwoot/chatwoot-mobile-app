@@ -2,6 +2,7 @@
 
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { conversationActions } from '../conversation/conversationActions';
+import { isOutdatedConversationUpdate } from '../conversation/conversationSlice';
 import { notificationActions } from '../notification/notificationAction';
 import { addNotification } from '../notification/notificationSlice';
 import { addContact, addContacts } from './contactSlice';
@@ -34,6 +35,19 @@ contactListenerMiddleware.startListening({
     // was always undefined, so the contact was never refreshed when a
     // conversation was opened.
     const { conversation } = action.payload as { conversation: Conversation };
+
+    // Mirror the conversation reducer's staleness guard: when this response
+    // is older than the snapshot already in the store (e.g. a slow fetch
+    // completing after a newer conversations-list refresh), the conversation
+    // store discards it — its stale meta.sender must not overwrite a
+    // fresher contact either.
+    const state = listenerApi.getState() as {
+      conversations: { entities: Record<number, Conversation | undefined> };
+    };
+    if (isOutdatedConversationUpdate(state.conversations.entities[conversation.id], conversation)) {
+      return;
+    }
+
     const contact = conversation?.meta?.sender;
     if (contact) {
       listenerApi.dispatch(addContact(contact));

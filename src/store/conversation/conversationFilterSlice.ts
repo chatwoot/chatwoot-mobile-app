@@ -1,6 +1,6 @@
 // Conversation Filter Slice is used to manage the filters for the conversations screen
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ConversationFilterOptions } from '@/types';
 import { RootState } from '@/store';
 
@@ -9,6 +9,7 @@ export type FilterState = Record<ConversationFilterOptions, string>;
 export const defaultFilterState: FilterState = {
   assignee_type: 'me',
   status: 'open',
+  read_status: 'all',
   sort_by: 'latest',
   inbox_id: '0',
 };
@@ -40,6 +41,11 @@ const conversationFilterSlice = createSlice({
 
 export const { setFilters, resetFilters } = conversationFilterSlice.actions;
 
-export const selectFilters = (state: RootState) => state.conversationFilter.filters;
+// Filters persisted before a filter key existed lack that key, so the defaults
+// fill the gaps.
+export const selectFilters = createSelector(
+  (state: RootState) => state.conversationFilter.filters,
+  (filters): FilterState => ({ ...defaultFilterState, ...filters }),
+);
 
 export default conversationFilterSlice.reducer;

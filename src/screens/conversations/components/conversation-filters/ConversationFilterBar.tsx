@@ -4,7 +4,12 @@ import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { BottomSheetType, setBottomSheetState } from '@/store/conversation/conversationHeaderSlice';
 import { selectFilters } from '@/store/conversation/conversationFilterSlice';
 import { BaseFilterOption, FilterBar } from '@/components-next';
-import { AssigneeOptions, StatusOptions, SortOptions } from '@/types/common/ConversationStatus';
+import {
+  AssigneeOptions,
+  StatusOptions,
+  ReadStatusOptions,
+  SortOptions,
+} from '@/types/common/ConversationStatus';
 import i18n from '@/i18n';
 
 export const ConversationFilterOptions: BaseFilterOption[] = [
@@ -17,6 +22,11 @@ export const ConversationFilterOptions: BaseFilterOption[] = [
     type: 'status',
     options: StatusOptions,
     defaultFilter: 'Open',
+  },
+  {
+    type: 'read_status',
+    options: ReadStatusOptions,
+    defaultFilter: 'All',
   },
   {
     type: 'sort_by',

@@ -6,6 +6,8 @@ export type SortTypes = 'latest' | 'sort_on_created_at' | 'sort_on_priority';
 
 export type AssigneeTypes = 'me' | 'unassigned' | 'all';
 
+export type ReadStatusTypes = 'all' | 'unread';
+
 export type StatusCollection = { id: AllStatusTypes; icon: React.ReactNode };
 
 export const AssigneeOptions: Record<AssigneeTypes, string> = {
@@ -20,6 +22,11 @@ export const StatusOptions: Record<AllStatusTypes, string> = {
   resolved: 'Resolved',
   pending: 'Pending',
   snoozed: 'Snoozed',
+};
+
+export const ReadStatusOptions: Record<ReadStatusTypes, string> = {
+  all: 'All',
+  unread: 'Unread',
 };
 
 export const SortOptions: Record<SortTypes, string> = {

@@ -463,6 +463,8 @@
     "PHONE_NUMBER": "Phone Number",
     "PHONE": "Phone",
     "CALL": "Call",
+    "CALL_OPTIONS_TITLE": "Choose how to call",
+    "PHONE_DIALER": "Phone dialer",
     "LOCATION": "Location",
     "COMPANY": "Company",
     "CONTACT_ATTRIBUTES": "Contact Attributes",

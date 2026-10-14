@@ -18,6 +18,7 @@ import { callMediaActions } from './callMediaActions';
 import { callSyncActions } from './callSyncActions';
 import { CallService } from './callService';
 import { takeEarlyOutboundEvents } from './earlyOutboundEvents';
+import type { CallerSnapshot } from './callTypes';
 import {
   addCall,
   clearActiveCall,
@@ -57,11 +58,15 @@ const digest = (value: string) =>
 const httpStatus = (error: unknown) =>
   (error as { response?: { status?: number } })?.response?.status;
 
+// A call is placed in a conversation, or to a contact through an inbox, where the server
+// finds or opens the conversation it lands in
 export type StartOutboundCallParams = {
   provider: VoiceCallProvider;
-  conversationId: number;
+  conversationId?: number;
   inboxId: number;
   contactId?: number;
+  // Who is being called, for the call screen while the conversation is not in the store
+  caller?: CallerSnapshot | null;
 };
 
 export type StartOutboundCallResult =
@@ -147,7 +152,7 @@ export const callActions = {
     { state: RootState }
   >(
     'calls/startOutboundCall',
-    async ({ provider, conversationId, inboxId, contactId }, { getState, dispatch }) => {
+    async ({ provider, conversationId, inboxId, contactId, caller }, { getState, dispatch }) => {
       const state = getState();
       // One call at a time, a call still being placed or joined included
       if (
@@ -166,7 +171,7 @@ export const callActions = {
       const attempt = placingAttempt;
       const cancelled = () => cancelledAttempts.has(attempt);
       // The call screen opens on this, before the media offer and the provider request
-      dispatch(setPlacingCall({ conversationId, inboxId, provider, accountId }));
+      dispatch(setPlacingCall({ conversationId, inboxId, provider, accountId, caller }));
 
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
@@ -192,6 +197,8 @@ export const callActions = {
             response = await CallService.initiateWhatsappCall({
               sdpOffer,
               conversationId,
+              contactId,
+              inboxId,
               accountId,
             });
           } catch (error) {
@@ -235,6 +242,7 @@ export const callActions = {
               provider: VOICE_CALL_PROVIDERS.WHATSAPP,
               senderId,
               accountId,
+              caller,
             }),
           );
           // The contact's side may have answered before the request above returned
@@ -285,6 +293,7 @@ export const callActions = {
             provider: VOICE_CALL_PROVIDERS.TWILIO,
             senderId,
             accountId,
+            caller,
           }),
         );
         // Twilio's status may have arrived before the request above returned

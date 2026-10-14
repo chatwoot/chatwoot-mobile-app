@@ -75,11 +75,13 @@ export type CallState = {
 };
 
 export type PlacingCall = {
-  conversationId: number;
+  // Absent for a call placed to a contact, until the server names the conversation
+  conversationId?: number;
   inboxId?: number;
   provider?: VoiceCallProvider;
   // The account the call is placed in, kept should the agent switch accounts meanwhile
   accountId?: number;
+  caller?: CallerSnapshot | null;
 };
 
 export type VoiceCallIncomingEvent = {

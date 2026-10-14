@@ -19,6 +19,7 @@ export const useScreenCall = (): LiveCall | null => {
             conversationId: placingCall.conversationId,
             inboxId: placingCall.inboxId,
             accountId: placingCall.accountId,
+            caller: placingCall.caller,
             callDirection: 'outbound',
             isActive: false,
             addedAt: Date.now(),

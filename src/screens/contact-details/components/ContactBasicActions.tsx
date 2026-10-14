@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Dimensions, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -9,6 +9,14 @@ import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import i18n from '@/i18n';
 import { openNumber, openEmail } from '@/utils/urlUtils';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import type { SheetRef } from '@/components-next/common/sheet/Sheet';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import type { CallerSnapshot } from '@/store/call/callTypes';
+import { placeOutboundCall } from '@/utils/placeOutboundCall';
+
+import { buildContactCallOptions, type ContactCallOption } from '../utils/contactCallOptions';
+import { ContactCallSheet } from './ContactCallSheet';
 
 type ContactOption = {
   contactType: 'call' | 'email';
@@ -62,17 +70,71 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
 type ContactBasicActionsProps = {
   phoneNumber?: string;
   email?: string;
+  contactId?: number;
+  // The conversation the contact was opened from, if any
+  conversation?: { id: number; inboxId?: number } | null;
+  caller?: CallerSnapshot | null;
 };
 
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
-  const { phoneNumber, email } = props;
+  const { phoneNumber, email, contactId, conversation, caller } = props;
+  const dispatch = useAppDispatch();
+  const inboxes = useAppSelector(selectAllInboxes);
+  const callSheetRef = useRef<SheetRef>(null);
+  const selectedOptionRef = useRef<ContactCallOption | null>(null);
 
+  const callOptions = useMemo(
+    () => (contactId ? buildContactCallOptions(inboxes, conversation) : []),
+    [contactId, inboxes, conversation],
+  );
+
+  const callThrough = (option: ContactCallOption) => {
+    if (option.type === 'dialer') {
+      if (phoneNumber) openNumber({ phoneNumber });
+      return;
+    }
+    placeOutboundCall(dispatch, {
+      provider: option.provider,
+      inboxId: option.inbox.id,
+      conversationId: option.conversationId,
+      contactId,
+      caller,
+    });
+  };
+
+  // With an inbox that can call, the agent picks how to call; otherwise the dialer opens
   const onCallPress = () => {
     if (!phoneNumber) {
       return;
     }
+    if (callOptions.length > 1) {
+      callSheetRef.current?.present();
+      return;
+    }
     openNumber({ phoneNumber });
   };
+
+  // The choice is acted on once the sheet is gone, so the call screen is not opened under it
+  const onCallOptionSelect = (option: ContactCallOption) => {
+    selectedOptionRef.current = option;
+    callSheetRef.current?.dismiss();
+  };
+
+  const onCallSheetDismiss = () => {
+    const option = selectedOptionRef.current;
+    selectedOptionRef.current = null;
+    if (option) callThrough(option);
+  };
+
+  const callSheet =
+    callOptions.length > 1 ? (
+      <ContactCallSheet
+        ref={callSheetRef}
+        options={callOptions}
+        onSelect={onCallOptionSelect}
+        onDismiss={onCallSheetDismiss}
+      />
+    ) : null;
 
   const onEmailPress = () => {
     if (!email) {
@@ -104,17 +166,21 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
           }}
           handleOptionPress={onCallPress}
         />
+        {callSheet}
       </Animated.View>
     );
   }
 
   if (phoneNumber) {
     return (
-      <IconButton
-        text={i18n.t('CONTACT_DETAILS.CALL')}
-        variant="secondary"
-        handlePress={onCallPress}
-      />
+      <>
+        <IconButton
+          text={i18n.t('CONTACT_DETAILS.CALL')}
+          variant="secondary"
+          handlePress={onCallPress}
+        />
+        {callSheet}
+      </>
     );
   }
 

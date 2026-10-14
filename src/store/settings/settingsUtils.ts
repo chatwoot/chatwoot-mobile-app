@@ -40,10 +40,29 @@ export const extractDomain = ({ url }: { url: string }) => {
 };
 
 /**
+ * Extracts http:// or https:// scheme if present in the input url.
+ */
+export const extractScheme = ({ url }: { url: string }): 'http://' | 'https://' | null => {
+  const trimmedUrl = url.trim();
+  const match = trimmedUrl.match(/^([a-z][a-z0-9+.-]*):\/\//i);
+  if (match) {
+    const scheme = match[1].toLowerCase();
+    if (scheme === 'http') {
+      return 'http://';
+    }
+    if (scheme === 'https') {
+      return 'https://';
+    }
+  }
+  return null;
+};
+
+/**
  * The Action Cable endpoint for a host. Always derived from the extracted host,
  * since a scheme left in the value produces an endpoint that never connects.
  */
-export const buildWebSocketUrl = (host: string) => `wss://${host}/cable`;
+export const buildWebSocketUrl = (host: string, protocol: 'ws' | 'wss' = 'wss') =>
+  `${protocol}://${host}/cable`;
 
 /**
  * Replaces a persisted websocket URL that disagrees with the stored host, which
@@ -52,12 +71,13 @@ export const buildWebSocketUrl = (host: string) => `wss://${host}/cable`;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const repairPersistedWebSocketUrl = (state: any) => {
-  const { baseUrl, webSocketUrl } = state?.settings ?? {};
+  const { baseUrl, webSocketUrl, installationUrl } = state?.settings ?? {};
   if (!baseUrl) {
     return state;
   }
 
-  const expectedUrl = buildWebSocketUrl(baseUrl);
+  const protocol = installationUrl?.startsWith('http://') ? 'ws' : 'wss';
+  const expectedUrl = buildWebSocketUrl(baseUrl, protocol);
   if (webSocketUrl === expectedUrl) {
     return state;
   }

@@ -10,7 +10,8 @@ import type {
 export class SettingsService {
   static async verifyInstallationUrl(url: string): Promise<boolean> {
     try {
-      await axios.get(`${url}api`);
+      const normalizedUrl = url.endsWith('/') ? url : `${url}/`;
+      await axios.get(`${normalizedUrl}api`, { timeout: 5000 });
       return true;
     } catch {
       return false;

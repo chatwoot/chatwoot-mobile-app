@@ -41,7 +41,7 @@ const ConfigURLScreen = () => {
   const onSubmit = async (data: FormData) => {
     const { url } = data;
     if (url) {
-      dispatch(settingsActions.setInstallationUrl(url));
+      dispatch(settingsActions.setInstallationUrl(url.trim()));
     }
   };
 
@@ -92,8 +92,9 @@ const ConfigURLScreen = () => {
                   onChangeText={onChange}
                   value={value}
                   placeholderTextColor={tailwind.color('text-gray-900')}
-                  keyboardType="email-address"
+                  keyboardType="url"
                   autoCapitalize="none"
+                  autoCorrect={false}
                 />
                 {errors.url && (
                   <Animated.Text style={tailwind.style('text-ruby-900')}>

@@ -22,6 +22,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           'This app does not use Apple Music, but a system API may require this permission.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
+        NSAppTransportSecurity: {
+          NSAllowsArbitraryLoads: true,
+        },
       },
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
@@ -31,6 +34,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     android: {
       adaptiveIcon: { foregroundImage: './assets/adaptive-icon.png', backgroundColor: '#ffffff' },
       package: 'com.chatwoot.app',
+      usesCleartextTraffic: true,
       permissions: [
         'android.permission.CAMERA',
         'android.permission.RECORD_AUDIO',

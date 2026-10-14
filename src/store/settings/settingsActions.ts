@@ -21,8 +21,13 @@ import type {
   PushPayload,
 } from './settingsTypes';
 import I18n from '@/i18n';
-import { URL_TYPE } from '@/constants/url';
-import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
+import {
+  checkValidUrl,
+  extractDomain,
+  extractScheme,
+  handleApiError,
+  buildWebSocketUrl,
+} from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { isUnactionablePushError } from '@/utils/sentryUtils';
 
@@ -45,24 +50,66 @@ export const settingsActions = {
     'settings/setInstallationUrl',
     async (url, { rejectWithValue }) => {
       try {
-        const installationUrl = extractDomain({ url });
-        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
-        const WEB_SOCKET_URL = buildWebSocketUrl(installationUrl);
+        const host = extractDomain({ url });
+        const scheme = extractScheme({ url });
 
-        if (!checkValidUrl({ url: INSTALLATION_URL })) {
+        if (!host || /\s/.test(host)) {
           throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
         }
 
-        const isValid = await SettingsService.verifyInstallationUrl(INSTALLATION_URL);
+        let verifiedInstallationUrl = '';
+        let verifiedWebSocketUrl = '';
 
-        if (!isValid) {
-          throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+        if (scheme === 'http://') {
+          const testUrl = `http://${host}/`;
+          if (!checkValidUrl({ url: testUrl })) {
+            throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+          }
+          const isValid = await SettingsService.verifyInstallationUrl(testUrl);
+          if (!isValid) {
+            throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+          }
+          verifiedInstallationUrl = testUrl;
+          verifiedWebSocketUrl = buildWebSocketUrl(host, 'ws');
+        } else if (scheme === 'https://') {
+          const testUrl = `https://${host}/`;
+          if (!checkValidUrl({ url: testUrl })) {
+            throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+          }
+          const isValid = await SettingsService.verifyInstallationUrl(testUrl);
+          if (!isValid) {
+            throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+          }
+          verifiedInstallationUrl = testUrl;
+          verifiedWebSocketUrl = buildWebSocketUrl(host, 'wss');
+        } else {
+          // No scheme provided. Try https first; fallback to http if https fails.
+          const httpsUrl = `https://${host}/`;
+          const httpUrl = `http://${host}/`;
+
+          if (!checkValidUrl({ url: httpsUrl })) {
+            throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+          }
+
+          const isHttpsValid = await SettingsService.verifyInstallationUrl(httpsUrl);
+          if (isHttpsValid) {
+            verifiedInstallationUrl = httpsUrl;
+            verifiedWebSocketUrl = buildWebSocketUrl(host, 'wss');
+          } else {
+            const isHttpValid = await SettingsService.verifyInstallationUrl(httpUrl);
+            if (isHttpValid) {
+              verifiedInstallationUrl = httpUrl;
+              verifiedWebSocketUrl = buildWebSocketUrl(host, 'ws');
+            } else {
+              throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+            }
+          }
         }
 
         return {
-          installationUrl: INSTALLATION_URL,
-          webSocketUrl: WEB_SOCKET_URL,
-          baseUrl: installationUrl,
+          installationUrl: verifiedInstallationUrl,
+          webSocketUrl: verifiedWebSocketUrl,
+          baseUrl: host,
         };
       } catch (error) {
         const message = error instanceof Error ? error.message : I18n.t('CONFIGURE_URL.ERROR');

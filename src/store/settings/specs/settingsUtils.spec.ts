@@ -2,6 +2,7 @@ import {
   buildWebSocketUrl,
   checkValidUrl,
   extractDomain,
+  extractScheme,
   repairPersistedWebSocketUrl,
 } from '../settingsUtils';
 
@@ -66,12 +67,34 @@ describe('extractDomain', () => {
   });
 });
 
+describe('extractScheme', () => {
+  it.each([
+    ['http://192.168.0.71:9668', 'http://'],
+    ['HTTP://192.168.0.71:9668/', 'http://'],
+    ['https://app.chatwoot.com', 'https://'],
+    ['HTTPS://APP.CHATWOOT.COM/', 'https://'],
+  ])('extracts %s as %s', (url, expected) => {
+    expect(extractScheme({ url })).toBe(expected);
+  });
+
+  it.each(['192.168.0.71:9668', 'app.chatwoot.com', 'ftp://app.chatwoot.com', ''])(
+    'returns null for %s without valid http(s) scheme',
+    url => {
+      expect(extractScheme({ url })).toBeNull();
+    },
+  );
+});
+
 describe('buildWebSocketUrl', () => {
   it.each([
     ['app.chatwoot.com', 'wss://app.chatwoot.com/cable'],
     ['chatwoot.example.com:3000', 'wss://chatwoot.example.com:3000/cable'],
   ])('builds the cable endpoint for %s', (host, expected) => {
     expect(buildWebSocketUrl(host)).toBe(expected);
+  });
+
+  it('builds insecure ws cable endpoint when protocol is ws', () => {
+    expect(buildWebSocketUrl('192.168.0.71:9668', 'ws')).toBe('ws://192.168.0.71:9668/cable');
   });
 });
 
@@ -89,6 +112,20 @@ describe('repairPersistedWebSocketUrl', () => {
       baseUrl: 'app.chatwoot.com',
       installationUrl: 'https://app.chatwoot.com/',
       webSocketUrl: 'wss://app.chatwoot.com/cable',
+    });
+  });
+
+  it('rebuilds a websocket URL with ws scheme when installationUrl is http', () => {
+    const state = stateWith({
+      baseUrl: '192.168.0.71:9668',
+      installationUrl: 'http://192.168.0.71:9668/',
+      webSocketUrl: 'wss://192.168.0.71:9668/cable',
+    });
+
+    expect(repairPersistedWebSocketUrl(state).settings).toEqual({
+      baseUrl: '192.168.0.71:9668',
+      installationUrl: 'http://192.168.0.71:9668/',
+      webSocketUrl: 'ws://192.168.0.71:9668/cable',
     });
   });
 

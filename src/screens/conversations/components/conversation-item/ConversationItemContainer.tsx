@@ -73,7 +73,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
     priority,
     unreadCount,
     labels,
-    timestamp,
+    lastActivityAt: timestamp,
     inboxId,
     lastNonActivityMessage,
     slaPolicyId,

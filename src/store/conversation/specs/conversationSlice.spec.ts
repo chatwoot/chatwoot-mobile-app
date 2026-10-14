@@ -1,4 +1,9 @@
-import conversationReducer, { addConversation, updateConversation } from '../conversationSlice';
+import conversationReducer, {
+  addOrUpdateMessage,
+  updateConversationLastActivity,
+  addConversation,
+  updateConversation,
+} from '../conversationSlice';
 import { conversation } from './conversationMockData';
 import { conversationActions } from '../conversationActions';
 
@@ -251,5 +256,53 @@ describe('conversation reducer', () => {
 
     expect(state.entities[conversation.id]?.status).toBe('resolved');
     expect(state.entities[conversation.id]?.updatedAt).toBe(200);
+  });
+});
+
+describe('conversation activity timestamps', () => {
+  it('keeps the latest activity when an older message receives a receipt', () => {
+    let state = conversationReducer(
+      undefined,
+      addConversation({
+        ...conversation,
+        lastActivityAt: 1000,
+        timestamp: 1000,
+        messages: [],
+      }),
+    );
+    state = conversationReducer(
+      state,
+      addOrUpdateMessage({
+        id: 10,
+        conversationId: conversation.id,
+        createdAt: 100,
+        status: 'read',
+      }),
+    );
+    expect(state.entities[conversation.id]!.timestamp).toBe(1000);
+    expect(state.entities[conversation.id]!.lastActivityAt).toBe(1000);
+    expect(state.entities[conversation.id]!.messages[0].status).toBe('read');
+  });
+
+  it('advances activity and ignores delayed or incomplete creation events', () => {
+    let state = conversationReducer(
+      undefined,
+      addConversation({
+        ...conversation,
+        lastActivityAt: 1000,
+        timestamp: 1000,
+      }),
+    );
+    for (const lastActivityAt of [2000, 1500, undefined]) {
+      state = conversationReducer(
+        state,
+        updateConversationLastActivity({
+          conversationId: conversation.id,
+          lastActivityAt,
+        }),
+      );
+    }
+    expect(state.entities[conversation.id]!.lastActivityAt).toBe(2000);
+    expect(state.entities[conversation.id]!.timestamp).toBe(2000);
   });
 });

@@ -115,6 +115,11 @@ export const conversationActions = {
         const camelCaseMessage = transformMessage(response);
 
         dispatch({
+          type: 'conversation/updateConversationLastActivity',
+          payload: { conversationId, lastActivityAt: camelCaseMessage.createdAt },
+        });
+
+        dispatch({
           type: 'conversation/addOrUpdateMessage',
           payload: {
             ...camelCaseMessage,
@@ -172,6 +177,11 @@ export const conversationActions = {
         }
 
         const camelCaseMessage = transformMessage(response);
+
+        dispatch({
+          type: 'conversation/updateConversationLastActivity',
+          payload: { conversationId, lastActivityAt: camelCaseMessage.createdAt },
+        });
 
         dispatch({
           type: 'conversation/addOrUpdateMessage',

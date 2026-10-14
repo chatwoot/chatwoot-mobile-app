@@ -20,6 +20,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         NSMicrophoneUsageDescription: 'This app requires access to the microphone to record audio.',
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
+        NSLocalNetworkUsageDescription:
+          'This app requires access to the local network to discover and connect to self-hosted Chatwoot installations.',
         UIBackgroundModes: ['fetch', 'remote-notification'],
         ITSAppUsesNonExemptEncryption: false,
         NSAppTransportSecurity: {

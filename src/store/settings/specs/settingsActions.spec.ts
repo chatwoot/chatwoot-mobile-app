@@ -148,4 +148,18 @@ describe('setInstallationUrl', () => {
       baseUrl: 'chatwoot.example.com',
     });
   });
+
+  it('falls back to http for local host with trailing root dot', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('chatwoot.local.');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://chatwoot.local./',
+      webSocketUrl: 'ws://chatwoot.local./cable',
+      baseUrl: 'chatwoot.local.',
+    });
+  });
 });

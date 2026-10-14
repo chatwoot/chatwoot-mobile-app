@@ -116,7 +116,10 @@ export const isLocalOrPrivateHost = (hostname: string): boolean => {
   } catch {
     // Fallback if not directly parseable
   }
-  const clean = canonicalHost.replace(/^\[|\]$/g, '').toLowerCase();
+  const clean = canonicalHost
+    .replace(/^\[|\]$/g, '')
+    .replace(/\.$/, '')
+    .toLowerCase();
   if (
     clean === 'localhost' ||
     clean.endsWith('.localhost') ||
@@ -217,7 +220,7 @@ export const checkValidInstallationUrl = (input: string): boolean => {
   if (!details.isValid || details.hasWhitespace || !details.hostname) {
     return false;
   }
-  const host = details.hostname;
+  const host = details.hostname.replace(/\.$/, '');
   return (
     host === 'localhost' ||
     host.endsWith('.localhost') ||

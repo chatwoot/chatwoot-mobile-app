@@ -549,7 +549,7 @@ describe('callActions.syncRingingCalls', () => {
       }),
     });
 
-    const sync = run(store)(callActions.syncRingingCalls()).unwrap();
+    const sync = run(store as never)(callActions.syncRingingCalls()).unwrap();
     store.dispatch({ type: 'test/switchAccount', payload: 2 });
     finish([
       {

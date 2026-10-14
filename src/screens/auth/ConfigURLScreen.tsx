@@ -4,7 +4,7 @@ import { Animated, StatusBar, TextInput, View } from 'react-native';
 import * as Application from 'expo-application';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Icon } from '@/components-next';
-import { URL_WITHOUT_HTTP_REGEX } from '@/constants';
+import { checkValidInstallationUrl } from '@/store/settings/settingsUtils';
 import { LinkIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
@@ -73,10 +73,8 @@ const ConfigURLScreen = () => {
             control={control}
             rules={{
               required: i18n.t('CONFIGURE_URL.URL_REQUIRED'),
-              pattern: {
-                value: URL_WITHOUT_HTTP_REGEX,
-                message: i18n.t('CONFIGURE_URL.URL_ERROR'),
-              },
+              validate: value =>
+                checkValidInstallationUrl(value) || i18n.t('CONFIGURE_URL.URL_ERROR'),
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={tailwind.style('pt-8 mb-8 gap-2')}>

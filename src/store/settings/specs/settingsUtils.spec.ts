@@ -1,5 +1,6 @@
 import {
   buildWebSocketUrl,
+  checkValidInstallationUrl,
   checkValidUrl,
   extractDomain,
   extractScheme,
@@ -185,6 +186,11 @@ describe('isLocalOrPrivateHost', () => {
     ['169.254.1.1', true],
     ['::1', true],
     ['[::1]', true],
+    ['[fd12::1]', true],
+    ['fd12::1', true],
+    ['010.0.0.1', false],
+    ['0x7f000001', true],
+    ['chatwoot.example.com.', false],
     ['app.chatwoot.com', false],
     ['chatwoot.example.com', false],
     ['8.8.8.8', false],
@@ -245,5 +251,64 @@ describe('extractUrlDetails', () => {
     const details = extractUrlDetails({ url: 'app chatwoot com' });
     expect(details.isValid).toBe(false);
     expect(details.hasWhitespace).toBe(true);
+  });
+
+  it('extracts bracketed IPv6 with explicit port', () => {
+    const details = extractUrlDetails({ url: 'http://[fd12::1]:3000' });
+    expect(details).toEqual({
+      hostname: '[fd12::1]',
+      port: '3000',
+      scheme: 'http://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts fully qualified domain with trailing dot', () => {
+    const details = extractUrlDetails({ url: 'https://chatwoot.example.com./' });
+    expect(details).toEqual({
+      hostname: 'chatwoot.example.com.',
+      port: '',
+      scheme: 'https://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('rejects unsupported schemes like ftp', () => {
+    const details = extractUrlDetails({ url: 'ftp://app.chatwoot.com' });
+    expect(details.isValid).toBe(false);
+  });
+});
+
+describe('checkValidInstallationUrl', () => {
+  it.each([
+    ['app.chatwoot.com', true],
+    ['https://app.chatwoot.com', true],
+    ['https://app.chatwoot.com/', true],
+    ['https://app.chatwoot.com/app', true],
+    ['https://app.chatwoot.com/#/app', true],
+    ['http://192.168.0.71:9668/', true],
+    ['192.168.0.71:9668', true],
+    ['http://[fd12::1]:3000', true],
+    ['[fd12::1]:3000', true],
+    ['https://chatwoot.example.com./', true],
+    ['chatwoot.example.com.', true],
+    ['localhost:3000', true],
+    ['localhost', true],
+    ['http://localhost:3000', true],
+    ['chatwoot.local', true],
+    ['custom-host:8080', true],
+    ['app chatwoot com', false],
+    ['https://', false],
+    ['http://', false],
+    ['', false],
+    ['   ', false],
+    ['ftp://app.chatwoot.com', false],
+    ['javascript:alert(1)', false],
+    [':::3000', false],
+    ['random-string-no-dot-no-port', false],
+  ])('returns %s for input %s', (input, expected) => {
+    expect(checkValidInstallationUrl(input)).toBe(expected);
   });
 });

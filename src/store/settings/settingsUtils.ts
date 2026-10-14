@@ -107,7 +107,16 @@ export const isLocalOrPrivateHost = (hostname: string): boolean => {
   if (!hostname) {
     return false;
   }
-  const clean = hostname.replace(/^\[|\]$/g, '').toLowerCase();
+  let canonicalHost = hostname;
+  try {
+    const wrapped =
+      hostname.includes(':') && !hostname.startsWith('[') ? `[${hostname}]` : hostname;
+    // Canonicalize IPv4 octets / IPv6 using the standard WHATWG URL parser
+    canonicalHost = new URL(`http://${wrapped}`).hostname;
+  } catch {
+    // Fallback if not directly parseable
+  }
+  const clean = canonicalHost.replace(/^\[|\]$/g, '').toLowerCase();
   if (
     clean === 'localhost' ||
     clean.endsWith('.localhost') ||
@@ -160,8 +169,9 @@ export const extractUrlDetails = ({ url }: { url: string }): UrlDetails => {
   const trimmedUrl = url.trim();
   const hasWhitespace = /\s/.test(trimmedUrl);
   const scheme = extractScheme({ url: trimmedUrl });
+  const hasUnsupportedScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmedUrl) && !scheme;
 
-  if (!trimmedUrl || hasWhitespace) {
+  if (!trimmedUrl || hasWhitespace || hasUnsupportedScheme) {
     return {
       hostname: '',
       port: '',
@@ -173,9 +183,10 @@ export const extractUrlDetails = ({ url }: { url: string }): UrlDetails => {
 
   try {
     const rawWithoutScheme = trimmedUrl.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
-    const parsed = new URL(`chatwoot://${rawWithoutScheme}`);
+    const parsed = new URL(`http://${rawWithoutScheme}`);
     const hostname = parsed.hostname;
-    const port = parsed.port;
+    const explicitPortMatch = rawWithoutScheme.split(/[/?#]/)[0].match(/:(\d+)$/);
+    const port = explicitPortMatch ? explicitPortMatch[1] : parsed.port;
 
     return {
       hostname,
@@ -193,4 +204,25 @@ export const extractUrlDetails = ({ url }: { url: string }): UrlDetails => {
       isValid: false,
     };
   }
+};
+
+/**
+ * Validates whether the user input can be parsed into a valid installation URL or host.
+ */
+export const checkValidInstallationUrl = (input: string): boolean => {
+  if (!input) {
+    return false;
+  }
+  const details = extractUrlDetails({ url: input });
+  if (!details.isValid || details.hasWhitespace || !details.hostname) {
+    return false;
+  }
+  const host = details.hostname;
+  return (
+    host === 'localhost' ||
+    host.endsWith('.localhost') ||
+    host.startsWith('[') ||
+    host.includes('.') ||
+    Boolean(details.port)
+  );
 };

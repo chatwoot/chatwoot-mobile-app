@@ -7,6 +7,7 @@ import { notificationActions } from '../notification/notificationAction';
 import { addNotification } from '../notification/notificationSlice';
 import { addContact, addContacts, updateContact } from './contactSlice';
 import { Conversation } from '@/types/Conversation';
+import { Contact } from '@/types/Contact';
 import { Notification } from '@/types/Notification';
 import type { ConversationListResponse } from '../conversation/conversationTypes';
 import type {
@@ -16,27 +17,52 @@ import type {
 
 export const contactListenerMiddleware = createListenerMiddleware();
 
-// Wallclock markers for cross-source ordering: a conversation response embeds
-// a `meta.sender` snapshot generated when the server rendered it, while a
-// `contact.updated` websocket event (or a contact edit) can land in the store
-// while that request is still in flight — the snapshot is then older than the
-// contact already stored and must not overwrite it. Contact payloads carry no
-// reliable updated-at timestamp shared by all sources, so the listener tracks
-// "did any contact write happen after this conversation fetch started".
-let conversationFetchStartedAt = 0;
-let lastContactWriteAt = 0;
+// The `meta.sender` embedded in a conversation response is a snapshot rendered
+// when the server handled the request, while the same contact can be written
+// by a websocket `contact.updated` event while that request is still in
+// flight. Contact payloads carry no updated-at timestamp shared by all
+// sources, so the ordering is fenced with wallclock markers instead:
+// - fetch start, keyed by thunk requestId — several conversation fetches can
+//   be in flight at once (inbox notifications and the chat screen dispatch it);
+// - last contact write, keyed by contact id — `contact.updated` fires for any
+//   contact in the account, so only writes for the fetched contact matter.
+const fetchStartedAtByRequestId = new Map<string, number>();
+const lastContactWriteAtById = new Map<number, number>();
+
+// `contact.updated` fires on every message activity, so keep the map bounded.
+const MAX_TRACKED_CONTACT_WRITES = 500;
+const CONTACT_WRITE_TTL_MS = 10 * 60 * 1000;
+
+const trackContactWrite = (contactId: number) => {
+  const now = Date.now();
+  if (lastContactWriteAtById.size >= MAX_TRACKED_CONTACT_WRITES) {
+    lastContactWriteAtById.forEach((writtenAt, id) => {
+      if (now - writtenAt > CONTACT_WRITE_TTL_MS) {
+        lastContactWriteAtById.delete(id);
+      }
+    });
+  }
+  lastContactWriteAtById.set(contactId, now);
+};
 
 contactListenerMiddleware.startListening({
-  matcher: isAnyOf(conversationActions.fetchConversation.pending),
-  effect: () => {
-    conversationFetchStartedAt = Date.now();
+  matcher: conversationActions.fetchConversation.pending.match,
+  effect: action => {
+    fetchStartedAtByRequestId.set(action.meta.requestId, Date.now());
   },
 });
 
 contactListenerMiddleware.startListening({
-  matcher: isAnyOf(updateContact),
-  effect: () => {
-    lastContactWriteAt = Date.now();
+  matcher: conversationActions.fetchConversation.rejected.match,
+  effect: action => {
+    fetchStartedAtByRequestId.delete(action.meta.requestId);
+  },
+});
+
+contactListenerMiddleware.startListening({
+  matcher: updateContact.match,
+  effect: action => {
+    trackContactWrite(action.payload.id);
   },
 });
 
@@ -52,13 +78,18 @@ contactListenerMiddleware.startListening({
 });
 
 contactListenerMiddleware.startListening({
-  matcher: isAnyOf(conversationActions.fetchConversation.fulfilled),
+  matcher: conversationActions.fetchConversation.fulfilled.match,
   effect: (action, listenerApi) => {
     // The thunk resolves to `{ conversation }` — the same shape the
     // conversation slice reducer destructures. Reading `payload.meta` here
     // was always undefined, so the contact was never refreshed when a
     // conversation was opened.
-    const { conversation } = action.payload as { conversation: Conversation };
+    const { conversation } = action.payload;
+
+    // Consume this request's marker up front — it's only meaningful for this
+    // one fulfillment.
+    const fetchStartedAt = fetchStartedAtByRequestId.get(action.meta.requestId);
+    fetchStartedAtByRequestId.delete(action.meta.requestId);
 
     // Mirror the conversation reducer's staleness guard: when this response
     // is older than the snapshot already in the store (e.g. a slow fetch
@@ -67,22 +98,39 @@ contactListenerMiddleware.startListening({
     // fresher contact either.
     const state = listenerApi.getState() as {
       conversations: { entities: Record<number, Conversation | undefined> };
+      contacts: { entities: Record<number, Contact | undefined> };
     };
     if (isOutdatedConversationUpdate(state.conversations.entities[conversation.id], conversation)) {
       return;
     }
 
-    // Keep contact data written while the request was in flight (websocket
-    // `contact.updated`, availability, contact edit) — the response snapshot
-    // predates it.
-    if (lastContactWriteAt > conversationFetchStartedAt) {
+    const contact = conversation?.meta?.sender;
+    if (!contact) {
       return;
     }
 
-    const contact = conversation?.meta?.sender;
-    if (contact) {
-      listenerApi.dispatch(addContact(contact));
+    // Skip the snapshot when this exact contact was written while the request
+    // was in flight (websocket `contact.updated`) — the stored contact is then
+    // newer than the response data. Writes to other contacts don't matter.
+    const lastContactWriteAt = lastContactWriteAtById.get(contact.id);
+    if (
+      fetchStartedAt !== undefined &&
+      lastContactWriteAt !== undefined &&
+      lastContactWriteAt > fetchStartedAt
+    ) {
+      return;
     }
+
+    // Availability is live data: presence heartbeats rewrite it for all
+    // contacts every ~20s, and the snapshot was rendered before the request
+    // resolved — keep the stored value instead of the render-time one.
+    const { availabilityStatus } = state.contacts.entities[contact.id] ?? {};
+    listenerApi.dispatch(
+      addContact({
+        ...contact,
+        availabilityStatus: availabilityStatus ?? contact.availabilityStatus,
+      }),
+    );
   },
 });
 

@@ -342,6 +342,36 @@ describe('getInitialUrl', () => {
     ).toBe('http://192.168.0.71:9668');
   });
 
+  it('retains explicit https scheme for local IP installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '192.168.0.71:9668',
+        installationUrl: 'https://192.168.0.71:9668/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://192.168.0.71:9668');
+  });
+
+  it('retains explicit https scheme for local .local host installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot.local',
+        installationUrl: 'https://chatwoot.local/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://chatwoot.local');
+  });
+
+  it('retains explicit https scheme for bracketed IPv6 installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '[fd12::1]:3000',
+        installationUrl: 'https://[fd12::1]:3000/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://[fd12::1]:3000');
+  });
+
   it('returns bare baseUrl for standard cloud Chatwoot', () => {
     expect(
       getInitialUrl({

@@ -16,7 +16,7 @@ final class CallKitManager: NSObject {
     let provider: String
     let conversationId: Int?
     let inboxId: Int?
-    let accountId: Int?
+    var accountId: Int?
     let displayName: String
     let handle: String
     var outgoing: Bool
@@ -170,7 +170,11 @@ final class CallKitManager: NSObject {
     conversationId: Int?, inboxId: Int?, accountId: Int?, callerName: String? = nil,
     callId: Int? = nil, completion: @escaping (UUID, Error?) -> Void
   ) -> UUID {
-    if let existing = call(forSid: callSid) {
+    if var existing = call(forSid: callSid) {
+      // A later report of the same call fills in what the first one lacked
+      if existing.accountId == nil, let accountId { existing.accountId = accountId }
+      if existing.callId == nil, let callId { existing.callId = callId }
+      calls[existing.uuid] = existing
       completion(existing.uuid, nil)
       return existing.uuid
     }
@@ -348,7 +352,7 @@ final class CallKitManager: NSObject {
           self.calls[reported]?.callId = Self.intValue(dictionary["id"])
         }
         if type == "voice_call.cancel" {
-          self.endCall(uuid: reported, reason: .remoteEnded)
+          self.endCall(uuid: reported, reason: self.cancelReason(dictionary["status"] as? String))
         } else if let tracked = self.calls[reported] {
           // JavaScript hears of the call only once the system has accepted it
           self.send("onIncomingCall", tracked.payload)

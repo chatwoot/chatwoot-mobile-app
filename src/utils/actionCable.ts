@@ -195,6 +195,7 @@ class ActionCableConnector extends BaseActionCableConnector {
         callSid: data.call_id,
         callId: data.id,
         inboxId: data.inbox_id,
+        accountId: data.account_id,
         callDirection: 'inbound',
         provider: VOICE_CALL_PROVIDERS.WHATSAPP,
         sdpOffer: data.sdp_offer,

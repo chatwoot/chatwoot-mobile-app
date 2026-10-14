@@ -78,4 +78,88 @@ describe('setInstallationUrl', () => {
     expect(action.type).toBe('settings/setInstallationUrl/rejected');
     expect(SettingsService.verifyInstallationUrl).not.toHaveBeenCalled();
   });
+
+  it('handles explicit http scheme with ip and port', async () => {
+    const action = await setInstallationUrl('http://192.168.0.71:9668/');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://192.168.0.71:9668/',
+      webSocketUrl: 'ws://192.168.0.71:9668/cable',
+      baseUrl: '192.168.0.71:9668',
+    });
+  });
+
+  it('handles bare ip:port by falling back to http when https verification fails', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('192.168.0.71:9668');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://192.168.0.71:9668/',
+      webSocketUrl: 'ws://192.168.0.71:9668/cable',
+      baseUrl: '192.168.0.71:9668',
+    });
+  });
+
+  it('rejects when both https and http verification fail', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockResolvedValue(false);
+
+    const action = await setInstallationUrl('192.168.0.71:9668');
+
+    expect(action.type).toBe('settings/setInstallationUrl/rejected');
+  });
+
+  it('preserves explicit port 443 on bare local IP across HTTP fallback', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('192.168.0.71:443');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://192.168.0.71:443/',
+      webSocketUrl: 'ws://192.168.0.71:443/cable',
+      baseUrl: '192.168.0.71:443',
+    });
+  });
+
+  it('does not downgrade bare public host to http when https fails', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('app.chatwoot.com');
+
+    expect(action.type).toBe('settings/setInstallationUrl/rejected');
+  });
+
+  it('allows explicit http scheme on public host', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('http://chatwoot.example.com');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://chatwoot.example.com/',
+      webSocketUrl: 'ws://chatwoot.example.com/cable',
+      baseUrl: 'chatwoot.example.com',
+    });
+  });
+
+  it('falls back to http for local host with trailing root dot', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('chatwoot.local.');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://chatwoot.local./',
+      webSocketUrl: 'ws://chatwoot.local./cable',
+      baseUrl: 'chatwoot.local.',
+    });
+  });
 });

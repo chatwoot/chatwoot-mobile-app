@@ -4,12 +4,12 @@ import { Animated, StatusBar, TextInput, View } from 'react-native';
 import * as Application from 'expo-application';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Icon } from '@/components-next';
-import { URL_WITHOUT_HTTP_REGEX } from '@/constants';
+import { checkValidInstallationUrl, getInitialUrl } from '@/store/settings/settingsUtils';
 import { LinkIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useAppSelector, useAppDispatch } from '@/hooks';
-import { selectBaseUrl } from '@/store/settings/settingsSelectors';
+import { selectBaseUrl, selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { resetSettings } from '@/store/settings/settingsSlice';
 import { settingsActions } from '@/store/settings/settingsActions';
 
@@ -21,6 +21,7 @@ const appName = Application.applicationName;
 
 const ConfigURLScreen = () => {
   const baseUrl = useAppSelector(selectBaseUrl);
+  const installationUrl = useAppSelector(selectInstallationUrl);
 
   const dispatch = useAppDispatch();
 
@@ -30,7 +31,7 @@ const ConfigURLScreen = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      url: baseUrl ? baseUrl : appName === 'Chatwoot' ? 'app.chatwoot.com' : '',
+      url: getInitialUrl({ baseUrl, installationUrl, appName }),
     },
   });
 
@@ -41,7 +42,7 @@ const ConfigURLScreen = () => {
   const onSubmit = async (data: FormData) => {
     const { url } = data;
     if (url) {
-      dispatch(settingsActions.setInstallationUrl(url));
+      dispatch(settingsActions.setInstallationUrl(url.trim()));
     }
   };
 
@@ -73,10 +74,8 @@ const ConfigURLScreen = () => {
             control={control}
             rules={{
               required: i18n.t('CONFIGURE_URL.URL_REQUIRED'),
-              pattern: {
-                value: URL_WITHOUT_HTTP_REGEX,
-                message: i18n.t('CONFIGURE_URL.URL_ERROR'),
-              },
+              validate: value =>
+                checkValidInstallationUrl(value) || i18n.t('CONFIGURE_URL.URL_ERROR'),
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <View style={tailwind.style('pt-8 mb-8 gap-2')}>
@@ -92,8 +91,9 @@ const ConfigURLScreen = () => {
                   onChangeText={onChange}
                   value={value}
                   placeholderTextColor={tailwind.color('text-gray-900')}
-                  keyboardType="email-address"
+                  keyboardType="url"
                   autoCapitalize="none"
+                  autoCorrect={false}
                 />
                 {errors.url && (
                   <Animated.Text style={tailwind.style('text-ruby-900')}>

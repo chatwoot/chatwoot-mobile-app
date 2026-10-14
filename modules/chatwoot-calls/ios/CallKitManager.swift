@@ -332,7 +332,7 @@ final class CallKitManager: NSObject {
       // device answered or placed is live here, so the cancel is for other devices only.
       if let existing = call(forSid: callSid) {
         if !existing.answered && !existing.outgoing {
-          endCall(uuid: existing.uuid, reason: cancelReason(dictionary["status"] as? String))
+          endCall(uuid: existing.uuid, reason: cancelReason(dictionary["reason"] as? String ?? dictionary["status"] as? String))
         }
         completion()
         return
@@ -352,7 +352,7 @@ final class CallKitManager: NSObject {
           self.calls[reported]?.callId = Self.intValue(dictionary["id"])
         }
         if type == "voice_call.cancel" {
-          self.endCall(uuid: reported, reason: self.cancelReason(dictionary["status"] as? String))
+          self.endCall(uuid: reported, reason: self.cancelReason(dictionary["reason"] as? String ?? dictionary["status"] as? String))
         } else if let tracked = self.calls[reported] {
           // JavaScript hears of the call only once the system has accepted it
           self.send("onIncomingCall", tracked.payload)

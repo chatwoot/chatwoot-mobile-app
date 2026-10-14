@@ -5,7 +5,7 @@ import { conversationActions } from '../conversation/conversationActions';
 import { isOutdatedConversationUpdate } from '../conversation/conversationSlice';
 import { notificationActions } from '../notification/notificationAction';
 import { addNotification } from '../notification/notificationSlice';
-import { addContact, addContacts } from './contactSlice';
+import { addContact, addContacts, updateContact } from './contactSlice';
 import { Conversation } from '@/types/Conversation';
 import { Notification } from '@/types/Notification';
 import type { ConversationListResponse } from '../conversation/conversationTypes';
@@ -15,6 +15,30 @@ import type {
 } from '../notification/notificationTypes';
 
 export const contactListenerMiddleware = createListenerMiddleware();
+
+// Wallclock markers for cross-source ordering: a conversation response embeds
+// a `meta.sender` snapshot generated when the server rendered it, while a
+// `contact.updated` websocket event (or a contact edit) can land in the store
+// while that request is still in flight — the snapshot is then older than the
+// contact already stored and must not overwrite it. Contact payloads carry no
+// reliable updated-at timestamp shared by all sources, so the listener tracks
+// "did any contact write happen after this conversation fetch started".
+let conversationFetchStartedAt = 0;
+let lastContactWriteAt = 0;
+
+contactListenerMiddleware.startListening({
+  matcher: isAnyOf(conversationActions.fetchConversation.pending),
+  effect: () => {
+    conversationFetchStartedAt = Date.now();
+  },
+});
+
+contactListenerMiddleware.startListening({
+  matcher: isAnyOf(updateContact),
+  effect: () => {
+    lastContactWriteAt = Date.now();
+  },
+});
 
 contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversations.fulfilled),
@@ -45,6 +69,13 @@ contactListenerMiddleware.startListening({
       conversations: { entities: Record<number, Conversation | undefined> };
     };
     if (isOutdatedConversationUpdate(state.conversations.entities[conversation.id], conversation)) {
+      return;
+    }
+
+    // Keep contact data written while the request was in flight (websocket
+    // `contact.updated`, availability, contact edit) — the response snapshot
+    // predates it.
+    if (lastContactWriteAt > conversationFetchStartedAt) {
       return;
     }
 

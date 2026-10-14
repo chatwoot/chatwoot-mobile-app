@@ -520,6 +520,52 @@ describe('callActions.syncRingingCalls', () => {
     const call = store.getState().calls.calls.find(entry => entry.callSid === 'wacid.sync');
     expect(call?.conversationId).toBe(57);
     expect(call?.caller?.name).toBe('Priya');
+    expect(call?.accountId).toBe(1);
     expect(result).toEqual({ found: 1, ended: [] });
+  });
+
+  it('drops the ringing calls when the account changed while the request was out', async () => {
+    let finish: (calls: unknown[]) => void = () => {};
+    (CallService.getRingingCalls as jest.Mock).mockImplementationOnce(
+      () => new Promise(resolve => (finish = resolve)),
+    );
+    const user = (accountId: number) => ({
+      id: 1,
+      account_id: accountId,
+      accounts: [
+        { id: 1, availability: 'online' },
+        { id: 2, availability: 'online' },
+      ],
+    });
+    const switchingAuth = (
+      state = { user: user(1) },
+      action: { type: string; payload?: number },
+    ) => (action.type === 'test/switchAccount' ? { user: user(action.payload ?? 1) } : state);
+    const store = configureStore({
+      reducer: combineReducers({
+        calls: callReducer,
+        auth: switchingAuth,
+        conversations: conversationReducer,
+      }),
+    });
+
+    const sync = run(store)(callActions.syncRingingCalls()).unwrap();
+    store.dispatch({ type: 'test/switchAccount', payload: 2 });
+    finish([
+      {
+        id: 21,
+        call_id: 'wacid.previous',
+        provider: 'whatsapp',
+        status: 'ringing',
+        direction: 'inbound',
+        created_at: 1_790_000_000,
+        conversation: { id: 812345, display_id: 57 },
+        inbox: { id: 7, name: 'Sales' },
+        contact: null,
+      },
+    ]);
+
+    await expect(sync).resolves.toEqual({ found: 0, ended: [] });
+    expect(store.getState().calls.calls).toEqual([]);
   });
 });

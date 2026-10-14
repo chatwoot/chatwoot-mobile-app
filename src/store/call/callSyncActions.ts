@@ -6,7 +6,11 @@ import { ConversationService } from '@/store/conversation/conversationService';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { addConversation, addOrUpdateMessage } from '@/store/conversation/conversationSlice';
 import { extractCallData } from '@/utils/voiceCallRouting';
-import { selectCurrentUserAvailability, selectUserId } from '@/store/auth/authSelectors';
+import {
+  selectCurrentUserAccountId,
+  selectCurrentUserAvailability,
+  selectUserId,
+} from '@/store/auth/authSelectors';
 
 import { CallService, type RingingCallResponse } from './callService';
 import { addCall } from './callSlice';
@@ -17,6 +21,13 @@ export type SyncRingingCallsResult = {
   ended: { callSid: string; status: string | null }[];
 };
 
+// The signed-in user and account a request was made for; a result that returns after either
+// changed belongs to the previous session and is dropped
+const sessionOf = (state: RootState) =>
+  `${selectUserId(state) ?? ''}:${selectCurrentUserAccountId(state) ?? ''}`;
+
+const NOTHING_SYNCED: SyncRingingCallsResult = { found: 0, ended: [] };
+
 // Reconciling this device's ring state with the server
 export const callSyncActions = {
   // Asks the server which calls are ringing for this agent and surfaces them. Calls this
@@ -25,12 +36,15 @@ export const callSyncActions = {
   syncRingingCalls: createAsyncThunk<SyncRingingCallsResult, void, { state: RootState }>(
     'calls/syncRingingCalls',
     async (_, { getState, dispatch }) => {
+      const session = sessionOf(getState());
+      const accountId = selectCurrentUserAccountId(getState());
       let ringing: RingingCallResponse[];
       try {
         ringing = await CallService.getRingingCalls();
       } catch {
         return syncFromConversations(getState, dispatch);
       }
+      if (sessionOf(getState()) !== session) return NOTHING_SYNCED;
       const dismissed = selectDismissedCallSids(getState());
       // Only inbound rings are surfaced, and only to an agent who is online, as over the
       // socket; an outbound call belongs to the device that placed it, which already has it
@@ -59,6 +73,7 @@ export const callSyncActions = {
               provider: call.provider,
               conversationId: call.conversation.display_id,
               inboxId: call.inbox.id,
+              accountId: accountId ?? undefined,
               callDirection: call.direction,
               caller: call.contact
                 ? {
@@ -98,12 +113,14 @@ const syncFromConversations = async (
   getState: () => RootState,
   dispatch: (action: unknown) => unknown,
 ): Promise<SyncRingingCallsResult> => {
+  const session = sessionOf(getState());
   const { conversations } = await ConversationService.getConversations({
     status: 'open',
     assigneeType: 'all',
     sortBy: 'latest',
     page: 1,
   });
+  if (sessionOf(getState()) !== session) return NOTHING_SYNCED;
   const pendingSids = new Set(
     selectCalls(getState())
       .filter(call => !call.isActive && call.callDirection === 'inbound')

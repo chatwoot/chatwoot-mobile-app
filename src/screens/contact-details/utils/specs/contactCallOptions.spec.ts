@@ -66,4 +66,26 @@ describe('buildContactCallOptions', () => {
     expect(describeOptions(options)).toEqual(['1:twilio', 'dialer']);
     expect(options[0]).not.toHaveProperty('conversationId');
   });
+
+  describe('without a phone number', () => {
+    it('offers only the WhatsApp conversation on screen', () => {
+      const options = buildContactCallOptions(
+        [twilioVoice, whatsappCalling],
+        { id: 37, inboxId: 2 },
+        false,
+      );
+      expect(describeOptions(options)).toEqual(['2:whatsapp']);
+      expect(options[0]).toMatchObject({ type: 'inbox', conversationId: 37 });
+    });
+
+    it('offers nothing when the conversation on screen cannot be called by identity', () => {
+      expect(
+        buildContactCallOptions([twilioVoice, whatsappCalling], { id: 37, inboxId: 1 }, false),
+      ).toEqual([]);
+    });
+
+    it('offers nothing without a conversation', () => {
+      expect(buildContactCallOptions([twilioVoice, whatsappCalling], null, false)).toEqual([]);
+    });
+  });
 });

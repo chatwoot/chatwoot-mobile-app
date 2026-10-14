@@ -1,5 +1,5 @@
 import React, { useMemo, useRef } from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Dimensions, Pressable, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Icon, IconButton } from '@/components-next';
@@ -74,18 +74,24 @@ type ContactBasicActionsProps = {
   // The conversation the contact was opened from, if any
   conversation?: { id: number; inboxId?: number } | null;
   caller?: CallerSnapshot | null;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
-  const { phoneNumber, email, contactId, conversation, caller } = props;
+  const { phoneNumber, email, contactId, conversation, caller, style } = props;
   const dispatch = useAppDispatch();
   const inboxes = useAppSelector(selectAllInboxes);
   const callSheetRef = useRef<SheetRef>(null);
   const selectedOptionRef = useRef<ContactCallOption | null>(null);
 
   const callOptions = useMemo(
-    () => (contactId ? buildContactCallOptions(inboxes, conversation) : []),
-    [contactId, inboxes, conversation],
+    () =>
+      contactId
+        ? buildContactCallOptions(inboxes, conversation, !!phoneNumber)
+        : phoneNumber
+          ? [{ type: 'dialer' } as ContactCallOption]
+          : [],
+    [contactId, inboxes, conversation, phoneNumber],
   );
 
   const callThrough = (option: ContactCallOption) => {
@@ -102,16 +108,13 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
     });
   };
 
-  // With an inbox that can call, the agent picks how to call; otherwise the dialer opens
+  // With more than one way to call, the agent picks one; a single way is used directly
   const onCallPress = () => {
-    if (!phoneNumber) {
-      return;
-    }
     if (callOptions.length > 1) {
       callSheetRef.current?.present();
       return;
     }
-    openNumber({ phoneNumber });
+    if (callOptions[0]) callThrough(callOptions[0]);
   };
 
   // The choice is acted on once the sheet is gone, so the call screen is not opened under it
@@ -143,13 +146,14 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
     openEmail({ email });
   };
 
-  if (!email && !phoneNumber) {
+  const canCall = callOptions.length > 0;
+  if (!email && !canCall) {
     return null;
   }
 
-  if (email && phoneNumber) {
+  if (email && canCall) {
     return (
-      <Animated.View style={tailwind.style('flex flex-row justify-between ')}>
+      <Animated.View style={[tailwind.style('flex flex-row justify-between '), style]}>
         <ContactOptionComponent
           key="email"
           option={{
@@ -159,7 +163,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
           handleOptionPress={onEmailPress}
         />
         <ContactOptionComponent
-          key="phoneNumber"
+          key="call"
           option={{
             contactType: i18n.t('CONTACT_DETAILS.CALL'),
             icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
@@ -171,26 +175,26 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
     );
   }
 
-  if (phoneNumber) {
+  if (canCall) {
     return (
-      <>
+      <Animated.View style={style}>
         <IconButton
           text={i18n.t('CONTACT_DETAILS.CALL')}
           variant="secondary"
           handlePress={onCallPress}
         />
         {callSheet}
-      </>
+      </Animated.View>
     );
   }
 
-  if (email) {
-    return (
+  return (
+    <Animated.View style={style}>
       <IconButton
         text={i18n.t('CONTACT_DETAILS.EMAIL')}
         variant="secondary"
         handlePress={onEmailPress}
       />
-    );
-  }
+    </Animated.View>
+  );
 };

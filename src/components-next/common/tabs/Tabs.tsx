@@ -105,6 +105,7 @@ export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
                 onPress={() => onTabPress(item.id)}
                 hitSlop={8}
                 accessibilityRole="tab"
+                accessibilityLabel={item.count ? `${item.label} (${item.count})` : item.label}
                 accessibilityState={{ selected: isActive }}
                 style={({ pressed }) =>
                   tailwind.style('px-4 py-1.5 justify-center items-center', pressed && 'opacity-70')

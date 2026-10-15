@@ -36,6 +36,7 @@ import { UpdateAvailableSheet } from './UpdateAvailableSheet';
 type DownloadState = 'idle' | 'downloading' | 'downloaded';
 
 const currentVersion = Application.nativeApplicationVersion ?? '';
+const UPDATE_RECHECK_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
 /** True while notification permission can still be requested, i.e. the system prompt may show this launch. */
 const isNotificationPromptPending = async (): Promise<boolean> => {
@@ -64,11 +65,11 @@ const downloadStateFor = (status: InstallStatus): DownloadState | null => {
 };
 
 /**
- * Optional store-update flow for the main tabs. Checks once per launch: iOS shows the update
- * sheet; Android starts Play's flexible update, shows a downloading pill, and installs once the
- * download finishes and the user is on the conversation list or has left the app, falling back
- * to the sheet when Play can't run the flow. Mount it inside the main tabs screen so it only
- * appears on the conversation list.
+ * Optional store-update flow for the main tabs. Checks on launch and again on foreground at most
+ * once a day: iOS shows the update sheet; Android starts Play's flexible update, shows a
+ * downloading pill, and installs once the download finishes and the user is on the main tabs
+ * (or left the app from them), falling back to the sheet when Play can't run the flow. Mount it
+ * inside the main tabs screen so it only appears there.
  */
 export const AppUpdatePrompt = () => {
   const isFocused = useIsFocused();
@@ -80,11 +81,16 @@ export const AppUpdatePrompt = () => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(Keyboard.isVisible());
   const isInstallingRef = useRef(false);
 
+  const isFocusedRef = useRef(isFocused);
+  isFocusedRef.current = isFocused;
+  const lastCheckedAtRef = useRef(0);
+
+  // The launch check also skips the launch where the user signed in.
   const canPrompt = useCallback(
-    async () =>
+    async (isLaunchCheck: boolean) =>
       isFocused &&
       !Keyboard.isVisible() &&
-      !wasSignedInThisSession() &&
+      !(isLaunchCheck && wasSignedInThisSession()) &&
       !(await isNotificationPromptPending()),
     [isFocused],
   );
@@ -100,40 +106,57 @@ export const AppUpdatePrompt = () => {
     if (sheetRequest) sheetRef.current?.present();
   }, [sheetRequest]);
 
-  const checkAndroid = useCallback(async () => {
-    const info = await getPlayUpdateInfo();
-    if (!info) return;
+  const checkAndroid = useCallback(
+    async (isLaunchCheck: boolean) => {
+      const info = await getPlayUpdateInfo();
+      if (!info) return;
 
-    const existingState = downloadStateFor(info.installStatus);
-    if (existingState && existingState !== 'idle') {
-      setDownloadState(existingState);
-      return;
-    }
-    if (info.updateAvailability !== 'available' || (await isUpdatePromptSnoozed())) return;
-    if (!(await canPromptRef.current())) return;
+      const existingState = downloadStateFor(info.installStatus);
+      if (existingState && existingState !== 'idle') {
+        setDownloadState(existingState);
+        return;
+      }
+      if (info.updateAvailability !== 'available' || (await isUpdatePromptSnoozed())) return;
+      if (!(await canPromptRef.current(isLaunchCheck))) return;
 
-    if (!info.flexibleAllowed) {
-      presentSheet(null);
-      return;
-    }
-    const result = await startPlayUpdate('flexible');
-    if (result === 'accepted') {
-      setDownloadState('downloading');
-    } else if (result === 'declined') {
-      await snoozeUpdatePrompt();
-    }
-  }, [presentSheet]);
+      if (info.flexibleAllowed) {
+        const result = await startPlayUpdate('flexible').catch(() => 'failed' as const);
+        if (result === 'accepted') {
+          setDownloadState('downloading');
+          return;
+        }
+        if (result === 'declined') {
+          await snoozeUpdatePrompt();
+          return;
+        }
+      }
+      // Play can't run the flexible flow here, so offer the store listing instead.
+      if (await canPromptRef.current(isLaunchCheck)) presentSheet(null);
+    },
+    [presentSheet],
+  );
 
-  const checkIOS = useCallback(async () => {
-    const release = await fetchAppStoreRelease();
-    if (!release || !isVersionLower(currentVersion, release.version)) return;
-    if (!canInstallRelease(release, Device.osVersion ?? '0')) return;
-    if (await isUpdatePromptSnoozed()) return;
-    if (!(await canPromptRef.current())) return;
-    presentSheet(release.version);
-  }, [presentSheet]);
+  const checkIOS = useCallback(
+    async (isLaunchCheck: boolean) => {
+      const release = await fetchAppStoreRelease();
+      if (!release || !isVersionLower(currentVersion, release.version)) return;
+      if (!canInstallRelease(release, Device.osVersion ?? '0')) return;
+      if (await isUpdatePromptSnoozed()) return;
+      if (!(await canPromptRef.current(isLaunchCheck))) return;
+      presentSheet(release.version);
+    },
+    [presentSheet],
+  );
 
-  // Once per launch: confirm a finished update, then look for a new one.
+  const checkForUpdate = useCallback(
+    async (isLaunchCheck: boolean) => {
+      lastCheckedAtRef.current = Date.now();
+      await (Platform.OS === 'android' ? checkAndroid(isLaunchCheck) : checkIOS(isLaunchCheck));
+    },
+    [checkAndroid, checkIOS],
+  );
+
+  // On launch: confirm a finished update, then look for a new one.
   useEffect(() => {
     const run = async () => {
       const updatedVersion = await consumeUpdatedVersion(currentVersion);
@@ -142,11 +165,22 @@ export const AppUpdatePrompt = () => {
           message: i18n.t('APP_UPDATE.UPDATED', { version: isolateBidi(updatedVersion) }),
         });
       }
-      await (Platform.OS === 'android' ? checkAndroid() : checkIOS());
+      await checkForUpdate(true);
     };
     run().catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Look again when the app returns to the foreground, at most once per interval, so a
+  // session kept in memory for days still sees new releases once a snooze has ended.
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', state => {
+      if (state !== 'active') return;
+      if (Date.now() - lastCheckedAtRef.current < UPDATE_RECHECK_INTERVAL_MS) return;
+      checkForUpdate(false).catch(() => {});
+    });
+    return () => subscription.remove();
+  }, [checkForUpdate]);
 
   const installUpdate = useCallback(async () => {
     if (isInstallingRef.current) return;
@@ -157,19 +191,22 @@ export const AppUpdatePrompt = () => {
     });
   }, []);
 
-  // Play installs silently when the app is in the background, so a downloaded update is
-  // installed as soon as the user leaves the app.
+  // Play installs silently when the app is in the background. That happens only when the user
+  // left from the main tabs: leaving from a conversation would discard reply state that isn't
+  // persisted (recipients, editor mode), so that case waits for the main tabs.
   useEffect(() => {
     if (Platform.OS !== 'android') return;
+    const canInstallInBackground = () =>
+      AppState.currentState === 'background' && isFocusedRef.current;
     const removeInstallListener = addInstallStatusListener(status => {
       const nextState = downloadStateFor(status);
       if (nextState) setDownloadState(nextState);
-      if (nextState === 'downloaded' && AppState.currentState === 'background') installUpdate();
+      if (nextState === 'downloaded' && canInstallInBackground()) installUpdate();
     });
     // A download can finish while the app is in the background.
     const appStateSubscription = AppState.addEventListener('change', state => {
       if (state === 'background') {
-        if (downloadStateRef.current === 'downloaded') installUpdate();
+        if (downloadStateRef.current === 'downloaded' && canInstallInBackground()) installUpdate();
         return;
       }
       if (state !== 'active') return;
@@ -199,8 +236,8 @@ export const AppUpdatePrompt = () => {
     };
   }, []);
 
-  // In the foreground, install only on the conversation list with the keyboard closed, so the
-  // restart never discards a reply in progress.
+  // In the foreground, install only on the main tabs with the keyboard closed, so the restart
+  // never discards a reply in progress.
   const canInstallNow = downloadState === 'downloaded' && isFocused && !isKeyboardVisible;
   useEffect(() => {
     if (canInstallNow && AppState.currentState === 'active') installUpdate();

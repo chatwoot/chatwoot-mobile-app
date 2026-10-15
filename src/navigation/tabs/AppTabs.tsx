@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -199,10 +199,16 @@ export const AppTabs = () => {
   const installationUrl = useAppSelector(selectInstallationUrl);
   const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
 
+  // Refetched on every foreground so a minimum version raised while the app stayed in memory
+  // still applies.
   useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(settingsActions.getChatwootVersion({ installationUrl }));
-    }
+    if (!isLoggedIn) return;
+    const fetchServerInfo = () => dispatch(settingsActions.getChatwootVersion({ installationUrl }));
+    fetchServerInfo();
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') fetchServerInfo();
+    });
+    return () => subscription.remove();
   }, [dispatch, installationUrl, isLoggedIn]);
 
   const wasLoggedInRef = useRef(isLoggedIn);

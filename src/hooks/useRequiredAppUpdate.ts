@@ -1,78 +1,70 @@
 import { useEffect, useState } from 'react';
 import { AppState, Platform } from 'react-native';
 import * as Application from 'expo-application';
+import * as Device from 'expo-device';
 
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { settingsActions } from '@/store/settings/settingsActions';
-import {
-  selectInstallationUrl,
-  selectMobileAppMinVersion,
-} from '@/store/settings/settingsSelectors';
-import { fetchAppStoreRelease, isVersionLower } from '@/utils/appUpdateUtils';
-import { getPlayUpdateInfo } from '../../modules/app-update';
+import { useAppSelector } from '@/hooks';
+import { selectMobileAppMinVersion } from '@/store/settings/settingsSelectors';
+import { canInstallRelease, fetchAppStoreRelease, isVersionLower } from '@/utils/appUpdateUtils';
 
 const currentVersion = Application.nativeApplicationVersion ?? '';
 
 type StoreAvailability = 'unknown' | 'available' | 'unavailable';
 
 /**
- * Whether the store offers a version that satisfies `minVersion`. A failed check counts as
- * available, so the block still applies when the store can't be reached.
+ * Whether the App Store offers a release that satisfies `minVersion` and installs on this
+ * device's iOS version. A lookup that fails or finds nothing is 'unknown'.
  */
-const checkStoreAvailability = async (minVersion: string): Promise<StoreAvailability> => {
+const checkAppStoreAvailability = async (minVersion: string): Promise<StoreAvailability> => {
   try {
-    if (Platform.OS === 'ios') {
-      const release = await fetchAppStoreRelease();
-      if (!release) return 'available';
-      return isVersionLower(release.version, minVersion) ? 'unavailable' : 'available';
-    }
-    const info = await getPlayUpdateInfo();
-    return info?.updateAvailability === 'not_available' ? 'unavailable' : 'available';
+    const release = await fetchAppStoreRelease();
+    if (!release) return 'unknown';
+    if (isVersionLower(release.version, minVersion)) return 'unavailable';
+    return canInstallRelease(release, Device.osVersion ?? '0') ? 'available' : 'unavailable';
   } catch {
-    return 'available';
+    return 'unknown';
   }
 };
 
 /**
- * Decides whether the app must be blocked until it is updated: the server's minimum app
- * version is above the installed one and the store already offers a version that meets it.
- * Re-checks the server and the store whenever the app returns to the foreground while the
- * installed version is below the minimum.
+ * Decides whether the app must be blocked until it is updated, which requires the installed
+ * version to be below the server's minimum.
+ *
+ * - Android blocks on the version alone: Play reports only version codes, so it can't confirm
+ *   which release it offers. Admins set the minimum once that release is live.
+ * - iOS also waits for the App Store to confirm a release that meets the minimum and installs
+ *   on this device. Until then (lookup pending or failing) nothing is blocked; a confirmed
+ *   answer is kept when a later re-check on foreground fails.
  */
 export const useRequiredAppUpdate = () => {
-  const dispatch = useAppDispatch();
-  const installationUrl = useAppSelector(selectInstallationUrl);
   const minVersion = useAppSelector(selectMobileAppMinVersion);
   const [storeAvailability, setStoreAvailability] = useState<StoreAvailability>('unknown');
 
   const isBelowMinimum = !!minVersion && isVersionLower(currentVersion, minVersion);
+  const needsStoreCheck = Platform.OS === 'ios' && isBelowMinimum;
 
   useEffect(() => {
-    if (!isBelowMinimum || !minVersion) {
-      setStoreAvailability('unknown');
-      return;
-    }
+    setStoreAvailability('unknown');
+    if (!needsStoreCheck || !minVersion) return;
     let isCancelled = false;
     const check = () => {
-      checkStoreAvailability(minVersion).then(availability => {
-        if (!isCancelled) setStoreAvailability(availability);
+      checkAppStoreAvailability(minVersion).then(availability => {
+        if (isCancelled) return;
+        setStoreAvailability(previous => (availability === 'unknown' ? previous : availability));
       });
     };
     check();
     const subscription = AppState.addEventListener('change', state => {
-      if (state !== 'active') return;
-      dispatch(settingsActions.getChatwootVersion({ installationUrl }));
-      check();
+      if (state === 'active') check();
     });
     return () => {
       isCancelled = true;
       subscription.remove();
     };
-  }, [dispatch, installationUrl, isBelowMinimum, minVersion]);
+  }, [needsStoreCheck, minVersion]);
 
-  return {
-    isUpdateRequired: isBelowMinimum && storeAvailability !== 'unavailable',
-    currentVersion,
-    minVersion,
-  };
+  const isUpdateRequired =
+    isBelowMinimum && (Platform.OS === 'android' || storeAvailability === 'available');
+
+  return { isUpdateRequired, currentVersion, minVersion };
 };

@@ -67,6 +67,7 @@ export const settingsSlice = createSlice({
         state.uiFlags.isSettingUrl = false;
         state.installationUrl = action.payload.installationUrl;
         state.baseUrl = action.payload.baseUrl;
+        state.mobileAppMinVersions = initialState.mobileAppMinVersions;
         state.webSocketUrl = action.payload.webSocketUrl;
         RootNavigation.navigate('Login');
       })
@@ -89,6 +90,8 @@ export const settingsSlice = createSlice({
         state.uiFlags.isUpdating = false;
       })
       .addCase(settingsActions.getChatwootVersion.fulfilled, (state, action) => {
+        // A response that arrives after the user switched servers belongs to the old server.
+        if (action.meta.arg.installationUrl !== state.installationUrl) return;
         const { version, mobile_app: mobileApp } = action.payload;
         state.version = version;
         state.mobileAppMinVersions = {

@@ -7,9 +7,7 @@ import * as Application from 'expo-application';
 import * as Device from 'expo-device';
 
 import i18n from '@/i18n';
-import { tailwind } from '@/theme';
 import { showToast } from '@/utils/toastUtils';
-import { useTabBarHeight } from '@/utils/common';
 import {
   canInstallRelease,
   consumeUpdatedVersion,
@@ -67,18 +65,20 @@ const downloadStateFor = (status: InstallStatus): DownloadState | null => {
 
 /**
  * Optional store-update flow for the main tabs. Checks once per launch: iOS shows the update
- * sheet; Android starts Play's flexible update, then shows a downloading pill and a Restart
- * snackbar, falling back to the sheet when Play can't run the flow. Mount it inside the main
- * tabs screen so it only appears on the conversation list.
+ * sheet; Android starts Play's flexible update, shows a downloading pill, and installs once the
+ * download finishes and the user is on the conversation list or has left the app, falling back
+ * to the sheet when Play can't run the flow. Mount it inside the main tabs screen so it only
+ * appears on the conversation list.
  */
 export const AppUpdatePrompt = () => {
   const isFocused = useIsFocused();
-  const tabBarHeight = useTabBarHeight();
   const sheetRef = useRef<SheetRef>(null);
   const [sheetRequest, setSheetRequest] = useState<{ version: string | null } | null>(null);
   const [downloadState, setDownloadState] = useState<DownloadState>('idle');
+  const downloadStateRef = useRef(downloadState);
+  downloadStateRef.current = downloadState;
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(Keyboard.isVisible());
-  const isSnackbarShownRef = useRef(false);
+  const isInstallingRef = useRef(false);
 
   const canPrompt = useCallback(
     async () =>
@@ -148,14 +148,30 @@ export const AppUpdatePrompt = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const installUpdate = useCallback(async () => {
+    if (isInstallingRef.current) return;
+    isInstallingRef.current = true;
+    await markRestartForUpdate(currentVersion);
+    await completePlayUpdate().catch(() => {
+      isInstallingRef.current = false;
+    });
+  }, []);
+
+  // Play installs silently when the app is in the background, so a downloaded update is
+  // installed as soon as the user leaves the app.
   useEffect(() => {
     if (Platform.OS !== 'android') return;
     const removeInstallListener = addInstallStatusListener(status => {
       const nextState = downloadStateFor(status);
       if (nextState) setDownloadState(nextState);
+      if (nextState === 'downloaded' && AppState.currentState === 'background') installUpdate();
     });
     // A download can finish while the app is in the background.
     const appStateSubscription = AppState.addEventListener('change', state => {
+      if (state === 'background') {
+        if (downloadStateRef.current === 'downloaded') installUpdate();
+        return;
+      }
       if (state !== 'active') return;
       getPlayUpdateInfo()
         .then(info => {
@@ -168,7 +184,7 @@ export const AppUpdatePrompt = () => {
       removeInstallListener();
       appStateSubscription.remove();
     };
-  }, []);
+  }, [installUpdate]);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () =>
@@ -183,35 +199,12 @@ export const AppUpdatePrompt = () => {
     };
   }, []);
 
-  const restartToUpdate = useCallback(async () => {
-    await markRestartForUpdate(currentVersion);
-    await completePlayUpdate().catch(() => {});
-  }, []);
-
-  // The Restart snackbar stays until used, but steps aside while the keyboard is open
-  // (so a mis-tap can't discard a reply) and while another screen covers the tabs.
-  const shouldShowSnackbar = downloadState === 'downloaded' && isFocused && !isKeyboardVisible;
+  // In the foreground, install only on the conversation list with the keyboard closed, so the
+  // restart never discards a reply in progress.
+  const canInstallNow = downloadState === 'downloaded' && isFocused && !isKeyboardVisible;
   useEffect(() => {
-    if (shouldShowSnackbar && !isSnackbarShownRef.current) {
-      isSnackbarShownRef.current = true;
-      Snackbar.show({
-        text: i18n.t('APP_UPDATE.READY.TITLE'),
-        duration: Snackbar.LENGTH_INDEFINITE,
-        marginBottom: tabBarHeight + 8,
-        action: {
-          text: i18n.t('APP_UPDATE.READY.RESTART'),
-          textColor: tailwind.color('text-blue-600'),
-          onPress: () => {
-            isSnackbarShownRef.current = false;
-            restartToUpdate();
-          },
-        },
-      });
-    } else if (!shouldShowSnackbar && isSnackbarShownRef.current) {
-      isSnackbarShownRef.current = false;
-      Snackbar.dismiss();
-    }
-  }, [shouldShowSnackbar, tabBarHeight, restartToUpdate]);
+    if (canInstallNow && AppState.currentState === 'active') installUpdate();
+  }, [canInstallNow, installUpdate]);
 
   const handleUpdate = useCallback(() => {
     openStorePage().catch(() => {

@@ -504,10 +504,6 @@
       "ANDROID": "Play Store"
     },
     "DOWNLOADING": "Downloading update…",
-    "READY": {
-      "TITLE": "Update downloaded",
-      "RESTART": "Restart"
-    },
     "UPDATED": "Updated to version %{version}",
     "REQUIRED": {
       "TITLE": "Update to continue",

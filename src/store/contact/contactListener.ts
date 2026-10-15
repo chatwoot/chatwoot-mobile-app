@@ -8,6 +8,7 @@ import { addNotification } from '../notification/notificationSlice';
 import { addContact, addContacts, updateContact, updateContactsPresence } from './contactSlice';
 import { Conversation } from '@/types/Conversation';
 import { Contact } from '@/types/Contact';
+import type { AvailabilityStatus } from '@/types/common/AvailabilityStatus';
 import { Notification } from '@/types/Notification';
 import type { ConversationListResponse } from '../conversation/conversationTypes';
 import type {
@@ -19,68 +20,95 @@ export const contactListenerMiddleware = createListenerMiddleware();
 
 // The `meta.sender` embedded in a conversation response is a snapshot rendered
 // when the server handled the request, while the same contact can be written
-// by a websocket `contact.updated` event while that request is still in
-// flight. Contact payloads carry no updated-at timestamp shared by all
-// sources, so the ordering is fenced with wallclock markers instead:
+// while that request is still in flight: a websocket `contact.updated` event,
+// a conversations-list / notification response, or a fresher detail snapshot
+// from an overlapping request. Contact payloads carry no updated-at timestamp
+// shared by all sources, so ordering is fenced with markers recorded as events
+// are processed:
 // - fetch start, keyed by thunk requestId — several conversation fetches can
 //   be in flight at once (inbox notifications and the chat screen dispatch it);
-// - last contact write, keyed by contact id — websocket `contact.updated`
-//   events and contacts stored from conversations-list / notification
-//   responses all count as writes; they fire for any contact in the account,
-//   so only writes for the fetched contact matter;
-// - last presence write, global — one `presence.update` rewrites the
-//   availability of every stored contact at once, so a single marker covers
-//   them all.
-const fetchStartedAtByRequestId = new Map<string, number>();
-const lastContactWriteAtById = new Map<number, number>();
-let lastPresenceWriteAt: number | undefined;
+// - last contact write, keyed by contact id — every source above records its
+//   store writes here; writes fire for any contact in the account, so only
+//   writes for the fetched contact matter;
+// - last presence write, global and per contact — one `presence.update`
+//   rewrites the availability of every stored contact at once, but the store
+//   only holds contacts that already exist, so the event's per-contact value
+//   is kept here for senders that aren't stored yet.
+// Markers compare by a monotonic sequence token: two events can be processed
+// within the same millisecond, where wallclock values would tie.
+let lastSequence = 0;
+const nextSequence = () => {
+  lastSequence += 1;
+  return lastSequence;
+};
+
+interface TrackedEvent {
+  // Wallclock, for the TTL sweep only — ordering uses `order`.
+  at: number;
+  order: number;
+}
+
+const fetchStartOrderByRequestId = new Map<string, number>();
+const lastContactWriteById = new Map<number, TrackedEvent>();
+let lastPresenceWrite: TrackedEvent | undefined;
+const lastPresenceByContactId = new Map<number, TrackedEvent & { status: AvailabilityStatus }>();
 
 // Contact writes land on every message activity (websocket events, list and
-// notification refreshes), so keep the map bounded.
+// notification refreshes), so keep the tracking maps bounded.
 export const MAX_TRACKED_CONTACT_WRITES = 500;
 const CONTACT_WRITE_TTL_MS = 10 * 60 * 1000;
 
-const trackContactWrite = (contactId: number) => {
-  const now = Date.now();
-  // Refreshing a tracked key never grows the map — make room only when a new
-  // key needs a slot, so re-writing a recent contact can't evict someone
-  // else's marker (e.g. one fencing an in-flight fetch).
-  if (
-    !lastContactWriteAtById.has(contactId) &&
-    lastContactWriteAtById.size >= MAX_TRACKED_CONTACT_WRITES
-  ) {
-    lastContactWriteAtById.forEach((writtenAt, id) => {
-      if (now - writtenAt > CONTACT_WRITE_TTL_MS) {
-        lastContactWriteAtById.delete(id);
-      }
-    });
-    // A burst of distinct contacts inside the TTL expires nothing; drop the
-    // least recently written entries so the insert below can't grow the map
-    // past the cap. Iteration order is insertion order — and every write
-    // re-inserts its entry, so the front of the map is the oldest write.
-    while (lastContactWriteAtById.size >= MAX_TRACKED_CONTACT_WRITES) {
-      const oldest = lastContactWriteAtById.keys().next();
-      if (oldest.done) {
-        break;
-      }
-      lastContactWriteAtById.delete(oldest.value);
-    }
+// Refreshing an existing key never grows the map — make room only when a new
+// key needs a slot, so re-writing a recent contact can't evict someone else's
+// entry (e.g. one fencing an in-flight fetch). A burst of distinct contacts
+// inside the TTL expires nothing; drop the least recently refreshed entries so
+// the insert can't grow the map past the cap. Iteration order is insertion
+// order — and every refresh re-inserts its entry, so the front of the map is
+// the oldest entry.
+const makeRoomForNewKey = <V extends { at: number }>(map: Map<number, V>, now: number) => {
+  if (map.size < MAX_TRACKED_CONTACT_WRITES) {
+    return;
   }
-  lastContactWriteAtById.delete(contactId);
-  lastContactWriteAtById.set(contactId, now);
+  map.forEach((tracked, id) => {
+    if (now - tracked.at > CONTACT_WRITE_TTL_MS) {
+      map.delete(id);
+    }
+  });
+  while (map.size >= MAX_TRACKED_CONTACT_WRITES) {
+    const oldest = map.keys().next();
+    if (oldest.done) {
+      break;
+    }
+    map.delete(oldest.value);
+  }
+};
+
+const refreshTracked = <V extends TrackedEvent>(map: Map<number, V>, id: number, value: V) => {
+  if (!map.has(id)) {
+    makeRoomForNewKey(map, value.at);
+  }
+  map.delete(id);
+  map.set(id, value);
+};
+
+const trackContactWrite = (contactId: number) => {
+  refreshTracked(lastContactWriteById, contactId, {
+    at: Date.now(),
+    order: nextSequence(),
+  });
 };
 
 contactListenerMiddleware.startListening({
   matcher: conversationActions.fetchConversation.pending.match,
   effect: action => {
-    fetchStartedAtByRequestId.set(action.meta.requestId, Date.now());
+    fetchStartOrderByRequestId.set(action.meta.requestId, nextSequence());
   },
 });
 
 contactListenerMiddleware.startListening({
   matcher: conversationActions.fetchConversation.rejected.match,
   effect: action => {
-    fetchStartedAtByRequestId.delete(action.meta.requestId);
+    fetchStartOrderByRequestId.delete(action.meta.requestId);
   },
 });
 
@@ -93,8 +121,18 @@ contactListenerMiddleware.startListening({
 
 contactListenerMiddleware.startListening({
   matcher: updateContactsPresence.match,
-  effect: () => {
-    lastPresenceWriteAt = Date.now();
+  effect: action => {
+    const { contacts } = action.payload as { contacts: Record<number, AvailabilityStatus> };
+    const tracked: TrackedEvent = { at: Date.now(), order: nextSequence() };
+    lastPresenceWrite = tracked;
+    Object.entries(contacts).forEach(([contactId, rawStatus]) => {
+      // Mirror the reducer's fallback so the recorded value matches what a
+      // stored contact would have received from this event.
+      refreshTracked(lastPresenceByContactId, Number(contactId), {
+        ...tracked,
+        status: rawStatus || 'offline',
+      });
+    });
   },
 });
 
@@ -128,8 +166,8 @@ contactListenerMiddleware.startListening({
 
     // Consume this request's marker up front — it's only meaningful for this
     // one fulfillment.
-    const fetchStartedAt = fetchStartedAtByRequestId.get(action.meta.requestId);
-    fetchStartedAtByRequestId.delete(action.meta.requestId);
+    const fetchStartOrder = fetchStartOrderByRequestId.get(action.meta.requestId);
+    fetchStartOrderByRequestId.delete(action.meta.requestId);
 
     // Mirror the conversation reducer's staleness guard: when this response
     // is older than the snapshot already in the store (e.g. a slow fetch
@@ -150,15 +188,16 @@ contactListenerMiddleware.startListening({
     }
 
     // Skip the snapshot when this exact contact was written while the request
-    // was in flight — a websocket `contact.updated`, or a conversations-list /
-    // notification response that stored the contact after this fetch started.
-    // Either way the stored copy is newer than the response data. Writes to
-    // other contacts don't matter.
-    const lastContactWriteAt = lastContactWriteAtById.get(contact.id);
+    // was in flight — a websocket `contact.updated`, a conversations-list /
+    // notification response, or a fresher snapshot from an overlapping fetch
+    // of the same conversation (a repeat press dispatches a second request
+    // while the first is still in flight). Either way the stored copy is
+    // newer than this response's data. Writes to other contacts don't matter.
+    const lastContactWrite = lastContactWriteById.get(contact.id);
     if (
-      fetchStartedAt !== undefined &&
-      lastContactWriteAt !== undefined &&
-      lastContactWriteAt > fetchStartedAt
+      fetchStartOrder !== undefined &&
+      lastContactWrite !== undefined &&
+      lastContactWrite.order > fetchStartOrder
     ) {
       return;
     }
@@ -168,18 +207,32 @@ contactListenerMiddleware.startListening({
     // `presence.update` actually landed during this fetch — without a socket
     // (or right after launch, from rehydrated storage) the stored status can
     // be arbitrarily old, and the snapshot is then the freshest evidence.
-    const storedAvailability =
-      fetchStartedAt !== undefined &&
-      lastPresenceWriteAt !== undefined &&
-      lastPresenceWriteAt > fetchStartedAt
-        ? state.contacts.entities[contact.id]?.availabilityStatus
-        : undefined;
+    // Prefer the event's own value for this contact: the reducer only updates
+    // contacts that are already stored, so for a sender that isn't stored yet
+    // the event value survives only in the tracking above.
+    let storedAvailability: AvailabilityStatus | undefined;
+    if (
+      fetchStartOrder !== undefined &&
+      lastPresenceWrite !== undefined &&
+      lastPresenceWrite.order > fetchStartOrder
+    ) {
+      const presenceEvent = lastPresenceByContactId.get(contact.id);
+      storedAvailability =
+        presenceEvent && presenceEvent.order > fetchStartOrder
+          ? presenceEvent.status
+          : state.contacts.entities[contact.id]?.availabilityStatus;
+    }
     listenerApi.dispatch(
       addContact({
         ...contact,
         availabilityStatus: storedAvailability ?? contact.availabilityStatus,
       }),
     );
+
+    // Record the snapshot as a contact write: an overlapping fetch that
+    // started earlier must not overwrite it when its own older response
+    // arrives later.
+    trackContactWrite(contact.id);
   },
 });
 

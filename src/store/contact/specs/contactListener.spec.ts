@@ -322,4 +322,96 @@ describe('contactListener', () => {
 
     expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
   });
+
+  it('vetoes the snapshot when a write lands in the same tick as the fetch start', () => {
+    const store = makeStore();
+    const staleSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    fetchStarted(store, makeConversation({ id: 26, updatedAt: 100, sender: staleSender }));
+    // No timer advance: the websocket write is processed in the same
+    // millisecond as the fetch start, where wallclock values would tie —
+    // ordering must come from the processing sequence instead.
+    store.dispatch(updateContact(makeSender({ id: 1, customAttributes: { plan: 'gold' } })));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 26, updatedAt: 100, sender: staleSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('keeps the fresher snapshot when an overlapping fetch of the same conversation resolves late', () => {
+    const store = makeStore();
+    const earlierSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+    const laterSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    // Pressing a notification dispatches one fetch and pushes the chat
+    // screen, which dispatches another for the same conversation while the
+    // first is still in flight. The later request resolves first; the
+    // earlier one must not overwrite its contact when it finally resolves.
+    store.dispatch(conversationActions.fetchConversation.pending('req-press-30', 30));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(conversationActions.fetchConversation.pending('req-screen-30', 30));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(
+      conversationActions.fetchConversation.fulfilled(
+        { conversation: makeConversation({ id: 30, updatedAt: 100, sender: laterSender }) },
+        'req-screen-30',
+        30,
+      ),
+    );
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(
+      conversationActions.fetchConversation.fulfilled(
+        { conversation: makeConversation({ id: 30, updatedAt: 100, sender: earlierSender }) },
+        'req-press-30',
+        30,
+      ),
+    );
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('keeps a presence event for a contact that is not in the store yet', () => {
+    const store = makeStore();
+    const snapshot = makeSender({ id: 1, availabilityStatus: 'offline', name: 'New contact' });
+
+    fetchStarted(store, makeConversation({ id: 27, updatedAt: 100, sender: snapshot }));
+
+    jest.advanceTimersByTime(10);
+    // The contact isn't stored yet, so updateContactsPresence's reducer
+    // skips it — the event's value survives only in the listener's own
+    // per-contact tracking.
+    store.dispatch(updateContactsPresence({ contacts: { 1: 'online' } }));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 27, updatedAt: 100, sender: snapshot }));
+
+    const stored = store.getState().contacts.entities[1];
+    expect(stored?.availabilityStatus).toEqual('online');
+    expect(stored?.name).toEqual('New contact');
+  });
+
+  it("uses the snapshot availability when the contact's own presence event predates the fetch", () => {
+    const store = makeStore();
+
+    // Contact 1's last presence event lands before the fetch; only another
+    // contact's event lands during it.
+    store.dispatch(updateContactsPresence({ contacts: { 1: 'online' } }));
+
+    const snapshot = makeSender({ id: 1, availabilityStatus: 'offline', name: 'Renamed' });
+    fetchStarted(store, makeConversation({ id: 28, updatedAt: 100, sender: snapshot }));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(updateContactsPresence({ contacts: { 2: 'busy' } }));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 28, updatedAt: 100, sender: snapshot }));
+
+    const stored = store.getState().contacts.entities[1];
+    expect(stored?.availabilityStatus).toEqual('offline');
+    expect(stored?.name).toEqual('Renamed');
+  });
 });

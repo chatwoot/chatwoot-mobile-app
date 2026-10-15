@@ -24,8 +24,10 @@ export const contactListenerMiddleware = createListenerMiddleware();
 // sources, so the ordering is fenced with wallclock markers instead:
 // - fetch start, keyed by thunk requestId — several conversation fetches can
 //   be in flight at once (inbox notifications and the chat screen dispatch it);
-// - last contact write, keyed by contact id — `contact.updated` fires for any
-//   contact in the account, so only writes for the fetched contact matter;
+// - last contact write, keyed by contact id — websocket `contact.updated`
+//   events and contacts stored from conversations-list / notification
+//   responses all count as writes; they fire for any contact in the account,
+//   so only writes for the fetched contact matter;
 // - last presence write, global — one `presence.update` rewrites the
 //   availability of every stored contact at once, so a single marker covers
 //   them all.
@@ -33,13 +35,20 @@ const fetchStartedAtByRequestId = new Map<string, number>();
 const lastContactWriteAtById = new Map<number, number>();
 let lastPresenceWriteAt: number | undefined;
 
-// `contact.updated` fires on every message activity, so keep the map bounded.
+// Contact writes land on every message activity (websocket events, list and
+// notification refreshes), so keep the map bounded.
 export const MAX_TRACKED_CONTACT_WRITES = 500;
 const CONTACT_WRITE_TTL_MS = 10 * 60 * 1000;
 
 const trackContactWrite = (contactId: number) => {
   const now = Date.now();
-  if (lastContactWriteAtById.size >= MAX_TRACKED_CONTACT_WRITES) {
+  // Refreshing a tracked key never grows the map — make room only when a new
+  // key needs a slot, so re-writing a recent contact can't evict someone
+  // else's marker (e.g. one fencing an in-flight fetch).
+  if (
+    !lastContactWriteAtById.has(contactId) &&
+    lastContactWriteAtById.size >= MAX_TRACKED_CONTACT_WRITES
+  ) {
     lastContactWriteAtById.forEach((writtenAt, id) => {
       if (now - writtenAt > CONTACT_WRITE_TTL_MS) {
         lastContactWriteAtById.delete(id);
@@ -96,6 +105,14 @@ contactListenerMiddleware.startListening({
     const contacts = conversations.map((conversation: Conversation) => conversation.meta.sender);
     if (contacts.length > 0) {
       listenerApi.dispatch(addContacts({ contacts }));
+      // These are store writes as well: a list response processed while a
+      // conversation fetch is in flight is fresher evidence than that fetch's
+      // snapshot, so the fence must see it like any other write.
+      contacts.forEach(contact => {
+        if (contact) {
+          trackContactWrite(contact.id);
+        }
+      });
     }
   },
 });
@@ -133,8 +150,10 @@ contactListenerMiddleware.startListening({
     }
 
     // Skip the snapshot when this exact contact was written while the request
-    // was in flight (websocket `contact.updated`) — the stored contact is then
-    // newer than the response data. Writes to other contacts don't matter.
+    // was in flight — a websocket `contact.updated`, or a conversations-list /
+    // notification response that stored the contact after this fetch started.
+    // Either way the stored copy is newer than the response data. Writes to
+    // other contacts don't matter.
     const lastContactWriteAt = lastContactWriteAtById.get(contact.id);
     if (
       fetchStartedAt !== undefined &&
@@ -177,6 +196,11 @@ contactListenerMiddleware.startListening({
     );
     if (contacts.length > 0) {
       listenerApi.dispatch(addContacts({ contacts }));
+      contacts.forEach(contact => {
+        if (contact) {
+          trackContactWrite(contact.id);
+        }
+      });
     }
   },
 });
@@ -188,6 +212,7 @@ contactListenerMiddleware.startListening({
     const contact = notification?.primaryActor?.meta?.sender;
     if (contact) {
       listenerApi.dispatch(addContact(contact));
+      trackContactWrite(contact.id);
     }
   },
 });

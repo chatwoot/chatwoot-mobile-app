@@ -2,9 +2,11 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { contactListenerMiddleware, MAX_TRACKED_CONTACT_WRITES } from '../contactListener';
 import contactReducer, { addContact, updateContact, updateContactsPresence } from '../contactSlice';
+import { addNotification } from '@/store/notification/notificationSlice';
 import conversationReducer from '@/store/conversation/conversationSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { conversation as conversationFixture } from '@/store/conversation/specs/conversationMockData';
+import type { Notification } from '@/types/Notification';
 import type { Conversation, Contact } from '@/types';
 
 const makeConversation = ({
@@ -56,6 +58,15 @@ const fetchResolved = (store: ReturnType<typeof makeStore>, conversation: Conver
       { conversation },
       `req-${conversation.id}`,
       conversation.id,
+    ),
+  );
+
+const listResolved = (store: ReturnType<typeof makeStore>, conversations: Conversation[]) =>
+  store.dispatch(
+    conversationActions.fetchConversations.fulfilled(
+      { conversations, meta: { mineCount: 1, unassignedCount: 1, allCount: 1 } },
+      `req-list-${conversations[0]?.id}`,
+      { page: 1, status: 'open', assigneeType: 'me', sortBy: 'latest' },
     ),
   );
 
@@ -227,5 +238,88 @@ describe('contactListener', () => {
 
     expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'silver' });
     expect(store.getState().contacts.entities[MAX_TRACKED_CONTACT_WRITES + 1]).toBeDefined();
+  });
+
+  it('skips the snapshot when a conversations-list write landed during the fetch', () => {
+    const store = makeStore();
+    const listSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+    const snapshotSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    fetchStarted(store, makeConversation({ id: 21, updatedAt: 100, sender: snapshotSender }));
+
+    jest.advanceTimersByTime(10);
+    // The conversation updatedAt is unchanged, so the conversation staleness
+    // guard passes — only the list write's fence rejects the snapshot.
+    listResolved(store, [makeConversation({ id: 21, updatedAt: 100, sender: listSender })]);
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 21, updatedAt: 100, sender: snapshotSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('applies the snapshot when the list write predates the fetch', () => {
+    const store = makeStore();
+    const sender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    listResolved(store, [makeConversation({ id: 24, updatedAt: 100, sender })]);
+
+    jest.advanceTimersByTime(10);
+    fetchStarted(store, makeConversation({ id: 24, updatedAt: 100, sender }));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 24, updatedAt: 100, sender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('skips the snapshot when a notification stored the contact during the fetch', () => {
+    const store = makeStore();
+    const snapshotSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    fetchStarted(store, makeConversation({ id: 25, updatedAt: 100, sender: snapshotSender }));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(
+      addNotification({
+        accountId: 1,
+        unreadCount: 1,
+        count: 1,
+        notification: {
+          id: 991,
+          primaryActorType: 'Conversation',
+          primaryActor: {
+            meta: { sender: makeSender({ id: 1, customAttributes: { plan: 'gold' } }) },
+          },
+        } as unknown as Notification,
+      }),
+    );
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 25, updatedAt: 100, sender: snapshotSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('keeps the oldest marker when a tracked write is refreshed at the cap', () => {
+    const store = makeStore();
+    const staleSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    fetchStarted(store, makeConversation({ id: 23, updatedAt: 100, sender: staleSender }));
+
+    jest.advanceTimersByTime(10);
+    // Contact 1 is written during the fetch and must stay fenced. The map is
+    // then filled to the cap, and refreshing an already-tracked contact must
+    // not evict contact 1's marker to make room.
+    store.dispatch(updateContact(makeSender({ id: 1, customAttributes: { plan: 'gold' } })));
+    for (let id = 2; id <= MAX_TRACKED_CONTACT_WRITES; id += 1) {
+      store.dispatch(updateContact(makeSender({ id, customAttributes: { filler: String(id) } })));
+    }
+    store.dispatch(updateContact(makeSender({ id: 2, customAttributes: { filler: 'again' } })));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 23, updatedAt: 100, sender: staleSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
   });
 });

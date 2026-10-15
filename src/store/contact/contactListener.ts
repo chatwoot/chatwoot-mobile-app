@@ -5,7 +5,7 @@ import { conversationActions } from '../conversation/conversationActions';
 import { isOutdatedConversationUpdate } from '../conversation/conversationSlice';
 import { notificationActions } from '../notification/notificationAction';
 import { addNotification } from '../notification/notificationSlice';
-import { addContact, addContacts, updateContact } from './contactSlice';
+import { addContact, addContacts, updateContact, updateContactsPresence } from './contactSlice';
 import { Conversation } from '@/types/Conversation';
 import { Contact } from '@/types/Contact';
 import { Notification } from '@/types/Notification';
@@ -25,12 +25,16 @@ export const contactListenerMiddleware = createListenerMiddleware();
 // - fetch start, keyed by thunk requestId — several conversation fetches can
 //   be in flight at once (inbox notifications and the chat screen dispatch it);
 // - last contact write, keyed by contact id — `contact.updated` fires for any
-//   contact in the account, so only writes for the fetched contact matter.
+//   contact in the account, so only writes for the fetched contact matter;
+// - last presence write, global — one `presence.update` rewrites the
+//   availability of every stored contact at once, so a single marker covers
+//   them all.
 const fetchStartedAtByRequestId = new Map<string, number>();
 const lastContactWriteAtById = new Map<number, number>();
+let lastPresenceWriteAt: number | undefined;
 
 // `contact.updated` fires on every message activity, so keep the map bounded.
-const MAX_TRACKED_CONTACT_WRITES = 500;
+export const MAX_TRACKED_CONTACT_WRITES = 500;
 const CONTACT_WRITE_TTL_MS = 10 * 60 * 1000;
 
 const trackContactWrite = (contactId: number) => {
@@ -41,7 +45,19 @@ const trackContactWrite = (contactId: number) => {
         lastContactWriteAtById.delete(id);
       }
     });
+    // A burst of distinct contacts inside the TTL expires nothing; drop the
+    // least recently written entries so the insert below can't grow the map
+    // past the cap. Iteration order is insertion order — and every write
+    // re-inserts its entry, so the front of the map is the oldest write.
+    while (lastContactWriteAtById.size >= MAX_TRACKED_CONTACT_WRITES) {
+      const oldest = lastContactWriteAtById.keys().next();
+      if (oldest.done) {
+        break;
+      }
+      lastContactWriteAtById.delete(oldest.value);
+    }
   }
+  lastContactWriteAtById.delete(contactId);
   lastContactWriteAtById.set(contactId, now);
 };
 
@@ -63,6 +79,13 @@ contactListenerMiddleware.startListening({
   matcher: updateContact.match,
   effect: action => {
     trackContactWrite(action.payload.id);
+  },
+});
+
+contactListenerMiddleware.startListening({
+  matcher: updateContactsPresence.match,
+  effect: () => {
+    lastPresenceWriteAt = Date.now();
   },
 });
 
@@ -121,14 +144,21 @@ contactListenerMiddleware.startListening({
       return;
     }
 
-    // Availability is live data: presence heartbeats rewrite it for all
-    // contacts every ~20s, and the snapshot was rendered before the request
-    // resolved — keep the stored value instead of the render-time one.
-    const { availabilityStatus } = state.contacts.entities[contact.id] ?? {};
+    // Availability is live data: the snapshot carries the value rendered when
+    // the server handled the request. Keep the stored value only when a
+    // `presence.update` actually landed during this fetch — without a socket
+    // (or right after launch, from rehydrated storage) the stored status can
+    // be arbitrarily old, and the snapshot is then the freshest evidence.
+    const storedAvailability =
+      fetchStartedAt !== undefined &&
+      lastPresenceWriteAt !== undefined &&
+      lastPresenceWriteAt > fetchStartedAt
+        ? state.contacts.entities[contact.id]?.availabilityStatus
+        : undefined;
     listenerApi.dispatch(
       addContact({
         ...contact,
-        availabilityStatus: availabilityStatus ?? contact.availabilityStatus,
+        availabilityStatus: storedAvailability ?? contact.availabilityStatus,
       }),
     );
   },

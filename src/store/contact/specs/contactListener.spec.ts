@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { contactListenerMiddleware } from '../contactListener';
-import contactReducer, { addContact, updateContact } from '../contactSlice';
+import { contactListenerMiddleware, MAX_TRACKED_CONTACT_WRITES } from '../contactListener';
+import contactReducer, { addContact, updateContact, updateContactsPresence } from '../contactSlice';
 import conversationReducer from '@/store/conversation/conversationSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { conversation as conversationFixture } from '@/store/conversation/specs/conversationMockData';
@@ -162,17 +162,37 @@ describe('contactListener', () => {
     expect(store.getState().contacts.entities[2]).toBeDefined();
   });
 
-  it('keeps the stored availability status instead of the render-time one', () => {
+  it('keeps the stored availability status when presence was updated during the fetch', () => {
     const store = makeStore();
     const onlineContact = makeSender({ id: 1, availabilityStatus: 'online' });
     store.dispatch(addContact(onlineContact));
 
     const snapshot = makeSender({ id: 1, availabilityStatus: 'offline', name: 'Renamed' });
     fetchStarted(store, makeConversation({ id: 18, updatedAt: 100, sender: snapshot }));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(updateContactsPresence({ contacts: { 1: 'online' } }));
+
+    jest.advanceTimersByTime(10);
     fetchResolved(store, makeConversation({ id: 18, updatedAt: 100, sender: snapshot }));
 
     const stored = store.getState().contacts.entities[1];
     expect(stored?.availabilityStatus).toEqual('online');
+    expect(stored?.name).toEqual('Renamed');
+  });
+
+  it('takes the snapshot availability status when the stored one predates the fetch', () => {
+    const store = makeStore();
+    // e.g. rehydrated from storage after a relaunch with the socket down: the
+    // stored status has no live write behind it, the snapshot does.
+    store.dispatch(addContact(makeSender({ id: 1, availabilityStatus: 'online' })));
+
+    const snapshot = makeSender({ id: 1, availabilityStatus: 'offline', name: 'Renamed' });
+    fetchStarted(store, makeConversation({ id: 18, updatedAt: 100, sender: snapshot }));
+    fetchResolved(store, makeConversation({ id: 18, updatedAt: 100, sender: snapshot }));
+
+    const stored = store.getState().contacts.entities[1];
+    expect(stored?.availabilityStatus).toEqual('offline');
     expect(stored?.name).toEqual('Renamed');
   });
 
@@ -184,5 +204,28 @@ describe('contactListener', () => {
     fetchResolved(store, makeConversation({ id: 19, updatedAt: 100, sender: snapshot }));
 
     expect(store.getState().contacts.entities[1]?.availabilityStatus).toEqual('online');
+  });
+
+  it('evicts the oldest tracked write when the map reaches the cap', () => {
+    const store = makeStore();
+    const staleSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    fetchStarted(store, makeConversation({ id: 20, updatedAt: 100, sender: staleSender }));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(updateContact(makeSender({ id: 1, customAttributes: { plan: 'gold' } })));
+    for (let id = 2; id <= MAX_TRACKED_CONTACT_WRITES; id += 1) {
+      store.dispatch(updateContact(makeSender({ id, customAttributes: { filler: String(id) } })));
+    }
+    // One more distinct contact over the cap while nothing has expired: the
+    // oldest marker — contact 1's — is dropped to keep the map bounded, so
+    // the snapshot for contact 1 is no longer fenced.
+    store.dispatch(updateContact(makeSender({ id: MAX_TRACKED_CONTACT_WRITES + 1 })));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 20, updatedAt: 100, sender: staleSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'silver' });
+    expect(store.getState().contacts.entities[MAX_TRACKED_CONTACT_WRITES + 1]).toBeDefined();
   });
 });

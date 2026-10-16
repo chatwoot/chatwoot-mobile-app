@@ -414,4 +414,101 @@ describe('contactListener', () => {
     expect(stored?.availabilityStatus).toEqual('offline');
     expect(stored?.name).toEqual('Renamed');
   });
+
+  it('lets a later-started fetch supersede an earlier completion of the same conversation', () => {
+    const store = makeStore();
+    const earlierSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+    const laterSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    // The normal ordering for repeated presses: the earlier request resolves
+    // first, the one that started later carries the fresher snapshot and must
+    // not be fenced by the earlier completion's write.
+    store.dispatch(conversationActions.fetchConversation.pending('req-press-31', 31));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(conversationActions.fetchConversation.pending('req-screen-31', 31));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(
+      conversationActions.fetchConversation.fulfilled(
+        { conversation: makeConversation({ id: 31, updatedAt: 100, sender: earlierSender }) },
+        'req-press-31',
+        31,
+      ),
+    );
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(
+      conversationActions.fetchConversation.fulfilled(
+        { conversation: makeConversation({ id: 31, updatedAt: 100, sender: laterSender }) },
+        'req-screen-31',
+        31,
+      ),
+    );
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('keeps the stored contact offline when a newer presence event omits it', () => {
+    const store = makeStore();
+    store.dispatch(addContact(makeSender({ id: 1, availabilityStatus: 'online' })));
+
+    const snapshot = makeSender({ id: 1, availabilityStatus: 'offline', name: 'Renamed' });
+    fetchStarted(store, makeConversation({ id: 32, updatedAt: 100, sender: snapshot }));
+
+    jest.advanceTimersByTime(10);
+    store.dispatch(updateContactsPresence({ contacts: { 1: 'online' } }));
+    // A later full snapshot without contact 1 already applied the reducer's
+    // offline fallback to the stored contact; the earlier explicit marker
+    // must not revive it at fulfillment.
+    store.dispatch(updateContactsPresence({ contacts: { 2: 'busy' } }));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 32, updatedAt: 100, sender: snapshot }));
+
+    const stored = store.getState().contacts.entities[1];
+    expect(stored?.availabilityStatus).toEqual('offline');
+    expect(stored?.name).toEqual('Renamed');
+  });
+
+  it('skips the snapshot when a direct upsert stored the contact during the fetch', () => {
+    const store = makeStore();
+    const snapshotSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    fetchStarted(store, makeConversation({ id: 33, updatedAt: 100, sender: snapshotSender }));
+
+    jest.advanceTimersByTime(10);
+    // e.g. the contact-details screen fetched the full record from search
+    // while the conversation fetch was still in flight.
+    store.dispatch(addContact(makeSender({ id: 1, customAttributes: { plan: 'gold' } })));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 33, updatedAt: 100, sender: snapshotSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('ignores senders from list entries the conversation store rejects as outdated', () => {
+    const store = makeStore();
+    const freshSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+    const staleListSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    // A fresh snapshot is stored for conversation 34, then a detail fetch
+    // starts and an outdated list response lands while it is in flight: its
+    // sender must not be stored, and must not fence the in-flight request
+    // that carries the fresh contact.
+    fetchStarted(store, makeConversation({ id: 34, updatedAt: 200, sender: freshSender }));
+    fetchResolved(store, makeConversation({ id: 34, updatedAt: 200, sender: freshSender }));
+
+    jest.advanceTimersByTime(10);
+    fetchStarted(store, makeConversation({ id: 34, updatedAt: 200, sender: freshSender }));
+
+    jest.advanceTimersByTime(10);
+    listResolved(store, [makeConversation({ id: 34, updatedAt: 100, sender: staleListSender })]);
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 34, updatedAt: 200, sender: freshSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
 });

@@ -21,7 +21,8 @@ export const contactListenerMiddleware = createListenerMiddleware();
 // The `meta.sender` embedded in a conversation response is a snapshot rendered
 // when the server handled the request, while the same contact can be written
 // while that request is still in flight: a websocket `contact.updated` event,
-// a conversations-list / notification response, or a fresher detail snapshot
+// a conversations-list / notification response, a direct upsert (e.g. the full
+// contact record fetched by the search screen), or a fresher detail snapshot
 // from an overlapping request. Contact payloads carry no updated-at timestamp
 // shared by all sources, so ordering is fenced with markers recorded as events
 // are processed:
@@ -29,11 +30,16 @@ export const contactListenerMiddleware = createListenerMiddleware();
 //   be in flight at once (inbox notifications and the chat screen dispatch it);
 // - last contact write, keyed by contact id — every source above records its
 //   store writes here; writes fire for any contact in the account, so only
-//   writes for the fetched contact matter;
-// - last presence write, global and per contact — one `presence.update`
-//   rewrites the availability of every stored contact at once, but the store
-//   only holds contacts that already exist, so the event's per-contact value
-//   is kept here for senders that aren't stored yet.
+//   writes for the fetched contact matter. A fulfilled snapshot is recorded
+//   under its own request's start order: fetches that started earlier must
+//   still be fenced by it, while ones that started later hold fresher data
+//   and must not be;
+// - last presence event, global — one `presence.update` rewrites the
+//   availability of every stored contact from a full snapshot: contacts named
+//   in its payload get that value, the rest fall back to offline. Only the
+//   latest event is live evidence, and the store only holds contacts that
+//   already exist, so its payload is kept verbatim for senders that aren't
+//   stored yet.
 // Markers compare by a monotonic sequence token: two events can be processed
 // within the same millisecond, where wallclock values would tie.
 let lastSequence = 0;
@@ -50,8 +56,9 @@ interface TrackedEvent {
 
 const fetchStartOrderByRequestId = new Map<string, number>();
 const lastContactWriteById = new Map<number, TrackedEvent>();
-let lastPresenceWrite: TrackedEvent | undefined;
-const lastPresenceByContactId = new Map<number, TrackedEvent & { status: AvailabilityStatus }>();
+let lastPresenceEvent:
+  | (TrackedEvent & { contacts: Record<number, AvailabilityStatus> })
+  | undefined;
 
 // Contact writes land on every message activity (websocket events, list and
 // notification refreshes), so keep the tracking maps bounded.
@@ -91,11 +98,28 @@ const refreshTracked = <V extends TrackedEvent>(map: Map<number, V>, id: number,
   map.set(id, value);
 };
 
+const trackContactWriteAt = (contactId: number, at: number, order: number) => {
+  refreshTracked(lastContactWriteById, contactId, { at, order });
+};
+
 const trackContactWrite = (contactId: number) => {
-  refreshTracked(lastContactWriteById, contactId, {
-    at: Date.now(),
-    order: nextSequence(),
-  });
+  trackContactWriteAt(contactId, Date.now(), nextSequence());
+};
+
+// Listener-owned upserts record their own markers with the ordering the fence
+// needs — a fulfilled snapshot under its request's start order, external data
+// under a fresh sequence. The generic upsert matcher must not re-track them.
+let isListenerOwnedWrite = false;
+const dispatchListenerOwned = <T extends { type: string }>(
+  dispatch: (action: T) => unknown,
+  action: T,
+) => {
+  isListenerOwnedWrite = true;
+  try {
+    return dispatch(action);
+  } finally {
+    isListenerOwnedWrite = false;
+  }
 };
 
 contactListenerMiddleware.startListening({
@@ -113,9 +137,21 @@ contactListenerMiddleware.startListening({
 });
 
 contactListenerMiddleware.startListening({
-  matcher: updateContact.match,
+  matcher: isAnyOf(addContact, addContacts, updateContact),
   effect: action => {
-    trackContactWrite(action.payload.id);
+    if (isListenerOwnedWrite) {
+      return;
+    }
+    if (addContacts.match(action)) {
+      const { contacts } = action.payload as { contacts: Contact[] };
+      contacts.forEach(contact => {
+        if (contact) {
+          trackContactWrite(contact.id);
+        }
+      });
+      return;
+    }
+    trackContactWrite((action.payload as Contact).id);
   },
 });
 
@@ -123,16 +159,13 @@ contactListenerMiddleware.startListening({
   matcher: updateContactsPresence.match,
   effect: action => {
     const { contacts } = action.payload as { contacts: Record<number, AvailabilityStatus> };
-    const tracked: TrackedEvent = { at: Date.now(), order: nextSequence() };
-    lastPresenceWrite = tracked;
-    Object.entries(contacts).forEach(([contactId, rawStatus]) => {
-      // Mirror the reducer's fallback so the recorded value matches what a
-      // stored contact would have received from this event.
-      refreshTracked(lastPresenceByContactId, Number(contactId), {
-        ...tracked,
-        status: rawStatus || 'offline',
-      });
-    });
+    // `updateContactsPresence` applies a full snapshot: contacts named in the
+    // payload get that value, every other stored contact falls back to
+    // offline. Only the latest event is live evidence — an earlier event's
+    // per-contact value is superseded even when the newest payload omits the
+    // contact — so keep the payload verbatim and let the fulfillment derive
+    // what the store would hold now.
+    lastPresenceEvent = { at: Date.now(), order: nextSequence(), contacts };
   },
 });
 
@@ -140,9 +173,24 @@ contactListenerMiddleware.startListening({
   matcher: isAnyOf(conversationActions.fetchConversations.fulfilled),
   effect: (action, listenerApi) => {
     const { conversations } = action.payload as ConversationListResponse;
-    const contacts = conversations.map((conversation: Conversation) => conversation.meta.sender);
+    // Mirror the list reducer's per-entry staleness guard: an entry the
+    // conversation store rejects as outdated must not reach the contact store
+    // either — neither its sender nor a write marker that would fence a
+    // fresher detail fetch already in flight.
+    const state = listenerApi.getState() as {
+      conversations: { entities: Record<number, Conversation | undefined> };
+    };
+    const contacts = conversations
+      .filter(
+        conversation =>
+          !isOutdatedConversationUpdate(
+            state.conversations.entities[conversation.id],
+            conversation,
+          ),
+      )
+      .map((conversation: Conversation) => conversation.meta.sender);
     if (contacts.length > 0) {
-      listenerApi.dispatch(addContacts({ contacts }));
+      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts }));
       // These are store writes as well: a list response processed while a
       // conversation fetch is in flight is fresher evidence than that fetch's
       // snapshot, so the fence must see it like any other write.
@@ -176,7 +224,6 @@ contactListenerMiddleware.startListening({
     // fresher contact either.
     const state = listenerApi.getState() as {
       conversations: { entities: Record<number, Conversation | undefined> };
-      contacts: { entities: Record<number, Contact | undefined> };
     };
     if (isOutdatedConversationUpdate(state.conversations.entities[conversation.id], conversation)) {
       return;
@@ -189,10 +236,11 @@ contactListenerMiddleware.startListening({
 
     // Skip the snapshot when this exact contact was written while the request
     // was in flight — a websocket `contact.updated`, a conversations-list /
-    // notification response, or a fresher snapshot from an overlapping fetch
-    // of the same conversation (a repeat press dispatches a second request
-    // while the first is still in flight). Either way the stored copy is
-    // newer than this response's data. Writes to other contacts don't matter.
+    // notification response, a direct upsert from another screen, or a
+    // fresher snapshot from an overlapping fetch of the same conversation (a
+    // repeat press dispatches a second request while the first is still in
+    // flight). Either way the stored copy is newer than this response's data.
+    // Writes to other contacts don't matter.
     const lastContactWrite = lastContactWriteById.get(contact.id);
     if (
       fetchStartOrder !== undefined &&
@@ -207,32 +255,32 @@ contactListenerMiddleware.startListening({
     // `presence.update` actually landed during this fetch — without a socket
     // (or right after launch, from rehydrated storage) the stored status can
     // be arbitrarily old, and the snapshot is then the freshest evidence.
-    // Prefer the event's own value for this contact: the reducer only updates
-    // contacts that are already stored, so for a sender that isn't stored yet
-    // the event value survives only in the tracking above.
+    // Derive it from the latest event only, the way the reducer applies it:
+    // a contact named in its payload gets that value, an omitted one falls
+    // back to offline — the reducer only updates contacts that are already
+    // stored, so for a sender that isn't stored yet the event value survives
+    // only in the payload kept above.
     let storedAvailability: AvailabilityStatus | undefined;
     if (
       fetchStartOrder !== undefined &&
-      lastPresenceWrite !== undefined &&
-      lastPresenceWrite.order > fetchStartOrder
+      lastPresenceEvent !== undefined &&
+      lastPresenceEvent.order > fetchStartOrder
     ) {
-      const presenceEvent = lastPresenceByContactId.get(contact.id);
-      storedAvailability =
-        presenceEvent && presenceEvent.order > fetchStartOrder
-          ? presenceEvent.status
-          : state.contacts.entities[contact.id]?.availabilityStatus;
+      storedAvailability = lastPresenceEvent.contacts[contact.id] || 'offline';
     }
-    listenerApi.dispatch(
+    dispatchListenerOwned(
+      listenerApi.dispatch,
       addContact({
         ...contact,
         availabilityStatus: storedAvailability ?? contact.availabilityStatus,
       }),
     );
 
-    // Record the snapshot as a contact write: an overlapping fetch that
-    // started earlier must not overwrite it when its own older response
-    // arrives later.
-    trackContactWrite(contact.id);
+    // Record the snapshot as a contact write, stamped with this request's own
+    // start order: an overlapping fetch that started earlier must not
+    // overwrite it when its older response arrives later, while one that
+    // started later holds fresher data and must not be fenced by this write.
+    trackContactWriteAt(contact.id, Date.now(), fetchStartOrder ?? nextSequence());
   },
 });
 
@@ -248,7 +296,7 @@ contactListenerMiddleware.startListening({
       (notification: Notification) => notification.primaryActor?.meta?.sender,
     );
     if (contacts.length > 0) {
-      listenerApi.dispatch(addContacts({ contacts }));
+      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts }));
       contacts.forEach(contact => {
         if (contact) {
           trackContactWrite(contact.id);
@@ -264,7 +312,7 @@ contactListenerMiddleware.startListening({
     const { notification } = action.payload as NotificationCreatedResponse;
     const contact = notification?.primaryActor?.meta?.sender;
     if (contact) {
-      listenerApi.dispatch(addContact(contact));
+      dispatchListenerOwned(listenerApi.dispatch, addContact(contact));
       trackContactWrite(contact.id);
     }
   },

@@ -177,18 +177,18 @@ export const AppUpdatePrompt = () => {
     [checkAndroid, checkIOS, isBelowServerMinimum],
   );
 
-  // On launch: confirm a finished update, then look for a new one.
+  // On launch: look for a new update and confirm a finished one. The check starts first so it
+  // claims the one-at-a-time guard before any foreground check can.
   useEffect(() => {
-    const run = async () => {
-      const updatedVersion = await consumeUpdatedVersion(currentVersion);
-      if (updatedVersion) {
+    checkForUpdate(true).catch(() => {});
+    consumeUpdatedVersion(currentVersion)
+      .then(updatedVersion => {
+        if (!updatedVersion) return;
         showToast({
           message: i18n.t('APP_UPDATE.UPDATED', { version: isolateBidi(updatedVersion) }),
         });
-      }
-      await checkForUpdate(true);
-    };
-    run().catch(() => {});
+      })
+      .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -207,7 +207,10 @@ export const AppUpdatePrompt = () => {
   // background when the user left from them (Play then installs silently). Leaving from a
   // conversation would discard reply state that isn't persisted (recipients, editor mode).
   const canInstallSafely = useCallback(
-    () => isFocusedRef.current && (AppState.currentState === 'background' || !Keyboard.isVisible()),
+    () =>
+      isMountedRef.current &&
+      isFocusedRef.current &&
+      (AppState.currentState === 'background' || !Keyboard.isVisible()),
     [],
   );
 

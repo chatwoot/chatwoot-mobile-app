@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { RootState } from '@/store';
+import { getMinVersionForPlatform } from '@/utils/appUpdateUtils';
 
 export const selectSettings = (state: RootState) => state.settings;
 
@@ -38,5 +39,9 @@ export const selectIsChatwootCloud = createSelector(selectSettings, settings =>
 );
 
 export const selectChatwootVersion = createSelector(selectSettings, settings => settings.version);
+
+export const selectMobileAppMinVersion = createSelector(selectSettings, settings =>
+  getMinVersionForPlatform(settings.mobileAppMinVersions),
+);
 
 export const selectPushToken = createSelector(selectSettings, settings => settings.pushToken);

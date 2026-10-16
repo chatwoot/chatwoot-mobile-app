@@ -50,6 +50,13 @@ export interface PushPayload {
   };
 }
 
+export interface ChatwootVersionResponse {
+  version: string;
+  mobile_app?: {
+    min_version?: { ios?: string | null; android?: string | null };
+  };
+}
+
 export interface RemoveDevicePayload {
   push_token: string;
 }

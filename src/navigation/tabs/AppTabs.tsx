@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -40,6 +40,9 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { AppUpdatePrompt, RequiredUpdateScreen } from '@/components-next/app-update';
+import { useRequiredAppUpdate } from '@/hooks/useRequiredAppUpdate';
+import { markServerPolicyLoaded, markSignedInThisSession } from '@/utils/appUpdateUtils';
 
 const Tab = createBottomTabNavigator();
 
@@ -149,11 +152,6 @@ const Tabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);
 
-  useEffect(() => {
-    dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [installationUrl]);
-
   const userPermissions = user ? getUserPermissions(user, user.account_id) : [];
 
   // Checking if user has conversation permission to show inbox and conversations tabs
@@ -176,24 +174,62 @@ const Tabs = () => {
   }, []);
 
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
-      {hasConversationPermission && (
-        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
-      )}
-      {hasConversationPermission && (
-        <Tab.Screen
-          name="Conversations"
-          options={{ headerShown: false }}
-          component={ConversationStack}
-        />
-      )}
-      <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
+        {hasConversationPermission && (
+          <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+        )}
+        {hasConversationPermission && (
+          <Tab.Screen
+            name="Conversations"
+            options={{ headerShown: false }}
+            component={ConversationStack}
+          />
+        )}
+        <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
+      </Tab.Navigator>
+      <AppUpdatePrompt />
+    </>
   );
 };
 
 export const AppTabs = () => {
+  const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectLoggedIn);
+  const installationUrl = useAppSelector(selectInstallationUrl);
+  const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
+
+  // Refetched on every foreground so a minimum version raised while the app stayed in memory
+  // still applies. Only the latest request signals that the policy is loaded, since the store
+  // ignores older responses.
+  const latestServerInfoRequestRef = useRef<Promise<unknown> | null>(null);
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const fetchServerInfo = () => {
+      const request = dispatch(settingsActions.getChatwootVersion({ installationUrl }));
+      latestServerInfoRequestRef.current = request;
+      request.finally(() => {
+        if (latestServerInfoRequestRef.current === request) markServerPolicyLoaded();
+      });
+    };
+    fetchServerInfo();
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') fetchServerInfo();
+    });
+    return () => subscription.remove();
+  }, [dispatch, installationUrl, isLoggedIn]);
+
+  const wasLoggedInRef = useRef(isLoggedIn);
+  useEffect(() => {
+    if (isLoggedIn && !wasLoggedInRef.current) {
+      markSignedInThisSession();
+    }
+    wasLoggedInRef.current = isLoggedIn;
+  }, [isLoggedIn]);
+
+  if (isLoggedIn && isUpdateRequired && minVersion) {
+    return <RequiredUpdateScreen currentVersion={currentVersion} minVersion={minVersion} />;
+  }
 
   if (isLoggedIn) {
     return (

@@ -1,5 +1,6 @@
 export * from './Add';
 export * from './AddParticipant';
+export * from './ArrowUp';
 export * from './AttachFile';
 export * from './Attachment';
 export * from './Camera';
@@ -43,3 +44,4 @@ export * from './SelfAssign';
 export * from './Company';
 export * from './SocialIcons';
 export * from './Error';
+export * from './WarningCircle';

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { apiService } from '@/services/APIService';
 import type {
+  ChatwootVersionResponse,
   NotificationSettings,
   NotificationSettingsPayload,
   PushPayload,
@@ -29,8 +30,8 @@ export class SettingsService {
     return response.data;
   }
 
-  static async getChatwootVersion(installationUrl: string): Promise<{ version: string }> {
-    const response = await axios.get(`${installationUrl}api`);
+  static async getChatwootVersion(installationUrl: string): Promise<ChatwootVersionResponse> {
+    const response = await axios.get<ChatwootVersionResponse>(`${installationUrl}api`);
     return response.data;
   }
 

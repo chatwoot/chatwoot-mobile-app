@@ -495,6 +495,31 @@
     "WARNING_FOR_AGENT": "It seems like you are using unsupported Chatwoot server for your mobile app. Please contact your admin to upgrade your Chatwoot server.",
     "WARNING_FOR_ADMIN": "It seems like you are using unsupported Chatwoot server for your mobile app. Upgrading to server version %{minimumVersion} or later is required."
   },
+  "APP_UPDATE": {
+    "OPTIONAL": {
+      "TITLE": "Update available",
+      "BODY": "Version %{version} is available with improvements and fixes.",
+      "BODY_WITHOUT_VERSION": "A new version is available with improvements and fixes.",
+      "UPDATE": "Update",
+      "NOT_NOW": "Not now",
+      "STORE_ERROR": "Couldn't open the %{store}. Search for Chatwoot in the %{store} to update."
+    },
+    "STORE_NAME": {
+      "IOS": "App Store",
+      "ANDROID": "Play Store"
+    },
+    "DOWNLOADING": "Downloading update…",
+    "UPDATED": "Updated to version %{version}",
+    "REQUIRED": {
+      "TITLE": "Update to continue",
+      "BODY": "This version of Chatwoot is no longer supported. Install the latest version to get back to your conversations.",
+      "INSTALLED": "Installed: %{currentVersion}",
+      "MINIMUM": "Required: %{minVersion} or later",
+      "OPENING": "Opening store…",
+      "LOG_OUT": "Log out",
+      "STORE_ERROR": "Couldn't open the %{store}. Tap Update to try again, or search for Chatwoot in the %{store}."
+    }
+  },
   "EXIT": {
     "TITLE": "Exit",
     "SUBTITLE": "Are you sure you want to quit?",

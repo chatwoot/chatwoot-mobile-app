@@ -15,6 +15,7 @@ import {
 
 import { SettingsService } from './settingsService';
 import type {
+  ChatwootVersionResponse,
   NotificationSettings,
   NotificationSettingsPayload,
   InstallationUrls,
@@ -25,6 +26,7 @@ import { URL_TYPE } from '@/constants/url';
 import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { isUnactionablePushError } from '@/utils/sentryUtils';
+import { markNotificationRequestSettled } from '@/utils/appUpdateUtils';
 
 const createSettingsThunk = <TResponse, TPayload>(
   type: string,
@@ -82,7 +84,7 @@ export const settingsActions = {
     NotificationSettingsPayload
   >('settings/updateNotificationSettings', SettingsService.updateNotificationSettings),
 
-  getChatwootVersion: createSettingsThunk<{ version: string }, { installationUrl: string }>(
+  getChatwootVersion: createSettingsThunk<ChatwootVersionResponse, { installationUrl: string }>(
     'settings/getChatwootVersion',
     ({ installationUrl }) => SettingsService.getChatwootVersion(installationUrl),
   ),
@@ -102,9 +104,13 @@ export const settingsActions = {
         const buildNumber = await getBuildNumber();
 
         // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
-        const { status } = await checkNotifications();
-        if (status !== RESULTS.GRANTED) {
-          await requestNotifications(['alert', 'sound', 'badge']);
+        try {
+          const { status } = await checkNotifications();
+          if (status !== RESULTS.GRANTED) {
+            await requestNotifications(['alert', 'sound', 'badge']);
+          }
+        } finally {
+          markNotificationRequestSettled();
         }
 
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -128,6 +134,7 @@ export const settingsActions = {
         await SettingsService.saveDeviceDetails(pushData);
         return { fcmToken };
       } catch (error) {
+        markNotificationRequestSettled();
         if (!isUnactionablePushError(error)) {
           Sentry.captureException(error);
         }

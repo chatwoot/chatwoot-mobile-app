@@ -659,6 +659,31 @@ describe('contactListener', () => {
     expect(stored?.name).toEqual('Renamed');
   });
 
+  it('applies a detail response whose conversation version is definitively newer', () => {
+    const store = makeStore();
+    const listSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+    const detailSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    // The detail request starts first, but a list request that started later
+    // resolves before it with an older render (updatedAt 100). The slow
+    // detail response carries the definitively newer version (updatedAt 200)
+    // — the conversation store accepts it, so its sender must not be fenced
+    // by the list's start-order marker.
+    fetchStarted(store, makeConversation({ id: 50, updatedAt: 200, sender: detailSender }));
+
+    jest.advanceTimersByTime(10);
+    listStarted(store, 'req-list-50');
+
+    jest.advanceTimersByTime(10);
+    listResolved(store, [makeConversation({ id: 50, updatedAt: 100, sender: listSender })]);
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 50, updatedAt: 200, sender: detailSender }));
+
+    expect(store.getState().conversations.entities[50]?.updatedAt).toEqual(200);
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
   it('ignores a senderless direct upsert without recording a write', () => {
     const store = makeStore();
     const sender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });

@@ -3,6 +3,7 @@ import {
   updateConversationLastActivity,
   addConversation,
   addOrUpdateMessage,
+  isOutdatedConversationUpdate,
 } from '@/store/conversation/conversationSlice';
 import { addContact, updateContact, updateContactsPresence } from '@/store/contact/contactSlice';
 import { setTypingUsers, removeTypingUser } from '@/store/conversation/conversationTypingSlice';
@@ -84,6 +85,19 @@ class ActionCableConnector extends BaseActionCableConnector {
 
   onConversationUpdated = (data: Conversation) => {
     const conversation = transformConversation(data);
+    // Mirror the conversation reducer's staleness guard: an event the
+    // conversation store rejects as outdated (e.g. rendered before a newer
+    // HTTP refresh but delivered after it) must not reach the contact store
+    // either — not its sender, nor a write marker that would fence a fresher
+    // detail fetch already in flight.
+    const { entities } = (
+      store.getState() as {
+        conversations: { entities: Record<number, Conversation | undefined> };
+      }
+    ).conversations;
+    if (isOutdatedConversationUpdate(entities[conversation.id], conversation)) {
+      return;
+    }
     store.dispatch(updateConversation(conversation));
     store.dispatch(addContact(conversation.meta.sender));
   };

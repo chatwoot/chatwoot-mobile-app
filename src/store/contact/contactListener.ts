@@ -33,10 +33,12 @@ export const contactListenerMiddleware = createListenerMiddleware();
 //   store writes here; writes fire for any contact in the account, so only
 //   writes for the fetched contact matter. A fulfilled snapshot — from a
 //   detail fetch or a list response — is recorded under its own request's
-//   start order: requests that started earlier must still be fenced by it,
-//   while ones that started later hold fresher data and must not be. Live
-//   websocket writes get a fresh sequence: they arrive after every request
-//   in flight began;
+//   start order and its conversation version: requests that started earlier
+//   must still be fenced by it, ones that started later hold fresher data
+//   and must not be, and a response whose conversation version is
+//   definitively newer than the write's source version wins regardless of
+//   processing order. Live websocket writes get a fresh sequence and no
+//   version: they arrive after every request in flight began;
 // - last presence event, global — one `presence.update` rewrites the
 //   availability of every stored contact from a full snapshot: contacts named
 //   in its payload get that value, the rest fall back to offline. Only the
@@ -55,6 +57,9 @@ interface TrackedEvent {
   // Wallclock, for the TTL sweep only — ordering uses `order`.
   at: number;
   order: number;
+  // Conversation version behind the write, when the source carries one (a
+  // detail or list snapshot). Live websocket events have none.
+  version?: number;
 }
 
 const fetchStartOrderByRequestId = new Map<string, number>();
@@ -101,27 +106,30 @@ const refreshTracked = <V extends TrackedEvent>(map: Map<number, V>, id: number,
   map.set(id, value);
 };
 
-const trackContactWriteAt = (contactId: number, at: number, order: number) => {
-  refreshTracked(lastContactWriteById, contactId, { at, order });
+const trackContactWriteAt = (contactId: number, at: number, order: number, version?: number) => {
+  refreshTracked(lastContactWriteById, contactId, { at, order, version });
 };
 
 const trackContactWrite = (contactId: number) => {
   trackContactWriteAt(contactId, Date.now(), nextSequence());
 };
 
+interface ListSenderEntry {
+  sender: Contact;
+  // Conversation version the sender was rendered from, when present.
+  version?: number;
+}
+
 // A sender already written after the list request began (a live websocket
 // event, a direct upsert) is fresher than the list snapshot: drop it, so
 // neither the upsert nor the stamping reverts its newer marker to the list
 // request's older start order.
-const writableListSenders = <T extends { id: number }>(
-  contacts: (T | undefined)[],
+const writableListSenders = (
+  entries: ListSenderEntry[],
   listStartOrder: number | undefined,
-): T[] =>
-  contacts.filter((contact): contact is T => {
-    if (!contact) {
-      return false;
-    }
-    const marker = lastContactWriteById.get(contact.id);
+): ListSenderEntry[] =>
+  entries.filter(entry => {
+    const marker = lastContactWriteById.get(entry.sender.id);
     return !(listStartOrder !== undefined && marker !== undefined && marker.order > listStartOrder);
   });
 
@@ -214,7 +222,7 @@ contactListenerMiddleware.startListening({
     const state = listenerApi.getState() as {
       conversations: { entities: Record<number, Conversation | undefined> };
     };
-    const contacts = conversations
+    const senderEntries = conversations
       .filter(
         conversation =>
           !isOutdatedConversationUpdate(
@@ -222,7 +230,11 @@ contactListenerMiddleware.startListening({
             conversation,
           ),
       )
-      .map((conversation: Conversation) => conversation.meta.sender);
+      .flatMap((conversation: Conversation) =>
+        conversation.meta.sender
+          ? [{ sender: conversation.meta.sender, version: conversation.updatedAt }]
+          : [],
+      );
     // Consume this request's marker up front — its only remaining use is
     // stamping this fulfillment's writes.
     const { requestId } = action.meta as { requestId: string };
@@ -234,11 +246,19 @@ contactListenerMiddleware.startListening({
     // conversation opened while pagination was still in flight) resolves
     // unfenced and can apply its fresher contact; one that started earlier
     // is still fenced by the list's fresher senders.
-    const writable = writableListSenders(contacts, listStartOrder);
+    const writable = writableListSenders(senderEntries, listStartOrder);
     if (writable.length > 0) {
-      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts: writable }));
-      writable.forEach(contact => {
-        trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
+      dispatchListenerOwned(
+        listenerApi.dispatch,
+        addContacts({ contacts: writable.map(entry => entry.sender) }),
+      );
+      writable.forEach(entry => {
+        trackContactWriteAt(
+          entry.sender.id,
+          Date.now(),
+          listStartOrder ?? nextSequence(),
+          entry.version,
+        );
       });
     }
   },
@@ -282,11 +302,21 @@ contactListenerMiddleware.startListening({
     // repeat press dispatches a second request while the first is still in
     // flight). Either way the stored copy is newer than this response's data.
     // Writes to other contacts don't matter.
+    // The order fence only decides version ties: a response whose
+    // conversation is definitively newer than the stored write's source
+    // version is the fresher one, whatever the processing order (e.g. a slow
+    // detail response that rendered after a list refresh which started
+    // later). Live writes carry no version, so the fence still vetoes them.
     const lastContactWrite = lastContactWriteById.get(contact.id);
     if (
       fetchStartOrder !== undefined &&
       lastContactWrite !== undefined &&
-      lastContactWrite.order > fetchStartOrder
+      lastContactWrite.order > fetchStartOrder &&
+      !(
+        typeof conversation.updatedAt === 'number' &&
+        typeof lastContactWrite.version === 'number' &&
+        conversation.updatedAt > lastContactWrite.version
+      )
     ) {
       return;
     }
@@ -325,10 +355,16 @@ contactListenerMiddleware.startListening({
     );
 
     // Record the snapshot as a contact write, stamped with this request's own
-    // start order: an overlapping fetch that started earlier must not
-    // overwrite it when its older response arrives later, while one that
-    // started later holds fresher data and must not be fenced by this write.
-    trackContactWriteAt(contact.id, Date.now(), fetchStartOrder ?? nextSequence());
+    // start order and its conversation version: an overlapping fetch that
+    // started earlier must not overwrite it when its older response arrives
+    // later, one that started later holds fresher data and must not be fenced
+    // by this write, and a yet newer version outranks it outright.
+    trackContactWriteAt(
+      contact.id,
+      Date.now(),
+      fetchStartOrder ?? nextSequence(),
+      conversation.updatedAt,
+    );
   },
 });
 
@@ -340,8 +376,18 @@ contactListenerMiddleware.startListening({
       (notification: Notification) =>
         notification.primaryActorType === 'Conversation' && notification.primaryActor?.meta?.sender,
     );
-    const contacts = conversationNotifications.map(
-      (notification: Notification) => notification.primaryActor?.meta?.sender,
+    const senderEntries = conversationNotifications.reduce<ListSenderEntry[]>(
+      (entries, notification: Notification) => {
+        const sender = notification.primaryActor?.meta?.sender as unknown as Contact | undefined;
+        if (sender) {
+          entries.push({
+            sender,
+            version: (notification.primaryActor as { updatedAt?: number } | undefined)?.updatedAt,
+          });
+        }
+        return entries;
+      },
+      [],
     );
     // Same as the conversations list: stamp with the request's own start
     // order — a notifications request that started before a detail fetch is
@@ -349,11 +395,19 @@ contactListenerMiddleware.startListening({
     const { requestId } = action.meta as { requestId: string };
     const listStartOrder = fetchStartOrderByRequestId.get(requestId);
     fetchStartOrderByRequestId.delete(requestId);
-    const writable = writableListSenders(contacts, listStartOrder);
+    const writable = writableListSenders(senderEntries, listStartOrder);
     if (writable.length > 0) {
-      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts: writable }));
-      writable.forEach(contact => {
-        trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
+      dispatchListenerOwned(
+        listenerApi.dispatch,
+        addContacts({ contacts: writable.map(entry => entry.sender) }),
+      );
+      writable.forEach(entry => {
+        trackContactWriteAt(
+          entry.sender.id,
+          Date.now(),
+          listStartOrder ?? nextSequence(),
+          entry.version,
+        );
       });
     }
   },

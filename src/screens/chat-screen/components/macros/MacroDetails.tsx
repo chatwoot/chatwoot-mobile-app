@@ -8,6 +8,7 @@ import { ChevronLeft } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Agent, Macro } from '@/types';
 import { useHaptic, useScaleAnimation } from '@/utils';
+import { expandTabs } from '@/utils/expandTabs';
 import { useAppSelector } from '@/hooks';
 import { selectAllLabels } from '@/store/label/labelSelectors';
 import { selectAllTeams } from '@/store/team/teamSelectors';
@@ -127,7 +128,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
                 {action.actionName}
               </Animated.Text>
               <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
-                {action.actionValue}
+                {expandTabs(String(action.actionValue))}
               </Animated.Text>
             </View>
           ))}

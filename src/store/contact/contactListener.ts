@@ -26,14 +26,17 @@ export const contactListenerMiddleware = createListenerMiddleware();
 // from an overlapping request. Contact payloads carry no updated-at timestamp
 // shared by all sources, so ordering is fenced with markers recorded as events
 // are processed:
-// - fetch start, keyed by thunk requestId — several conversation fetches can
-//   be in flight at once (inbox notifications and the chat screen dispatch it);
+// - request start, keyed by thunk requestId — detail fetches (inbox
+//   notifications and the chat screen dispatch it), conversations-list and
+//   notifications-list requests can all overlap with one another;
 // - last contact write, keyed by contact id — every source above records its
 //   store writes here; writes fire for any contact in the account, so only
-//   writes for the fetched contact matter. A fulfilled snapshot is recorded
-//   under its own request's start order: fetches that started earlier must
-//   still be fenced by it, while ones that started later hold fresher data
-//   and must not be;
+//   writes for the fetched contact matter. A fulfilled snapshot — from a
+//   detail fetch or a list response — is recorded under its own request's
+//   start order: requests that started earlier must still be fenced by it,
+//   while ones that started later hold fresher data and must not be. Live
+//   websocket writes get a fresh sequence: they arrive after every request
+//   in flight began;
 // - last presence event, global — one `presence.update` rewrites the
 //   availability of every stored contact from a full snapshot: contacts named
 //   in its payload get that value, the rest fall back to offline. Only the
@@ -123,16 +126,26 @@ const dispatchListenerOwned = <T extends { type: string }>(
 };
 
 contactListenerMiddleware.startListening({
-  matcher: conversationActions.fetchConversation.pending.match,
+  matcher: isAnyOf(
+    conversationActions.fetchConversation.pending,
+    conversationActions.fetchConversations.pending,
+    notificationActions.fetchNotifications.pending,
+  ),
   effect: action => {
-    fetchStartOrderByRequestId.set(action.meta.requestId, nextSequence());
+    const { requestId } = action.meta as { requestId: string };
+    fetchStartOrderByRequestId.set(requestId, nextSequence());
   },
 });
 
 contactListenerMiddleware.startListening({
-  matcher: conversationActions.fetchConversation.rejected.match,
+  matcher: isAnyOf(
+    conversationActions.fetchConversation.rejected,
+    conversationActions.fetchConversations.rejected,
+    notificationActions.fetchNotifications.rejected,
+  ),
   effect: action => {
-    fetchStartOrderByRequestId.delete(action.meta.requestId);
+    const { requestId } = action.meta as { requestId: string };
+    fetchStartOrderByRequestId.delete(requestId);
   },
 });
 
@@ -189,14 +202,22 @@ contactListenerMiddleware.startListening({
           ),
       )
       .map((conversation: Conversation) => conversation.meta.sender);
+    // Consume this request's marker up front — its only remaining use is
+    // stamping this fulfillment's writes.
+    const { requestId } = action.meta as { requestId: string };
+    const listStartOrder = fetchStartOrderByRequestId.get(requestId);
+    fetchStartOrderByRequestId.delete(requestId);
     if (contacts.length > 0) {
       dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts }));
-      // These are store writes as well: a list response processed while a
-      // conversation fetch is in flight is fresher evidence than that fetch's
-      // snapshot, so the fence must see it like any other write.
+      // The senders are snapshots rendered when the LIST request was handled,
+      // so stamp their writes with the list request's own start order — not
+      // with the completion time. A detail fetch that started later (a
+      // conversation opened while pagination was still in flight) resolves
+      // unfenced and can apply its fresher contact; one that started earlier
+      // is still fenced by the list's fresher senders.
       contacts.forEach(contact => {
         if (contact) {
-          trackContactWrite(contact.id);
+          trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
         }
       });
     }
@@ -295,11 +316,17 @@ contactListenerMiddleware.startListening({
     const contacts = conversationNotifications.map(
       (notification: Notification) => notification.primaryActor?.meta?.sender,
     );
+    // Same as the conversations list: stamp with the request's own start
+    // order — a notifications request that started before a detail fetch is
+    // the older snapshot, its completion must not fence the fresher one.
+    const { requestId } = action.meta as { requestId: string };
+    const listStartOrder = fetchStartOrderByRequestId.get(requestId);
+    fetchStartOrderByRequestId.delete(requestId);
     if (contacts.length > 0) {
       dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts }));
       contacts.forEach(contact => {
         if (contact) {
-          trackContactWrite(contact.id);
+          trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
         }
       });
     }

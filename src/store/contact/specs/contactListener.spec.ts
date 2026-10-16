@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { contactListenerMiddleware, MAX_TRACKED_CONTACT_WRITES } from '../contactListener';
 import contactReducer, { addContact, updateContact, updateContactsPresence } from '../contactSlice';
 import { addNotification } from '@/store/notification/notificationSlice';
+import { notificationActions } from '@/store/notification/notificationAction';
 import conversationReducer from '@/store/conversation/conversationSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { conversation as conversationFixture } from '@/store/conversation/specs/conversationMockData';
@@ -69,6 +70,41 @@ const listResolved = (store: ReturnType<typeof makeStore>, conversations: Conver
       { page: 1, status: 'open', assigneeType: 'me', sortBy: 'latest' },
     ),
   );
+
+const CONVERSATIONS_PAYLOAD = {
+  page: 1,
+  status: 'open',
+  assigneeType: 'me',
+  sortBy: 'latest',
+} as const;
+
+const listStarted = (store: ReturnType<typeof makeStore>, requestId: string) =>
+  store.dispatch(conversationActions.fetchConversations.pending(requestId, CONVERSATIONS_PAYLOAD));
+
+const NOTIFICATIONS_PAYLOAD = { page: 1, sort_order: 'desc' } as const;
+
+const notificationsStarted = (store: ReturnType<typeof makeStore>, requestId: string) =>
+  store.dispatch(notificationActions.fetchNotifications.pending(requestId, NOTIFICATIONS_PAYLOAD));
+
+const notificationsResolved = (
+  store: ReturnType<typeof makeStore>,
+  requestId: string,
+  notifications: Notification[],
+) =>
+  store.dispatch(
+    notificationActions.fetchNotifications.fulfilled(
+      { meta: { unreadCount: 1, count: 1, currentPage: '1' }, payload: notifications },
+      requestId,
+      NOTIFICATIONS_PAYLOAD,
+    ),
+  );
+
+const makeNotification = (id: number, sender: Contact): Notification =>
+  ({
+    id,
+    primaryActorType: 'Conversation',
+    primaryActor: { meta: { sender } },
+  }) as unknown as Notification;
 
 describe('contactListener', () => {
   beforeEach(() => {
@@ -508,6 +544,71 @@ describe('contactListener', () => {
 
     jest.advanceTimersByTime(10);
     fetchResolved(store, makeConversation({ id: 34, updatedAt: 200, sender: freshSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('lets a detail fetch supersede a list response that started earlier', () => {
+    const store = makeStore();
+    const listSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+    const detailSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    // Pagination starts, the conversation is opened while it is still in
+    // flight, and the list resolves in between: the detail response is the
+    // later snapshot (higher updatedAt) and must not be fenced by the list's
+    // completion.
+    listStarted(store, 'req-list-40');
+
+    jest.advanceTimersByTime(10);
+    fetchStarted(store, makeConversation({ id: 40, updatedAt: 200, sender: detailSender }));
+
+    jest.advanceTimersByTime(10);
+    listResolved(store, [makeConversation({ id: 40, updatedAt: 100, sender: listSender })]);
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 40, updatedAt: 200, sender: detailSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('still fences the snapshot when the list request started after the fetch', () => {
+    const store = makeStore();
+    const snapshotSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+    const listSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    fetchStarted(store, makeConversation({ id: 41, updatedAt: 100, sender: snapshotSender }));
+
+    jest.advanceTimersByTime(10);
+    // The list started after the detail fetch, so its senders are the
+    // fresher snapshot even though both responses land during the fetch.
+    listStarted(store, 'req-list-41');
+
+    jest.advanceTimersByTime(10);
+    listResolved(store, [makeConversation({ id: 41, updatedAt: 100, sender: listSender })]);
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 41, updatedAt: 100, sender: snapshotSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('lets a detail fetch supersede a notifications response that started earlier', () => {
+    const store = makeStore();
+    const notificationSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+    const detailSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    notificationsStarted(store, 'req-notifications-42');
+
+    jest.advanceTimersByTime(10);
+    fetchStarted(store, makeConversation({ id: 42, updatedAt: 100, sender: detailSender }));
+
+    jest.advanceTimersByTime(10);
+    notificationsResolved(store, 'req-notifications-42', [
+      makeNotification(992, notificationSender),
+    ]);
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 42, updatedAt: 100, sender: detailSender }));
 
     expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
   });

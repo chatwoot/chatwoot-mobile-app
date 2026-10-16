@@ -19,6 +19,8 @@ interface SettingsState {
   theme: Theme;
   version: string;
   mobileAppMinVersions: MobileAppMinVersions;
+  // The latest server info request; older responses are ignored.
+  serverInfoRequestId: string;
   pushToken: string;
 }
 const initialState: SettingsState = {
@@ -43,6 +45,7 @@ const initialState: SettingsState = {
   theme: 'system',
   version: '',
   mobileAppMinVersions: { ios: null, android: null },
+  serverInfoRequestId: '',
   pushToken: '',
 };
 export const settingsSlice = createSlice({
@@ -89,8 +92,13 @@ export const settingsSlice = createSlice({
       .addCase(settingsActions.updateNotificationSettings.rejected, state => {
         state.uiFlags.isUpdating = false;
       })
+      .addCase(settingsActions.getChatwootVersion.pending, (state, action) => {
+        state.serverInfoRequestId = action.meta.requestId;
+      })
       .addCase(settingsActions.getChatwootVersion.fulfilled, (state, action) => {
-        // A response that arrives after the user switched servers belongs to the old server.
+        // Responses from an older request, or from a server the user has switched away from,
+        // would overwrite the current minimum version.
+        if (action.meta.requestId !== state.serverInfoRequestId) return;
         if (action.meta.arg.installationUrl !== state.installationUrl) return;
         const { version, mobile_app: mobileApp } = action.payload;
         state.version = version;

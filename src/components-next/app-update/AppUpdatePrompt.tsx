@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, Keyboard, Platform } from 'react-native';
 import Snackbar from 'react-native-snackbar';
-import { RESULTS, checkNotifications } from 'react-native-permissions';
 import { useIsFocused } from '@react-navigation/native';
 import { useStore } from 'react-redux';
 import * as Application from 'expo-application';
@@ -22,6 +21,7 @@ import {
   markRestartForUpdate,
   openStorePage,
   snoozeUpdatePrompt,
+  waitForNotificationRequest,
   waitForServerPolicy,
   wasSignedInThisSession,
 } from '@/utils/appUpdateUtils';
@@ -41,16 +41,6 @@ type DownloadState = 'idle' | 'downloading' | 'downloaded';
 
 const currentVersion = Application.nativeApplicationVersion ?? '';
 const UPDATE_RECHECK_INTERVAL_MS = 24 * 60 * 60 * 1000;
-
-/** True while notification permission can still be requested, i.e. the system prompt may show this launch. */
-const isNotificationPromptPending = async (): Promise<boolean> => {
-  try {
-    const { status } = await checkNotifications();
-    return status === RESULTS.DENIED;
-  } catch {
-    return false;
-  }
-};
 
 const downloadStateFor = (status: InstallStatus): DownloadState | null => {
   switch (status) {
@@ -84,22 +74,38 @@ export const AppUpdatePrompt = () => {
   downloadStateRef.current = downloadState;
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(Keyboard.isVisible());
   const isInstallingRef = useRef(false);
+  const isCheckingRef = useRef(false);
+  const isMountedRef = useRef(true);
+  const store = useStore<RootState>();
 
   const isFocusedRef = useRef(isFocused);
   isFocusedRef.current = isFocused;
   const lastCheckedAtRef = useRef(0);
 
-  // The launch check also skips the launch where the user signed in.
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Versions below the server minimum belong to the required-update screen.
+  const isBelowServerMinimum = useCallback(() => {
+    const minVersion = selectMobileAppMinVersion(store.getState());
+    return !!minVersion && isVersionLower(currentVersion, minVersion);
+  }, [store]);
+
+  // Re-read right before any sheet or Play UI, since checks await the store in between. The
+  // launch check also skips the launch where the user signed in.
   const canPrompt = useCallback(
-    async (isLaunchCheck: boolean) =>
-      isFocused &&
+    (isLaunchCheck: boolean) =>
+      isMountedRef.current &&
+      isFocusedRef.current &&
       !Keyboard.isVisible() &&
       !(isLaunchCheck && wasSignedInThisSession()) &&
-      !(await isNotificationPromptPending()),
-    [isFocused],
+      !isBelowServerMinimum(),
+    [isBelowServerMinimum],
   );
-  const canPromptRef = useRef(canPrompt);
-  canPromptRef.current = canPrompt;
 
   const presentSheet = useCallback((version: string | null) => {
     setSheetRequest({ version });
@@ -121,7 +127,7 @@ export const AppUpdatePrompt = () => {
         return;
       }
       if (info.updateAvailability !== 'available' || (await isUpdatePromptSnoozed())) return;
-      if (!(await canPromptRef.current(isLaunchCheck))) return;
+      if (!canPrompt(isLaunchCheck)) return;
 
       if (info.flexibleAllowed) {
         const result = await startPlayUpdate('flexible').catch(() => 'failed' as const);
@@ -135,9 +141,9 @@ export const AppUpdatePrompt = () => {
         }
       }
       // Play can't run the flexible flow here, so offer the store listing instead.
-      if (await canPromptRef.current(isLaunchCheck)) presentSheet(null);
+      if (canPrompt(isLaunchCheck)) presentSheet(null);
     },
-    [presentSheet],
+    [canPrompt, presentSheet],
   );
 
   const checkIOS = useCallback(
@@ -146,25 +152,29 @@ export const AppUpdatePrompt = () => {
       if (!release || !isVersionLower(currentVersion, release.version)) return;
       if (!canInstallRelease(release, Device.osVersion ?? '0')) return;
       if (await isUpdatePromptSnoozed()) return;
-      if (!(await canPromptRef.current(isLaunchCheck))) return;
+      if (!canPrompt(isLaunchCheck)) return;
       presentSheet(release.version);
     },
-    [presentSheet],
+    [canPrompt, presentSheet],
   );
 
-  const store = useStore<RootState>();
-
-  // Versions below the server minimum belong to the required-update screen, so this waits for
-  // the launch's minimum and stays out of the way when it applies.
+  // One check at a time, claimed before any await so a foreground check can't run alongside the
+  // launch check. It waits for this launch's server minimum and notification permission request,
+  // so it neither shows under the required-update screen nor stacks on the permission dialog.
   const checkForUpdate = useCallback(
     async (isLaunchCheck: boolean) => {
-      await waitForServerPolicy();
-      const minVersion = selectMobileAppMinVersion(store.getState());
-      if (minVersion && isVersionLower(currentVersion, minVersion)) return;
+      if (isCheckingRef.current) return;
+      isCheckingRef.current = true;
       lastCheckedAtRef.current = Date.now();
-      await (Platform.OS === 'android' ? checkAndroid(isLaunchCheck) : checkIOS(isLaunchCheck));
+      try {
+        await Promise.all([waitForServerPolicy(), waitForNotificationRequest()]);
+        if (!isMountedRef.current || isBelowServerMinimum()) return;
+        await (Platform.OS === 'android' ? checkAndroid(isLaunchCheck) : checkIOS(isLaunchCheck));
+      } finally {
+        isCheckingRef.current = false;
+      }
     },
-    [checkAndroid, checkIOS, store],
+    [checkAndroid, checkIOS, isBelowServerMinimum],
   );
 
   // On launch: confirm a finished update, then look for a new one.
@@ -193,38 +203,49 @@ export const AppUpdatePrompt = () => {
     return () => subscription.remove();
   }, [checkForUpdate]);
 
-  const installUpdate = useCallback(async () => {
-    if (isInstallingRef.current) return;
-    isInstallingRef.current = true;
-    await markRestartForUpdate(currentVersion);
-    await completePlayUpdate().catch(() => {
-      isInstallingRef.current = false;
-    });
-  }, []);
+  // A restart is safe on the main tabs: in the foreground with the keyboard closed, or in the
+  // background when the user left from them (Play then installs silently). Leaving from a
+  // conversation would discard reply state that isn't persisted (recipients, editor mode).
+  const canInstallSafely = useCallback(
+    () => isFocusedRef.current && (AppState.currentState === 'background' || !Keyboard.isVisible()),
+    [],
+  );
 
-  // Play installs silently when the app is in the background. That happens only when the user
-  // left from the main tabs: leaving from a conversation would discard reply state that isn't
-  // persisted (recipients, editor mode), so that case waits for the main tabs.
+  const installUpdate = useCallback(async () => {
+    if (isInstallingRef.current || !canInstallSafely()) return;
+    isInstallingRef.current = true;
+    try {
+      await markRestartForUpdate(currentVersion);
+      // The user may have opened a conversation while the marker was being written.
+      if (!canInstallSafely()) {
+        isInstallingRef.current = false;
+        return;
+      }
+      await completePlayUpdate();
+    } catch {
+      isInstallingRef.current = false;
+    }
+  }, [canInstallSafely]);
+
   useEffect(() => {
     if (Platform.OS !== 'android') return;
-    const canInstallInBackground = () =>
-      AppState.currentState === 'background' && isFocusedRef.current;
     const removeInstallListener = addInstallStatusListener(status => {
       const nextState = downloadStateFor(status);
       if (nextState) setDownloadState(nextState);
-      if (nextState === 'downloaded' && canInstallInBackground()) installUpdate();
+      if (nextState === 'downloaded') installUpdate();
     });
-    // A download can finish while the app is in the background.
     const appStateSubscription = AppState.addEventListener('change', state => {
       if (state === 'background') {
-        if (downloadStateRef.current === 'downloaded' && canInstallInBackground()) installUpdate();
+        if (downloadStateRef.current === 'downloaded') installUpdate();
         return;
       }
       if (state !== 'active') return;
+      // A download can finish, or a background install can fail, while the app is away.
       getPlayUpdateInfo()
         .then(info => {
           const nextState = info && downloadStateFor(info.installStatus);
           if (nextState) setDownloadState(nextState);
+          if (nextState === 'downloaded') installUpdate();
         })
         .catch(() => {});
     });
@@ -247,11 +268,10 @@ export const AppUpdatePrompt = () => {
     };
   }, []);
 
-  // In the foreground, install only on the main tabs with the keyboard closed, so the restart
-  // never discards a reply in progress.
+  // Installs as soon as the user is back on the main tabs with the keyboard closed.
   const canInstallNow = downloadState === 'downloaded' && isFocused && !isKeyboardVisible;
   useEffect(() => {
-    if (canInstallNow && AppState.currentState === 'active') installUpdate();
+    if (canInstallNow) installUpdate();
   }, [canInstallNow, installUpdate]);
 
   const handleUpdate = useCallback(() => {

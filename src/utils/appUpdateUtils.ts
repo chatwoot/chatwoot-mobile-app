@@ -31,6 +31,17 @@ export const markServerPolicyLoaded = (): void => resolveServerPolicyLoaded();
 
 /** Resolves once this launch's server info request has settled. */
 export const waitForServerPolicy = (): Promise<void> => serverPolicyLoaded;
+
+let resolveNotificationRequestSettled: () => void = () => {};
+const notificationRequestSettled = new Promise<void>(resolve => {
+  resolveNotificationRequestSettled = resolve;
+});
+
+/** Records that this launch's notification permission request has finished, whatever the answer. */
+export const markNotificationRequestSettled = (): void => resolveNotificationRequestSettled();
+
+/** Resolves once this launch's notification permission request has finished. */
+export const waitForNotificationRequest = (): Promise<void> => notificationRequestSettled;
 const SNOOZED_UNTIL_KEY = 'appUpdate.snoozedUntil';
 const RESTARTED_FROM_VERSION_KEY = 'appUpdate.restartedFromVersion';
 

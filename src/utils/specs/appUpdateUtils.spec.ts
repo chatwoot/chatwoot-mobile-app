@@ -128,6 +128,14 @@ describe('consumeUpdatedVersion', () => {
   it('returns null without a restart marker', async () => {
     await expect(consumeUpdatedVersion('4.10.0')).resolves.toBeNull();
   });
+
+  it('keeps a marker written while the previous one is being read', async () => {
+    await markRestartForUpdate('4.9.0');
+    const read = consumeUpdatedVersion('4.9.6');
+    const write = markRestartForUpdate('4.9.6');
+    await Promise.all([read, write]);
+    await expect(consumeUpdatedVersion('4.10.0')).resolves.toBe('4.10.0');
+  });
 });
 
 describe('sign-in during the session', () => {

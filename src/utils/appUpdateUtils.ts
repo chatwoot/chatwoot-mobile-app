@@ -111,8 +111,13 @@ export const snoozeUpdatePrompt = async (now: number = Date.now()): Promise<void
   await AsyncStorage.setItem(SNOOZED_UNTIL_KEY, String(until));
 };
 
+// The in-flight read of the previous marker. Writes wait for it, so its removal can't delete a
+// marker written while it runs.
+let pendingMarkerRead: Promise<unknown> = Promise.resolve();
+
 /** Records the running version before an update restart so the next launch can confirm it. */
 export const markRestartForUpdate = async (currentVersion: string): Promise<void> => {
+  await pendingMarkerRead;
   await AsyncStorage.setItem(RESTARTED_FROM_VERSION_KEY, currentVersion);
 };
 
@@ -120,11 +125,15 @@ export const markRestartForUpdate = async (currentVersion: string): Promise<void
  * Returns the running version if the app was restarted for an update and is now newer,
  * clearing the marker either way.
  */
-export const consumeUpdatedVersion = async (currentVersion: string): Promise<string | null> => {
-  const previousVersion = await AsyncStorage.getItem(RESTARTED_FROM_VERSION_KEY);
-  if (previousVersion === null) return null;
-  await AsyncStorage.removeItem(RESTARTED_FROM_VERSION_KEY);
-  return isVersionLower(previousVersion, currentVersion) ? currentVersion : null;
+export const consumeUpdatedVersion = (currentVersion: string): Promise<string | null> => {
+  const read = (async () => {
+    const previousVersion = await AsyncStorage.getItem(RESTARTED_FROM_VERSION_KEY);
+    if (previousVersion === null) return null;
+    await AsyncStorage.removeItem(RESTARTED_FROM_VERSION_KEY);
+    return isVersionLower(previousVersion, currentVersion) ? currentVersion : null;
+  })();
+  pendingMarkerRead = read.catch(() => {});
+  return read;
 };
 
 const openPlayStoreListing = async (): Promise<void> => {

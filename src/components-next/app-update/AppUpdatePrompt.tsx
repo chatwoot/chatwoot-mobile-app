@@ -76,9 +76,6 @@ export const AppUpdatePrompt = () => {
   const isInstallingRef = useRef(false);
   const isCheckingRef = useRef(false);
   const isMountedRef = useRef(true);
-  // The launch read of the previous restart marker; installs wait for it so their new marker
-  // isn't removed by that read.
-  const markerReadRef = useRef<Promise<void>>(Promise.resolve());
   const store = useStore<RootState>();
 
   const isFocusedRef = useRef(isFocused);
@@ -183,7 +180,7 @@ export const AppUpdatePrompt = () => {
   // On launch: confirm a finished update and look for a new one. The check starts right away so
   // it claims the one-at-a-time guard before any foreground check can.
   useEffect(() => {
-    markerReadRef.current = consumeUpdatedVersion(currentVersion)
+    consumeUpdatedVersion(currentVersion)
       .then(updatedVersion => {
         if (!updatedVersion) return;
         showToast({
@@ -221,7 +218,6 @@ export const AppUpdatePrompt = () => {
     if (isInstallingRef.current || !canInstallSafely()) return;
     isInstallingRef.current = true;
     try {
-      await markerReadRef.current;
       await markRestartForUpdate(currentVersion);
       // The user may have opened a conversation while the marker was being written.
       if (!canInstallSafely()) {

@@ -62,8 +62,20 @@ class AppUpdateModule : Module() {
         promise.reject(CodedException("An update flow is already in progress"))
         return@AsyncFunction
       }
+      // Reserved before the Play info lookup so a second call can't start alongside this one.
+      // Every path that won't produce an activity result releases it.
+      pendingStartPromise = promise
+      fun release(settle: () -> Unit) {
+        pendingStartPromise = null
+        settle()
+      }
       val updateType = if (type == "immediate") AppUpdateType.IMMEDIATE else AppUpdateType.FLEXIBLE
-      val updateManager = manager()
+      val updateManager = try {
+        manager()
+      } catch (error: Exception) {
+        release { promise.reject(CodedException("Failed to read update info: ${error.message}", error)) }
+        return@AsyncFunction
+      }
 
       updateManager.appUpdateInfo
         .addOnSuccessListener { info ->
@@ -74,29 +86,26 @@ class AppUpdateModule : Module() {
             else -> false
           }
           if (!canStart) {
-            promise.resolve("not_allowed")
+            release { promise.resolve("not_allowed") }
             return@addOnSuccessListener
           }
           val activity = appContext.currentActivity
           if (activity == null) {
-            promise.reject(CodedException("Current activity is not available"))
+            release { promise.reject(CodedException("Current activity is not available")) }
             return@addOnSuccessListener
           }
           try {
-            pendingStartPromise = promise
             val options = AppUpdateOptions.newBuilder(updateType).build()
             // false means Play didn't start the flow, so no activity result will arrive.
             if (!updateManager.startUpdateFlowForResult(info, activity, options, UPDATE_REQUEST_CODE)) {
-              pendingStartPromise = null
-              promise.resolve("not_allowed")
+              release { promise.resolve("not_allowed") }
             }
           } catch (error: Exception) {
-            pendingStartPromise = null
-            promise.reject(CodedException("Failed to start update flow: ${error.message}", error))
+            release { promise.reject(CodedException("Failed to start update flow: ${error.message}", error)) }
           }
         }
         .addOnFailureListener { error ->
-          promise.reject(CodedException("Failed to read update info: ${error.message}", error))
+          release { promise.reject(CodedException("Failed to read update info: ${error.message}", error)) }
         }
     }
 

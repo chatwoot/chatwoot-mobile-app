@@ -74,7 +74,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   onConversationCreated = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(addConversation(conversation));
-    store.dispatch(addContact(conversation));
+    store.dispatch(addContact(conversation.meta.sender));
   };
 
   onMessageUpdated = (data: Message) => {
@@ -85,7 +85,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   onConversationUpdated = (data: Conversation) => {
     const conversation = transformConversation(data);
     store.dispatch(updateConversation(conversation));
-    store.dispatch(addContact(conversation));
+    store.dispatch(addContact(conversation.meta.sender));
   };
 
   onAssigneeChanged = (data: Conversation) => {

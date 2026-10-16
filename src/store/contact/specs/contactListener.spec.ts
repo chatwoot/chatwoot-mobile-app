@@ -612,4 +612,64 @@ describe('contactListener', () => {
 
     expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
   });
+
+  it('keeps a live contact write when an older list response lands during a fetch', () => {
+    const store = makeStore();
+    const liveSender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+    const listSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+    const snapshotSender = makeSender({ id: 1, customAttributes: { plan: 'silver' } });
+
+    listStarted(store, 'req-list-47');
+
+    jest.advanceTimersByTime(10);
+    fetchStarted(store, makeConversation({ id: 47, updatedAt: 100, sender: snapshotSender }));
+
+    jest.advanceTimersByTime(10);
+    // A websocket event writes the contact after the list request began: the
+    // list snapshot is older and must neither upsert the sender nor replace
+    // the live write's marker with the list's older start order.
+    store.dispatch(updateContact(liveSender));
+
+    jest.advanceTimersByTime(10);
+    listResolved(store, [makeConversation({ id: 47, updatedAt: 100, sender: listSender })]);
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 47, updatedAt: 100, sender: snapshotSender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
+
+  it('keeps the stored availability when neither presence nor the snapshot supplies one', () => {
+    const store = makeStore();
+    store.dispatch(addContact(makeSender({ id: 1, availabilityStatus: 'online' })));
+
+    // Presence fired just before the fetch; the snapshot renders no status
+    // at all. The upsert must not clear the stored status with an explicit
+    // undefined.
+    store.dispatch(updateContactsPresence({ contacts: { 1: 'online' } }));
+
+    const snapshot = makeSender({ id: 1, availabilityStatus: undefined, name: 'Renamed' });
+    fetchStarted(store, makeConversation({ id: 48, updatedAt: 100, sender: snapshot }));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 48, updatedAt: 100, sender: snapshot }));
+
+    const stored = store.getState().contacts.entities[1];
+    expect(stored?.availabilityStatus).toEqual('online');
+    expect(stored?.name).toEqual('Renamed');
+  });
+
+  it('ignores a senderless direct upsert without recording a write', () => {
+    const store = makeStore();
+    const sender = makeSender({ id: 1, customAttributes: { plan: 'gold' } });
+
+    fetchStarted(store, makeConversation({ id: 49, updatedAt: 100, sender }));
+    // e.g. an ActionCable conversation event without meta.sender
+    store.dispatch(addContact(undefined as unknown as Contact));
+
+    jest.advanceTimersByTime(10);
+    fetchResolved(store, makeConversation({ id: 49, updatedAt: 100, sender }));
+
+    expect(store.getState().contacts.entities[1]?.customAttributes).toEqual({ plan: 'gold' });
+  });
 });

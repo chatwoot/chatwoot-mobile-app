@@ -109,6 +109,22 @@ const trackContactWrite = (contactId: number) => {
   trackContactWriteAt(contactId, Date.now(), nextSequence());
 };
 
+// A sender already written after the list request began (a live websocket
+// event, a direct upsert) is fresher than the list snapshot: drop it, so
+// neither the upsert nor the stamping reverts its newer marker to the list
+// request's older start order.
+const writableListSenders = <T extends { id: number }>(
+  contacts: (T | undefined)[],
+  listStartOrder: number | undefined,
+): T[] =>
+  contacts.filter((contact): contact is T => {
+    if (!contact) {
+      return false;
+    }
+    const marker = lastContactWriteById.get(contact.id);
+    return !(listStartOrder !== undefined && marker !== undefined && marker.order > listStartOrder);
+  });
+
 // Listener-owned upserts record their own markers with the ordering the fence
 // needs — a fulfilled snapshot under its request's start order, external data
 // under a fresh sequence. The generic upsert matcher must not re-track them.
@@ -164,7 +180,12 @@ contactListenerMiddleware.startListening({
       });
       return;
     }
-    trackContactWrite((action.payload as Contact).id);
+    // e.g. an ActionCable conversation event with no meta.sender dispatches
+    // addContact(undefined) — nothing was written, nothing to record.
+    const contact = action.payload as Contact | undefined;
+    if (contact) {
+      trackContactWrite(contact.id);
+    }
   },
 });
 
@@ -207,18 +228,17 @@ contactListenerMiddleware.startListening({
     const { requestId } = action.meta as { requestId: string };
     const listStartOrder = fetchStartOrderByRequestId.get(requestId);
     fetchStartOrderByRequestId.delete(requestId);
-    if (contacts.length > 0) {
-      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts }));
-      // The senders are snapshots rendered when the LIST request was handled,
-      // so stamp their writes with the list request's own start order — not
-      // with the completion time. A detail fetch that started later (a
-      // conversation opened while pagination was still in flight) resolves
-      // unfenced and can apply its fresher contact; one that started earlier
-      // is still fenced by the list's fresher senders.
-      contacts.forEach(contact => {
-        if (contact) {
-          trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
-        }
+    // The senders are snapshots rendered when the LIST request was handled,
+    // so stamp their writes with the list request's own start order — not
+    // with the completion time. A detail fetch that started later (a
+    // conversation opened while pagination was still in flight) resolves
+    // unfenced and can apply its fresher contact; one that started earlier
+    // is still fenced by the list's fresher senders.
+    const writable = writableListSenders(contacts, listStartOrder);
+    if (writable.length > 0) {
+      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts: writable }));
+      writable.forEach(contact => {
+        trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
       });
     }
   },
@@ -289,12 +309,19 @@ contactListenerMiddleware.startListening({
     ) {
       storedAvailability = lastPresenceEvent.contacts[contact.id] || 'offline';
     }
+    // Neither live presence nor the snapshot supplies a value — omit the
+    // property: an explicit `availabilityStatus: undefined` would clear a
+    // status the stored contact already holds (e.g. from a presence event
+    // just before the fetch) in the upsert merge.
+    const { availabilityStatus: snapshotAvailability, ...contactFields } = contact;
+    const resolvedAvailability = storedAvailability ?? snapshotAvailability;
     dispatchListenerOwned(
       listenerApi.dispatch,
-      addContact({
-        ...contact,
-        availabilityStatus: storedAvailability ?? contact.availabilityStatus,
-      }),
+      addContact(
+        resolvedAvailability === undefined
+          ? (contactFields as Contact)
+          : { ...contactFields, availabilityStatus: resolvedAvailability },
+      ),
     );
 
     // Record the snapshot as a contact write, stamped with this request's own
@@ -322,12 +349,11 @@ contactListenerMiddleware.startListening({
     const { requestId } = action.meta as { requestId: string };
     const listStartOrder = fetchStartOrderByRequestId.get(requestId);
     fetchStartOrderByRequestId.delete(requestId);
-    if (contacts.length > 0) {
-      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts }));
-      contacts.forEach(contact => {
-        if (contact) {
-          trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
-        }
+    const writable = writableListSenders(contacts, listStartOrder);
+    if (writable.length > 0) {
+      dispatchListenerOwned(listenerApi.dispatch, addContacts({ contacts: writable }));
+      writable.forEach(contact => {
+        trackContactWriteAt(contact.id, Date.now(), listStartOrder ?? nextSequence());
       });
     }
   },

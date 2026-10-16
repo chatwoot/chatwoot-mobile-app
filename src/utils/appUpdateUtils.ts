@@ -26,11 +26,24 @@ const serverPolicyLoaded = new Promise<void>(resolve => {
   resolveServerPolicyLoaded = resolve;
 });
 
-/** Records that this launch's server info request has settled, so its minimum version is current. */
-export const markServerPolicyLoaded = (): void => resolveServerPolicyLoaded();
+const serverPolicyListeners = new Set<() => void>();
 
-/** Resolves once this launch's server info request has settled. */
+/** Records that a server info request has settled, so the stored minimum version is current. */
+export const markServerPolicyLoaded = (): void => {
+  resolveServerPolicyLoaded();
+  serverPolicyListeners.forEach(listener => listener());
+};
+
+/** Resolves once this launch's first server info request has settled. */
 export const waitForServerPolicy = (): Promise<void> => serverPolicyLoaded;
+
+/** Calls `listener` each time a server info request settles. Returns an unsubscribe function. */
+export const onServerPolicyLoaded = (listener: () => void): (() => void) => {
+  serverPolicyListeners.add(listener);
+  return () => {
+    serverPolicyListeners.delete(listener);
+  };
+};
 
 let resolveNotificationRequestSettled: () => void = () => {};
 const notificationRequestSettled = new Promise<void>(resolve => {

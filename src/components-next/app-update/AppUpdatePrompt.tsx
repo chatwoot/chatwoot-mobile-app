@@ -19,6 +19,7 @@ import {
   isUpdatePromptSnoozed,
   isVersionLower,
   markRestartForUpdate,
+  onServerPolicyLoaded,
   openStorePage,
   snoozeUpdatePrompt,
   waitForNotificationRequest,
@@ -192,16 +193,17 @@ export const AppUpdatePrompt = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Look again when the app returns to the foreground, at most once per interval, so a
-  // session kept in memory for days still sees new releases once a snooze has ended.
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', state => {
-      if (state !== 'active') return;
-      if (Date.now() - lastCheckedAtRef.current < UPDATE_RECHECK_INTERVAL_MS) return;
-      checkForUpdate(false).catch(() => {});
-    });
-    return () => subscription.remove();
-  }, [checkForUpdate]);
+  // Look again after each server info refresh, at most once per interval, so a session kept in
+  // memory for days still sees new releases once a snooze has ended. AppTabs refreshes on every
+  // foreground, so this runs on return with the refreshed minimum already applied.
+  useEffect(
+    () =>
+      onServerPolicyLoaded(() => {
+        if (Date.now() - lastCheckedAtRef.current < UPDATE_RECHECK_INTERVAL_MS) return;
+        checkForUpdate(false).catch(() => {});
+      }),
+    [checkForUpdate],
+  );
 
   // A restart is safe on the main tabs: in the foreground with the keyboard closed, or in the
   // background when the user left from them (Play then installs silently). Leaving from a

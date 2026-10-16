@@ -203,8 +203,11 @@ export const AppTabs = () => {
   // still applies.
   useEffect(() => {
     if (!isLoggedIn) return;
-    const fetchServerInfo = () => dispatch(settingsActions.getChatwootVersion({ installationUrl }));
-    fetchServerInfo().finally(markServerPolicyLoaded);
+    const fetchServerInfo = () =>
+      dispatch(settingsActions.getChatwootVersion({ installationUrl })).finally(
+        markServerPolicyLoaded,
+      );
+    fetchServerInfo();
     const subscription = AppState.addEventListener('change', state => {
       if (state === 'active') fetchServerInfo();
     });

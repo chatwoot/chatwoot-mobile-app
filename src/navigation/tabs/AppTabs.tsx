@@ -42,7 +42,7 @@ import { customAttributeActions } from '@/store/custom-attribute/customAttribute
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { AppUpdatePrompt, RequiredUpdateScreen } from '@/components-next/app-update';
 import { useRequiredAppUpdate } from '@/hooks/useRequiredAppUpdate';
-import { markSignedInThisSession } from '@/utils/appUpdateUtils';
+import { markServerPolicyLoaded, markSignedInThisSession } from '@/utils/appUpdateUtils';
 
 const Tab = createBottomTabNavigator();
 
@@ -204,7 +204,7 @@ export const AppTabs = () => {
   useEffect(() => {
     if (!isLoggedIn) return;
     const fetchServerInfo = () => dispatch(settingsActions.getChatwootVersion({ installationUrl }));
-    fetchServerInfo();
+    fetchServerInfo().finally(markServerPolicyLoaded);
     const subscription = AppState.addEventListener('change', state => {
       if (state === 'active') fetchServerInfo();
     });

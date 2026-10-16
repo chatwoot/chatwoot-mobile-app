@@ -3,10 +3,13 @@ import { AppState, Keyboard, Platform } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import { RESULTS, checkNotifications } from 'react-native-permissions';
 import { useIsFocused } from '@react-navigation/native';
+import { useStore } from 'react-redux';
 import * as Application from 'expo-application';
 import * as Device from 'expo-device';
 
 import i18n from '@/i18n';
+import type { RootState } from '@/store';
+import { selectMobileAppMinVersion } from '@/store/settings/settingsSelectors';
 import { showToast } from '@/utils/toastUtils';
 import {
   canInstallRelease,
@@ -19,6 +22,7 @@ import {
   markRestartForUpdate,
   openStorePage,
   snoozeUpdatePrompt,
+  waitForServerPolicy,
   wasSignedInThisSession,
 } from '@/utils/appUpdateUtils';
 import {
@@ -148,12 +152,19 @@ export const AppUpdatePrompt = () => {
     [presentSheet],
   );
 
+  const store = useStore<RootState>();
+
+  // Versions below the server minimum belong to the required-update screen, so this waits for
+  // the launch's minimum and stays out of the way when it applies.
   const checkForUpdate = useCallback(
     async (isLaunchCheck: boolean) => {
+      await waitForServerPolicy();
+      const minVersion = selectMobileAppMinVersion(store.getState());
+      if (minVersion && isVersionLower(currentVersion, minVersion)) return;
       lastCheckedAtRef.current = Date.now();
       await (Platform.OS === 'android' ? checkAndroid(isLaunchCheck) : checkIOS(isLaunchCheck));
     },
-    [checkAndroid, checkIOS],
+    [checkAndroid, checkIOS, store],
   );
 
   // On launch: confirm a finished update, then look for a new one.

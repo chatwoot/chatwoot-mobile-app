@@ -6,7 +6,12 @@ import i18n from '@/i18n';
 import { tailwind } from '@/theme';
 import { useLogout } from '@/hooks/useLogout';
 import { WarningCircleIcon } from '@/svg-icons';
-import { getStoreName, isolateBidi, openStorePage } from '@/utils/appUpdateUtils';
+import {
+  getStoreName,
+  isolateBidi,
+  markRestartForUpdate,
+  openStorePage,
+} from '@/utils/appUpdateUtils';
 import { startPlayUpdate } from '../../../modules/app-update';
 import { Spinner } from '../spinner';
 
@@ -48,13 +53,15 @@ export const RequiredUpdateScreen = ({ currentVersion, minVersion }: RequiredUpd
     setHasError(false);
     setIsOpening(true);
     try {
+      // Lets the next launch confirm the new version once the update has installed.
+      await markRestartForUpdate(currentVersion);
       await openUpdate();
     } catch {
       setHasError(true);
     } finally {
       setIsOpening(false);
     }
-  }, []);
+  }, [currentVersion]);
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')} edges={['top', 'bottom']}>

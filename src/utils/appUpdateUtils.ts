@@ -20,6 +20,17 @@ export const markSignedInThisSession = (): void => {
 };
 
 export const wasSignedInThisSession = (): boolean => hasSignedInThisSession;
+
+let resolveServerPolicyLoaded: () => void = () => {};
+const serverPolicyLoaded = new Promise<void>(resolve => {
+  resolveServerPolicyLoaded = resolve;
+});
+
+/** Records that this launch's server info request has settled, so its minimum version is current. */
+export const markServerPolicyLoaded = (): void => resolveServerPolicyLoaded();
+
+/** Resolves once this launch's server info request has settled. */
+export const waitForServerPolicy = (): Promise<void> => serverPolicyLoaded;
 const SNOOZED_UNTIL_KEY = 'appUpdate.snoozedUntil';
 const RESTARTED_FROM_VERSION_KEY = 'appUpdate.restartedFromVersion';
 

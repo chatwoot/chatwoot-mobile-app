@@ -85,7 +85,11 @@ class AppUpdateModule : Module() {
           try {
             pendingStartPromise = promise
             val options = AppUpdateOptions.newBuilder(updateType).build()
-            updateManager.startUpdateFlowForResult(info, activity, options, UPDATE_REQUEST_CODE)
+            // false means Play didn't start the flow, so no activity result will arrive.
+            if (!updateManager.startUpdateFlowForResult(info, activity, options, UPDATE_REQUEST_CODE)) {
+              pendingStartPromise = null
+              promise.resolve("not_allowed")
+            }
           } catch (error: Exception) {
             pendingStartPromise = null
             promise.reject(CodedException("Failed to start update flow: ${error.message}", error))

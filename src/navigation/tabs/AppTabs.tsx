@@ -200,13 +200,18 @@ export const AppTabs = () => {
   const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
 
   // Refetched on every foreground so a minimum version raised while the app stayed in memory
-  // still applies.
+  // still applies. Only the latest request signals that the policy is loaded, since the store
+  // ignores older responses.
+  const latestServerInfoRequestRef = useRef<Promise<unknown> | null>(null);
   useEffect(() => {
     if (!isLoggedIn) return;
-    const fetchServerInfo = () =>
-      dispatch(settingsActions.getChatwootVersion({ installationUrl })).finally(
-        markServerPolicyLoaded,
-      );
+    const fetchServerInfo = () => {
+      const request = dispatch(settingsActions.getChatwootVersion({ installationUrl }));
+      latestServerInfoRequestRef.current = request;
+      request.finally(() => {
+        if (latestServerInfoRequestRef.current === request) markServerPolicyLoaded();
+      });
+    };
     fetchServerInfo();
     const subscription = AppState.addEventListener('change', state => {
       if (state === 'active') fetchServerInfo();

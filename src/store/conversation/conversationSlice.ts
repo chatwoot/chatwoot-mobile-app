@@ -60,7 +60,7 @@ const isOutdatedConversationUpdate = (
 const shouldKeepLocalStatusMarker = (
   existingConversation: Conversation | undefined,
   incomingConversation: Conversation,
-) => {
+): existingConversation is Conversation => {
   const localStatusUpdatedAt = existingConversation?.localStatusUpdatedAt;
   const existingUpdatedAt = existingConversation?.updatedAt;
   const incomingUpdatedAt = incomingConversation.updatedAt;

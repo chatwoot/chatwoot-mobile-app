@@ -37,6 +37,7 @@ export type ImageMetadata = {
   contentType?: string | null;
   dataUrl: string;
   thumbUrl: string;
+  fileSize?: number;
   fallbackTitle: string;
   coordinatesLat: number;
   coordinatesLong: number;
@@ -86,7 +87,7 @@ export interface Message {
   lastNonActivityMessage: Message | null;
   conversation?: Conversation | null;
   shouldRenderAvatar?: boolean | false;
-  senderId: number;
+  senderId?: number;
   groupWithNext?: boolean | false;
   groupWithPrevious?: boolean | false;
   senderType?: string;

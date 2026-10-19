@@ -95,9 +95,7 @@ export const getHeaderSubtitle = (template: NormalizedTemplate): string | undefi
   return headerLabelMap[header.format];
 };
 
-const extractHeader = (
-  template: WhatsAppMessageTemplate,
-): NormalizedTemplateHeader | undefined => {
+const extractHeader = (template: WhatsAppMessageTemplate): NormalizedTemplateHeader | undefined => {
   const header = findComponentByType(template, 'HEADER');
   if (!header?.format) return undefined;
   return { format: header.format, text: header.text };

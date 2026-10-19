@@ -30,7 +30,10 @@ export const SendMessageButton = (props: SendMessageButtonProps) => {
         layout={LinearTransition.springify().mass(1).damping(15).stiffness(105)}
         entering={sendIconEnterAnimation}
         exiting={sendIconExitAnimation}
-        style={[tailwind.style('flex items-center justify-center h-10 w-10'), disabled ? {} : animatedStyle]}>
+        style={[
+          tailwind.style('flex items-center justify-center h-10 w-10'),
+          disabled ? {} : animatedStyle,
+        ]}>
         <Animated.View
           style={tailwind.style(
             'flex items-center justify-center h-7 w-7 rounded-full',

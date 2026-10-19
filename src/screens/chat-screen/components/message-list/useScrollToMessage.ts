@@ -11,7 +11,7 @@ interface UseScrollToMessageParams {
   scrollToMessageId?: number;
   clearScrollToMessageId: () => void;
   messages: MessageOrDate[];
-  messageListRef: React.RefObject<FlashListRef<MessageOrDate>>;
+  messageListRef: React.RefObject<FlashListRef<MessageOrDate> | null>;
   isFlashListReady: boolean;
   isLoadingMessages: boolean;
 }

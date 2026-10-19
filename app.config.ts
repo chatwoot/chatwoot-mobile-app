@@ -4,7 +4,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.9.4',
+    version: '4.9.11',
     orientation: 'portrait',
     icon: './assets/icon.png',
     userInterfaceStyle: 'light',
@@ -117,6 +117,5 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',
     ],
-    androidNavigationBar: { backgroundColor: '#ffffff' },
   };
 };

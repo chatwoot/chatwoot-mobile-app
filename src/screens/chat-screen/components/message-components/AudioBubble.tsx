@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Platform, Pressable, View } from 'react-native';
-import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
 
@@ -15,11 +14,17 @@ import { Icon, Slider } from '@/components-next/common';
 import { FileErrorIcon } from '@/svg-icons';
 import i18n from '@/i18n';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import {
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+  type Callback,
+} from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
-// eslint-disable-next-line import/no-unresolved
 import { preparePlayableAudio } from '@/utils/audioConverter';
 import { iosNeedsConversion } from '@/utils/audioSource';
 
@@ -66,9 +71,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = useCallback(
-    (data: { data: PlayBackType }) => {
-      const playBackData = data.data as PlayBackType;
+  const audioPlayBackStatus = useCallback<Callback>(
+    ({ data: playBackData }) => {
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
         totalDuration.value = playBackData.duration;

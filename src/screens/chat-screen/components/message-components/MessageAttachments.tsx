@@ -131,7 +131,12 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
             'flex flex-row items-center relative max-w-[300px] my-2',
             rowAlignment,
           )}>
-          <FileBubblePreview fileSrc={attachment.dataUrl} isComposed variant={variant} />
+          <FileBubblePreview
+            fileSrc={attachment.dataUrl}
+            fileSize={attachment.fileSize}
+            isComposed
+            variant={variant}
+          />
         </Animated.View>
       ))}
 

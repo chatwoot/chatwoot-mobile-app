@@ -53,6 +53,11 @@ class BaseActionCableConnector {
     this.consumer.disconnect();
   };
 
+  // Reopens the socket if the OS closed it while the app was suspended
+  ensureConnected = (): void => {
+    this.consumer.ensureActiveConnection();
+  };
+
   protected isAValidEvent = (data: unknown): boolean => {
     const { account_id } = data as { account_id: number };
     return this.accountId === account_id;

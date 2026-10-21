@@ -42,6 +42,13 @@ export const selectCurrentUserAvailability = createSelector(selectAuth, auth => 
 
 export const selectCurrentUserAccountId = createSelector(selectAuth, auth => auth.user?.account_id);
 
+// Servers without the Receive calls preference send no accepts_calls, which counts as on
+export const selectCurrentUserReceivesCalls = createSelector(selectAuth, auth => {
+  const { account_id, accounts = [] } = auth.user ?? {};
+  const currentAccount = accounts.find(account => account.id === account_id);
+  return currentAccount?.availability === 'online' && currentAccount.accepts_calls !== false;
+});
+
 export const selectCurrentUserAccount = createSelector(selectAuth, auth => {
   const { user } = auth;
   const currentAccount = user?.accounts?.find(

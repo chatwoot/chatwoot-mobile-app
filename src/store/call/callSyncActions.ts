@@ -8,7 +8,7 @@ import { addConversation, addOrUpdateMessage } from '@/store/conversation/conver
 import { extractCallData } from '@/utils/voiceCallRouting';
 import {
   selectCurrentUserAccountId,
-  selectCurrentUserAvailability,
+  selectCurrentUserReceivesCalls,
   selectUserId,
 } from '@/store/auth/authSelectors';
 
@@ -46,9 +46,9 @@ export const callSyncActions = {
       }
       if (sessionOf(getState()) !== session) return NOTHING_SYNCED;
       const dismissed = selectDismissedCallSids(getState());
-      // Only inbound rings are surfaced, and only to an agent who is online, as over the
-      // socket; an outbound call belongs to the device that placed it, which already has it
-      const online = selectCurrentUserAvailability(getState()) === 'online';
+      // Only inbound rings are surfaced, and only to an agent who is online and takes calls,
+      // as over the socket; an outbound call belongs to the device that placed it
+      const receivesCalls = selectCurrentUserReceivesCalls(getState());
       // The server lists the agents a ring went to when it started; a conversation since
       // assigned to someone else, as this device knows it, rings for them instead
       const currentUserId = selectUserId(getState());
@@ -60,7 +60,7 @@ export const callSyncActions = {
       ringing
         .filter(
           call =>
-            online &&
+            receivesCalls &&
             call.direction === 'inbound' &&
             !dismissed.includes(call.call_id) &&
             !assignedElsewhere(call),

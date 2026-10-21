@@ -45,7 +45,7 @@ import {
   holdEarlyProviderStatus,
 } from '@/store/call/earlyOutboundEvents';
 import type { VoiceCallIncomingEvent, VoiceCallStatusEvent } from '@/store/call/callTypes';
-import { selectCurrentUserAvailability, selectUserId } from '@/store/auth/authSelectors';
+import { selectCurrentUserReceivesCalls, selectUserId } from '@/store/auth/authSelectors';
 import {
   callsHiddenByConversationUpdate,
   extractCallData,
@@ -162,7 +162,7 @@ class ActionCableConnector extends BaseActionCableConnector {
     const state = store.getState();
     return {
       currentUserId: selectUserId(state),
-      currentUserAvailability: selectCurrentUserAvailability(state),
+      receivesCalls: selectCurrentUserReceivesCalls(state),
       dismissedCallSids: selectDismissedCallSids(state),
       localCallSid: selectLocalCallSid(state),
     };
@@ -184,12 +184,12 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   // WhatsApp rings through this event; Twilio rings through message.created. The server
-  // already targets online agents, so the availability check only guards wider streams.
+  // already targets online agents who take calls, so this check only guards wider streams.
   // The event's conversation id is the database one, not the display id the app opens
   // conversations by, so the call's conversation comes from its message or push instead.
   onVoiceCallIncoming = (data: VoiceCallIncomingEvent) => {
     if (data?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
-    if (selectCurrentUserAvailability(store.getState()) !== 'online') return;
+    if (!selectCurrentUserReceivesCalls(store.getState())) return;
     store.dispatch(
       addCall({
         callSid: data.call_id,

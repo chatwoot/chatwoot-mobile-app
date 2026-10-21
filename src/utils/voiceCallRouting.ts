@@ -7,7 +7,7 @@ import type { CallerSnapshot, LiveCallInput, VoiceCallDirection } from '@/store/
 
 export type RoutingContext = {
   currentUserId?: number | null;
-  currentUserAvailability?: string | null;
+  receivesCalls?: boolean;
   dismissedCallSids: string[];
   // The call this device placed itself; an outbound call from the same agent's other
   // device is not shown here, since only the originating device holds its media
@@ -64,11 +64,9 @@ export const shouldShowCall = ({
   return !isAssignedToAnotherAgent(assigneeId, currentUserId);
 };
 
-// Only agents who set themselves online get an inbound ring; outbound always shows.
-export const shouldRingInbound = (
-  callDirection: VoiceCallDirection,
-  currentUserAvailability?: string | null,
-) => callDirection === 'outbound' || currentUserAvailability === 'online';
+// Only agents who are online and take calls get an inbound ring; outbound always shows.
+export const shouldRingInbound = (callDirection: VoiceCallDirection, receivesCalls?: boolean) =>
+  callDirection === 'outbound' || !!receivesCalls;
 
 // Only incoming messages carry the contact as sender; on outbound the sender is the agent.
 export const extractCallerSnapshot = (message: Message): CallerSnapshot | null => {
@@ -123,7 +121,7 @@ export const routeVoiceCallCreated = (
     return { action: 'ignore' };
   }
   if (isOutboundFromAnotherDevice(data, context)) return { action: 'ignore' };
-  if (!shouldRingInbound(data.callDirection, context.currentUserAvailability)) {
+  if (!shouldRingInbound(data.callDirection, context.receivesCalls)) {
     return { action: 'ignore' };
   }
   return { action: 'add', call: toLiveCall(data) };
@@ -146,7 +144,7 @@ export const routeVoiceCallUpdated = (
     return { action: 'remove', callSid: data.callSid };
   if (data.status === VOICE_CALL_STATUS.RINGING) {
     if (context.dismissedCallSids.includes(data.callSid)) return { action: 'ignore' };
-    if (!shouldRingInbound(data.callDirection, context.currentUserAvailability)) {
+    if (!shouldRingInbound(data.callDirection, context.receivesCalls)) {
       return { action: 'ignore' };
     }
     return { action: 'add', call: toLiveCall(data) };

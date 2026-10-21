@@ -4,7 +4,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { VOICE_CALL_STATUS } from '@/constants';
 import { store } from '@/store';
-import { selectCurrentUserAvailability, selectUserId } from '@/store/auth/authSelectors';
+import { selectCurrentUserReceivesCalls, selectUserId } from '@/store/auth/authSelectors';
 import { selectDismissedCallSids, selectLocalCallSid } from '@/store/call/callSelectors';
 import { addCall } from '@/store/call/callSlice';
 import { selectAllConversations } from '@/store/conversation/conversationSelectors';
@@ -36,7 +36,7 @@ const selectRingingKey = createSelector(selectAllConversations, conversations =>
 export const useRingingCallsFromCache = () => {
   const dispatch = useAppDispatch();
   const currentUserId = useAppSelector(selectUserId);
-  const currentUserAvailability = useAppSelector(selectCurrentUserAvailability);
+  const receivesCalls = useAppSelector(selectCurrentUserReceivesCalls);
   const dismissedCallSids = useAppSelector(selectDismissedCallSids);
 
   const ringingKey = useAppSelector(selectRingingKey);
@@ -45,7 +45,7 @@ export const useRingingCallsFromCache = () => {
     if (!ringingKey) return;
     const context = {
       currentUserId,
-      currentUserAvailability,
+      receivesCalls,
       dismissedCallSids,
       localCallSid: selectLocalCallSid(store.getState()),
     };
@@ -63,5 +63,5 @@ export const useRingingCallsFromCache = () => {
     });
     // Keyed on the ringing calls present, not on every message update
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ringingKey, currentUserId, currentUserAvailability]);
+  }, [ringingKey, currentUserId, receivesCalls]);
 };

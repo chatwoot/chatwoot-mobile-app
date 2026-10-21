@@ -40,7 +40,7 @@ const message = (overrides: Record<string, unknown> = {}) =>
 
 const context = (overrides: Partial<Parameters<typeof routeVoiceCallCreated>[1]> = {}) => ({
   currentUserId: AGENT_ID,
-  currentUserAvailability: 'online',
+  receivesCalls: true,
   dismissedCallSids: [],
   ...overrides,
 });
@@ -112,11 +112,10 @@ describe('shouldShowCall and shouldRingInbound', () => {
     ).toBe(false);
   });
 
-  it('rings inbound only for online agents and outbound regardless', () => {
-    expect(shouldRingInbound('inbound', 'online')).toBe(true);
-    expect(shouldRingInbound('inbound', 'busy')).toBe(false);
-    expect(shouldRingInbound('inbound', 'offline')).toBe(false);
-    expect(shouldRingInbound('outbound', 'offline')).toBe(true);
+  it('rings inbound only for agents who take calls and outbound regardless', () => {
+    expect(shouldRingInbound('inbound', true)).toBe(true);
+    expect(shouldRingInbound('inbound', false)).toBe(false);
+    expect(shouldRingInbound('outbound', false)).toBe(true);
   });
 });
 
@@ -146,7 +145,7 @@ describe('routeVoiceCallCreated', () => {
       context(),
     ],
     ['dismissed earlier', message(), context({ dismissedCallSids: ['wacid.ring'] })],
-    ['agent is busy', message(), context({ currentUserAvailability: 'busy' })],
+    ['agent is not taking calls', message(), context({ receivesCalls: false })],
     [
       'assigned to someone else',
       message({ conversation: { id: 37, meta: { assignee: { id: OTHER_AGENT_ID } } } }),
@@ -173,7 +172,7 @@ describe('routeVoiceCallCreated', () => {
         sender: { id: AGENT_ID, name: 'Sam', type: 'user' },
         call: { ...ringingPayload().call, direction: 'outgoing' },
       }),
-      context({ currentUserAvailability: 'offline', localCallSid: 'wacid.ring' }),
+      context({ receivesCalls: false, localCallSid: 'wacid.ring' }),
     );
     expect(decision.action).toBe('add');
   });

@@ -5,6 +5,7 @@ import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import {
   AudioIcon,
+  CallIcon,
   ImageAttachmentIcon,
   DocumentAttachmentIcon,
   PrivateNoteIcon,
@@ -12,9 +13,34 @@ import {
 } from '@/svg-icons';
 import { Icon } from '@/components-next';
 import { Message } from '@/types';
-import { MESSAGE_TYPES } from '@/constants';
+import { CONTENT_TYPES, MESSAGE_TYPES } from '@/constants';
 import i18n from '@/i18n';
 import { getPlainText } from '@/utils/messageFormatterUtils';
+import { getVoiceCallDisplay } from '@/utils/voiceCallUtils';
+
+// A call is previewed by its outcome: missed calls in red,
+// live calls in green, everything else in the usual grey
+const VoiceCallPreview = ({ message }: { message: Message }) => {
+  const display = getVoiceCallDisplay(message);
+  const color = display.isFailed
+    ? (tailwind.color('text-ruby-800') as string)
+    : display.isLive
+      ? (tailwind.color('text-green-800') as string)
+      : (tailwind.color('text-gray-900') as string);
+  return (
+    <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
+      <CallIcon color={color} size={14} />
+      <Text
+        numberOfLines={1}
+        style={[
+          tailwind.style('text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px]'),
+          { color },
+        ]}>
+        {i18n.t(display.labelKey)}
+      </Text>
+    </NativeView>
+  );
+};
 
 type ConversationLastMessageProps = {
   numberOfLines: number;
@@ -76,6 +102,10 @@ const MessageContent = ({
   const lastMessageFileType = message?.attachments?.[0]?.fileType;
 
   const isMessageSticker = message?.contentType === ('sticker' as Message['contentType']);
+
+  if (message?.contentType === CONTENT_TYPES.VOICE_CALL) {
+    return <VoiceCallPreview message={message} />;
+  }
 
   if (message.content && isMessageSticker) {
     return (

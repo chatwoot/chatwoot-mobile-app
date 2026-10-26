@@ -3,7 +3,6 @@ import { Path, Svg } from 'react-native-svg';
 
 import { IconProps } from '../../types';
 
-// A handset with the signal arcs that mark a call the agent can place
 export const PhoneOutlineIcon = ({
   stroke = '#646464',
   strokeWidth = '1.40919',

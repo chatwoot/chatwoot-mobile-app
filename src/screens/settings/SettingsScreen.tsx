@@ -430,52 +430,54 @@ const SettingsScreen = () => {
     </View>
   );
 
-  if (!isSplit) {
-    if (!IOS_DESIGN) return listContent;
-    return (
-      <View style={tailwind.style('flex-1')}>
-        {listContent}
-        {iosPage ? (
-          <Animated.View
-            entering={SlideInRight.duration(280)}
-            exiting={SlideOutRight.duration(240)}
-            style={tailwind.style('absolute inset-0')}>
-            <SwipeBackPage
-              onBack={() => setIosPage(null)}
-              style={tailwind.style('flex-1 bg-gray-50')}>
-              <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1')}>
-                <PageHeader title={titleFor(iosPage)} onBack={() => setIosPage(null)} />
-                <ScrollView
-                  showsVerticalScrollIndicator={false}
-                  contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
-                  {renderPaneCard(iosPage)}
-                </ScrollView>
-              </SafeAreaView>
-            </SwipeBackPage>
-          </Animated.View>
-        ) : null}
-      </View>
-    );
-  }
-
-  // Split view (iPhone Duo), like iPad Settings: the list on the left (40%) and the
-  // selected setting's options on the right, with the same header as the other panes.
-  const paneTitle = titleFor(pane);
-
+  // One layout tree for both the split view and a single column, so folding or unfolding the
+  // Duo resizes the list instead of remounting it. Split view (like iPad Settings): the list on
+  // the left (40%) and the selected setting's options on the right. Single column on iOS: the
+  // options slide in as a page over the list.
   return (
     <View style={tailwind.style('flex-1 flex-row bg-white')}>
-      <View style={{ width: Math.max(320, Math.round(width * 0.4)) }}>{listContent}</View>
-      <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
-      {/* Detail pane like iPad Settings: light gray background (as the other panes) with
-          the options in a white rounded card, and no divider under the header. */}
-      <SafeAreaView edges={['top', 'right', 'bottom']} style={tailwind.style('flex-1 bg-gray-50')}>
-        <PaneHeader title={paneTitle} />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
-          {renderPaneCard(pane)}
-        </ScrollView>
-      </SafeAreaView>
+      <View
+        style={
+          isSplit ? { width: Math.max(320, Math.round(width * 0.4)) } : tailwind.style('flex-1')
+        }>
+        {listContent}
+      </View>
+      {isSplit ? (
+        <>
+          <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
+          {/* Detail pane: light gray background (as the other panes) with the options in a
+              white rounded card, and no divider under the header. */}
+          <SafeAreaView
+            edges={['top', 'right', 'bottom']}
+            style={tailwind.style('flex-1 bg-gray-50')}>
+            <PaneHeader title={titleFor(pane)} />
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+              {renderPaneCard(pane)}
+            </ScrollView>
+          </SafeAreaView>
+        </>
+      ) : null}
+      {!isSplit && IOS_DESIGN && iosPage ? (
+        <Animated.View
+          entering={SlideInRight.duration(280)}
+          exiting={SlideOutRight.duration(240)}
+          style={tailwind.style('absolute inset-0')}>
+          <SwipeBackPage
+            onBack={() => setIosPage(null)}
+            style={tailwind.style('flex-1 bg-gray-50')}>
+            <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1')}>
+              <PageHeader title={titleFor(iosPage)} onBack={() => setIosPage(null)} />
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+                {renderPaneCard(iosPage)}
+              </ScrollView>
+            </SafeAreaView>
+          </SwipeBackPage>
+        </Animated.View>
+      ) : null}
     </View>
   );
 };

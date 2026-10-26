@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
 import { SlaPillVisibilityContext } from './SlaPillVisibility';
@@ -38,7 +38,8 @@ import { MacrosList } from './components/macros/MacrosList';
 import { WhatsAppTemplatesList } from './components/whatsapp-templates';
 import { macroActions } from '@/store/macro/macroActions';
 import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
-import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
+import { handOffToSplitView } from '@/navigation/split/splitHandoff';
 import { SideToolbarProvider } from '@/context';
 import { SideToolbarSlot } from '@/navigation/tabs/BottomTabBar';
 
@@ -228,6 +229,25 @@ const ChatScreen = (props: ChatScreenProps) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [primaryActorId, primaryActorType]);
+
+  // Unfolding the Duo while this chat is open full screen: close it and open the same
+  // conversation in the list's split view, so the list shows on the left. Only on the change
+  // (folded to unfolded), so chats opened on the open Duo (search, notifications) stay.
+  const isSplitLayout = useIsSplitLayout();
+  const wasSplitLayout = useRef(isSplitLayout);
+  useEffect(() => {
+    const unfolded = !wasSplitLayout.current && isSplitLayout;
+    wasSplitLayout.current = isSplitLayout;
+    if (!unfolded || isInDetailPane || !navigation.isFocused()) return;
+    handOffToSplitView(conversationId);
+    // Close without the slide: the window is already resizing as the Duo unfolds.
+    // (The option applies on the next render, so pop a frame later.)
+    navigation.setOptions({ animation: 'none' });
+    requestAnimationFrame(() => {
+      if (navigation.canGoBack()) navigation.dispatch(StackActions.pop());
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSplitLayout]);
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {

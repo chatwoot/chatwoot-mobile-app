@@ -5,6 +5,9 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   withSpring,
+  useSharedValue,
+  withDelay,
+  withTiming,
 } from 'react-native-reanimated';
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
@@ -267,6 +270,27 @@ export const SideToolbarSlot = () => {
 };
 
 /**
+ * Covers the app while the Duo folds or unfolds: the layout switches between one column and
+ * the split view, and screens close, open and re-measure over a few frames. A white cover
+ * hides those in-between frames, then fades out once the new layout has settled.
+ */
+export const LayoutChangeCover = () => {
+  const isSplit = useIsSplitLayout();
+  const wasSplit = React.useRef(isSplit);
+  const opacity = useSharedValue(0);
+  React.useEffect(() => {
+    if (wasSplit.current === isSplit) return;
+    wasSplit.current = isSplit;
+    opacity.value = 1;
+    opacity.value = withDelay(220, withTiming(0, { duration: 250 }));
+  }, [isSplit, opacity]);
+  const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
+  return (
+    <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.cover, style]} />
+  );
+};
+
+/**
  * Hairline between the content and the side status column when the Duo is closed (side
  * tabs, no split view), so the column reads as its own strip. Drawn once over the app.
  */
@@ -398,3 +422,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  cover: { backgroundColor: '#FFFFFF', zIndex: 100 },
+});

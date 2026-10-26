@@ -8,7 +8,8 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useIsFocused, useNavigation } from '@react-navigation/native';
+import { takeSplitHandoff, useSplitHandoffSignal } from './splitHandoff';
 
 import { useWindowDimensions, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -218,6 +219,40 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
     [selectedConversationId, secondary, isSecondaryOpen],
   );
 
+  // Folding the Duo collapses the split view: keep the open conversation on screen by pushing
+  // it full screen (like iPad apps), and close any side column.
+  const listNavigation = useNavigation();
+  const wasSplit = useRef(isSplit);
+  useEffect(() => {
+    if (wasSplit.current && !isSplit) {
+      if (selectedConversationId) {
+        listNavigation.dispatch(
+          // No slide: the window is already resizing as the Duo folds.
+          StackActions.push('ChatScreen', {
+            conversationId: selectedConversationId,
+            instant: true,
+          }),
+        );
+      }
+      setSecondary(null);
+      setSelectedConversationId(null);
+    }
+    wasSplit.current = isSplit;
+  }, [isSplit, selectedConversationId, listNavigation]);
+
+  // Unfolding with a chat open full screen: that chat hands its conversation over, and the
+  // focused list opens it here so the list shows on the left.
+  const handoffSignal = useSplitHandoffSignal();
+  const isFocused = useIsFocused();
+  useEffect(() => {
+    if (!isSplit || !isFocused) return;
+    const id = takeSplitHandoff();
+    if (id) {
+      setSecondary(null);
+      setSelectedConversationId(id);
+    }
+  }, [isSplit, isFocused, handoffSignal]);
+
   const resetSignature = JSON.stringify(resetKey ?? null);
   const lastResetSignature = useRef(resetSignature);
   useEffect(() => {
@@ -258,49 +293,56 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       else if (event.translationX > 60 || (fast && event.velocityX > 0)) runOnJS(swipeClose)();
     });
 
-  if (!isSplit) return <>{children}</>;
-
+  // The list keeps the same place in the tree whether or not the split view is showing, so
+  // folding or unfolding the Duo resizes it instead of remounting it (no refetch, scroll kept).
+  // Without the split view there's no context, so rows push the chat screen as before.
   return (
-    <SplitViewContext.Provider value={value}>
+    <SplitViewContext.Provider value={isSplit ? value : null}>
       <View
         style={tailwind.style('flex-1 bg-white overflow-hidden')}
         onLayout={e => setTotalWidth(Math.round(e.nativeEvent.layout.width))}>
-        <Animated.View style={[tailwind.style('flex-1 flex-row'), stripStyle]}>
+        <Animated.View style={[tailwind.style('flex-1 flex-row'), isSplit ? stripStyle : null]}>
           {/* Each pane tells width-based layouts (rows, bubbles, action grids) its own width. */}
-          <ContainerWidthContext.Provider value={listWidth}>
-            <View style={{ width: listWidth }}>{children}</View>
-          </ContainerWidthContext.Provider>
-          <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
-          <ContainerWidthContext.Provider value={detailWidth}>
-            <Animated.View
-              // Animate the conversation narrowing/widening along with the slide.
-              layout={LinearTransition.springify().damping(26).stiffness(220)}
-              style={[
-                // Gray only for the empty state; an open conversation sits on white.
-                tailwind.style(selectedConversationId ? 'bg-white' : 'bg-gray-50'),
-                { width: detailWidth ?? 0 },
-              ]}>
-              {/* Wait for the pane's width so the chat doesn't first lay out at window width. */}
-              {selectedConversationId && detailWidth ? (
-                <GestureDetector gesture={swipe}>
-                  <View style={tailwind.style('flex-1')}>
-                    <ConversationPane conversationId={selectedConversationId} />
-                  </View>
-                </GestureDetector>
-              ) : selectedConversationId ? null : (
-                <EmptyPane icon={emptyIcon} message={emptyMessage} />
-              )}
-            </Animated.View>
-          </ContainerWidthContext.Provider>
-          <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
-          {/* The column pads its right side for the status bar, so its content is narrower. */}
-          <ContainerWidthContext.Provider value={contactWidth - safeRight}>
-            <View style={{ width: contactWidth }}>
-              {secondary && selectedConversationId ? (
-                <SecondaryPane column={secondary} conversationId={selectedConversationId} />
-              ) : null}
+          <ContainerWidthContext.Provider value={isSplit ? listWidth : null}>
+            <View style={isSplit ? { width: listWidth } : tailwind.style('flex-1')}>
+              {children}
             </View>
           </ContainerWidthContext.Provider>
+          {isSplit ? (
+            <>
+              <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
+              <ContainerWidthContext.Provider value={detailWidth}>
+                <Animated.View
+                  // Animate the conversation narrowing/widening along with the slide.
+                  layout={LinearTransition.springify().damping(26).stiffness(220)}
+                  style={[
+                    // Gray only for the empty state; an open conversation sits on white.
+                    tailwind.style(selectedConversationId ? 'bg-white' : 'bg-gray-50'),
+                    { width: detailWidth ?? 0 },
+                  ]}>
+                  {/* Wait for the pane's width so the chat doesn't first lay out at window width. */}
+                  {selectedConversationId && detailWidth ? (
+                    <GestureDetector gesture={swipe}>
+                      <View style={tailwind.style('flex-1')}>
+                        <ConversationPane conversationId={selectedConversationId} />
+                      </View>
+                    </GestureDetector>
+                  ) : selectedConversationId ? null : (
+                    <EmptyPane icon={emptyIcon} message={emptyMessage} />
+                  )}
+                </Animated.View>
+              </ContainerWidthContext.Provider>
+              <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
+              {/* The column pads its right side for the status bar, so its content is narrower. */}
+              <ContainerWidthContext.Provider value={contactWidth - safeRight}>
+                <View style={{ width: contactWidth }}>
+                  {secondary && selectedConversationId ? (
+                    <SecondaryPane column={secondary} conversationId={selectedConversationId} />
+                  ) : null}
+                </View>
+              </ContainerWidthContext.Provider>
+            </>
+          ) : null}
         </Animated.View>
       </View>
     </SplitViewContext.Provider>

@@ -33,7 +33,8 @@ import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import SearchScreen from '@/screens/search/SearchScreen';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
-import { BottomTabBar, SideColumnDivider } from './BottomTabBar';
+import { BottomTabBar, LayoutChangeCover, SideColumnDivider } from './BottomTabBar';
+import { GlassToastHost } from '@/components-next/toast';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/utils/serverUtils';
@@ -67,6 +68,8 @@ export type TabBarExcludedScreenParamList = {
     primaryActorId?: number;
     primaryActorType?: string;
     messageId?: number;
+    // Shown without the slide, e.g. when folding the Duo moves the open conversation here.
+    instant?: boolean;
   };
   ContactDetails: { conversationId?: number; contactId?: number };
   ComposeScreen: { conversationId: number };
@@ -232,7 +235,9 @@ export const AppTabs = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Tab" component={Tabs} />
           <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
+            options={({ route }) => ({
+              animation: route.params?.instant ? 'none' : 'slide_from_right',
+            })}
             name="ChatScreen"
             component={ChatScreen}
           />
@@ -265,9 +270,16 @@ export const AppTabs = () => {
           />
         </Stack.Navigator>
         <SideColumnDivider />
+        <LayoutChangeCover />
+        <GlassToastHost />
       </View>
     );
   } else {
-    return <AuthStack />;
+    return (
+      <View style={{ flex: 1 }}>
+        <AuthStack />
+        <GlassToastHost />
+      </View>
+    );
   }
 };

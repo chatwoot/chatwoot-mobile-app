@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
-import Animated from 'react-native-reanimated';
+import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { SlaPillVisibilityContext } from './SlaPillVisibility';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -60,24 +62,45 @@ const ConversationPagerView = (props: ChatScreenProps) => {
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
     setPagerViewIndex(e.nativeEvent.position);
   };
-  return (
+  // iOS: a clear leftward swipe on the messages opens the actions page (like the split view's
+  // swipe that opens the actions column). Only leftward drags start it, so the edge swipe back
+  // and scrolling the messages aren't affected.
+  const navigation = useNavigation();
+  const { conversationId } = useChatWindowContext();
+  const openActions = () =>
+    navigation.dispatch(StackActions.push('ConversationActionsScreen', { conversationId }));
+  const swipeToActions = Gesture.Pan()
+    .activeOffsetX([-20, 10000])
+    .failOffsetY([-12, 12])
+    .onEnd(event => {
+      if (event.translationX < -60 || event.velocityX < -500) runOnJS(openActions)();
+    });
+  const pager = (
     <PagerView
       ref={chatPagerView}
       orientation="horizontal"
       overdrag
       style={tailwind.style('flex-1')}
       // In the split view pane actions open as a column instead of a swipe-left page.
-      scrollEnabled={!isInDetailPane}
+      // iOS opens actions as a page, so the chat doesn't swipe sideways (that's Back).
+      scrollEnabled={!isInDetailPane && !IOS_DESIGN}
       initialPage={0}
       onPageSelected={onPageSelected}>
       <ChatWindow {...props} />
       <ConversationActions />
     </PagerView>
   );
+  if (!IOS_DESIGN || isInDetailPane) return pager;
+  return (
+    <GestureDetector gesture={swipeToActions}>
+      <Animated.View style={tailwind.style('flex-1')}>{pager}</Animated.View>
+    </GestureDetector>
+  );
 };
 
 const ChatScreenWrapper = (props: ChatScreenProps) => {
   const dispatch = useAppDispatch();
+  const slaPillVisibility = useSharedValue(1);
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
@@ -93,10 +116,10 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
   }, [inboxId]);
 
   return (
-    <React.Fragment>
+    <SlaPillVisibilityContext.Provider value={slaPillVisibility}>
       <ChatHeaderContainer name={name || ''} imageSrc={{ uri: thumbnail || '' }} />
       <ConversationPagerView {...props} />
-    </React.Fragment>
+    </SlaPillVisibilityContext.Provider>
   );
 };
 // Error state for the split view's conversation pane: compact and quiet, in the same

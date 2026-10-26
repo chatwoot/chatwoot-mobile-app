@@ -232,10 +232,11 @@ const TabItem = (props: any) => {
         }
         onPress={onPress}
         onLongPress={onLongPress}>
+        {/* Round buttons (side capsule, floating bar) use the glyph-centered icons. */}
         <TabBarIcons
           focused={isFocused}
           route={route}
-          compact={vertical ? sideIconSize : undefined}
+          compact={vertical ? sideIconSize : floating ? 26 : undefined}
         />
       </Pressable>
     </Animated.View>

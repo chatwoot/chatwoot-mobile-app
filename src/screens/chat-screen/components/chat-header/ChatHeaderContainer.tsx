@@ -160,6 +160,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         currentUser,
       });
       navigation.dispatch(navigateToScreen);
+    } else if (IOS_DESIGN) {
+      // iOS: actions are a pushed page (the chat no longer swipes to them).
+      navigation.dispatch(StackActions.push('ConversationActionsScreen', { conversationId }));
     } else {
       chatPagerView.current?.setPage(1);
     }
@@ -236,7 +239,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         isInDetailPane && splitView
           ? splitView.openActions
           : IOS_DESIGN
-            ? () => chatPagerView.current?.setPage(1)
+            ? () => handleNavigation()
             : undefined
       }
     />

@@ -27,6 +27,7 @@ import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stac
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ComposeScreen from '@/screens/chat-screen/ComposeScreen';
 import MacrosScreen from '@/screens/chat-screen/MacrosScreen';
+import ConversationActionsScreen from '@/screens/chat-screen/ConversationActionsScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import SearchScreen from '@/screens/search/SearchScreen';
@@ -70,6 +71,7 @@ export type TabBarExcludedScreenParamList = {
   ContactDetails: { conversationId?: number; contactId?: number };
   ComposeScreen: { conversationId: number };
   MacrosScreen: { conversationId: number };
+  ConversationActionsScreen: { conversationId: number };
   ConversationActions: undefined;
   Dashboard: { url: string };
   Login: undefined;
@@ -250,6 +252,11 @@ export const AppTabs = () => {
             options={{ animation: 'slide_from_right' }}
             name="MacrosScreen"
             component={MacrosScreen}
+          />
+          <Stack.Screen
+            options={{ animation: 'slide_from_right' }}
+            name="ConversationActionsScreen"
+            component={ConversationActionsScreen}
           />
           <Stack.Screen
             options={{ headerShown: false, animation: 'slide_from_right' }}

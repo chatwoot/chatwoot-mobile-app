@@ -168,6 +168,18 @@ export const MessageTextInput = ({
     [],
   );
 
+  // The full editor focuses its field once it has slid in, so the keyboard animation doesn't
+  // run on top of the page/column transition and the editor's first render (dropped frames).
+  useEffect(() => {
+    if (!composer) return;
+    const timer = setTimeout(() => {
+      // @ts-expect-error TextInput ref focus method may not be properly typed
+      textInputRef?.current?.focus();
+    }, 380);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [composer]);
+
   useEffect(() => {
     if (selectedCannedResponse) onChangeText(selectedCannedResponse);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -291,7 +303,6 @@ export const MessageTextInput = ({
                 ? tailwind.style('flex-1')
                 : undefined
           }
-          autoFocus={composer}
           multiline
           enablesReturnKeyAutomatically
           style={[

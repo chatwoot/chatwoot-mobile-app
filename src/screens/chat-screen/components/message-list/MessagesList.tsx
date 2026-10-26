@@ -1,6 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 
-import Animated, { interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, {
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import { useSlaPillVisibility } from '../../SlaPillVisibility';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
@@ -58,6 +66,19 @@ export const MessagesList = ({
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
+  // The floating SLA pill shows only at the newest messages (the list is inverted, so that's an
+  // offset near 0) and hides as soon as you scroll away, either way.
+  const slaPill = useSlaPillVisibility();
+  const isPillShown = useSharedValue(1);
+  const onScroll = useAnimatedScrollHandler({
+    onScroll: event => {
+      if (!slaPill) return;
+      const shouldShow = event.contentOffset.y < 8 ? 1 : 0;
+      if (shouldShow === isPillShown.value) return;
+      isPillShown.value = shouldShow;
+      slaPill.value = withTiming(shouldShow, { duration: 180 });
+    },
+  });
   const typedMessageListRef = messageListRef as React.RefObject<
     FlashListRef<Message | { date: string }>
   >;
@@ -128,6 +149,8 @@ export const MessagesList = ({
         // Data is newest-first, so inverted renders index 0 at the visual bottom.
         // Older history loads via onEndReached, newer via onStartReached.
         inverted
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         getItemType={item => ('date' in item ? 'date' : 'message')}
         drawDistance={500}
         showsVerticalScrollIndicator={false}

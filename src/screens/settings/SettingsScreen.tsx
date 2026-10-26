@@ -69,6 +69,7 @@ import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
 import { PageHeader } from '@/navigation/split/FullScreenPage';
+import { SwipeBackPage } from '@/navigation/split/SwipeBackPage';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -434,15 +435,19 @@ const SettingsScreen = () => {
           <Animated.View
             entering={SlideInRight.duration(280)}
             exiting={SlideOutRight.duration(240)}
-            style={tailwind.style('absolute inset-0 bg-gray-50')}>
-            <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1')}>
-              <PageHeader title={titleFor(iosPage)} onBack={() => setIosPage(null)} />
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
-                {renderPaneCard(iosPage)}
-              </ScrollView>
-            </SafeAreaView>
+            style={tailwind.style('absolute inset-0')}>
+            <SwipeBackPage
+              onBack={() => setIosPage(null)}
+              style={tailwind.style('flex-1 bg-gray-50')}>
+              <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1')}>
+                <PageHeader title={titleFor(iosPage)} onBack={() => setIosPage(null)} />
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+                  {renderPaneCard(iosPage)}
+                </ScrollView>
+              </SafeAreaView>
+            </SwipeBackPage>
           </Animated.View>
         ) : null}
       </View>

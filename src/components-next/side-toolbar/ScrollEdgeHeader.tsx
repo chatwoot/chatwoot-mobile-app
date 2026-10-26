@@ -10,6 +10,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { BlurView } from '@react-native-community/blur';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 // A floating header with an iOS "scroll edge effect" (Apple HIG, Scroll views): the list
@@ -120,6 +121,9 @@ type ScrollEdgeHeaderProps = PropsWithChildren<{
 
 export const ScrollEdgeHeader = ({ scrollY, onHeightChange, children }: ScrollEdgeHeaderProps) => {
   const [height, setHeight] = useState(0);
+  // The header starts at the top of the screen so the blur also covers the status bar; its
+  // content sits below the status bar.
+  const { top } = useSafeAreaInsets();
 
   const effectStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, APPEAR_DISTANCE], [0, 1], Extrapolation.CLAMP),
@@ -132,7 +136,7 @@ export const ScrollEdgeHeader = ({ scrollY, onHeightChange, children }: ScrollEd
   return (
     <View
       pointerEvents="box-none"
-      style={styles.container}
+      style={[styles.container, { paddingTop: top }]}
       onLayout={e => {
         const h = Math.round(e.nativeEvent.layout.height);
         setHeight(h);

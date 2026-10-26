@@ -263,7 +263,17 @@ const InboxScreen = () => {
       {/* In the split view the list ends at the divider, not the screen edge, so it
           skips the right inset (SafeAreaView applies screen insets regardless of position). */}
       <SafeAreaView
-        edges={isSplit ? ['top', 'left'] : ['top', 'left', 'right']}
+        // With the floating header, the list runs under the status bar too and the header
+        // pads itself below it (ScrollEdgeHeader).
+        edges={
+          hasOverlayHeader
+            ? isSplit
+              ? ['left']
+              : ['left', 'right']
+            : isSplit
+              ? ['top', 'left']
+              : ['top', 'left', 'right']
+        }
         style={tailwind.style('flex-1 bg-white')}>
         <StatusBar
           translucent

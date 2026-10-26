@@ -1,6 +1,8 @@
 import React from 'react';
-import { ImageSourcePropType, Keyboard, Pressable } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { ImageSourcePropType, Keyboard, Platform, Pressable, StyleSheet } from 'react-native';
+import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { useSlaPillVisibility } from '../../SlaPillVisibility';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
 import {
@@ -54,6 +56,59 @@ type ChatHeaderProps = {
 // Line weight for side toolbar icons drawn at 24pt: about 1.5pt on screen, matching the
 // tab bar icons, so both capsules read as one monochrome set.
 const TOOLBAR_STROKE = 1.5;
+
+const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
+
+const FloatingSlaPill = ({
+  label,
+  isMissed,
+  onPress,
+}: {
+  label: string;
+  isMissed: boolean;
+  onPress: () => void;
+}) => {
+  const visibility = useSlaPillVisibility();
+  const style = useAnimatedStyle(() => {
+    const shown = visibility ? visibility.value : 1;
+    return { opacity: shown, transform: [{ translateY: (1 - shown) * -12 }] };
+  });
+  return (
+    <Animated.View
+      pointerEvents="box-none"
+      style={[tailwind.style('absolute left-0 right-0 top-full mt-2 items-center'), style]}>
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        style={({ pressed }) =>
+          tailwind.style(
+            'flex-row items-center gap-1.5 h-8 pl-2.5 pr-3 rounded-full',
+            useLiquidGlass ? '' : 'bg-white border-[0.5px] border-blackA-A6',
+            pressed && 'opacity-70',
+          )
+        }>
+        {useLiquidGlass ? (
+          <GlassView
+            glassEffectStyle="regular"
+            isInteractive
+            style={[StyleSheet.absoluteFill, { borderRadius: 16 }]}
+          />
+        ) : null}
+        <Icon icon={<SLAIcon color={isMissed ? '#E13D45' : '#858585'} />} size={14} />
+        <Animated.Text
+          style={tailwind.style(
+            'text-[13px] leading-[18px] font-inter-medium-24',
+            isMissed ? 'text-ruby-800' : 'text-gray-950',
+          )}>
+          {label}
+        </Animated.Text>
+      </Pressable>
+    </Animated.View>
+  );
+};
+
+// The SLA sheet fits its content on iOS; elsewhere it keeps its fixed height.
+const SLA_SHEET_SIZE = IOS_DESIGN ? { autoSize: true } : { detents: [0.36] };
 
 export const ChatHeader = ({
   name,
@@ -249,8 +304,8 @@ export const ChatHeader = ({
             </Pressable>
           ) : null}
         </Animated.View>
-        <Sheet ref={slaEventsSheetRef} detents={[0.36]}>
-          <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
+        <Sheet ref={slaEventsSheetRef} {...SLA_SHEET_SIZE}>
+          <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} isMissed={isSlaMissed} />
         </Sheet>
       </Animated.View>
     );
@@ -258,11 +313,12 @@ export const ChatHeader = ({
 
   if (IOS_DESIGN) {
     // iPhone (and the Duo without the split view): one row like Messages, with round glass
-    // buttons. Back, then who and where (the SLA joins the inbox line so the name keeps its
-    // room), then Resolve/Reopen, Actions and More. On the actions page it's just Back.
+    // buttons. Back, then who and where, then Resolve/Reopen and Actions or More. The SLA, when
+    // there is one, floats below.
     const slaLabel = hasSla && slaType ? (slaTime ? `${slaType}: ${slaTime}` : slaType) : null;
     return (
-      <Animated.View>
+      // Above the messages so the floating SLA pill can overlap them.
+      <Animated.View style={tailwind.style('z-10')}>
         <Animated.View style={tailwind.style('flex-row items-center gap-2 px-4 pt-1 pb-3')}>
           <GlassCircleButton
             icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
@@ -284,7 +340,7 @@ export const ChatHeader = ({
                 )}>
                 {name}
               </Animated.Text>
-              {inboxName || slaLabel ? (
+              {inboxName ? (
                 <Animated.View style={tailwind.style('flex-row items-center gap-1')}>
                   {channelIcon ? <Icon icon={channelIcon} size={13} /> : null}
                   {inboxName ? (
@@ -295,30 +351,6 @@ export const ChatHeader = ({
                       )}>
                       {inboxName}
                     </Animated.Text>
-                  ) : null}
-                  {slaLabel ? (
-                    <Pressable
-                      hitSlop={8}
-                      onPress={toggleSlaEventsSheet}
-                      accessibilityRole="button"
-                      style={tailwind.style('flex-row items-center gap-1 flex-shrink-0')}>
-                      {inboxName ? (
-                        <Animated.Text style={tailwind.style('text-[13px] text-gray-700')}>
-                          ·
-                        </Animated.Text>
-                      ) : null}
-                      <Icon
-                        icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#858585'} />}
-                        size={13}
-                      />
-                      <Animated.Text
-                        style={tailwind.style(
-                          'text-[13px] leading-[18px] font-inter-medium-24',
-                          isSlaMissed ? 'text-ruby-800' : 'text-gray-950',
-                        )}>
-                        {slaLabel}
-                      </Animated.Text>
-                    </Pressable>
                   ) : null}
                 </Animated.View>
               ) : null}
@@ -338,7 +370,9 @@ export const ChatHeader = ({
                 onPress={onToggleChatStatus}
                 accessibilityLabel={statusLabel}
               />
-              {onOpenActions ? (
+              {/* Two buttons at most so the name and inbox have room on a phone: with
+                  dashboard apps, Actions joins them in the More menu (its first item). */}
+              {paneMenuList.length === 0 && onOpenActions ? (
                 <GlassCircleButton
                   icon={<InfoCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
                   iconSize={22}
@@ -347,7 +381,7 @@ export const ChatHeader = ({
                 />
               ) : null}
               {paneMenuList.length > 0 ? (
-                <ChatDropdownMenu dropdownMenuList={paneMenuList} plainTrigger>
+                <ChatDropdownMenu dropdownMenuList={dashboardsList} plainTrigger>
                   <GlassCircleButton
                     icon={<Overflow stroke={HEADER_ICON_COLOR} strokeWidth={1.3} />}
                     iconSize={22}
@@ -358,8 +392,18 @@ export const ChatHeader = ({
             </>
           )}
         </Animated.View>
-        <Sheet ref={slaEventsSheetRef} detents={[0.36]}>
-          <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
+        {/* SLA floats under the header on glass, centered, over the messages; it slides away
+            while you scroll down and comes back when you scroll up. Tapping it shows the SLA
+            events. */}
+        {slaLabel && !isOnActionsPage ? (
+          <FloatingSlaPill
+            label={slaLabel}
+            isMissed={!!isSlaMissed}
+            onPress={toggleSlaEventsSheet}
+          />
+        ) : null}
+        <Sheet ref={slaEventsSheetRef} {...SLA_SHEET_SIZE}>
+          <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} isMissed={isSlaMissed} />
         </Sheet>
       </Animated.View>
     );
@@ -466,8 +510,8 @@ export const ChatHeader = ({
           </Animated.View>
         </Animated.View>
       )}
-      <Sheet ref={slaEventsSheetRef} detents={[0.36]}>
-        <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
+      <Sheet ref={slaEventsSheetRef} {...SLA_SHEET_SIZE}>
+        <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} isMissed={isSlaMissed} />
       </Sheet>
     </Animated.View>
   );

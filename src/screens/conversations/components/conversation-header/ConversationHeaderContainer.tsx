@@ -137,6 +137,7 @@ export const ConversationHeader = () => {
       <ConversationHeaderPresenter
         currentState={currentState}
         isSelectedAll={isSelectedAll}
+        selectedCount={selectedConversations.length}
         filtersAppliedCount={filtersAppliedCount}
         onLeftIconPress={handleLeftIconPress}
         onRightIconPress={handleRightIconPress}

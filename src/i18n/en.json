@@ -93,9 +93,23 @@
       "FILTER": "Filter",
       "CLOSE": "Close",
       "SELECT_ALL": "Select all",
+      "SELECT_ALL_TITLE": "Select All",
+      "DESELECT_ALL": "Deselect All",
+      "SELECT_ITEMS": "Select Items",
+      "SELECTED_COUNT": "%{count} Selected",
+      "DONE": "Done",
       "MORE": "More",
       "BACK_TO_MESSAGES": "Back to messages",
       "BACK": "Back"
+    },
+    "BULK": {
+      "LABEL": "Label",
+      "ASSIGN": "Assign",
+      "STATUS": "Status",
+      "ADD_LABEL": "Add Label",
+      "ASSIGN_TO": "Assign To",
+      "SEARCH_AGENTS": "Search agents",
+      "SEARCH_LABELS": "Search labels"
     },
     "SPLIT_VIEW": {
       "EMPTY": "Select a conversation to view it here"

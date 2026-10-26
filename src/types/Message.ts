@@ -90,6 +90,12 @@ export interface Message {
   senderId?: number;
   groupWithNext?: boolean | false;
   groupWithPrevious?: boolean | false;
+  // The message just above (older) is from the same sender, regardless of time: iOS shows the
+  // sender's name only when it changes.
+  sameSenderAsAbove?: boolean;
+  // The message just below (newer) is from the same sender: iOS keeps the avatar for the last
+  // message of the run.
+  sameSenderAsBelow?: boolean;
   senderType?: string;
   // Set when a send fails inside the app, before the message reaches the server
   meta?: { error?: string };

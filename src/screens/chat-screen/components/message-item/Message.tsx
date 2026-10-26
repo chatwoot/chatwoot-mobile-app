@@ -6,7 +6,7 @@ import { selectConversationById } from '@/store/conversation/conversationSelecto
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { useChatWindowContext } from '@/context';
 import { conversationActions } from '@/store/conversation/conversationActions';
-import { unixTimestampToReadableTime, useHaptic } from '@/utils';
+import { IOS_DESIGN, unixTimestampToReadableTime, useHaptic } from '@/utils';
 import {
   ComposedBubble,
   DeliveryStatus,
@@ -95,6 +95,11 @@ type MessageWrapperProps = {
   isTargetMessage?: boolean;
   onRetry: () => void;
   canSendPublicReply: boolean;
+  // iOS plain text: the time and ticks sit inside the last line (WhatsApp-style), not in a
+  // footer row. The text keeps room for them (TextBubble timeSpacer).
+  inlineTime?: boolean;
+  // Sent by the signed-in agent (no name label on the right).
+  isOwnMessage?: boolean;
 };
 
 const variantTextMap = {
@@ -140,6 +145,8 @@ const MessageWrapper = ({
   isTargetMessage = false,
   onRetry,
   canSendPublicReply,
+  inlineTime = false,
+  isOwnMessage = false,
 }: MessageWrapperProps) => {
   const paneRightInset = usePaneRightInset();
   const containerWidth = useContainerWidth();
@@ -169,22 +176,59 @@ const MessageWrapper = ({
   // Only the search-target row animates, so only it needs an Animated.View.
   const BubbleContainer = isTargetMessage ? Animated.View : View;
 
-  const hasAvatar = !shouldGroupWithPrevious && shouldShowAvatar;
-  const shouldShowSenderName = hasAvatar && !!avatarInfo.name;
-  const shouldShowTail = hasAvatar && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
+  // iOS groups by sender like Messages: the avatar beside the last message of a person's run,
+  // the others lined up with it, 2pt between them and 10pt when the sender changes. Elsewhere
+  // grouping is by sender within the same minute.
+  const hasAvatar = IOS_DESIGN
+    ? shouldShowAvatar && !item.sameSenderAsBelow
+    : !shouldGroupWithPrevious && shouldShowAvatar;
+  // Earlier bubbles in a run line up with the one that has the avatar (left or right side).
+  const isIndented = IOS_DESIGN
+    ? shouldShowAvatar && !!item.sameSenderAsBelow
+    : shouldGroupWithPrevious && orientation === ORIENTATION.LEFT;
+  const isRight = orientation === ORIENTATION.RIGHT;
+  // iOS: the sender's name sits above their first message after someone else's (like group
+  // chats in Messages), instead of inside each bubble next to the time.
+  // Incoming (left) always; outgoing (right) when another agent or the bot sent it.
+  const showNameAbove =
+    IOS_DESIGN &&
+    !item.sameSenderAsAbove &&
+    !!avatarInfo.name &&
+    ((orientation === ORIENTATION.LEFT && shouldShowAvatar) ||
+      (orientation === ORIENTATION.RIGHT && !isOwnMessage));
+  const shouldShowSenderName = !IOS_DESIGN && hasAvatar && !!avatarInfo.name;
+  // The tail points left, so only left-side bubbles get it.
+  const shouldShowTail = hasAvatar && !isRight && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
 
   return (
     <Animated.View
       entering={entering}
       style={tailwind.style(
-        'my-[1px]',
         flexOrientationClass(),
-        shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-8' : '',
-        !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-        item.private ? 'my-1' : '',
+        isIndented ? (isRight ? 'mr-8' : 'ml-8') : '',
+        IOS_DESIGN
+          ? item.sameSenderAsAbove
+            ? 'mt-[2px]'
+            : 'mt-2.5'
+          : [
+              'my-[1px]',
+              !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+              item.private ? 'my-1' : '',
+            ].join(' '),
       )}>
+      {showNameAbove ? (
+        <Text
+          numberOfLines={1}
+          style={[
+            tailwind.style('mb-0.5 text-[12px] leading-[16px] font-inter-normal-20 text-gray-700'),
+            // Lined up with the bubble's text: past the avatar column when this bubble has one.
+            isRight ? { marginRight: hasAvatar ? 44 : 12 } : { marginLeft: hasAvatar ? 44 : 12 },
+          ]}>
+          {capitalizeWords(firstName(avatarInfo.name))}
+        </Text>
+      ) : null}
       <View style={tailwind.style('flex flex-row')}>
-        {hasAvatar ? (
+        {hasAvatar && !isRight ? (
           <View style={tailwind.style('flex items-end justify-end mr-2')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
           </View>
@@ -222,7 +266,31 @@ const MessageWrapper = ({
                   pointerEvents="none"
                 />
               )}
-              {!shouldGroupWithPrevious && (
+              {inlineTime ? (
+                <View
+                  pointerEvents="none"
+                  style={tailwind.style('absolute right-2.5 bottom-[7px] flex-row items-center')}>
+                  <Text
+                    style={tailwind.style(
+                      'text-[11px] leading-[14px] font-inter-420-20 pr-1',
+                      variantTextMap[variant],
+                      orientation === ORIENTATION.LEFT ? 'opacity-75' : 'opacity-90',
+                    )}>
+                    {unixTimestampToReadableTime(item.createdAt)}
+                  </Text>
+                  <DeliveryStatus
+                    isPrivate={item.private}
+                    status={item.status}
+                    messageType={item.messageType}
+                    channel={channel}
+                    sourceId={item.sourceId}
+                    errorMessage={item.contentAttributes?.externalError || ''}
+                    deliveredColor="text-gray-700"
+                    sentColor="text-gray-700"
+                  />
+                </View>
+              ) : null}
+              {!inlineTime && !shouldGroupWithPrevious && (
                 <View
                   style={tailwind.style(
                     'h-[27px] pt-[11px] pb-0.5 flex flex-row items-baseline',
@@ -266,6 +334,12 @@ const MessageWrapper = ({
             ) : null}
           </BubbleContainer>
         </MessageMenu>
+        {/* Outgoing on iOS: the agent's (or bot's) avatar on the right, like the web app. */}
+        {hasAvatar && isRight ? (
+          <View style={tailwind.style('flex items-end justify-end ml-2')}>
+            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+          </View>
+        ) : null}
       </View>
       {item.status === MESSAGE_STATUS.FAILED ? (
         <MessageError
@@ -434,7 +508,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const shouldShowAvatar = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
-    if (orientation() === ORIENTATION.RIGHT) return false;
+    // iOS shows avatars on both sides (outgoing on the right), like the web app.
+    if (orientation() === ORIENTATION.RIGHT && !IOS_DESIGN) return false;
     return true;
   };
 
@@ -457,6 +532,14 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const orientation = () => {
+    // iOS: outgoing (any agent or the bot) on the right, incoming on the left, like the web app.
+    if (IOS_DESIGN) {
+      if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
+      if (messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.TEMPLATE)
+        return ORIENTATION.RIGHT;
+      if (isMyMessage()) return ORIENTATION.RIGHT;
+      return ORIENTATION.LEFT;
+    }
     if (isMyMessage()) {
       return ORIENTATION.RIGHT;
     }
@@ -521,6 +604,14 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     const attachments = item.attachments;
     const isReplyMessage = item.contentAttributes?.inReplyTo;
+    // WhatsApp-style time inside the last line, for plain text on iOS (translated messages keep
+    // the footer, since their toggle is the last line).
+    const hasTranslations = !!item.contentAttributes?.translations;
+    const useInlineTime =
+      IOS_DESIGN &&
+      !hasTranslations &&
+      contentType !== CONTENT_TYPES.INCOMING_EMAIL &&
+      !(isEmailInbox && !item.private);
     const isUnsupported = item.contentAttributes?.isUnsupported;
     let messageContent;
 
@@ -540,7 +631,16 @@ export const MessageComponent = (props: MessageComponentProps) => {
         <ComposedBubble item={item} variant={variant()} orientation={orientation()} />
       );
     } else if (item.content) {
-      messageContent = <TextBubble item={item} variant={variant()} />;
+      messageContent = (
+        <TextBubble
+          item={item}
+          variant={variant()}
+          // Room for the time (and the ticks on sent messages) at the end of the last line.
+          timeReserve={
+            useInlineTime ? (messageType === MESSAGE_TYPES.OUTGOING ? 'ticks' : 'time') : undefined
+          }
+        />
+      );
     } else {
       return <View />;
     }
@@ -552,12 +652,20 @@ export const MessageComponent = (props: MessageComponentProps) => {
         shouldGroupWithPrevious={shouldGroupWithPrevious()}
         shouldGroupWithNext={shouldGroupWithNext()}
         shouldShowAvatar={shouldShowAvatar()}
+        isOwnMessage={isMyMessage()}
         avatarInfo={avatarInfo()}
         getMenuOptions={getMenuOptions}
         variant={variant()}
         channel={channel}
         isTargetMessage={isTargetMessage}
         onRetry={handleRetryMessage}
+        inlineTime={
+          useInlineTime &&
+          !isUnsupported &&
+          !!item.content &&
+          !attachments?.length &&
+          !isReplyMessage
+        }
         canSendPublicReply={canSendPublicReply}>
         {messageContent}
       </MessageWrapper>

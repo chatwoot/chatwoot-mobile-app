@@ -27,6 +27,7 @@ import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stac
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ComposeScreen from '@/screens/chat-screen/ComposeScreen';
 import MacrosScreen from '@/screens/chat-screen/MacrosScreen';
+import BulkPickerScreen from '@/screens/conversations/BulkPickerScreen';
 import ConversationActionsScreen from '@/screens/chat-screen/ConversationActionsScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
@@ -75,6 +76,7 @@ export type TabBarExcludedScreenParamList = {
   ComposeScreen: { conversationId: number };
   MacrosScreen: { conversationId: number };
   ConversationActionsScreen: { conversationId: number };
+  BulkPicker: { kind: 'assign' | 'label' };
   ConversationActions: undefined;
   Dashboard: { url: string };
   Login: undefined;
@@ -262,6 +264,12 @@ export const AppTabs = () => {
             options={{ animation: 'slide_from_right' }}
             name="ConversationActionsScreen"
             component={ConversationActionsScreen}
+          />
+          <Stack.Screen
+            // Bulk Assign/Label picker: a full-height sheet with search (iOS page sheet).
+            options={{ presentation: 'modal' }}
+            name="BulkPicker"
+            component={BulkPickerScreen}
           />
           <Stack.Screen
             options={{ headerShown: false, animation: 'slide_from_right' }}

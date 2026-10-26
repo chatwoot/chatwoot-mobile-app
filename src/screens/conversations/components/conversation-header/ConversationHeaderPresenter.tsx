@@ -32,6 +32,8 @@ type ConversationHeaderPresenterProps = {
   onLeftIconPress: () => void;
   onRightIconPress: () => void;
   onClearFilter: () => void;
+  // Conversations picked in select mode (shown as "3 Selected" in the iOS header).
+  selectedCount?: number;
 };
 
 type RightSectionProps = {
@@ -193,18 +195,17 @@ const SideLayoutListAction = ({
   onClearFilter,
 }: Omit<ConversationHeaderPresenterProps, 'onRightIconPress'>) => {
   if (currentState === 'Select') {
+    // A text button like Mail's (Done is the side toolbar's close button).
     return (
-      <Pressable onPress={onLeftIconPress} hitSlop={16}>
-        <Icon
-          size={24}
-          icon={
-            isSelectedAll ? (
-              <CheckedIcon />
-            ) : (
-              <UncheckedIcon stroke={tailwind.color('text-gray-800')} />
-            )
-          }
-        />
+      <Pressable onPress={onLeftIconPress} hitSlop={12} accessibilityRole="button">
+        <Text
+          style={tailwind.style('text-[17px] leading-[22px] font-inter-medium-24 text-blue-800')}>
+          {i18n.t(
+            isSelectedAll
+              ? 'CONVERSATION.HEADER.DESELECT_ALL'
+              : 'CONVERSATION.HEADER.SELECT_ALL_TITLE',
+          )}
+        </Text>
       </Pressable>
     );
   }
@@ -232,6 +233,7 @@ export const ConversationHeaderPresenter = ({
   onLeftIconPress,
   onRightIconPress,
   onClearFilter,
+  selectedCount = 0,
 }: ConversationHeaderPresenterProps) => {
   const { handlers, animatedStyle } = useScaleAnimation();
   const isModal = currentState === 'Filter' || currentState === 'Select';
@@ -267,6 +269,37 @@ export const ConversationHeaderPresenter = ({
     [isModal, filtersAppliedCount, onLeftIconPress, onRightIconPress],
     !isSplit,
   );
+
+  if ((isSplit || (IOS_DESIGN && !isSideLayout)) && currentState === 'Select') {
+    // Select mode, like Mail: text buttons (Select All / Deselect All and Done) around a count.
+    return (
+      <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
+        <Animated.View style={tailwind.style('w-[124px] flex-row items-center')}>
+          <GlassPillButton
+            label={i18n.t(
+              isSelectedAll
+                ? 'CONVERSATION.HEADER.DESELECT_ALL'
+                : 'CONVERSATION.HEADER.SELECT_ALL_TITLE',
+            )}
+            onPress={onLeftIconPress}
+          />
+        </Animated.View>
+        <Text
+          numberOfLines={1}
+          accessibilityRole="header"
+          style={tailwind.style(
+            'flex-1 text-[17px] leading-[22px] font-inter-semibold-20 text-center text-gray-950',
+          )}>
+          {selectedCount > 0
+            ? i18n.t('CONVERSATION.HEADER.SELECTED_COUNT', { count: selectedCount })
+            : i18n.t('CONVERSATION.HEADER.SELECT_ITEMS')}
+        </Text>
+        <Animated.View style={tailwind.style('w-[124px] flex-row items-center justify-end')}>
+          <GlassPillButton label={i18n.t('CONVERSATION.HEADER.DONE')} onPress={onRightIconPress} />
+        </Animated.View>
+      </Animated.View>
+    );
+  }
 
   if (isSplit || (IOS_DESIGN && !isSideLayout)) {
     // Split view and iPhone: small centered title with round glass buttons on each side,
@@ -328,7 +361,15 @@ export const ConversationHeaderPresenter = ({
   if (isSideLayout) {
     return (
       <Animated.View style={tailwind.style('flex flex-row items-center gap-3 px-4 pt-2 pb-3')}>
-        <LargeHeaderTitle title={i18n.t('CONVERSATION.HEADER.TITLE')} />
+        <LargeHeaderTitle
+          title={
+            currentState !== 'Select'
+              ? i18n.t('CONVERSATION.HEADER.TITLE')
+              : selectedCount > 0
+                ? i18n.t('CONVERSATION.HEADER.SELECTED_COUNT', { count: selectedCount })
+                : i18n.t('CONVERSATION.HEADER.SELECT_ITEMS')
+          }
+        />
         <SideLayoutListAction
           currentState={currentState}
           isSelectedAll={isSelectedAll}

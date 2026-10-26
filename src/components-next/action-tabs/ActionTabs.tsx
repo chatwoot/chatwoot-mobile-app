@@ -1,5 +1,16 @@
 import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable, StyleSheet, useWindowDimensions } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import * as DropdownMenu from 'zeego/dropdown-menu';
+import { conversationActions } from '@/store/conversation/conversationActions';
+import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
+import { ConversationStatus, StatusOptions } from '@/types';
+import { CheckCircleIcon, PersonCircleGlyph, TagGlyph } from '@/svg-icons';
+import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import i18n from '@/i18n';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -10,9 +21,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 
-import { useRefsContext } from '@/context';
+import { useContainerWidth, useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
@@ -23,7 +34,11 @@ const ACTION_TAB_HEIGHT = 58;
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
 
-type ActionTabBarBackgroundProps = BlurViewProps & PropsWithChildren;
+type ActionTabBarBackgroundProps = Partial<BlurViewProps> &
+  PropsWithChildren & {
+    // iOS: Liquid Glass instead of the blur.
+    glass?: boolean;
+  };
 
 const ActionLabelTag = () => (
   <Svg width="29" height="28" viewBox="0 0 29 28" fill="none">
@@ -63,8 +78,139 @@ const ActionStatusIcon = () => (
   </Svg>
 );
 
+const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
+const IOS_BAR_WIDTH = 264;
+const TINT = tailwind.color('blue-800') as string;
+const DISABLED = tailwind.color('gray-600') as string;
+
+// zeego's Label typings include web-only props; on iOS it only needs the section title.
+const MenuLabel = DropdownMenu.Label as unknown as React.FC<{ children: string }>;
+
+const STATUS_OPTIONS: { id: ConversationStatus; icon: string }[] = [
+  { id: 'open', icon: 'tray' },
+  { id: 'pending', icon: 'clock' },
+  { id: 'snoozed', icon: 'moon' },
+  { id: 'resolved', icon: 'checkmark.circle' },
+];
+
+type ToolbarButtonProps = {
+  label: string;
+  glyph: (props: { stroke?: string; strokeWidth?: number }) => JSX.Element;
+  enabled: boolean;
+};
+
+// A labeled toolbar button. It has no onPress of its own: it's the trigger of a native menu.
+const ToolbarButton = ({ label, glyph: Glyph, enabled }: ToolbarButtonProps) => (
+  <View
+    accessibilityRole="button"
+    accessibilityLabel={label}
+    accessibilityState={{ disabled: !enabled }}
+    style={tailwind.style('h-[50px] min-w-[72px] items-center justify-center gap-1')}>
+    <Icon size={22} icon={<Glyph stroke={enabled ? TINT : DISABLED} strokeWidth={1.6} />} />
+    <Text
+      style={[
+        tailwind.style('text-[11px] leading-[13px] font-inter-medium-24'),
+        { color: enabled ? TINT : DISABLED },
+      ]}>
+      {label}
+    </Text>
+  </View>
+);
+
+// iOS: a Liquid Glass toolbar like Mail's edit mode, applying to every selected conversation.
+// Label and Assign open a full-height sheet with search; Status is a native menu. The buttons
+// are gray and inactive until something is selected.
+const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: number }) => {
+  const dispatch = useAppDispatch();
+  const haptic = useHaptic();
+  const selectedIds = useAppSelector(selectSelectedIds);
+  const hasSelection = selectedIds.length > 0;
+
+  const bulk = (payload: Record<string, unknown>) => {
+    haptic?.();
+    dispatch(
+      conversationActions.bulkAction({ type: 'Conversation', ids: selectedIds, ...payload }),
+    );
+  };
+  const navigation = useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList>>();
+  const openPicker = (kind: 'assign' | 'label') => {
+    haptic?.();
+    navigation.navigate('BulkPicker', { kind });
+  };
+  const setStatus = (status: ConversationStatus) => {
+    bulk({ fields: { status } });
+    dispatch(setCurrentState('none'));
+  };
+
+  const menu = (button: React.ReactElement, content: React.ReactNode) =>
+    hasSelection ? (
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <View>{button}</View>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>{content}</DropdownMenu.Content>
+      </DropdownMenu.Root>
+    ) : (
+      button
+    );
+
+  return (
+    <ActionTabBarBackground
+      glass
+      style={[
+        tailwind.style(
+          'absolute flex-row items-center justify-around rounded-full px-2',
+          `h-[${ACTION_TAB_HEIGHT}px] w-[${IOS_BAR_WIDTH}px]`,
+        ),
+        { bottom, left: barLeft },
+      ]}>
+      {/* Label and Assign open a full-height sheet with search (lists can be long). */}
+      <Pressable
+        disabled={!hasSelection}
+        onPress={() => openPicker('label')}
+        style={({ pressed }) => tailwind.style('rounded-full', pressed && 'bg-blackA-A3')}>
+        <ToolbarButton
+          label={i18n.t('CONVERSATION.BULK.LABEL')}
+          glyph={TagGlyph}
+          enabled={hasSelection}
+        />
+      </Pressable>
+      <Pressable
+        disabled={!hasSelection}
+        onPress={() => openPicker('assign')}
+        style={({ pressed }) => tailwind.style('rounded-full', pressed && 'bg-blackA-A3')}>
+        <ToolbarButton
+          label={i18n.t('CONVERSATION.BULK.ASSIGN')}
+          glyph={PersonCircleGlyph}
+          enabled={hasSelection}
+        />
+      </Pressable>
+      {menu(
+        <ToolbarButton
+          label={i18n.t('CONVERSATION.BULK.STATUS')}
+          glyph={CheckCircleIcon}
+          enabled={hasSelection}
+        />,
+        <DropdownMenu.Group>
+          <MenuLabel>{i18n.t('CONVERSATION.CHANGE_STATUS')}</MenuLabel>
+          {STATUS_OPTIONS.map(option => (
+            <DropdownMenu.Item key={`status-${option.id}`} onSelect={() => setStatus(option.id)}>
+              <DropdownMenu.ItemIcon ios={{ name: option.icon as never }} />
+              <DropdownMenu.ItemTitle>
+                {i18n.t(
+                  `CONVERSATION.ASSIGNEE.STATUS.OPTIONS.${StatusOptions[option.id].toUpperCase()}`,
+                )}
+              </DropdownMenu.ItemTitle>
+            </DropdownMenu.Item>
+          ))}
+        </DropdownMenu.Group>,
+      )}
+    </ActionTabBarBackground>
+  );
+};
+
 const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
-  const { children, blurAmount, blurType, style } = props;
+  const { children, blurAmount, blurType, style, glass } = props;
 
   const currentState = useAppSelector(selectCurrentState);
   const { bottom } = useSafeAreaInsets();
@@ -90,6 +236,29 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
 
   // Layout and shadow sit on the Animated.View. BlurView fills it as a
   // background, clipped to the corner radius by its own wrapper.
+  if (glass) {
+    return (
+      <Animated.View
+        style={[style, animatedTabBarStyle, useLiquidGlass ? null : styles.listShadow]}>
+        {useLiquidGlass ? (
+          <GlassView
+            glassEffectStyle="regular"
+            style={[StyleSheet.absoluteFill, { borderRadius: ACTION_TAB_HEIGHT / 2 }]}
+          />
+        ) : (
+          <Animated.View style={tailwind.style('absolute inset-0 rounded-full overflow-hidden')}>
+            <BlurView
+              blurAmount={25}
+              blurType="light"
+              style={tailwind.style('flex-1 bg-[#00000009]')}
+            />
+          </Animated.View>
+        )}
+        {children}
+      </Animated.View>
+    );
+  }
+
   return Platform.OS === 'ios' ? (
     <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
       <Animated.View style={tailwind.style('absolute inset-0 rounded-[30px] overflow-hidden')}>
@@ -136,10 +305,11 @@ const ActionItem = (props: ActionItemProps) => {
 };
 
 export const ActionTabs = () => {
-  const { bottom, left, right } = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
-  // Center within the content area, which is narrower when tabs sit on the side.
-  const barLeft = left + (width - left - right - 220) / 2;
+  const { bottom, left } = useSafeAreaInsets();
+  // Center within the area it's drawn in: the list pane in the split view, or the content
+  // between the side insets elsewhere.
+  const containerWidth = useContainerWidth();
+  const barLeft = left + (containerWidth - 220) / 2;
   const dispatch = useAppDispatch();
 
   const { actionsModalSheetRef } = useRefsContext();
@@ -174,6 +344,12 @@ export const ActionTabs = () => {
       onPress: handleBulkChangeStatus,
     },
   ];
+
+  if (IOS_DESIGN) {
+    return (
+      <IOSActionBar barLeft={left + (containerWidth - IOS_BAR_WIDTH) / 2} bottom={bottom + 8} />
+    );
+  }
 
   return (
     <ActionTabBarBackground

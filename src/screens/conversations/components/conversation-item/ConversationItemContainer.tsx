@@ -184,10 +184,13 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       handlePress={onPressAction}
       triggerOverswipeOnFlick
       {...{ index, openedRowIndex }}>
+      {/* In select mode the checkboxes show the selection, so the open row isn't highlighted. */}
       <SelectedRowBackground
-        selected={splitView?.selectedConversationId === id}
+        selected={currentState !== 'Select' && splitView?.selectedConversationId === id}
         beforeSelected={
-          !!nextConversationId && splitView?.selectedConversationId === nextConversationId
+          currentState !== 'Select' &&
+          !!nextConversationId &&
+          splitView?.selectedConversationId === nextConversationId
         }>
         <ConversationItem {...viewProps} />
       </SelectedRowBackground>

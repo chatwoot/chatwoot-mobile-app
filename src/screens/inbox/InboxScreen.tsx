@@ -296,7 +296,10 @@ const InboxScreen = () => {
                   />
                 ) : null}
               </Animated.View>
-              <ScrollEdgeHeader scrollY={scrollEdge.scrollY} onHeightChange={setHeaderHeight}>
+              <ScrollEdgeHeader
+                scrollY={scrollEdge.scrollY}
+                onHeightChange={setHeaderHeight}
+                insetSides={!isSplit}>
                 <InboxHeader markAllAsRead={markAllAsRead} />
               </ScrollEdgeHeader>
             </>

@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useEffect, useMemo, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
-  LinearTransition,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -192,13 +191,18 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
   const { right: safeRight } = useSafeAreaInsets();
   const [selectedConversationId, setSelectedConversationId] = useState<number | null>(null);
   const [secondary, setSecondary] = useState<SecondaryColumn | null>(null);
-  const isSecondaryOpen = secondary !== null;
+  // While a swipe is opening a column, it's shown (and laid out as open) but not committed
+  // until the finger lifts past the threshold.
+  const [isPreviewing, setPreviewing] = useState(false);
+  const isColumnShown = secondary !== null;
+  const isSecondaryOpen = isColumnShown && !isPreviewing;
   const [totalWidth, setTotalWidth] = useState<number | null>(null);
 
   const value = useMemo(
     () => ({
       selectedConversationId,
       openConversation: (id: number) => {
+        setPreviewing(false);
         setSecondary(null);
         setSelectedConversationId(id);
       },
@@ -214,7 +218,10 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       openCompose: () => setSecondary({ kind: 'compose' }),
       openDashboard: (params: DashboardColumnParams) =>
         setSecondary({ kind: 'dashboard', ...params }),
-      closeSecondary: () => setSecondary(null),
+      closeSecondary: () => {
+        setPreviewing(false);
+        setSecondary(null);
+      },
     }),
     [selectedConversationId, secondary, isSecondaryOpen],
   );
@@ -234,6 +241,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
           }),
         );
       }
+      setPreviewing(false);
       setSecondary(null);
       setSelectedConversationId(null);
     }
@@ -263,34 +271,81 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
     }
   }, [resetSignature]);
 
-  // The list takes 40% of the display and the conversation the rest. Opening contact
-  // details slides the strip left by the list's width: the conversation narrows to 40% on the
-  // left and contact details take the remaining 60% on the right.
+  // The list takes 40% of the display and the conversation the rest. A side column (contact,
+  // actions, …) is as wide as the list: opening it slides the strip left by the list's width, so
+  // the conversation moves over at the same width. Widths never change, so the slide (and the
+  // swipe that drives it) only moves things; messages never re-wrap mid-animation.
   const listWidth = Math.max(320, Math.round(width * 0.4));
   const wideWidth = totalWidth ? totalWidth - listWidth - 1 : null;
-  const detailWidth = isSecondaryOpen ? listWidth : wideWidth;
-  const contactWidth = isSecondaryOpen ? (wideWidth ?? listWidth) : listWidth;
+  const detailWidth = wideWidth;
+  const contactWidth = listWidth;
+  const openOffset = -(listWidth + 1);
   const offset = useSharedValue(0);
+  // Settles the strip when the column opens or closes, unless a swipe is driving it.
   useEffect(() => {
-    offset.value = withSpring(isSecondaryOpen ? -(listWidth + 1) : 0, SLIDE_SPRING);
-  }, [isSecondaryOpen, listWidth, offset]);
+    if (isPreviewing) return;
+    offset.value = withSpring(isSecondaryOpen ? openOffset : 0, SLIDE_SPRING);
+  }, [isSecondaryOpen, isPreviewing, openOffset, offset]);
   const stripStyle = useAnimatedStyle(() => ({ transform: [{ translateX: offset.value }] }));
 
-  // Swipes on the conversation: left opens actions, right closes the open column. Only clear
-  // horizontal drags count, so scrolling the messages isn't affected.
-  const swipeOpen = () => {
-    if (selectedConversationId && !isSecondaryOpen) setSecondary({ kind: 'actions' });
+  // Interactive swipes on the conversation: the strip follows the finger. Left opens actions,
+  // right closes the open column; on release it completes past a third of the way (or on a
+  // flick) and springs back otherwise. Only clear horizontal drags count, so scrolling the
+  // messages isn't affected.
+  const isOpenSV = useSharedValue(0);
+  const isPreviewSV = useSharedValue(0);
+  useEffect(() => {
+    isOpenSV.value = isSecondaryOpen ? 1 : 0;
+  }, [isSecondaryOpen, isOpenSV]);
+  const beginPreview = () => {
+    if (!selectedConversationId || secondary) return;
+    setPreviewing(true);
+    setSecondary({ kind: 'actions' });
   };
-  const swipeClose = () => {
-    if (isSecondaryOpen) setSecondary(null);
+  const commitPreview = () => setPreviewing(false);
+  const cancelPreview = () => {
+    setSecondary(null);
+    setPreviewing(false);
   };
+  const closeColumn = () => setSecondary(null);
   const swipe = Gesture.Pan()
     .activeOffsetX([-20, 20])
     .failOffsetY([-12, 12])
+    .onUpdate(event => {
+      const dx = event.translationX;
+      if (isOpenSV.value === 1) {
+        offset.value = Math.min(0, Math.max(openOffset, openOffset + dx));
+        return;
+      }
+      if (dx < 0 && isPreviewSV.value === 0) {
+        isPreviewSV.value = 1;
+        runOnJS(beginPreview)();
+      }
+      if (isPreviewSV.value === 1) offset.value = Math.min(0, Math.max(openOffset, dx));
+    })
     .onEnd(event => {
-      const fast = Math.abs(event.velocityX) > 500;
-      if (event.translationX < -60 || (fast && event.velocityX < 0)) runOnJS(swipeOpen)();
-      else if (event.translationX > 60 || (fast && event.velocityX > 0)) runOnJS(swipeClose)();
+      const dx = event.translationX;
+      const threshold = -openOffset / 3;
+      if (isOpenSV.value === 1) {
+        if (dx > threshold || event.velocityX > 500) {
+          offset.value = withSpring(0, SLIDE_SPRING, finished => {
+            if (finished) runOnJS(closeColumn)();
+          });
+        } else {
+          offset.value = withSpring(openOffset, SLIDE_SPRING);
+        }
+        return;
+      }
+      if (isPreviewSV.value === 1) {
+        isPreviewSV.value = 0;
+        if (dx < -threshold || event.velocityX < -500) {
+          runOnJS(commitPreview)();
+        } else {
+          offset.value = withSpring(0, SLIDE_SPRING, finished => {
+            if (finished) runOnJS(cancelPreview)();
+          });
+        }
+      }
     });
 
   // The list keeps the same place in the tree whether or not the split view is showing, so
@@ -313,8 +368,8 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
               <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
               <ContainerWidthContext.Provider value={detailWidth}>
                 <Animated.View
-                  // Animate the conversation narrowing/widening along with the slide.
-                  layout={LinearTransition.springify().damping(26).stiffness(220)}
+                  // The width changes in one step (hidden by the slide) instead of animating:
+                  // animating it re-lays out the whole chat every frame and drops frames.
                   style={[
                     // Gray only for the empty state; an open conversation sits on white.
                     tailwind.style(selectedConversationId ? 'bg-white' : 'bg-gray-50'),

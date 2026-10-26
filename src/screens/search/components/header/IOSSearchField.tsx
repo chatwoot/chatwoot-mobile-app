@@ -15,6 +15,7 @@ type IOSSearchFieldProps = {
   isLoading: boolean;
   onChangeText: (text: string) => void;
   onClear: () => void;
+  placeholder?: string;
 };
 
 // Search field in the same glass capsule as the reply bar's text field (44pt, 17pt text),
@@ -24,6 +25,7 @@ export const IOSSearchField = ({
   isLoading,
   onChangeText,
   onClear,
+  placeholder,
 }: IOSSearchFieldProps) => (
   <View
     style={tailwind.style(
@@ -42,7 +44,7 @@ export const IOSSearchField = ({
       autoFocus
       value={value}
       onChangeText={onChangeText}
-      placeholder={i18n.t('SEARCH.PLACEHOLDER')}
+      placeholder={placeholder ?? i18n.t('SEARCH.PLACEHOLDER')}
       placeholderTextColor={tailwind.color('text-gray-700')}
       autoCapitalize="none"
       autoCorrect={false}

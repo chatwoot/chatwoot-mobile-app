@@ -117,13 +117,21 @@ type ScrollEdgeHeaderProps = PropsWithChildren<{
   scrollY: SharedValue<number>;
   // Reports the header's height so the list can start below it.
   onHeightChange: (height: number) => void;
+  // Keep the content clear of the side safe areas (e.g. the side status column on the closed
+  // Duo); the blur still spans the full width.
+  insetSides?: boolean;
 }>;
 
-export const ScrollEdgeHeader = ({ scrollY, onHeightChange, children }: ScrollEdgeHeaderProps) => {
+export const ScrollEdgeHeader = ({
+  scrollY,
+  onHeightChange,
+  insetSides = false,
+  children,
+}: ScrollEdgeHeaderProps) => {
   const [height, setHeight] = useState(0);
   // The header starts at the top of the screen so the blur also covers the status bar; its
   // content sits below the status bar.
-  const { top } = useSafeAreaInsets();
+  const { top, left, right } = useSafeAreaInsets();
 
   const effectStyle = useAnimatedStyle(() => ({
     opacity: interpolate(scrollY.value, [0, APPEAR_DISTANCE], [0, 1], Extrapolation.CLAMP),
@@ -157,7 +165,7 @@ export const ScrollEdgeHeader = ({ scrollY, onHeightChange, children }: ScrollEd
           </Svg>
         </Animated.View>
       ) : null}
-      {children}
+      <View style={insetSides ? { paddingLeft: left, paddingRight: right } : null}>{children}</View>
     </View>
   );
 };

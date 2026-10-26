@@ -21,6 +21,7 @@ import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { useIsSplitLayout, useScaleAnimation } from '@/utils';
 import { useHeaderAnimation } from '@/hooks/useHeaderAnimation';
+import { ConversationFilterMenu } from '../conversation-filters/ConversationFilterMenu';
 
 type HeaderState = 'Search' | 'Filter' | 'Select' | 'none';
 
@@ -251,12 +252,14 @@ export const ConversationHeaderPresenter = ({
         onPress={onLeftIconPress}
         accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
       />
-      <SideToolbarButton
-        icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
-        onPress={onRightIconPress}
-        showBadge={filtersAppliedCount > 0}
-        accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
-      />
+      {/* Native filter menu (iOS pull-down) instead of the filter mode. */}
+      <ConversationFilterMenu>
+        <SideToolbarButton
+          icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
+          showBadge={filtersAppliedCount > 0}
+          accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
+        />
+      </ConversationFilterMenu>
     </>
   );
   const isSideLayout = useSideToolbar(
@@ -269,7 +272,7 @@ export const ConversationHeaderPresenter = ({
     // Split view (WhatsApp style): small centered title with round glass buttons on
     // each side, above the list they act on.
     return (
-      <Animated.View style={tailwind.style('flex flex-row items-center px-3 pt-1 pb-3')}>
+      <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
         <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
           {currentState === 'Filter' ? (
             <GlassPillButton
@@ -308,12 +311,15 @@ export const ConversationHeaderPresenter = ({
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
             />
           ) : (
-            <GlassCircleButton
-              icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
-              onPress={onRightIconPress}
-              showBadge={filtersAppliedCount > 0}
-              accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
-            />
+            // Native filter menu (iOS pull-down) instead of the filter mode.
+            // Native filter menu (iOS pull-down) instead of the filter mode.
+            <ConversationFilterMenu>
+              <GlassCircleButton
+                icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
+                showBadge={filtersAppliedCount > 0}
+                accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
+              />
+            </ConversationFilterMenu>
           )}
         </Animated.View>
       </Animated.View>

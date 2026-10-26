@@ -6,6 +6,7 @@ import { expandTabs } from '@/utils/expandTabs';
 
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
+import { appFont } from '@/theme/appFont';
 
 // Shared parser instance; the options are static.
 const markdownItInstance = MarkdownIt({ linkify: true, typographer: true, breaks: true });
@@ -44,7 +45,7 @@ const buildStyles = (variant: string) => {
       ...textStyle,
     },
     strong: {
-      fontFamily: 'Inter-600-20',
+      ...appFont('Inter-600-20'),
       fontWeight: '600',
     },
     em: {
@@ -53,7 +54,7 @@ const buildStyles = (variant: string) => {
     paragraph: {
       marginTop: 0,
       marginBottom: 0,
-      fontFamily: 'Inter-400-20',
+      ...appFont('Inter-400-20'),
     },
     bullet_list: {
       minWidth: 200,

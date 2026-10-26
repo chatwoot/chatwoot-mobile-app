@@ -8,6 +8,7 @@ import { DoubleCheckIcon, InboxFilterIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import { InboxFilters } from './InboxFilters';
+import { InboxSortMenu, useIsInboxSortChanged } from './InboxSortMenu';
 import i18n from '@/i18n';
 import { useRefsContext, useSideToolbar } from '@/context';
 import {
@@ -31,6 +32,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   // With tabs on the side (iPhone Duo), the header actions move to the side toolbar. In
   // the split view they stay above the list, next to the content they affect.
   const isSplit = useIsSplitLayout();
+  const isSortChanged = useIsInboxSortChanged();
   const sideTabBar = useSideTabBarLayout();
   const actionItems = (
     <>
@@ -39,14 +41,17 @@ export const InboxHeader = (props: InboxHeaderProps) => {
         onPress={markAllAsRead}
         accessibilityLabel={i18n.t('NOTIFICATION.MARK_ALL')}
       />
-      <SideToolbarButton
-        icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
-        onPress={handleToggleState}
-        accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
-      />
+      {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
+      <InboxSortMenu>
+        <SideToolbarButton
+          icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
+          showBadge={isSortChanged}
+          accessibilityLabel={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')}
+        />
+      </InboxSortMenu>
     </>
   );
-  const isSideLayout = useSideToolbar(actionItems, [markAllAsRead], !isSplit);
+  const isSideLayout = useSideToolbar(actionItems, [markAllAsRead, isSortChanged], !isSplit);
 
   return (
     <Animated.View
@@ -59,7 +64,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
       ]}>
       {isSideLayout && isSplit ? (
         // Split view (WhatsApp style): small centered title with round glass buttons.
-        <Animated.View style={tailwind.style('flex flex-row items-center px-3 pt-1 pb-3')}>
+        <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
           <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
             <GlassCircleButton
               icon={<DoubleCheckIcon stroke={HEADER_ICON_COLOR} />}
@@ -75,11 +80,14 @@ export const InboxHeader = (props: InboxHeaderProps) => {
             {i18n.t('NOTIFICATION.INBOX')}
           </Animated.Text>
           <Animated.View style={tailwind.style('w-24 flex-row items-center justify-end')}>
-            <GlassCircleButton
-              icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
-              onPress={handleToggleState}
-              accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
-            />
+            {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
+            <InboxSortMenu>
+              <GlassCircleButton
+                icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
+                showBadge={isSortChanged}
+                accessibilityLabel={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')}
+              />
+            </InboxSortMenu>
           </Animated.View>
         </Animated.View>
       ) : isSideLayout ? (
@@ -93,7 +101,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
           ]}>
           <Animated.View style={tailwind.style('flex-1')}>
             <Pressable hitSlop={16} onPress={markAllAsRead}>
-              <Icon icon={<DoubleCheckIcon stroke={HEADER_ICON_COLOR} />} size={24} />
+              <Icon icon={<DoubleCheckIcon />} size={24} />
             </Pressable>
           </Animated.View>
           <Animated.View style={tailwind.style('flex-1')}>
@@ -106,7 +114,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
           </Animated.View>
           <Animated.View style={tailwind.style('flex-1 items-end')}>
             <Pressable onPress={handleToggleState} hitSlop={16}>
-              <Icon icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />} size={24} />
+              <Icon icon={<InboxFilterIcon />} size={24} />
             </Pressable>
           </Animated.View>
         </Animated.View>

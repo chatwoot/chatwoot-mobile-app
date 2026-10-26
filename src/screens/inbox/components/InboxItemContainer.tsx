@@ -18,6 +18,7 @@ import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { useSplitView } from '@/navigation/split/SplitViewContext';
+import { SelectedRowBackground } from '@/navigation/split/SelectedRowBackground';
 import { conversationActions } from '@/store/conversation/conversationActions';
 
 type InboxItemContainerProps = {
@@ -145,18 +146,23 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       triggerOverswipeOnFlick
       rightElementBgColor="bg-ruby-800"
       {...{ index, openedRowIndex }}>
-      <InboxItem
-        isRead={isRead}
-        assignee={assignee}
-        lastActivityAt={lastActivityAt}
-        sender={sender}
-        conversationId={conversationId}
-        priority={priority}
-        inbox={inbox || null}
-        additionalAttributes={additionalAttributes}
-        pushMessageTitle={pushTitle}
-        notificationType={notificationType}
-      />
+      <SelectedRowBackground
+        selected={
+          !!item.primaryActor?.id && splitView?.selectedConversationId === item.primaryActor.id
+        }>
+        <InboxItem
+          isRead={isRead}
+          assignee={assignee}
+          lastActivityAt={lastActivityAt}
+          sender={sender}
+          conversationId={conversationId}
+          priority={priority}
+          inbox={inbox || null}
+          additionalAttributes={additionalAttributes}
+          pushMessageTitle={pushTitle}
+          notificationType={notificationType}
+        />
+      </SelectedRowBackground>
     </Swipeable>
   );
 };

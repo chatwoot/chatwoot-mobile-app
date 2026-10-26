@@ -6,7 +6,8 @@ import { tailwind } from '@/theme';
 
 type SideToolbarButtonProps = {
   icon: React.ReactElement;
-  onPress: () => void;
+  // Leave out when the button is a menu trigger, so the menu receives the tap.
+  onPress?: () => void;
   accessibilityLabel: string;
   // Shows a small dot, e.g. when filters are applied.
   showBadge?: boolean;
@@ -20,25 +21,46 @@ export const SideToolbarButton = ({
   accessibilityLabel,
   showBadge,
   disabled,
-}: SideToolbarButtonProps) => (
-  <Pressable
-    onPress={onPress}
-    disabled={disabled}
-    accessibilityRole="button"
-    accessibilityLabel={accessibilityLabel}
-    style={({ pressed }) =>
-      tailwind.style(
-        'h-11 w-11 rounded-full items-center justify-center',
-        pressed ? 'bg-blackA-A3' : 'bg-transparent',
-      )
-    }>
-    <View>
-      {showBadge && (
-        <View
-          style={tailwind.style('absolute z-10 -right-0.5 h-2.5 w-2.5 rounded-full bg-blue-800')}
-        />
-      )}
-      <Icon size={24} icon={icon} />
-    </View>
-  </Pressable>
-);
+}: SideToolbarButtonProps) => {
+  if (!onPress) {
+    return (
+      <View
+        accessibilityRole="button"
+        accessibilityLabel={accessibilityLabel}
+        style={tailwind.style('h-11 w-11 rounded-full items-center justify-center')}>
+        <View>
+          {showBadge && (
+            <View
+              style={tailwind.style(
+                'absolute z-10 -right-0.5 h-2.5 w-2.5 rounded-full bg-blue-800',
+              )}
+            />
+          )}
+          <Icon size={24} icon={icon} />
+        </View>
+      </View>
+    );
+  }
+  return (
+    <Pressable
+      onPress={onPress}
+      disabled={disabled}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      style={({ pressed }) =>
+        tailwind.style(
+          'h-11 w-11 rounded-full items-center justify-center',
+          pressed ? 'bg-blackA-A3' : 'bg-transparent',
+        )
+      }>
+      <View>
+        {showBadge && (
+          <View
+            style={tailwind.style('absolute z-10 -right-0.5 h-2.5 w-2.5 rounded-full bg-blue-800')}
+          />
+        )}
+        <Icon size={24} icon={icon} />
+      </View>
+    </Pressable>
+  );
+};

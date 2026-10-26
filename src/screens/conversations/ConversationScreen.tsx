@@ -4,7 +4,12 @@ import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SplitView } from '@/navigation/split/SplitView';
 import { SplitEmptyState } from '@/navigation/split/SplitEmptyState';
-import { ScrollEdgeHeader, useScrollEdge } from '@/components-next/side-toolbar';
+import {
+  HeaderSpacer,
+  PullToRefreshIndicator,
+  ScrollEdgeHeader,
+  useScrollEdge,
+} from '@/components-next/side-toolbar';
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -71,6 +76,9 @@ type FlashListRenderItemType = {
 type OverlayListProps = {
   overlayHeaderHeight?: number;
   splitEmpty?: boolean;
+  // Drives the pull-to-refresh spinner drawn below the floating header.
+  scrollY?: SharedValue<number>;
+  isDragging?: SharedValue<number>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onScroll?: any;
 };
@@ -78,6 +86,8 @@ const ConversationList = ({
   overlayHeaderHeight = 0,
   splitEmpty = false,
   onScroll,
+  scrollY,
+  isDragging,
 }: OverlayListProps) => {
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
@@ -235,56 +245,80 @@ const ConversationList = ({
       <ActivityIndicator />
     </Animated.View>
   ) : allConversations.length === 0 ? (
-    <Animated.ScrollView
-      refreshControl={
-        <RefreshControl
+    <Animated.View style={tailwind.style('flex-1')}>
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            // Under the floating header the spinner is drawn by PullToRefreshIndicator.
+            tintColor={overlayHeaderHeight ? 'transparent' : undefined}
+          />
+        }
+        contentContainerStyle={tailwind.style(
+          'flex-1 items-center justify-center',
+          `pb-[${tabBarHeight}px]`,
+        )}>
+        {splitEmpty ? (
+          <SplitEmptyState message={i18n.t('CONVERSATION.EMPTY')} />
+        ) : (
+          <>
+            <EmptyStateIcon />
+            <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
+              {i18n.t('CONVERSATION.EMPTY')}
+            </Animated.Text>
+          </>
+        )}
+      </Animated.ScrollView>
+      {overlayHeaderHeight && scrollY && isDragging ? (
+        <PullToRefreshIndicator
+          scrollY={scrollY}
+          isDragging={isDragging}
+          top={overlayHeaderHeight}
           refreshing={isRefreshing}
-          onRefresh={handleRefresh}
-          progressViewOffset={overlayHeaderHeight}
         />
-      }
-      contentContainerStyle={tailwind.style(
-        'flex-1 items-center justify-center',
-        `pb-[${tabBarHeight}px]`,
-      )}>
-      {splitEmpty ? (
-        <SplitEmptyState message={i18n.t('CONVERSATION.EMPTY')} />
-      ) : (
-        <>
-          <EmptyStateIcon />
-          <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
-            {i18n.t('CONVERSATION.EMPTY')}
-          </Animated.Text>
-        </>
-      )}
-    </Animated.ScrollView>
+      ) : null}
+    </Animated.View>
   ) : (
-    <AnimatedFlashList
-      refreshControl={
-        <RefreshControl
+    <Animated.View style={tailwind.style('flex-1')}>
+      <AnimatedFlashList
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            // Under the floating header the spinner is drawn by PullToRefreshIndicator.
+            tintColor={overlayHeaderHeight ? 'transparent' : undefined}
+          />
+        }
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        // Start below the floating header: a spacer the header's height sits above the rows.
+        ListHeaderComponent={
+          overlayHeaderHeight ? <HeaderSpacer height={overlayHeaderHeight} /> : null
+        }
+        scrollIndicatorInsets={overlayHeaderHeight ? { top: overlayHeaderHeight } : undefined}
+        showsVerticalScrollIndicator={false}
+        data={allConversations}
+        onScrollBeginDrag={handleScrollBeginDrag}
+        onEndReached={handleOnEndReached}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={ListFooterComponent}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        renderItem={handleRender}
+        contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}
+      />
+      {overlayHeaderHeight && scrollY && isDragging ? (
+        <PullToRefreshIndicator
+          scrollY={scrollY}
+          isDragging={isDragging}
+          top={overlayHeaderHeight}
           refreshing={isRefreshing}
-          onRefresh={handleRefresh}
-          progressViewOffset={overlayHeaderHeight}
         />
-      }
-      onScroll={onScroll}
-      scrollEventThrottle={16}
-      // Start below the floating header: a spacer the header's height sits above the rows.
-      ListHeaderComponent={
-        overlayHeaderHeight ? <Animated.View style={{ height: overlayHeaderHeight }} /> : null
-      }
-      scrollIndicatorInsets={overlayHeaderHeight ? { top: overlayHeaderHeight } : undefined}
-      showsVerticalScrollIndicator={false}
-      data={allConversations}
-      onScrollBeginDrag={handleScrollBeginDrag}
-      onEndReached={handleOnEndReached}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={ListFooterComponent}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      renderItem={handleRender}
-      contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}
-    />
+      ) : null}
+    </Animated.View>
   );
 };
 
@@ -346,6 +380,8 @@ const ConversationScreen = () => {
                     overlayHeaderHeight={headerHeight}
                     splitEmpty={isSplit}
                     onScroll={scrollEdge.onScroll}
+                    scrollY={scrollEdge.scrollY}
+                    isDragging={scrollEdge.isDragging}
                   />
                 ) : null}
               </Animated.View>

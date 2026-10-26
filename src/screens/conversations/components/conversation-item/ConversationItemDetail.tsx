@@ -19,6 +19,8 @@ import { LastActivityTime } from './LastActivityTime';
 import { SLA } from '@/types/common/SLA';
 import { Inbox } from '@/types/Inbox';
 import { TypingMessage } from './TypingMessage';
+import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
+import { useIsRowSelected } from '@/navigation/split/SelectedRowBackground';
 
 type ConversationDetailSubCellProps = Pick<
   Conversation,
@@ -51,6 +53,8 @@ const checkIfPropsAreSame = (
 };
 
 export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
+  const iosText = useIOSListText();
+  const isRowSelected = useIsRowSelected();
   const {
     id: conversationId,
     priority,
@@ -86,16 +90,30 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   return (
     <AnimatedNativeView
       layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}
-      style={tailwind.style('flex-1 gap-1 py-3 border-b-[1px] border-b-blackA-A3')}>
+      // iOS list layout: every line box matches its line height (name 22, preview 20,
+      // labels/SLA 20) with the same 4pt gap between lines, and 12pt row padding.
+      style={tailwind.style(
+        'flex-1 border-b-[1px]',
+        isRowSelected ? 'border-b-transparent' : 'border-b-blackA-A3',
+        'gap-1 py-3',
+      )}>
       <AnimatedNativeView
-        style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
+        style={tailwind.style(
+          'flex flex-row justify-between items-center',
+          iosText ? 'h-[22px]' : 'h-[24px]',
+        )}>
         {/* The name shrinks to fit; the id, indicators and time keep their size. */}
         <AnimatedNativeView
-          style={tailwind.style('flex flex-row flex-1 items-center h-[24px] gap-[5px] mr-2')}>
+          style={tailwind.style(
+            'flex flex-row flex-1 items-center gap-[5px] mr-2',
+            iosText ? 'h-[22px]' : 'h-[24px]',
+          )}>
           <Text
             numberOfLines={1}
             style={tailwind.style(
               'flex-shrink text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
+              iosText && IOS_LIST_TEXT.title,
+              iosText && (unreadCount > 0 ? IOS_LIST_TEXT.unreadTitle : IOS_LIST_TEXT.readTitle),
             )}>
             {senderName}
           </Text>
@@ -127,7 +145,10 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             )}
           </AnimatedNativeView>
           <AnimatedNativeView
-            style={tailwind.style('flex flex-row h-6 justify-between items-center gap-2')}>
+            style={tailwind.style(
+              'flex flex-row justify-between items-center gap-2',
+              iosText ? 'h-5' : 'h-6',
+            )}>
             <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
               {hasSLA && appliedSla && (
                 <SLAIndicator

@@ -9,7 +9,7 @@ import { tailwind } from '@/theme';
 import { useIsSplitLayout } from '@/utils';
 import i18n from '@/i18n';
 import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
-import { DetailPaneContext, SplitViewContext } from './SplitViewContext';
+import { DetailPaneContext, SplitViewContext, useSplitView } from './SplitViewContext';
 import { SplitEmptyState } from './SplitEmptyState';
 import { ConversationPaneEmptyIcon } from '@/svg-icons';
 
@@ -19,17 +19,32 @@ import { ConversationPaneEmptyIcon } from '@/svg-icons';
 
 const PaneStack = createNativeStackNavigator<Pick<TabBarExcludedScreenParamList, 'ChatScreen'>>();
 
-// The chat runs in its own small stack so ChatScreen keeps reading its route params.
-// Screens it opens (contact details, dashboard apps) are not in this stack, so those
-// navigations go up to the app stack as before. Its own RefsProvider keeps the chat's
-// sheets and pager separate from the list's.
+type PaneChatProps = React.ComponentProps<typeof ChatScreen>;
+
+// Reads the conversation from the split view's selection rather than its route params.
+// A nested navigator's state is kept by its parent screen, so a remounted pane would
+// restore the first conversation it showed and ignore new params. ChatScreen already
+// handles its conversation changing (it refetches and resets its content).
+const PaneChat = (props: PaneChatProps) => {
+  const selectedConversationId = useSplitView()?.selectedConversationId;
+  const route = {
+    ...props.route,
+    params: { ...props.route.params, conversationId: selectedConversationId ?? 0 },
+  };
+  return <ChatScreen {...props} route={route} />;
+};
+
+// The chat runs in its own small stack so ChatScreen keeps its usual route and
+// navigation props. Screens it opens (contact details, dashboard apps) are not in this
+// stack, so those navigations go up to the app stack as before. Its own RefsProvider keeps
+// the chat's sheets and pager separate from the list's.
 const ConversationPane = ({ conversationId }: { conversationId: number }) => (
   <DetailPaneContext.Provider value={true}>
     <RefsProvider>
       <PaneStack.Navigator screenOptions={{ headerShown: false }}>
         <PaneStack.Screen
           name="ChatScreen"
-          component={ChatScreen}
+          component={PaneChat}
           initialParams={{ conversationId }}
         />
       </PaneStack.Navigator>
@@ -101,10 +116,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
             onLayout={e => setDetailWidth(Math.round(e.nativeEvent.layout.width))}>
             {/* Wait for the pane's width so the chat doesn't first lay out at window width. */}
             {selectedConversationId && detailWidth ? (
-              <ConversationPane
-                key={selectedConversationId}
-                conversationId={selectedConversationId}
-              />
+              <ConversationPane conversationId={selectedConversationId} />
             ) : selectedConversationId ? null : (
               <EmptyPane icon={emptyIcon} message={emptyMessage} />
             )}

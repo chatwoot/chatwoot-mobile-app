@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -7,6 +7,7 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
+  withSpring,
 } from 'react-native-reanimated';
 import { BlurView } from '@react-native-community/blur';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
@@ -22,13 +23,93 @@ const FADE_HEIGHT = 20;
 // Scroll distance over which the effect appears.
 const APPEAR_DISTANCE = 12;
 
+/**
+ * Space at the top of a list that sits under a ScrollEdgeHeader. When the header grows
+ * or shrinks (e.g. the filter bar opens) the space springs to the new height, so the
+ * list glides instead of jumping. The first height applies immediately.
+ */
+export const HeaderSpacer = ({ height }: { height: number }) => {
+  const animatedHeight = useSharedValue(height);
+  const isFirst = useRef(true);
+  useEffect(() => {
+    if (isFirst.current) {
+      isFirst.current = false;
+      animatedHeight.value = height;
+      return;
+    }
+    // Same spring the list used when the header pushed it down.
+    animatedHeight.value = withSpring(height, { damping: 22, stiffness: 180 });
+  }, [height, animatedHeight]);
+  const style = useAnimatedStyle(() => ({ height: animatedHeight.value }));
+  return <Animated.View style={style} />;
+};
+
+/**
+ * Pull-to-refresh spinner for a list under a ScrollEdgeHeader. The system spinner can't
+ * sit below a floating header (iOS reserves its space at the very top, behind the
+ * header), so the list hides it (transparent tint) and this one is drawn in the gap that
+ * opens below the header as you pull, centered in it while refreshing.
+ */
+export const PullToRefreshIndicator = ({
+  scrollY,
+  isDragging,
+  top,
+  refreshing,
+}: {
+  scrollY: SharedValue<number>;
+  isDragging: SharedValue<number>;
+  top: number;
+  refreshing: boolean;
+}) => {
+  // A refresh can swap the list out for a loader mid-pull, so the "finger lifted" and
+  // final scroll events never arrive. Reset the tracking when this list mounts or
+  // unmounts and whenever a refresh finishes, so nothing is left on screen.
+  useEffect(() => {
+    isDragging.value = 0;
+    scrollY.value = 0;
+    return () => {
+      isDragging.value = 0;
+      scrollY.value = 0;
+    };
+  }, [isDragging, scrollY]);
+  useEffect(() => {
+    if (!refreshing) isDragging.value = 0;
+  }, [refreshing, isDragging]);
+
+  // Visible only during an active pull or a running refresh.
+  const style = useAnimatedStyle(() => {
+    const pull = Math.max(-scrollY.value, 0);
+    const pullOpacity = interpolate(pull, [8, 48], [0, 1], Extrapolation.CLAMP);
+    const visible = refreshing || isDragging.value === 1;
+    return {
+      height: visible ? pull : 0,
+      opacity: refreshing ? 1 : visible ? pullOpacity : 0,
+    };
+  });
+  return (
+    <Animated.View pointerEvents="none" style={[styles.refresh, { top }, style]}>
+      <ActivityIndicator animating />
+    </Animated.View>
+  );
+};
+
 /** Tracks the list's scroll position for ScrollEdgeHeader. */
 export const useScrollEdge = () => {
   const scrollY = useSharedValue(0);
-  const onScroll = useAnimatedScrollHandler(event => {
-    scrollY.value = event.contentOffset.y;
+  // 1 while a finger is on the list, so the refresh spinner only follows an active pull.
+  const isDragging = useSharedValue(0);
+  const onScroll = useAnimatedScrollHandler({
+    onScroll: event => {
+      scrollY.value = event.contentOffset.y;
+    },
+    onBeginDrag: () => {
+      isDragging.value = 1;
+    },
+    onEndDrag: () => {
+      isDragging.value = 0;
+    },
   });
-  return { scrollY, onScroll };
+  return { scrollY, isDragging, onScroll };
 };
 
 type ScrollEdgeHeaderProps = PropsWithChildren<{
@@ -81,4 +162,12 @@ const styles = StyleSheet.create({
   container: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 },
   effect: { position: 'absolute', top: 0, left: 0, right: 0 },
   blur: { position: 'absolute', top: 0, left: 0, right: 0 },
+  refresh: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
 });

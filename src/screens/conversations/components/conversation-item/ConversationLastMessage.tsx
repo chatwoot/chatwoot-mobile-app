@@ -15,6 +15,7 @@ import { Message } from '@/types';
 import { MESSAGE_TYPES } from '@/constants';
 import i18n from '@/i18n';
 import { getPlainText } from '@/utils/messageFormatterUtils';
+import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
 
 type ConversationLastMessageProps = {
   numberOfLines: number;
@@ -43,6 +44,8 @@ const getAttachmentIcon = (fileType: string) => {
   }
 };
 
+// Shown inline before the preview text. On the iOS list layout callers add right padding
+// (padding is part of an inline view's width, margins may not be) to separate it from the text.
 const MessageType = ({ message, style }: { message: Message; style?: StyleProp<ViewStyle> }) => {
   const { private: isPrivate } = message;
   const isOutgoing = message?.messageType === MESSAGE_TYPES.OUTGOING;
@@ -68,6 +71,7 @@ const MessageContent = ({
   message: Message;
   numberOfLines: number;
 }) => {
+  const iosText = useIOSListText();
   const { contentAttributes } = message || {};
   const { email: { subject = '' } = {} } = contentAttributes || {};
 
@@ -79,31 +83,34 @@ const MessageContent = ({
 
   if (message.content && isMessageSticker) {
     return (
-      <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
+      <NativeView style={tailwind.style('flex-row items-center', iosText ? 'gap-1.5' : 'gap-1')}>
         <Icon icon={<ImageAttachmentIcon />} />
         <Text
           numberOfLines={1}
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
+            iosText && IOS_LIST_TEXT.body,
           )}>
-          <MessageType message={message} style={tailwind.style('ml-1')} />
+          <MessageType message={message} style={tailwind.style('ml-1', iosText && 'pr-1')} />
           {i18n.t(`CONVERSATION.ATTACHMENTS.image.CONTENT`)}
         </Text>
       </NativeView>
     );
   } else if (lastMessageContent) {
     return (
-      <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
+      <NativeView style={tailwind.style('flex-row items-center', iosText ? 'gap-1.5' : 'gap-1')}>
         <Text
           numberOfLines={numberOfLines}
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
+            iosText && IOS_LIST_TEXT.body,
           )}>
-          <MessageType message={message} style={tailwind.style('ml-1')} />
+          <MessageType message={message} style={tailwind.style('ml-1', iosText && 'pr-1')} />
           <Text
             numberOfLines={numberOfLines}
             style={tailwind.style(
               'text-md flex-1 font-inter-420-20 tracking-[0.3px] leading-[21px] text-gray-900',
+              iosText && IOS_LIST_TEXT.body,
             )}>
             {lastMessageContent}
           </Text>
@@ -112,13 +119,14 @@ const MessageContent = ({
     );
   } else if (message.attachments) {
     return (
-      <NativeView style={tailwind.style('flex-row gap-1 items-center')}>
+      <NativeView style={tailwind.style('flex-row items-center', iosText ? 'gap-1.5' : 'gap-1')}>
         <Icon icon={getAttachmentIcon(lastMessageFileType)} />
         <MessageType message={message} />
         <Text
           numberOfLines={1}
           style={tailwind.style(
             'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
+            iosText && IOS_LIST_TEXT.body,
           )}>
           {i18n.t(`CONVERSATION.ATTACHMENTS.${lastMessageFileType}.CONTENT`)}
         </Text>
@@ -129,6 +137,7 @@ const MessageContent = ({
     <Text
       style={tailwind.style(
         'text-md flex-1 font-inter-420-20 tracking-[0.32px] leading-[21px] text-gray-900',
+        iosText && IOS_LIST_TEXT.body,
       )}>
       {i18n.t('CONVERSATION.NO_CONTENT')}
     </Text>

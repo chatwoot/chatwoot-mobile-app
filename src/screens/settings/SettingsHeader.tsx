@@ -9,17 +9,15 @@ export const SettingsHeader = () => {
   const sideTabBar = useSideTabBarLayout();
 
   // With tabs on the side (iPhone Duo), match the Conversations and Inbox headers: same
-  // top margin, height and divider, with a small centered title. Settings has no header
+  // top margin and height, with a small centered title. Settings has no header
   // actions, so the side slots stay empty and keep the title centered.
   if (sideTabBar) {
     return (
       <Animated.View
-        style={[
-          tailwind.style('border-b-[1px] border-b-blackA-A3'),
-          // Keep the title out of the rounded corner when the status bar is on the side.
-          { paddingTop: sideTabBar.contentTopPadding },
-        ]}>
-        <Animated.View style={tailwind.style('flex flex-row items-center px-3 pt-1 pb-3')}>
+        // No divider, like the Conversations and Inbox headers on this layout. Keep the
+        // title out of the rounded corner when the status bar is on the side.
+        style={{ paddingTop: sideTabBar.contentTopPadding }}>
+        <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
           <Animated.View style={tailwind.style('w-24 h-9')} />
           <Animated.Text
             numberOfLines={1}

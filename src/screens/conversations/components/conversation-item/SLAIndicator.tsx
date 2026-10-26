@@ -7,6 +7,7 @@ import { SlaMissedIcon } from '@/svg-icons';
 import { SLA, SLAStatus } from '@/types/common/SLA';
 import { evaluateSLAStatus } from '@chatwoot/utils';
 import i18n from '@/i18n';
+import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
 
 const REFRESH_INTERVAL = 60000;
 
@@ -25,6 +26,7 @@ export const SLAIndicator = ({
   };
   onSLAStatusChange: (hasThreshold: boolean) => void;
 }) => {
+  const iosText = useIOSListText();
   const [slaStatus, setSlaStatus] = useState<SLAStatus | null>(null);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -85,6 +87,7 @@ export const SLAIndicator = ({
       <Text
         style={tailwind.style(
           'pl-1 text-sm leading-[20px] text-center',
+          iosText && IOS_LIST_TEXT.footnote,
           slaStatus?.isSlaMissed ? 'text-ruby-800' : 'text-gray-800',
         )}>
         {`${sLAStatusText()}: ${slaStatus?.threshold}`}

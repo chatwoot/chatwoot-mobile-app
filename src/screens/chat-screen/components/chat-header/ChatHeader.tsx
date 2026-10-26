@@ -11,6 +11,7 @@ import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
 import { SLAEvent } from '@/types/common';
 import { useRefsContext } from '@/context';
 import { SlaEvents } from './SlaEvents';
+import { useIOSListText } from '@/utils';
 
 type ChatHeaderProps = {
   name: string;
@@ -49,6 +50,7 @@ export const ChatHeader = ({
   onContactDetailsPress,
   onToggleChatStatus,
 }: ChatHeaderProps) => {
+  const iosList = useIOSListText();
   const { slaEventsSheetRef } = useRefsContext();
 
   const toggleSlaEventsSheet = () => {
@@ -68,7 +70,14 @@ export const ChatHeader = ({
         <Pressable
           onPress={onContactDetailsPress}
           style={tailwind.style('flex flex-row items-center gap-2 flex-1')}>
-          <Avatar size="md" src={imageSrc} name={name} />
+          {/* On the iOS list layout (iPhone Duo) a 32pt avatar with two-letter initials,
+              matching the conversation list; 24pt with one letter elsewhere. */}
+          <Avatar
+            size={iosList ? 'xl' : 'md'}
+            initialsClassName={iosList ? 'text-[13px]' : undefined}
+            src={imageSrc}
+            name={name}
+          />
           <Animated.Text
             numberOfLines={1}
             style={tailwind.style(

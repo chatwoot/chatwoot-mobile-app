@@ -10,7 +10,8 @@ const SIZE = 36;
 
 type GlassCircleButtonProps = {
   icon: React.ReactElement;
-  onPress: () => void;
+  // Leave out when the button is a menu trigger, so the menu receives the tap.
+  onPress?: () => void;
   accessibilityLabel: string;
   // Shows a small dot, e.g. when filters are applied.
   showBadge?: boolean;
@@ -29,21 +30,9 @@ export const GlassCircleButton = ({
   accessibilityLabel,
   showBadge,
   iconSize = 20,
-}: GlassCircleButtonProps) => (
-  <Pressable
-    onPress={onPress}
-    accessibilityRole="button"
-    accessibilityLabel={accessibilityLabel}
-    style={tailwind.style(`h-[${SIZE}px] w-[${SIZE}px] items-center justify-center`)}>
-    {useLiquidGlass ? (
-      <GlassView
-        glassEffectStyle="regular"
-        isInteractive
-        style={[tailwind.style('absolute inset-0'), { borderRadius: SIZE / 2 }]}
-      />
-    ) : (
-      <View style={tailwind.style('absolute inset-0 rounded-full bg-gray-100')} />
-    )}
+}: GlassCircleButtonProps) => {
+  const Container = onPress ? Pressable : View;
+  const content = (
     <View>
       {showBadge && (
         <View
@@ -52,8 +41,26 @@ export const GlassCircleButton = ({
       )}
       <Icon size={iconSize} icon={icon} />
     </View>
-  </Pressable>
-);
+  );
+  return (
+    <Container
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      style={tailwind.style(`h-[${SIZE}px] w-[${SIZE}px] items-center justify-center`)}>
+      {useLiquidGlass ? (
+        <GlassView
+          glassEffectStyle="regular"
+          isInteractive
+          style={[tailwind.style('absolute inset-0'), { borderRadius: SIZE / 2 }]}
+        />
+      ) : (
+        <View style={tailwind.style('absolute inset-0 rounded-full bg-gray-100')} />
+      )}
+      {content}
+    </Container>
+  );
+};
 
 type GlassPillButtonProps = {
   label: string;

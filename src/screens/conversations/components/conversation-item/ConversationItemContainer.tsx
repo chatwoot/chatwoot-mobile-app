@@ -29,6 +29,7 @@ import { tailwind } from '@/theme';
 import { MarkAsRead } from '@/svg-icons';
 import i18n from '@/i18n';
 import { useSplitView } from '@/navigation/split/SplitViewContext';
+import { SelectedRowBackground } from '@/navigation/split/SelectedRowBackground';
 
 type ConversationItemContainerProps = {
   conversationItem: Conversation;
@@ -181,7 +182,9 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       handlePress={onPressAction}
       triggerOverswipeOnFlick
       {...{ index, openedRowIndex }}>
-      <ConversationItem {...viewProps} />
+      <SelectedRowBackground selected={splitView?.selectedConversationId === id}>
+        <ConversationItem {...viewProps} />
+      </SelectedRowBackground>
     </Swipeable>
   );
 });

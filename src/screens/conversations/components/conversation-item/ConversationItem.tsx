@@ -18,6 +18,7 @@ import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
 import { SLA } from '@/types/common/SLA';
+import { useIOSListText } from '@/utils';
 
 export type ConversationItemProps = {
   // Basic info
@@ -83,8 +84,12 @@ export const ConversationItem = memo(
     allLabels,
     typingText,
   }: ConversationItemProps) => {
+    const iosList = useIOSListText();
     return (
-      <NativeView style={tailwind.style('px-3 gap-3 flex-row justify-between')}>
+      <NativeView
+        // 16pt side margins on the iOS list layout (iOS standard), 12pt elsewhere.
+        style={tailwind.style('gap-3 flex-row justify-between', iosList ? 'px-4' : 'px-3')}>
+        {/* Avatar top-aligns with the name (rows vary in height), like Mail. */}
         <NativeView style={tailwind.style('py-3 flex flex-row')}>
           <ConversationSelect {...{ isSelected, currentState }} />
           <ConversationAvatar

@@ -29,6 +29,7 @@ import { useSideToolbar } from '@/context';
 import { HEADER_ICON_COLOR, SideToolbarButton } from '@/components-next/side-toolbar';
 import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { useIsColumnOpen } from '@/navigation/split/columnOpenStore';
 
 type ChatHeaderProps = {
   name: string;
@@ -159,7 +160,9 @@ export const ChatHeader = ({
   // With a secondary column open (contact, actions or a dashboard app), the toolbar is just a
   // back button.
   const splitView = useSplitView();
-  const isContactOpen = !!splitView?.isSecondaryOpen;
+  // Switches as soon as a column starts opening or closing (not after the slide lands).
+  const isColumnOpen = useIsColumnOpen();
+  const isContactOpen = isColumnOpen ?? !!splitView?.isSecondaryOpen;
   const actionsInToolbar =
     useSideToolbar(
       isContactOpen ? (

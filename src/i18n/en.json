@@ -350,6 +350,7 @@
     "HEADER_TITLE": "Settings",
     "SET_AVAILABILITY": "Set yourself as",
     "CHANGE_AVAILABILITY": "Set availability",
+    "AVAILABILITY_ERROR": "Couldn't change your status. Please try again.",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",

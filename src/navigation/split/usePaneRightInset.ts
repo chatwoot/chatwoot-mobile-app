@@ -1,17 +1,7 @@
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { useIsInDetailPane, useSplitView } from './SplitViewContext';
-
 /**
- * In the split view's conversation pane the chat runs to the display edge so bars and
- * their lines are full width; content inside them pads by this much to stay clear of the
- * status bar and side toolbar column. 0 elsewhere (the screen's safe area handles it).
+ * Right padding content in the split view's conversation pane needs to stay clear of the status
+ * bar column. It's 0: the pane is sized to end before that column (SplitView gives that width
+ * to the side column instead), so its content never moves or resizes when a column opens.
+ * Kept as a hook so layouts that size against it stay correct if that changes.
  */
-export const usePaneRightInset = () => {
-  const isInPane = useIsInDetailPane();
-  const isSecondaryOpen = useSplitView()?.isSecondaryOpen ?? false;
-  const { right } = useSafeAreaInsets();
-  // With a secondary column open the conversation sits on the left, away from the edge (the
-  // column pads itself).
-  return isInPane && !isSecondaryOpen ? right : 0;
-};
+export const usePaneRightInset = () => 0;

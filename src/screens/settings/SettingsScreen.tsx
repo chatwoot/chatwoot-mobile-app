@@ -67,6 +67,7 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { showToast } from '@/utils/toastUtils';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
 import { PageHeader } from '@/navigation/split/FullScreenPage';
 import { SwipeBackPage } from '@/navigation/split/SwipeBackPage';
@@ -103,8 +104,12 @@ const SettingsScreen = () => {
   };
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
-  const availabilityStatus =
+  const savedAvailabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
+  // Shown right away when you pick a status, while the change is saved; cleared once it's done
+  // (the saved status then matches) or reverted if it fails.
+  const [pendingAvailability, setPendingAvailability] = useState<AvailabilityStatus | null>(null);
+  const availabilityStatus = pendingAvailability ?? savedAvailabilityStatus;
 
   // const { bottom } = useSafeAreaInsets();
 
@@ -182,9 +187,13 @@ const SettingsScreen = () => {
       to: updatedStatus,
     });
     const payload = { profile: { availability: updatedStatus, account_id: activeAccountId } };
+    setPendingAvailability(updatedStatus as AvailabilityStatus);
     // TODO: Fix this later
     // @ts-expect-error TODO: Fix typing for dispatch
-    dispatch(authActions.updateAvailability(payload));
+    dispatch(authActions.updateAvailability(payload))
+      .unwrap()
+      .catch(() => showToast({ message: i18n.t('SETTINGS.AVAILABILITY_ERROR') }))
+      .finally(() => setPendingAvailability(null));
   };
 
   const onChangeLanguage = (locale: string) => {

@@ -46,6 +46,7 @@ import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 import { useMessageEntrance } from './useMessageEntrance';
 import { BubbleTail } from './BubbleTail';
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 // import { ImageMetadata } from '@/types';
 
@@ -149,6 +150,7 @@ const MessageWrapper = ({
   isOwnMessage = false,
 }: MessageWrapperProps) => {
   const paneRightInset = usePaneRightInset();
+  const isInPane = useIsInDetailPane();
   const containerWidth = useContainerWidth();
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
@@ -169,7 +171,7 @@ const MessageWrapper = ({
   const EMAIL_WIDTH = windowWidth - 56;
   // Text bubbles: 300pt on phones. In the split view's wider conversation pane, up to 80% of
   // the visible width so long messages use the space.
-  const textMaxWidth = paneRightInset
+  const textMaxWidth = isInPane
     ? Math.max(TEXT_MAX_WIDTH, Math.round(windowWidth * 0.8))
     : TEXT_MAX_WIDTH;
 

@@ -40,9 +40,23 @@ const DropdownMenuItem = DropdownMenu.create<React.ComponentProps<typeof Dropdow
   'Item',
 );
 
+// Same trigger without the left margin, for the side toolbar (iPhone Duo).
+const DropdownMenuTriggerPlain = DropdownMenu.create<
+  React.ComponentProps<typeof DropdownMenu.Trigger>
+>(
+  props => (
+    <DropdownMenu.Trigger {...props} asChild>
+      <View aria-role="button">{props.children}</View>
+    </DropdownMenu.Trigger>
+  ),
+  'Trigger',
+);
+
 type ChatDropdownMenuProps = {
   dropdownMenuList: DashboardList[];
   children: React.ReactNode | JSX.Element;
+  // Drops the trigger's left margin, e.g. inside the side toolbar.
+  plainTrigger?: boolean;
 };
 
 export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>) => {
@@ -101,9 +115,10 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
     );
   }
 
+  const Trigger = props.plainTrigger ? DropdownMenuTriggerPlain : DropdownMenuTrigger;
   return (
     <DropdownMenu.Root>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+      <Trigger>{children}</Trigger>
       <DropdownMenu.Content>
         {dropdownMenuList.map(menuOption => {
           const handleOnOptionSelect = () => {

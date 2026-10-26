@@ -24,9 +24,16 @@ export const useSideTabBarLayout = (): SideTabBarLayout | null => {
   if (Platform.OS !== 'ios') return null;
   const sideInset = Math.max(left, right);
   if (sideInset <= top) return null;
-  // Center the capsule in the status bar column when it fits, otherwise keep a small gap.
-  const offset = Math.max(SIDE_TAB_BAR_GAP, (sideInset - SIDE_TAB_BAR_WIDTH) / 2);
-  const contentPadding = Math.max(0, offset + SIDE_TAB_BAR_WIDTH + SIDE_TAB_BAR_GAP - sideInset);
+  // Center the capsule in the status bar column, like the status pill. Only when it doesn't
+  // fit do screens need extra padding beyond the safe area; otherwise they can run to the
+  // display edge (bars and backgrounds full width, content kept clear by the safe area).
+  const fits = SIDE_TAB_BAR_WIDTH + 2 <= sideInset;
+  const offset = fits
+    ? (sideInset - SIDE_TAB_BAR_WIDTH) / 2
+    : Math.max(SIDE_TAB_BAR_GAP, (sideInset - SIDE_TAB_BAR_WIDTH) / 2);
+  const contentPadding = fits
+    ? 0
+    : Math.max(0, offset + SIDE_TAB_BAR_WIDTH + SIDE_TAB_BAR_GAP - sideInset);
   return {
     edge: right >= left ? 'right' : 'left',
     offset,

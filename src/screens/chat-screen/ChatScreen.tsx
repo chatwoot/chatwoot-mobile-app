@@ -52,6 +52,7 @@ export const ChatWindow = (props: ChatScreenProps) => {
 type ChatScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'ChatScreen'>;
 
 const ConversationPagerView = (props: ChatScreenProps) => {
+  const isInDetailPane = useIsInDetailPane();
   const { chatPagerView } = useRefsContext();
   const { setPagerViewIndex } = useChatWindowContext();
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
@@ -63,7 +64,8 @@ const ConversationPagerView = (props: ChatScreenProps) => {
       orientation="horizontal"
       overdrag
       style={tailwind.style('flex-1')}
-      scrollEnabled
+      // In the split view pane actions open as a column instead of a swipe-left page.
+      scrollEnabled={!isInDetailPane}
       initialPage={0}
       onPageSelected={onPageSelected}>
       <ChatWindow {...props} />
@@ -212,7 +214,10 @@ const ChatScreen = (props: ChatScreenProps) => {
   if (conversation) {
     const { messageId } = props.route.params;
     return (
-      <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView
+        // In the split view pane the chat runs to the display edge; its parts pad their content.
+        edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
+        style={tailwind.style('flex-1 bg-white')}>
         {/* In the split view pane, match the list header's top margin so the headers line up. */}
         {isInDetailPane ? <Animated.View style={{ height: paneTopMargin }} /> : null}
         {/* Remount the chat subtree when the conversation or account changes so its
@@ -249,7 +254,10 @@ const ChatScreen = (props: ChatScreenProps) => {
 
   if (conversationError || !conversation) {
     return (
-      <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView
+        // In the split view pane the chat runs to the display edge; its parts pad their content.
+        edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
+        style={tailwind.style('flex-1 bg-white')}>
         <Animated.View
           style={tailwind.style(
             'flex-1 items-center justify-center gap-8 px-4',

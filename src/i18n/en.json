@@ -92,7 +92,10 @@
       "SEARCH": "Search",
       "FILTER": "Filter",
       "CLOSE": "Close",
-      "SELECT_ALL": "Select all"
+      "SELECT_ALL": "Select all",
+      "MORE": "More",
+      "BACK_TO_MESSAGES": "Back to messages",
+      "BACK": "Back"
     },
     "SPLIT_VIEW": {
       "EMPTY": "Select a conversation to view it here"

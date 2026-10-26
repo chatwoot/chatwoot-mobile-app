@@ -25,6 +25,7 @@ import { Message } from '@/types';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectUserId } from '@/store/auth/authSelectors';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 
 type DateSeparator = { date: string; type: 'date' };
 type MessageOrDate = Message | DateSeparator;
@@ -72,6 +73,7 @@ const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
 
 export const MessagesListContainer = () => {
+  const paneRightInset = usePaneRightInset();
   const [appState, setAppState] = useState(AppState.currentState);
   const { conversationId, messageId, scrollToMessageId, setScrollToMessageId } =
     useChatWindowContext();
@@ -318,7 +320,13 @@ export const MessagesListContainer = () => {
     <PlatformSpecificKeyboardWrapperComponent
       style={tailwind.style('flex-1 bg-white')}
       interpolator="linear">
-      <View style={[tailwind.style('flex-1'), !isListVisible && messageId ? { opacity: 0 } : {}]}>
+      <View
+        style={[
+          tailwind.style('flex-1'),
+          // Split view pane: keep messages clear of the status bar column.
+          { paddingRight: paneRightInset },
+          !isListVisible && messageId ? { opacity: 0 } : {},
+        ]}>
         <MessagesList
           // Key forces remount when messageId changes, ensuring correct scroll position
           key={messageId ? `search-${messageId}` : 'normal-chat'}

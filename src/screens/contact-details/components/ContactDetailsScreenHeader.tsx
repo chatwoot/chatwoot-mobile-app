@@ -7,6 +7,8 @@ import { Icon, Avatar } from '@/components-next/common';
 import { CloseIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { expandTabs } from '@/utils/expandTabs';
+import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
+import { useSideTabBarLayout } from '@/utils';
 
 type ContactDetailsScreenHeaderProps = {
   name: string;
@@ -16,11 +18,39 @@ type ContactDetailsScreenHeaderProps = {
 
 export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProps) => {
   const navigation = useNavigation();
+  const isInContactPane = useIsInContactPane();
+  const sideTabBar = useSideTabBarLayout();
 
   const { name, thumbnail, bio } = props;
   const handleBackPress = () => {
     navigation.dispatch(StackActions.pop());
   };
+
+  // Split view column: no title bar; the centered profile starts at the same top margin as
+  // the other panes' headers. No close button or divider (the side toolbar's back button
+  // closes the column).
+  if (isInContactPane) {
+    return (
+      <Animated.View style={{ paddingTop: sideTabBar?.contentTopPadding ?? 0 }}>
+        <Animated.View style={tailwind.style('items-center px-4 pt-1')}>
+          <Avatar size="4xl" src={thumbnail ? { uri: thumbnail } : undefined} name={name} />
+          <Animated.View style={tailwind.style('flex flex-col items-center gap-1 pt-3')}>
+            <Animated.Text style={tailwind.style('text-[21px] font-inter-580-24 text-gray-950')}>
+              {name}
+            </Animated.Text>
+            {bio ? (
+              <Animated.Text
+                style={tailwind.style(
+                  'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900 text-center',
+                )}>
+                {expandTabs(bio)}
+              </Animated.Text>
+            ) : null}
+          </Animated.View>
+        </Animated.View>
+      </Animated.View>
+    );
+  }
 
   return (
     <Animated.View

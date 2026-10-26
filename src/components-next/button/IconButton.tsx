@@ -15,9 +15,9 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const getButtonStyles = (isPrimary: boolean, pressed: boolean) => {
+const getButtonStyles = (isPrimary: boolean, pressed: boolean, secondaryBackground?: string) => {
   const baseStyles = 'py-[11px] flex-row items-center justify-center rounded-[13px] gap-4';
-  const variantStyles = isPrimary ? 'bg-blue-800' : 'bg-gray-50';
+  const variantStyles = isPrimary ? 'bg-blue-800' : (secondaryBackground ?? 'bg-gray-50');
   const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100' : '';
 
   return tailwind.style(baseStyles, variantStyles, pressedStyles);
@@ -42,7 +42,13 @@ export const IconButton = ({
   handlePress,
   variant = 'primary',
   disabled = false,
-}: ButtonProps) => {
+  icon,
+  secondaryBackground,
+}: ButtonProps & {
+  icon?: React.ReactElement;
+  // Background for the secondary variant, e.g. white on a gray page.
+  secondaryBackground?: string;
+}) => {
   const { handlers, animatedStyle } = useScaleAnimation();
   const haptic = useHaptic(isDestructive ? 'medium' : 'selection');
 
@@ -63,10 +69,11 @@ export const IconButton = ({
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed)}
+        style={({ pressed }) => getButtonStyles(isPrimary, pressed, secondaryBackground)}
         {...handlers}>
+        {/* Defaults to the phone icon (its original use, Call); pass one for other actions. */}
         <Icon
-          icon={<PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />}
+          icon={icon ?? <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />}
           size={24}
         />
         <Animated.Text style={getTextStyles(isPrimary, isDestructive)}>{text}</Animated.Text>

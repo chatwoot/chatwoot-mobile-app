@@ -11,13 +11,24 @@ import { CloseIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { User } from '@/types/User';
+import { PaneHeader } from '@/navigation/split/PaneHeader';
 
-const DashboardScreen = () => {
+type DashboardScreenProps = {
+  // Set when shown in the split view's secondary column (iPhone Duo) instead of as a screen.
+  paneParams?: {
+    conversation: Conversation;
+    currentUser: User;
+    title?: string;
+    url: string;
+  };
+};
+
+const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {
   const route = useRoute();
   const navigation = useNavigation();
   const webviewRef = useRef<WebView>(null);
 
-  const { conversation, currentUser, title, url } = route.params as {
+  const { conversation, currentUser, title, url } = (paneParams ?? route.params) as {
     conversation: Conversation;
     currentUser: User;
     title: string;
@@ -52,9 +63,11 @@ const DashboardScreen = () => {
 
   return (
     <Animated.View style={tailwind.style('flex-1')}>
+      {paneParams ? <PaneHeader title={title ?? ''} /> : null}
       <Animated.View
         style={tailwind.style(
           'flex flex-row items-center justify-between px-4 border-b-[1px] border-b-blackA-A3 py-[12px] bg-white',
+          paneParams ? 'hidden' : '',
         )}>
         <Pressable hitSlop={16} onPress={handleBackPress}>
           <Animated.View>

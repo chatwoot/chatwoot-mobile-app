@@ -96,6 +96,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
         'flex-1 border-b-[1px]',
         isRowSelected ? 'border-b-transparent' : 'border-b-blackA-A3',
         'gap-1 py-3',
+        iosText ? 'pr-2.5' : '',
       )}>
       <AnimatedNativeView
         style={tailwind.style(
@@ -152,6 +153,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
             <AnimatedNativeView style={tailwind.style('flex flex-row flex-1 gap-2 items-center')}>
               {hasSLA && appliedSla && (
                 <SLAIndicator
+                  conversationId={conversationId}
                   slaPolicyId={slaPolicyId}
                   appliedSla={appliedSla}
                   appliedSlaConversationDetails={

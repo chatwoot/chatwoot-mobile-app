@@ -133,11 +133,25 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   };
 
   const handleNavigationToContactDetails = () => {
+    // Split view: push contact details as a column on the right instead of a sheet.
+    if (isInDetailPane && splitView) {
+      splitView.openContact();
+      return;
+    }
     const navigateToScreen = StackActions.push('ContactDetails', { conversationId });
     navigation.dispatch(navigateToScreen);
   };
 
   const handleNavigation = (url?: string, title?: string) => {
+    // Split view: dashboard apps and conversation actions open as a column on the right.
+    if (isInDetailPane && splitView) {
+      if (url) {
+        splitView.openDashboard({ url, title, conversation, currentUser });
+      } else {
+        splitView.openActions();
+      }
+      return;
+    }
     if (url) {
       const navigateToScreen = StackActions.push('Dashboard', {
         url,
@@ -212,10 +226,12 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       slaType={slaType}
       slaEvents={slaEvents}
       statusText={slaStatusText()}
+      slaTime={slaStatus?.threshold}
       // In the split view's conversation pane, back closes the conversation.
       onBackPress={isInDetailPane && splitView ? splitView.closeConversation : handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
+      onOpenActions={isInDetailPane && splitView ? splitView.openActions : undefined}
     />
   );
 };

@@ -35,6 +35,7 @@ import { getContactCustomAttributes } from '@/store/custom-attribute/customAttri
 import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectContactLabelsByContactId } from '@/store/contact/contactLabelSlice';
 import i18n from '@/i18n';
+import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
 
 type ContactDetailsScreenProps = NativeStackScreenProps<
   TabBarExcludedScreenParamList,
@@ -117,6 +118,7 @@ const processContactAttributes = (
 };
 
 const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
+  const isInContactPane = useIsInContactPane();
   const { conversationId, contactId: routeContactId } = props.route.params;
   const dispatch = useAppDispatch();
 
@@ -224,7 +226,10 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   return (
     <View
       style={tailwind.style(
-        `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
+        // In the split view column the pane header provides the top spacing.
+        isInContactPane
+          ? 'flex-1'
+          : `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
       )}>
       <ContactDetailsScreenHeader
         name={name || contactName || ''}
@@ -239,16 +244,16 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
             <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
           </Animated.View>
         ) : null}
-        <Animated.View style={tailwind.style('pt-10')}>
+        <Animated.View style={tailwind.style(isInContactPane ? 'pt-8' : 'pt-10')}>
           <AttributeList list={allDetails as AttributeListType[]} />
         </Animated.View>
         {hasContactCustomAttributes && (
-          <Animated.View style={tailwind.style('pt-10')}>
+          <Animated.View style={tailwind.style(isInContactPane ? 'pt-8' : 'pt-10')}>
             <ContactMetaInformation attributes={usedContactCustomAttributes} />
           </Animated.View>
         )}
         {contactId ? (
-          <Animated.View style={tailwind.style('pt-10')}>
+          <Animated.View style={tailwind.style(isInContactPane ? 'pt-8' : 'pt-10')}>
             <ContactLabelActions labels={contactLabels} contactId={contactId} />
           </Animated.View>
         ) : null}

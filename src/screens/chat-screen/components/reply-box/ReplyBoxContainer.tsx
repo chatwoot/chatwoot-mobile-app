@@ -88,6 +88,7 @@ import {
 } from '@/store/copilot/copilotSlice';
 import { executeCopilotAction, sendCopilotFollowUp } from '@/store/copilot/copilotActions';
 import type { CopilotActionKey } from '@/types/Copilot';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -101,6 +102,7 @@ const SHEET_APPEAR_SPRING_CONFIG = {
 
 const AnimatedKeyboardStickyView = Animated.createAnimatedComponent(KeyboardStickyView);
 const BottomSheetContent = () => {
+  const paneRightInset = usePaneRightInset();
   const hapticSelection = useHaptic();
   const dispatch = useAppDispatch();
   const { bottom } = useSafeAreaInsets();
@@ -523,9 +525,13 @@ const BottomSheetContent = () => {
             ? undefined
             : LinearTransition.springify().mass(1).damping(29).stiffness(140)
         }
-        style={tailwind.style(
-          `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
-        )}>
+        style={[
+          tailwind.style(
+            `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
+          ),
+          // Split view pane: the top line runs to the display edge, the content keeps clear.
+          { paddingRight: paneRightInset },
+        ]}>
         {quoteMessage && !isPrivate && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
             <QuoteReply />

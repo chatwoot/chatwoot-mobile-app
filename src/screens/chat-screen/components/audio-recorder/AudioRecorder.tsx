@@ -22,6 +22,7 @@ import {
 } from '@/store/conversation/localRecordedAudioCacheSlice';
 import { convertAacToWav } from '@/utils/audioConverter';
 import type { AttachmentFile } from '@/store/conversation/conversationTypes';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 
 const ARPlayer = new AudioRecorderPlayer();
 
@@ -65,7 +66,7 @@ export const AudioRecorder = ({
   onRecordingComplete: (audioFile: AttachmentFile) => void;
   audioFormat: 'audio/m4a' | 'audio/wav';
 }) => {
-  const RecorderSegmentWidth = useContainerWidth() - 8 - 80 - 12;
+  const RecorderSegmentWidth = useContainerWidth() - usePaneRightInset() - 8 - 80 - 12;
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();
   const [isSending, setIsSending] = useState(false);

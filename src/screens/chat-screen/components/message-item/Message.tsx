@@ -45,6 +45,7 @@ import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 import { useMessageEntrance } from './useMessageEntrance';
 import { BubbleTail } from './BubbleTail';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 
 // import { ImageMetadata } from '@/types';
 
@@ -140,6 +141,7 @@ const MessageWrapper = ({
   onRetry,
   canSendPublicReply,
 }: MessageWrapperProps) => {
+  const paneRightInset = usePaneRightInset();
   const containerWidth = useContainerWidth();
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
@@ -155,9 +157,14 @@ const MessageWrapper = ({
     return map[orientation];
   };
 
-  const windowWidth = containerWidth;
+  const windowWidth = containerWidth - paneRightInset;
   // 56 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (8)
   const EMAIL_WIDTH = windowWidth - 56;
+  // Text bubbles: 300pt on phones. In the split view's wider conversation pane, up to 80% of
+  // the visible width so long messages use the space.
+  const textMaxWidth = paneRightInset
+    ? Math.max(TEXT_MAX_WIDTH, Math.round(windowWidth * 0.8))
+    : TEXT_MAX_WIDTH;
 
   // Only the search-target row animates, so only it needs an Animated.View.
   const BubbleContainer = isTargetMessage ? Animated.View : View;
@@ -187,7 +194,7 @@ const MessageWrapper = ({
             <View
               style={tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
+                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${textMaxWidth}px]`}`,
                 variantBaseMap[variant],
                 variantBorderMap[variant],
                 shouldGroupWithNext && shouldGroupWithPrevious

@@ -55,7 +55,11 @@ export const InboxItemComponent = (props: InboxItemProps) => {
       style={tailwind.style(
         // Same 16pt side and 12pt vertical padding as Conversations rows on the iOS list layout.
         'py-3 border-b-[1px]',
-        iosText ? 'ml-4 pr-4' : 'ml-3 pr-4',
+        // iOS list layout: the divider ends where the selection highlight ends (6pt from the
+        // edge); 10pt inner padding keeps the content at the 16pt margin. Read rows fade with
+        // opacity rather than a white overlay, so the highlight behind stays one even color.
+        iosText ? 'ml-4 mr-1.5 pr-2.5' : 'ml-3 pr-4',
+        iosText && isRead ? 'opacity-50' : '',
         isRowSelected ? 'border-b-transparent' : 'border-b-blackA-A3',
       )}>
       <Animated.View style={tailwind.style('')}>
@@ -140,7 +144,7 @@ export const InboxItemComponent = (props: InboxItemProps) => {
           <NotificationTypeIndicator type={notificationType} />
         </Animated.View>
       </Animated.View>
-      {isRead && (
+      {isRead && !iosText && (
         <Animated.View style={tailwind.style('absolute bg-white opacity-50 inset-0 z-20')} />
       )}
     </Animated.View>

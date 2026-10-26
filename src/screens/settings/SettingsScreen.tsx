@@ -44,7 +44,7 @@ import { useRefsContext } from '@/context';
 import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
-import { useHaptic, useIsSplitLayout, useSideTabBarLayout, useTabBarHeight } from '@/utils';
+import { useHaptic, useIsSplitLayout, useTabBarHeight } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
 import {
@@ -67,6 +67,7 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { PaneHeader } from '@/navigation/split/PaneHeader';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -80,7 +81,6 @@ type SettingsPane = 'availability' | 'notifications' | 'language' | 'account';
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const isSplit = useIsSplitLayout();
-  const sideTabBar = useSideTabBarLayout();
   const { width } = useWindowDimensions();
   // The first item is selected by default so the detail pane is never empty.
   const [pane, setPane] = useState<SettingsPane>('availability');
@@ -402,20 +402,7 @@ const SettingsScreen = () => {
       {/* Detail pane like iPad Settings: light gray background (as the other panes) with
           the options in a white rounded card, and no divider under the header. */}
       <SafeAreaView edges={['top', 'right', 'bottom']} style={tailwind.style('flex-1 bg-gray-50')}>
-        <View style={{ paddingTop: sideTabBar?.contentTopPadding ?? 0 }}>
-          <View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
-            <View style={tailwind.style('w-24 h-9')} />
-            <Text
-              numberOfLines={1}
-              accessibilityRole="header"
-              style={tailwind.style(
-                'flex-1 text-[17px] text-center leading-[22px] font-inter-medium-24 text-gray-950',
-              )}>
-              {paneTitle}
-            </Text>
-            <View style={tailwind.style('w-24 h-9')} />
-          </View>
-        </View>
+        <PaneHeader title={paneTitle} />
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>

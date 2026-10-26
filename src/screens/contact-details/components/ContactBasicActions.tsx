@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Icon, IconButton } from '@/components-next';
@@ -9,6 +9,8 @@ import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import i18n from '@/i18n';
 import { openNumber, openEmail } from '@/utils/urlUtils';
+import { useContainerWidth } from '@/context';
+import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
 
 type ContactOption = {
   contactType: 'call' | 'email';
@@ -20,10 +22,10 @@ type ContactOptionProps = {
   handleOptionPress?: () => void;
 };
 
-const SCREEN_WIDTH = Dimensions.get('screen').width;
-const OPTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 2;
-
 const ContactOptionComponent = (props: ContactOptionProps) => {
+  const isInContactPane = useIsInContactPane();
+  // Sized to the container (e.g. the split view's contact column), not the whole screen.
+  const OPTION_WIDTH = (useContainerWidth() - 32 - 12 * 3) / 2;
   const { option, handleOptionPress } = props;
 
   const { handlers, animatedStyle } = useScaleAnimation();
@@ -39,7 +41,9 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
       <Pressable
         style={({ pressed }) => [
           tailwind.style(
-            'flex items-center justify-center flex-1 rounded-xl bg-gray-50 py-3',
+            'flex items-center justify-center flex-1 rounded-xl py-3',
+            // White on the split view column's gray background, light gray elsewhere.
+            isInContactPane ? 'bg-white' : 'bg-gray-50',
             `w-[${OPTION_WIDTH}px]`,
             pressed ? 'bg-gray-100' : '',
           ),
@@ -65,6 +69,7 @@ type ContactBasicActionsProps = {
 };
 
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
+  const isInContactPane = useIsInContactPane();
   const { phoneNumber, email } = props;
 
   const onCallPress = () => {
@@ -113,6 +118,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
       <IconButton
         text={i18n.t('CONTACT_DETAILS.CALL')}
         variant="secondary"
+        secondaryBackground={isInContactPane ? 'bg-white' : undefined}
         handlePress={onCallPress}
       />
     );
@@ -123,7 +129,9 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
       <IconButton
         text={i18n.t('CONTACT_DETAILS.EMAIL')}
         variant="secondary"
+        secondaryBackground={isInContactPane ? 'bg-white' : undefined}
         handlePress={onEmailPress}
+        icon={<MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />}
       />
     );
   }

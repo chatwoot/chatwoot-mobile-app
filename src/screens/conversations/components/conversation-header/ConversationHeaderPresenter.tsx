@@ -19,7 +19,7 @@ import { useSideToolbar } from '@/context';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
-import { useIsSplitLayout, useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useIsSplitLayout, useScaleAnimation } from '@/utils';
 import { useHeaderAnimation } from '@/hooks/useHeaderAnimation';
 import { ConversationFilterMenu } from '../conversation-filters/ConversationFilterMenu';
 
@@ -268,9 +268,9 @@ export const ConversationHeaderPresenter = ({
     !isSplit,
   );
 
-  if (isSideLayout && isSplit) {
-    // Split view (WhatsApp style): small centered title with round glass buttons on
-    // each side, above the list they act on.
+  if (isSplit || (IOS_DESIGN && !isSideLayout)) {
+    // Split view and iPhone: small centered title with round glass buttons on each side,
+    // above the list they act on.
     return (
       <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
         <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
@@ -311,7 +311,6 @@ export const ConversationHeaderPresenter = ({
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
             />
           ) : (
-            // Native filter menu (iOS pull-down) instead of the filter mode.
             // Native filter menu (iOS pull-down) instead of the filter mode.
             <ConversationFilterMenu>
               <GlassCircleButton

@@ -7,6 +7,7 @@ import { Agent, ConversationPriority, Team } from '@/types';
 import AssigneePanel from './AssigneePanel';
 import TeamPanel from './TeamPanel';
 import PriorityPanel from './PriorityPanel';
+import { IOS_DESIGN } from '@/utils';
 import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 type ConversationSettingsPanelProps = {
@@ -26,7 +27,8 @@ export const ConversationSettingsPanel = ({
   onChangeTeamAssignee,
   onChangePriority,
 }: ConversationSettingsPanelProps) => {
-  const isInPane = useIsInDetailPane();
+  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   return (
     <Animated.View
       // Flat (no shadow) on the split view pane's gray page, like iOS Settings.

@@ -8,7 +8,7 @@ import Animated, {
 
 import { useConversationListStateContext } from '@/context';
 import { tailwind } from '@/theme';
-import { useHaptic, useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useHaptic, useSideTabBarLayout } from '@/utils';
 import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
 import { selectUserId } from '@/store/auth/authSelectors';
 import {
@@ -126,9 +126,9 @@ export const ConversationHeader = () => {
   return (
     <Animated.View
       style={[
-        // With tabs on the side the header floats over the list and the scroll edge
-        // effect separates it, so it has no background or divider of its own.
-        sideTabBar
+        // On iOS (and with tabs on the side) the header floats over the list and the scroll
+        // edge effect separates it, so it has no background or divider of its own.
+        IOS_DESIGN || sideTabBar
           ? tailwind.style('z-10')
           : [tailwind.style('border-b-[1px] bg-white z-10'), headerBorderAnimation],
         // Keep header controls out of the rounded corner when the status bar is on the side.

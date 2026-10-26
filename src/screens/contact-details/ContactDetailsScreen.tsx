@@ -1,3 +1,5 @@
+import { FullScreenPage } from '@/navigation/split/FullScreenPage';
+import { IOS_DESIGN } from '@/utils';
 import React, { useEffect } from 'react';
 import { View, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -223,11 +225,11 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const allDetails = [...userDetails, ...socialMediaDetails];
 
-  return (
+  const content = (
     <View
       style={tailwind.style(
         // In the split view column the pane header provides the top spacing.
-        isInContactPane
+        isInContactPane || IOS_DESIGN
           ? 'flex-1'
           : `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
       )}>
@@ -244,22 +246,27 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
             <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
           </Animated.View>
         ) : null}
-        <Animated.View style={tailwind.style(isInContactPane ? 'pt-8' : 'pt-10')}>
+        <Animated.View style={tailwind.style(isInContactPane || IOS_DESIGN ? 'pt-8' : 'pt-10')}>
           <AttributeList list={allDetails as AttributeListType[]} />
         </Animated.View>
         {hasContactCustomAttributes && (
-          <Animated.View style={tailwind.style(isInContactPane ? 'pt-8' : 'pt-10')}>
+          <Animated.View style={tailwind.style(isInContactPane || IOS_DESIGN ? 'pt-8' : 'pt-10')}>
             <ContactMetaInformation attributes={usedContactCustomAttributes} />
           </Animated.View>
         )}
         {contactId ? (
-          <Animated.View style={tailwind.style(isInContactPane ? 'pt-8' : 'pt-10')}>
+          <Animated.View style={tailwind.style(isInContactPane || IOS_DESIGN ? 'pt-8' : 'pt-10')}>
             <ContactLabelActions labels={contactLabels} contactId={contactId} />
           </Animated.View>
         ) : null}
       </Animated.ScrollView>
     </View>
   );
+  // iOS: a full-screen page (like the split view's contact column) instead of a sheet.
+  if (IOS_DESIGN && !isInContactPane) {
+    return <FullScreenPage background="bg-gray-50">{content}</FullScreenPage>;
+  }
+  return content;
 };
 
 export default ContactDetailsScreen;

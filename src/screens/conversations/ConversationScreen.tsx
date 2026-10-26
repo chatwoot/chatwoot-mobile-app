@@ -56,7 +56,7 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
-import { useTabBarHeight, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useTabBarHeight, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // The screen list thats need to be checked for refreshing the conversations list
@@ -328,7 +328,9 @@ const ConversationList = ({
 const ConversationScreen = () => {
   const isSplit = useIsSplitLayout();
   const [headerHeight, setHeaderHeight] = useState(0);
-  const isSideLayout = useSideTabBarLayout() !== null;
+  // The header floats over the list on iOS (and with tabs on the side).
+  const sideTabBar = useSideTabBarLayout();
+  const hasOverlayHeader = IOS_DESIGN || sideTabBar !== null;
   const scrollEdge = useScrollEdge();
   const filters = useAppSelector(selectFilters);
   const currentBottomSheet = useAppSelector(selectBottomSheetState);
@@ -373,8 +375,8 @@ const ConversationScreen = () => {
           barStyle={'dark-content'}
         />
         <ConversationListStateProvider>
-          {isSideLayout ? (
-            // Header floats over the list with a scroll edge effect (iPhone Duo).
+          {hasOverlayHeader ? (
+            // Header floats over the list with a scroll edge effect (Apple HIG, Scroll views).
             <>
               <Animated.View style={tailwind.style('flex-1')}>
                 {/* Wait for the header's height so the list opens at the right offset. */}

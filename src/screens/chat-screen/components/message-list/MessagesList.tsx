@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import Animated, { interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
@@ -7,6 +7,7 @@ import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
 import { useRefsContext } from '@/context';
+import { MESSAGE_TYPES } from '@/constants';
 
 export type FlashListRenderProps = {
   item: { date: string } | Message;
@@ -60,6 +61,25 @@ export const MessagesList = ({
   const typedMessageListRef = messageListRef as React.RefObject<
     FlashListRef<Message | { date: string }>
   >;
+
+  // FlashList keeps the visible messages in place when new ones are added, so a message you
+  // just sent would land below the view. When the newest message is one you sent, scroll to
+  // it once it's in the list.
+  const newest = messages[0];
+  const newestId = newest && !('date' in newest) ? newest.id : null;
+  const lastNewestId = useRef(newestId);
+  useEffect(() => {
+    if (newestId === lastNewestId.current) return;
+    const isFirstLoad = lastNewestId.current === null;
+    lastNewestId.current = newestId;
+    if (isFirstLoad || !newest || 'date' in newest) return;
+    const senderId = newest.sender?.id ?? newest.senderId;
+    if (newest.messageType !== MESSAGE_TYPES.OUTGOING || senderId !== currentUserId) return;
+    const frame = requestAnimationFrame(() => {
+      typedMessageListRef.current?.scrollToOffset({ offset: 0, animated: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [newestId, newest, currentUserId, typedMessageListRef]);
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
     if ('date' in item) {

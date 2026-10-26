@@ -17,7 +17,16 @@ export type SideTabBarLayout = {
   // With the status bar on the side the top inset is 0, so tab screen headers add this
   // margin to keep their controls out of the rounded display corner.
   contentTopPadding: number;
+  // Capsule width, round button size and icon scale. Larger when the Duo is closed (no split
+  // view), where the screen is phone sized and the buttons are the main controls.
+  width: number;
+  buttonSize: number;
+  iconScale: number;
 };
+
+// Narrowest width that gets the list + conversation split view.
+const SPLIT_VIEW_MIN_WIDTH = 600;
+const SIDE_TAB_BAR_WIDTH_COMPACT = 48;
 
 // On iPhone Duo the system moves the status bar to a side of the display and places
 // tab bars on that same side (Apple HIG, "Designing for iPhone Duo"). Follow the
@@ -25,6 +34,7 @@ export type SideTabBarLayout = {
 // capsule. Returns null when tabs should stay at the bottom.
 export const useSideTabBarLayout = (): SideTabBarLayout | null => {
   const { top, left, right } = useSafeAreaInsets();
+  const { width: windowWidth } = useWindowDimensions();
   const layoutMargin = 20;
   if (Platform.OS !== 'ios') return null;
   const sideInset = Math.max(left, right);
@@ -32,23 +42,30 @@ export const useSideTabBarLayout = (): SideTabBarLayout | null => {
   // Center the capsule in the status bar column, like the status pill. Only when it doesn't
   // fit do screens need extra padding beyond the safe area; otherwise they can run to the
   // display edge (bars and backgrounds full width, content kept clear by the safe area).
-  const fits = SIDE_TAB_BAR_WIDTH + 2 * SIDE_STATUS_COLUMN_SHIFT + 2 <= sideInset;
+  const isCompact = windowWidth - left - right < SPLIT_VIEW_MIN_WIDTH;
+  const width = isCompact ? SIDE_TAB_BAR_WIDTH_COMPACT : SIDE_TAB_BAR_WIDTH;
+  const fits = width + 2 * SIDE_STATUS_COLUMN_SHIFT + 2 <= sideInset;
   const offset = fits
-    ? (sideInset - SIDE_TAB_BAR_WIDTH) / 2 + SIDE_STATUS_COLUMN_SHIFT
-    : Math.max(SIDE_TAB_BAR_GAP, (sideInset - SIDE_TAB_BAR_WIDTH) / 2);
-  const contentPadding = fits
-    ? 0
-    : Math.max(0, offset + SIDE_TAB_BAR_WIDTH + SIDE_TAB_BAR_GAP - sideInset);
+    ? (sideInset - width) / 2 + SIDE_STATUS_COLUMN_SHIFT
+    : Math.max(SIDE_TAB_BAR_GAP, (sideInset - width) / 2);
+  const contentPadding = fits ? 0 : Math.max(0, offset + width + SIDE_TAB_BAR_GAP - sideInset);
   return {
     edge: right >= left ? 'right' : 'left',
     offset,
     contentPadding,
     contentTopPadding: Math.max(0, layoutMargin - top),
+    width,
+    buttonSize: width - 6,
+    iconScale: isCompact ? 1.17 : 1,
   };
 };
 
-// Narrowest width that gets the list + conversation split view.
-const SPLIT_VIEW_MIN_WIDTH = 600;
+// The iOS design (glass header buttons, native menus, iOS list text, Messages-style reply
+// bar, iOS Settings-style pages) applies on every iPhone. Layout that depends on where the
+// tabs are (side tab bar, split view, columns) is decided separately by
+// useSideTabBarLayout / useIsSplitLayout.
+export const IOS_DESIGN = Platform.OS === 'ios';
+export const useIOSDesign = () => IOS_DESIGN;
 
 // Show the list and the open conversation side by side, like Mail or WhatsApp on the
 // open iPhone Duo (Apple HIG: split views expand on the inner display and collapse to a

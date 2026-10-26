@@ -11,6 +11,7 @@ import { Icon } from '@/components-next/common';
 import { showToast } from '@/utils/toastUtils';
 import { formatAttributeValue } from '@/utils/attributeUtils';
 import { expandTabs } from '@/utils/expandTabs';
+import { IOS_DESIGN } from '@/utils';
 import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 type AttributeItemProps = {
@@ -102,7 +103,8 @@ type AttributeListProps = {
   list: AttributeListType[];
 };
 export const AttributeList = (props: AttributeListProps) => {
-  const isInPane = useIsInDetailPane();
+  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { list, sectionTitle } = props;
 
   return (

@@ -7,7 +7,7 @@ import { tailwind } from '@/theme';
 import type { Channel } from '@/types';
 import type { Conversation } from '@/types/Conversation';
 import { HighlightedText } from '../shared/HighlightedText';
-import { useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, IOS_LIST_TEXT, useScaleAnimation } from '@/utils';
 import { getChannelIcon } from '@/utils/getChannelIcon';
 import { LastActivityTime } from '@/screens/conversations/components/conversation-item/LastActivityTime';
 import { ConversationId } from '@/screens/conversations/components/conversation-item/ConversationId';
@@ -52,6 +52,81 @@ export const SearchResultConversationItem = ({
   ].filter(item => item.show);
 
   const { animatedStyle, handlers } = useScaleAnimation();
+
+  if (IOS_DESIGN) {
+    // iOS list row: the contact as a 17pt title with the time, then the subject and email
+    // in 15pt, and the id and inbox in a footnote. Hairline divider inset from the text.
+    return (
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => tailwind.style('pl-4', pressed && 'bg-gray-100')}>
+        <Animated.View
+          style={tailwind.style(
+            'py-3 pr-4 gap-0.5',
+            !isLast && 'border-b-[0.5px] border-b-blackA-A6',
+          )}>
+          <Animated.View style={tailwind.style('flex-row items-center gap-2')}>
+            <Animated.View style={tailwind.style('flex-1')}>
+              {contactName ? (
+                <HighlightedText
+                  text={contactName}
+                  searchQuery={searchQuery}
+                  style={tailwind.style(
+                    'text-gray-950',
+                    IOS_LIST_TEXT.title,
+                    IOS_LIST_TEXT.readTitle,
+                  )}
+                  numberOfLines={1}
+                />
+              ) : (
+                <ConversationId id={conversation.id} />
+              )}
+            </Animated.View>
+            {createdAt && <LastActivityTime timestamp={createdAt} />}
+          </Animated.View>
+          {emailSubject ? (
+            <HighlightedText
+              text={emailSubject}
+              searchQuery={searchQuery}
+              style={tailwind.style('font-inter-normal-20 text-gray-950', IOS_LIST_TEXT.body)}
+              numberOfLines={1}
+            />
+          ) : null}
+          {contactEmail ? (
+            <HighlightedText
+              text={contactEmail}
+              searchQuery={searchQuery}
+              style={tailwind.style('font-inter-normal-20 text-gray-700', IOS_LIST_TEXT.body)}
+              numberOfLines={1}
+            />
+          ) : null}
+          <Animated.View style={tailwind.style('flex-row items-center gap-1.5 mt-0.5')}>
+            {contactName ? <ConversationId id={conversation.id} /> : null}
+            {inboxName ? (
+              <>
+                {inbox && channelType && (
+                  <Animated.View
+                    style={tailwind.style(
+                      'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
+                    )}>
+                    <Icon icon={getChannelIcon(channelType, medium, additionalType)} size={10} />
+                  </Animated.View>
+                )}
+                <Animated.Text
+                  numberOfLines={1}
+                  style={tailwind.style(
+                    'font-inter-normal-20 text-gray-700 flex-shrink',
+                    IOS_LIST_TEXT.footnote,
+                  )}>
+                  {inboxName}
+                </Animated.Text>
+              </>
+            ) : null}
+          </Animated.View>
+        </Animated.View>
+      </Pressable>
+    );
+  }
 
   return (
     <Pressable

@@ -13,6 +13,7 @@ import { filterLabels } from '@/store/label/labelSelectors';
 
 import { LabelItem } from '../LabelItem';
 import { LabelStack } from './LabelStack';
+import { IOS_DESIGN } from '@/utils';
 import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 interface LabelActionsProps {
@@ -25,7 +26,8 @@ interface LabelActionsProps {
 }
 
 export const LabelActions = (props: LabelActionsProps) => {
-  const isInPane = useIsInDetailPane();
+  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { labels, onLabelsUpdate, sheetRef, titleText, addLabelText, searchPlaceholderText } =
     props;
   const [searchTerm, setSearchTerm] = useState('');

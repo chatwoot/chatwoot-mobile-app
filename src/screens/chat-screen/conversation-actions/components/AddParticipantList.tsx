@@ -12,6 +12,7 @@ import { conversationParticipantActions } from '@/store/conversation-participant
 import { showToast } from '@/utils/toastUtils';
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
+import { IOS_DESIGN } from '@/utils';
 import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 type ListItemProps = {
@@ -85,7 +86,8 @@ type AddParticipantListProps = {
 };
 
 export const AddParticipantList = (props: AddParticipantListProps) => {
-  const isInPane = useIsInDetailPane();
+  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { conversationParticipants, onAddParticipant, conversationId } = props;
   const dispatch = useAppDispatch();
   const isRemovingParticipantRef = useRef(false);

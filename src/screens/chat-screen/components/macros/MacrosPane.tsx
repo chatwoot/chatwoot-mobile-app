@@ -12,6 +12,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
+import { PageHeader } from '@/navigation/split/FullScreenPage';
 import { SplitEmptyState } from '@/navigation/split/SplitEmptyState';
 import { useSplitView } from '@/navigation/split/SplitViewContext';
 import { macroActions } from '@/store/macro/macroActions';
@@ -140,7 +141,14 @@ const MacroSteps = ({ macro, conversationId }: { macro: Macro; conversationId: n
   );
 };
 
-export const MacrosPane = ({ conversationId }: { conversationId: number }) => {
+export const MacrosPane = ({
+  conversationId,
+  onClose,
+}: {
+  conversationId: number;
+  // Full-screen page (iPhone, closed Duo): closes the page; the list gets a Back button.
+  onClose?: () => void;
+}) => {
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
   const splitView = useSplitView();
@@ -157,7 +165,8 @@ export const MacrosPane = ({ conversationId }: { conversationId: number }) => {
         macroActions.executeMacro({ macroId: macro.id, conversationIds: [conversationId] }),
       ).unwrap();
       showToast({ message: i18n.t('MACRO.EXECUTION_SUCCESS') });
-      splitView?.closeSecondary();
+      if (onClose) onClose();
+      else splitView?.closeSecondary();
     } catch {
       showToast({ message: i18n.t('MACRO.EXECUTION_ERROR') });
     } finally {
@@ -185,6 +194,8 @@ export const MacrosPane = ({ conversationId }: { conversationId: number }) => {
             />
           }
         />
+      ) : onClose ? (
+        <PageHeader title={i18n.t('MACRO.TITLE')} onBack={onClose} />
       ) : (
         <PaneHeader title={i18n.t('MACRO.TITLE')} />
       )}

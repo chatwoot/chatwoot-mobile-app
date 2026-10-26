@@ -26,7 +26,7 @@ import { InboxHeader, InboxItemContainer } from './components';
 import { useInboxListStateContext } from '@/context';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { showToast } from '@/utils/toastUtils';
-import { useTabBarHeight, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useTabBarHeight, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import i18n from '@/i18n';
 import { selectSortOrder } from '@/store/notification/notificationFilterSlice';
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
@@ -240,7 +240,9 @@ const InboxList = ({
 const InboxScreen = () => {
   const isSplit = useIsSplitLayout();
   const [headerHeight, setHeaderHeight] = useState(0);
-  const isSideLayout = useSideTabBarLayout() !== null;
+  // The header floats over the list on iOS (and with tabs on the side).
+  const sideTabBar = useSideTabBarLayout();
+  const hasOverlayHeader = IOS_DESIGN || sideTabBar !== null;
   const scrollEdge = useScrollEdge();
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
@@ -269,8 +271,8 @@ const InboxScreen = () => {
           barStyle={'dark-content'}
         />
         <InboxListStateProvider>
-          {isSideLayout ? (
-            // Header floats over the list with a scroll edge effect (iPhone Duo).
+          {hasOverlayHeader ? (
+            // Header floats over the list with a scroll edge effect (Apple HIG, Scroll views).
             <>
               <Animated.View style={tailwind.style('flex-1')}>
                 {/* Wait for the header's height so the list opens at the right offset. */}

@@ -22,6 +22,8 @@ export const SIDE_TAB_BAR_GAP = 8;
 // Space the side status bar (time, Wi-Fi, battery) takes at the top of its column on
 // iPhone Duo. iOS doesn't report it, so the side toolbar starts below this. Measured on device.
 export const SIDE_STATUS_BAR_CLEARANCE = 168;
+// Closed (no split view), iOS draws the side status bar larger, so it reaches further down.
+export const SIDE_STATUS_BAR_CLEARANCE_COMPACT = 214;
 export const TEXT_INPUT_CONTAINER_HEIGHT = 57;
 
 export const userStatusList = [

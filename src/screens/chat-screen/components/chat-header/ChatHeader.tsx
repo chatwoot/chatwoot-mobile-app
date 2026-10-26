@@ -21,10 +21,11 @@ import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
 import { SLAEvent } from '@/types/common';
 import { useRefsContext } from '@/context';
 import { SlaEvents } from './SlaEvents';
-import { useIOSListText } from '@/utils';
+import { IOS_DESIGN, useIOSListText, useSideTabBarLayout } from '@/utils';
 import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
 import { useSideToolbar } from '@/context';
 import { HEADER_ICON_COLOR, SideToolbarButton } from '@/components-next/side-toolbar';
+import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 
 type ChatHeaderProps = {
@@ -81,6 +82,10 @@ export const ChatHeader = ({
   // where; its actions move to the side toolbar below the status bar, ordered like Apple's
   // vertical toolbars: Close first, then Resolve/Reopen, then More.
   const isInPane = useIsInDetailPane();
+  // With tabs on the side (iPhone Duo), the actions always go in the side toolbar, in the
+  // split view pane or with the chat full screen.
+  const sideTabBar = useSideTabBarLayout();
+  const hasSideToolbar = isInPane || sideTabBar !== null;
   const paneRightInset = usePaneRightInset();
   const statusLabel = isOpen
     ? i18n.t('CONVERSATION.RESOLVE')
@@ -115,12 +120,22 @@ export const ChatHeader = ({
         />
       ) : (
         <>
-          <SideToolbarButton
-            icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.2} />}
-            iconSize={28}
-            onPress={onBackPress}
-            accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
-          />
+          {isInPane ? (
+            <SideToolbarButton
+              icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.2} />}
+              iconSize={28}
+              onPress={onBackPress}
+              accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
+            />
+          ) : (
+            // Full screen chat: back to the list.
+            <SideToolbarButton
+              icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+              iconSize={24}
+              onPress={onBackPress}
+              accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
+            />
+          )}
           <SideToolbarButton
             icon={
               isOpen ? (
@@ -162,8 +177,8 @@ export const ChatHeader = ({
         isContactOpen,
         onOpenActions,
       ],
-      isInPane,
-    ) && isInPane;
+      hasSideToolbar,
+    ) && hasSideToolbar;
 
   const toggleSlaEventsSheet = () => {
     Keyboard.dismiss();
@@ -233,6 +248,115 @@ export const ChatHeader = ({
               ) : null}
             </Pressable>
           ) : null}
+        </Animated.View>
+        <Sheet ref={slaEventsSheetRef} detents={[0.36]}>
+          <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />
+        </Sheet>
+      </Animated.View>
+    );
+  }
+
+  if (IOS_DESIGN) {
+    // iPhone (and the Duo without the split view): one row like Messages, with round glass
+    // buttons. Back, then who and where (the SLA joins the inbox line so the name keeps its
+    // room), then Resolve/Reopen, Actions and More. On the actions page it's just Back.
+    const slaLabel = hasSla && slaType ? (slaTime ? `${slaType}: ${slaTime}` : slaType) : null;
+    return (
+      <Animated.View>
+        <Animated.View style={tailwind.style('flex-row items-center gap-2 px-4 pt-1 pb-3')}>
+          <GlassCircleButton
+            icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+            onPress={isOnActionsPage ? () => chatPagerView.current?.setPage(0) : onBackPress}
+            accessibilityLabel={i18n.t(
+              isOnActionsPage ? 'CONVERSATION.HEADER.BACK_TO_MESSAGES' : 'CONVERSATION.HEADER.BACK',
+            )}
+          />
+          <Pressable
+            onPress={onContactDetailsPress}
+            accessibilityRole="button"
+            style={[tailwind.style('flex-1 flex-row items-center gap-2.5 ml-1')]}>
+            <Avatar size="xl" initialsClassName="text-[11px]" src={imageSrc} name={name} />
+            <Animated.View style={tailwind.style('flex-1')}>
+              <Animated.Text
+                numberOfLines={1}
+                style={tailwind.style(
+                  'text-[17px] leading-[22px] font-inter-semibold-20 text-gray-950',
+                )}>
+                {name}
+              </Animated.Text>
+              {inboxName || slaLabel ? (
+                <Animated.View style={tailwind.style('flex-row items-center gap-1')}>
+                  {channelIcon ? <Icon icon={channelIcon} size={13} /> : null}
+                  {inboxName ? (
+                    <Animated.Text
+                      numberOfLines={1}
+                      style={tailwind.style(
+                        'flex-shrink text-[13px] leading-[18px] font-inter-normal-20 text-gray-700',
+                      )}>
+                      {inboxName}
+                    </Animated.Text>
+                  ) : null}
+                  {slaLabel ? (
+                    <Pressable
+                      hitSlop={8}
+                      onPress={toggleSlaEventsSheet}
+                      accessibilityRole="button"
+                      style={tailwind.style('flex-row items-center gap-1 flex-shrink-0')}>
+                      {inboxName ? (
+                        <Animated.Text style={tailwind.style('text-[13px] text-gray-700')}>
+                          ·
+                        </Animated.Text>
+                      ) : null}
+                      <Icon
+                        icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#858585'} />}
+                        size={13}
+                      />
+                      <Animated.Text
+                        style={tailwind.style(
+                          'text-[13px] leading-[18px] font-inter-medium-24',
+                          isSlaMissed ? 'text-ruby-800' : 'text-gray-950',
+                        )}>
+                        {slaLabel}
+                      </Animated.Text>
+                    </Pressable>
+                  ) : null}
+                </Animated.View>
+              ) : null}
+            </Animated.View>
+          </Pressable>
+          {isOnActionsPage ? null : (
+            <>
+              <GlassCircleButton
+                icon={
+                  isOpen ? (
+                    <CheckCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+                  ) : (
+                    <ReopenCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+                  )
+                }
+                iconSize={22}
+                onPress={onToggleChatStatus}
+                accessibilityLabel={statusLabel}
+              />
+              {onOpenActions ? (
+                <GlassCircleButton
+                  icon={<InfoCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+                  iconSize={22}
+                  onPress={onOpenActions}
+                  accessibilityLabel={i18n.t('CONVERSATION_ACTION.TITLE')}
+                />
+              ) : null}
+              {paneMenuList.length > 0 ? (
+                <ChatDropdownMenu dropdownMenuList={paneMenuList} plainTrigger>
+                  <GlassCircleButton
+                    icon={<Overflow stroke={HEADER_ICON_COLOR} strokeWidth={1.3} />}
+                    iconSize={22}
+                    accessibilityLabel={i18n.t('CONVERSATION.HEADER.MORE')}
+                  />
+                </ChatDropdownMenu>
+              ) : null}
+            </>
+          )}
         </Animated.View>
         <Sheet ref={slaEventsSheetRef} detents={[0.36]}>
           <SlaEvents slaEvents={slaEvents} statusText={statusText ?? ''} />

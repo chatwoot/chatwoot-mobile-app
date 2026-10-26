@@ -8,7 +8,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -44,7 +44,7 @@ import { useRefsContext } from '@/context';
 import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
-import { useHaptic, useIsSplitLayout, useTabBarHeight } from '@/utils';
+import { IOS_DESIGN, useHaptic, useIsSplitLayout, useTabBarHeight } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
 import {
@@ -68,6 +68,7 @@ import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
+import { PageHeader } from '@/navigation/split/FullScreenPage';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -84,11 +85,17 @@ const SettingsScreen = () => {
   const { width } = useWindowDimensions();
   // The first item is selected by default so the detail pane is never empty.
   const [pane, setPane] = useState<SettingsPane>('availability');
+  // iOS without the split view: the same options as the detail pane, as a page that slides
+  // in from the right (like Settings on iPhone) instead of a sheet.
+  const [iosPage, setIosPage] = useState<SettingsPane | null>(null);
   // In the split view rows open their options in the detail pane instead of a sheet.
   const openPane = (next: SettingsPane, openSheetInstead: () => void) => () => {
     if (isSplit) {
       hapticSelection?.();
       setPane(next);
+    } else if (IOS_DESIGN) {
+      hapticSelection?.();
+      setIosPage(next);
     } else {
       openSheetInstead();
     }
@@ -352,9 +359,12 @@ const SettingsScreen = () => {
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </ScrollView>
       </Sheet>
-      <Sheet ref={notificationPreferencesSheetRef} detents={[0.52]}>
-        <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
-        <NotificationPreferences />
+      {/* Scrolls, since the number of notification types comes from the server. */}
+      <Sheet ref={notificationPreferencesSheetRef} detents={[0.7]} scrollable>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
+          <NotificationPreferences />
+        </ScrollView>
       </Sheet>
       <Sheet ref={switchAccountSheetRef} detents={[0.5]}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SWITCH_ACCOUNT')} />
@@ -384,16 +394,64 @@ const SettingsScreen = () => {
     </SafeAreaView>
   );
 
-  if (!isSplit) return listContent;
+  const titleFor = (p: SettingsPane) =>
+    ({
+      availability: i18n.t('SETTINGS.SET_AVAILABILITY'),
+      notifications: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
+      language: i18n.t('SETTINGS.SET_LANGUAGE'),
+      account: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
+    })[p];
+
+  // A setting's options in a white rounded card, shared by the detail pane and the iOS page.
+  const renderPaneCard = (p: SettingsPane) => (
+    <View style={tailwind.style('rounded-[13px] bg-white overflow-hidden')}>
+      {p === 'availability' ? (
+        <AvailabilityStatusList
+          changeAvailabilityStatus={changeAvailabilityStatus}
+          availabilityStatus={availabilityStatus}
+        />
+      ) : null}
+      {p === 'notifications' ? <NotificationPreferences /> : null}
+      {p === 'language' ? (
+        <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
+      ) : null}
+      {p === 'account' ? (
+        <SwitchAccount
+          currentAccountId={activeAccountId}
+          changeAccount={changeAccount}
+          accounts={accounts}
+        />
+      ) : null}
+    </View>
+  );
+
+  if (!isSplit) {
+    if (!IOS_DESIGN) return listContent;
+    return (
+      <View style={tailwind.style('flex-1')}>
+        {listContent}
+        {iosPage ? (
+          <Animated.View
+            entering={SlideInRight.duration(280)}
+            exiting={SlideOutRight.duration(240)}
+            style={tailwind.style('absolute inset-0 bg-gray-50')}>
+            <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1')}>
+              <PageHeader title={titleFor(iosPage)} onBack={() => setIosPage(null)} />
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+                {renderPaneCard(iosPage)}
+              </ScrollView>
+            </SafeAreaView>
+          </Animated.View>
+        ) : null}
+      </View>
+    );
+  }
 
   // Split view (iPhone Duo), like iPad Settings: the list on the left (40%) and the
   // selected setting's options on the right, with the same header as the other panes.
-  const paneTitle = {
-    availability: i18n.t('SETTINGS.SET_AVAILABILITY'),
-    notifications: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
-    language: i18n.t('SETTINGS.SET_LANGUAGE'),
-    account: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
-  }[pane];
+  const paneTitle = titleFor(pane);
 
   return (
     <View style={tailwind.style('flex-1 flex-row bg-white')}>
@@ -406,25 +464,7 @@ const SettingsScreen = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
-          <View style={tailwind.style('rounded-[13px] bg-white overflow-hidden')}>
-            {pane === 'availability' ? (
-              <AvailabilityStatusList
-                changeAvailabilityStatus={changeAvailabilityStatus}
-                availabilityStatus={availabilityStatus}
-              />
-            ) : null}
-            {pane === 'notifications' ? <NotificationPreferences /> : null}
-            {pane === 'language' ? (
-              <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
-            ) : null}
-            {pane === 'account' ? (
-              <SwitchAccount
-                currentAccountId={activeAccountId}
-                changeAccount={changeAccount}
-                accounts={accounts}
-              />
-            ) : null}
-          </View>
+          {renderPaneCard(pane)}
         </ScrollView>
       </SafeAreaView>
     </View>

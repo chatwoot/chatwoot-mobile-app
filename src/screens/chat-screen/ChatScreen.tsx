@@ -36,7 +36,9 @@ import { MacrosList } from './components/macros/MacrosList';
 import { WhatsAppTemplatesList } from './components/whatsapp-templates';
 import { macroActions } from '@/store/macro/macroActions';
 import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
-import { useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
+import { SideToolbarProvider } from '@/context';
+import { SideToolbarSlot } from '@/navigation/tabs/BottomTabBar';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -164,7 +166,8 @@ const ChatScreen = (props: ChatScreenProps) => {
   const navigation = useNavigation();
   const isInDetailPane = useIsInDetailPane();
   const splitView = useSplitView();
-  const paneTopMargin = useSideTabBarLayout()?.contentTopPadding ?? 0;
+  const sideTabBar = useSideTabBarLayout();
+  const paneTopMargin = sideTabBar?.contentTopPadding ?? 0;
   const { conversationId, primaryActorId, primaryActorType } = props.route.params;
   const dispatch = useAppDispatch();
 
@@ -213,13 +216,14 @@ const ChatScreen = (props: ChatScreenProps) => {
 
   if (conversation) {
     const { messageId } = props.route.params;
-    return (
+    const screen = (
       <SafeAreaView
         // In the split view pane the chat runs to the display edge; its parts pad their content.
         edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
         style={tailwind.style('flex-1 bg-white')}>
-        {/* In the split view pane, match the list header's top margin so the headers line up. */}
-        {isInDetailPane ? <Animated.View style={{ height: paneTopMargin }} /> : null}
+        {/* With tabs on the side (split view pane or full screen), match the list header's top
+            margin so the headers line up and stay out of the rounded corner. */}
+        {isInDetailPane || sideTabBar ? <Animated.View style={{ height: paneTopMargin }} /> : null}
         {/* Remount the chat subtree when the conversation or account changes so its
             account-scoped data (agents, teams, participants, canned responses) refetches. */}
         <ChatWindowProvider
@@ -231,6 +235,19 @@ const ChatScreen = (props: ChatScreenProps) => {
         <ActionBottomSheet />
       </SafeAreaView>
     );
+    // Full screen with tabs on the side (e.g. opened from a notification): the tab bar isn't
+    // shown, so the chat draws its own side toolbar for its header actions.
+    if (!isInDetailPane && sideTabBar) {
+      return (
+        <SideToolbarProvider>
+          <Animated.View style={tailwind.style('flex-1')}>
+            {screen}
+            <SideToolbarSlot />
+          </Animated.View>
+        </SideToolbarProvider>
+      );
+    }
+    return screen;
   }
 
   if (conversationFetching) {
@@ -249,6 +266,19 @@ const ChatScreen = (props: ChatScreenProps) => {
         onRetry={fetchConversation}
         onClose={() => splitView?.closeConversation()}
       />
+    );
+  }
+
+  if ((conversationError || !conversation) && IOS_DESIGN) {
+    // iOS: the same compact error state as the split view pane; Close goes back.
+    return (
+      <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-gray-50')}>
+        <PaneErrorState
+          title={conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
+          onRetry={fetchConversation}
+          onClose={handleBackPress}
+        />
+      </SafeAreaView>
     );
   }
 

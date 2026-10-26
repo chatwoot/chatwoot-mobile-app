@@ -19,7 +19,7 @@ import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
-import { getChannelIcon } from '@/utils';
+import { IOS_DESIGN, getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
 
 type ChatScreenHeaderProps = {
@@ -231,7 +231,14 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       onBackPress={isInDetailPane && splitView ? splitView.closeConversation : handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
-      onOpenActions={isInDetailPane && splitView ? splitView.openActions : undefined}
+      // Actions open as a column in the split view and as the actions page elsewhere on iOS.
+      onOpenActions={
+        isInDetailPane && splitView
+          ? splitView.openActions
+          : IOS_DESIGN
+            ? () => chatPagerView.current?.setPage(1)
+            : undefined
+      }
     />
   );
 };

@@ -12,6 +12,9 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import type { CopilotActionKey } from '@/types/Copilot';
 import { isAWhatsAppChannel, useHaptic } from '@/utils';
 import { useSplitView } from '@/navigation/split/SplitViewContext';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 
 import { TONE_OPTIONS } from '../copilot/ToneSelectionSheet';
 import {
@@ -37,8 +40,9 @@ const renderItem = ({ key, title, icon, onSelect }: MenuItemSpec) => (
 export const AddAttachmentMenu = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
-  const { macrosListSheetRef, whatsAppTemplatesSheetRef } = useRefsContext();
+  const { whatsAppTemplatesSheetRef } = useRefsContext();
   const splitView = useSplitView();
+  const navigation = useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList>>();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const inboxId = conversation?.inboxId;
@@ -69,8 +73,11 @@ export const AddAttachmentMenu = ({ children }: PropsWithChildren) => {
       key: 'macros',
       title: i18n.t('CONVERSATION_ATTACHMENT.OPTIONS.MACROS'),
       icon: 'bolt',
-      // On the Duo, macros open in the side column like Actions; otherwise the sheet.
-      onSelect: () => (splitView ? splitView.openMacros() : macrosListSheetRef.current?.present()),
+      // Macros open in the side column on the open Duo and as a full-screen page otherwise.
+      onSelect: () =>
+        splitView
+          ? splitView.openMacros()
+          : navigation.navigate('MacrosScreen', { conversationId }),
     },
   ];
   if (inbox && isAWhatsAppChannel(inbox)) {

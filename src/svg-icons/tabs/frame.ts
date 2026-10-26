@@ -3,7 +3,8 @@
 // Duo. 28pt leaves room for each glyph's full measured size (Inbox 25×20, Conversations
 // 23.5×23.5, Settings 23.4×25.7, close to Apple's tab icon targets) so nothing is clipped,
 // and centering on each glyph keeps them optically aligned.
-export type TabIconProps = { compact?: boolean };
+// `compact` can also be the drawn size in points (24 by default).
+export type TabIconProps = { compact?: boolean | number };
 
 const COMPACT_SIZE = 28;
 const COMPACT_DRAWN_SIZE = 24;
@@ -14,15 +15,15 @@ const COMPACT_DRAWN_SIZE = 24;
  *   horizontally at 24)
  */
 export const tabIconCanvas = (
-  compact: boolean | undefined,
+  compact: boolean | number | undefined,
   canvasWidth: number,
   glyphCenterY = 14,
 ) =>
   compact
     ? {
         // Drawn at 24pt so the tab glyphs (about 22–24pt) match the side toolbar's icons.
-        width: COMPACT_DRAWN_SIZE,
-        height: COMPACT_DRAWN_SIZE,
+        width: typeof compact === 'number' ? compact : COMPACT_DRAWN_SIZE,
+        height: typeof compact === 'number' ? compact : COMPACT_DRAWN_SIZE,
         viewBox: `${24 - COMPACT_SIZE / 2} ${glyphCenterY - COMPACT_SIZE / 2} ${COMPACT_SIZE} ${COMPACT_SIZE}`,
       }
     : { width: canvasWidth, height: 40, viewBox: `0 0 ${canvasWidth} 40` };

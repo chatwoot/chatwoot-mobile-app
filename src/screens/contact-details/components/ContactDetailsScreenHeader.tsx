@@ -8,7 +8,8 @@ import { CloseIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { expandTabs } from '@/utils/expandTabs';
 import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
-import { useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
+import { PageHeader } from '@/navigation/split/FullScreenPage';
 
 type ContactDetailsScreenHeaderProps = {
   name: string;
@@ -29,9 +30,13 @@ export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProp
   // Split view column: no title bar; the centered profile starts at the same top margin as
   // the other panes' headers. No close button or divider (the side toolbar's back button
   // closes the column).
-  if (isInContactPane) {
+  // iOS full screen: the same profile under a page header with Back.
+  if (isInContactPane || IOS_DESIGN) {
+    const isFullScreen = !isInContactPane;
     return (
-      <Animated.View style={{ paddingTop: sideTabBar?.contentTopPadding ?? 0 }}>
+      <Animated.View
+        style={{ paddingTop: isFullScreen ? 0 : (sideTabBar?.contentTopPadding ?? 0) }}>
+        {isFullScreen ? <PageHeader title="" onBack={handleBackPress} /> : null}
         <Animated.View style={tailwind.style('items-center px-4 pt-1')}>
           <Avatar size="4xl" src={thumbnail ? { uri: thumbnail } : undefined} name={name} />
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1 pt-3')}>

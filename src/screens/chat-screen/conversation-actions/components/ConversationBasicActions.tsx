@@ -16,7 +16,7 @@ import {
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
 
 import { ConversationActionType } from '../ConversationActions';
@@ -88,7 +88,12 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
   const actionActive = useSharedValue(0);
 
   const { handlers, animatedStyle } = useScaleAnimation();
-  const isInPane = useIsInDetailPane();
+  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
+  // Four buttons share the row; when each is under 100pt (e.g. the closed Duo) the label
+  // goes under the icon so it fits without truncating.
+  const rowWidth = useContainerWidth() - usePaneRightInset();
+  const isStacked = (rowWidth - 32 - 3 * 6) / 4 < 100;
 
   useEffect(() => {
     if (conversationAction.actionStatus === status) {
@@ -121,7 +126,9 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
           accessibilityState={{ selected: isActive }}
           style={({ pressed }) =>
             tailwind.style(
-              'h-11 flex-row items-center justify-center gap-1 rounded-[10px] px-1',
+              isStacked
+                ? 'h-[58px] items-center justify-center gap-1 rounded-[12px] px-1'
+                : 'h-11 flex-row items-center justify-center gap-1 rounded-[10px] px-1',
               isActive
                 ? conversationAction.backgroundActionColor
                 : pressed
@@ -133,18 +140,27 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
           {...handlers}>
           {conversationAction.iconNativeSize ? (
             // Fixed-size icon: scale it down into the 18pt slot.
-            <View style={tailwind.style('h-[18px] w-[18px] items-center justify-center')}>
-              <View style={{ transform: [{ scale: 18 / conversationAction.iconNativeSize }] }}>
+            <View
+              style={tailwind.style(
+                isStacked ? 'h-5 w-5' : 'h-[18px] w-[18px]',
+                'items-center justify-center',
+              )}>
+              <View
+                style={{
+                  transform: [{ scale: (isStacked ? 20 : 18) / conversationAction.iconNativeSize }],
+                }}>
                 {conversationAction.actionIcon}
               </View>
             </View>
           ) : (
-            <Icon icon={conversationAction.actionIcon} size={18} />
+            <Icon icon={conversationAction.actionIcon} size={isStacked ? 20 : 18} />
           )}
           <Animated.Text
             numberOfLines={1}
             style={tailwind.style(
-              'flex-shrink text-[15px] leading-[20px] font-inter-medium-24 text-gray-950 capitalize',
+              isStacked
+                ? 'text-[13px] leading-[16px] font-inter-medium-24 text-gray-950 capitalize'
+                : 'flex-shrink text-[15px] leading-[20px] font-inter-medium-24 text-gray-950 capitalize',
             )}>
             {i18n.t(`CONVERSATION_ACTION.OPTIONS.${conversationAction.actionStatus.toUpperCase()}`)}
           </Animated.Text>

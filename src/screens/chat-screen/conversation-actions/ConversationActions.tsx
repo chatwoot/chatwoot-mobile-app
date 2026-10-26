@@ -31,12 +31,14 @@ import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { ConversationMetaInformation } from './components/ConversationMetaInformation';
 import { selectConversationParticipantsByConversationId } from '@/store/conversation-participant/conversationParticipantSelectors';
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { IOS_DESIGN } from '@/utils';
 import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
-  const isInPane = useIsInDetailPane();
+  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   // 32pt between sections in the pane, 40pt elsewhere.
   const sectionGap = isInPane ? 'pt-8' : 'pt-10';
   const paneRightInset = usePaneRightInset();

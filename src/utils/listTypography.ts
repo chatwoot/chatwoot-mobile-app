@@ -1,17 +1,17 @@
-import { useSideTabBarLayout } from './common';
+import { IOS_DESIGN } from './common';
 
 // iOS list row text (Apple HIG, Typography): iOS text-style sizes with tight leading for
 // list rows. Letter spacing is left to the system font (see src/theme/tailwind.ts).
-// Applied with tabs on the side (iPhone Duo) and added after a row's own classes so these
-// win; other layouts keep their current styles.
+// Applied on iOS (IOS_DESIGN) and added after a row's own classes so these win; Android
+// keeps its current styles.
 // Sizes follow Apple's iOS text styles at the default text size (HIG, Typography).
 export const IOS_LIST_TEXT = {
   // Row title: Headline (unread, semibold) / Body (read), 17/22.
   title: 'text-[17px] leading-[22px]',
   // Notification-style row title (Inbox): Subhead, 15/20, semibold when unread.
   notificationTitle: 'text-[15px] leading-[20px]',
-  // Secondary line (message preview): Subhead size with a looser 22pt line for readability.
-  body: 'text-[15px] leading-[22px]',
+  // Secondary line (message preview): Subhead, 15/20.
+  body: 'text-[15px] leading-[20px]',
   // Trailing time: Subhead, 15/20.
   meta: 'text-[15px] leading-[20px]',
   // Supporting details (conversation ID, SLA, labels): Footnote, 13/18.
@@ -24,4 +24,4 @@ export const IOS_LIST_TEXT = {
 };
 
 /** True when list rows should use the iOS list text styles. */
-export const useIOSListText = () => useSideTabBarLayout() !== null;
+export const useIOSListText = () => IOS_DESIGN;

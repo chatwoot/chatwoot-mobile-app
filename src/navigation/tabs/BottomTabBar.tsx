@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -22,8 +22,19 @@ import {
   SettingsIconOutline,
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { useHaptic, useScaleAnimation, useSideTabBarLayout, useTabBarHeight } from '@/utils';
-import { SIDE_STATUS_BAR_CLEARANCE, SIDE_TAB_BAR_WIDTH } from '@/constants';
+import {
+  IOS_DESIGN,
+  useHaptic,
+  useIsSplitLayout,
+  useScaleAnimation,
+  useSideTabBarLayout,
+  useTabBarHeight,
+} from '@/utils';
+import {
+  SIDE_STATUS_BAR_CLEARANCE,
+  SIDE_STATUS_BAR_CLEARANCE_COMPACT,
+  SIDE_TAB_BAR_WIDTH,
+} from '@/constants';
 import { useSideToolbarItems } from '@/context';
 
 import { TabParamList } from './AppTabs';
@@ -36,7 +47,7 @@ type TabBarIconsProps = {
   focused: boolean;
   route: RouteProp<TabParamList, keyof TabParamList>;
   // Centered 24pt glyph for the round buttons of the side tab bar.
-  compact?: boolean;
+  compact?: boolean | number;
 };
 
 const TabBarIcons = ({ focused, route, compact }: TabBarIconsProps) => {
@@ -62,7 +73,13 @@ const TabBarIcons = ({ focused, route, compact }: TabBarIconsProps) => {
   }
 };
 
-type TabBarBackgroundProps = BlurViewProps & PropsWithChildren & { capsule?: boolean };
+type TabBarBackgroundProps = BlurViewProps &
+  PropsWithChildren & { capsule?: boolean; capsuleRadius?: number };
+
+// Floating tab bar on iPhone (iOS 26 style): a Liquid Glass capsule centered above the home
+// indicator, with a soft pill behind the selected tab.
+const FLOATING_BAR_HEIGHT = 60;
+const FLOATING_TAB_WIDTH = 76;
 
 // Soft lift for the floating side capsules (iPhone Duo).
 // Side capsules use the system Liquid Glass material when iOS supports it. Glass draws
@@ -83,12 +100,16 @@ const capsuleBorder = useLiquidGlass ? '' : 'border border-blackA-A3';
 
 // Background of a side capsule. The blur is clipped by its own wrapper so the capsule
 // itself can draw a shadow.
-const CapsuleFill = ({ blurAmount, blurType }: BlurViewProps) =>
+const CapsuleFill = ({
+  blurAmount,
+  blurType,
+  radius = SIDE_TAB_BAR_WIDTH / 2,
+}: BlurViewProps & { radius?: number }) =>
   useLiquidGlass ? (
     <GlassView
       glassEffectStyle="regular"
       isInteractive
-      style={[tailwind.style('absolute inset-0'), { borderRadius: SIDE_TAB_BAR_WIDTH / 2 }]}
+      style={[tailwind.style('absolute inset-0'), { borderRadius: radius }]}
     />
   ) : (
     <Animated.View style={tailwind.style('absolute inset-0 rounded-full overflow-hidden')}>
@@ -97,7 +118,7 @@ const CapsuleFill = ({ blurAmount, blurType }: BlurViewProps) =>
   );
 
 const TabBarBackground = (props: TabBarBackgroundProps) => {
-  const { children, style, blurAmount, blurType, capsule } = props;
+  const { children, style, blurAmount, blurType, capsule, capsuleRadius } = props;
 
   const currentState = useAppSelector(selectCurrentState);
 
@@ -105,7 +126,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
   const sideTabBar = useSideTabBarLayout();
   // How far the side capsule moves to leave the screen, signed toward its edge.
   const sideExitDistance = sideTabBar
-    ? (sideTabBar.offset + SIDE_TAB_BAR_WIDTH) * (sideTabBar.edge === 'right' ? 1 : -1)
+    ? (sideTabBar.offset + sideTabBar.width) * (sideTabBar.edge === 'right' ? 1 : -1)
     : 0;
 
   const derivedAnimatedState = useDerivedValue(() =>
@@ -138,7 +159,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
   return Platform.OS === 'ios' ? (
     capsule ? (
       <Animated.View style={[style, animatedTabBarStyle, capsuleShadow]}>
-        <CapsuleFill {...{ blurAmount, blurType }} />
+        <CapsuleFill {...{ blurAmount, blurType }} radius={capsuleRadius} />
         {children}
       </Animated.View>
     ) : (
@@ -159,7 +180,11 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
 const TabItem = (props: any) => {
   const { handlers, animatedStyle } = useScaleAnimation();
 
-  const { onPress, onLongPress, isFocused, options, route, vertical } = props;
+  const { onPress, onLongPress, isFocused, options, route, vertical, floating } = props;
+  // Side capsule button size and icon size (larger when the Duo is closed).
+  const sideTabBar = useSideTabBarLayout();
+  const buttonSize = sideTabBar?.buttonSize ?? 34;
+  const sideIconSize = Math.round(24 * (sideTabBar?.iconScale ?? 1));
 
   // Memoize hitSlop to prevent new object reference on every render. In the side capsule the
   // 34pt buttons get an even margin so the tap area stays comfortable.
@@ -183,8 +208,10 @@ const TabItem = (props: any) => {
           'justify-center items-center',
           // In the side capsule the selected tab gets a soft circle, like system side tab bars.
           vertical
-            ? `h-[34px] w-[34px] rounded-full ${isFocused ? 'bg-blackA-A3' : 'bg-transparent'}`
-            : 'flex-1 bg-transparent',
+            ? `h-[${buttonSize}px] w-[${buttonSize}px] rounded-full ${isFocused ? 'bg-blackA-A3' : 'bg-transparent'}`
+            : floating
+              ? `h-[48px] w-[${FLOATING_TAB_WIDTH}px] rounded-full ${isFocused ? 'bg-blackA-A3' : 'bg-transparent'}`
+              : 'flex-1 bg-transparent',
         ),
         animatedStyle,
       ]}>
@@ -197,13 +224,65 @@ const TabItem = (props: any) => {
         testID={options.tabBarTestID}
         // In the side capsule the whole round button is the tap target.
         style={
-          vertical ? tailwind.style('h-[34px] w-[34px] items-center justify-center') : undefined
+          vertical
+            ? tailwind.style(`h-[${buttonSize}px] w-[${buttonSize}px] items-center justify-center`)
+            : floating
+              ? tailwind.style(`h-[48px] w-[${FLOATING_TAB_WIDTH}px] items-center justify-center`)
+              : undefined
         }
         onPress={onPress}
         onLongPress={onLongPress}>
-        <TabBarIcons focused={isFocused} route={route} compact={vertical} />
+        <TabBarIcons
+          focused={isFocused}
+          route={route}
+          compact={vertical ? sideIconSize : undefined}
+        />
       </Pressable>
     </Animated.View>
+  );
+};
+
+/**
+ * The side toolbar (iPhone Duo): header actions of the focused screen at the top of the side
+ * column, below the status bar. Rendered by the tab bar, and by full-screen pages outside
+ * the tabs (e.g. a chat opened from a notification) inside their own SideToolbarProvider.
+ */
+export const SideToolbarSlot = () => {
+  const sideTabBar = useSideTabBarLayout();
+  const sideToolbarItems = useSideToolbarItems();
+  const isSplit = useIsSplitLayout();
+  if (!sideTabBar || !sideToolbarItems) return null;
+  const top = isSplit ? SIDE_STATUS_BAR_CLEARANCE : SIDE_STATUS_BAR_CLEARANCE_COMPACT;
+  return (
+    // Separate round glass buttons (not a capsule), so actions don't look like tabs.
+    <Animated.View
+      style={[
+        tailwind.style('absolute flex flex-col items-center gap-2.5', `top-[${top}px]`),
+        sideTabBar.edge === 'right' ? { right: sideTabBar.offset } : { left: sideTabBar.offset },
+      ]}>
+      {sideToolbarItems}
+    </Animated.View>
+  );
+};
+
+/**
+ * Hairline between the content and the side status column when the Duo is closed (side
+ * tabs, no split view), so the column reads as its own strip. Drawn once over the app.
+ */
+export const SideColumnDivider = () => {
+  const sideTabBar = useSideTabBarLayout();
+  const isSplit = useIsSplitLayout();
+  const { left, right } = useSafeAreaInsets();
+  if (!sideTabBar || isSplit) return null;
+  return (
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        tailwind.style('absolute top-0 bottom-0 bg-blackA-A3'),
+        { width: StyleSheet.hairlineWidth },
+        sideTabBar.edge === 'right' ? { right } : { left },
+      ]}
+    />
   );
 };
 
@@ -212,7 +291,8 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
   const tabBarHeight = useTabBarHeight();
   const { bottom } = useSafeAreaInsets();
   const sideTabBar = useSideTabBarLayout();
-  const sideToolbarItems = useSideToolbarItems();
+  // iPhone without side tabs: a floating glass capsule instead of the full-width bar.
+  const floating = IOS_DESIGN && !sideTabBar;
 
   // Memoize press handlers using useCallback
   const createPressHandler = React.useCallback(
@@ -248,49 +328,44 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
 
   return (
     <>
-      {sideTabBar && sideToolbarItems ? (
-        // Header actions of the focused screen, at the top of the side column below
-        // the status bar (iPhone Duo).
-        <Animated.View
-          style={[
-            tailwind.style(
-              'absolute flex flex-col items-center py-[3px] gap-1.5 rounded-full',
-              capsuleBorder,
-              `w-[${SIDE_TAB_BAR_WIDTH}px] top-[${SIDE_STATUS_BAR_CLEARANCE}px]`,
-            ),
-            sideTabBar.edge === 'right'
-              ? { right: sideTabBar.offset }
-              : { left: sideTabBar.offset },
-            capsuleShadow,
-          ]}>
-          <CapsuleFill blurAmount={25} blurType="light" />
-          {sideToolbarItems}
-        </Animated.View>
-      ) : null}
+      <SideToolbarSlot />
       <TabBarBackground
         blurAmount={25}
         blurType="light"
-        capsule={!!sideTabBar}
+        capsule={!!sideTabBar || floating}
+        capsuleRadius={
+          floating ? FLOATING_BAR_HEIGHT / 2 : sideTabBar ? sideTabBar.width / 2 : undefined
+        }
         style={Platform.select({
-          ios: sideTabBar
+          ios: floating
             ? [
-                // Floating capsule on the status bar side (iPhone Duo), anchored near the
-                // bottom like the system side tab bar.
                 tailwind.style(
-                  'flex flex-col absolute items-center py-[3px] gap-1.5 rounded-full',
+                  'flex flex-row absolute self-center items-center px-1.5 rounded-full',
                   capsuleBorder,
-                  `w-[${SIDE_TAB_BAR_WIDTH}px] bottom-[${bottom + 16}px]`,
+                  `h-[${FLOATING_BAR_HEIGHT}px]`,
                 ),
-                sideTabBar.edge === 'right'
-                  ? { right: sideTabBar.offset }
-                  : { left: sideTabBar.offset },
+                // Just above the home indicator, like the system tab bar.
+                { bottom: Math.max(bottom - 14, 12) },
               ]
-            : [
-                tailwind.style(
-                  'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
-                  `h-[${tabBarHeight}px]`,
-                ),
-              ],
+            : sideTabBar
+              ? [
+                  // Floating capsule on the status bar side (iPhone Duo), anchored near the
+                  // bottom like the system side tab bar.
+                  tailwind.style(
+                    'flex flex-col absolute items-center py-[3px] gap-1.5 rounded-full',
+                    capsuleBorder,
+                    `w-[${sideTabBar.width}px] bottom-[${bottom + 16}px]`,
+                  ),
+                  sideTabBar.edge === 'right'
+                    ? { right: sideTabBar.offset }
+                    : { left: sideTabBar.offset },
+                ]
+              : [
+                  tailwind.style(
+                    'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] pb-8 bg-[#00000009]',
+                    `h-[${tabBarHeight}px]`,
+                  ),
+                ],
           android: [
             tailwind.style(
               'flex flex-row absolute w-full bottom-0 pl-[72px] pr-[71px] pt-[11px] bg-white',
@@ -298,7 +373,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
             ),
           ],
         })}>
-        {!sideTabBar && (
+        {!sideTabBar && !floating && (
           <Animated.View style={tailwind.style('absolute inset-0 h-[1px] bg-blackA-A3')} />
         )}
         {state.routes.map((route, index) => {
@@ -314,6 +389,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
               route={route}
               isFocused={isFocused}
               vertical={!!sideTabBar}
+              floating={floating}
             />
           );
         })}

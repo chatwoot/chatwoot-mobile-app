@@ -6,7 +6,7 @@ import { Icon, IconButton } from '@/components-next';
 
 import { MailIcon, PhoneIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import i18n from '@/i18n';
 import { openNumber, openEmail } from '@/utils/urlUtils';
 import { useContainerWidth } from '@/context';
@@ -23,7 +23,8 @@ type ContactOptionProps = {
 };
 
 const ContactOptionComponent = (props: ContactOptionProps) => {
-  const isInContactPane = useIsInContactPane();
+  // White buttons on the gray page in the contact column and on iOS.
+  const isInContactPane = useIsInContactPane() || IOS_DESIGN;
   // Sized to the container (e.g. the split view's contact column), not the whole screen.
   const OPTION_WIDTH = (useContainerWidth() - 32 - 12 * 3) / 2;
   const { option, handleOptionPress } = props;
@@ -69,7 +70,8 @@ type ContactBasicActionsProps = {
 };
 
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
-  const isInContactPane = useIsInContactPane();
+  // White buttons on the gray page in the contact column and on iOS.
+  const isInContactPane = useIsInContactPane() || IOS_DESIGN;
   const { phoneNumber, email } = props;
 
   const onCallPress = () => {

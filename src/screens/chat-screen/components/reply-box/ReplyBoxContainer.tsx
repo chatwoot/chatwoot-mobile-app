@@ -17,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useChatWindowContext, useRefsContext } from '@/context';
 import {
+  IOS_DESIGN,
   useHaptic,
   isAWhatsAppChannel,
   isAnEmailChannel,
@@ -108,7 +109,9 @@ import {
 import { executeCopilotAction, sendCopilotFollowUp } from '@/store/copilot/copilotActions';
 import type { CopilotActionKey } from '@/types/Copilot';
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
-import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -123,13 +126,18 @@ const SHEET_APPEAR_SPRING_CONFIG = {
 const AnimatedKeyboardStickyView = Animated.createAnimatedComponent(KeyboardStickyView);
 const BottomSheetContent = () => {
   const paneRightInset = usePaneRightInset();
-  // iPhone Duo (split view pane): iOS Messages-style reply bar.
-  const iosStyle = useIsInDetailPane();
+  // iOS Messages-style reply bar on every iPhone.
+  const iosStyle = IOS_DESIGN;
+  const navigation = useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList>>();
   // The full editor in the side column (iPhone Duo). While it's open, the reply bar under
   // the messages is hidden so there's one editor; both share the draft in the store.
   const isComposer = useIsInComposePane();
   const splitView = useSplitView();
   const isComposeColumnOpen = splitView?.secondary?.kind === 'compose';
+  // The full editor opens in the side column on the Duo and as a sheet on iPhone.
+  const openComposer = () =>
+    splitView ? splitView.openCompose() : navigation.navigate('ComposeScreen', { conversationId });
+  const closeComposer = () => (splitView ? splitView.closeSecondary() : navigation.goBack());
   const hapticSelection = useHaptic();
   const dispatch = useAppDispatch();
   const { bottom } = useSafeAreaInsets();
@@ -492,7 +500,7 @@ const BottomSheetContent = () => {
     setSelectedCannedResponse(null);
     dispatch(setMessageContent(''));
     dispatch(clearEmailRecipients());
-    if (isComposer) splitView?.closeSecondary();
+    if (isComposer) closeComposer();
     messageListRef?.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
@@ -568,7 +576,7 @@ const BottomSheetContent = () => {
           left={
             <GlassCircleButton
               icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
-              onPress={() => splitView?.closeSecondary()}
+              onPress={closeComposer}
               accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.CLOSE')}
             />
           }
@@ -797,11 +805,7 @@ const BottomSheetContent = () => {
               <>
                 <MessageTextInput
                   iosStyle
-                  onExpand={
-                    inbox && isAnEmailChannel(inbox) && splitView
-                      ? splitView.openCompose
-                      : undefined
-                  }
+                  onExpand={inbox && isAnEmailChannel(inbox) ? openComposer : undefined}
                   maxLength={maxLength()}
                   replyEditorMode={replyEditorMode}
                   selectedCannedResponse={selectedCannedResponse}

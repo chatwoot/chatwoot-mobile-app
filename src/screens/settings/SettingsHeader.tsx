@@ -3,20 +3,20 @@ import Animated from 'react-native-reanimated';
 
 import i18n from 'i18n';
 import { tailwind } from '@/theme';
-import { useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
 
 export const SettingsHeader = () => {
   const sideTabBar = useSideTabBarLayout();
 
-  // With tabs on the side (iPhone Duo), match the Conversations and Inbox headers: same
+  // On iOS (and with tabs on the side), match the Conversations and Inbox headers: same
   // top margin and height, with a small centered title. Settings has no header
   // actions, so the side slots stay empty and keep the title centered.
-  if (sideTabBar) {
+  if (sideTabBar || IOS_DESIGN) {
     return (
       <Animated.View
         // No divider, like the Conversations and Inbox headers on this layout. Keep the
         // title out of the rounded corner when the status bar is on the side.
-        style={{ paddingTop: sideTabBar.contentTopPadding }}>
+        style={{ paddingTop: sideTabBar?.contentTopPadding ?? 0 }}>
         <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
           <Animated.View style={tailwind.style('w-24 h-9')} />
           <Animated.Text

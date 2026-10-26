@@ -1,20 +1,19 @@
 import React from 'react';
 import { Pressable, SafeAreaView, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ErrorBoundary } from '@sentry/react-native';
 
 import i18n from '@/i18n';
 import { ErrorIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { useIsSplitLayout } from '@/utils';
+import { IOS_DESIGN } from '@/utils';
 import { Button } from '../button';
 
 type FallbackProps = {
   resetError: () => void;
 };
 
-// iPhone Duo: the same compact look as the conversation pane's "Could not fetch
+// iOS: the same compact look as the conversation pane's "Could not fetch
 // conversation" state (small icon, 17pt title, 15pt gray text, round button).
 const SplitFallback = ({ resetError }: FallbackProps) => (
   <View style={tailwind.style('flex-1 bg-gray-50 items-center justify-center px-8')}>
@@ -75,20 +74,13 @@ const PhoneFallback = ({ resetError }: FallbackProps) => (
   </SafeAreaView>
 );
 
+// iOS uses the compact style everywhere, matching the conversation error state.
 const FallbackContent = ({ resetError }: FallbackProps) =>
-  useIsSplitLayout() ? (
+  IOS_DESIGN ? (
     <SplitFallback resetError={resetError} />
   ) : (
     <PhoneFallback resetError={resetError} />
   );
-
-// The boundary sits above the navigator's safe area provider, so the fallback brings its
-// own to read the layout.
-const Fallback = ({ resetError }: FallbackProps) => (
-  <SafeAreaProvider>
-    <FallbackContent resetError={resetError} />
-  </SafeAreaProvider>
-);
 
 type AppErrorBoundaryProps = {
   children: React.ReactNode;
@@ -103,7 +95,7 @@ type AppErrorBoundaryProps = {
  * one screen does not require the user to relaunch.
  */
 export const AppErrorBoundary = ({ children }: AppErrorBoundaryProps) => (
-  <ErrorBoundary fallback={({ resetError }) => <Fallback resetError={resetError} />}>
+  <ErrorBoundary fallback={({ resetError }) => <FallbackContent resetError={resetError} />}>
     {children}
   </ErrorBoundary>
 );

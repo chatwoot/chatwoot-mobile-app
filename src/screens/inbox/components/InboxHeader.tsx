@@ -6,7 +6,7 @@ import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { Icon } from '@/components-next/common/icon';
 import { DoubleCheckIcon, InboxFilterIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { useIsSplitLayout, useSideTabBarLayout } from '@/utils';
+import { IOS_DESIGN, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import { InboxFilters } from './InboxFilters';
 import { InboxSortMenu, useIsInboxSortChanged } from './InboxSortMenu';
 import i18n from '@/i18n';
@@ -56,14 +56,14 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   return (
     <Animated.View
       style={[
-        // With tabs on the side the header floats over the list and the scroll edge
-        // effect separates it, so it has no divider of its own.
-        sideTabBar ? null : tailwind.style('border-b-[1px] border-b-blackA-A3'),
+        // On iOS (and with tabs on the side) the header floats over the list and the scroll
+        // edge effect separates it, so it has no divider of its own.
+        IOS_DESIGN || sideTabBar ? null : tailwind.style('border-b-[1px] border-b-blackA-A3'),
         // Keep header controls out of the rounded corner when the status bar is on the side.
         { paddingTop: sideTabBar?.contentTopPadding ?? 0 },
       ]}>
-      {isSideLayout && isSplit ? (
-        // Split view (WhatsApp style): small centered title with round glass buttons.
+      {isSplit || (IOS_DESIGN && !isSideLayout) ? (
+        // Split view and iPhone: small centered title with round glass buttons.
         <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
           <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
             <GlassCircleButton

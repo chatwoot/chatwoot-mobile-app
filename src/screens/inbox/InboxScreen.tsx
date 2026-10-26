@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
 import Animated, { SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SplitView } from '@/navigation/split/SplitView';
+import { SplitEmptyState } from '@/navigation/split/SplitEmptyState';
+import { ScrollEdgeHeader, useScrollEdge } from '@/components-next/side-toolbar';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
 import { InboxListStateProvider } from '@/context';
@@ -18,16 +21,26 @@ import { InboxHeader, InboxItemContainer } from './components';
 import { useInboxListStateContext } from '@/context';
 import { resetNotifications } from '@/store/notification/notificationSlice';
 import { showToast } from '@/utils/toastUtils';
-import { useTabBarHeight } from '@/utils';
+import { useTabBarHeight, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import i18n from '@/i18n';
 import { selectSortOrder } from '@/store/notification/notificationFilterSlice';
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
-import { EmptyStateIcon } from '@/svg-icons';
+import { EmptyStateIcon, NotificationPaneEmptyIcon } from '@/svg-icons';
 import { InboxSortTypes } from '@/store/notification/notificationTypes';
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Notification>);
 
-const InboxList = () => {
+// With tabs on the side (iPhone Duo) the header floats over the list with a scroll edge
+// effect: `overlayHeaderHeight` adds a spacer so the rows start below the header and
+// offsets the refresh spinner to match, and `onScroll` drives the effect. `splitEmpty` uses
+// the split view's empty state.
+type OverlayListProps = {
+  overlayHeaderHeight?: number;
+  splitEmpty?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onScroll?: any;
+};
+const InboxList = ({ overlayHeaderHeight = 0, splitEmpty = false, onScroll }: OverlayListProps) => {
   const tabBarHeight = useTabBarHeight();
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -135,19 +148,44 @@ const InboxList = () => {
     </Animated.View>
   ) : notifications.length === 0 ? (
     <Animated.ScrollView
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          progressViewOffset={overlayHeaderHeight}
+        />
+      }
       contentContainerStyle={tailwind.style(
         'flex-1 items-center justify-center',
         `pb-[${tabBarHeight}px]`,
       )}>
-      <EmptyStateIcon />
-      <Animated.Text style={tailwind.style('pt-6 text-md tracking-[0.32px] text-gray-800')}>
-        {i18n.t('NOTIFICATION.EMPTY')}
-      </Animated.Text>
+      {splitEmpty ? (
+        <SplitEmptyState message={i18n.t('NOTIFICATION.EMPTY')} />
+      ) : (
+        <>
+          <EmptyStateIcon />
+          <Animated.Text style={tailwind.style('pt-6 text-md tracking-[0.32px] text-gray-800')}>
+            {i18n.t('NOTIFICATION.EMPTY')}
+          </Animated.Text>
+        </>
+      )}
     </Animated.ScrollView>
   ) : (
     <AnimatedFlashlist
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          progressViewOffset={overlayHeaderHeight}
+        />
+      }
+      onScroll={onScroll}
+      scrollEventThrottle={16}
+      // Start below the floating header: a spacer the header's height sits above the rows.
+      ListHeaderComponent={
+        overlayHeaderHeight ? <Animated.View style={{ height: overlayHeaderHeight }} /> : null
+      }
+      scrollIndicatorInsets={overlayHeaderHeight ? { top: overlayHeaderHeight } : undefined}
       showsVerticalScrollIndicator={false}
       data={notifications}
       onScrollBeginDrag={handleScrollBeginDrag}
@@ -161,6 +199,11 @@ const InboxList = () => {
 };
 
 const InboxScreen = () => {
+  const isSplit = useIsSplitLayout();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const isSideLayout = useSideTabBarLayout() !== null;
+  const scrollEdge = useScrollEdge();
+  const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
 
   // Memoize the markAllAsRead callback
@@ -172,17 +215,47 @@ const InboxScreen = () => {
   }, [dispatch]);
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
-      <InboxListStateProvider>
-        <InboxHeader markAllAsRead={markAllAsRead} />
-        <InboxList />
-      </InboxListStateProvider>
-    </SafeAreaView>
+    <SplitView
+      resetKey={sortOrder}
+      emptyIcon={<NotificationPaneEmptyIcon />}
+      emptyMessage={i18n.t('NOTIFICATION.SPLIT_VIEW_EMPTY')}>
+      {/* In the split view the list ends at the divider, not the screen edge, so it
+          skips the right inset (SafeAreaView applies screen insets regardless of position). */}
+      <SafeAreaView
+        edges={isSplit ? ['top', 'left'] : ['top', 'left', 'right']}
+        style={tailwind.style('flex-1 bg-white')}>
+        <StatusBar
+          translucent
+          backgroundColor={tailwind.color('bg-white')}
+          barStyle={'dark-content'}
+        />
+        <InboxListStateProvider>
+          {isSideLayout ? (
+            // Header floats over the list with a scroll edge effect (iPhone Duo).
+            <>
+              <Animated.View style={tailwind.style('flex-1')}>
+                {/* Wait for the header's height so the list opens at the right offset. */}
+                {headerHeight ? (
+                  <InboxList
+                    overlayHeaderHeight={headerHeight}
+                    splitEmpty={isSplit}
+                    onScroll={scrollEdge.onScroll}
+                  />
+                ) : null}
+              </Animated.View>
+              <ScrollEdgeHeader scrollY={scrollEdge.scrollY} onHeightChange={setHeaderHeight}>
+                <InboxHeader markAllAsRead={markAllAsRead} />
+              </ScrollEdgeHeader>
+            </>
+          ) : (
+            <>
+              <InboxHeader markAllAsRead={markAllAsRead} />
+              <InboxList />
+            </>
+          )}
+        </InboxListStateProvider>
+      </SafeAreaView>
+    </SplitView>
   );
 };
 

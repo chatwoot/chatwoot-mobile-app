@@ -69,7 +69,7 @@ const SearchScreen = () => {
   );
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-white')}>
       <SearchHeader
         searchText={searchText}
         isLoading={isLoading}

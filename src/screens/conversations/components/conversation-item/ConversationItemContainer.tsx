@@ -28,6 +28,7 @@ import { MarkAsUnRead, StatusIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { MarkAsRead } from '@/svg-icons';
 import i18n from '@/i18n';
+import { useSplitView } from '@/navigation/split/SplitViewContext';
 
 type ConversationItemContainerProps = {
   conversationItem: Conversation;
@@ -86,6 +87,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
 
   // Hooks
   const navigation = useNavigation();
+  const splitView = useSplitView();
   const dispatch = useAppDispatch();
   const { actionsModalSheetRef } = useRefsContext();
 
@@ -126,6 +128,8 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const onPressAction = useCallback(() => {
     if (currentState === 'Select') {
       dispatch(toggleSelection({ conversation: conversationItem }));
+    } else if (splitView) {
+      splitView.openConversation(id);
     } else {
       const pushToChatScreen = StackActions.push('ChatScreen', {
         conversationId: id,
@@ -133,7 +137,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       });
       navigation.dispatch(pushToChatScreen);
     }
-  }, [currentState, dispatch, conversationItem, navigation, id]);
+  }, [currentState, dispatch, conversationItem, navigation, id, splitView]);
 
   const viewProps = {
     id,

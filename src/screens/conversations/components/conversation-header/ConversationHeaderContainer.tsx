@@ -8,7 +8,7 @@ import Animated, {
 
 import { useConversationListStateContext } from '@/context';
 import { tailwind } from '@/theme';
-import { useHaptic } from '@/utils';
+import { useHaptic, useSideTabBarLayout } from '@/utils';
 import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
 import { selectUserId } from '@/store/auth/authSelectors';
 import {
@@ -43,6 +43,7 @@ const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterS
 
 export const ConversationHeader = () => {
   const currentState = useAppSelector(selectCurrentState);
+  const sideTabBar = useSideTabBarLayout();
 
   const filters = useAppSelector(selectFilters);
   const dispatch = useAppDispatch();
@@ -123,7 +124,16 @@ export const ConversationHeader = () => {
   };
 
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px] bg-white z-10'), headerBorderAnimation]}>
+    <Animated.View
+      style={[
+        // With tabs on the side the header floats over the list and the scroll edge
+        // effect separates it, so it has no background or divider of its own.
+        sideTabBar
+          ? tailwind.style('z-10')
+          : [tailwind.style('border-b-[1px] bg-white z-10'), headerBorderAnimation],
+        // Keep header controls out of the rounded corner when the status bar is on the side.
+        { paddingTop: sideTabBar?.contentTopPadding ?? 0 },
+      ]}>
       <ConversationHeaderPresenter
         currentState={currentState}
         isSelectedAll={isSelectedAll}

@@ -17,6 +17,7 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useSplitView } from '@/navigation/split/SplitViewContext';
 import { conversationActions } from '@/store/conversation/conversationActions';
 
 type InboxItemContainerProps = {
@@ -57,6 +58,7 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
   const dispatch = useAppDispatch();
 
   const navigation = useNavigation();
+  const splitView = useSplitView();
   const meta = item.primaryActor?.meta;
   const inboxId = item.primaryActor?.inboxId;
   const isRead = !!item.readAt;
@@ -67,6 +69,10 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
     });
     if (item.primaryActor?.id) {
       await dispatch(conversationActions.fetchConversation(item.primaryActor?.id));
+      if (splitView) {
+        splitView.openConversation(item.primaryActor.id);
+        return;
+      }
       const pushToChatScreen = StackActions.push('ChatScreen', {
         conversationId: item.primaryActor?.id,
         isConversationOpenedExternally: false,

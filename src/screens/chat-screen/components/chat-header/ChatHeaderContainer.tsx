@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
@@ -29,6 +30,8 @@ type ChatScreenHeaderProps = {
 const REFRESH_INTERVAL = 60000;
 
 export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
+  const isInDetailPane = useIsInDetailPane();
+  const splitView = useSplitView();
   const { name, imageSrc } = props;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -209,7 +212,8 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       slaType={slaType}
       slaEvents={slaEvents}
       statusText={slaStatusText()}
-      onBackPress={handleBackPress}
+      // In the split view's conversation pane, back closes the conversation.
+      onBackPress={isInDetailPane && splitView ? splitView.closeConversation : handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
     />

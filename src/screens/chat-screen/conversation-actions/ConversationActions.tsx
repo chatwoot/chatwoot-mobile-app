@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Alert, Dimensions, Platform, Share } from 'react-native';
+import { Alert, Platform, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
@@ -17,7 +17,7 @@ import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { errorMessage } from '@/utils/errorUtils';
 import { ConversationStatus } from '@/types';
-import { useChatWindowContext } from '@/context';
+import { useChatWindowContext, useContainerWidth } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -31,11 +31,10 @@ import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { ConversationMetaInformation } from './components/ConversationMetaInformation';
 import { selectConversationParticipantsByConversationId } from '@/store/conversation-participant/conversationParticipantSelectors';
 
-const SCREEN_WIDTH = Dimensions.get('screen').width;
-
 export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
+  const SCREEN_WIDTH = useContainerWidth();
   const dispatch = useAppDispatch();
   const { updateParticipantSheetRef, actionsModalSheetRef } = useRefsContext();
   const { conversationId } = useChatWindowContext();

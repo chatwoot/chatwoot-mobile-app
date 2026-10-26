@@ -1,9 +1,10 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { TabIconProps, tabIconCanvas } from './frame';
 
-export const InboxIconOutline = () => {
+export const InboxIconOutline = ({ compact }: TabIconProps = {}) => {
   return (
-    <Svg width="48" height="40" viewBox="0 0 48 40" fill="none">
+    <Svg {...tabIconCanvas(compact, 48)} fill="none">
       <Path
         d="M12.9167 16H16.8623C19.9167 16 20.5 18.9166 24 18.9166C27.5 18.9166 27.5 16 30.292 16H35.0834M20.461 6.66663H27.539C28.7954 6.66663 29.4236 6.66663 29.9782 6.85792C30.4686 7.02708 30.9153 7.30315 31.2859 7.66616C31.7051 8.07666 31.986 8.63853 32.5478 9.76223L35.0755 14.8175C35.296 15.2585 35.4062 15.479 35.484 15.7101C35.553 15.9153 35.6029 16.1265 35.6329 16.3409C35.6667 16.5824 35.6667 16.8289 35.6667 17.3219V19.7333C35.6667 21.6935 35.6667 22.6736 35.2852 23.4223C34.9497 24.0808 34.4142 24.6163 33.7557 24.9518C33.007 25.3333 32.0269 25.3333 30.0667 25.3333H17.9334C15.9732 25.3333 14.9931 25.3333 14.2444 24.9518C13.5858 24.6163 13.0504 24.0808 12.7149 23.4223C12.3334 22.6736 12.3334 21.6935 12.3334 19.7333V17.3219C12.3334 16.8289 12.3334 16.5824 12.3672 16.3409C12.3972 16.1265 12.4471 15.9153 12.5161 15.7101C12.5938 15.479 12.7041 15.2585 12.9246 14.8175L15.4522 9.76223C16.0141 8.63852 16.295 8.07666 16.7141 7.66616C17.0848 7.30315 17.5315 7.02708 18.0219 6.85792C18.5765 6.66663 19.2047 6.66663 20.461 6.66663Z"
         stroke="#171717"
@@ -15,9 +16,9 @@ export const InboxIconOutline = () => {
   );
 };
 
-export const InboxIconFilled = () => {
+export const InboxIconFilled = ({ compact }: TabIconProps = {}) => {
   return (
-    <Svg width="48" height="40" viewBox="0 0 48 40" fill="none">
+    <Svg {...tabIconCanvas(compact, 48)} fill="none">
       <Path
         fillRule="evenodd"
         clipRule="evenodd"

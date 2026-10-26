@@ -10,7 +10,6 @@ import { PriorityIndicator, ChannelIndicator } from '@/components-next/list-comp
 import { Inbox } from '@/types/Inbox';
 import { ConversationAdditionalAttributes } from '@/types/Conversation';
 import { NotificationTypeIndicator } from './NotificationTypeIndicator';
-import { Dimensions } from 'react-native';
 
 type InboxItemProps = {
   isRead: boolean;
@@ -30,8 +29,6 @@ type InboxItemProps = {
   pushMessageTitle: string;
   notificationType: NotificationType;
 };
-
-const { width } = Dimensions.get('screen');
 
 export const InboxItemComponent = (props: InboxItemProps) => {
   const {
@@ -54,17 +51,17 @@ export const InboxItemComponent = (props: InboxItemProps) => {
       <Animated.View style={tailwind.style('')}>
         <AnimatedNativeView
           style={tailwind.style('flex flex-row justify-between items-center h-[24px]')}>
+          {/* The name shrinks to fit; the id and time keep their size. */}
           <AnimatedNativeView
-            style={tailwind.style('flex flex-row items-center h-[24px] gap-[5px]')}>
+            style={tailwind.style('flex flex-row flex-1 items-center h-[24px] gap-[5px] mr-2')}>
             <Animated.Text
               numberOfLines={1}
               style={tailwind.style(
-                'text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
-                `max-w-[${width - 250}px]`,
+                'flex-shrink text-base font-inter-medium-24 tracking-[0.24px] text-gray-950 capitalize',
               )}>
               {sender?.name || ''}
             </Animated.Text>
-            <NativeView style={tailwind.style('flex flex-row items-center gap-0.5')}>
+            <NativeView style={tailwind.style('flex flex-row flex-shrink-0 items-center gap-0.5')}>
               <Animated.Text style={tailwind.style('text-sm font-inter-420-20 text-gray-700')}>
                 #
               </Animated.Text>
@@ -73,7 +70,8 @@ export const InboxItemComponent = (props: InboxItemProps) => {
               </Animated.Text>
             </NativeView>
           </AnimatedNativeView>
-          <AnimatedNativeView style={tailwind.style('flex flex-row items-center gap-2')}>
+          <AnimatedNativeView
+            style={tailwind.style('flex flex-row flex-shrink-0 items-center gap-2')}>
             {priority ? <PriorityIndicator {...{ priority }} /> : null}
             {inbox && (
               <ChannelIndicator inbox={inbox} additionalAttributes={additionalAttributes} />

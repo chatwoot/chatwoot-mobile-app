@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { forwardRef, useCallback } from 'react';
-import { Dimensions, Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
@@ -22,8 +22,7 @@ import { scheduleOnRN } from 'react-native-worklets';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { AnimatedNativeView } from '@/components-next/native-components';
-
-const WIDTH = Dimensions.get('screen').width;
+import { useContainerWidth } from '@/context';
 
 const SNAP_POINT = 96;
 const FRICTION = 10;
@@ -108,6 +107,7 @@ export type SwipeableProps = {
 
 // eslint-disable-next-line react/display-name
 export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
+  const WIDTH = useContainerWidth();
   const {
     children,
     openedRowIndex,

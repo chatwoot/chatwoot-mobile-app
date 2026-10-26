@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Dimensions, Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet, useWindowDimensions } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -10,7 +10,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 
-import { TAB_BAR_HEIGHT } from '@/constants';
 import { useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
@@ -20,8 +19,6 @@ import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice
 import { setActionState } from '@/store/conversation/conversationActionSlice';
 
 const ACTION_TAB_HEIGHT = 58;
-
-const SCREEN_WIDTH = Dimensions.get('screen').width;
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
@@ -70,6 +67,10 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
   const { children, blurAmount, blurType, style } = props;
 
   const currentState = useAppSelector(selectCurrentState);
+  const { bottom } = useSafeAreaInsets();
+  // Move far enough to hide the bar and its shadow even without a bottom tab bar
+  // covering it (side tab layout on iPhone Duo).
+  const hiddenOffset = bottom + 8 + ACTION_TAB_HEIGHT + 24;
 
   const derivedAnimatedState = useDerivedValue(() =>
     currentState === 'Select'
@@ -81,7 +82,7 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
     return {
       transform: [
         {
-          translateY: interpolate(derivedAnimatedState.value, [0, 1], [0, TAB_BAR_HEIGHT]),
+          translateY: interpolate(derivedAnimatedState.value, [0, 1], [0, hiddenOffset]),
         },
       ],
     };
@@ -135,7 +136,10 @@ const ActionItem = (props: ActionItemProps) => {
 };
 
 export const ActionTabs = () => {
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, left, right } = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  // Center within the content area, which is narrower when tabs sit on the side.
+  const barLeft = left + (width - left - right - 220) / 2;
   const dispatch = useAppDispatch();
 
   const { actionsModalSheetRef } = useRefsContext();
@@ -179,17 +183,13 @@ export const ActionTabs = () => {
         ios: [
           tailwind.style(
             'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px]',
-            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
-              (SCREEN_WIDTH - 220) / 2
-            }px]`,
+            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${barLeft}px]`,
           ),
         ],
         android: [
           tailwind.style(
             'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-white',
-            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
-              (SCREEN_WIDTH - 220) / 2
-            }px]`,
+            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${barLeft}px]`,
           ),
         ],
       })}>

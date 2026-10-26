@@ -72,6 +72,7 @@
     "expo-device": "~57.0.1",
     "expo-file-system": "~57.0.1",
     "expo-font": "~57.0.1",
+    "expo-glass-effect": "~57.0.4",
     "expo-haptics": "~57.0.1",
     "expo-image": "~57.0.1",
     "expo-splash-screen": "~57.0.4",
@@ -189,7 +190,8 @@
       "@react-native-clipboard/clipboard@1.16.2": "patches/@react-native-clipboard__clipboard@1.16.2.patch",
       "react-native-modal": "patches/react-native-modal.patch",
       "expo-modules-jsi@57.0.3": "patches/expo-modules-jsi@57.0.3.patch",
-      "react-native-reanimated@4.5.5": "patches/react-native-reanimated@4.5.5.patch"
+      "react-native-reanimated@4.5.5": "patches/react-native-reanimated@4.5.5.patch",
+      "react-native-ios-context-menu@3.2.1": "patches/react-native-ios-context-menu@3.2.1.patch"
     },
     "overrides": {
       "@expo/dom-webview": "57.0.1",

@@ -18,6 +18,9 @@ import {
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
 import { getUserPermissions } from '@/utils/permissionUtils';
+import { useSideTabBarLayout } from '@/utils';
+import { SideToolbarProvider } from '@/context';
+import { tailwind } from '@/theme';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
@@ -77,6 +80,7 @@ const CustomTabBar = (props: BottomTabBarProps) => <BottomTabBar {...props} />;
 
 const Tabs = () => {
   const dispatch = useAppDispatch();
+  const sideTabBar = useSideTabBarLayout();
   const user = useAppSelector(selectUser);
   const installationUrl = useAppSelector(selectInstallationUrl);
   const chatwootVersion = useAppSelector(selectChatwootVersion);
@@ -176,19 +180,34 @@ const Tabs = () => {
   }, []);
 
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
-      {hasConversationPermission && (
-        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
-      )}
-      {hasConversationPermission && (
-        <Tab.Screen
-          name="Conversations"
-          options={{ headerShown: false }}
-          component={ConversationStack}
-        />
-      )}
-      <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
-    </Tab.Navigator>
+    <SideToolbarProvider>
+      <Tab.Navigator
+        tabBar={CustomTabBar}
+        initialRouteName="Inbox"
+        // With a side tab bar (iPhone Duo), keep tab screens clear of the capsule and the
+        // rounded top corners.
+        sceneContainerStyle={
+          sideTabBar
+            ? {
+                backgroundColor: tailwind.color('bg-white'),
+                [sideTabBar.edge === 'right' ? 'paddingRight' : 'paddingLeft']:
+                  sideTabBar.contentPadding,
+              }
+            : undefined
+        }>
+        {hasConversationPermission && (
+          <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+        )}
+        {hasConversationPermission && (
+          <Tab.Screen
+            name="Conversations"
+            options={{ headerShown: false }}
+            component={ConversationStack}
+          />
+        )}
+        <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
+      </Tab.Navigator>
+    </SideToolbarProvider>
   );
 };
 

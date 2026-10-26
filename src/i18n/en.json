@@ -88,7 +88,14 @@
   "CONVERSATION": {
     "HEADER": {
       "TITLE": "Conversations",
-      "CLEAR_FILTER": "Clear"
+      "CLEAR_FILTER": "Clear",
+      "SEARCH": "Search",
+      "FILTER": "Filter",
+      "CLOSE": "Close",
+      "SELECT_ALL": "Select all"
+    },
+    "SPLIT_VIEW": {
+      "EMPTY": "Select a conversation to view it here"
     },
     "FILTERS": {
       "AGENT": {
@@ -170,6 +177,8 @@
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
       "BACK_TO_HOME": "Go back to home",
+      "CLOSE": "Close",
+      "PANE_DESCRIPTION": "Check your connection and try again. The conversation may also have been deleted or moved.",
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "BOT": "Bot",
@@ -327,6 +336,7 @@
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
+    "SPLIT_VIEW_EMPTY": "Select a notification to view the conversation",
     "HEADER_TITLE": "Notifications",
     "INBOX": "Inbox",
     "EMPTY": "No notifications yet.",

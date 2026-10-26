@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -20,6 +20,7 @@ import { useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
 
 import { ConversationActionType } from '../ConversationActions';
+import { useContainerWidth } from '@/context';
 
 type ConversationActionOptionsType = {
   backgroundActionColor: string;
@@ -28,9 +29,6 @@ type ConversationActionOptionsType = {
   actionIcon: React.JSX.Element;
   actionStatus: ConversationStatus | 'open';
 };
-
-const SCREEN_WIDTH = Dimensions.get('screen').width;
-const ACTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 4;
 
 const conversationActionOptions: ConversationActionOptionsType[] = [
   {
@@ -72,6 +70,7 @@ type ConversationActionOptionProps = {
 };
 
 const ConversationActionOption = (props: ConversationActionOptionProps) => {
+  const ACTION_WIDTH = (useContainerWidth() - 32 - 12 * 3) / 4;
   const { index, conversationAction, status, updateConversationStatus, isMuted } = props;
 
   const hapticSelection = useHaptic();

@@ -39,7 +39,8 @@ import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
-import { Dimensions, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
+import { useContainerWidth } from '@/context';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 import { useMessageEntrance } from './useMessageEntrance';
@@ -139,6 +140,7 @@ const MessageWrapper = ({
   onRetry,
   canSendPublicReply,
 }: MessageWrapperProps) => {
+  const containerWidth = useContainerWidth();
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
   });
@@ -153,7 +155,7 @@ const MessageWrapper = ({
     return map[orientation];
   };
 
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = containerWidth;
   // 56 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (8)
   const EMAIL_WIDTH = windowWidth - 56;
 

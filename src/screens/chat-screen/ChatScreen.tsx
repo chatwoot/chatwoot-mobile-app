@@ -35,6 +35,8 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { WhatsAppTemplatesList } from './components/whatsapp-templates';
 import { macroActions } from '@/store/macro/macroActions';
+import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
+import { useSideTabBarLayout } from '@/utils';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -93,8 +95,74 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
     </React.Fragment>
   );
 };
+// Error state for the split view's conversation pane: compact and quiet, in the same
+// type scale as the chat (17pt title, 15pt body, rounded button) instead of the
+// full-screen phone layout.
+const PaneErrorState = ({
+  title,
+  onRetry,
+  onClose,
+}: {
+  title: string;
+  onRetry: () => void;
+  onClose: () => void;
+}) => (
+  <Animated.View style={tailwind.style('flex-1 bg-gray-50 items-center justify-center px-8')}>
+    <Animated.View style={tailwind.style('items-center gap-3 max-w-[320px]')}>
+      <Animated.View style={tailwind.style('h-10 w-10 items-center justify-center')}>
+        <Animated.View style={{ transform: [{ scale: 0.5 }] }}>
+          <ErrorIcon />
+        </Animated.View>
+      </Animated.View>
+      <Animated.Text
+        style={tailwind.style(
+          'text-[17px] leading-[22px] font-inter-semibold-20 text-gray-950 text-center',
+        )}>
+        {title}
+      </Animated.Text>
+      <Animated.Text
+        style={tailwind.style(
+          'text-[15px] leading-[20px] font-inter-normal-20 text-gray-700 text-center',
+        )}>
+        {i18n.t('CONVERSATION.NOT_FOUND.PANE_DESCRIPTION')}
+      </Animated.Text>
+      <Animated.View style={tailwind.style('flex-row items-center gap-2 mt-2')}>
+        <Pressable
+          onPress={onRetry}
+          accessibilityRole="button"
+          style={({ pressed }) =>
+            tailwind.style(
+              'h-9 min-w-[88px] px-5 rounded-full items-center justify-center border border-blue-800 bg-blue-800',
+              pressed && 'opacity-80',
+            )
+          }>
+          <Animated.Text style={tailwind.style('text-[15px] font-inter-medium-24 text-white')}>
+            {i18n.t('CONVERSATION.NOT_FOUND.RETRY')}
+          </Animated.Text>
+        </Pressable>
+        <Pressable
+          onPress={onClose}
+          accessibilityRole="button"
+          style={({ pressed }) =>
+            tailwind.style(
+              'h-9 min-w-[88px] px-5 rounded-full items-center justify-center border border-gray-300 bg-white',
+              pressed && 'opacity-80',
+            )
+          }>
+          <Animated.Text style={tailwind.style('text-[15px] font-inter-medium-24 text-gray-950')}>
+            {i18n.t('CONVERSATION.NOT_FOUND.CLOSE')}
+          </Animated.Text>
+        </Pressable>
+      </Animated.View>
+    </Animated.View>
+  </Animated.View>
+);
+
 const ChatScreen = (props: ChatScreenProps) => {
   const navigation = useNavigation();
+  const isInDetailPane = useIsInDetailPane();
+  const splitView = useSplitView();
+  const paneTopMargin = useSideTabBarLayout()?.contentTopPadding ?? 0;
   const { conversationId, primaryActorId, primaryActorType } = props.route.params;
   const dispatch = useAppDispatch();
 
@@ -144,7 +212,9 @@ const ChatScreen = (props: ChatScreenProps) => {
   if (conversation) {
     const { messageId } = props.route.params;
     return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-white')}>
+        {/* In the split view pane, match the list header's top margin so the headers line up. */}
+        {isInDetailPane ? <Animated.View style={{ height: paneTopMargin }} /> : null}
         {/* Remount the chat subtree when the conversation or account changes so its
             account-scoped data (agents, teams, participants, canned responses) refetches. */}
         <ChatWindowProvider
@@ -167,9 +237,19 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
+  if ((conversationError || !conversation) && isInDetailPane) {
+    return (
+      <PaneErrorState
+        title={conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
+        onRetry={fetchConversation}
+        onClose={() => splitView?.closeConversation()}
+      />
+    );
+  }
+
   if (conversationError || !conversation) {
     return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-white')}>
         <Animated.View
           style={tailwind.style(
             'flex-1 items-center justify-center gap-8 px-4',

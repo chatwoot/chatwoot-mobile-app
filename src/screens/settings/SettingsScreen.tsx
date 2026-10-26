@@ -295,7 +295,11 @@ const SettingsScreen = () => {
     <SafeAreaView
       // In the split view the list ends at the divider, so it skips the right inset.
       edges={isSplit ? ['top', 'left', 'bottom'] : undefined}
-      style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
+      // iPhone Settings: light gray page with white cards (the open Duo's list stays white).
+      style={tailwind.style(
+        'flex-1 font-inter-normal-20',
+        IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white',
+      )}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}

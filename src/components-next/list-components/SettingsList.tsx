@@ -6,7 +6,7 @@ import { CaretRight } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { GenericListType } from '@/types';
 import { Icon } from '@/components-next/common/icon';
-import { useIOSListText } from '@/utils';
+import { useIOSListText, useIsSplitLayout } from '@/utils';
 
 type GenericListProps = {
   sectionTitle?: string;
@@ -75,9 +75,10 @@ const ListItem = (props: ListItemProps) => {
 
 export const SettingsList = (props: GenericListProps) => {
   const { list, sectionTitle } = props;
-  // iPhone Duo layout: cards with a very light gray fill and no shadow, so groups stay
-  // visible on the white page like the rest of the app. Elsewhere white cards with shadow.
+  // iOS: flat cards, no shadow. In the open Duo's split view the list page is white, so the
+  // cards are light gray; elsewhere it's iPhone Settings: white cards on a light gray page.
   const iosList = useIOSListText();
+  const isSplit = useIsSplitLayout();
 
   return (
     <Animated.View>
@@ -93,7 +94,7 @@ export const SettingsList = (props: GenericListProps) => {
       ) : null}
       <Animated.View
         style={[
-          tailwind.style('rounded-[13px] mx-4', iosList ? 'bg-gray-50' : 'bg-white'),
+          tailwind.style('rounded-[13px] mx-4', iosList && isSplit ? 'bg-gray-50' : 'bg-white'),
           iosList ? null : styles.listShadow,
         ]}>
         {list.map(

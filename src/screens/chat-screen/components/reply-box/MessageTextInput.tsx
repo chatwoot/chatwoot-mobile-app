@@ -331,7 +331,10 @@ export const MessageTextInput = ({
           maxLength={maxLength}
           placeholder={
             isPrivateMessage
-              ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
+              ? // iOS keeps placeholders short so they fit on one line.
+                i18n.t(
+                  iosStyle ? 'CONVERSATION.PRIVATE_NOTE_SHORT' : 'CONVERSATION.PRIVATE_MSG_INPUT',
+                )
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
           }
           onSubmitEditing={() => setMessageContent('')}
@@ -356,6 +359,10 @@ export const MessageTextInput = ({
           <Pressable
             hitSlop={5}
             onPress={toggleReplyMode}
+            accessibilityRole="button"
+            accessibilityState={{ selected: isPrivateMessage }}
+            accessibilityLabel={i18n.t('CONVERSATION.PRIVATE_NOTE_SHORT')}
+            accessibilityHint={i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}
             style={tailwind.style('h-9 w-[34px] pr-1 items-center justify-center')}>
             {isPrivateMessage ? (
               <Icon size={29} icon={<Locked plain />} />

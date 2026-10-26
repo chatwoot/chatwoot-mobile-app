@@ -108,7 +108,10 @@ const FloatingSlaPill = ({
 };
 
 // The SLA sheet fits its content on iOS; elsewhere it keeps its fixed height.
-const SLA_SHEET_SIZE = IOS_DESIGN ? { autoSize: true } : { detents: [0.36] };
+// On wide screens (the open Duo) it's capped to a readable width instead of spanning the display.
+const SLA_SHEET_SIZE = IOS_DESIGN
+  ? { autoSize: true, maxWidth: 440 }
+  : { detents: [0.36], maxWidth: 440 };
 
 export const ChatHeader = ({
   name,

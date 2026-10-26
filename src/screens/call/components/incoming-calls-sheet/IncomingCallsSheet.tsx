@@ -1,17 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
-import Animated, {
-  FadeIn,
-  FadeOut,
-  SlideInDown,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, SlideInDown, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { tailwind } from '@/theme';
+import { useHaptic } from '@/utils';
 import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 
@@ -22,10 +16,10 @@ import {
   CARD_SHADOW,
   SHEET_SHADOW,
 } from '../../constants/callTheme';
+import { SHEET_CLOSE_MS } from '../../constants/sheet';
 import { SWIPE_ROW_HEIGHT } from '../../constants/swipeRow';
 import { useCallerInfo } from '../../hooks/useCallerInfo';
 import { useSheetDismissal } from '../../hooks/useSheetDismissal';
-import type { SwipeAction } from '../../hooks/useSwipeToAct';
 import { IncomingCallActions } from '../IncomingCallActions';
 import { PulseDot } from '../PulseDot';
 import { CollapsedCallsStrip } from './CollapsedCallsStrip';
@@ -44,7 +38,7 @@ type IncomingCallsSheetProps = {
   answerDisabled?: boolean;
   onAnswer: (call: LiveCall) => Promise<boolean>;
   onDecline: (call: LiveCall) => Promise<boolean>;
-  onDeclineAll: () => void;
+  onDeclineAll: () => Promise<string[]>;
 };
 
 export const IncomingCallsSheet = ({
@@ -57,41 +51,16 @@ export const IncomingCallsSheet = ({
   onDeclineAll,
 }: IncomingCallsSheetProps) => {
   const insets = useSafeAreaInsets();
-  const [decliningAll, setDecliningAll] = useState(false);
-  const [leavingSids, setLeavingSids] = useState<string[]>([]);
   const single = calls.length === 1 ? calls[0] : null;
   const singleInfo = useCallerInfo(single);
+  const sheet = useSheetDismissal(startCollapsed);
+  const openedRowIndex = useSharedValue<number | null>(null);
+  const [decliningSids, setDecliningSids] = useState<string[]>([]);
+  const hapticSelection = useHaptic();
 
-  const resetRows = useCallback(() => {
-    setDecliningAll(false);
-    setLeavingSids([]);
-  }, []);
-  const sheet = useSheetDismissal(resetRows, startCollapsed);
-
-  const live = useMemo(
-    () => calls.filter(entry => !leavingSids.includes(entry.callSid)).length,
-    [calls, leavingSids],
-  );
-  const footerAlpha = useSharedValue(1);
-  useEffect(() => {
-    footerAlpha.value = withTiming(live === 0 ? 0 : 1, { duration: 250 });
-  }, [footerAlpha, live]);
-  const footerStyle = useAnimatedStyle(() => ({
-    opacity: footerAlpha.value,
-    transform: [{ translateY: (1 - footerAlpha.value) * 6 }],
-  }));
-
-  const rowLeaving = useCallback(
-    (sid: string, action: SwipeAction) => {
-      setLeavingSids(current => (current.includes(sid) ? current : [...current, sid]));
-      const remaining = calls.filter(
-        entry => entry.callSid !== sid && !leavingSids.includes(entry.callSid),
-      );
-      if (action === 'answer') setTimeout(sheet.closeSheet, 300);
-      else if (remaining.length === 0) setTimeout(sheet.closeSheet, 140);
-    },
-    [calls, leavingSids, sheet.closeSheet],
-  );
+  const answerRow = async (call: LiveCall) => {
+    if (await onAnswer(call)) sheet.closeSheet();
+  };
 
   const answerSingle = async () => {
     if (!single) return;
@@ -105,21 +74,34 @@ export const IncomingCallsSheet = ({
     const ok = await onDecline(single);
     if (!ok) sheet.expand();
   };
+  // The sheet slides away before the calls end, so no row leaves mid-slide; only a
+  // call whose decline fails comes back to the collapsed strip
   const declineAll = () => {
-    setDecliningAll(true);
-    setLeavingSids(calls.map(entry => entry.callSid));
-    setTimeout(sheet.closeSheet, 60);
-    onDeclineAll();
+    hapticSelection?.();
+    setDecliningSids(calls.map(entry => entry.callSid));
+    sheet.closeSheet();
+    setTimeout(async () => {
+      const failed = await onDeclineAll();
+      setDecliningSids(current => current.filter(sid => !failed.includes(sid)));
+    }, SHEET_CLOSE_MS);
   };
 
   const title = single
     ? i18n.t('CONVERSATION.VOICE_WIDGET.INCOMING_CALL')
-    : i18n.t('CONVERSATION.VOICE_WIDGET.INCOMING_CALLS_COUNT', { count: live || calls.length });
+    : i18n.t('CONVERSATION.VOICE_WIDGET.INCOMING_CALLS_COUNT', { count: calls.length });
   const answerLabel = hasActiveCall
     ? i18n.t('CONVERSATION.VOICE_WIDGET.END_AND_ANSWER')
     : i18n.t('CONVERSATION.VOICE_WIDGET.JOIN_CALL');
 
-  if (sheet.collapsed) return <CollapsedCallsStrip label={title} onPress={sheet.expand} />;
+  if (sheet.collapsed) {
+    const waiting = calls.filter(entry => !decliningSids.includes(entry.callSid)).length;
+    if (!waiting) return null;
+    const label =
+      waiting === 1
+        ? i18n.t('CONVERSATION.VOICE_WIDGET.INCOMING_CALL')
+        : i18n.t('CONVERSATION.VOICE_WIDGET.INCOMING_CALLS_COUNT', { count: waiting });
+    return <CollapsedCallsStrip label={label} onPress={sheet.expand} />;
+  }
 
   return (
     <View style={tailwind.style('absolute inset-0')} pointerEvents="box-none">
@@ -146,11 +128,7 @@ export const IncomingCallsSheet = ({
             <View
               style={tailwind.style('self-center h-[5px] w-9 rounded-[3px] bg-[#CCCCCC] mb-3.5')}
             />
-            <Animated.View
-              style={[
-                tailwind.style('flex-row items-center gap-2', single ? '' : 'px-5'),
-                footerStyle,
-              ]}>
+            <View style={tailwind.style('flex-row items-center gap-2', single ? '' : 'px-5')}>
               <PulseDot />
               <Text
                 style={[
@@ -161,7 +139,7 @@ export const IncomingCallsSheet = ({
                 ]}>
                 {title}
               </Text>
-            </Animated.View>
+            </View>
 
             {single ? (
               <SingleCallerCard info={singleInfo} />
@@ -183,16 +161,15 @@ export const IncomingCallsSheet = ({
                     key={entry.callSid}
                     call={entry}
                     index={index}
-                    declineAll={decliningAll}
-                    onAnswer={() => onAnswer(entry)}
+                    openedRowIndex={openedRowIndex}
+                    onAnswer={() => answerRow(entry)}
                     onDecline={() => onDecline(entry)}
-                    onLeaving={action => rowLeaving(entry.callSid, action)}
                   />
                 ))}
               </ScrollView>
             )}
 
-            <Animated.View style={footerStyle}>
+            <View>
               {single ? (
                 <>
                   {hasActiveCall ? (
@@ -224,7 +201,7 @@ export const IncomingCallsSheet = ({
                   </View>
                 </>
               )}
-            </Animated.View>
+            </View>
           </View>
         </Animated.View>
       </GestureDetector>

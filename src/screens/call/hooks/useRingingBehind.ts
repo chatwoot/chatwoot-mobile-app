@@ -65,13 +65,14 @@ export const useRingingBehind = ({ call, isJoining }: Options) => {
     [hapticSelection],
   );
 
-  const declineAll = useCallback(() => {
-    hapticSelection?.();
+  // Resolves with the calls whose decline failed
+  const declineAll = useCallback(async () => {
     cancelCallNotification();
-    calls.forEach(target => {
-      systemCall.end(store, target).catch(() => {});
-    });
-  }, [calls, hapticSelection]);
+    const results = await Promise.allSettled(calls.map(target => systemCall.end(store, target)));
+    return calls
+      .filter((_, index) => results[index].status === 'rejected')
+      .map(target => target.callSid);
+  }, [calls]);
 
   return { calls, rungBySystem, answer, decline, declineAll };
 };

@@ -1,25 +1,17 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { GestureDetector } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
+import Animated, { FadeOut, type SharedValue } from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
+import { Swipeable } from '@/components-next';
 import { AnswerGlyph, EndGlyph } from '@/svg-icons';
 import type { LiveCall } from '@/store/call/callTypes';
 
-import {
-  CALL_ANSWER,
-  CALL_END,
-  CALL_INK,
-  CALL_LINK,
-  CALL_RING_TEXT,
-} from '../../constants/callTheme';
+import { CALL_INK, CALL_LINK, CALL_RING_TEXT } from '../../constants/callTheme';
 import { useCallerInfo } from '../../hooks/useCallerInfo';
 import { useRingingFor } from '../../hooks/useRingingFor';
-import { useSwipeToAct, type SwipeAction } from '../../hooks/useSwipeToAct';
 import { CallerMetaLine } from './CallerMetaLine';
-import { RevealPanel } from './RevealPanel';
 import { RingingAvatar } from './RingingAvatar';
 
 const WHITE = '#FFFFFF';
@@ -27,49 +19,60 @@ const WHITE = '#FFFFFF';
 type RingingRowProps = {
   call: LiveCall;
   index: number;
-  declineAll: boolean;
-  // False restores the swiped row.
-  onAnswer: () => Promise<boolean>;
-  onDecline: () => Promise<boolean>;
-  onLeaving: (action: SwipeAction) => void;
+  openedRowIndex: SharedValue<number | null>;
+  onAnswer: () => void;
+  onDecline: () => void;
 };
+
+const SwipeActionLabel = ({ glyph, label }: { glyph: React.ReactNode; label: string }) => (
+  <View style={tailwind.style('items-center justify-center gap-1')}>
+    {glyph}
+    <Text
+      numberOfLines={1}
+      style={tailwind.style('font-inter-580-24 text-[13px] leading-4 text-white')}>
+      {label}
+    </Text>
+  </View>
+);
+
+const noop = () => {};
 
 export const RingingRow = ({
   call,
   index,
-  declineAll,
+  openedRowIndex,
   onAnswer,
   onDecline,
-  onLeaving,
 }: RingingRowProps) => {
   const info = useCallerInfo(call);
   const ringingFor = useRingingFor(call.addedAt);
-  const swipe = useSwipeToAct({ index, declineAll, onAnswer, onDecline, onLeaving });
 
   return (
-    <Animated.View style={[tailwind.style('overflow-hidden bg-white'), swipe.wrapStyle]}>
-      <RevealPanel
-        side="left"
-        label={i18n.t('CONVERSATION.VOICE_WIDGET.JOIN_CALL')}
-        colour={CALL_ANSWER}
-        style={swipe.answerPanelStyle}
-        onPress={() => swipe.commit('answer')}>
-        <AnswerGlyph color={WHITE} size={22} />
-      </RevealPanel>
-      <RevealPanel
-        side="right"
-        label={i18n.t('CONVERSATION.VOICE_WIDGET.REJECT_CALL')}
-        colour={CALL_END}
-        style={swipe.declinePanelStyle}
-        onPress={() => swipe.commit('decline')}>
-        <EndGlyph color={WHITE} size={22} />
-      </RevealPanel>
-      <GestureDetector gesture={swipe.gesture}>
-        <Animated.View
-          style={[
-            tailwind.style('h-[72px] px-5 flex-row items-center gap-3 bg-white'),
-            swipe.rowStyle,
-          ]}>
+    <Animated.View exiting={FadeOut.duration(160)}>
+      <Swipeable
+        spacing={24}
+        leftElement={
+          <SwipeActionLabel
+            glyph={<AnswerGlyph color={WHITE} size={22} />}
+            label={i18n.t('CONVERSATION.VOICE_WIDGET.JOIN_CALL')}
+          />
+        }
+        rightElement={
+          <SwipeActionLabel
+            glyph={<EndGlyph color={WHITE} size={22} />}
+            label={i18n.t('CONVERSATION.VOICE_WIDGET.REJECT_CALL')}
+          />
+        }
+        leftElementBgColor="bg-teal-700"
+        rightElementBgColor="bg-ruby-700"
+        handleLeftElementPress={onAnswer}
+        handleOnLeftOverswiped={onAnswer}
+        handleRightElementPress={onDecline}
+        handleOnRightOverswiped={onDecline}
+        handlePress={noop}
+        triggerOverswipeOnFlick
+        {...{ index, openedRowIndex }}>
+        <View style={tailwind.style('h-[72px] px-5 flex-row items-center gap-3')}>
           <RingingAvatar name={info.name} uri={info.avatar || undefined} size="row" />
           <View style={tailwind.style('flex-1 min-w-0 gap-[3px]')}>
             <View style={tailwind.style('flex-row items-center gap-2')}>
@@ -107,8 +110,8 @@ export const RingingRow = ({
               size="row"
             />
           </View>
-        </Animated.View>
-      </GestureDetector>
+        </View>
+      </Swipeable>
     </Animated.View>
   );
 };

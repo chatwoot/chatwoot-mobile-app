@@ -10,8 +10,8 @@ export const IOS_LIST_TEXT = {
   title: 'text-[17px] leading-[22px]',
   // Notification-style row title (Inbox): Subhead, 15/20, semibold when unread.
   notificationTitle: 'text-[15px] leading-[20px]',
-  // Secondary line (message preview): Subhead, 15/20.
-  body: 'text-[15px] leading-[20px]',
+  // Secondary line (message preview): Subhead size with a looser 22pt line for readability.
+  body: 'text-[15px] leading-[22px]',
   // Trailing time: Subhead, 15/20.
   meta: 'text-[15px] leading-[20px]',
   // Supporting details (conversation ID, SLA, labels): Footnote, 13/18.

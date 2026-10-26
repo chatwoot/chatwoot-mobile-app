@@ -25,22 +25,21 @@ export const removeEmoji = (text: string) => {
   return '';
 };
 
-function getInitials(name: string, size: AvatarSizes) {
+export function getInitials(name: string) {
   const userNameWithoutEmoji = removeEmoji(name).trimStart();
   if (!userNameWithoutEmoji) {
     return;
   }
   const [firstName, lastName] = userNameWithoutEmoji.split(' ');
-  const oneLetterInitialSizes = ['xs', 'sm', 'md'];
   const initials =
     firstName && lastName
       ? `${firstName.charAt(0)}${lastName.charAt(0)}`
       : `${firstName.charAt(0)}${firstName.charAt(1)}`;
 
-  return oneLetterInitialSizes.includes(size)
-    ? initials.toUpperCase().charAt(0)
-    : initials.toUpperCase();
+  return initials.toUpperCase();
 }
+
+const ONE_LETTER_INITIAL_SIZES: AvatarSizes[] = ['xs', 'sm', 'md'];
 
 export interface AvatarProps extends ViewProps {
   /**
@@ -157,7 +156,9 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
           ]}
           adjustsFontSizeToFit
           allowFontScaling={false}>
-          {getInitials(name, size)}
+          {ONE_LETTER_INITIAL_SIZES.includes(size)
+            ? getInitials(name)?.charAt(0)
+            : getInitials(name)}
         </Text>
       ) : null}
       {status && <AvatarStatus parentsBackground={parentsBackground} size={size} status={status} />}

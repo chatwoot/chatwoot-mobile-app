@@ -15,10 +15,8 @@ import {
 } from '../../constants/callTheme';
 import { PulseDot } from '../PulseDot';
 
-// Space between the top of the tray and the strip
 const STRIP_GAP = 14;
 
-// The strip above the tray once the sheet is put away: how many still ring, and a way back
 export const CollapsedCallsStrip = ({ label, onPress }: { label: string; onPress: () => void }) => {
   const insets = useSafeAreaInsets();
   return (

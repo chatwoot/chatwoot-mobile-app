@@ -29,16 +29,10 @@ import { callTone } from './utils/callTone';
 type ActiveCallScreenProps = {
   call: LiveCall;
   info: CallerInfo;
-  // Shown over the lock screen, where nothing else in the app may be reached: there is no
-  // minimise, and the way into the chat asks the phone to unlock first
   onLockScreen?: boolean;
-  // When this device joined the call, which the timer counts from
   activeSince?: number;
-  // False while an outbound call is still ringing: no media yet, so no mute or speaker
   isConnected: boolean;
-  // Answered on this device, with the media still being set up
   isConnecting?: boolean;
-  // An inbound call still ringing on this device, which gets answer and decline instead
   isIncoming?: boolean;
   isJoining?: boolean;
   onAnswer?: () => void;
@@ -54,12 +48,9 @@ type ActiveCallScreenProps = {
   onToggleHold: () => void;
   onEnd: () => void;
   onOpenConversation: () => void;
-  // Told when the audio route list opens or closes, so nothing is drawn over it
   onRoutePickerOpenChange?: (open: boolean) => void;
 };
 
-// Full-screen view of a call: the inbox in use at the top, the phase and the contact in
-// the middle, the controls in a tray at the bottom. The phase colours the whole screen.
 export const ActiveCallScreen = ({
   call,
   info,
@@ -85,7 +76,6 @@ export const ActiveCallScreen = ({
   onRoutePickerOpenChange,
 }: ActiveCallScreenProps) => {
   const insets = useSafeAreaInsets();
-  // Over a lock screen the call is all the agent may reach: no way back into the app
   useHardwareBackToMinimise(onLockScreen, onMinimise);
 
   const hasHeadset = hasHeadsetRoute(audioRoute);
@@ -96,7 +86,6 @@ export const ActiveCallScreen = ({
     onRoutePickerOpenChange?.(routePicker.isOpen);
   }, [onRoutePickerOpenChange, routePicker.isOpen]);
 
-  // A placed Twilio call keeps the ringing colours until the contact picks up
   const tone = callTone(isOnHold, isConnected && !isAwaitingTwilioContact(call));
   const statusFlags = { isOnHold, isConnected, isConnecting, isIncoming };
   const trayBottom = callTrayBottom(insets.bottom);
@@ -121,7 +110,6 @@ export const ActiveCallScreen = ({
       />
 
       {routePicker.isOpen ? (
-        // A tap anywhere outside the list closes it
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={i18n.t('CONVERSATION.VOICE_WIDGET.AUDIO_ROUTE')}

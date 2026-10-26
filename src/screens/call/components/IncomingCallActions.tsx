@@ -13,13 +13,11 @@ const WHITE = '#FFFFFF';
 type IncomingCallActionsProps = {
   onDecline: () => void;
   onAnswer: () => void;
-  // The answer button's label, "Answer" unless the caller says otherwise
   answerLabel?: string;
   declineDisabled?: boolean;
   answerDisabled?: boolean;
 };
 
-// Decline and Answer as two wide buttons side by side
 export const IncomingCallActions = ({
   onDecline,
   onAnswer,

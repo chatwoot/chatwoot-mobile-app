@@ -7,7 +7,6 @@ import { isHeadsetRoute } from '../utils/audioRoutes';
 
 type Props = { route: AudioRoute; color: string; size?: number };
 
-// Any headset, Bluetooth or wired, shows as the headset glyph
 export const AudioRouteIcon = ({ route, color, size }: Props) => {
   if (isHeadsetRoute(route)) return <HeadsetGlyph color={color} size={size} />;
   if (route === 'speaker') return <SpeakerGlyph color={color} size={size} />;

@@ -21,8 +21,6 @@ type CallerMetaLineProps = {
   size: keyof typeof SIZES;
 };
 
-// The caller's number and the inbox they rang, split by a short rule; the inbox name gives
-// way first when the line runs out of room
 export const CallerMetaLine = ({
   phone,
   inboxName,

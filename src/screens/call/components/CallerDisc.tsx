@@ -11,13 +11,10 @@ type CallerDiscProps = {
   name: string;
   uri?: string;
   tone: CallTone;
-  // Tailwind classes for the disc's size and the initial's type size
   box: string;
   text: string;
 };
 
-// A caller's photo when there is one, otherwise their initial in the phase colours. The
-// photo sits over the initial and stays in the image cache across remounts.
 export const CallerDisc = ({ name, uri, tone, box, text }: CallerDiscProps) => {
   const colours = CALL_TONES[tone];
   const initial = removeEmoji(name).trim().charAt(0).toUpperCase() || '?';

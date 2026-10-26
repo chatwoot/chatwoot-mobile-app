@@ -6,8 +6,6 @@ import { Defs, Ellipse, RadialGradient, Stop, Svg } from 'react-native-svg';
 
 import { CALL_TONES, type CallTone } from '../constants/callTheme';
 
-// Two soft washes of the phase colour over the light ground: a large one behind the
-// caller and a smaller one low on the right, under the controls
 export const CallBackdrop = ({ tone }: { tone: CallTone }) => {
   const { width, height } = useWindowDimensions();
   const { wash: colour, washTop, washLow } = CALL_TONES[tone];

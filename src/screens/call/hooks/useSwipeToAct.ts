@@ -23,11 +23,9 @@ import {
 export type SwipeAction = 'answer' | 'decline';
 
 type Options = {
-  // Row index, which staggers every row leaving together
   index: number;
-  // Set when every row is to leave together, as declined
   declineAll: boolean;
-  // Resolve true once the action went through; false brings the row back
+  // False restores the swiped row.
   onAnswer: () => Promise<boolean>;
   onDecline: () => Promise<boolean>;
   onLeaving: (action: SwipeAction) => void;
@@ -39,10 +37,6 @@ const glide = (to: number) => {
   return withTiming(to, { duration: SWIPE_ANIMATION_MS, easing: EASE });
 };
 
-// The swipe that answers or declines a ringing row. The row follows the finger and uncovers
-// a full-height panel the width of the drag: answer on the left, decline on the right. On
-// release a short drag springs shut, a longer one stays open on the action, and past half
-// the row the row slides off and acts. A tap on an open row closes it.
 export const useSwipeToAct = ({ index, declineAll, onAnswer, onDecline, onLeaving }: Options) => {
   const { width } = useWindowDimensions();
   const offset = useSharedValue(0);
@@ -66,7 +60,6 @@ export const useSwipeToAct = ({ index, declineAll, onAnswer, onDecline, onLeavin
     offset.value = glide(0);
   };
 
-  // Slides the row off, then folds it shut; the store removes it once the server agrees
   const commit = async (action: SwipeAction) => {
     if (leaving.value) return;
     leaving.value = true;
@@ -77,7 +70,6 @@ export const useSwipeToAct = ({ index, declineAll, onAnswer, onDecline, onLeavin
     if (!ok) restore();
   };
 
-  // Declining everything: each row slides off to the left, a little after the one above
   useEffect(() => {
     if (!declineAll || leaving.value) return;
     leaving.value = true;

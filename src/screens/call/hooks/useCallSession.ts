@@ -13,9 +13,6 @@ import { useRingtone } from './useRingtone';
 import { useSystemCallBridge } from './useSystemCallBridge';
 import { useVoipTokenRegistration } from './useVoipTokenRegistration';
 
-// Mounted once while the agent is logged in. Owns everything a call needs outside its
-// screen: the media engines' end-of-call signals, the ringtone, the ring timeouts, the
-// re-seeding of rings the socket missed, and the OS call UI.
 export const useCallSession = () => {
   useEffect(() => attachCallSessionCore(), []);
   const syncRinging = useRingingSync();

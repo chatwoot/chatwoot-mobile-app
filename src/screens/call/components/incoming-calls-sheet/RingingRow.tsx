@@ -27,17 +27,13 @@ const WHITE = '#FFFFFF';
 type RingingRowProps = {
   call: LiveCall;
   index: number;
-  // Set when every row is to leave together, as declined
   declineAll: boolean;
-  // Resolve true once the action went through; false brings the row back
+  // False restores the swiped row.
   onAnswer: () => Promise<boolean>;
   onDecline: () => Promise<boolean>;
-  // The row has started leaving
   onLeaving: (action: SwipeAction) => void;
 };
 
-// One ringing caller as a swipeable row: who it is, the number and inbox, and how long they
-// have waited. Swiping right answers, swiping left declines.
 export const RingingRow = ({
   call,
   index,

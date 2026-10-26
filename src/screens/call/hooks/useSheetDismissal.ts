@@ -11,8 +11,6 @@ import {
 
 import { SHEET_CLOSE_MS, SHEET_DISMISS_DRAG, SHEET_SCRIM_FADE_MS } from '../constants/sheet';
 
-// How the incoming-calls sheet leaves: a drag down collapses it to the strip at once, and
-// closeSheet drops it away with the scrim fading, after which only the strip remains
 export const useSheetDismissal = (onClosed: () => void, startCollapsed = false) => {
   const [collapsed, setCollapsed] = useState(startCollapsed);
   const dragY = useSharedValue(0);

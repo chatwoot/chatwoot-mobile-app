@@ -34,16 +34,12 @@ import { RingingRow } from './RingingRow';
 import { SingleCallerCard } from './SingleCallerCard';
 
 const HINT_TEXT = 'font-inter-420-20 text-center text-[13px] leading-[18px]';
-// Four rows show at once; more scroll
 const LIST_VISIBLE_ROWS = 4;
 const LIST_MAX_HEIGHT = LIST_VISIBLE_ROWS * (SWIPE_ROW_HEIGHT + 1) + 1;
 
 type IncomingCallsSheetProps = {
-  // Ringing calls, longest waiting first
   calls: LiveCall[];
-  // A call is up, so answering ends it
   hasActiveCall: boolean;
-  // The OS is already prompting for the calls, so the sheet opens only from the strip
   startCollapsed?: boolean;
   answerDisabled?: boolean;
   onAnswer: (call: LiveCall) => Promise<boolean>;
@@ -51,10 +47,6 @@ type IncomingCallsSheetProps = {
   onDeclineAll: () => void;
 };
 
-// Calls ringing while another call is on screen. One caller gets a block with two wide
-// buttons; two or more become a list of swipeable rows. The sheet slides away once a call is taken or
-// nothing is left ringing, and a swipe down leaves a strip above the tray with the count;
-// a tap on the strip brings the sheet back.
 export const IncomingCallsSheet = ({
   calls,
   hasActiveCall,
@@ -76,7 +68,6 @@ export const IncomingCallsSheet = ({
   }, []);
   const sheet = useSheetDismissal(resetRows, startCollapsed);
 
-  // Rows still on their way out do not count as ringing any more
   const live = useMemo(
     () => calls.filter(entry => !leavingSids.includes(entry.callSid)).length,
     [calls, leavingSids],

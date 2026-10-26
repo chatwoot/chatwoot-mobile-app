@@ -9,14 +9,11 @@ type RevealPanelProps = {
   side: 'left' | 'right';
   label: string;
   colour: string;
-  // Grows with the drag, so the panel is always as wide as the space the row uncovered
   style: AnimatedStyle<StyleProp<ViewStyle>>;
   onPress: () => void;
   children: React.ReactNode;
 };
 
-// The full-height answer or decline panel a swiped row uncovers, its content centred and
-// clipped to the uncovered width
 export const RevealPanel = ({
   side,
   label,

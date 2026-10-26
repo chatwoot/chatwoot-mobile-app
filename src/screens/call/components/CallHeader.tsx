@@ -10,12 +10,10 @@ import { CALL_INK } from '../constants/callTheme';
 import { ChatwootMark } from './ChatwootMark';
 
 type CallHeaderProps = {
-  // Over a lock screen there is no way back into the app, so no minimise caret
   canMinimise: boolean;
   onMinimise: () => void;
 };
 
-// What kind of call this is, with the caret that tucks the call into the banner
 export const CallHeader = ({ canMinimise, onMinimise }: CallHeaderProps) => {
   const insets = useSafeAreaInsets();
   return (

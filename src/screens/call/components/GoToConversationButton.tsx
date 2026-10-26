@@ -7,7 +7,6 @@ import { CaretRightBoldGlyph } from '@/svg-icons';
 
 import { CALL_LINK, PILL_SHADOW } from '../constants/callTheme';
 
-// A pill under the caller that opens the conversation behind the call
 export const GoToConversationButton = ({ onPress }: { onPress: () => void }) => (
   <Pressable
     accessibilityRole="button"

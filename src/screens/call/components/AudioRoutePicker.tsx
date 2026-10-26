@@ -22,7 +22,6 @@ type AudioRoutePickerProps = {
   onSelect: (route: AudioRoute) => void;
 };
 
-// The list of places the call's audio can go, shown above the tray
 export const AudioRoutePicker = ({
   routes,
   current,

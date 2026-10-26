@@ -5,8 +5,6 @@ import { callTimerStart } from '@/utils/voiceCallUtils';
 import { callStatusText, type CallStatusFlags } from '../utils/callStatusText';
 import { useCallDuration } from './useCallDuration';
 
-// The call's phase, or its running timer once connected. Only the component that shows it
-// re-renders with the timer.
 export const useCallStatusText = (
   call: LiveCall,
   activeSince: number | undefined,

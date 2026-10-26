@@ -11,7 +11,6 @@ type WideActionButtonProps = {
   children: React.ReactNode;
 };
 
-// A full-width coloured button with a glyph and a label, the shape a phone's ring screen uses
 export const WideActionButton = ({
   label,
   fill,

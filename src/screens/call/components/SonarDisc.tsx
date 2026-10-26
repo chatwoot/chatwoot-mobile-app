@@ -12,7 +12,6 @@ import { tailwind } from '@/theme';
 
 const SONAR_PERIOD_MS = 3200;
 
-// One translucent disc that swells out from behind the avatar and dissolves, on a loop
 export const SonarDisc = ({ colour, delay }: { colour: string; delay: number }) => {
   const progress = useSharedValue(0);
   useEffect(() => {

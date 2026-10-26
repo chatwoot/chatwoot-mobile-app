@@ -126,7 +126,7 @@ export const IncomingCallsSheet = ({
       <Animated.View
         entering={FadeIn.duration(180)}
         exiting={FadeOut.duration(140)}
-        style={[tailwind.style('absolute inset-0 bg-[rgba(20,20,26,0.28)]'), sheet.scrimStyle]}>
+        style={[tailwind.style('absolute inset-0 bg-call-scrim'), sheet.scrimStyle]}>
         <Pressable
           accessibilityRole="button"
           onPress={sheet.collapse}

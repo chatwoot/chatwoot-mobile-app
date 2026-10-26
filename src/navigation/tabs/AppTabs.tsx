@@ -93,7 +93,6 @@ const Tabs = () => {
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
-    // The call permissions depend on the inboxes, so they are asked for once those arrive
     const inboxesLoaded = dispatch(inboxActions.fetchInboxes());
     askForPermissions(inboxesLoaded);
     initActionCable();
@@ -108,18 +107,14 @@ const Tabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Every prompt the app needs, in one run: notifications first, then what a call will
-  // need on the accounts that can call, so the agent is not asked again while a caller is
-  // ringing. The push token is registered once notifications have been answered.
   const askForPermissions = useCallback(async (inboxesLoaded: Promise<unknown>) => {
     try {
-      // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
       const { status } = await checkNotifications();
       if (status !== RESULTS.GRANTED) await requestNotifications(['alert', 'sound', 'badge']);
       await inboxesLoaded;
       await runCallReadiness();
     } catch {
-      // A prompt that fails to show still lets the device register for pushes
+      // Prompt failures must not prevent registration.
     }
     dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps

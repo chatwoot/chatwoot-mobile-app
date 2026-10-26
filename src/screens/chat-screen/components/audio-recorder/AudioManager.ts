@@ -21,13 +21,9 @@ let audioRecorderPlayer: AudioRecorderPlayer | undefined;
 let currentPath: Path;
 let currentCallback: Callback = () => {};
 let currentPosition = 0;
-// The note was cut off and its player released; play recreates it where it stopped, or
-// wherever it was since sought to
 let cutOff = false;
 
-// Progress arrives a few times a second, so a note that reports its end while the last
-// position was further off than this was cut off, not finished: the phone switching its
-// audio when a call ends does this
+// Interrupted playback can report premature completion.
 const CUT_OFF_GAP_MS = 1500;
 
 const play = async (path: string, from = 0) => {
@@ -38,7 +34,6 @@ const play = async (path: string, from = 0) => {
   audioRecorderPlayer.addPlayBackListener(async e => {
     if (e.currentPosition === e.duration) {
       if (currentPosition > 0 && e.duration - currentPosition > CUT_OFF_GAP_MS) {
-        // Paused where it stopped, so play carries on from there
         const stoppedAt = currentPosition;
         await releasePlayer();
         currentPosition = stoppedAt;
@@ -61,7 +56,6 @@ const play = async (path: string, from = 0) => {
   });
 };
 
-// Drops the native player but keeps the note and its position
 const releasePlayer = async () => {
   await audioRecorderPlayer?.stopPlayer().catch(() => {});
   audioRecorderPlayer?.removePlayBackListener();
@@ -76,8 +70,6 @@ export const startPlayer = async (path: string, callback: Callback) => {
     if (audioRecorderPlayer !== undefined) {
       await stopPlayer();
     } else {
-      // A note that was cut off keeps its position but has no player; playing another
-      // note ends it, so neither starts from the other's position
       currentPosition = 0;
       currentCallback({ status: AudioStatus.STOPPED });
     }
@@ -104,7 +96,6 @@ export const pausePlayer = async () => {
 };
 
 export const resumePlayer = async () => {
-  // A note that was cut off has no player left; a new one starts where it stopped
   if (!audioRecorderPlayer && currentPath && cutOff) {
     await play(currentPath, currentPosition);
   } else {
@@ -113,8 +104,7 @@ export const resumePlayer = async () => {
   currentCallback({ status: AudioStatus.RESUMED });
 };
 
-// The position is taken from the seek at once, so a seek close to the end is not taken for
-// a cut-off when the end arrives before the next progress report
+// Seek completion can precede progress events.
 export const seekTo = async (position: number) => {
   currentPosition = position;
   await audioRecorderPlayer?.seekToPlayer(position);

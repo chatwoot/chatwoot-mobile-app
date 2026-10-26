@@ -33,8 +33,7 @@ import { useAppDispatch } from '@/hooks';
 import { APP_FONTS } from '@/theme/fonts';
 
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
-  // Call pushes are rung by the native service, which posts the notification before
-  // JavaScript has started; this path would only duplicate it.
+  // Native code already handles call pushes.
   if (isCallPush(remoteMessage.data)) return;
   console.log('Message handled in the background!', remoteMessage);
 });
@@ -96,8 +95,6 @@ export const AppNavigationContainer = () => {
         accountId = (params as { accountId?: number })?.accountId;
       }
 
-      // The conversation belongs to the target account; with the switch refused during a
-      // call, it is not opened in the account on screen
       const targetAccountId = resolveAccountSwitch(accountId);
       if (targetAccountId && !switchAccount(dispatch, targetAccountId)) return undefined;
 

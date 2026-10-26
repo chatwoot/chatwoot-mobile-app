@@ -33,15 +33,12 @@ const callState = (display: ReturnType<typeof getVoiceCallDisplay>): CallBubbleS
   return 'ringing';
 };
 
-// A call in the conversation, on a card inset into the message bubble: which way it went
-// and how it ended, the one action it offers, and the recording and transcript it left.
 export const CallBubble = ({ item, variant }: CallBubbleProps) => {
   const display = useMemo(() => getVoiceCallDisplay(item), [item]);
   const dispatch = useAppDispatch();
   const liveCall = useAppSelector(selectFullScreenCall);
   const actions = useCallBubbleActions(item, display);
   const callSid = item.call?.providerCallId;
-  // The card opens the call screen while this device is on that very call
   const isThisDevicesCall = !!liveCall && !!callSid && liveCall.callSid === callSid;
 
   const state = callState(display);

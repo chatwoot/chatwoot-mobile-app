@@ -1,5 +1,3 @@
-// The call card sits on both message bubbles, so its own colours are fixed rather than
-// taken from the bubble: a white card with the phase in the icon box.
 export type CallBubbleState = 'ringing' | 'live' | 'ended' | 'missed';
 
 export const CARD_INK = '#1C1C1E';
@@ -21,7 +19,6 @@ export const CALL_BUBBLE_TONES: Record<CallBubbleState, StateTone> = {
   missed: { icon: CALL_RED, iconBox: 'rgba(214,51,91,0.12)' },
 };
 
-// Text on the bubble around the card, which is white on the contact's blue
 export const bubbleInk = (lightOnDark: boolean) => (lightOnDark ? '#FFFFFF' : CARD_INK);
 export const bubbleMuted = (lightOnDark: boolean) =>
   lightOnDark ? 'rgba(255,255,255,0.9)' : CARD_MUTED;

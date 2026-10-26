@@ -41,15 +41,11 @@ type CallStatusCardProps = {
   isOutbound: boolean;
   title: string;
   subtitle: string;
-  // Shown at the end of the title row once the call has a length
   duration?: string;
-  // Set while this device is on this very call, which makes the card open the call screen
   onOpenCall?: () => void;
   children?: React.ReactNode;
 };
 
-// The call itself, on a card inset into the message bubble. The card stays light on both
-// bubbles so the phase colour in the icon box reads at full contrast.
 export const CallStatusCard = ({
   state,
   isOutbound,
@@ -61,7 +57,6 @@ export const CallStatusCard = ({
 }: CallStatusCardProps) => {
   const tone = CALL_BUBBLE_TONES[state];
   const isRinging = state === 'ringing' && !isOutbound;
-  // A finished call the agent placed draws its icon in the card's ink rather than grey
   const iconColour = state === 'ended' && isOutbound ? CARD_INK : tone.icon;
 
   const card = (

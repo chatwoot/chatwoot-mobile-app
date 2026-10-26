@@ -1,9 +1,5 @@
 import { isTwilioAnswerStatus } from '@/utils/voiceCallUtils';
 
-// Socket events for a call this device is placing can arrive before the request that
-// places it returns, while the app does not yet know the call's id. They are held here for
-// a short while and applied once the call exists.
-
 const HOLD_MS = 60_000;
 
 type Early = { sdpAnswer?: string; accepted?: boolean; providerStatus?: string; at: number };
@@ -27,8 +23,6 @@ export const holdEarlyAccept = (callSid: string) => {
   held.set(callSid, { ...held.get(callSid), accepted: true, at: Date.now() });
 };
 
-// Twilio's own status for the call; an answer already seen is not replaced by an earlier
-// stage delivered late
 export const holdEarlyProviderStatus = (callSid: string, providerStatus: string) => {
   prune();
   const current = held.get(callSid)?.providerStatus;
@@ -36,7 +30,6 @@ export const holdEarlyProviderStatus = (callSid: string, providerStatus: string)
   held.set(callSid, { ...held.get(callSid), providerStatus, at: Date.now() });
 };
 
-// What arrived for this call before it was known, removed once taken
 export const takeEarlyOutboundEvents = (callSid: string) => {
   prune();
   const entry = held.get(callSid);

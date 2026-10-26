@@ -83,7 +83,7 @@ test('CallKit End settles the pending real connect without a terminal SDK callba
 
 test('a CallKit reset settles the pending connect at once and leaves the conference', async () => {
   const { store, listener, detach, join } = await connecting('reset');
-  // Native providerDidReset has already disconnected the call and removed its active reference.
+  // Reset disconnects native media before notifying.
   listener({ type: 'reset' });
   await jest.advanceTimersByTimeAsync(0);
   await join;

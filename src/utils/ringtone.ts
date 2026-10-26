@@ -8,7 +8,6 @@ const RINGTONE = require('../../assets/ringtone.mp3');
 
 let player: AudioRecorderPlayer | null = null;
 let isRinging = false;
-// Android rings natively with the phone's own ringtone; the bundled file is the fallback
 let ringingNatively = false;
 
 const ringtoneUri = () => Image.resolveAssetSource(RINGTONE)?.uri;
@@ -29,9 +28,6 @@ const playOnce = async () => {
   });
 };
 
-// Loops a ringtone while an inbound call is unanswered. On Android that is the phone's own
-// ringtone, played natively. Elsewhere the bundled file plays on the voice note player,
-// which is a singleton, so starting it stops any voice note that is playing.
 export const startRingtone = async () => {
   if (isRinging) return;
   isRinging = true;
@@ -59,6 +55,6 @@ export const stopRingtone = async () => {
     player?.removePlayBackListener();
     await player?.stopPlayer();
   } catch {
-    // The player throws when nothing is playing; nothing to clean up in that case.
+    // Already-stopped players can reject stop requests.
   }
 };

@@ -54,8 +54,6 @@ import {
   type AudioRoute,
 } from '@/services/voice/chatwootCalls';
 
-// The platform reports its routes as a list with a name beside each, empty where a route
-// has none
 const audioRouteNames = (available: AudioRoute[], names?: string[]) => {
   const byRoute: Partial<Record<AudioRoute, string>> = {};
   available.forEach((route, index) => {
@@ -64,26 +62,20 @@ const audioRouteNames = (available: AudioRoute[], names?: string[]) => {
   return byRoute;
 };
 
-// The part of a call session that needs no React tree: the media engines' end-of-call
-// signals, Android's native call screen, and the choice the agent made on it. The app's
-// call hook attaches it while mounted, and the Android headless task attaches it for a
-// call answered on the lock screen, where no activity exists at all.
+// UI and headless tasks share ownership.
 
 let attachments = 0;
 let detach: (() => void) | null = null;
 
-// Whether the call being carried was answered outside the app
 let openedForCall = false;
 
-// The call this device ended itself, so Telecom records it as a local hang-up
 let locallyEndedSid: string | null = null;
 
 export const markLocalEnd = (callSid: string) => {
   locallyEndedSid = callSid;
 };
 
-// The end of a call is held back while another one is being taken in its place, so the
-// native screen carries over rather than closing between the two
+// Keep native surfaces during call switches.
 let switching = false;
 let endReportPending = false;
 let settleEndReport: (() => void) | null = null;
@@ -109,9 +101,6 @@ export const attachCallSessionCore = () => {
   };
 };
 
-// The choices made on the Android call notification or native call screen, applied one
-// at a time, oldest first. A run requested while another drains the queue follows it, and
-// resolves once the choices queued by then are applied.
 let draining: Promise<void> = Promise.resolve();
 export const applyPendingCallAction = () => {
   const run = draining.then(async () => {
@@ -124,9 +113,6 @@ export const applyPendingCallAction = () => {
   return run;
 };
 
-// A call in progress hung up from a headset, watch or other system surface while the app
-// was not running: the app's call ends as if hung up here, or, when the app no longer has
-// it, the server is told from what the ring carried
 const applyEnd = async (pending: PendingCallAction) => {
   const state = store.getState();
   const active = selectActiveCall(state);
@@ -147,14 +133,10 @@ const applyEnd = async (pending: PendingCallAction) => {
   } else if (pending.callId) {
     await CallService.terminateWhatsappCall(pending.callId, pending.accountId).catch(() => {});
   }
-  // The app no longer had the call, so nothing here saw it end; its in-progress
-  // notification and Telecom call are ended directly
   if (active?.callSid !== pending.callSid) stopOngoingCallNotification(pending.callSid, 'local');
   reportNativeCallState('ended', pending.callSid);
 };
 
-// A call answered before it reached the store is created from what the ring carried, so
-// the caller stops ringing as soon as the app can answer
 const applyCallAction = async (pending: PendingCallAction) => {
   if (pending.action === 'end') {
     await applyEnd(pending);
@@ -175,11 +157,6 @@ const applyCallAction = async (pending: PendingCallAction) => {
       }),
     );
   }
-  // Taken once no other join is under way and only when this device is on no other call,
-  // so the call screen shows it connecting from the first frame; otherwise the join
-  // releases the call this device is on and takes this one itself. An answer reached
-  // while the session's calls are ending, on logout, is a decline instead: the agent is
-  // leaving, and the caller stops ringing for them.
   if (pending.action === 'answer') {
     await whenNotJoining(store);
     if (isSessionClosing()) {
@@ -194,8 +171,6 @@ const applyCallAction = async (pending: PendingCallAction) => {
   }
   const call = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);
   if (pending.action === 'decline') {
-    // The server learns of the decline so the caller and the agent's other devices stop
-    // ringing; the request itself is what the headless task waits on
     await store
       .dispatch(callActions.rejectIncomingCall(pending.callSid))
       .unwrap()
@@ -214,9 +189,6 @@ const applyCallAction = async (pending: PendingCallAction) => {
       reportNativeCallState('failed', pending.callSid);
     }
   } catch (error) {
-    // Answered on the native screen, so the reason is told once the app is in front. The
-    // ring is dropped here: the agent's answer is over, and it would otherwise ring again
-    // once the app opens.
     reportAnswerFailure(error);
     reportNativeCallState('failed', pending.callSid);
     const failed = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);
@@ -225,20 +197,15 @@ const applyCallAction = async (pending: PendingCallAction) => {
 };
 
 const install = () => {
-  // The WhatsApp media dropped: the far side hung up or the network gave out. The call
-  // ends now rather than waiting for the server's own word on it.
   setWebrtcConnectionLostHandler(() => {
     const state = store.getState();
     const localCallSid = selectLocalCallSid(state);
     const active = selectActiveCall(state);
     if (!active || !localCallSid || active.callSid !== localCallSid) return;
     if (active.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
-    // Ended like a hang-up: the server is told and the microphone is released
     store.dispatch(callActions.endCall());
   });
 
-  // A Twilio call can end from the far side or on a network failure; either way it is
-  // ended like a hang-up, so the server ends the conference and the contact's leg with it
   const twilio = addTwilioCallStateListener(event => {
     if (event.state !== 'disconnected' && event.state !== 'failed') return;
     const state = store.getState();
@@ -253,7 +220,6 @@ const install = () => {
     store.dispatch(callActions.endCall());
   });
 
-  // Buttons pressed on Android's native call screen
   const native = addNativeCallActionListener(event => {
     const state = store.getState();
     switch (event.action) {
@@ -266,14 +232,10 @@ const install = () => {
         }
         break;
       case 'end': {
-        // Anything kept natively for this call is superseded by the end handled here
         if (event.callSid) takePendingCallAction(event.callSid);
-        // The end names its call; one without a name falls back to what is on screen
         const named = event.callSid
           ? selectCalls(state).find(entry => entry.callSid === event.callSid)
           : undefined;
-        // A call the app no longer has, as after it reloaded during the call, is ended from
-        // the details the native side remembered for it
         if (event.callSid && !named) {
           queueNativeEnd(event.callSid);
           applyPendingCallAction().catch(() => {});
@@ -287,7 +249,6 @@ const install = () => {
         applyPendingCallAction().catch(() => {});
         break;
       case 'dismissed':
-        // The ring is dropped here without declining; a call this device is taking stays
         if (event.callSid !== selectLocalCallSid(state)) {
           store.dispatch(dismissCall(event.callSid));
         }
@@ -296,8 +257,6 @@ const install = () => {
         store.dispatch(setMinimised(false));
         break;
       case 'hold':
-        // Telecom names the call it holds; one for a call this device no longer carries,
-        // delivered late after a switch, is left alone
         if (
           event.callSid &&
           event.callSid !== (selectLocalCallSid(state) ?? selectActiveCall(state)?.callSid)
@@ -311,18 +270,11 @@ const install = () => {
     }
   });
 
-  // The native call screen follows the call's state; the audio route is held for as long
-  // as the call is up; a call that took the agent out of the lock screen steps back off it.
-  // Android's in-progress notification, and the foreground service that keeps the
-  // microphone, cover a call from the moment it is placed or answered, before it connects,
-  // so the agent can always get back to it. It is started again once the call connects,
-  // which covers a start the microphone permission held back.
   let wasActive = selectHasActiveCall(store.getState());
   let speakerOn = selectIsSpeakerOn(store.getState());
   let carriedSid: string | null = null;
   let carriedActive = false;
   let carriedCall: LiveCall | null = null;
-  // The call last reported connected, which an end report refers to
   let connectedSid: string | null = null;
   const reportEnded = () => {
     endReportPending = false;
@@ -350,8 +302,7 @@ const install = () => {
       carried.isActive || carried.callDirection === 'inbound' ? 'active' : 'calling',
     );
   };
-  // A start the missing microphone permission held back is made again once it is granted,
-  // while the answer is still on screen
+  // Retry service startup after microphone permission.
   setMicrophoneGrantedHandler(() => {
     if (carriedCall && !carriedActive) startCarried(store.getState(), carriedCall);
   });
@@ -365,23 +316,16 @@ const install = () => {
   const unsubscribe = store.subscribe(() => {
     const state = store.getState();
     const previousCarried = carriedSid;
-    // Signing out, a 401's automatic logout included, may come while a call is joining or
-    // being placed: its media is released at once and again once the join settles, no join
-    // starts meanwhile, and the placement is given up
-    // The flag moves before anything is dispatched, since a dispatch re-enters this
-    // subscriber, which must not see the sign-out again
+    // Update before dispatch re-enters this subscriber.
     const wasSignedIn = signedIn;
     const nowSignedIn = !!state.auth?.user;
     signedIn = nowSignedIn;
     if (wasSignedIn !== nowSignedIn) setNativeSignedIn(nowSignedIn);
     if (wasSignedIn && !nowSignedIn) {
       releaseAllMedia();
-      // A call still being placed is given up, so its late response does not install it
-      // in the next session
       store.dispatch(callActions.cancelPlacingCall());
       closeSession(async () => releaseAllMedia()).catch(() => {});
     }
-    // Signing out clears the store under a live call; its media and system call end too
     if (!state.auth?.user && carriedCall) {
       const ended = carriedCall;
       callEngine
@@ -414,14 +358,11 @@ const install = () => {
     carriedSid = carried?.callSid ?? null;
     carriedActive = !!carried?.isActive;
     carriedCall = carried;
-    // A ring that left the store without being carried here (answered elsewhere, timed
-    // out, or a join that failed) is closed with the platform too
     const sids = new Set(selectCalls(state).map(call => call.callSid));
     knownSids.forEach(sid => {
       if (sid && !sids.has(sid) && sid !== previousCarried) endRingingNativeCall(sid);
     });
     knownSids = sids;
-    // Native routing reports the active device; the speaker flag must not override it
     if (active && (!wasActive || isSpeakerOn !== speakerOn) && !hasNativeAudioRouting()) {
       if (active.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
         webrtcEngine.ensureAudioRoute(isSpeakerOn);
@@ -453,7 +394,6 @@ const install = () => {
     }
   });
 
-  // A headset or the system changed the route, or the routes on offer changed
   const audioRoute = addAudioRouteListener(event => {
     const state = store.getState();
     const callSid = selectLocalCallSid(state) ?? selectFullScreenCall(state)?.callSid;
@@ -467,8 +407,6 @@ const install = () => {
     );
   });
 
-  // Telecom could not take the call: a WhatsApp call already live takes the app's own audio
-  // handling now, and one still connecting takes it as it goes live
   const telecomUnavailable = addTelecomUnavailableListener(event => {
     const state = store.getState();
     const active = selectActiveCall(state);

@@ -12,7 +12,6 @@ import {
 const AGENT_ID = 1;
 const OTHER_AGENT_ID = 2;
 
-// Shape of a ringing voice_call message as delivered over ActionCable
 const ringingPayload = (overrides: Record<string, unknown> = {}) => ({
   id: 1900,
   content: 'WhatsApp Call',

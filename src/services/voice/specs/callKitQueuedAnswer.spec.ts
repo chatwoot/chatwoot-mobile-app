@@ -70,9 +70,7 @@ test('an end made while a CallKit answer waits for another join cancels that ans
       systemUuid: 'uuid',
     }),
   );
-  // Another call is joining, so the answer below is queued behind it
   store.dispatch(setIsJoining(true));
-  // The decline the end sends is still in flight when the other join finishes
   let finishLeave: (value: unknown) => void = () => {};
   (CallService.leaveConference as jest.Mock).mockImplementationOnce(
     () => new Promise(resolve => (finishLeave = resolve)),

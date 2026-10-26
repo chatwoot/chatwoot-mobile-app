@@ -26,7 +26,6 @@ const persistConfig = {
   key: 'Root',
   version: CURRENT_VERSION,
   storage: AsyncStorage,
-  // Ringing calls are transient; a stale entry must not reappear on the next launch
   blacklist: ['calls'],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   migrate: async (state: any) => {

@@ -133,7 +133,6 @@ class ActionCableConnector extends BaseActionCableConnector {
       if (callSid && message.call) {
         const state = store.getState();
         const known = selectCalls(state).some(call => call.callSid === callSid);
-        // The call this device is placing may not be known yet; its status waits for it
         if (!known && selectPlacingCall(state) && message.call.providerStatus) {
           holdEarlyProviderStatus(callSid, message.call.providerStatus);
         }
@@ -183,10 +182,7 @@ class ActionCableConnector extends BaseActionCableConnector {
     ).forEach(callSid => store.dispatch(removeCall(callSid)));
   };
 
-  // WhatsApp rings through this event; Twilio rings through message.created. The server
-  // already targets online agents who take calls, so this check only guards wider streams.
-  // The event's conversation id is the database one, not the display id the app opens
-  // conversations by, so the call's conversation comes from its message or push instead.
+  // Socket conversation IDs are database IDs.
   onVoiceCallIncoming = (data: VoiceCallIncomingEvent) => {
     if (data?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
     if (!selectCurrentUserReceivesCalls(store.getState())) return;
@@ -205,9 +201,6 @@ class ActionCableConnector extends BaseActionCableConnector {
     );
   };
 
-  // Account-wide: someone (this device or another agent) took the call. Drop the ringing
-  // entry unless this device owns it; always mark dismissed so a late ringing
-  // message.created cannot resurrect it.
   onVoiceCallAccepted = (data: VoiceCallStatusEvent) => {
     if (!data?.provider) return;
     store.dispatch(markCallDismissed(data.call_id));
@@ -216,27 +209,20 @@ class ActionCableConnector extends BaseActionCableConnector {
     store.dispatch(removeCall(data.call_id));
   };
 
-  // The WebRTC tunnel is up. Apply the answer to this device's own outbound session so
-  // the handshake completes while ringing; the call only becomes active on pickup.
   onVoiceCallOutboundConnected = (data: VoiceCallStatusEvent) => {
     if (data?.provider !== VOICE_CALL_PROVIDERS.WHATSAPP || !data.sdp_answer) return;
     const state = store.getState();
-    // The call this device is placing may not be known yet; the answer waits for it
     if (!selectCalls(state).some(call => call.callSid === data.call_id)) {
       if (selectPlacingCall(state)) holdEarlyAnswer(data.call_id, data.sdp_answer);
       return;
     }
     if (selectLocalCallSid(state) === data.call_id) {
-      // Without the contact's answer the call would go live with no media, so it is ended
       callEngine.whatsapp
         .applyAnswer(data.sdp_answer)
         .catch(() => store.dispatch(callActions.rejectIncomingCall(data.call_id)));
     }
   };
 
-  // Releases the microphone when the call this device is on ends from the other side. With
-  // a join still in flight the media is released at once and again once the join settles,
-  // so whatever the join connects meanwhile is released too.
   private hangupIfLocal = (callSid: string) => {
     const pending = pendingJoin(callSid);
     if (pending) {

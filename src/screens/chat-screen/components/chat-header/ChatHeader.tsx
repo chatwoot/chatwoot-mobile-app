@@ -188,7 +188,7 @@ export const ChatHeader = ({
             onPress={onContactDetailsPress}
             accessibilityRole="button"
             style={[tailwind.style('flex-row items-center gap-3'), { flexShrink: 1 }]}>
-            <Avatar size="xl" initialsClassName="text-[13px]" src={imageSrc} name={name} />
+            <Avatar size="xl" initialsClassName="text-[11px]" src={imageSrc} name={name} />
             {/* Name, with the inbox (channel icon and name) as a second line. */}
             <Animated.View style={{ flexShrink: 1 }}>
               <Animated.Text
@@ -259,7 +259,7 @@ export const ChatHeader = ({
               matching the conversation list; 24pt with one letter elsewhere. */}
           <Avatar
             size={iosList ? 'xl' : 'md'}
-            initialsClassName={iosList ? 'text-[13px]' : undefined}
+            initialsClassName={iosList ? 'text-[11px]' : undefined}
             src={imageSrc}
             name={name}
           />

@@ -32,7 +32,7 @@ export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
       layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}>
       <Avatar
         size={size}
-        initialsClassName={iosList ? 'text-[16px]' : undefined}
+        initialsClassName={iosList ? 'text-[14px]' : undefined}
         {...{ src, name, status: status as AvatarStatusType }}
       />
     </AnimatedNativeView>

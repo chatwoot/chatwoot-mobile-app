@@ -13,3 +13,15 @@ index eb1cc942ba5ec3ff7e359be3b0a3822b24685fe9..9f019722e829a0f3df3ae3c2fb663940
      throw InvalidDateException()
    }
    return Date(timeIntervalSince1970: milliseconds.rounded(.towardZero) / 1000.0)
+diff --git a/apple/scripts/build-xcframework.sh b/apple/scripts/build-xcframework.sh
+index 28d3249bebc01086a04487b8b1ab12de225abacd..5d059af7ab2a864dcb3945cb10ad8f57dc69f853 100755
+--- a/apple/scripts/build-xcframework.sh
++++ b/apple/scripts/build-xcframework.sh
+@@ -207,7 +207,6 @@ build_slice() {
+     -destination "generic/platform=${destination}" \
+     -derivedDataPath "$DERIVED_DATA_PATH" \
+     -configuration "$CONFIGURATION" \
+-    -quiet \
+     -disableAutomaticPackageResolution \
+     -skipPackagePluginValidation \
+     -skipMacroValidation \

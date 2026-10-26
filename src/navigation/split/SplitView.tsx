@@ -17,13 +17,18 @@ import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import { ConversationActions } from '@/screens/chat-screen/conversation-actions';
+import { MacrosPane } from '@/screens/chat-screen/components/macros/MacrosPane';
+import { ReplyBoxContainer } from '@/screens/chat-screen/components/reply-box/ReplyBoxContainer';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { ChatWindowProvider, ContainerWidthContext, RefsProvider } from '@/context';
 import { tailwind } from '@/theme';
 import { useIsSplitLayout } from '@/utils';
+import { useAppSelector } from '@/hooks';
+import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
 import i18n from '@/i18n';
 import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import {
+  ComposePaneContext,
   ContactPaneContext,
   DashboardColumnParams,
   DetailPaneContext,
@@ -103,7 +108,16 @@ const SecondaryPane = ({
   const navigation = useNavigation();
   const { right } = useSafeAreaInsets();
   // Actions and contact details use the iOS Settings style: light gray with flat white cards.
-  const background = column.kind === 'dashboard' ? 'bg-white' : 'bg-gray-50';
+  const isPrivateNote = useAppSelector(selectIsPrivateMessage);
+  const background =
+    column.kind === 'compose'
+      ? // Matches the editor, including under the status bar column.
+        isPrivateNote
+        ? 'bg-amber-50'
+        : 'bg-white'
+      : column.kind === 'dashboard'
+        ? 'bg-white'
+        : 'bg-gray-50';
 
   let content: React.ReactNode = null;
   if (column.kind === 'contact') {
@@ -133,6 +147,21 @@ const SecondaryPane = ({
             <ActionBottomSheet />
           </ChatWindowProvider>
         </RefsProvider>
+      </DetailPaneContext.Provider>
+    );
+  } else if (column.kind === 'macros') {
+    content = <MacrosPane conversationId={conversationId} />;
+  } else if (column.kind === 'compose') {
+    // The reply editor, with the chat's context so the draft (kept in the store) carries over.
+    content = (
+      <DetailPaneContext.Provider value={true}>
+        <ComposePaneContext.Provider value={true}>
+          <RefsProvider>
+            <ChatWindowProvider conversationId={conversationId}>
+              <ReplyBoxContainer />
+            </ChatWindowProvider>
+          </RefsProvider>
+        </ComposePaneContext.Provider>
       </DetailPaneContext.Provider>
     );
   } else {
@@ -180,6 +209,8 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       isSecondaryOpen,
       openContact: () => setSecondary({ kind: 'contact' }),
       openActions: () => setSecondary({ kind: 'actions' }),
+      openMacros: () => setSecondary({ kind: 'macros' }),
+      openCompose: () => setSecondary({ kind: 'compose' }),
       openDashboard: (params: DashboardColumnParams) =>
         setSecondary({ kind: 'dashboard', ...params }),
       closeSecondary: () => setSecondary(null),

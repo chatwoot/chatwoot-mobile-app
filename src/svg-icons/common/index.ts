@@ -44,3 +44,4 @@ export * from './Company';
 export * from './SocialIcons';
 export * from './Error';
 export * from './InfoCircle';
+export * from './ExpandCompose';

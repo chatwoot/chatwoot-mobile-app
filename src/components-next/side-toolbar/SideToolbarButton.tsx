@@ -11,6 +11,9 @@ type SideToolbarButtonProps = {
   accessibilityLabel: string;
   // Shows a small dot, e.g. when filters are applied.
   showBadge?: boolean;
+  // Optical size: symbols with a lot of empty space (✕, …) need a larger box to look as
+  // big as round ones.
+  iconSize?: number;
   disabled?: boolean;
 };
 
@@ -20,6 +23,7 @@ export const SideToolbarButton = ({
   onPress,
   accessibilityLabel,
   showBadge,
+  iconSize = 24,
   disabled,
 }: SideToolbarButtonProps) => {
   if (!onPress) {
@@ -27,7 +31,7 @@ export const SideToolbarButton = ({
       <View
         accessibilityRole="button"
         accessibilityLabel={accessibilityLabel}
-        style={tailwind.style('h-11 w-11 rounded-full items-center justify-center')}>
+        style={tailwind.style('h-[34px] w-[34px] rounded-full items-center justify-center')}>
         <View>
           {showBadge && (
             <View
@@ -36,7 +40,7 @@ export const SideToolbarButton = ({
               )}
             />
           )}
-          <Icon size={24} icon={icon} />
+          <Icon size={iconSize} icon={icon} />
         </View>
       </View>
     );
@@ -45,11 +49,13 @@ export const SideToolbarButton = ({
     <Pressable
       onPress={onPress}
       disabled={disabled}
+      // 34pt circle; a margin keeps the tap area comfortable.
+      hitSlop={{ top: 4, left: 6, right: 6, bottom: 4 }}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       style={({ pressed }) =>
         tailwind.style(
-          'h-11 w-11 rounded-full items-center justify-center',
+          'h-[34px] w-[34px] rounded-full items-center justify-center',
           pressed ? 'bg-blackA-A3' : 'bg-transparent',
         )
       }>
@@ -59,7 +65,7 @@ export const SideToolbarButton = ({
             style={tailwind.style('absolute z-10 -right-0.5 h-2.5 w-2.5 rounded-full bg-blue-800')}
           />
         )}
-        <Icon size={24} icon={icon} />
+        <Icon size={iconSize} icon={icon} />
       </View>
     </Pressable>
   );

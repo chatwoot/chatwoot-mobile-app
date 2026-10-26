@@ -6,13 +6,23 @@ import { useSideTabBarLayout } from '@/utils';
 
 // Header for split view panes and columns (iPhone Duo), matching the list headers: the same
 // top margin, a 36pt row with a small centered title, and no divider. Actions live in the
-// side toolbar, so the side slots stay empty to keep the title centered.
-export const PaneHeader = ({ title }: { title: string }) => {
+// side toolbar, so the side slots are usually empty; a column with its own navigation (e.g.
+// macro details) can put Back and an action in them. They're equal width to keep the title
+// centered.
+export const PaneHeader = ({
+  title,
+  left,
+  right,
+}: {
+  title: string;
+  left?: React.ReactNode;
+  right?: React.ReactNode;
+}) => {
   const sideTabBar = useSideTabBarLayout();
   return (
     <View style={{ paddingTop: sideTabBar?.contentTopPadding ?? 0 }}>
       <View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
-        <View style={tailwind.style('w-24 h-9')} />
+        <View style={tailwind.style('w-24 h-9 flex-row items-center justify-start')}>{left}</View>
         <Text
           numberOfLines={1}
           accessibilityRole="header"
@@ -21,7 +31,7 @@ export const PaneHeader = ({ title }: { title: string }) => {
           )}>
           {title}
         </Text>
-        <View style={tailwind.style('w-24 h-9')} />
+        <View style={tailwind.style('w-24 h-9 flex-row items-center justify-end')}>{right}</View>
       </View>
     </View>
   );

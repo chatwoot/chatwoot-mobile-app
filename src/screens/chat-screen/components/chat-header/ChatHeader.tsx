@@ -5,8 +5,10 @@ import Animated from 'react-native-reanimated';
 import { Avatar, Icon } from '@/components-next';
 import {
   ChevronLeft,
+  CheckCircleIcon,
   CloseIcon,
   InfoCircleIcon,
+  ReopenCircleIcon,
   Overflow,
   SLAIcon,
   StatusOpenIcon,
@@ -47,6 +49,10 @@ type ChatHeaderProps = {
   // Opens conversation actions (split view pane: a column on the right).
   onOpenActions?: () => void;
 };
+
+// Line weight for side toolbar icons drawn at 24pt: about 1.5pt on screen, matching the
+// tab bar icons, so both capsules read as one monochrome set.
+const TOOLBAR_STROKE = 1.5;
 
 export const ChatHeader = ({
   name,
@@ -95,31 +101,42 @@ export const ChatHeader = ({
     useSideToolbar(
       isContactOpen ? (
         <SideToolbarButton
-          icon={<ChevronLeft stroke={HEADER_ICON_COLOR} />}
+          icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+          iconSize={24}
           onPress={() => splitView?.closeSecondary()}
           accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
         />
       ) : isOnActionsPage ? (
         <SideToolbarButton
-          icon={<ChevronLeft stroke={HEADER_ICON_COLOR} />}
+          icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+          iconSize={24}
           onPress={() => chatPagerView.current?.setPage(0)}
           accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK_TO_MESSAGES')}
         />
       ) : (
         <>
           <SideToolbarButton
-            icon={<CloseIcon stroke={HEADER_ICON_COLOR} />}
+            icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.2} />}
+            iconSize={28}
             onPress={onBackPress}
             accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
           />
           <SideToolbarButton
-            icon={isOpen ? <StatusResolvedIcon /> : <StatusOpenIcon />}
+            icon={
+              isOpen ? (
+                <CheckCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+              ) : (
+                <ReopenCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+              )
+            }
+            iconSize={24}
             onPress={onToggleChatStatus}
             accessibilityLabel={statusLabel}
           />
           {onOpenActions ? (
             <SideToolbarButton
-              icon={<InfoCircleIcon stroke={HEADER_ICON_COLOR} />}
+              icon={<InfoCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+              iconSize={24}
               onPress={onOpenActions}
               accessibilityLabel={i18n.t('CONVERSATION_ACTION.TITLE')}
             />
@@ -127,7 +144,8 @@ export const ChatHeader = ({
           {paneMenuList.length > 0 ? (
             <ChatDropdownMenu dropdownMenuList={paneMenuList} plainTrigger>
               <SideToolbarButton
-                icon={<Overflow strokeWidth={2} />}
+                icon={<Overflow stroke={HEADER_ICON_COLOR} strokeWidth={1.3} />}
+                iconSize={26}
                 accessibilityLabel={i18n.t('CONVERSATION.HEADER.MORE')}
               />
             </ChatDropdownMenu>
@@ -183,8 +201,9 @@ export const ChatHeader = ({
               {inboxName ? (
                 <Animated.View style={tailwind.style('flex-row items-center gap-1')}>
                   {channelIcon ? <Icon icon={channelIcon} size={13} /> : null}
-                  {/* Full inbox name; wraps rather than being cut off if it's very long. */}
+                  {/* One line; truncated with "…" when there isn't room. */}
                   <Animated.Text
+                    numberOfLines={1}
                     style={tailwind.style(
                       'flex-shrink text-[13px] leading-[18px] font-inter-normal-20 text-gray-700',
                     )}>

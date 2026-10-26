@@ -141,6 +141,7 @@ const InboxList = ({
       <InboxItemContainer
         item={item}
         index={index}
+        nextConversationId={notifications[index + 1]?.primaryActor?.id}
         openedRowIndex={openedRowIndex as SharedValue<number | null>}
       />
     );

@@ -1,7 +1,12 @@
 import { Platform, useWindowDimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { SIDE_TAB_BAR_GAP, SIDE_TAB_BAR_WIDTH, TAB_BAR_HEIGHT } from '@/constants';
+import {
+  SIDE_STATUS_COLUMN_SHIFT,
+  SIDE_TAB_BAR_GAP,
+  SIDE_TAB_BAR_WIDTH,
+  TAB_BAR_HEIGHT,
+} from '@/constants';
 
 export type SideTabBarLayout = {
   edge: 'left' | 'right';
@@ -27,9 +32,9 @@ export const useSideTabBarLayout = (): SideTabBarLayout | null => {
   // Center the capsule in the status bar column, like the status pill. Only when it doesn't
   // fit do screens need extra padding beyond the safe area; otherwise they can run to the
   // display edge (bars and backgrounds full width, content kept clear by the safe area).
-  const fits = SIDE_TAB_BAR_WIDTH + 2 <= sideInset;
+  const fits = SIDE_TAB_BAR_WIDTH + 2 * SIDE_STATUS_COLUMN_SHIFT + 2 <= sideInset;
   const offset = fits
-    ? (sideInset - SIDE_TAB_BAR_WIDTH) / 2
+    ? (sideInset - SIDE_TAB_BAR_WIDTH) / 2 + SIDE_STATUS_COLUMN_SHIFT
     : Math.max(SIDE_TAB_BAR_GAP, (sideInset - SIDE_TAB_BAR_WIDTH) / 2);
   const contentPadding = fits
     ? 0

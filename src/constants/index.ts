@@ -12,7 +12,11 @@ export const SCREENS = {
 
 export const TAB_BAR_HEIGHT = 83;
 // Side tab bar (iPhone Duo style): a floating capsule along the edge that holds the status bar.
-export const SIDE_TAB_BAR_WIDTH = 52;
+// Matches the width of the status bar items (camera, time, battery) above it.
+export const SIDE_TAB_BAR_WIDTH = 40;
+// iOS centers the side status bar items a little inward of the safe-area column's center
+// (measured on iPhone Duo); the capsules line up with them.
+export const SIDE_STATUS_COLUMN_SHIFT = 5;
 // Smallest gap kept between the side tab bar and the display edge or content.
 export const SIDE_TAB_BAR_GAP = 8;
 // Space the side status bar (time, Wi-Fi, battery) takes at the top of its column on

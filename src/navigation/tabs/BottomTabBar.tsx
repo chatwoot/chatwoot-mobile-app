@@ -161,8 +161,15 @@ const TabItem = (props: any) => {
 
   const { onPress, onLongPress, isFocused, options, route, vertical } = props;
 
-  // Memoize hitSlop to prevent new object reference on every render
-  const hitSlop = React.useMemo(() => ({ top: 2, left: 10, right: 10, bottom: 10 }), []);
+  // Memoize hitSlop to prevent new object reference on every render. In the side capsule the
+  // 34pt buttons get an even margin so the tap area stays comfortable.
+  const hitSlop = React.useMemo(
+    () =>
+      vertical
+        ? { top: 4, left: 6, right: 6, bottom: 4 }
+        : { top: 2, left: 10, right: 10, bottom: 10 },
+    [vertical],
+  );
 
   // Use stable object reference for accessibilityState when not focused
   const accessibilityState = React.useMemo(
@@ -176,7 +183,7 @@ const TabItem = (props: any) => {
           'justify-center items-center',
           // In the side capsule the selected tab gets a soft circle, like system side tab bars.
           vertical
-            ? `h-11 w-11 rounded-full ${isFocused ? 'bg-blackA-A3' : 'bg-transparent'}`
+            ? `h-[34px] w-[34px] rounded-full ${isFocused ? 'bg-blackA-A3' : 'bg-transparent'}`
             : 'flex-1 bg-transparent',
         ),
         animatedStyle,
@@ -189,7 +196,9 @@ const TabItem = (props: any) => {
         accessibilityLabel={options.tabBarAccessibilityLabel}
         testID={options.tabBarTestID}
         // In the side capsule the whole round button is the tap target.
-        style={vertical ? tailwind.style('h-11 w-11 items-center justify-center') : undefined}
+        style={
+          vertical ? tailwind.style('h-[34px] w-[34px] items-center justify-center') : undefined
+        }
         onPress={onPress}
         onLongPress={onLongPress}>
         <TabBarIcons focused={isFocused} route={route} compact={vertical} />
@@ -245,7 +254,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
         <Animated.View
           style={[
             tailwind.style(
-              'absolute flex flex-col items-center py-1 gap-1 rounded-full',
+              'absolute flex flex-col items-center py-[3px] gap-1.5 rounded-full',
               capsuleBorder,
               `w-[${SIDE_TAB_BAR_WIDTH}px] top-[${SIDE_STATUS_BAR_CLEARANCE}px]`,
             ),
@@ -268,7 +277,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
                 // Floating capsule on the status bar side (iPhone Duo), anchored near the
                 // bottom like the system side tab bar.
                 tailwind.style(
-                  'flex flex-col absolute items-center py-1 gap-1 rounded-full',
+                  'flex flex-col absolute items-center py-[3px] gap-1.5 rounded-full',
                   capsuleBorder,
                   `w-[${SIDE_TAB_BAR_WIDTH}px] bottom-[${bottom + 16}px]`,
                 ),

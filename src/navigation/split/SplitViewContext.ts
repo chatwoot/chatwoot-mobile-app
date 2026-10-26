@@ -5,12 +5,15 @@ export type SplitViewContextValue = {
   openConversation: (conversationId: number) => void;
   // Clears the conversation pane back to its empty state.
   closeConversation: () => void;
-  // A secondary column (contact details, conversation actions or a dashboard app): the list
+  // A secondary column (contact details, conversation actions, macros or a dashboard app): the list
   // slides away, the conversation narrows on the left and the column opens on the right.
   secondary: SecondaryColumn | null;
   isSecondaryOpen: boolean;
   openContact: () => void;
   openActions: () => void;
+  openMacros: () => void;
+  // Full reply editor (iPhone Duo), next to the conversation so you can read while writing.
+  openCompose: () => void;
   openDashboard: (params: DashboardColumnParams) => void;
   closeSecondary: () => void;
 };
@@ -27,6 +30,8 @@ export type DashboardColumnParams = {
 export type SecondaryColumn =
   | { kind: 'contact' }
   | { kind: 'actions' }
+  | { kind: 'macros' }
+  | { kind: 'compose' }
   | ({ kind: 'dashboard' } & DashboardColumnParams);
 
 export const SplitViewContext = createContext<SplitViewContextValue | null>(null);
@@ -41,3 +46,8 @@ export const ContactPaneContext = createContext(false);
 
 /** True inside the contact details column of the split view. */
 export const useIsInContactPane = () => useContext(ContactPaneContext);
+
+export const ComposePaneContext = createContext(false);
+
+/** True inside the compose column (the full reply editor) of the split view. */
+export const useIsInComposePane = () => useContext(ComposePaneContext);

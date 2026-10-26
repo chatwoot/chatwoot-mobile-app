@@ -6,6 +6,7 @@
 export type TabIconProps = { compact?: boolean };
 
 const COMPACT_SIZE = 28;
+const COMPACT_DRAWN_SIZE = 24;
 
 /**
  * @param canvasWidth width of the icon's full canvas (its height is 40)
@@ -19,8 +20,9 @@ export const tabIconCanvas = (
 ) =>
   compact
     ? {
-        width: COMPACT_SIZE,
-        height: COMPACT_SIZE,
+        // Drawn at 24pt so the tab glyphs (about 22–24pt) match the side toolbar's icons.
+        width: COMPACT_DRAWN_SIZE,
+        height: COMPACT_DRAWN_SIZE,
         viewBox: `${24 - COMPACT_SIZE / 2} ${glyphCenterY - COMPACT_SIZE / 2} ${COMPACT_SIZE} ${COMPACT_SIZE}`,
       }
     : { width: canvasWidth, height: 40, viewBox: `0 0 ${canvasWidth} 40` };

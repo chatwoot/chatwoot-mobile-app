@@ -25,6 +25,8 @@ type InboxItemContainerProps = {
   item: Notification;
   index: number;
   openedRowIndex: SharedValue<number | null>;
+  // The next row's conversation, so this row can hide its divider above a selected row.
+  nextConversationId?: number;
 };
 
 const UnreadComponent = React.memo(() => {
@@ -55,7 +57,7 @@ const DeleteComponent = React.memo(() => {
 });
 
 export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
-  const { index, item, openedRowIndex } = props;
+  const { index, item, openedRowIndex, nextConversationId } = props;
   const dispatch = useAppDispatch();
 
   const navigation = useNavigation();
@@ -152,6 +154,9 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       <SelectedRowBackground
         selected={
           !!item.primaryActor?.id && splitView?.selectedConversationId === item.primaryActor.id
+        }
+        beforeSelected={
+          !!nextConversationId && splitView?.selectedConversationId === nextConversationId
         }>
         <InboxItem
           isRead={isRead}

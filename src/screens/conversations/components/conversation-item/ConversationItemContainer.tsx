@@ -35,6 +35,8 @@ type ConversationItemContainerProps = {
   conversationItem: Conversation;
   index: number;
   openedRowIndex: SharedValue<number | null>;
+  // The next row's conversation, so this row can hide its divider above a selected row.
+  nextConversationId?: number;
 };
 
 const ReadComponent = React.memo(() => {
@@ -65,7 +67,7 @@ const StatusComponent = React.memo(() => {
 });
 
 export const ConversationItemContainer = memo((props: ConversationItemContainerProps) => {
-  const { conversationItem, index, openedRowIndex } = props;
+  const { conversationItem, index, openedRowIndex, nextConversationId } = props;
   const {
     meta: {
       sender: { name: senderName, thumbnail: senderThumbnail, id: contactId },
@@ -182,7 +184,11 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       handlePress={onPressAction}
       triggerOverswipeOnFlick
       {...{ index, openedRowIndex }}>
-      <SelectedRowBackground selected={splitView?.selectedConversationId === id}>
+      <SelectedRowBackground
+        selected={splitView?.selectedConversationId === id}
+        beforeSelected={
+          !!nextConversationId && splitView?.selectedConversationId === nextConversationId
+        }>
         <ConversationItem {...viewProps} />
       </SelectedRowBackground>
     </Swipeable>

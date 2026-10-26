@@ -13,14 +13,22 @@ import { tailwind } from '@/theme';
 
 const SelectedRowContext = createContext(false);
 
-/** True inside the row that's open in the split view; rows hide their divider. */
+/**
+ * True when a row should hide its divider: it's the row open in the split view, or the row
+ * just above it (so no line touches the highlight).
+ */
 export const useIsRowSelected = () => useContext(SelectedRowContext);
 
 export const SelectedRowBackground = ({
   selected,
+  beforeSelected = false,
   children,
-}: PropsWithChildren<{ selected: boolean }>) => (
-  <SelectedRowContext.Provider value={selected}>
+}: PropsWithChildren<{
+  selected: boolean;
+  // The next row is the selected one: hide this row's divider too.
+  beforeSelected?: boolean;
+}>) => (
+  <SelectedRowContext.Provider value={selected || beforeSelected}>
     <View>
       {selected ? (
         <View

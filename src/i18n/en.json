@@ -166,6 +166,13 @@
     "TODAY": "Today",
     "YESTERDAY": "Yesterday",
     "TYPE_MESSAGE": "Type message",
+    "EXPAND_REPLY": "Expand reply",
+    "COMPOSE": {
+      "REPLY": "Reply",
+      "PRIVATE_NOTE": "Private note",
+      "CLOSE": "Close",
+      "SEND": "Send"
+    },
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
@@ -189,7 +196,10 @@
     "EMAIL_HEAD": {
       "TO": "To",
       "CC": "Cc",
-      "BCC": "Bcc"
+      "BCC": "Bcc",
+      "CC_BCC": "Cc/Bcc",
+      "REMOVE_CC": "Remove Cc and Bcc",
+      "REMOVE_BCC": "Remove Bcc"
     },
     "SELF_ASSIGN": "Assign to me",
     "UN_ASSIGN": "Unassign conversation",

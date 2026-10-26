@@ -110,18 +110,25 @@ const ConversationList = ({
   // This is used to check if all the conversations are fetched
   const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
 
-  const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
-    return (
-      <ConversationItemContainer
-        index={index}
-        conversationItem={item}
-        openedRowIndex={openedRowIndex as SharedValue<number | null>}
-      />
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const filters = useAppSelector(selectFilters);
+
+  const allConversations = useAppSelector(state =>
+    getFilteredConversations(state, filters, userId),
+  );
+
+  const handleRender = useCallback(
+    ({ item, index }: FlashListRenderItemType) => {
+      return (
+        <ConversationItemContainer
+          index={index}
+          conversationItem={item}
+          nextConversationId={allConversations[index + 1]?.id}
+          openedRowIndex={openedRowIndex as SharedValue<number | null>}
+        />
+      );
+    },
+    [allConversations, openedRowIndex],
+  );
 
   // Reset last active timestamp when the conversation screen is opened
   useEffect(() => {
@@ -232,10 +239,6 @@ const ConversationList = ({
       setFlashListReady(true);
     }
   }, [isFlashListReady, openedRowIndex]);
-
-  const allConversations = useAppSelector(state =>
-    getFilteredConversations(state, filters, userId),
-  );
 
   const shouldShowEmptyLoader = isConversationsLoading && allConversations.length === 0;
 

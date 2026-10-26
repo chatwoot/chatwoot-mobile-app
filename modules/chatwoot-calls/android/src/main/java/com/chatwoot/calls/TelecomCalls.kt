@@ -20,23 +20,15 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-// Registers each call with Android's Telecom framework, the counterpart of CallKit. The
-// system then routes audio to Bluetooth, car and watch, treats the call as a phone call
-// for do-not-disturb and a cellular call arriving mid-call, and shows its own in-call
-// chip. The ring screen and notification stay ours; Telecom is told when the call is
-// answered, connected and ended, and asked for audio route changes.
 object TelecomCalls {
   private const val TAG = "TelecomCalls"
   private const val AUTO_RESUME_POLL_MS = 1000L
-  // A ring still open with Telecom past the ring window, and this margin, is ended,
-  // whatever left it open; a ringing call there blocks new ones and takes the audio route
-  // requests. The window counts from when the call began ringing, a ring posted again
-  // included.
+  // Stale rings block calls and routing.
   private const val RING_LIMIT_MARGIN_MS = 5_000L
 
   private class Tracked(val callSid: String) {
     val addedAt = android.os.SystemClock.elapsedRealtime()
-    // Endpoint flows can remain open after the platform disconnects the call.
+    // Endpoint streams can outlive disconnected calls.
     val work = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     @Volatile var scope: CallControlScope? = null
     @Volatile var ended = false
@@ -56,21 +48,13 @@ object TelecomCalls {
   private var manager: CallsManager? = null
   @Volatile private var appContext: Context? = null
 
-  // The last call could not be registered with Telecom; the app then manages the call's
-  // audio itself until a registration succeeds
   @Volatile var registrationFailed = false
-  // Told when a registration fails, so a call already under way switches to the app's own
-  // audio handling
   @Volatile var onRegistrationFailed: ((callSid: String) -> Unit)? = null
 
-  // The agent acted on a system surface such as a headset button or a watch
   @Volatile var onSystemAnswer: ((callSid: String) -> Unit)? = null
   @Volatile var onSystemDisconnect: ((callSid: String) -> Unit)? = null
-  // The system put the call on hold, or took it back: a cellular call was answered or ended
   @Volatile var onSystemHold: ((callSid: String, held: Boolean) -> Unit)? = null
 
-  // Before the module has set its handlers, while a push is still starting the app, the
-  // choice is kept as a pending action for the app to apply once it is running
   private fun systemAnswer(context: Context, callSid: String) {
     val handler = onSystemAnswer
     if (handler != null) handler(callSid) else CallNotification.applySystemAction(context, "answer", callSid)
@@ -84,12 +68,8 @@ object TelecomCalls {
       else -> CallNotification.storeEnd(context, callSid)
     }
   }
-  // The audio route changed, or the set of routes did; names are the devices' own
   @Volatile var onAudioRoute: ((callSid: String, current: String, available: List<String>, names: List<String>) -> Unit)? = null
 
-  // Android 14+ uses Telecom; older devices use AppCallAudio.
-  // The debug property lets a tester run without Telecom:
-  // adb shell setprop debug.chatwoot.telecom 0
   val supported: Boolean
     get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && debugProperty("debug.chatwoot.telecom") != "0"
 
@@ -142,7 +122,6 @@ object TelecomCalls {
         ) {
           entry.scope = this
           registrationFailed = false
-          // Marked active before the scope existed: catch up now
           if (entry.active && !entry.ended) launch { setActive() }
           entry.work.launch {
             availableEndpoints.collect { list ->
@@ -183,7 +162,6 @@ object TelecomCalls {
     scope.launch { scope.setActive() }
   }
 
-  // Parks the call at the agent's request; returns false when Telecom is not tracking it
   fun hold(callSid: String): Boolean {
     val entry = tracked[callSid] ?: return false
     val scope = entry.scope ?: return false
@@ -195,19 +173,16 @@ object TelecomCalls {
     return true
   }
 
-  // The app is answering this ring: a cancel push that crosses the answer must leave it alone
+  // Answers outlive crossed cancel pushes.
   fun markAnswering(callSid: String) {
     tracked[callSid]?.active = true
   }
 
-  // An answer that did not go through leaves the call ringing in Telecom; this ends it
   fun abandonAnswer(callSid: String) {
     tracked[callSid]?.active = false
     endRinging(callSid, "failed")
   }
 
-  // Asks Telecom for the call back; succeeds once no other call holds the audio.
-  // Returns false when Telecom is not tracking the call
   fun resume(callSid: String): Boolean {
     val entry = tracked[callSid] ?: return false
     val scope = entry.scope ?: return false
@@ -224,9 +199,7 @@ object TelecomCalls {
     onSystemHold?.invoke(entry.callSid, held)
   }
 
-  // Android does not hand a held self-managed call back by itself when the call that
-  // displaced it ends, so while held the call is asked for again once no other call
-  // is in the audio mode
+  // Telecom does not resume displaced calls.
   private fun autoResume(entry: Tracked) {
     val scope = entry.scope ?: return
     entry.work.launch {
@@ -240,8 +213,6 @@ object TelecomCalls {
     }
   }
 
-  // The server says the ring is over. That also reaches the device that answered, so a
-  // call already live here is left alone.
   fun endRinging(callSid: String, reason: String) {
     val entry = tracked[callSid] ?: return
     if (entry.active) return
@@ -252,8 +223,7 @@ object TelecomCalls {
     val entry = tracked[callSid] ?: return
     entry.endingLocally = true
     finishRouting(entry)
-    // Telecom accepts only these four causes from an app; a call that failed here ended on
-    // this side, so it counts as local
+    // Telecom permits four app-reported disconnect causes.
     val cause = DisconnectCause(
       when (reason) {
         "rejected", "declined" -> DisconnectCause.REJECTED
@@ -290,17 +260,14 @@ object TelecomCalls {
     }
   }
 
-  // A registering call can keep a route choice until its endpoints arrive.
   private fun routeTarget(): Tracked? {
     val live = tracked.values.filter { !it.ended }
     return live.filter { it.active }.maxByOrNull { it.addedAt } ?: live.maxByOrNull { it.addedAt }
   }
 
-  // Speaker on, or the best non-speaker route available: Bluetooth, then a wired headset,
-  // then the earpiece. False means the app must manage audio without Telecom.
   fun setSpeaker(enabled: Boolean): Boolean = setRoute(if (enabled) "speaker" else "default")
 
-  // Telecom owns the request even while the call or endpoint is not ready.
+  // Telecom owns routing while registration completes.
   fun setRoute(route: String): Boolean {
     if (!available) return false
     val entry = routeTarget()

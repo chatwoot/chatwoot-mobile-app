@@ -13,9 +13,6 @@ import androidx.core.app.Person
 import androidx.core.app.ServiceCompat
 import androidx.core.graphics.drawable.IconCompat
 
-// Holds a call in progress as a foreground service, which keeps the microphone available
-// while the app is in the background and gives the agent a persistent notification with
-// Hang up and a way back to the call screen.
 class OngoingCallService : Service() {
   override fun onBind(intent: Intent?): IBinder? = null
 
@@ -35,9 +32,7 @@ class OngoingCallService : Service() {
     running = true
     latestStartId = startId
     ContactPhoto.fetchAsync(avatar) { photo ->
-      // A call style notification is only allowed while this service holds it in the
-      // foreground, so the photo is dropped once the call has ended. A photo for an
-      // earlier start, such as a previous call, is dropped too.
+      // CallStyle updates require a foreground service.
       if (!running || latestStartId != startId) return@fetchAsync
       runCatching {
         NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, notification(callSid, name, handle, inboxName, calling, photo))
@@ -86,8 +81,7 @@ class OngoingCallService : Service() {
   }
 
   companion object {
-    // Default importance so the call shows on the lock screen, where silent notifications
-    // are hidden; the channel itself makes no sound
+    // Default importance preserves lock-screen visibility.
     const val CHANNEL_ID = "voice_calls_ongoing_visible"
     private const val RETIRED_CHANNEL_ID = "voice_calls_ongoing"
     const val NOTIFICATION_ID = 4712
@@ -100,8 +94,6 @@ class OngoingCallService : Service() {
     const val EXTRA_OPEN_CALL = "com.chatwoot.calls.OPEN_CALL"
 
     fun start(context: Context, callSid: String, name: String, handle: String, inboxName: String, avatar: String, state: String) {
-      // From Android 14 a microphone service may only start with the microphone granted;
-      // without it the call carries no audio from this phone anyway
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
         androidx.core.content.ContextCompat.checkSelfPermission(context, android.Manifest.permission.RECORD_AUDIO) !=
         android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -123,12 +115,8 @@ class OngoingCallService : Service() {
       }
     }
 
-    // The call the service was last started for; there is one service for whichever call
-    // this phone carries
     @Volatile private var currentCallSid: String? = null
 
-    // Stops the service, unless it is stopped for an earlier call and now carries another,
-    // so ending an old call does not take down a newer one's notification
     fun stop(context: Context, callSid: String? = null) {
       val current = currentCallSid
       if (callSid != null && current != null && current != callSid) return
@@ -136,7 +124,6 @@ class OngoingCallService : Service() {
       context.stopService(Intent(context, OngoingCallService::class.java))
     }
 
-    // Brings the app up on its call screen
     private fun openCallIntent(context: Context): PendingIntent? {
       val launch = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: return null
       launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)

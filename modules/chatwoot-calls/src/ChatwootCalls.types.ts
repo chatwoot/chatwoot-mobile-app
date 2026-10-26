@@ -11,15 +11,12 @@ export type TwilioCallStateEvent = {
   error?: string;
 };
 
-// A call the system call UI knows about
 export type SystemCall = {
   uuid: string;
   callSid: string;
-  // Numeric call record id, present when the call arrived by push
   callId?: number;
   provider: 'whatsapp' | 'twilio';
   displayName: string;
-  // The caller's own name, for a call that arrived by push; displayName also names the inbox
   callerName?: string;
   handle: string;
   outgoing: boolean;
@@ -37,7 +34,6 @@ export type SystemCallReport = {
   conversationId?: number;
   inboxId?: number;
   accountId?: number;
-  // The WhatsApp call's id, so a call placed here can be ended from CallKit alone
   callId?: number;
 };
 
@@ -72,9 +68,6 @@ export type AudioSessionEvent = { active: boolean; provider: string };
 
 export type VoipTokenEvent = { token: string | null };
 
-// What the agent pressed on Android's native call screen or call notification; `pending`
-// means a stored answer or decline is waiting to be applied, `dismissed` that a ringing
-// call's notification was swiped away
 export type NativeCallActionEvent =
   | { action: 'mute'; enabled: boolean }
   | { action: 'speaker'; enabled: boolean }
@@ -86,13 +79,11 @@ export type NativeCallActionEvent =
 
 export type NativeCallState = 'connected' | 'ended' | 'failed';
 
-// What the in-progress notification says: a call being placed, or one that is connected
 export type OngoingCallState = 'calling' | 'active';
 
 export type AudioRoute = 'earpiece' | 'speaker' | 'bluetooth' | 'wired' | 'unknown';
 
-// The audio route of the call in progress, the routes on offer, and the devices' own
-// names in the same order, empty where a route has none
+// Route names align with available routes.
 export type AudioRouteEvent = {
   callSid?: string;
   current: AudioRoute;

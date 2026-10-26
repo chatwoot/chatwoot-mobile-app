@@ -2,15 +2,12 @@
           xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.RECORD_AUDIO" />
   <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-  <!-- Call audio can use headsets; the permission is asked for with the microphone -->
   <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
   <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-  <!-- A headset is optional: calls work on the earpiece and speaker without Bluetooth -->
   <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
 
   <application>
-    <!-- Takes call pushes before JavaScript starts; every other message falls through to
-         the React Native Firebase service this one extends. -->
+    <!-- Handle call pushes before JavaScript starts. -->
     <service
       android:name="com.chatwoot.calls.CallMessagingService"
       android:exported="false"
@@ -24,19 +21,15 @@
       android:name="com.chatwoot.calls.CallActionReceiver"
       android:exported="false" />
 
-    <!-- Holds a call in progress: microphone access in the background and the
-         persistent notification with Hang up -->
     <service
       android:name="com.chatwoot.calls.OngoingCallService"
       android:exported="false"
       android:foregroundServiceType="microphone" />
 
-    <!-- Carries a call answered over the keyguard without showing the app -->
     <service
       android:name="com.chatwoot.calls.CallSessionService"
       android:exported="false" />
 
-    <!-- Answer on the call notification: draws nothing and routes the answer -->
     <activity
       android:name="com.chatwoot.calls.CallAnswerActivity"
       android:exported="false"
@@ -46,7 +39,6 @@
       android:taskAffinity=".CallAnswer"
       android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-    <!-- The ringing screen itself: shown over the keyguard, kept out of recents -->
     <activity
       android:name="com.chatwoot.calls.IncomingCallActivity"
       android:exported="false"

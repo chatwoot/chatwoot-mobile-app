@@ -18,13 +18,9 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.interfaces.fabric.ReactSurface
 import org.json.JSONObject
 
-// The call screen shown over the lock screen, drawn natively so it appears the moment the
-// push arrives. The app runs behind it, invisible, to carry the audio; it is only brought
-// forward once the phone is unlocked. Ringing and connecting are native; once the call is
-// up, the app's own call screen is rendered into this activity so both screens are one.
+// Native ringing precedes the React surface.
 class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.core.PermissionAwareActivity {
 
-  // The React instance hosted here asks for permissions through its current activity
   private var permissionListener: com.facebook.react.modules.core.PermissionListener? = null
 
   override fun requestPermissions(
@@ -110,7 +106,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     if (callerAvatar.isNotEmpty()) loadAvatar(callerAvatar)
     views.showRingingTray(onDecline = { decline() }, onAnswer = { answer() })
     watchForUnlock()
-    // Answer pressed on the notification opens this screen already answering
     if (intent.getBooleanExtra(EXTRA_ANSWER, false)) {
       answer()
       return
@@ -124,8 +119,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     }, CallNotification.ringRemainingMs(callSid))
   }
 
-  // The React host mounts views only while it sees a resumed activity, so this screen
-  // reports its own lifecycle for as long as it hosts the app's call screen
+  // React surfaces require a resumed activity.
   override fun onStart() {
     super.onStart()
     visible = true
@@ -160,7 +154,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     super.onDestroy()
   }
 
-  // MARK: phases
 
   private fun answer() {
     ringer.stop()
@@ -176,21 +169,18 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       handOverToApp()
       return
     }
-    // The app's JavaScript carries the call from behind this screen, with no activity shown
     CallSessionService.start(this, callSid, callId)
     mountCallScreen()
     handler.postDelayed({ if (phase == Phase.CONNECTING) finishAndRemoveTask() }, CONNECT_TIMEOUT_MS)
   }
 
-  // The lock screen is not a way into the app, so Back does nothing here
+  // Back cannot expose locked app content.
   @Deprecated("Deprecated in Java")
   override fun onBackPressed() {
     if (phase == Phase.RINGING) super.onBackPressed()
   }
 
-  // The app's call screen, rendered here by the React instance the call already runs in.
-  // It stays hidden until it reports a call to draw, so the native controls keep working
-  // while the call connects.
+  // Keep native controls until React renders.
   private fun mountCallScreen() {
     if (callScreen != null) return
     val host = (application as? ReactApplication)?.reactHost ?: return
@@ -215,14 +205,11 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     TelecomCalls.end(callSid, "rejected")
     CallNotification.storePendingAction(this, "decline", callSid, callId, callDetails)
     CallNotification.cancel(this, callSid)
-    // The app applies the stored decline whether it is running or has to be started; the
-    // choice is consumed once, so both paths together apply it a single time
     NativeCallBridge.emit("pending")
     CallSessionService.start(this, callSid, callId)
     showNextRingOrFinish()
   }
 
-  // This ring is over; the oldest call still ringing takes the screen, or it closes
   private fun showNextRingOrFinish() {
     CallNotification.forgetRing(callSid)
     val next = CallNotification.nextRingingAfter(callSid)
@@ -230,8 +217,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       finishAndRemoveTask()
       return
     }
-    // The screen is rebuilt for the next call in its own task; starting a new screen here
-    // would land in this task and be removed with it
+    // New activities inherit this task's removal.
     setIntent(intent(this, next))
     recreate()
   }
@@ -250,7 +236,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     connected()
   }
 
-  // A call that rang while this one was up and is still ringing takes the screen
   private fun ended() {
     showNextRingOrFinish()
   }
@@ -271,14 +256,12 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
         showInCallTray(enabled = true)
       },
       onEnd = {
-        // The tray changes under the finger that answered; a press right after is not an end
+        // Prevent answer taps from ending calls.
         if (SystemClock.elapsedRealtime() - answeredAt >= TAP_GUARD_MS) endFromTray()
       }
     )
   }
 
-  // The call is in progress, so the app ends it; with the app not listening, as while it
-  // reloads, the hang-up waits for it as an end
   private fun endFromTray() {
     if (!NativeCallBridge.emit("end", callSid = callSid)) CallNotification.storeEnd(this, callSid)
     showNextRingOrFinish()
@@ -290,10 +273,7 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     }
   }
 
-  // Once the phone is unlocked the app's own call screen takes over. If the agent went home
-  // on the way, this screen closes and the call carries on behind the status bar chip.
-  // The unlock broadcast comes from System UI, which Android treats as another app, so
-  // the receiver is exported; only the system can send this broadcast.
+  // Protected System UI broadcasts require export.
   private fun watchForUnlock() {
     val receiver = object : BroadcastReceiver() {
       override fun onReceive(context: Context, intent: Intent) {
@@ -358,9 +338,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
     const val EXTRA_ACCOUNT_ID = "accountId"
     const val EXTRA_ANSWER = "answer"
 
-    // What the app reports about the call it is carrying; a report for another call
-    // leaves this screen alone, unless the app switched to that call while this screen
-    // held one in progress, which the screen then follows
     fun applyState(state: String, callSid: String?) {
       val activity = current ?: return
       if (callSid != null && activity.callSid != callSid) {
@@ -377,7 +354,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       }
     }
 
-    // The app's call screen has a call to draw, or nothing again
     fun setCallScreenVisible(visible: Boolean) {
       val activity = current ?: return
       activity.runOnUiThread {
@@ -385,8 +361,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       }
     }
 
-    // Leaves the lock-screen call for the app. The phone shows its unlock screen first,
-    // where the fingerprint and PIN work; true once the app has been opened.
     fun openApp(onResult: (Boolean) -> Unit) {
       val activity = current ?: return onResult(false)
       activity.runOnUiThread {
@@ -409,7 +383,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       }
     }
 
-    // An answer or decline from a system surface lands on the screen when it is showing
     fun applySystemAction(callSid: String, action: String): Boolean {
       val activity = current ?: return false
       if (activity.callSid != callSid || activity.phase != Phase.RINGING) return false
@@ -417,7 +390,6 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       return true
     }
 
-    // The server says this ring is over; a call already being answered is left to the app
     fun cancelRinging(callSid: String) {
       val activity = current ?: return
       activity.runOnUiThread {
@@ -425,10 +397,8 @@ class IncomingCallActivity : AppCompatActivity(), com.facebook.react.modules.cor
       }
     }
 
-    // Whether the screen is up and still ringing
     fun isRinging(): Boolean = current?.phase == Phase.RINGING
 
-    // Whether the screen is up at all, ringing or carrying a call
     fun isShowing(): Boolean = current != null
 
     fun intent(context: Context, data: Map<String, String>): Intent {

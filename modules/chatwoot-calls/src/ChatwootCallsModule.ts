@@ -66,5 +66,4 @@ declare class ChatwootCallsModule extends NativeModule<ChatwootCallsModuleEvents
   callKitRequestMute(uuid: string, muted: boolean): Promise<void>;
 }
 
-// Null when the native side is not compiled in (tests, web), so callers can degrade
 export default requireOptionalNativeModule<ChatwootCallsModule>('ChatwootCalls');

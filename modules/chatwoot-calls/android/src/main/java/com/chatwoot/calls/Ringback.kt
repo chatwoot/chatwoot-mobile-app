@@ -7,12 +7,10 @@ import kotlin.math.PI
 import kotlin.math.min
 import kotlin.math.sin
 
-// The double ring heard while the far end rings, played into the call's audio
 object Ringback {
   private const val RATE = 8000
-  // 400 Hz and 450 Hz together: on 0.4 s, off 0.2 s, on 0.4 s, then 2 s of silence
   private val PATTERN = listOf(0.4 to true, 0.2 to false, 0.4 to true, 2.0 to false)
-  // Each burst fades in and out over 10 ms so it starts and stops without a click
+  // Fades prevent clicks at burst boundaries.
   private const val FADE_SAMPLES = 80
 
   private var track: AudioTrack? = null

@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { openSettings } from 'react-native-permissions';
 
 import i18n from '@/i18n';
-import { isMediaUnavailableError, isMicrophoneDeniedError } from '@/services/voice/callEngine';
+import { isMediaUnavailableError, isMicrophoneDeniedError } from '@/services/voice/callErrors';
 
 import { showToast } from './toastUtils';
 

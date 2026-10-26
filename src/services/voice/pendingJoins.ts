@@ -25,6 +25,18 @@ export const cancelJoin = (callSid: string) => {
 
 export const isJoinCancelled = (callSid: string) => cancelledJoins.has(callSid);
 
+let locallyEndedSid: string | null = null;
+
+export const markLocalEnd = (callSid: string) => {
+  locallyEndedSid = callSid;
+};
+
+export const takeLocalEnd = (callSid: string) => {
+  const endedHere = locallyEndedSid === callSid;
+  if (endedHere) locallyEndedSid = null;
+  return endedHere;
+};
+
 const actionDrains = new Set<Promise<unknown>>();
 
 export const trackActionDrain = (run: Promise<unknown>) => {

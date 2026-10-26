@@ -7,7 +7,6 @@ import { CallService } from '@/store/call/callService';
 import native from '../../../../modules/chatwoot-calls/src/ChatwootCallsModule';
 
 jest.mock('react-native-device-info', () => ({ isEmulatorSync: () => false }));
-jest.mock('../callSessionCore', () => ({ markLocalEnd: jest.fn() }));
 jest.mock('../callerInfo', () => ({ selectCallerInfo: jest.fn() }));
 jest.mock('@/utils/voiceCallFeedback', () => ({ reportAnswerFailure: jest.fn() }));
 jest.mock('../webrtcEngine', () => ({

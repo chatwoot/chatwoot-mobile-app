@@ -8,7 +8,7 @@ import {
   stopAppCallAudio,
   setSpeakerOn as nativeSetSpeakerOn,
 } from '@/services/voice/chatwootCalls';
-import { MicrophoneDeniedError } from '@/services/voice/callEngine';
+import { MicrophoneDeniedError } from '@/services/voice/callErrors';
 
 import type { IceServer } from '@/store/call/callTypes';
 

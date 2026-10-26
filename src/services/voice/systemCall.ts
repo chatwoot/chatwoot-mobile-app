@@ -25,11 +25,11 @@ import { isAwaitingTwilioContact } from '@/utils/voiceCallUtils';
 
 import { callEngine } from './callEngine';
 import { selectCallerInfo } from './callerInfo';
-import { markLocalEnd } from './callSessionCore';
 import {
   cancelJoin,
   isJoinCancelled,
   type JoinResult,
+  markLocalEnd,
   pendingJoin,
   trackJoin,
 } from './pendingJoins';

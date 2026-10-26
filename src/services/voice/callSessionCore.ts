@@ -31,7 +31,12 @@ import {
 import type { RootState } from '@/store';
 import type { LiveCall } from '@/store/call/callTypes';
 import { callerInfo, systemCall, whenNotJoining } from '@/services/voice/systemCall';
-import { closeSession, isSessionClosing, trackActionDrain } from '@/services/voice/pendingJoins';
+import {
+  closeSession,
+  isSessionClosing,
+  takeLocalEnd,
+  trackActionDrain,
+} from '@/services/voice/pendingJoins';
 import { takePendingCallAction, type PendingCallAction } from '@/utils/callNotifications';
 import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import {
@@ -68,12 +73,6 @@ let attachments = 0;
 let detach: (() => void) | null = null;
 
 let openedForCall = false;
-
-let locallyEndedSid: string | null = null;
-
-export const markLocalEnd = (callSid: string) => {
-  locallyEndedSid = callSid;
-};
 
 // Keep native surfaces during call switches.
 let switching = false;
@@ -352,8 +351,7 @@ const install = () => {
       });
       startCarried(state, carried);
     } else if (!carried && carriedSid) {
-      stopOngoingCallNotification(carriedSid, locallyEndedSid === carriedSid ? 'local' : 'remote');
-      if (locallyEndedSid === carriedSid) locallyEndedSid = null;
+      stopOngoingCallNotification(carriedSid, takeLocalEnd(carriedSid) ? 'local' : 'remote');
     }
     carriedSid = carried?.callSid ?? null;
     carriedActive = !!carried?.isActive;

@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.9.11",
+  "version": "4.9.15",
   "packageManager": "pnpm@10.11.0",
   "scripts": {
     "start": "expo start --dev-client",
@@ -129,6 +129,7 @@
     "@types/react": "~19.2.0",
     "@welldone-software/why-did-you-render": "^10.0.1",
     "dotenv-cli": "^7.4.2",
+    "eas-cli": "^26.0.0",
     "eslint": "^8.57.0",
     "eslint-config-expo": "^10.0.0",
     "eslint-config-prettier": "^9.1.0",

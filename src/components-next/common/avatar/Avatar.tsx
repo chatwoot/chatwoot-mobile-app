@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import {
-  ImageProps,
-  ImageSourcePropType,
-  ImageURISource,
-  Text,
-  View,
-  ViewProps,
-} from 'react-native';
+import { ImageSourcePropType, ImageURISource, Text, View, ViewProps } from 'react-native';
+import type { ImageProps } from 'expo-image';
 
 import { avatarTheme, tailwind } from '@/theme';
 import { Channel } from '@/types';
@@ -90,6 +84,10 @@ export interface AvatarProps extends ViewProps {
    * The Avatar Channel Indicator, more likely for
    */
   channel: Channel;
+  /**
+   * Content shown in place of the initials, behind the image while it loads and after it fails
+   */
+  fallback: React.ReactNode;
 }
 
 export const Avatar: React.FC<Partial<AvatarProps>> = props => {
@@ -102,6 +100,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
     parentsBackground = 'text-white',
     imageProps = {},
     channel,
+    fallback,
     style,
     ...boxProps
   } = props;
@@ -122,7 +121,22 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
         styleAdapter(style),
       ]}
       {...boxProps}>
-      {imageAvailable && src ? (
+      {fallback !== undefined ? (
+        <>
+          {fallback}
+          {imageAvailable && src ? (
+            <View style={tailwind.style('absolute inset-0')}>
+              <AvatarImage
+                size={size}
+                imageProps={imageProps}
+                src={src as ImageURISource}
+                squared={isSquared}
+                handleFallback={loadFallback}
+              />
+            </View>
+          ) : null}
+        </>
+      ) : imageAvailable && src ? (
         <AvatarImage
           size={size}
           imageProps={imageProps}

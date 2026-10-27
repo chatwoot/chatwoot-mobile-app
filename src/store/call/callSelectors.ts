@@ -22,8 +22,6 @@ export const selectIncomingCalls = createSelector(selectCalls, calls =>
 
 export const selectHasIncomingCall = createSelector(selectIncomingCalls, calls => calls.length > 0);
 
-// The call the full screen shows: the live one, then one this device is joining, then one
-// it is placing, then an inbound ring the OS is not showing itself
 export const selectFullScreenCall = createSelector(
   selectActiveCall,
   selectIncomingCalls,
@@ -36,7 +34,6 @@ export const selectFullScreenCall = createSelector(
     if (outbound) return outbound;
     const inbound = incomingCalls.filter(call => call.callDirection === 'inbound');
     if (!isSystemCallUiAvailable()) return inbound[0] ?? null;
-    // The OS refused to show this ring, so the app stands in for it
     return inbound.find(call => call.systemUiFailed) ?? null;
   },
 );
@@ -65,8 +62,6 @@ export const selectIsSpeakerOn = createSelector(
 
 export const selectAudioRoute = createSelector(selectCallsState, state => state.audioRoute);
 
-// A WhatsApp call this device placed is ringing at the contact's end, unanswered. Twilio
-// carries the contact network's own ringback.
 export const selectIsRingingBack = createSelector(
   [selectCalls, selectLocalCallSid],
   (calls, localCallSid) =>

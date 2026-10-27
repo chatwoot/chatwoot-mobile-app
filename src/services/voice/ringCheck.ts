@@ -10,9 +10,7 @@ type RingTarget = {
   createdAt: unknown;
 };
 
-// Whether a call a chat bubble still shows ringing is ringing on the server. Asked before
-// an answer that would end the call the agent is on, so a bubble left stale by a missed
-// update does not cost them that call. A check that cannot be made leaves it to the join.
+// Verify ringing before replacing another call.
 export const isStillRinging = async (target: RingTarget) => {
   if (!isRingStillOpen(target.provider, target.createdAt)) return false;
   try {
@@ -23,7 +21,7 @@ export const isStillRinging = async (target: RingTarget) => {
     const ringing = await CallService.getRingingCalls();
     return ringing.some(call => call.call_id === target.callSid);
   } catch (error) {
-    // A call the server no longer has is not ringing; any other failure leaves it to the join
+    // Let the join handle transient failures.
     return (error as { response?: { status?: number } })?.response?.status !== 404;
   }
 };

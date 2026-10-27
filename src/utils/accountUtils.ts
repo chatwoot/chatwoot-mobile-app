@@ -25,8 +25,7 @@ import {
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 
-// The account of the call this device is on, joining or placing, or null with none. The
-// socket follows the account on screen, so a call's signaling stops on a switch away.
+// Account switches interrupt the signaling socket.
 const accountWithCall = (): number | null => {
   const state = getStore().getState();
   const calls = selectCallsState(state);
@@ -37,8 +36,6 @@ const accountWithCall = (): number | null => {
   return call?.accountId ?? placing?.accountId ?? selectCurrentUserAccountId(state) ?? null;
 };
 
-// Switches the account on screen. While a call is on this device the switch is refused,
-// unless it is to the call's own account; returns whether it switched.
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   const callAccountId = accountWithCall();
   if (callAccountId != null && Number(callAccountId) !== Number(accountId)) {
@@ -56,7 +53,6 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllParticipants());
   dispatch(resetCopilot());
   dispatch(resetSentMessage());
-  // The account being left, read before it changes
   dispatch((keep, getState) =>
     keep(
       keepOnlyLocalCall({ leaving: selectCurrentUserAccountId(getState()), entering: accountId }),

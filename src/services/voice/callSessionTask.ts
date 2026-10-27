@@ -17,10 +17,7 @@ import { reportNativeCallState } from '@/services/voice/chatwootCalls';
 import { discardPendingCallActions } from '@/utils/callNotifications';
 import { applyPendingCallAction, attachCallSessionCore } from './callSessionCore';
 
-// Carries a call the agent answered on Android's native call screen while the phone was
-// locked. It runs as a headless task, so the call has JavaScript, the socket and the media
-// engines behind it without any activity being shown; the app itself only appears if the
-// agent unlocks the phone, and it then finds the call already in the store.
+// Keep JavaScript alive for lock-screen calls.
 
 export const CALL_SESSION_TASK = 'ChatwootCallSession';
 
@@ -39,7 +36,7 @@ const waitForRehydration = () =>
     });
   });
 
-// The app's navigator normally opens the socket; without it, the task does
+// Headless tasks have no navigator lifecycle.
 const ensureCable = () => {
   if (actionCableConnector.isInitialised()) {
     actionCableConnector.ensureConnected();
@@ -59,8 +56,6 @@ const waitForCallToEnd = () =>
   new Promise<void>(resolve => {
     const settled = () => {
       const state = store.getState();
-      // Over once this device carries no call: nothing live, joining or owned here. A ring
-      // this device did not take is left to its own timeout and events.
       return !selectHasActiveCall(state) && !selectIsJoining(state) && !selectLocalCallSid(state);
     };
     const timer = setTimeout(finish, SESSION_LIMIT_MS);
@@ -78,8 +73,6 @@ const waitForCallToEnd = () =>
 export const runCallSessionTask = async () => {
   await waitForRehydration();
   if (!selectLoggedIn(store.getState())) {
-    // An answer or decline made on a ring that reached a signed-out phone has no session to
-    // act in, and is dropped so a later sign-in does not replay it
     discardPendingCallActions();
     reportNativeCallState('failed');
     return;

@@ -11,10 +11,6 @@ import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService
 import org.json.JSONArray
 import org.json.JSONObject
 
-// Rings for an incoming call straight from the push, without waiting for JavaScript to
-// start. With the app in front the push goes to JavaScript instead, which shows the call
-// in the app itself. Every other message is left to the React Native Firebase service
-// this extends.
 class CallMessagingService : ReactNativeFirebaseMessagingService() {
 
   override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -26,12 +22,10 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
     }
     when (data["type"]) {
       "voice_call.incoming" -> {
-        // A phone with nobody signed in does not ring, nor show the caller
         if (!CallSession.isSignedIn(applicationContext)) return
-        // A cancel can arrive before the ring it ends; that ring is not shown
+        // Cancellation can arrive before the ring.
         if (CallNotification.wasCancelled(applicationContext, callSid)) return
         if (AppVisibility.foreground) {
-          // The app rings for it; the phone takes over if the app leaves the front
           CallNotification.defer(data)
           super.onMessageReceived(remoteMessage)
           return
@@ -39,7 +33,6 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
         CallNotification.show(applicationContext, data)
         CallSessionService.warm(applicationContext)
       }
-      // The ring is over: answered elsewhere, declined, dropped or timed out
       "voice_call.cancel" -> {
         CallNotification.rememberCancelled(applicationContext, callSid)
         CallNotification.forgetRing(callSid)
@@ -57,7 +50,6 @@ class CallMessagingService : ReactNativeFirebaseMessagingService() {
 
 object CallNotification {
   const val CHANNEL_ID = "voice_calls_ring"
-  // The ring screen has its own ringtone, so a notification posted beside it stays quiet
   const val SILENT_CHANNEL_ID = "voice_calls_ring_silent"
   private const val RING_NOTIFICATION_BASE = 20_000
   const val ACTION_ANSWER = "com.chatwoot.calls.ANSWER"
@@ -67,11 +59,9 @@ object CallNotification {
   const val EXTRA_CALL_SID = "callSid"
   const val EXTRA_CALL_ID = "callId"
   const val PREFS = "chatwoot_calls"
-  // The agent's choices on calls, kept until the app applies them, oldest first
   const val PENDING_ACTIONS_KEY = "pendingCallActions"
   private val pendingLock = Any()
-  // Keeps the call out of the app's message notification group, which would otherwise
-  // hide the app name from the call's own header
+  // Separate grouping preserves the app name.
   const val GROUP_CALLS = "chatwoot_calls"
   const val ACCENT = 0xFF1F93FF.toInt()
   private const val RING_TIMEOUT_MS = 60_000L
@@ -87,10 +77,7 @@ object CallNotification {
     ringing[callSid] = data
     ringStarted.putIfAbsent(callSid, android.os.SystemClock.elapsedRealtime())
     TelecomCalls.add(context, callSid, name, caller?.optString("phone").orEmpty(), outgoing = false)
-    // The ring screen keeps the call it is showing, ringing or in progress; a further ring
-    // waits its turn there. Exactly one thing rings: the ring screen where it is up or about
-    // to open over the lock screen, the app itself where the agent is looking at it, and
-    // otherwise this notification.
+    // Only one surface rings audibly.
     val screenShowing = IncomingCallActivity.isShowing()
     val fullScreen = !screenShowing
     val overLockScreen = screenShowing || ringScreenWillOpen(context)
@@ -99,8 +86,7 @@ object CallNotification {
     val manager = NotificationManagerCompat.from(context)
     val id = notificationId(callSid)
     manager.notify(id, build(context, data, callSid, name, inboxName, null, fullScreen, ringsElsewhere, overLockScreen))
-    // The photo follows once it is in, as long as this call is still ringing, on the same
-    // channel so the ring it started carries on
+    // Photo updates must not restart ringing.
     ContactPhoto.fetchAsync(caller?.optString("avatar")) { photo ->
       val stillRinging = manager.activeNotifications.any { it.id == id }
       if (stillRinging) {
@@ -111,8 +97,6 @@ object CallNotification {
     }
   }
 
-  // The full-screen intent opens the ring screen, rather than a heads-up, when the phone is
-  // locked or its screen is off and the app may use full-screen intents
   private fun ringScreenWillOpen(context: Context): Boolean {
     val keyguard = context.getSystemService(android.app.KeyguardManager::class.java)
     val power = context.getSystemService(android.os.PowerManager::class.java)
@@ -123,7 +107,6 @@ object CallNotification {
       ?.canUseFullScreenIntent() == true
   }
 
-  // Rings the app took while in front, with when each arrived
   private val deferred = java.util.concurrent.ConcurrentHashMap<String, Pair<Map<String, String>, Long>>()
 
   fun defer(data: Map<String, String>) {
@@ -132,8 +115,6 @@ object CallNotification {
     deferred[callSid] = data to started
   }
 
-  // The app took over these rings from their notifications; they are posted again if it
-  // leaves the front while they still ring
   fun deferRinging(callSids: List<String>) {
     callSids.forEach { callSid ->
       val data = ringing[callSid] ?: return@forEach
@@ -142,8 +123,6 @@ object CallNotification {
     }
   }
 
-  // The app left the front: rings it took that are still within their ring window are
-  // posted here. True when any was.
   fun showDeferred(context: Context): Boolean {
     val now = android.os.SystemClock.elapsedRealtime()
     val live = deferred.values.filter { now - it.second < RING_TIMEOUT_MS }.map { it.first }
@@ -152,13 +131,10 @@ object CallNotification {
     return live.isNotEmpty()
   }
 
-  // The calls still ringing on this phone, oldest first, and when each began ringing
   private val ringing = java.util.Collections.synchronizedMap(LinkedHashMap<String, Map<String, String>>())
   private val ringStarted = java.util.concurrent.ConcurrentHashMap<String, Long>()
 
-  // Calls whose ring was cancelled, with when, so a ring push arriving after its cancel is
-  // ignored; kept in preferences with the wall-clock time, since a new process can take the
-  // late ring, and for longer than any ring lasts
+  // Persist cancellations across process restarts.
   private const val CANCELLED_KEY = "cancelledCalls"
   private const val CANCELLED_MEMORY_MS = 120_000L
 
@@ -182,8 +158,6 @@ object CallNotification {
     return System.currentTimeMillis() - stored.optLong(callSid) <= CANCELLED_MEMORY_MS
   }
 
-  // What is left of the ring's window, counted from when it began ringing, so a ring
-  // posted again keeps its original end
   fun ringRemainingMs(callSid: String): Long {
     val started = ringStarted[callSid] ?: return RING_TIMEOUT_MS
     val elapsed = android.os.SystemClock.elapsedRealtime() - started
@@ -232,11 +206,9 @@ object CallNotification {
       .setAutoCancel(false)
       .setOnlyAlertOnce(true)
       .setTimeoutAfter(ringRemainingMs(callSid))
-      // Swiped away: the ring stops on this phone only
       .setDeleteIntent(actionIntent(context, ACTION_DISMISS, callSid, data))
     val decline = actionIntent(context, ACTION_DECLINE, callSid, data)
-    // Over the lock screen, Answer goes to the ring screen through a broadcast: a button that
-    // opens an activity makes the lock screen ask for the PIN first
+    // Broadcast answers avoid lock-screen PIN prompts.
     val answer = if (overLockScreen) {
       actionIntent(context, ACTION_ANSWER, callSid, data)
     } else {
@@ -247,9 +219,7 @@ object CallNotification {
         .setFullScreenIntent(openAppIntent(context, callSid, data), true)
         .setStyle(androidx.core.app.NotificationCompat.CallStyle.forIncomingCall(person, decline, answer))
     } else {
-      // Android only accepts the call style with a full-screen intent or a foreground
-      // service, so a ring queued behind the ring screen is a plain notification with
-      // the same two actions
+      // CallStyle requires foreground or full-screen delivery.
       builder
         .setLargeIcon(photo)
         .addAction(0, "Decline", decline)
@@ -261,14 +231,12 @@ object CallNotification {
     return builder.build()
   }
 
-  // Each ringing call has its own notification, so ending one ring leaves the others
   fun notificationId(callSid: String) = RING_NOTIFICATION_BASE + (callSid.hashCode() and 0xFFFF)
 
   fun cancel(context: Context, callSid: String) {
     NotificationManagerCompat.from(context).cancel(notificationId(callSid))
   }
 
-  // Every ring notification this app has up
   fun cancel(context: Context) {
     val manager = NotificationManagerCompat.from(context)
     manager.activeNotifications
@@ -276,10 +244,8 @@ object CallNotification {
       .forEach { manager.cancel(it.id) }
   }
 
-  // What the push carried, kept for an answer or decline that comes from a system surface
   private val remembered = java.util.concurrent.ConcurrentHashMap<String, Map<String, String>>()
 
-  // A later report adds to what is known, so the app's details do not drop the push's
   fun remember(callSid: String, data: Map<String, String>) {
     remembered[callSid] = (remembered[callSid] ?: emptyMap()) + data
   }
@@ -296,12 +262,10 @@ object CallNotification {
 
   fun callIdFor(callSid: String): String? = remembered[callSid]?.get("id")
 
-  // A headset button, a watch or the system took the call or ended the ring
   fun applySystemAction(context: Context, action: String, callSid: String) {
     if (IncomingCallActivity.applySystemAction(callSid, action)) return
     val details = detailsFor(callSid) ?: return
     storePendingAction(context, action, callSid, callIdFor(callSid), details)
-    // Only the call acted on; other waiting calls keep their notifications
     forgetRing(callSid)
     cancel(context, callSid)
     NativeCallBridge.emit("pending")
@@ -314,15 +278,12 @@ object CallNotification {
     }
   }
 
-  // A call in progress was hung up from a system surface with no app to tell: the choice
-  // waits for the app, which a call session is started to run
   fun storeEnd(context: Context, callSid: String) {
     val callId = callIdFor(callSid)
     storePendingAction(context, "end", callSid, callId, detailsFor(callSid) ?: CallDetails(null, null, null))
     CallSessionService.start(context, callSid, callId)
   }
 
-  // What the app needs to answer a call it has not yet seen over the socket
   data class CallDetails(
     val provider: String?,
     val conversationId: String?,
@@ -333,8 +294,6 @@ object CallNotification {
     val accountId: String? = null
   )
 
-  // The agent's choice, kept until the app is running and can act on it. A newer choice on
-  // the same call replaces the older one; choices on other calls wait their turn.
   fun storePendingAction(
     context: Context,
     action: String,
@@ -364,14 +323,11 @@ object CallNotification {
       writePendingActions(prefs, existing.filterNot { it.optString("callSid") == callSid } + pending)
       replaced
     }
-    // Answered from now on, so Telecom's ring deadline leaves the call to the app however
-    // long the app takes to start; an answer taken back before the app applied it ends the
-    // call in Telecom too
+    // Answering suspends Telecom's ring deadline.
     if (action == "answer") TelecomCalls.markAnswering(callSid)
     else if (replacedAnswer) TelecomCalls.abandonAnswer(callSid)
   }
 
-  // The oldest choice waiting, or the one for the named call; removed once taken
   fun takePendingAction(context: Context, callSid: String?): String? = synchronized(pendingLock) {
     val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
     val queue = readPendingActions(prefs).toMutableList()
@@ -400,8 +356,7 @@ object CallNotification {
     )
   }
 
-  // Answer opens an activity directly; Android does not let a notification action start
-  // one from a broadcast receiver
+  // Notification trampolines cannot launch activities.
   private fun answerIntent(context: Context, callSid: String, data: Map<String, String>): PendingIntent {
     val intent = IncomingCallActivity.intent(context, data)
       .setClass(context, CallAnswerActivity::class.java)
@@ -444,10 +399,7 @@ object CallNotification {
 }
 
 object CallNotificationChannel {
-  // Two channels for the same ring: the audible one for a call the phone shows only as a
-  // notification, and a silent one for a call whose ring screen is already ringing
   fun ensure(context: Context) {
-    // Channels exist from Android 8; earlier versions post without one
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) return
     val manager = context.getSystemService(android.app.NotificationManager::class.java) ?: return
     if (manager.getNotificationChannel(CallNotification.CHANNEL_ID) == null) {

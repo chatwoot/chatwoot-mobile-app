@@ -14,7 +14,7 @@ export type WhatsappCallResponse = {
   inbox_id: number;
   message_id: number;
   accepted_by_agent_id: number | null;
-  // SHA-256 of the SDP answer the server accepted
+  // SHA-256 of the accepted SDP answer.
   answer_digest?: string | null;
   elapsed_seconds: number | null;
   sdp_offer: string | null;
@@ -42,16 +42,12 @@ type ConferenceParams = {
   conversationId: number;
   callSid: string;
   accountId?: number;
-  // Names the connection this join opens, which carries the same id to Twilio, so the server
-  // can tell it from an earlier one of the same agent
+  // Correlates the claim with its connection.
   attemptId?: string;
 };
 
-// A call that another agent took or that already ended answers with these; the call
-// actions report them in their own words
 const EXPECTED_CALL_ERRORS = [404, 409, 422];
 
-// Scopes a request to the call's own account when it has one
 const inAccount = (
   accountId: number | undefined,
   config: AxiosRequestConfig = {},
@@ -106,7 +102,6 @@ export type RingingCallResponse = {
 };
 
 export class CallService {
-  // The calls still ringing for this agent, which a phone that lost its socket catches up on
   static async getRingingCalls() {
     const response = await apiService.get<{ payload: RingingCallResponse[] }>('calls', {
       params: { status: 'ringing' },
@@ -149,7 +144,6 @@ export class CallService {
     return response.data;
   }
 
-  // Server-side dial of the contact into a Twilio conference; the agent leg joins separately
   static async startContactCall({
     contactId,
     inboxId,
@@ -173,8 +167,7 @@ export class CallService {
     return response.data;
   }
 
-  // A 422 here carries the permission-request outcome, which is a normal result rather
-  // than an error, so it is accepted instead of going through the global error toast.
+  // 422 can indicate permission-request success.
   static async initiateWhatsappCall({
     sdpOffer,
     conversationId,

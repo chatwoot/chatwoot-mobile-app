@@ -48,8 +48,7 @@ export const formatCallDuration = (durationInSeconds?: number | null) => {
   return hours > 0 ? `${hours.toString().padStart(2, '0')}:${mm}:${ss}` : `${mm}:${ss}`;
 };
 
-// The live call object is authoritative; content_attributes.data is the snapshot written when
-// the message was created or last updated and is only consulted when the call object is absent.
+// Live state takes precedence over snapshots.
 type CallFacts = {
   direction?: string;
   status?: string;
@@ -106,12 +105,10 @@ const getRecording = (message: Message, recordingUrl: string | null): VoiceCallR
 
 const TWILIO_ANSWER_STATUSES = ['in-progress', 'inprogress', 'answered'];
 
-// Whether Twilio's own status says the contact picked up
 export const isTwilioAnswerStatus = (providerStatus?: string | null) =>
   !!providerStatus && TWILIO_ANSWER_STATUSES.includes(providerStatus.toLowerCase());
 
-// A Twilio call this device placed whose contact has not picked up yet. The agent's own leg
-// is connected to the conference meanwhile, so the call counts as connected on the device.
+// Agent connection precedes the contact answer.
 export const isAwaitingTwilioContact = (call: {
   provider?: string;
   callDirection?: string;
@@ -121,8 +118,6 @@ export const isAwaitingTwilioContact = (call: {
   call.callDirection === 'outbound' &&
   !call.answeredAt;
 
-// When the in-call timer starts: the contact's answer for a Twilio call this device placed,
-// the moment this device joined otherwise
 export const callTimerStart = (
   call: { provider?: string; callDirection?: string; answeredAt?: number },
   activeSince: number | undefined,
@@ -131,8 +126,7 @@ export const callTimerStart = (
     ? call.answeredAt
     : activeSince;
 
-// Whether a call this device placed has reached the far handset. Twilio says so through
-// its own status; WhatsApp has no such event, so the call id Meta hands back stands in.
+// WhatsApp supplies no separate ringing event.
 export const isOutboundCallRinging = (call: {
   provider?: string;
   callSid?: string;
@@ -210,8 +204,7 @@ export const getVoiceCallDisplay = (message: Message): VoiceCallDisplay => {
   };
 };
 
-// A Twilio caller waits on hold until someone joins; a WhatsApp ring ends after its window,
-// so a call message still showing it ringing past that missed the update that ended it
+// Only WhatsApp rings expire client-side.
 export const isRingStillOpen = (
   provider: string | undefined,
   createdAt: unknown,

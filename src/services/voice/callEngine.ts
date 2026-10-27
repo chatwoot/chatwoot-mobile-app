@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import type { VoiceCallProvider } from '@/types';
 import type { IceServer } from '@/store/call/callTypes';
 
+import { MediaUnavailableError } from './callErrors';
 import { ensureMicrophonePermission, webrtcEngine } from './webrtcEngine';
 import {
   isNativeCallsAvailable,
@@ -17,8 +18,6 @@ import {
   type AudioRoute,
 } from '@/services/voice/chatwootCalls';
 
-// Media layer contract. Screens and thunks only talk to this interface; the media itself
-// is WebRTC for WhatsApp and Twilio's Voice SDK for Twilio.
 export type CallEngine = {
   whatsapp: {
     createOffer: (iceServers?: IceServer[]) => Promise<string>;
@@ -30,10 +29,8 @@ export type CallEngine = {
     connect: (token: string, params: Record<string, string>) => Promise<void>;
     disconnect: () => Promise<void>;
   };
-  // Ends the media for a call on the engine that carries its provider. With a session
-  // number from `session()`, it does nothing if another call's media has started since.
+  // Ignore hangups from superseded sessions.
   hangup: (provider: VoiceCallProvider, session?: number) => Promise<void>;
-  // Increases each time either engine starts media for a call
   session: () => number;
   setMuted: (muted: boolean) => Promise<void>;
   setSpeaker: (enabled: boolean) => Promise<void>;
@@ -41,41 +38,13 @@ export type CallEngine = {
   setAudioRoute: (route: AudioRoute) => Promise<void>;
 };
 
-export class MediaUnavailableError extends Error {
-  constructor(provider: VoiceCallProvider) {
-    super(`No media engine for ${provider}`);
-    this.name = 'MediaUnavailableError';
-  }
-}
-
-// The agent has turned the microphone off for the app, so no call can carry audio
-export class MicrophoneDeniedError extends Error {
-  constructor() {
-    super('Microphone permission denied');
-    this.name = 'MicrophoneDeniedError';
-  }
-}
-
-// Thunks serialise thrown errors into plain objects, so the check is by name, not class
-const isErrorNamed = (error: unknown, name: string) =>
-  typeof error === 'object' && error !== null && (error as { name?: string }).name === name;
-
-export const isMediaUnavailableError = (error: unknown) =>
-  isErrorNamed(error, 'MediaUnavailableError');
-
-export const isMicrophoneDeniedError = (error: unknown) =>
-  isErrorNamed(error, 'MicrophoneDeniedError');
-
 const unavailable = (provider: VoiceCallProvider) => async () => {
   throw new MediaUnavailableError(provider);
 };
 
-// Which engine currently holds the audio session, so mute and speaker go to the right one
 let activeProvider: VoiceCallProvider | null = null;
-// Counts media starts, so a hangup meant for an earlier call can be recognised
 let session = 0;
-// Counts Twilio connects and disconnects, so a connect still asking for the microphone
-// when the call is ended does not go on to connect
+// Disconnects invalidate connects awaiting microphone permission.
 let twilioStarts = 0;
 
 export class ConnectAbandonedError extends Error {
@@ -89,8 +58,6 @@ const beginSession = (provider: VoiceCallProvider) => {
   session += 1;
 };
 
-// WhatsApp media runs on WebRTC in JavaScript; Twilio media runs on Twilio's native Voice
-// SDK inside the in-repo ChatwootCalls module.
 export const callEngine: CallEngine = {
   whatsapp: {
     createOffer: async iceServers => {
@@ -104,7 +71,7 @@ export const callEngine: CallEngine = {
     applyAnswer: sdpAnswer => webrtcEngine.applyAnswer(sdpAnswer),
     hangup: async () => {
       if (activeProvider === 'whatsapp') activeProvider = null;
-      // The ringback goes with the media, before any request to the server
+      // Stop ringback before awaiting server requests.
       stopRingback();
       return webrtcEngine.hangup();
     },
@@ -113,9 +80,8 @@ export const callEngine: CallEngine = {
     connect: async (token, params) => {
       if (!isNativeCallsAvailable()) return unavailable('twilio')();
       const attempt = ++twilioStarts;
-      // Asked here as for WhatsApp, so a call in an account opened after launch still prompts
+      // Account switches can bypass launch prompts.
       await ensureMicrophonePermission();
-      // Ended while the permission was asked for: nothing is connected
       if (attempt !== twilioStarts) throw new ConnectAbandonedError();
       beginSession('twilio');
       webrtcEngine.abandonOpening();
@@ -149,7 +115,6 @@ export const callEngine: CallEngine = {
     if (activeProvider === 'twilio') nativeSetSpeakerOn(enabled);
     else await webrtcEngine.setSpeaker(enabled);
   },
-  // A named route; where the platform cannot pick one, speaker on or off is the fallback
   setAudioRoute: async route => {
     nativeSetAudioRoute(route);
     if (Platform.OS === 'android' && !hasNativeAudioRouting() && activeProvider !== 'twilio') {

@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Glyph, type GlyphProps } from './Glyph';
 
-// The phone held to the ear
 export const EarpieceGlyph = ({ color, size }: GlyphProps) => (
   <Glyph
     color={color}

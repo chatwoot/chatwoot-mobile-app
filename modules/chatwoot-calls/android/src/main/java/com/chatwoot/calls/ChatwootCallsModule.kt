@@ -44,8 +44,6 @@ class ChatwootCallsModule : Module() {
     }
   }
 
-  // Receives Twilio call callbacks and forwards them as a single state event. Only the
-  // current call reports; an earlier one ending late must not end the call that followed.
   private val callListener = object : Call.Listener {
     private fun current(call: Call) = call === activeCall
 
@@ -122,8 +120,6 @@ class ChatwootCallsModule : Module() {
         appContext.reactContext?.let { CallNotification.applySystemAction(it, "answer", callSid) }
       }
       TelecomCalls.onSystemHold = { callSid, held -> NativeCallBridge.emit("hold", held, callSid = callSid) }
-      // A ring still on this phone is declined through the pending action; any other call
-      // is ended by the app, or, before JavaScript listens, kept as an end for it
       TelecomCalls.onSystemDisconnect = { callSid ->
         val context = appContext.reactContext
         if (context != null && CallNotification.isRinging(callSid)) {
@@ -134,8 +130,6 @@ class ChatwootCallsModule : Module() {
       }
     }
 
-    // Without the module, Telecom's answer and decline are kept as pending actions until
-    // the next module attaches
     OnStartObserving("onNativeCallAction") {
       NativeCallBridge.listening = true
     }
@@ -158,12 +152,10 @@ class ChatwootCallsModule : Module() {
       TelecomCalls.onRegistrationFailed = null
     }
 
-    // The lock-screen call screen hosts the app's views too; it is not the app in front
     OnActivityEntersForeground {
       if (appContext.currentActivity !is IncomingCallActivity) AppVisibility.foreground = true
     }
 
-    // The in-progress notification was tapped: the app is up and the call screen is wanted
     OnNewIntent { intent ->
       if (intent.getBooleanExtra(OngoingCallService.EXTRA_OPEN_CALL, false)) {
         intent.removeExtra(OngoingCallService.EXTRA_OPEN_CALL)
@@ -171,14 +163,11 @@ class ChatwootCallsModule : Module() {
       }
     }
 
-    // The app left the front with a call still ringing in it: the ring moves to the phone
     OnActivityEntersBackground {
       AppVisibility.foreground = false
       if (CallNotification.showDeferred(context)) appRinger.stop()
     }
 
-    // Dials into the Twilio conference through the TwiML app. `params` become the
-    // TwiML request parameters (To, is_agent, conversation_id, call_sid).
     AsyncFunction("twilioConnect") { token: String, params: Map<String, String> ->
       activeCall?.disconnect()
       if (AppCallAudio.supported) twilioAudioToken = appAudio.start()
@@ -207,13 +196,11 @@ class ChatwootCallsModule : Module() {
       activeCall?.hold(hold)
     }
 
-    // A ringback for a call this device placed, while the contact's phone rings
     Function("startRingback") { -> Ringback.start() }
 
     Function("stopRingback") { -> Ringback.stop() }
 
     Function("setSpeakerOn") { enabled: Boolean ->
-      // A registering Telecom call keeps the choice until its endpoints arrive.
       if (AppCallAudio.supported) appAudio.setRoute(if (enabled) "speaker" else "default")
       else if (!TelecomCalls.setSpeaker(enabled)) audioManager.isSpeakerphoneOn = enabled
     }
@@ -226,12 +213,10 @@ class ChatwootCallsModule : Module() {
       if (AppCallAudio.supported) appAudio.stop(token)
     }
 
-    // Telecom owns audio mode, focus and routing for the calls it tracks
     Function("isTelecomAvailable") { ->
       TelecomCalls.available
     }
 
-    // A named route: speaker, earpiece, bluetooth or wired
     Function("setAudioRoute") { route: String ->
       if (AppCallAudio.supported) appAudio.setRoute(route)
       else if (!TelecomCalls.setRoute(route)) audioManager.isSpeakerphoneOn = route == "speaker"
@@ -242,25 +227,19 @@ class ChatwootCallsModule : Module() {
       mapOf("current" to current, "available" to available, "names" to names)
     }
 
-    // Answer or decline pressed on the call notification before the app was running
     Function("takePendingCallAction") { callSid: String? ->
       CallNotification.takePendingAction(context, callSid)
     }
 
-    // The app's own call UI replaces the ring notifications; the rings it shows are kept to
-    // be posted again should it leave the front
     Function("cancelCallNotification") { keepRinging: List<String>? ->
       CallNotification.deferRinging(keepRinging.orEmpty())
       CallNotification.cancel(context)
     }
 
-    // The native call screen follows the call the app is carrying behind it
     Function("reportCallState") { state: String, callSid: String? ->
       IncomingCallActivity.applyState(state, callSid)
     }
 
-    // The persistent notification for a call in progress, held by a foreground service,
-    // and the call's registration with Telecom
     Function("startOngoingCall") { callSid: String, name: String, handle: String, inboxName: String, avatar: String, state: String ->
       CallNotification.forgetRing(callSid)
       OngoingCallService.start(context, callSid, name, handle, inboxName, avatar, state)
@@ -276,8 +255,6 @@ class ChatwootCallsModule : Module() {
       CallNotification.remember(callSid, details)
     }
 
-    // An end for a call the app no longer has, after it reloaded: kept as a pending action
-    // with the details remembered for the call, for the app to end it with the server
     Function("queueEnd") { callSid: String ->
       CallNotification.storePendingAction(
         context, "end", callSid, CallNotification.callIdFor(callSid),
@@ -285,7 +262,6 @@ class ChatwootCallsModule : Module() {
       )
     }
 
-    // A ring that ended without becoming a call here is dropped from Telecom
     Function("markCallAnswering") { callSid: String ->
       CallNotification.forgetRing(callSid)
       TelecomCalls.markAnswering(callSid)
@@ -301,7 +277,6 @@ class ChatwootCallsModule : Module() {
       TelecomCalls.endRinging(callSid, "remote")
     }
 
-    // Hold and resume through Telecom; false means the call is not registered there
     Function("holdCall") { callSid: String ->
       TelecomCalls.hold(callSid)
     }
@@ -315,8 +290,6 @@ class ChatwootCallsModule : Module() {
       TelecomCalls.end(callSid, reason)
     }
 
-    // While the phone is locked the call screen may show, but nothing behind it may be
-    // reached, so the app hides the controls that would navigate into it
     Function("isAppInForeground") { ->
       AppVisibility.foreground
     }
@@ -327,7 +300,6 @@ class ChatwootCallsModule : Module() {
     }
 
 
-    // The lock-screen call activity shows the app's call screen once it has a call to draw
     Function("setLockScreenCallSurfaceVisible") { visible: Boolean ->
       IncomingCallActivity.setCallScreenVisible(visible)
     }
@@ -336,9 +308,7 @@ class ChatwootCallsModule : Module() {
       IncomingCallActivity.openApp { opened -> promise.resolve(opened) }
     }
 
-    // Android shows the frame saved when the app last left the foreground until the app
-    // draws again. While a call is up that frame goes stale within a second, so it is
-    // not saved. Needs Android 13; earlier versions keep the saved frame.
+    // Task snapshots become stale during calls.
     Function("setRecentsScreenshotEnabled") { enabled: Boolean ->
       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
         appContext.currentActivity?.let { activity ->
@@ -347,10 +317,6 @@ class ChatwootCallsModule : Module() {
       }
     }
 
-    // The app was opened by a call and the call is over: step back off the lock screen
-    // rather than leaving the app sitting on top of it
-    // The phone's ringtone while a call rings with the app in front, the same ring the
-    // native call screen uses
     Function("startAppRinger") { ->
       appRinger.stop()
       appRinger.start()
@@ -360,7 +326,7 @@ class ChatwootCallsModule : Module() {
       appRinger.stop()
     }
 
-    // The lock-screen call screen closes itself or shows the next ring, so it is left alone
+    // Lock-screen activities manage their own dismissal.
     Function("moveAppToBackground") { ->
       appContext.currentActivity?.takeUnless { it is IncomingCallActivity }?.let { activity ->
         activity.runOnUiThread { activity.moveTaskToBack(true) }

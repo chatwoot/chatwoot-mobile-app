@@ -2,7 +2,6 @@ import React from 'react';
 
 import { PhosphorGlyph, type GlyphProps } from './Glyph';
 
-// Phosphor's bold caret, pointing back
 export const CaretLeftGlyph = ({ color, size }: GlyphProps) => (
   <PhosphorGlyph
     color={color}

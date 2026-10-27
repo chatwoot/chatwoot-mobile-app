@@ -78,7 +78,6 @@ test('applies queued answers one at a time, keeping the joining call this device
   expect(answers).toHaveLength(1);
   answers[0]('answer-a');
   await new Promise(resolve => setTimeout(resolve, 0));
-  // B starts joining only once A has joined
   expect(answers).toHaveLength(2);
   expect(CallService.acceptWhatsappCall).toHaveBeenCalledTimes(1);
   answers[1]('answer-b');
@@ -90,7 +89,6 @@ test('applies queued answers one at a time, keeping the joining call this device
 
 test('an answer releases the outbound call this device is placing before taking over', async () => {
   (CallService.terminateWhatsappCall as jest.Mock).mockClear();
-  // The calls the previous test left behind
   store.getState().calls.calls.forEach(call => store.dispatch(removeCall(call.callSid)));
   store.dispatch(
     addCall({ callSid: 'out', callId: 9, provider: 'whatsapp', callDirection: 'outbound' }),

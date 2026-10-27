@@ -93,7 +93,6 @@ test('an answered inbound call is carried as an ongoing call while it connects',
       'active',
     );
 
-    // Started again once connected, for a start the microphone permission held back
     store.dispatch(setCallActive('answering'));
     expect(startOngoingCallNotification).toHaveBeenCalledTimes(2);
 
@@ -227,7 +226,6 @@ test('a kept end with call details ends the call with the server and clears the 
 
 test('an end for a call the reloaded app no longer has is recovered from the native details', async () => {
   const detach = attachCallSessionCore();
-  // The native side keeps the end with the details it remembered for the call
   (queueNativeEnd as jest.Mock).mockImplementationOnce(() =>
     (takePendingCallAction as jest.Mock).mockReturnValueOnce({
       action: 'end',

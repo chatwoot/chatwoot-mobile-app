@@ -10,7 +10,6 @@ import { SpinningNotch } from './SpinningNotch';
 
 type CallActionButtonProps = {
   label: string;
-  // Answering a ring is the strong action; calling back is the quiet one
   tone: 'answer' | 'callback';
   inFlight: boolean;
   onPress: () => void;
@@ -29,13 +28,10 @@ const TONES: Record<CallActionButtonProps['tone'], { idle: Colours; busy: Colour
   },
 };
 
-// The one action a call card offers, across the foot of the card. While it is in flight the
-// handset turns into a spinning ring; a call back also reads "Calling…" and greys out.
 export const CallActionButton = ({ label, tone, inFlight, onPress }: CallActionButtonProps) => {
   const { background, foreground } = TONES[tone][inFlight ? 'busy' : 'idle'];
   const shownLabel =
     inFlight && tone === 'callback' ? i18n.t('CONVERSATION.VOICE_WIDGET.CALLING') : label;
-  // The answer button fades while it waits; the call back button says so instead
   const idleOpacity = inFlight && tone === 'answer' ? 0.55 : 1;
   return (
     <Pressable

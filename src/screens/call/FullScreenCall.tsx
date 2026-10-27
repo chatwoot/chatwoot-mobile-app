@@ -27,12 +27,9 @@ type FullScreenCallProps = {
   call: LiveCall;
   onMinimise: () => void;
   onOpenConversation: () => void;
-  // Shown over the lock screen, where nothing else in the app may be reached
   onLockScreen?: boolean;
 };
 
-// The call screen with its controls wired to the call session. The in-app screen and the
-// Android lock screen both show this, so a control exists in one place for both.
 export const FullScreenCall = ({
   call,
   onMinimise,
@@ -44,8 +41,6 @@ export const FullScreenCall = ({
   const activeCall = useAppSelector(selectActiveCall);
   const isJoining = useAppSelector(selectIsJoining);
   const localCallSid = useAppSelector(selectLocalCallSid);
-  // Joining and connected describe the call on screen, not whichever call they belong to.
-  // An inbound call this device has taken is connecting from the moment it is taken.
   const connectedThis = activeCall?.callSid === call.callSid;
   const joiningThis =
     localCallSid === call.callSid &&
@@ -58,10 +53,8 @@ export const FullScreenCall = ({
   const info = useCallerInfo(call);
   const { answer, end, isEnding } = useCallActions(call, joiningThis);
   const ringingBehind = useRingingBehind({ call, isJoining });
-  // The strip of calls waiting behind this one steps aside while the route list is open
   const [routePickerOpen, setRoutePickerOpen] = useState(false);
 
-  // The photo is fetched into the cache as soon as the call has one
   useEffect(() => {
     if (info.avatar) Image.prefetch(info.avatar, 'memory-disk').catch(() => {});
   }, [info.avatar]);

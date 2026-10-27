@@ -15,7 +15,6 @@ import type { LiveCall } from '@/store/call/callTypes';
 import { CALL_BANNER_ROW_HEIGHT, CallBanner } from './components/CallBanner';
 import { useScreenCall } from './hooks/useScreenCall';
 
-// The same phases the call screen shows, for the call behind the bar
 const bannerFlags = (
   call: LiveCall,
   activeSid: string | undefined,
@@ -31,8 +30,6 @@ const bannerFlags = (
   };
 };
 
-// Wraps the whole app so the ongoing-call bar has room of its own: the screens move down
-// by the bar's row and their safe-area padding sits under the bar's status-bar half.
 export const OngoingCallBar = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
   const call = useScreenCall();

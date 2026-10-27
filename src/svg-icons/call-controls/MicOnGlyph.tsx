@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Glyph, type GlyphProps } from './Glyph';
 
-// The microphone, live
 export const MicOnGlyph = ({ color, size }: GlyphProps) => (
   <Glyph
     color={color}

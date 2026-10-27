@@ -12,7 +12,6 @@ import { CircleNotchIcon } from '@/svg-icons';
 
 const TURN_MS = 900;
 
-// An open ring turning steadily, shown while a call action is in flight
 export const SpinningNotch = ({ color, size }: { color: string; size: number }) => {
   const turn = useSharedValue(0);
   useEffect(() => {

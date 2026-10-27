@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 
-// How long a call has rung, as minutes and seconds ("0:41"), ticking once a second
 export const useRingingFor = (since?: number) => {
   const [seconds, setSeconds] = useState(0);
   useEffect(() => {

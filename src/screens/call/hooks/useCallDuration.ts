@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import { formatCallDuration } from '@/utils/voiceCallUtils';
 
-// Seconds since the call went active, ticking once a second
 export const useCallDuration = (activeSince?: number) => {
   const [elapsed, setElapsed] = useState(0);
   useEffect(() => {

@@ -58,14 +58,11 @@ const digest = (value: string) =>
 const httpStatus = (error: unknown) =>
   (error as { response?: { status?: number } })?.response?.status;
 
-// A call is placed in a conversation, or to a contact through an inbox, where the server
-// finds or opens the conversation it lands in
 export type StartOutboundCallParams = {
   provider: VoiceCallProvider;
   conversationId?: number;
   inboxId: number;
   contactId?: number;
-  // Who is being called, for the call screen while the conversation is not in the store
   caller?: CallerSnapshot | null;
 };
 
@@ -75,24 +72,16 @@ export type StartOutboundCallResult =
   | { status: 'cancelled' }
   | { status: 'permission_requested' | 'permission_pending' };
 
-// The agent can end a call that is still being placed. The provider request may already
-// be in flight, so the call is torn down as soon as it has an id to tear down. Each
-// placing attempt has a number and cancelling marks the current one, so a late result
-// from an earlier attempt cannot revive it or clear the next one.
+// Cancelled placements can still return calls.
 let placingAttempt = 0;
 const cancelledAttempts = new Set<number>();
 
 const findCall = (state: RootState, callSid: string) =>
   selectCalls(state).find(call => call.callSid === callSid);
 
-// Placing, answering, ending and dismissing calls, plus the media and sync actions
-// A call joins with the mute, speaker and hold chosen while it connected, from the call
-// screen or the OS; with none made it starts unmuted and live, on the route the system
-// picked, as each new call's state does
 const keepAudioChoices = async (getState: () => RootState) => {
   await callEngine.setMuted(selectIsMuted(getState())).catch(() => {});
   if (selectIsSpeakerOn(getState())) await callEngine.setSpeaker(true).catch(() => {});
-  // A hold the OS placed while the call connected, for another app's call
   if (selectIsOnHold(getState())) await callEngine.setHold(true).catch(() => {});
 };
 
@@ -100,18 +89,12 @@ export const callActions = {
   ...callMediaActions,
   ...callSyncActions,
 
-  // Declines for everyone: WhatsApp inbound → reject, WhatsApp outbound still ringing →
-  // terminate, Twilio → end the conference so the inbound leg hangs up. The local entry
-  // is dismissed before the request, so the ring stops at once, never sticks on a slow
-  // request and is not brought back by a sync meanwhile; a decline the server refused is
-  // forgotten, so the server can bring back a call that still rings.
+  // Dismissal prevents sync from restoring rings.
   rejectIncomingCall: createAsyncThunk<void, string, { state: RootState }>(
     'calls/rejectIncomingCall',
     async (callSid, { getState, dispatch }) => {
       const call = findCall(getState(), callSid);
       let declined = false;
-      // A call this device placed carries media here; it is released before the server is
-      // told, so a slow request does not keep the microphone open
       const ownsMedia = !!call && selectLocalCallSid(getState()) === callSid;
       if (ownsMedia) {
         await callEngine
@@ -142,10 +125,6 @@ export const callActions = {
     },
   ),
 
-  // Places a call from a conversation. Twilio dials the contact server-side and the agent
-  // leg joins once media exists; WhatsApp needs an SDP offer from the media engine first.
-  // The local marker is set before the call is added so the account-wide accepted
-  // broadcast cannot tear down this device's own outbound call.
   startOutboundCall: createAsyncThunk<
     StartOutboundCallResult,
     StartOutboundCallParams,
@@ -154,7 +133,6 @@ export const callActions = {
     'calls/startOutboundCall',
     async ({ provider, conversationId, inboxId, contactId, caller }, { getState, dispatch }) => {
       const state = getState();
-      // One call at a time, a call still being placed or joined included
       if (
         selectHasActiveCall(state) ||
         selectHasIncomingCall(state) ||
@@ -164,29 +142,24 @@ export const callActions = {
         return { status: 'locked' };
       }
       const senderId = selectUserId(state) ?? undefined;
-      // The account the call is placed in, kept for its later requests should the agent
-      // switch accounts while it is being placed
       const accountId = selectCurrentUserAccountId(state) ?? undefined;
       placingAttempt += 1;
       const attempt = placingAttempt;
       const cancelled = () => cancelledAttempts.has(attempt);
-      // The call screen opens on this, before the media offer and the provider request
       dispatch(setPlacingCall({ conversationId, inboxId, provider, accountId, caller }));
 
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
           const offer = callEngine.whatsapp.createOffer();
-          // Read as the offer starts, so a call placed while this one waits has its own
+          // Capture ownership before another session starts.
           const media = callEngine.session();
           let sdpOffer: string;
           try {
             sdpOffer = await offer;
           } catch (error) {
-            // A cancelled placement's media can be abandoned while it opens
             if (cancelled()) return { status: 'cancelled' };
             throw error;
           }
-          // The offer's microphone and connection are released unless a call comes of it
           const releaseOffer = () => callEngine.hangup('whatsapp', media).catch(() => {});
           if (cancelled()) {
             await releaseOffer();
@@ -216,16 +189,11 @@ export const callActions = {
             await releaseOffer();
             throw new Error((response as { error?: string }).error || 'WhatsApp call failed');
           }
-          // The agent gave up while the call was placed: the provider's call is ended by its
-          // id and only this attempt's media is released, without touching the store, which
-          // may already hold a newer call
           if (cancelled()) {
             await releaseOffer();
             await CallService.terminateWhatsappCall(response.id, accountId).catch(() => {});
             return { status: 'cancelled' };
           }
-          // The call ended before the request above returned, the contact declining at once;
-          // there is no call to show, so only its media is released
           if (selectDismissedCallSids(getState()).includes(response.call_id)) {
             takeEarlyOutboundEvents(response.call_id);
             await releaseOffer();
@@ -245,14 +213,13 @@ export const callActions = {
               caller,
             }),
           );
-          // The contact's side may have answered before the request above returned
+          // Socket events can precede placement responses.
           const early = takeEarlyOutboundEvents(response.call_id);
           if (early.sdpAnswer) {
             const applied = await callEngine.whatsapp.applyAnswer(early.sdpAnswer).then(
               () => true,
               () => false,
             );
-            // Without the contact's answer the call would go live with no media
             if (!applied) {
               await dispatch(callActions.rejectIncomingCall(response.call_id));
               throw new Error('The contact answer could not be applied');
@@ -278,7 +245,6 @@ export const callActions = {
           }).catch(() => {});
           return { status: 'cancelled' };
         }
-        // The call ended before the request above returned; there is no call to carry
         if (selectDismissedCallSids(getState()).includes(response.call_sid)) {
           takeEarlyOutboundEvents(response.call_sid);
           return { status: 'cancelled' };
@@ -296,7 +262,7 @@ export const callActions = {
             caller,
           }),
         );
-        // Twilio's status may have arrived before the request above returned
+        // Socket events can precede placement responses.
         const early = takeEarlyOutboundEvents(response.call_sid);
         if (early.providerStatus) {
           dispatch(
@@ -306,9 +272,6 @@ export const callActions = {
             }),
           );
         }
-        // The agent leg joins the conference right away; the contact is being dialed
-        // meanwhile. A join that fails ends the call, since nobody would be on it. The join
-        // is tracked so an end made meanwhile waits for it and ends what it established.
         const joined = await trackJoin(
           response.call_sid,
           dispatch(callActions.joinCall(response.call_sid)).unwrap(),
@@ -323,15 +286,11 @@ export const callActions = {
         return { status: 'calling', callSid: response.call_sid };
       } finally {
         cancelledAttempts.delete(attempt);
-        // A later attempt owns the placing state once it has started
         if (attempt === placingAttempt) dispatch(setPlacingCall(null));
       }
     },
   ),
 
-  // Answers an inbound WhatsApp call on this device. The local marker is set before the
-  // accept request so the account-wide accepted broadcast does not tear the call down.
-  // A 409 means another agent or the caller got there first.
   joinCall: createAsyncThunk<JoinCallResult, string, { state: RootState }>(
     'calls/joinCall',
     async (callSid, { getState, dispatch }) => {
@@ -339,25 +298,18 @@ export const callActions = {
       if (isSessionClosing()) return { status: 'already_ended' };
       const found = findCall(getState(), callSid);
       if (!found) return { status: 'already_ended' };
-      // The account the call rang in, kept for its requests should the agent switch
-      // accounts while it joins
       const call = {
         ...found,
         accountId: found.accountId ?? selectCurrentUserAccountId(getState()) ?? undefined,
       };
 
-      // One call at a time on this device: answering ends the one it is already on, and
-      // gives up a call still being placed. The answer is under way from here, so nothing
-      // rings for the call being taken meanwhile, and an account switch keeps it.
       dispatch(setIsJoining(callSid));
       if (call.callDirection === 'inbound' && selectPlacingCall(getState())) {
         await dispatch(callActions.cancelPlacingCall());
       }
       await dispatch(callActions.releaseLocalCall(callSid));
       dispatch(markLocalCall(callSid));
-      // The WhatsApp media session this answer opens, so its cleanup never ends another's
       let media: number | undefined;
-      // The server's acceptance of a Twilio join, kept so a later setup failure can undo it
       let conferenceJoin: ReturnType<typeof CallService.joinConference> | null = null;
       let conference: Parameters<typeof CallService.leaveConference>[0] | null = null;
       try {
@@ -381,7 +333,6 @@ export const callActions = {
               throw error;
             }),
           ]);
-          // Given up while the conference was joined: this device leaves it unconnected
           if (isJoinCancelled(callSid)) {
             await CallService.leaveConference(conference).catch(() => {});
             dispatch(clearLocalCall(callSid));
@@ -414,7 +365,6 @@ export const callActions = {
         const answering = callEngine.whatsapp.createAnswer(sdpOffer, iceServers);
         media = callEngine.session();
         const sdpAnswer = await answering;
-        // Given up while the microphone opened: it is released and the call not accepted
         if (isJoinCancelled(callSid)) {
           await callEngine.hangup('whatsapp', media).catch(() => {});
           dispatch(clearLocalCall(callSid));
@@ -433,10 +383,7 @@ export const callActions = {
               ? { status: 'already_ended' }
               : { status: 'answered_elsewhere' };
           }
-          // With no response the server may have taken the answer while this device has no
-          // media; a call it recorded as answered with this device's own answer is ended
-          // rather than left connected to nobody. An answer from another device or agent,
-          // or a response that refused this one, leaves the call alone.
+          // Unacknowledged answers can still succeed server-side.
           if (httpStatus(error) === undefined) {
             const current = await CallService.getWhatsappCall(call.callId, call.accountId).catch(
               () => null,
@@ -454,15 +401,13 @@ export const callActions = {
         if (httpStatus(error) === 409) {
           return { status: 'answered_elsewhere' };
         }
-        // A join the agent ended fails on the way; that is the end, not an error to report
         const abandoned = isJoinCancelled(callSid);
         if (!abandoned) console.error('Failed to join call:', error);
         if (call.provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
           if (media !== undefined) await callEngine.hangup('whatsapp', media).catch(() => {});
         } else {
           await callEngine.twilio.disconnect().catch(() => {});
-          // The server may have taken the join, even after the token request failed, while
-          // this device has no media: the conference is left so the caller is not stranded
+          // Token failure does not undo acceptance.
           const joinedConference = conference;
           conferenceJoin
             ?.then(() => joinedConference && CallService.leaveConference(joinedConference))
@@ -477,8 +422,6 @@ export const callActions = {
     },
   ),
 
-  // Ends a call that is still being placed, before the provider has given it an id. The
-  // screen closes now; the start request tears the call down once it can.
   cancelPlacingCall: createAsyncThunk<void, void, { state: RootState }>(
     'calls/cancelPlacingCall',
     async (_, { dispatch }) => {
@@ -488,9 +431,6 @@ export const callActions = {
     },
   ),
 
-  // Ends the call this device is on. The screen closes and the microphone is released at
-  // once, because waiting for the provider's reply leaves a dead call on screen; the
-  // request then goes out so the contact drops too.
   endCall: createAsyncThunk<void, void, { state: RootState }>(
     'calls/endCall',
     async (_, { getState, dispatch }) => {
@@ -499,7 +439,6 @@ export const callActions = {
       dispatch(markCallDismissed(call.callSid));
       dispatch(clearActiveCall());
       dispatch(clearLocalCall(call.callSid));
-      // The microphone is released at once; the server is told after
       await callEngine
         .hangup(call.provider === VOICE_CALL_PROVIDERS.WHATSAPP ? 'whatsapp' : 'twilio')
         .catch(() => {});
@@ -516,15 +455,10 @@ export const callActions = {
     },
   ),
 
-  // Everything this device has going, before the session ends: a call still being placed
-  // is given up, and the call this device is on, live or still ringing out, is ended
   endLocalCalls: createAsyncThunk<void, void, { state: RootState }>(
     'calls/endLocalCalls',
     async (_, { getState, dispatch }) => {
       if (selectPlacingCall(getState())) await dispatch(callActions.cancelPlacingCall());
-      // This device's media goes at once. A join still in flight would otherwise connect
-      // after the release; the release waits for it and ends whatever it established, and
-      // no new join starts meanwhile.
       await closeSession(
         () => dispatch(callActions.releaseLocalCall('')),
         () =>
@@ -536,8 +470,6 @@ export const callActions = {
     },
   ),
 
-  // Ends the call this device is on, other than keepSid: the live call, or a call it
-  // placed that is still ringing
   releaseLocalCall: createAsyncThunk<void, string, { state: RootState }>(
     'calls/releaseLocalCall',
     async (keepSid, { getState, dispatch }) => {

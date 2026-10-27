@@ -9,10 +9,6 @@ import com.facebook.react.ReactApplication
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.jstasks.HeadlessJsTaskConfig
 
-// Runs the JavaScript side of a call the agent answered or declined outside the app. No
-// activity is involved: on the lock screen the native call screen stays in front and this
-// task carries the call behind it until it ends; for a decline it lasts as long as the
-// request to the server.
 class CallSessionService : HeadlessJsTaskService() {
   private val handler = Handler(Looper.getMainLooper())
 
@@ -23,8 +19,7 @@ class CallSessionService : HeadlessJsTaskService() {
     return START_NOT_STICKY
   }
 
-  // A React instance freshly created for this process reports its context before it can run
-  // a task, so the task waits for the instance itself rather than for the context
+  // Context availability precedes runnable React instances.
   private fun startWhenReady(config: HeadlessJsTaskConfig, attemptsLeft: Int) {
     val context = reactContext
     if (context != null && context.hasActiveReactInstance()) {
@@ -51,8 +46,6 @@ class CallSessionService : HeadlessJsTaskService() {
       context.startService(intent)
     }
 
-    // Starts the React instance without any activity, so that JavaScript is already up by
-    // the time the agent answers or declines
     fun warm(context: Context) {
       runCatching {
         (context.applicationContext as? ReactApplication)?.reactHost?.start()

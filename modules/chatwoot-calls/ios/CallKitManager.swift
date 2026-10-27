@@ -3,9 +3,7 @@ import CallKit
 import Foundation
 import PushKit
 
-// Owns the CallKit provider and the PushKit registry for the whole app lifetime. It is
-// created from the app delegate so a VoIP push that launches the app can be reported to
-// CallKit synchronously, before JavaScript exists. Events are buffered until JS attaches.
+// Report PushKit calls before JavaScript starts.
 final class CallKitManager: NSObject {
   static let shared = CallKitManager()
 
@@ -22,7 +20,6 @@ final class CallKitManager: NSObject {
     var outgoing: Bool
     var answered: Bool
     var ringTimer: Timer?
-    // The caller's own name, apart from the display name CallKit shows with the inbox
     var callerName: String? = nil
 
     var payload: [String: Any] {
@@ -44,13 +41,9 @@ final class CallKitManager: NSObject {
     }
   }
 
-  // Hooks set by the module when it is created. The audio hooks receive the provider name
-  // of the call the session belongs to so the right media engine is switched.
   var emit: ((String, [String: Any]) -> Void)?
   var prepareAudioSession: ((String) -> Void)?
-  // Drops the native media leg for the provider when the system ends the call, so the
-  // far side hangs up even if JavaScript is not running at that moment
-  // Ends a provider's media; with a call sid, only that call's
+  // Release media even without JavaScript.
   var endMedia: ((String, String?) -> Void)?
   var audioSessionDidActivate: ((AVAudioSession, String) -> Void)?
   var audioSessionDidDeactivate: ((AVAudioSession, String) -> Void)?
@@ -65,29 +58,25 @@ final class CallKitManager: NSObject {
   private let callController = CXCallController()
   private let callObserver = CXCallObserver()
   private var pushRegistry: PKPushRegistry?
-  // Calls the system put on hold for another app's call; they resume once that call ends
   private var heldBySystem: Set<UUID> = []
-  // Calls that ended here, by sid, so a push arriving after the end does not ring again
+  // Suppress late pushes for ended calls.
   private var endedSids: [String: Date] = [:]
   private static let endedSidMemory: TimeInterval = 120
   private static let signedInKey = "chatwoot.calls.signedIn"
 
-  // Whether an agent is signed in to the app, as it last reported; one that never reported
-  // counts as signed in. Read when a call push arrives, which may be before JavaScript runs.
   var signedIn: Bool {
     get { UserDefaults.standard.object(forKey: Self.signedInKey) as? Bool ?? true }
     set { UserDefaults.standard.set(newValue, forKey: Self.signedInKey) }
   }
   private var holdRequestedHere: Set<UUID> = []
 
-  // Matches the window the server rings for, so CallKit never ends a live ring early
+  // Match the server's unanswered-ring deadline.
   private static let ringTimeout: TimeInterval = 60
 
   private override init() {
     let configuration = CXProviderConfiguration()
     configuration.supportsVideo = false
-    // A second call is shown as call waiting while one is ringing or live; with one group
-    // CallKit refuses to report it at all
+    // Call waiting requires two call groups.
     configuration.maximumCallGroups = 2
     configuration.maximumCallsPerCallGroup = 1
     configuration.supportedHandleTypes = [.generic, .phoneNumber]
@@ -99,8 +88,6 @@ final class CallKitManager: NSObject {
     callObserver.setDelegate(self, queue: nil)
   }
 
-  // White-on-transparent app glyph shown on the system call screen, from the module's
-  // resource bundle
   private static func iconTemplateData() -> Data? {
     let bundle = Bundle(for: CallKitManager.self)
     let resourceBundle = bundle.url(forResource: "ChatwootCallsResources", withExtension: "bundle")
@@ -109,7 +96,6 @@ final class CallKitManager: NSObject {
     return try? Data(contentsOf: url)
   }
 
-  // Called from the app delegate at launch
   func start() {
     guard pushRegistry == nil else { return }
     let registry = PKPushRegistry(queue: .main)
@@ -118,7 +104,6 @@ final class CallKitManager: NSObject {
     pushRegistry = registry
   }
 
-  // MARK: - Event plumbing
 
   private func send(_ name: String, _ body: [String: Any]) {
     if jsReady, let emit {
@@ -128,8 +113,6 @@ final class CallKitManager: NSObject {
     }
   }
 
-  // The module attaches its audio hooks after launch; a session the system activated
-  // before that (lock-screen answer that starts the app) is handed over now
   func replayAudioSessionIfActive() {
     guard let session = activeAudioSession else { return }
     let providerName = audioProvider
@@ -137,7 +120,6 @@ final class CallKitManager: NSObject {
     audioSessionDidActivate?(session, providerName)
   }
 
-  // The module is going away: events wait for the next one, which marks itself ready
   func markJsUnready() {
     jsReady = false
     emit = nil
@@ -158,12 +140,10 @@ final class CallKitManager: NSObject {
     calls.values.first { $0.callSid == callSid }
   }
 
-  // Provider of the call that currently owns the audio session
   private var audioProvider: String {
     (calls.values.first { $0.answered || $0.outgoing } ?? calls.values.first)?.provider ?? ""
   }
 
-  // MARK: - Reporting calls to the system
 
   func reportIncomingCall(
     callSid: String, provider providerName: String, displayName: String, handle: String,
@@ -171,7 +151,6 @@ final class CallKitManager: NSObject {
     callId: Int? = nil, completion: @escaping (UUID, Error?) -> Void
   ) -> UUID {
     if var existing = call(forSid: callSid) {
-      // A later report of the same call fills in what the first one lacked
       if existing.accountId == nil, let accountId { existing.accountId = accountId }
       if existing.callId == nil, let callId { existing.callId = callId }
       calls[existing.uuid] = existing
@@ -183,7 +162,6 @@ final class CallKitManager: NSObject {
       uuid: uuid, callSid: callSid, provider: providerName, conversationId: conversationId,
       inboxId: inboxId, accountId: accountId, displayName: displayName, handle: handle,
       outgoing: false, answered: false, ringTimer: nil, callerName: callerName)
-    // The details an end needs to reach the server if JavaScript loses the call meanwhile
     if tracked.callId == nil { tracked.callId = callId }
     let timeout = Self.ringTimeout
     tracked.ringTimer = Timer.scheduledTimer(withTimeInterval: timeout, repeats: false) { [weak self] _ in
@@ -215,7 +193,6 @@ final class CallKitManager: NSObject {
     completion: @escaping (UUID, Error?) -> Void
   ) -> UUID {
     let uuid = UUID()
-    // The details an end needs to reach the server if JavaScript loses the call meanwhile
     var tracked = TrackedCall(
       uuid: uuid, callSid: callSid, provider: providerName, conversationId: conversationId,
       inboxId: inboxId, accountId: accountId, displayName: displayName, handle: handle,
@@ -230,7 +207,7 @@ final class CallKitManager: NSObject {
         self?.calls[uuid] = nil
       } else {
         self?.provider.reportOutgoingCall(with: uuid, startedConnectingAt: Date())
-        // An outgoing call gets its capabilities from an update; it can be held like an inbound one
+        // Outgoing capabilities require a separate update.
         let update = CXCallUpdate()
         update.supportsHolding = true
         update.supportsGrouping = false
@@ -254,7 +231,6 @@ final class CallKitManager: NSObject {
     }
   }
 
-  // The call ended for a reason outside the user's own action on this device
   func endCall(uuid: UUID, reason: CXCallEndedReason) {
     guard let tracked = calls[uuid] else { return }
     tracked.ringTimer?.invalidate()
@@ -266,7 +242,6 @@ final class CallKitManager: NSObject {
     send("onCallKitAction", ["type": "ended", "uuid": uuid.uuidString, "callSid": tracked.callSid])
   }
 
-  // The user ended or declined from our own UI; route through CallKit so the system agrees
   func requestEnd(uuid: UUID, completion: @escaping (Error?) -> Void) {
     callController.request(CXTransaction(action: CXEndCallAction(call: uuid)), completion: completion)
   }
@@ -280,13 +255,11 @@ final class CallKitManager: NSObject {
       CXTransaction(action: CXSetMutedCallAction(call: uuid, muted: muted)), completion: completion)
   }
 
-  // Hold and resume from our own UI go through CallKit; the system also holds the call
-  // itself around another app's call, and both arrive as the same held action
+  // Local and system holds share callbacks.
   func requestHold(uuid: UUID, onHold: Bool, completion: @escaping (Error?) -> Void) {
     if onHold { holdRequestedHere.insert(uuid) }
     callController.request(CXTransaction(action: CXSetHeldCallAction(call: uuid, onHold: onHold))) { [weak self] error in
-      // A hold CallKit refused never arrives as an action, so its marker is dropped here rather
-      // than taken by a later hold the system makes
+      // Rejected holds produce no action callback.
       if error != nil, onHold {
         DispatchQueue.main.async { self?.holdRequestedHere.remove(uuid) }
       }
@@ -305,31 +278,25 @@ final class CallKitManager: NSObject {
     return Date().timeIntervalSince(at) < Self.endedSidMemory
   }
 
-  // Whether a call from another app is still up
   private var otherCallActive: Bool {
     callObserver.calls.contains { !$0.hasEnded && calls[$0.uuid] == nil }
   }
 
-  // MARK: - Push payloads
 
   private func handleIncomingPush(_ dictionary: [AnyHashable: Any], completion: @escaping () -> Void) {
     let callSid = dictionary["call_id"] as? String ?? UUID().uuidString
     let providerName = dictionary["provider"] as? String ?? "whatsapp"
-    // A phone with nobody signed in still has to report the push as a call, and ends it at
-    // once without the caller's details
+    // PushKit requires reporting while signed out.
     let caller = signedIn ? dictionary["caller"] as? [String: Any] ?? [:] : [:]
     let callerName = caller["name"] as? String ?? (signedIn ? "Unknown caller" : "Chatwoot")
     let inboxName = signedIn ? dictionary["inbox_name"] as? String ?? "" : ""
-    // The one line CallKit shows: the caller and the inbox they rang, as the app reports it
     let displayName = inboxName.isEmpty ? callerName : "\(callerName) · \(inboxName)"
     let handle = caller["phone"] as? String ?? callerName
-    // A ring for a call that already ended here is reported and ended like a cancel
     let pushType = dictionary["type"] as? String ?? "voice_call.incoming"
     let type = endedRecently(callSid) || !signedIn ? "voice_call.cancel" : pushType
 
     if type == "voice_call.cancel" {
-      // A VoIP push must always report a call; report it and end it at once. A call this
-      // device answered or placed is live here, so the cancel is for other devices only.
+      // Cancel pushes still require CallKit reporting.
       if let existing = call(forSid: callSid) {
         if !existing.answered && !existing.outgoing {
           endCall(uuid: existing.uuid, reason: cancelReason(dictionary["reason"] as? String ?? dictionary["status"] as? String))
@@ -354,7 +321,6 @@ final class CallKitManager: NSObject {
         if type == "voice_call.cancel" {
           self.endCall(uuid: reported, reason: self.cancelReason(dictionary["reason"] as? String ?? dictionary["status"] as? String))
         } else if let tracked = self.calls[reported] {
-          // JavaScript hears of the call only once the system has accepted it
           self.send("onIncomingCall", tracked.payload)
         }
       }
@@ -380,7 +346,6 @@ final class CallKitManager: NSObject {
   }
 }
 
-// MARK: - CXProviderDelegate
 
 extension CallKitManager: CXProviderDelegate {
   func providerDidReset(_ provider: CXProvider) {
@@ -403,8 +368,7 @@ extension CallKitManager: CXProviderDelegate {
     tracked.ringTimer = nil
     calls[action.callUUID] = tracked
     prepareAudioSession?(tracked.provider)
-    // A call answered while another holds the session gets no activation of its own, so
-    // the session is handed to this call's media engine here
+    // Active sessions receive no second activation.
     if let session = activeAudioSession { audioSessionDidActivate?(session, tracked.provider) }
     send("onCallKitAction", ["type": "answer", "uuid": action.callUUID.uuidString, "callSid": tracked.callSid])
     action.fulfill()
@@ -420,11 +384,8 @@ extension CallKitManager: CXProviderDelegate {
     rememberEnded(tracked.callSid)
     heldBySystem.remove(action.callUUID)
     holdRequestedHere.remove(action.callUUID)
-    // A call placed here carries media before the contact answers, so its end releases
-    // it too, without waiting for JavaScript
+    // Outgoing media starts before contact answers.
     if tracked.answered || tracked.outgoing { endMedia?(tracked.provider, tracked.callSid) }
-    // The call's details travel with the end, so a call declined before the app adopted it
-    // can still be declined with the server
     var event = tracked.payload
     event["type"] = "end"
     send("onCallKitAction", event)
@@ -458,9 +419,6 @@ extension CallKitManager: CXProviderDelegate {
       return
     }
     if action.isOnHold {
-      // A hold nobody here asked for, made while another app's call is up, is the system's
-      // making room for it and is undone when that call ends. One the agent chose on the
-      // system call screen, with no other call up, stays until they resume it.
       if holdRequestedHere.remove(action.callUUID) == nil && otherCallActive {
         heldBySystem.insert(action.callUUID)
       }
@@ -489,18 +447,14 @@ extension CallKitManager: CXProviderDelegate {
   }
 }
 
-// MARK: - CXCallObserverDelegate
 
 extension CallKitManager: CXCallObserverDelegate {
-  // The other app's call is over: a call the system held for it is resumed, the way a
-  // held call in another app resumes when ours ends
   func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
     guard call.hasEnded, calls[call.uuid] == nil, !otherCallActive else { return }
     heldBySystem.forEach { uuid in requestHold(uuid: uuid, onHold: false) { _ in } }
   }
 }
 
-// MARK: - PKPushRegistryDelegate
 
 extension CallKitManager: PKPushRegistryDelegate {
   func pushRegistry(_ registry: PKPushRegistry, didUpdate pushCredentials: PKPushCredentials, for type: PKPushType) {

@@ -23,21 +23,13 @@ import {
 let syncing = false;
 let syncAgain = false;
 
-// Reconciles this device's ringing calls with the server whenever the socket may have
-// missed something: on launch, on every return to the foreground, and when a call push
-// lands while the app is in front. Returns the sync so other hooks can trigger it.
 export const useRingingSync = () => {
   const dispatch = useAppDispatch();
   const hasCallingInbox = useAppSelector(state => selectAllInboxes(state).some(isVoiceCallEnabled));
   const accountId = useAppSelector(selectCurrentUserAccountId);
 
-  // Apply what the agent already chose on the native call screen, then surface calls that
-  // rang while the socket was down and end system calls the server has moved on from
   const syncRinging = useCallback(() => {
     applyPendingCallAction().catch(() => {});
-    // Only accounts with an inbox that can call have anything to sync. One sync runs at a
-    // time; a request made during it runs once it finishes, since the account may have
-    // changed under it
     if (!selectAllInboxes(store.getState()).some(isVoiceCallEnabled)) return;
     if (syncing) {
       syncAgain = true;
@@ -48,7 +40,6 @@ export const useRingingSync = () => {
       .unwrap()
       .then(result => {
         result.ended.forEach(({ callSid, status }) => {
-          // The OS call is ended while the call is still known, then it is dropped
           systemCall.endedBySid(store, callSid, systemEndReason(store, callSid, status));
           dispatch(dismissCall(callSid));
         });
@@ -74,16 +65,11 @@ export const useRingingSync = () => {
     return () => subscription.remove();
   }, [syncRinging]);
 
-  // The inboxes arrive after launch and change with the account; a call already ringing
-  // then is found once they do
   useEffect(() => {
     if (hasCallingInbox) syncRinging();
   }, [accountId, hasCallingInbox, syncRinging]);
 
-  // A call push arriving while the app is in front: the socket may have dropped, so the
-  // ringing call is fetched rather than waited for. A ring for another account is taken
-  // from the push, since the fetch only sees the account on screen. A ring that is over
-  // leaves the app's ring UI, unless it is the call this device is on.
+  // Cross-account rings bypass the account-scoped fetch.
   useEffect(
     () =>
       onMessage(getMessaging(), async message => {
@@ -91,7 +77,7 @@ export const useRingingSync = () => {
         if (isCallCancelPush(data) && data?.call_id) {
           const state = store.getState();
           const call = selectCalls(state).find(entry => entry.callSid === data.call_id);
-          // A cancel can arrive before the ring it ends; the ring is kept from showing
+          // Cancel pushes can precede their rings.
           if (!call) {
             dispatch(markCallDismissed(data.call_id));
             return;

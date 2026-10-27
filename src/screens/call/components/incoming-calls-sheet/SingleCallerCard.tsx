@@ -8,7 +8,6 @@ import type { CallerInfo } from '../../hooks/useCallerInfo';
 import { CallerMetaLine } from './CallerMetaLine';
 import { RingingAvatar } from './RingingAvatar';
 
-// One ringing caller, large, when nobody else is waiting
 export const SingleCallerCard = ({ info }: { info: CallerInfo }) => (
   <View style={tailwind.style('flex-row items-center gap-3.5 mt-3')}>
     <RingingAvatar name={info.name} uri={info.avatar || undefined} size="large" />

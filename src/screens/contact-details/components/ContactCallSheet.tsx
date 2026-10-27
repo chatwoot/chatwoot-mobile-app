@@ -66,10 +66,8 @@ type ContactCallSheetProps = {
   onDismiss: () => void;
 };
 
-// Up to this many rows the sheet hugs its content; a longer list opens at a fixed height and scrolls
 const MAX_ROWS_WITHOUT_SCROLL = 6;
 
-// The inboxes a contact can be called through, and the phone's own dialer
 export const ContactCallSheet = forwardRef<SheetRef, ContactCallSheetProps>(
   ({ options, onSelect, onDismiss }, ref) => {
     const { bottom } = useSafeAreaInsets();
@@ -93,7 +91,6 @@ export const ContactCallSheet = forwardRef<SheetRef, ContactCallSheetProps>(
         {scrolls ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
-            // The sheet reaches the screen edge, so the last row clears the home indicator
             contentContainerStyle={tailwind.style('pt-3 pl-3', `pb-[${24 + bottom}px]`)}>
             {rows}
           </ScrollView>

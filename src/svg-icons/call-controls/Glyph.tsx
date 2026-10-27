@@ -3,14 +3,12 @@ import { Path, Svg } from 'react-native-svg';
 
 export type GlyphProps = { color: string; size?: number };
 
-// A filled glyph on a 24pt grid, scaled to the requested size
 export const Glyph = ({ d, color, size = 24 }: GlyphProps & { d: string }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
     <Path d={d} fill={color} />
   </Svg>
 );
 
-// A Phosphor fill-weight glyph, drawn on its 256-unit grid and scaled to the requested size
 export const PhosphorGlyph = ({ d, color, size = 24 }: GlyphProps & { d: string }) => (
   <Svg width={size} height={size} viewBox="0 0 256 256" fill="none">
     <Path d={d} fill={color} />

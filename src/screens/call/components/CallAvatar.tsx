@@ -15,11 +15,9 @@ type CallAvatarProps = {
   name: string;
   uri?: string;
   tone: CallTone;
-  // Discs swell outwards while a call is ringing
   aura?: boolean;
 };
 
-// The caller, large. A photo when there is one, otherwise the initial in the phase colour.
 export const CallAvatar = ({ name, uri, tone, aura }: CallAvatarProps) => {
   const colours = CALL_TONES[tone];
   return (

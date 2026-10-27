@@ -3,7 +3,6 @@ import React from 'react';
 import { PhosphorGlyph } from '../call-controls/Glyph';
 import type { CallStateIconProps } from './Glyph';
 
-// An open ring, spun while something is in flight
 export const CircleNotchIcon = ({ color, size = 20 }: CallStateIconProps) => (
   <PhosphorGlyph
     color={color}

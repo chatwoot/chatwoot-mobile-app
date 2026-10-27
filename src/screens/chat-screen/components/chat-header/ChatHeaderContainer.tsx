@@ -172,7 +172,6 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
-  // One call at a time
   const startCall = async () => {
     if (!voiceCallProvider || !inbox || isStartingCall) return;
     setIsStartingCall(true);

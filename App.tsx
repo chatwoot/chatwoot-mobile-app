@@ -16,8 +16,6 @@ import { LOCK_SCREEN_CALL_COMPONENT } from '@/services/voice/chatwootCalls';
 
 const isStorybookEnabled = Constants.expoConfig?.extra?.eas?.storybookEnabled;
 
-// A call answered on Android's lock screen runs here until it ends, and its screen is
-// drawn by the lock-screen activity from the same call screen the app shows
 if (Platform.OS === 'android') {
   AppRegistry.registerHeadlessTask(CALL_SESSION_TASK, () => runCallSessionTask);
   AppRegistry.registerComponent(LOCK_SCREEN_CALL_COMPONENT, () => LockScreenCallRoot);

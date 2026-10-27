@@ -21,18 +21,12 @@ export type SyncRingingCallsResult = {
   ended: { callSid: string; status: string | null }[];
 };
 
-// The signed-in user and account a request was made for; a result that returns after either
-// changed belongs to the previous session and is dropped
 const sessionOf = (state: RootState) =>
   `${selectUserId(state) ?? ''}:${selectCurrentUserAccountId(state) ?? ''}`;
 
 const NOTHING_SYNCED: SyncRingingCallsResult = { found: 0, ended: [] };
 
-// Reconciling this device's ring state with the server
 export const callSyncActions = {
-  // Asks the server which calls are ringing for this agent and surfaces them. Calls this
-  // device still shows as ringing but the server has moved on from are returned, so the OS
-  // call UI can be ended before they are removed.
   syncRingingCalls: createAsyncThunk<SyncRingingCallsResult, void, { state: RootState }>(
     'calls/syncRingingCalls',
     async (_, { getState, dispatch }) => {
@@ -46,11 +40,8 @@ export const callSyncActions = {
       }
       if (sessionOf(getState()) !== session) return NOTHING_SYNCED;
       const dismissed = selectDismissedCallSids(getState());
-      // Only inbound rings are surfaced, and only to an agent who is online and takes calls,
-      // as over the socket; an outbound call belongs to the device that placed it
       const receivesCalls = selectCurrentUserReceivesCalls(getState());
-      // The server lists the agents a ring went to when it started; a conversation since
-      // assigned to someone else, as this device knows it, rings for them instead
+      // Assignments can change after ringing starts.
       const currentUserId = selectUserId(getState());
       const assignedElsewhere = (call: RingingCallResponse) => {
         const assigneeId = selectConversationById(getState(), call.conversation.display_id)?.meta
@@ -86,8 +77,7 @@ export const callSyncActions = {
             }),
           ),
         );
-      // A server without this query answers with no ringing calls at all, so a ring this
-      // device shows but the list leaves out is checked against its conversation instead
+      // Older servers need conversation-based ring reconciliation.
       const ringingSids = new Set(ringing.map(call => call.call_id));
       const localCallSid = selectLocalCallSid(getState());
       const unlisted = selectCalls(getState()).some(
@@ -107,8 +97,6 @@ export const callSyncActions = {
   ),
 };
 
-// The latest open conversations, with their call messages reconciled: ringing calls are
-// surfaced and calls the server has moved on from are returned
 const syncFromConversations = async (
   getState: () => RootState,
   dispatch: (action: unknown) => unknown,

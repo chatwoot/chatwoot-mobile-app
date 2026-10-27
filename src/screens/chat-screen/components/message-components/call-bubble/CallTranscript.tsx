@@ -8,7 +8,6 @@ import { CALL_LINK, bubbleInk, bubbleMuted } from './callBubbleTheme';
 
 const PREVIEW_LINES = 3;
 
-// What was said on the call, three lines at a time
 export const CallTranscript = ({ text, lightOnDark }: { text: string; lightOnDark: boolean }) => {
   const [expanded, setExpanded] = useState(false);
   const muted = bubbleMuted(lightOnDark);

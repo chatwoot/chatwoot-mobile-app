@@ -12,9 +12,6 @@ import { routeVoiceCallCreated } from '@/utils/voiceCallRouting';
 
 import { RING_TIMEOUT_MS } from '../constants/ringTimeouts';
 
-// The ringing calls in the conversation cache and who their conversations are assigned to,
-// as one string that only changes when either does; a reassignment can make a ring this
-// agent's
 const selectRingingKey = createSelector(selectAllConversations, conversations =>
   conversations
     .flatMap(conversation =>
@@ -29,10 +26,7 @@ const selectRingingKey = createSelector(selectAllConversations, conversations =>
     .join('|'),
 );
 
-// Cable events are one-shot, so a call that rang while the app was closed or the phone
-// was locked is only visible through its ringing message in the conversation cache.
-// Re-seeds whenever the set of ringing calls in that cache changes. A message older than
-// the ring timeout is a call nobody can still answer, so it is not re-surfaced.
+// Cable events are not replayed automatically.
 export const useRingingCallsFromCache = () => {
   const dispatch = useAppDispatch();
   const currentUserId = useAppSelector(selectUserId);
@@ -54,14 +48,12 @@ export const useRingingCallsFromCache = () => {
         if (message.call?.status !== VOICE_CALL_STATUS.RINGING) return;
         const startedAt = Number(message.createdAt) * 1000;
         if (!Number.isFinite(startedAt) || Date.now() - startedAt > RING_TIMEOUT_MS) return;
-        // The cached conversation holds the current assignment, which decides who the call
-        // rings for: a message fetched over HTTP carries no conversation, and one from the
-        // socket carries the assignment it was sent with
+        // Cached assignments supersede older socket payloads.
         const decision = routeVoiceCallCreated({ ...message, conversation }, context);
         if (decision.action === 'add') dispatch(addCall({ ...decision.call, addedAt: startedAt }));
       });
     });
-    // Keyed on the ringing calls present, not on every message update
+    // Dependencies track ringing identity and assignment.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ringingKey, currentUserId, receivesCalls]);
 };

@@ -22,9 +22,6 @@ import { reportAnswerFailure, toastJoinOutcome } from '@/utils/voiceCallFeedback
 
 type Display = ReturnType<typeof getVoiceCallDisplay>;
 
-// What a call bubble lets the agent do with the call it describes: join a ring nobody
-// has taken that is meant for this agent; call back a missed inbound call when no other
-// call is on.
 export const useCallBubbleActions = (item: Message, display: Display) => {
   const dispatch = useAppDispatch();
   const [isCallingBack, setIsCallingBack] = useState(false);
@@ -60,8 +57,7 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
 
   const joinCall = async () => {
     if (!canJoinCall || isJoining || !call || !callSid || !inboxId) return;
-    // Checked when pressed, as the bubble can stay on screen past the ring; with another call
-    // on, which the answer would end, the server confirms the call still rings
+    // Stale bubbles must not end calls.
     const target = { callSid, callId: call.id, provider: call.provider, createdAt: item.createdAt };
     const stillRinging = selectHasActiveCall(store.getState())
       ? await isStillRinging(target)
@@ -70,7 +66,6 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
       toastJoinOutcome('already_ended');
       return;
     }
-    // A ring that arrived while the agent was away is not in the store yet
     if (!selectCalls(store.getState()).some(entry => entry.callSid === callSid)) {
       dispatch(
         addCall({

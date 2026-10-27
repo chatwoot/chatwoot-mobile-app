@@ -18,13 +18,10 @@ type CallerIdentityProps = {
   activeSince?: number;
   statusFlags: CallStatusFlags;
   tone: CallTone;
-  // Discs swell out from the avatar while the call rings
   aura: boolean;
   onOpenConversation?: () => void;
 };
 
-// The middle of the call screen: the phase or timer, the caller, the inbox they rang, and the
-// way into the chat
 export const CallerIdentity = ({
   info,
   call,

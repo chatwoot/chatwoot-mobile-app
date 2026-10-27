@@ -1,11 +1,7 @@
 export type JoinResult = { status: string };
 
-// Joins in flight by call sid, so an end that lands mid-join settles after the join and
-// ends the call that was actually established instead of one already accepted
 const pendingJoins = new Map<string, Promise<JoinResult>>();
 
-// Joins the agent gave up on while they ran; each stops at its next step rather than
-// opening media or accepting the call
 const cancelledJoins = new Set<string>();
 
 export const trackJoin = (callSid: string, join: Promise<JoinResult>) => {
@@ -29,8 +25,18 @@ export const cancelJoin = (callSid: string) => {
 
 export const isJoinCancelled = (callSid: string) => cancelledJoins.has(callSid);
 
-// Runs of the queue of choices made on the native call screen or notification, which
-// can start joins of their own
+let locallyEndedSid: string | null = null;
+
+export const markLocalEnd = (callSid: string) => {
+  locallyEndedSid = callSid;
+};
+
+export const takeLocalEnd = (callSid: string) => {
+  const endedHere = locallyEndedSid === callSid;
+  if (endedHere) locallyEndedSid = null;
+  return endedHere;
+};
+
 const actionDrains = new Set<Promise<unknown>>();
 
 export const trackActionDrain = (run: Promise<unknown>) => {
@@ -38,19 +44,15 @@ export const trackActionDrain = (run: Promise<unknown>) => {
   run.finally(() => actionDrains.delete(run)).catch(() => {});
 };
 
-// While the session's calls are being ended, no new join starts
 let closing = 0;
 export const isSessionClosing = () => closing > 0;
 
-// Runs `close` with new joins held off and joins in flight given up, once every join and
-// every run of the queued choices has settled. `releaseNow` runs before that wait, so this
-// device's media goes at once rather than after a slow request a join is waiting on.
+// Release media before awaiting pending joins.
 export const closeSession = async (
   close: () => Promise<unknown>,
   releaseNow?: () => Promise<unknown>,
 ) => {
   closing += 1;
-  // Joins already under way stop at their next step rather than open media or accept
   pendingJoins.forEach((_, callSid) => cancelledJoins.add(callSid));
   try {
     await releaseNow?.();

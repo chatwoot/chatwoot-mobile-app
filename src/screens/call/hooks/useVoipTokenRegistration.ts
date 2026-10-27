@@ -6,10 +6,6 @@ import { settingsActions } from '@/store/settings/settingsActions';
 import { systemCall } from '@/services/voice/systemCall';
 import { addVoipTokenListener, getVoipToken } from '@/services/voice/chatwootCalls';
 
-// Keeps the server's copy of the VoIP push token current for this login. A token counts
-// as registered only once the server has accepted it; a failed registration is tried
-// again the next time the app comes to the foreground. The mount registration and the
-// token event can carry the same token, which is sent once.
 export const useVoipTokenRegistration = () => {
   const dispatch = useAppDispatch();
   const registeredTokenRef = useRef<string | null>(null);

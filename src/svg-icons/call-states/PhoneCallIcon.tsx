@@ -2,7 +2,6 @@ import React from 'react';
 
 import { CallStateGlyph, type CallStateIconProps } from './Glyph';
 
-// A call in progress
 export const PhoneCallIcon = ({ color, size }: CallStateIconProps) => (
   <CallStateGlyph
     color={color}

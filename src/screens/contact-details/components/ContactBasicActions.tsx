@@ -71,7 +71,6 @@ type ContactBasicActionsProps = {
   phoneNumber?: string;
   email?: string;
   contactId?: number;
-  // The conversation the contact was opened from, if any
   conversation?: { id: number; inboxId?: number } | null;
   caller?: CallerSnapshot | null;
   style?: StyleProp<ViewStyle>;
@@ -108,7 +107,6 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
     });
   };
 
-  // With more than one way to call, the agent picks one; a single way is used directly
   const onCallPress = () => {
     if (callOptions.length > 1) {
       callSheetRef.current?.present();
@@ -117,7 +115,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
     if (callOptions[0]) callThrough(callOptions[0]);
   };
 
-  // The choice is acted on once the sheet is gone, so the call screen is not opened under it
+  // Native sheets otherwise cover call screens.
   const onCallOptionSelect = (option: ContactCallOption) => {
     selectedOptionRef.current = option;
     callSheetRef.current?.dismiss();

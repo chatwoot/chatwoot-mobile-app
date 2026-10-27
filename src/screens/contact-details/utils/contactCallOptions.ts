@@ -7,14 +7,11 @@ export type ContactCallOption =
       type: 'inbox';
       inbox: Inbox;
       provider: VoiceCallProvider;
-      // The conversation the call continues in, when it is in this inbox
       conversationId?: number;
     }
   | { type: 'dialer' };
 
-// The ways to call a contact: each inbox that can place a call, the one of the
-// conversation on screen first, then the phone's own dialer. Without a phone number only
-// a WhatsApp conversation on screen can be called, through the identity it already has.
+// Existing WhatsApp identities need no number.
 export const buildContactCallOptions = (
   inboxes: Inbox[],
   conversation?: { id: number; inboxId?: number } | null,

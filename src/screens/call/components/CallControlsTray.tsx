@@ -26,13 +26,11 @@ import { CallControl } from './CallControl';
 const WHITE = '#FFFFFF';
 
 type CallControlsTrayProps = {
-  // False while an outbound call is still ringing: there is nothing to hold yet
   isConnected: boolean;
   isMuted: boolean;
   isOnHold: boolean;
   isSpeakerOn: boolean;
   isEnding: boolean;
-  // With a headset around the speaker button becomes a route button
   hasHeadset: boolean;
   currentRoute: AudioRoute;
   routeLabel: (route: AudioRoute) => string;
@@ -43,7 +41,6 @@ type CallControlsTrayProps = {
   onEnd: () => void;
 };
 
-// Mute, audio, hold and end in a row
 export const CallControlsTray = ({
   isConnected,
   isMuted,

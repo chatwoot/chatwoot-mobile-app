@@ -74,8 +74,6 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   const audioPlayBackStatus = useCallback<Callback>(
     ({ status, data: playBackData }) => {
-      // Paused by the player itself, when playback was cut off; that pause carries where it
-      // stopped, unlike the pause a drag of the scrubber makes before it resumes
       if (status === AudioStatus.PAUSED && playBackData) setAudioPlaying(false);
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;

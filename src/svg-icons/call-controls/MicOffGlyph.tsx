@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Glyph, type GlyphProps } from './Glyph';
 
-// The microphone, struck through while muted
 export const MicOffGlyph = ({ color, size }: GlyphProps) => (
   <Glyph
     color={color}

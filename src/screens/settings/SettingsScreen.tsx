@@ -188,7 +188,7 @@ const SettingsScreen = () => {
   // };
 
   const onClickLogout = useCallback(async () => {
-    // Calls are ended while the session can still tell the server
+    // Server hangup requires the current session.
     await dispatch(callActions.endLocalCalls()).catch(() => {});
     await AsyncStorage.removeItem('cwCookie');
     await RecentSearches.clearAll();

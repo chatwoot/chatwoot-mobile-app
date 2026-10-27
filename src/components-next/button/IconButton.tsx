@@ -15,12 +15,17 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const getButtonStyles = (isPrimary: boolean, pressed: boolean, secondaryBackground?: string) => {
+const getButtonStyles = (
+  isPrimary: boolean,
+  pressed: boolean,
+  disabled: boolean,
+  secondaryBackground?: string,
+) => {
   const baseStyles = 'py-[11px] flex-row items-center justify-center rounded-[13px] gap-4';
   const variantStyles = isPrimary ? 'bg-blue-800' : (secondaryBackground ?? 'bg-gray-50');
   const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100' : '';
 
-  return tailwind.style(baseStyles, variantStyles, pressedStyles);
+  return tailwind.style(baseStyles, variantStyles, pressedStyles, disabled ? 'opacity-40' : '');
 };
 
 const getTextStyles = (isPrimary: boolean, isDestructive: boolean) => {
@@ -69,7 +74,7 @@ export const IconButton = ({
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed, secondaryBackground)}
+        style={({ pressed }) => getButtonStyles(isPrimary, pressed, disabled, secondaryBackground)}
         {...handlers}>
         {/* Defaults to the phone icon (its original use, Call); pass one for other actions. */}
         <Icon

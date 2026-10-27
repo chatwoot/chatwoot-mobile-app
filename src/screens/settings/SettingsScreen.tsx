@@ -71,6 +71,8 @@ import { showToast } from '@/utils/toastUtils';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
 import { PageHeader } from '@/navigation/split/FullScreenPage';
 import { SwipeBackPage } from '@/navigation/split/SwipeBackPage';
+import { getVoipToken } from '@/services/voice/chatwootCalls';
+import { callActions } from '@/store/call/callActions';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -201,7 +203,7 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    switchAccount(dispatch, accountId);
+    if (!switchAccount(dispatch, accountId)) return;
     navigation.dispatch(StackActions.replace('Tab'));
   };
 
@@ -228,9 +230,13 @@ const SettingsScreen = () => {
   // };
 
   const onClickLogout = useCallback(async () => {
+    // Server hangup requires the current session.
+    await dispatch(callActions.endLocalCalls()).catch(() => {});
     await AsyncStorage.removeItem('cwCookie');
     await RecentSearches.clearAll();
     await dispatch(settingsActions.removeDevice({ pushToken }));
+    const voipToken = getVoipToken();
+    if (voipToken) await dispatch(settingsActions.removeDevice({ pushToken: voipToken }));
     dispatch(logout());
   }, [dispatch, pushToken]);
 

@@ -15,6 +15,7 @@ import { FileErrorIcon } from '@/svg-icons';
 import i18n from '@/i18n';
 import { Spinner } from '@/components-next/spinner';
 import {
+  AudioStatus,
   pausePlayer,
   resumePlayer,
   seekTo,
@@ -72,7 +73,8 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const totalDuration = useSharedValue(0);
 
   const audioPlayBackStatus = useCallback<Callback>(
-    ({ data: playBackData }) => {
+    ({ status, data: playBackData }) => {
+      if (status === AudioStatus.PAUSED && playBackData) setAudioPlaying(false);
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
         totalDuration.value = playBackData.duration;

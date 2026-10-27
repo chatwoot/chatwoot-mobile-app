@@ -48,6 +48,9 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { InAppCallScreen } from '@/screens/call';
+import { runCallReadiness } from '@/screens/call/utils/callReadiness';
+import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 
 const Tab = createBottomTabNavigator();
 
@@ -111,8 +114,8 @@ const Tabs = () => {
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
-    dispatch(settingsActions.saveDeviceDetails());
-    dispatch(inboxActions.fetchInboxes());
+    const inboxesLoaded = dispatch(inboxActions.fetchInboxes());
+    askForPermissions(inboxesLoaded);
     initActionCable();
     dispatch(labelActions.fetchLabels());
     dispatch(setCurrentState('none'));
@@ -122,6 +125,19 @@ const Tabs = () => {
     initAnalytics();
     initSentry();
     initPushNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const askForPermissions = useCallback(async (inboxesLoaded: Promise<unknown>) => {
+    try {
+      const { status } = await checkNotifications();
+      if (status !== RESULTS.GRANTED) await requestNotifications(['alert', 'sound', 'badge']);
+      await inboxesLoaded;
+      await runCallReadiness();
+    } catch {
+      // Prompt failures must not prevent registration.
+    }
+    dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -279,6 +295,7 @@ export const AppTabs = () => {
         </Stack.Navigator>
         <SideColumnDivider />
         <LayoutChangeCover />
+        <InAppCallScreen />
         <GlassToastHost />
       </View>
     );

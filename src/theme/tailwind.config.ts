@@ -12,12 +12,15 @@ const blackA = require('./colors/blackA');
 const whiteA = require('./colors/whiteA');
 const { plugin } = require('twrnc');
 const { appFont, useSystemFont } = require('./appFont');
+// Call screen colours the Radix palette above does not have
+const callColors = require('./colors/call');
 
 const chatwootAppColors = {
   ...blackA,
   ...whiteA,
   ...radixUILightColors,
   ...radixUIDarkColors,
+  ...callColors,
 };
 
 export const twConfig = {

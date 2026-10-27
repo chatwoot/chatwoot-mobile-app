@@ -1,5 +1,5 @@
-import React from 'react';
-import { Pressable } from 'react-native';
+import React, { useMemo, useRef } from 'react';
+import { Pressable, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Icon, IconButton } from '@/components-next';
@@ -11,6 +11,19 @@ import i18n from '@/i18n';
 import { openNumber, openEmail } from '@/utils/urlUtils';
 import { useContainerWidth } from '@/context';
 import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import type { SheetRef } from '@/components-next/common/sheet/Sheet';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import {
+  selectHasActiveCall,
+  selectHasIncomingCall,
+  selectPlacingCall,
+} from '@/store/call/callSelectors';
+import type { CallerSnapshot } from '@/store/call/callTypes';
+import { placeOutboundCall } from '@/utils/placeOutboundCall';
+
+import { buildContactCallOptions, type ContactCallOption } from '../utils/contactCallOptions';
+import { ContactCallSheet } from './ContactCallSheet';
 
 type ContactOption = {
   contactType: 'call' | 'email';
@@ -20,6 +33,7 @@ type ContactOption = {
 type ContactOptionProps = {
   option: ContactOption;
   handleOptionPress?: () => void;
+  disabled?: boolean;
 };
 
 const ContactOptionComponent = (props: ContactOptionProps) => {
@@ -27,7 +41,7 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
   const isInContactPane = useIsInContactPane() || IOS_DESIGN;
   // Sized to the container (e.g. the split view's contact column), not the whole screen.
   const OPTION_WIDTH = (useContainerWidth() - 32 - 12 * 3) / 2;
-  const { option, handleOptionPress } = props;
+  const { option, handleOptionPress, disabled = false } = props;
 
   const { handlers, animatedStyle } = useScaleAnimation();
   const hapticSelection = useHaptic();
@@ -47,8 +61,11 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
             isInContactPane ? 'bg-white' : 'bg-gray-50',
             `w-[${OPTION_WIDTH}px]`,
             pressed ? 'bg-gray-100' : '',
+            disabled ? 'opacity-40' : '',
           ),
         ]}
+        disabled={disabled}
+        accessibilityState={{ disabled }}
         onPress={handleOnPress}
         {...handlers}>
         <Icon icon={option.icon} size={24} />
@@ -67,19 +84,79 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
 type ContactBasicActionsProps = {
   phoneNumber?: string;
   email?: string;
+  contactId?: number;
+  conversation?: { id: number; inboxId?: number } | null;
+  caller?: CallerSnapshot | null;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   // White buttons on the gray page in the contact column and on iOS.
   const isInContactPane = useIsInContactPane() || IOS_DESIGN;
-  const { phoneNumber, email } = props;
+  const { phoneNumber, email, contactId, conversation, caller, style } = props;
+  const dispatch = useAppDispatch();
+  const inboxes = useAppSelector(selectAllInboxes);
+  const callSheetRef = useRef<SheetRef>(null);
+  const selectedOptionRef = useRef<ContactCallOption | null>(null);
+  const hasActiveCall = useAppSelector(selectHasActiveCall);
+  const hasIncomingCall = useAppSelector(selectHasIncomingCall);
+  const placingCall = useAppSelector(selectPlacingCall);
+  const isCallDisabled = hasActiveCall || hasIncomingCall || !!placingCall;
 
-  const onCallPress = () => {
-    if (!phoneNumber) {
+  const callOptions = useMemo(
+    () =>
+      contactId
+        ? buildContactCallOptions(inboxes, conversation, !!phoneNumber)
+        : phoneNumber
+          ? [{ type: 'dialer' } as ContactCallOption]
+          : [],
+    [contactId, inboxes, conversation, phoneNumber],
+  );
+
+  const callThrough = (option: ContactCallOption) => {
+    if (option.type === 'dialer') {
+      if (phoneNumber) openNumber({ phoneNumber });
       return;
     }
-    openNumber({ phoneNumber });
+    placeOutboundCall(dispatch, {
+      provider: option.provider,
+      inboxId: option.inbox.id,
+      conversationId: option.conversationId,
+      contactId,
+      caller,
+    });
   };
+
+  const onCallPress = () => {
+    if (isCallDisabled) return;
+    if (callOptions.length > 1) {
+      callSheetRef.current?.present();
+      return;
+    }
+    if (callOptions[0]) callThrough(callOptions[0]);
+  };
+
+  // Native sheets otherwise cover call screens.
+  const onCallOptionSelect = (option: ContactCallOption) => {
+    selectedOptionRef.current = option;
+    callSheetRef.current?.dismiss();
+  };
+
+  const onCallSheetDismiss = () => {
+    const option = selectedOptionRef.current;
+    selectedOptionRef.current = null;
+    if (option) callThrough(option);
+  };
+
+  const callSheet =
+    callOptions.length > 1 ? (
+      <ContactCallSheet
+        ref={callSheetRef}
+        options={callOptions}
+        onSelect={onCallOptionSelect}
+        onDismiss={onCallSheetDismiss}
+      />
+    ) : null;
 
   const onEmailPress = () => {
     if (!email) {
@@ -88,13 +165,14 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
     openEmail({ email });
   };
 
-  if (!email && !phoneNumber) {
+  const canCall = callOptions.length > 0;
+  if (!email && !canCall) {
     return null;
   }
 
-  if (email && phoneNumber) {
+  if (email && canCall) {
     return (
-      <Animated.View style={tailwind.style('flex flex-row justify-between ')}>
+      <Animated.View style={[tailwind.style('flex flex-row justify-between '), style]}>
         <ContactOptionComponent
           key="email"
           option={{
@@ -104,30 +182,36 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
           handleOptionPress={onEmailPress}
         />
         <ContactOptionComponent
-          key="phoneNumber"
+          key="call"
           option={{
             contactType: i18n.t('CONTACT_DETAILS.CALL'),
             icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
           }}
           handleOptionPress={onCallPress}
+          disabled={isCallDisabled}
         />
+        {callSheet}
       </Animated.View>
     );
   }
 
-  if (phoneNumber) {
+  if (canCall) {
     return (
-      <IconButton
-        text={i18n.t('CONTACT_DETAILS.CALL')}
-        variant="secondary"
-        secondaryBackground={isInContactPane ? 'bg-white' : undefined}
-        handlePress={onCallPress}
-      />
+      <Animated.View style={style}>
+        <IconButton
+          text={i18n.t('CONTACT_DETAILS.CALL')}
+          variant="secondary"
+          secondaryBackground={isInContactPane ? 'bg-white' : undefined}
+          handlePress={onCallPress}
+          disabled={isCallDisabled}
+        />
+        {callSheet}
+      </Animated.View>
     );
   }
 
-  if (email) {
-    return (
+  return (
+    <Animated.View style={style}>
       <IconButton
         text={i18n.t('CONTACT_DETAILS.EMAIL')}
         variant="secondary"
@@ -135,6 +219,6 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
         handlePress={onEmailPress}
         icon={<MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />}
       />
-    );
-  }
+    </Animated.View>
+  );
 };

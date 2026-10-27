@@ -12,6 +12,7 @@ import {
   InfoCircleIcon,
   ReopenCircleIcon,
   Overflow,
+  PhoneOutlineIcon,
   SLAIcon,
   StatusOpenIcon,
   StatusResolvedIcon,
@@ -47,6 +48,9 @@ type ChatHeaderProps = {
   statusText?: string;
   // SLA time left or overdue (e.g. "2h 53m"), shown with the SLA label in the pane header.
   slaTime?: string;
+  showCallButton?: boolean;
+  isCallDisabled?: boolean;
+  onCallPress?: () => void;
   onBackPress: () => void;
   onContactDetailsPress: () => void;
   onToggleChatStatus: () => void;
@@ -129,6 +133,9 @@ export const ChatHeader = ({
   statusText,
   slaTime,
   dashboardsList,
+  showCallButton = false,
+  isCallDisabled = false,
+  onCallPress,
   onBackPress,
   onContactDetailsPress,
   onToggleChatStatus,
@@ -445,6 +452,19 @@ export const ChatHeader = ({
             {name}
           </Animated.Text>
         </Pressable>
+        {showCallButton && (
+          <Pressable
+            hitSlop={8}
+            disabled={isCallDisabled}
+            accessibilityRole="button"
+            onPress={onCallPress}
+            style={tailwind.style(
+              'h-8 w-8 items-center justify-center',
+              isCallDisabled ? 'opacity-40' : '',
+            )}>
+            <Icon icon={<PhoneOutlineIcon />} size={24} />
+          </Pressable>
+        )}
         {!actionsInToolbar && dashboardsList.length > 0 && (
           <Animated.View style={tailwind.style('h-8 w-8 items-center justify-center')}>
             <ChatDropdownMenu dropdownMenuList={dashboardsList}>

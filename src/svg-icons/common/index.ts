@@ -46,3 +46,4 @@ export * from './Error';
 export * from './InfoCircle';
 export * from './ExpandCompose';
 export * from './ToolbarGlyphs';
+export * from './PhoneOutline';

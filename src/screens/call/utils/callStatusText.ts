@@ -9,7 +9,6 @@ export type CallStatusFlags = {
   isIncoming?: boolean;
 };
 
-// The line above the caller: the timer while connected, the phase otherwise
 export const callStatusText = (call: LiveCall, duration: string, flags: CallStatusFlags) => {
   if (flags.isOnHold) return i18n.t('CONVERSATION.VOICE_WIDGET.ON_HOLD');
   if (flags.isConnected && !isAwaitingTwilioContact(call)) return duration;

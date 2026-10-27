@@ -17,13 +17,11 @@ type PulseDotProps = {
   colour?: string;
   size?: number;
   periodMs?: number;
-  // How far the ring swells, as a multiple of the dot
+  // Ring expansion relative to dot size.
   spread?: number;
-  // The ring rests while nobody can see it
   paused?: boolean;
 };
 
-// A small dot with a sonar ring, marking a call that is ringing or live
 export const PulseDot = ({
   colour = CALL_LINK,
   size = 8,

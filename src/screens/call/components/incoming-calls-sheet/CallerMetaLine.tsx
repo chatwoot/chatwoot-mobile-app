@@ -6,7 +6,7 @@ import { tailwind } from '@/theme';
 import { CALL_LABEL_TEXT } from '../../constants/callTheme';
 import { InboxChannelIcon } from '../InboxChannelIcon';
 
-const META_RULE = 'hsl(0, 0%, 78%)';
+const META_RULE = tailwind.color('bg-call-rule') as string;
 
 const SIZES = {
   large: { text: 'text-[15px] leading-5', mark: 14, gap: 'gap-1.5' },
@@ -21,8 +21,6 @@ type CallerMetaLineProps = {
   size: keyof typeof SIZES;
 };
 
-// The caller's number and the inbox they rang, split by a short rule; the inbox name gives
-// way first when the line runs out of room
 export const CallerMetaLine = ({
   phone,
   inboxName,

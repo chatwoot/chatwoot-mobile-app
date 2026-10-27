@@ -24,7 +24,6 @@ export const hasHeadsetRoute = (state: AudioRouteState) => state.available.some(
 export const availableAudioRoutes = (state: AudioRouteState) =>
   ROUTE_ORDER.filter(route => state.available.includes(route));
 
-// A headset goes by its own name; the phone's routes keep their labels
 export const audioRouteLabel = (state: AudioRouteState, route: AudioRoute) =>
   isHeadsetRoute(route) && state.names[route]
     ? (state.names[route] as string)

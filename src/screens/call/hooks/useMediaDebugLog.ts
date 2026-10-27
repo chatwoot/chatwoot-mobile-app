@@ -7,8 +7,6 @@ import { isNativeCallsAvailable } from '@/services/voice/chatwootCalls';
 
 const REPORT_INTERVAL_MS = 5_000;
 
-// Development only: notes whether the native module loaded and logs the media path
-// every few seconds while a call is active
 export const useMediaDebugLog = () => {
   const hasActiveCall = useAppSelector(selectHasActiveCall);
 

@@ -10,7 +10,6 @@ import { CALL_LINK } from '../constants/callTheme';
 import { useCallStatusText } from '../hooks/useCallStatusText';
 import type { CallStatusFlags } from '../utils/callStatusText';
 
-// Height of the bar's own row, on top of the status bar it covers
 export const CALL_BANNER_ROW_HEIGHT = 46;
 
 type CallBannerProps = {
@@ -20,9 +19,6 @@ type CallBannerProps = {
   onPress: () => void;
 };
 
-// Ongoing-call strip across the top of the app, covering the status bar the way the
-// system's own call indicator does. Screens keep their safe-area padding, which lands
-// directly below the bar, so nothing is hidden underneath it.
 export const CallBanner = ({ call, activeSince, flags, onPress }: CallBannerProps) => {
   const insets = useSafeAreaInsets();
   const statusText = useCallStatusText(call, activeSince, flags);

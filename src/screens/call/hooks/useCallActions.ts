@@ -7,12 +7,10 @@ import { systemCall } from '@/services/voice/systemCall';
 import { useHaptic } from '@/utils';
 import { reportAnswerFailure, toastJoinOutcome } from '@/utils/voiceCallFeedback';
 
-// Answer and end for the call on screen, routed through the OS call UI where there is one
 export const useCallActions = (call: LiveCall, isJoining: boolean) => {
   const hapticSelection = useHaptic();
   const [isEnding, setIsEnding] = useState(false);
 
-  // Answering from the full screen, used where the OS has no call screen of its own
   const answer = useCallback(async () => {
     if (isJoining) return;
     hapticSelection?.();
@@ -29,14 +27,13 @@ export const useCallActions = (call: LiveCall, isJoining: boolean) => {
     hapticSelection?.();
     setIsEnding(true);
     try {
-      // A call still being placed has no id for the OS or the provider to end yet
       if (!call.callSid) {
         await store.dispatch(callActions.cancelPlacingCall());
         return;
       }
       await systemCall.end(store, call);
     } catch {
-      // The call state is cleared locally whatever the request did
+      // Local call cleanup runs despite failures.
     } finally {
       setIsEnding(false);
     }

@@ -24,16 +24,13 @@ const CONTROL_FILL: Record<CallControlTone, string> = {
 
 type CallControlProps = {
   label: string;
-  // A toggle that is on is blue, one that is off is grey; hold and end keep their own colours
   tone: CallControlTone;
-  // A control that does nothing yet keeps its place in the row as an empty outline
   inactive?: boolean;
   disabled?: boolean;
   onPress: () => void;
   children: React.ReactNode;
 };
 
-// One round-cornered button in the call tray with its label underneath
 export const CallControl = ({
   label,
   tone,

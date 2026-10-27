@@ -11,9 +11,7 @@ import {
 
 import { SHEET_CLOSE_MS, SHEET_DISMISS_DRAG, SHEET_SCRIM_FADE_MS } from '../constants/sheet';
 
-// How the incoming-calls sheet leaves: a drag down collapses it to the strip at once, and
-// closeSheet drops it away with the scrim fading, after which only the strip remains
-export const useSheetDismissal = (onClosed: () => void, startCollapsed = false) => {
+export const useSheetDismissal = (startCollapsed = false) => {
   const [collapsed, setCollapsed] = useState(startCollapsed);
   const dragY = useSharedValue(0);
   const closeY = useSharedValue(0);
@@ -31,11 +29,10 @@ export const useSheetDismissal = (onClosed: () => void, startCollapsed = false) 
     setTimeout(() => {
       closingRef.current = false;
       setCollapsed(true);
-      onClosed();
       closeY.value = 0;
       scrim.value = 1;
     }, SHEET_CLOSE_MS);
-  }, [closeY, onClosed, scrim]);
+  }, [closeY, scrim]);
 
   const collapse = useCallback(() => setCollapsed(true), []);
   const expand = useCallback(() => setCollapsed(false), []);

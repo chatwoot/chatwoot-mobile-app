@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 
-// Back tucks the call away into the banner; over a lock screen it does nothing, since
-// the app behind the call screen must stay out of reach
+// Back must not expose locked content.
 export const useHardwareBackToMinimise = (onLockScreen: boolean, onMinimise: () => void) => {
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {

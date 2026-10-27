@@ -70,9 +70,8 @@ export const ChatHeader = ({
   };
 
   return (
-    <Animated.View style={tailwind.style(
-        'border-b-[1px] border-b-slate-100 dark:border-b-slateDark-100',
-      )}>
+    <Animated.View
+      style={tailwind.style('border-b-[1px] border-b-slate-100 dark:border-b-slateDark-100')}>
       <Animated.View style={tailwind.style('flex flex-row items-center gap-3 px-4 pt-2 pb-[13px]')}>
         <Pressable
           hitSlop={8}

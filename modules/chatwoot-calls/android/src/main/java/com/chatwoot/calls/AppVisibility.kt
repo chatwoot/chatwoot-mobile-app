@@ -4,9 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 
-// Whether the app's own activity is in front. The messaging service is in the same
-// process, so it can tell a call push for an app the agent is looking at from one that
-// has to ring on its own. The call screen's own activity does not count as the app.
+// Excludes the lock-screen call activity.
 object AppVisibility {
   @Volatile
   var foreground = false

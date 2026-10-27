@@ -38,8 +38,7 @@ const noSubscription = { remove: () => {} };
 
 export const isNativeCallsAvailable = () => ChatwootCallsModule !== null;
 
-// The system call UI is CallKit, so it exists on iOS only. The simulator has CallKit but no call service behind it and ends every reported call
-// within seconds, so it always uses the app's own ring UI.
+// Simulator CallKit ends calls prematurely.
 export const isSystemCallUiAvailable = () =>
   Platform.OS === 'ios' && ChatwootCallsModule !== null && !isEmulatorSync();
 
@@ -60,11 +59,7 @@ export const addVoipTokenListener = (listener: (event: VoipTokenEvent) => void) 
 export const addAudioSessionListener = (listener: (event: AudioSessionEvent) => void) =>
   systemCallUi()?.addListener('onAudioSession', listener) ?? noSubscription;
 
-// Resolves once the call is connected; rejects on failure, disconnect before connect,
-// or timeout. State events keep flowing to listeners for the rest of the call.
-// The connect still waiting for Twilio's answer. A local disconnect settles it at once:
-// the native side drops its call before Twilio's own terminal report, which then never
-// reaches the waiting connect.
+// Local disconnects can omit terminal callbacks.
 let settlePendingConnect: ((error?: Error) => void) | null = null;
 
 export const twilioConnect = (token: string, params: Record<string, string>) =>
@@ -108,25 +103,19 @@ export const twilioSetHold = (hold: boolean) => ChatwootCallsModule?.twilioSetHo
 
 export const setSpeakerOn = (enabled: boolean) => ChatwootCallsModule?.setSpeakerOn(enabled);
 
-// A ringback for a call this device placed, played into the call's audio
 export const startRingback = () => ChatwootCallsModule?.startRingback?.();
 
 export const stopRingback = () => ChatwootCallsModule?.stopRingback?.();
 
-// Android's call notification is posted natively, so its buttons are read back the same way
-// The oldest choice waiting, or the one for the named call
 export const takeNativeCallAction = (callSid?: string | null) =>
   ChatwootCallsModule?.takePendingCallAction?.(callSid ?? null) ?? null;
 
 export const cancelNativeCallNotification = (keepRinging: string[] = []) =>
   ChatwootCallsModule?.cancelCallNotification?.(keepRinging);
 
-// Android's native call screen: it shows the state of the call the app carries, and the
-// buttons pressed on it arrive as actions
 export const reportNativeCallState = (state: NativeCallState, callSid?: string | null) =>
   ChatwootCallsModule?.reportCallState?.(state, callSid ?? null);
 
-// Android's persistent notification for a call in progress
 export const startOngoingCallNotification = (
   callSid: string,
   name: string,
@@ -136,8 +125,7 @@ export const startOngoingCallNotification = (
   state: OngoingCallState,
 ) => ChatwootCallsModule?.startOngoingCall?.(callSid, name, handle, inboxName, avatar, state);
 
-// Android only: what the native side needs to end a call with the server should the app
-// reload while the call is on, in the same shape a ring push carries
+// Retain server identifiers across JavaScript reloads.
 export const rememberNativeCall = (
   callSid: string,
   details: {
@@ -161,38 +149,29 @@ export const rememberNativeCall = (
   ChatwootCallsModule?.rememberCall?.(callSid, data);
 };
 
-// Android only: keeps an end for a call the app no longer has, with the details the native
-// side remembered for it, as a pending action for the app to apply
 export const queueNativeEnd = (callSid: string) => ChatwootCallsModule?.queueEnd?.(callSid);
 
-// Hold and resume through the platform's call service. True means the platform owns the
-// change and reports it back through the hold action; false means it is not tracking the call
+// True delegates state changes to native.
 export const holdCallNatively = (callSid: string): boolean =>
   ChatwootCallsModule?.holdCall?.(callSid) ?? false;
 
 export const resumeCallNatively = (callSid: string): boolean =>
   ChatwootCallsModule?.resumeCall?.(callSid) ?? false;
 
-// The app is about to join this ring, so a cancel push crossing the answer must not end
-// the platform's record of it
 export const markCallAnswering = (callSid: string) =>
   ChatwootCallsModule?.markCallAnswering?.(callSid);
 
-// Android: the answer did not go through, so Telecom stops treating the call as ringing
 export const abandonAnswer = (callSid: string) => ChatwootCallsModule?.abandonAnswer?.(callSid);
 
-// Closes the platform's record of a ring that never became a call here
 export const endRingingNativeCall = (callSid: string) =>
   ChatwootCallsModule?.endRingingCall?.(callSid);
 
 export const stopOngoingCallNotification = (callSid: string, reason: 'local' | 'remote') =>
   ChatwootCallsModule?.stopOngoingCall?.(callSid, reason);
 
-// The observed audio route of the call in progress.
 export const addAudioRouteListener = (listener: (event: AudioRouteEvent) => void) =>
   ChatwootCallsModule?.addListener('onAudioRoute', listener) ?? noSubscription;
 
-// Android only: Telecom could not take a call, so the app handles its audio itself
 export const addTelecomUnavailableListener = (listener: (event: { callSid: string }) => void) =>
   ChatwootCallsModule?.addListener('onTelecomUnavailable', listener) ?? noSubscription;
 
@@ -209,8 +188,6 @@ export const addNativeCallActionListener = (listener: (event: NativeCallActionEv
 
 export const moveAppToBackground = () => ChatwootCallsModule?.moveAppToBackground?.();
 
-// Android: the phone's ringtone and vibration, played natively. Returns false where the
-// module cannot ring, so the caller can fall back to its own player.
 export const startAppRinger = () => {
   if (!ChatwootCallsModule?.startAppRinger) return false;
   ChatwootCallsModule.startAppRinger();
@@ -219,29 +196,22 @@ export const startAppRinger = () => {
 
 export const stopAppRinger = () => ChatwootCallsModule?.stopAppRinger?.();
 
-// Whether Android keeps a picture of the app's last frame to show when it is reopened.
-// Android only; a no-op elsewhere.
 export const setRecentsScreenshotEnabled = (enabled: boolean) =>
   ChatwootCallsModule?.setRecentsScreenshotEnabled?.(enabled);
 
-// The React component Android's lock-screen call activity renders for a live call
 export const LOCK_SCREEN_CALL_COMPONENT = 'ChatwootLockScreenCall';
 
-// Whether that component has something to show; the native screen stays in front until it does
 export const setLockScreenCallSurfaceVisible = (visible: boolean) =>
   ChatwootCallsModule?.setLockScreenCallSurfaceVisible?.(visible);
 
-// Leaves the lock-screen call for the app, which the phone asks to unlock first; true once
-// the app has been opened, false when the unlock was cancelled
+// Resolves false when unlocking is cancelled.
 export const openAppFromLockScreen = async () =>
   (await ChatwootCallsModule?.openAppFromLockScreen?.()) ?? false;
 
-// Android's Telecom framework tracks calls on this device: it sets the audio mode, holds
-// focus and routes audio, so the app must not fight it for the route
+// Telecom owns audio mode and routing.
 export const isTelecomAvailable = () =>
   Platform.OS === 'android' && (ChatwootCallsModule?.isTelecomAvailable?.() ?? false);
 
-// Android route reports come from Telecom or the app's native communication session.
 export const hasNativeAudioRouting = () =>
   Platform.OS === 'android' &&
   (ChatwootCallsModule?.hasNativeAudioRouting?.() ?? isTelecomAvailable());
@@ -249,23 +219,15 @@ export const hasNativeAudioRouting = () =>
 export const startAppCallAudio = () => ChatwootCallsModule?.startAppCallAudio?.() ?? null;
 export const stopAppCallAudio = (token: string) => ChatwootCallsModule?.stopAppCallAudio?.(token);
 
-// True while the phone is locked, so the call screen can hide anything that leads into
-// the app. Always false where the app cannot appear over a lock screen at all.
 export const isDeviceLocked = () => ChatwootCallsModule?.isDeviceLocked?.() ?? false;
 
-// Whether one of the app's own screens is in front, not counting Android's lock-screen
-// call screen; platforms without that screen answer true
+// Excludes Android's lock-screen call activity.
 export const isAppInForeground = () => ChatwootCallsModule?.isAppInForeground?.() ?? true;
 
-// WebRTC audio for a call with no system call behind it; with a system call the OS
-// activates the session and the module switches audio on itself
 export const activateWebrtcAudio = () => ChatwootCallsModule?.activateWebrtcAudio?.();
 export const deactivateWebrtcAudio = () => ChatwootCallsModule?.deactivateWebrtcAudio?.();
 export const setTwilioAudioEnabled = (enabled: boolean) =>
   ChatwootCallsModule?.twilioSetAudioEnabled?.(enabled);
-
-// System call UI (CallKit). The Android half of the module has none of these functions,
-// so every one of them is a no-op wherever the system call UI is unavailable.
 
 export const callKitReady = () => systemCallUi()?.callKitReady();
 
@@ -294,7 +256,6 @@ export const requestSystemCallEnd = (uuid: string) =>
 export const requestSystemCallMute = (uuid: string, muted: boolean) =>
   systemCallUi()?.callKitRequestMute(uuid, muted) ?? Promise.resolve();
 
-// Whether an agent is signed in, kept by the native side so a call push that arrives while
-// nobody is does not ring or show the caller
+// Persist sign-in state for native pushes.
 export const setNativeSignedIn = (signedIn: boolean) =>
   ChatwootCallsModule?.setSignedIn?.(signedIn);

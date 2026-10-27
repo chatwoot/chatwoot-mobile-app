@@ -11,14 +11,12 @@ import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
 
-// The phone's own ringtone and a vibration pattern for as long as a call rings natively
 internal class CallRinger(private val context: Context) {
   private var ringtone: Ringtone? = null
   private var vibrator: Vibrator? = null
   private val handler = Handler(Looper.getMainLooper())
 
-  // Ringtone.isLooping exists from Android 9; below that the ringtone is restarted each
-  // time it finishes
+  // Replay where native looping is unavailable.
   private val replay = object : Runnable {
     override fun run() {
       val current = ringtone ?: return
@@ -29,7 +27,6 @@ internal class CallRinger(private val context: Context) {
 
   fun start() {
     val audio = context.getSystemService(AudioManager::class.java)
-    // A phone set to silent neither rings nor vibrates
     if (audio?.ringerMode == AudioManager.RINGER_MODE_SILENT) return
     if (audio?.ringerMode == AudioManager.RINGER_MODE_NORMAL) {
       runCatching {

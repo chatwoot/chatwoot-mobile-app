@@ -5,9 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 
-// Answer on the call notification. Draws nothing: over the lock screen it hands the call to
-// the ring screen, which carries it there; otherwise it stores the answer and brings the
-// app up, which opens straight onto its call screen.
 class CallAnswerActivity : Activity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +18,6 @@ class CallAnswerActivity : Activity() {
   }
 
   private fun answer(callSid: String) {
-    // The ring screen already showing this call answers it itself
     if (IncomingCallActivity.applySystemAction(callSid, "answer")) return
     val locked = getSystemService(android.app.KeyguardManager::class.java)?.isKeyguardLocked ?: false
     if (locked) {
@@ -47,7 +43,6 @@ class CallAnswerActivity : Activity() {
       this, "answer", callSid, intent.getStringExtra(CallNotification.EXTRA_CALL_ID), details
     )
     CallNotification.cancel(this, callSid)
-    // A running app answers at once; a starting one reads the stored answer as it opens
     NativeCallBridge.emit("pending")
     packageManager.getLaunchIntentForPackage(packageName)?.let { launch ->
       launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

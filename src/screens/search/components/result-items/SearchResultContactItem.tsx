@@ -6,6 +6,7 @@ import { Avatar } from '@/components-next/common/avatar';
 import { tailwind } from '@/theme';
 import type { Contact } from '@/types/Contact';
 import { HighlightedText } from '../shared/HighlightedText';
+import { expandTabs } from '@/utils/expandTabs';
 import { useScaleAnimation } from '@/utils';
 
 type SearchResultContactItemProps = {
@@ -118,7 +119,7 @@ export const SearchResultContactItem = ({
               />
             ) : (
               <Animated.Text key={`text-${index}`} style={textStyle} numberOfLines={1}>
-                {item.content || ''}
+                {expandTabs(item.content || '')}
               </Animated.Text>
             );
           })}

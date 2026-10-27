@@ -15,7 +15,7 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const getButtonStyles = (isPrimary: boolean, pressed: boolean) => {
+const getButtonStyles = (isPrimary: boolean, pressed: boolean, disabled: boolean) => {
   const baseStyles = 'py-[11px] flex-row items-center justify-center rounded-[13px] gap-4';
   const variantStyles = isPrimary ? 'bg-blue-800' : 'bg-gray-50 dark:bg-grayDark-100';
   const pressedStyles = isPrimary
@@ -24,7 +24,7 @@ const getButtonStyles = (isPrimary: boolean, pressed: boolean) => {
       ? 'bg-gray-100 dark:bg-grayDark-200'
       : '';
 
-  return tailwind.style(baseStyles, variantStyles, pressedStyles);
+  return tailwind.style(baseStyles, variantStyles, pressedStyles, disabled ? 'opacity-40' : '');
 };
 
 const getTextStyles = (isPrimary: boolean, isDestructive: boolean) => {
@@ -67,7 +67,7 @@ export const IconButton = ({
         accessible
         accessibilityRole="button"
         accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed)}
+        style={({ pressed }) => getButtonStyles(isPrimary, pressed, disabled)}
         {...handlers}>
         <Icon
           icon={<PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />}

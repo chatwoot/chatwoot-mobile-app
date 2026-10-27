@@ -6,6 +6,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { Icon, Avatar } from '@/components-next/common';
 import { CloseIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import { expandTabs } from '@/utils/expandTabs';
 
 type ContactDetailsScreenHeaderProps = {
   name: string;
@@ -45,7 +46,7 @@ export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProp
               style={tailwind.style(
                 'text-[15px] font-inter-420-20 leading-[17.25px] text-gray-900 dark:text-grayDark-900',
               )}>
-              {bio}
+              {expandTabs(bio)}
             </Animated.Text>
           </Animated.View>
         </Animated.View>

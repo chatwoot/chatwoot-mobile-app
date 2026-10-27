@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { cannedResponseActions } from '@/store/canned-response/cannedResponseActions';
 import { CannedResponse } from '@/types';
 import { FlashList } from '@shopify/flash-list';
+import { expandTabs } from '@/utils/expandTabs';
 
 type CannedResponsesProps = {
   searchKey: string;
@@ -30,7 +31,7 @@ const CannedResponseItem = ({
       <Animated.Text
         numberOfLines={1}
         style={tailwind.style('text-md flex-1 text-gray-950 dark:text-grayDark-950')}>
-        {item.content.replace(/\n/g, ' ')}
+        {expandTabs(item.content.replace(/\n/g, ' '))}
       </Animated.Text>
       <Animated.Text style={tailwind.style('text-sm text-gray-900 dark:text-grayDark-900 ml-2')}>
         {`/${item.shortCode}`}

@@ -10,6 +10,7 @@ import { AttributeListType } from '@/types';
 import { Icon } from '@/components-next/common';
 import { showToast } from '@/utils/toastUtils';
 import { formatAttributeValue } from '@/utils/attributeUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type AttributeItemProps = {
   listItem: AttributeListType;
@@ -87,7 +88,7 @@ const AttributeItem = (props: AttributeItemProps) => {
                   : 'text-gray-950 dark:text-grayDark-950',
                 listItem.type === 'link' ? 'text-blue-800 underline' : '',
               )}>
-              {formattedValue}
+              {expandTabs(formattedValue)}
             </Animated.Text>
             {listItem.hasChevron ? <Icon icon={<CaretRight />} size={20} /> : null}
           </Animated.View>

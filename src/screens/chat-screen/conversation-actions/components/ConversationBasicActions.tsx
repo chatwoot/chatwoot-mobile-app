@@ -8,9 +8,14 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next';
-import { OpenIcon, ResolvedFilledIcon, PendingFilledIcon, SnoozedFilledIcon } from '@/svg-icons';
-import { useTheme } from '@/context/ThemeContext';
+import {
+  StatusOpenIcon,
+  StatusResolvedIcon,
+  PendingFilledIcon,
+  SnoozedFilledIcon,
+} from '@/svg-icons';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import i18n from '@/i18n';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
@@ -28,18 +33,12 @@ type ConversationActionOptionsType = {
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const ACTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 4;
 
-// The options below are built once, so the stroke is resolved when the icon renders.
-const ThemedOpenIcon = () => {
-  useTheme();
-  return <OpenIcon stroke={tailwind.color('text-gray-700 dark:text-grayDark-700') as string} />;
-};
-
 const conversationActionOptions: ConversationActionOptionsType[] = [
   {
     backgroundActionColor: 'bg-gray-100 dark:bg-grayDark-100',
     backgroundActionPressedColor: 'bg-gray-200 dark:bg-grayDark-200',
     borderActionColor: 'bg-gray-700 dark:bg-grayDark-700',
-    actionIcon: <ThemedOpenIcon />,
+    actionIcon: <StatusOpenIcon />,
     actionStatus: 'open',
   },
   {
@@ -60,7 +59,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionColor: 'bg-green-100 dark:bg-greenDark-100',
     backgroundActionPressedColor: 'bg-green-200 dark:bg-greenDark-200',
     borderActionColor: 'bg-green-700',
-    actionIcon: <ResolvedFilledIcon />,
+    actionIcon: <StatusResolvedIcon />,
     actionStatus: 'resolved',
   },
 ];
@@ -75,6 +74,7 @@ type ConversationActionOptionProps = {
 
 const ConversationActionOption = (props: ConversationActionOptionProps) => {
   const { index, conversationAction, status, updateConversationStatus, isMuted } = props;
+  useTheme();
 
   const hapticSelection = useHaptic();
 
@@ -100,7 +100,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
     return {
       borderColor: interpolateColor(actionActive.value, [0, 1], ['transparent', actionBorderColor]),
     };
-  });
+  }, [actionBorderColor]);
 
   return (
     <Animated.View

@@ -236,11 +236,14 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
-        {email || phoneNumber ? (
-          <Animated.View style={tailwind.style('mt-[23px] px-4')}>
-            <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
-          </Animated.View>
-        ) : null}
+        <ContactBasicActions
+          style={tailwind.style('mt-[23px] px-4')}
+          phoneNumber={phoneNumber || ''}
+          email={email || ''}
+          contactId={contactId}
+          conversation={conversation}
+          caller={{ name, phone: phoneNumber, avatar: thumbnail }}
+        />
         <Animated.View style={tailwind.style('pt-10')}>
           <AttributeList list={allDetails as AttributeListType[]} />
         </Animated.View>

@@ -7,6 +7,7 @@ import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
 import { useTheme } from '@/context/ThemeContext';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type CopilotEditorSectionProps = {
   isGenerating: boolean;
@@ -98,7 +99,7 @@ export const CopilotEditorSection = ({
         )}
         contentContainerStyle={tailwind.style('px-3 py-2')}>
         <Markdown style={getMarkdownStyles(colorScheme)} markdownit={markdownIt}>
-          {displayText}
+          {expandTabs(displayText)}
         </Markdown>
       </ScrollView>
       {showActions ? (

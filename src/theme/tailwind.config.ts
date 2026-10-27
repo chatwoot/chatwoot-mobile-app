@@ -10,12 +10,15 @@ const radixUIDarkColors = require('./colors/dark');
 const blackA = require('./colors/blackA');
 // White with alpha variations
 const whiteA = require('./colors/whiteA');
+// Call screen colours the Radix palette above does not have
+const callColors = require('./colors/call');
 
 const chatwootAppColors = {
   ...blackA,
   ...whiteA,
   ...radixUILightColors,
   ...radixUIDarkColors,
+  ...callColors,
 };
 
 export const twConfig = {

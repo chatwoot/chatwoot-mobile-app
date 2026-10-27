@@ -6,9 +6,6 @@ import { callActions, type StartOutboundCallParams } from '@/store/call/callActi
 import { showToast } from './toastUtils';
 import { reportOutboundFailure } from './voiceCallFeedback';
 
-// Places a call from the conversation, telling the agent about a permission request sent
-// to the contact or a call that could not start. Permission outcomes are information
-// rather than failures.
 export const placeOutboundCall = async (dispatch: AppDispatch, params: StartOutboundCallParams) => {
   try {
     const result = await dispatch(callActions.startOutboundCall(params)).unwrap();

@@ -10,14 +10,11 @@ export type CallerInfo = {
   phone: string;
   avatar: string;
   inboxName: string;
-  // What kind of inbox the call came through, which picks its icon
   channelType: string;
   medium: string;
 };
 
-// Who is on the call, from the call itself first and the conversation's contact otherwise.
-// Conversations and inboxes are looked up only in the call's own account, since their ids
-// are per account and the store holds the account on screen.
+// Conversation IDs are scoped per account.
 export const selectCallerInfo = (state: RootState, call: LiveCall | null): CallerInfo => {
   const inCurrentAccount =
     call?.accountId == null || Number(call.accountId) === Number(selectCurrentUserAccountId(state));

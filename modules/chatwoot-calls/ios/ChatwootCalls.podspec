@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 
   s.dependency 'ExpoModulesCore'
   s.dependency 'TwilioVoice', '~> 6.13'
-  # The same WebRTC build react-native-webrtc links, so the module can drive its audio session
+  # Share WebRTC with react-native-webrtc.
   s.dependency 'JitsiWebRTC', '~> 124.0.0'
 
   s.pod_target_xcconfig = {

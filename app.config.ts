@@ -103,7 +103,6 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       'expo-web-browser',
-      // Purpose strings come from infoPlist above
       '@config-plugins/react-native-webrtc',
       '@react-native-community/datetimepicker',
       '@react-native-firebase/app',

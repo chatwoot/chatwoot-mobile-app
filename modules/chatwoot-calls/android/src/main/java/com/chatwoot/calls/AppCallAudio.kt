@@ -15,7 +15,6 @@ import android.os.Looper
 import android.util.Log
 import java.util.UUID
 
-// Owns communication audio on devices where calls are not registered with Telecom.
 @Suppress("DEPRECATION")
 internal class AppCallAudio(private val context: Context) {
   companion object {
@@ -62,7 +61,7 @@ internal class AppCallAudio(private val context: Context) {
     fun routeForRequestedDevice() = availableDevices().firstOrNull { it.id == requestedDevice }?.let(::routeName)
   }
 
-  // Tokens keep a delayed teardown from releasing a newer media session.
+  // Tokens protect newer media sessions.
   fun start(): String {
     val token = UUID.randomUUID().toString()
     main.post {
@@ -167,7 +166,7 @@ internal class AppCallAudio(private val context: Context) {
     return devices.filter {
       val route = routeName(it)
       route != "unknown" && (route != "bluetooth" || bluetoothAllowed) &&
-        // Legacy speaker/SCO controls cannot select the handset while a wired headset is plugged in.
+        // Wired headsets override legacy handset routing.
         !(Build.VERSION.SDK_INT < Build.VERSION_CODES.S && wired && route == "earpiece")
     }.distinctBy(::routeName)
   }

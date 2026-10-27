@@ -4,15 +4,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 
-// Decline on the call notification, the notification swiped away, Answer while the phone
-// is locked, and Hang up on the in-progress one. A decline is stored and the app applies
-// it: straight away when it is running, otherwise as soon as it starts. Answer with the
-// phone unlocked opens an activity directly and does not come through here.
 class CallActionReceiver : BroadcastReceiver() {
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action == CallNotification.ACTION_HANG_UP) {
-      // Hang up on the in-progress notification. The app is running whenever it shows, but
-      // its bridge can be away while the app reloads; the hang-up then waits for the app.
       val hungUpSid = intent.getStringExtra(CallNotification.EXTRA_CALL_SID)
       if (!NativeCallBridge.emit("end", callSid = hungUpSid) && hungUpSid != null) {
         CallNotification.storeEnd(context, hungUpSid)
@@ -22,8 +16,7 @@ class CallActionReceiver : BroadcastReceiver() {
     }
     val callSid = intent.getStringExtra(CallNotification.EXTRA_CALL_SID) ?: return
     if (intent.action == CallNotification.ACTION_ANSWER) {
-      // The ring screen answers its own call; another call takes the screen, answering.
-      // The ring screen is showing, so the app may open an activity from here.
+      // Visible call screens permit activity launches.
       if (IncomingCallActivity.applySystemAction(callSid, "answer")) return
       context.startActivity(
         Intent(intent)
@@ -35,7 +28,7 @@ class CallActionReceiver : BroadcastReceiver() {
       return
     }
     if (intent.action == CallNotification.ACTION_DISMISS) {
-      // The agent silenced the ring; the caller and the agent's other devices keep ringing
+      // Dismissal silences only this device.
       CallNotification.forgetRing(callSid)
       TelecomCalls.endRinging(callSid, "missed")
       NativeCallBridge.emit("dismissed", callSid = callSid)
@@ -58,8 +51,7 @@ class CallActionReceiver : BroadcastReceiver() {
     CallNotification.forgetRing(callSid)
     CallNotification.cancel(context, callSid)
     IncomingCallActivity.cancelRinging(callSid)
-    // The stored choice is consumed once, whichever of the running app or the started
-    // task gets to it first
+    // Native actions are consumed once.
     NativeCallBridge.emit("pending")
     CallSessionService.start(context, callSid, callId)
   }

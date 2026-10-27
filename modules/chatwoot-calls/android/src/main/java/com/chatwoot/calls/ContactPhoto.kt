@@ -10,16 +10,13 @@ import android.graphics.Rect
 import java.net.HttpURLConnection
 import java.net.URL
 
-// Fetches a contact's photo for the call surfaces. Callers show the call first and update
-// it once the photo is in, so the ring never waits. A photo is downloaded once, scaled
-// down on decode, and kept for the other surfaces of the same call.
+// Photos must not delay incoming rings.
 object ContactPhoto {
   private const val TIMEOUT_MS = 4000
   private const val SIZE_PX = 256
   private val cache = android.util.LruCache<String, Bitmap>(4)
   private val executor = java.util.concurrent.Executors.newSingleThreadExecutor()
 
-  // The photo as downloaded, no larger than needed for the call screen's avatar
   fun load(url: String?): Bitmap? {
     if (url.isNullOrBlank()) return null
     cache.get(url)?.let { return it }
@@ -41,7 +38,7 @@ object ContactPhoto {
     return source
   }
 
-  // Cropped to a circle, for notifications
+  // Circular crop for notifications.
   fun fetch(url: String?): Bitmap? = load(url)?.let(::circle)
 
   fun fetchAsync(url: String?, onLoaded: (Bitmap) -> Unit) {

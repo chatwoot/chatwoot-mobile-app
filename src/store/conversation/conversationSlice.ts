@@ -260,9 +260,7 @@ const conversationSlice = createSlice({
           conversation.messages.sort((a, b) => b.createdAt - a.createdAt);
           state.isAllNewerMessagesFetched = messages.length < 20;
         } else {
-          // First load or older pagination: prepend the messages not already held. A
-          // call message already held takes the fetched copy in place, since its call
-          // status may have moved on while the app was not listening.
+          // Fetched calls can carry newer statuses.
           const heldIndex = new Map(conversation.messages.map((m, index) => [m.id, index]));
           const unseen: Message[] = [];
           messages.forEach(message => {

@@ -3,7 +3,6 @@ import { transformMessage } from '../camelCaseKeys';
 import { formatCallDuration, getVoiceCallDisplay, isRingStillOpen } from '../voiceCallUtils';
 import { RING_TIMEOUT_MS } from '@/screens/call/constants/ringTimeouts';
 
-// Captured from GET /api/v1/accounts/1/conversations/37/messages on a WhatsApp Cloud inbox
 const completedInboundPayload = {
   id: 1869,
   content: 'WhatsApp Call',

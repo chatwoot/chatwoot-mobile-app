@@ -12,6 +12,11 @@ import { openNumber, openEmail } from '@/utils/urlUtils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import type { SheetRef } from '@/components-next/common/sheet/Sheet';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import {
+  selectHasActiveCall,
+  selectHasIncomingCall,
+  selectPlacingCall,
+} from '@/store/call/callSelectors';
 import type { CallerSnapshot } from '@/store/call/callTypes';
 import { placeOutboundCall } from '@/utils/placeOutboundCall';
 
@@ -26,13 +31,14 @@ type ContactOption = {
 type ContactOptionProps = {
   option: ContactOption;
   handleOptionPress?: () => void;
+  disabled?: boolean;
 };
 
 const SCREEN_WIDTH = Dimensions.get('screen').width;
 const OPTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 2;
 
 const ContactOptionComponent = (props: ContactOptionProps) => {
-  const { option, handleOptionPress } = props;
+  const { option, handleOptionPress, disabled = false } = props;
 
   const { handlers, animatedStyle } = useScaleAnimation();
   const hapticSelection = useHaptic();
@@ -50,8 +56,11 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
             'flex items-center justify-center flex-1 rounded-xl bg-gray-50 py-3',
             `w-[${OPTION_WIDTH}px]`,
             pressed ? 'bg-gray-100' : '',
+            disabled ? 'opacity-40' : '',
           ),
         ]}
+        disabled={disabled}
+        accessibilityState={{ disabled }}
         onPress={handleOnPress}
         {...handlers}>
         <Icon icon={option.icon} size={24} />
@@ -82,6 +91,10 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   const inboxes = useAppSelector(selectAllInboxes);
   const callSheetRef = useRef<SheetRef>(null);
   const selectedOptionRef = useRef<ContactCallOption | null>(null);
+  const hasActiveCall = useAppSelector(selectHasActiveCall);
+  const hasIncomingCall = useAppSelector(selectHasIncomingCall);
+  const placingCall = useAppSelector(selectPlacingCall);
+  const isCallDisabled = hasActiveCall || hasIncomingCall || !!placingCall;
 
   const callOptions = useMemo(
     () =>
@@ -108,6 +121,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   };
 
   const onCallPress = () => {
+    if (isCallDisabled) return;
     if (callOptions.length > 1) {
       callSheetRef.current?.present();
       return;
@@ -167,6 +181,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
             icon: <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />,
           }}
           handleOptionPress={onCallPress}
+          disabled={isCallDisabled}
         />
         {callSheet}
       </Animated.View>
@@ -180,6 +195,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
           text={i18n.t('CONTACT_DETAILS.CALL')}
           variant="secondary"
           handlePress={onCallPress}
+          disabled={isCallDisabled}
         />
         {callSheet}
       </Animated.View>

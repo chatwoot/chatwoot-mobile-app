@@ -239,6 +239,7 @@ export const NOTIFICATION_PREFERENCE_TYPES = {
   push_sla_missed_first_response: 'CONVERSATION_SLA_MISSED_FIRST_RESPONSE',
   push_sla_missed_next_response: 'CONVERSATION_SLA_MISSED_NEXT_RESPONSE',
   push_sla_missed_resolution: 'CONVERSATION_SLA_MISSED_RESOLUTION',
+  push_voice_call_missed: 'VOICE_CALL_MISSED',
 };
 
 export const NOTIFICATION_TYPES = [

@@ -204,6 +204,15 @@ export const ChatHeader = ({
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
             />
           )}
+          {showCallButton ? (
+            <SideToolbarButton
+              icon={<PhoneOutlineIcon />}
+              iconSize={24}
+              onPress={onCallPress}
+              disabled={isCallDisabled}
+              accessibilityLabel={i18n.t('CONTACT_DETAILS.CALL')}
+            />
+          ) : null}
           <SideToolbarButton
             icon={
               isOpen ? (
@@ -244,6 +253,9 @@ export const ChatHeader = ({
         isOnActionsPage,
         isContactOpen,
         onOpenActions,
+        showCallButton,
+        isCallDisabled,
+        onCallPress,
       ],
       hasSideToolbar,
     ) && hasSideToolbar;
@@ -371,6 +383,15 @@ export const ChatHeader = ({
           </Pressable>
           {isOnActionsPage ? null : (
             <>
+              {showCallButton ? (
+                <GlassCircleButton
+                  icon={<PhoneOutlineIcon />}
+                  iconSize={22}
+                  onPress={onCallPress}
+                  disabled={isCallDisabled}
+                  accessibilityLabel={i18n.t('CONTACT_DETAILS.CALL')}
+                />
+              ) : null}
               <GlassCircleButton
                 icon={
                   isOpen ? (

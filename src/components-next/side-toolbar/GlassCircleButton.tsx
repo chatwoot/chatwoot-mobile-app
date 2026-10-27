@@ -17,6 +17,7 @@ type GlassCircleButtonProps = {
   showBadge?: boolean;
   // Icons drawn edge to edge (like the selection circles) read larger, so they use 18.
   iconSize?: number;
+  disabled?: boolean;
 };
 
 // One color for every header button icon, matching the tab bar icons.
@@ -30,6 +31,7 @@ export const GlassCircleButton = ({
   accessibilityLabel,
   showBadge,
   iconSize = 20,
+  disabled = false,
 }: GlassCircleButtonProps) => {
   const Container = onPress ? Pressable : View;
   const content = (
@@ -45,13 +47,18 @@ export const GlassCircleButton = ({
   return (
     <Container
       onPress={onPress}
+      disabled={disabled}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      style={tailwind.style(`h-[${SIZE}px] w-[${SIZE}px] items-center justify-center`)}>
+      accessibilityState={{ disabled }}
+      style={tailwind.style(
+        `h-[${SIZE}px] w-[${SIZE}px] items-center justify-center`,
+        disabled ? 'opacity-40' : '',
+      )}>
       {useLiquidGlass ? (
         <GlassView
           glassEffectStyle="regular"
-          isInteractive
+          isInteractive={!disabled}
           style={[tailwind.style('absolute inset-0'), { borderRadius: SIZE / 2 }]}
         />
       ) : (

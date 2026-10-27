@@ -28,14 +28,15 @@ const CUT_OFF_GAP_MS = 1500;
 
 const play = async (path: string, from = 0) => {
   cutOff = false;
-  audioRecorderPlayer = new AudioRecorderPlayer();
-  await audioRecorderPlayer.startPlayer(path);
-  if (from > 0) await audioRecorderPlayer.seekToPlayer(from);
-  audioRecorderPlayer.addPlayBackListener(async e => {
+  const player = new AudioRecorderPlayer();
+  audioRecorderPlayer = player;
+  await player.startPlayer(path);
+  if (from > 0) await player.seekToPlayer(from);
+  player.addPlayBackListener(async e => {
     if (e.currentPosition === e.duration) {
       if (currentPosition > 0 && e.duration - currentPosition > CUT_OFF_GAP_MS) {
         const stoppedAt = currentPosition;
-        await releasePlayer();
+        if (!(await releasePlayer(player))) return;
         currentPosition = stoppedAt;
         cutOff = true;
         currentCallback({ status: AudioStatus.PAUSED, data: { ...e, currentPosition: stoppedAt } });
@@ -56,10 +57,12 @@ const play = async (path: string, from = 0) => {
   });
 };
 
-const releasePlayer = async () => {
-  await audioRecorderPlayer?.stopPlayer().catch(() => {});
-  audioRecorderPlayer?.removePlayBackListener();
+const releasePlayer = async (player: AudioRecorderPlayer) => {
+  await player.stopPlayer().catch(() => {});
+  player.removePlayBackListener();
+  if (audioRecorderPlayer !== player) return false;
   audioRecorderPlayer = undefined;
+  return true;
 };
 
 export const startPlayer = async (path: string, callback: Callback) => {

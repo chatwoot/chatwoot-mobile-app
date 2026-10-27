@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Dimensions, Pressable, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -12,7 +12,11 @@ import { openNumber, openEmail } from '@/utils/urlUtils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import type { SheetRef } from '@/components-next/common/sheet/Sheet';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
-import { selectHasActiveCall, selectHasIncomingCall } from '@/store/call/callSelectors';
+import {
+  selectHasActiveCall,
+  selectHasIncomingCall,
+  selectPlacingCall,
+} from '@/store/call/callSelectors';
 import type { CallerSnapshot } from '@/store/call/callTypes';
 import { placeOutboundCall } from '@/utils/placeOutboundCall';
 
@@ -89,8 +93,8 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   const selectedOptionRef = useRef<ContactCallOption | null>(null);
   const hasActiveCall = useAppSelector(selectHasActiveCall);
   const hasIncomingCall = useAppSelector(selectHasIncomingCall);
-  const [isStartingCall, setIsStartingCall] = useState(false);
-  const isCallDisabled = hasActiveCall || hasIncomingCall || isStartingCall;
+  const placingCall = useAppSelector(selectPlacingCall);
+  const isCallDisabled = hasActiveCall || hasIncomingCall || !!placingCall;
 
   const callOptions = useMemo(
     () =>
@@ -102,20 +106,18 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
     [contactId, inboxes, conversation, phoneNumber],
   );
 
-  const callThrough = async (option: ContactCallOption) => {
+  const callThrough = (option: ContactCallOption) => {
     if (option.type === 'dialer') {
       if (phoneNumber) openNumber({ phoneNumber });
       return;
     }
-    setIsStartingCall(true);
-    await placeOutboundCall(dispatch, {
+    placeOutboundCall(dispatch, {
       provider: option.provider,
       inboxId: option.inbox.id,
       conversationId: option.conversationId,
       contactId,
       caller,
     });
-    setIsStartingCall(false);
   };
 
   const onCallPress = () => {

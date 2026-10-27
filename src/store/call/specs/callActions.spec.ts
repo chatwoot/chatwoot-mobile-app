@@ -40,7 +40,6 @@ const buildStore = () =>
   });
 
 type Store = ReturnType<typeof buildStore>;
-// The thunks are typed against the app's RootState; this store only carries the slices they read
 const run = (store: Store) => store.dispatch as unknown as AppDispatch;
 
 const startTwilio = (store: Store) =>
@@ -98,7 +97,6 @@ describe('callActions.startOutboundCall', () => {
       call_sid: 'CA123',
       attempt_id: expect.any(String),
     });
-    // The join and the connection it opens name the same attempt
     const { attemptId } = (CallService.joinConference as jest.Mock).mock.calls[0][0];
     expect(connect.mock.calls[0][1]).toMatchObject({ attempt_id: attemptId });
     expect(store.getState().calls.localCallSid).toBe('CA123');
@@ -405,7 +403,6 @@ describe('callActions.rejectIncomingCall', () => {
     await new Promise(resolve => setImmediate(resolve));
 
     expect(store.getState().calls.calls).toEqual([]);
-    // A sync while the decline is in flight does not bring the call back
     store.dispatch(
       addCall({ callSid: 'wa', callId: 5, provider: 'whatsapp', callDirection: 'inbound' }),
     );

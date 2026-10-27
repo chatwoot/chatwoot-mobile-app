@@ -46,14 +46,11 @@ function deviceHeaders(): Record<string, string> {
   };
 }
 
-// Request options with an optional account the URL is scoped to, and response statuses
-// the caller handles itself, which skip the generic error toast
 export type AccountScopedRequestConfig = AxiosRequestConfig & {
   accountId?: number;
   quietStatuses?: number[];
 };
 
-// A request that names its own account is meant for that account, whichever is showing
 const namesItsAccount = (config?: AxiosRequestConfig) =>
   !!(config as AccountScopedRequestConfig | undefined)?.accountId;
 
@@ -93,8 +90,6 @@ class APIService {
         const store = getStore();
         const state = store.getState();
         config.baseURL = state.settings?.installationUrl;
-        // A request may name its own account, such as a call rung on this phone for an
-        // account other than the one the app is showing
         const accountId =
           (config as AccountScopedRequestConfig).accountId ?? state.auth.user?.account_id;
         if (accountId && config.url && !nonAccountRoutes.includes(config.url)) {

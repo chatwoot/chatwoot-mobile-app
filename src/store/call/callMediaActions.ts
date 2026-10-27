@@ -18,7 +18,6 @@ import {
   selectIsSpeakerOn,
 } from './callSelectors';
 
-// Mute, hold and audio routing on the call this device is carrying
 export const callMediaActions = {
   toggleMute: createAsyncThunk<boolean, void, { state: RootState }>(
     'calls/toggleMute',
@@ -29,8 +28,6 @@ export const callMediaActions = {
       return next;
     },
   ),
-  // The system holds and resumes the call around a cellular one; the mute the agent
-  // had chosen comes back with the call
   setHold: createAsyncThunk<boolean, boolean, { state: RootState }>(
     'calls/setHold',
     async (hold, { dispatch, getState }) => {
@@ -40,8 +37,6 @@ export const callMediaActions = {
       return hold;
     },
   ),
-  // Hold from the call screen. Where the platform tracks the call it owns the change and
-  // the hold action brings the state back; elsewhere the engine is held directly
   toggleHold: createAsyncThunk<boolean, void, { state: RootState }>(
     'calls/toggleHold',
     async (_, { dispatch, getState }) => {
@@ -57,7 +52,6 @@ export const callMediaActions = {
     'calls/selectAudioRoute',
     async (route, { dispatch, getState }) => {
       await callEngine.setAudioRoute(route);
-      // The selected route follows the native route report.
       if (!hasNativeAudioRouting()) {
         const current = selectAudioRoute(getState());
         dispatch(

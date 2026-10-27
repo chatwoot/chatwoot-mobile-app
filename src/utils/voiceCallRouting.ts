@@ -2,15 +2,10 @@ import { CONTENT_TYPES, MESSAGE_TYPES, VOICE_CALL_STATUS } from '@/constants';
 import type { Conversation, Message } from '@/types';
 import type { CallerSnapshot, LiveCallInput, VoiceCallDirection } from '@/store/call/callTypes';
 
-// Pure rules for turning call messages and conversation updates into call-list changes,
-// deciding which agents a call rings for
-
 export type RoutingContext = {
   currentUserId?: number | null;
   receivesCalls?: boolean;
   dismissedCallSids: string[];
-  // The call this device placed itself; an outbound call from the same agent's other
-  // device is not shown here, since only the originating device holds its media
   localCallSid?: string | null;
 };
 
@@ -48,7 +43,6 @@ const isAssignedToAnotherAgent = (assigneeId: number | null, currentUserId?: num
   return !!assigneeId && assigneeId !== currentUserId;
 };
 
-// Outbound calls belong to whoever placed them; inbound calls follow the assignee.
 export const shouldShowCall = ({
   callDirection,
   senderId,
@@ -64,11 +58,10 @@ export const shouldShowCall = ({
   return !isAssignedToAnotherAgent(assigneeId, currentUserId);
 };
 
-// Only agents who are online and take calls get an inbound ring; outbound always shows.
 export const shouldRingInbound = (callDirection: VoiceCallDirection, receivesCalls?: boolean) =>
   callDirection === 'outbound' || !!receivesCalls;
 
-// Only incoming messages carry the contact as sender; on outbound the sender is the agent.
+// Outbound senders identify agents, not contacts.
 export const extractCallerSnapshot = (message: Message): CallerSnapshot | null => {
   if (message.messageType !== MESSAGE_TYPES.INCOMING) return null;
   const sender = message.sender as
@@ -107,7 +100,6 @@ const toLiveCall = (data: ExtractedCallData): LiveCallInput => ({
   caller: data.caller,
 });
 
-// A call message can already be terminal when it arrives; ring only while ringing.
 export const routeVoiceCallCreated = (
   message: Message,
   context: RoutingContext,
@@ -127,7 +119,6 @@ export const routeVoiceCallCreated = (
   return { action: 'add', call: toLiveCall(data) };
 };
 
-// Updates drop calls the agent may no longer see and re-add ones still ringing.
 export const routeVoiceCallUpdated = (
   message: Message,
   context: RoutingContext,
@@ -135,7 +126,6 @@ export const routeVoiceCallUpdated = (
   if (!isVoiceCallMessage(message)) return { action: 'ignore' };
   const data = extractCallData(message);
   if (!data.callSid) return { action: 'ignore' };
-  // The call this device is on stays until it ends, whoever the conversation moves to
   if (data.callSid === context.localCallSid) return { action: 'ignore' };
   if (!shouldShowCall({ ...data, currentUserId: context.currentUserId })) {
     return { action: 'remove', callSid: data.callSid };
@@ -152,8 +142,6 @@ export const routeVoiceCallUpdated = (
   return { action: 'ignore' };
 };
 
-// When a conversation is handed to another agent, its inbound calls leave this device.
-// The call this device is on stays until it ends.
 export const callsHiddenByConversationUpdate = (
   conversation: Pick<Conversation, 'id'> & Partial<Conversation>,
   calls: LiveCallInput[],

@@ -28,11 +28,7 @@ const initialState: CallState = {
   placingCall: null,
 };
 
-// Mute and hold belong to the call carrying media: once this device has no call it owns,
-// is joining or is placing, and no answered call, nothing is muted or held. Each place a
-// call can stop being this device's runs this, so a choice never outlives its call.
 const resetMediaWhenIdle = (state: CallState) => {
-  // A call this device owns, is joining or is placing keeps the choices made as it connects
   if (state.localCallSid || state.isJoining || state.placingCall) return;
   if (state.calls.some(call => call.isActive || call.callDirection === 'outbound')) return;
   state.isMuted = false;
@@ -43,9 +39,6 @@ const callSlice = createSlice({
   name: 'calls',
   initialState,
   reducers: {
-    // Merges into an existing entry by callSid so a later event can fill in fields
-    // the earlier one lacked; a previously captured caller snapshot is kept when the
-    // new payload has none. New calls go first so the newest rings as primary.
     addCall: (state, action: PayloadAction<LiveCallInput>) => {
       const incoming = action.payload;
       if (!incoming?.callSid) return;
@@ -54,7 +47,6 @@ const callSlice = createSlice({
 
       const existing = state.calls.find(call => call.callSid === incoming.callSid);
       if (existing) {
-        // Fields the event does not carry keep what an earlier one said
         const next = Object.fromEntries(
           Object.entries(incoming).filter(([, value]) => value !== undefined),
         ) as Partial<LiveCall>;
@@ -70,7 +62,6 @@ const callSlice = createSlice({
         isActive: incoming.isActive ?? false,
         addedAt: incoming.addedAt ?? Date.now(),
       });
-      // A call that has just arrived opens the call screen, whatever was minimised before
       state.isMinimised = false;
     },
 
@@ -102,8 +93,6 @@ const callSlice = createSlice({
       state.isOnHold = action.payload;
     },
 
-    // The platform's report of the route in use and the routes on offer. An unknown route
-    // leaves the last known one in place; names are kept when none are given.
     setAudioRoute: (
       state,
       action: PayloadAction<{
@@ -120,8 +109,6 @@ const callSlice = createSlice({
       };
     },
 
-    // Speaker on, or off to the best other route on offer: a headset first, then the
-    // earpiece. The platform's next route report corrects it if it chose otherwise.
     setSpeakerOn: (state, action: PayloadAction<boolean>) => {
       const { available } = state.audioRoute;
       state.audioRoute.current = action.payload
@@ -132,7 +119,6 @@ const callSlice = createSlice({
 
     setPlacingCall: (state, action: PayloadAction<PlacingCall | null>) => {
       state.placingCall = action.payload;
-      // A new call's media starts unmuted and off hold
       if (action.payload) {
         state.isMinimised = false;
         state.isMuted = false;
@@ -151,8 +137,6 @@ const callSlice = createSlice({
       if (call) call.systemUuid = action.payload.systemUuid;
     },
 
-    // The OS dropped every system call: none is left behind any call, and calls still
-    // ringing in ring in the app instead
     clearSystemCalls: state => {
       state.calls.forEach(call => {
         delete call.systemUuid;
@@ -193,8 +177,6 @@ const callSlice = createSlice({
       callSlice.caseReducers.dismissCall(state, { type: 'calls/dismissCall', payload: callSid });
     },
 
-    // Hides the call on this device and keeps it from being re-added; other agents keep
-    // ringing
     dismissCall: (state, action: PayloadAction<string>) => {
       const callSid = action.payload;
       if (callSid && !state.dismissedCallSids.includes(callSid)) {
@@ -211,8 +193,6 @@ const callSlice = createSlice({
       }
     },
 
-    // A dismissal that did not hold, such as a decline the server refused, so the call can
-    // ring here again
     forgetCallDismissed: (state, action: PayloadAction<string>) => {
       state.dismissedCallSids = state.dismissedCallSids.filter(
         callSid => callSid !== action.payload,
@@ -228,16 +208,12 @@ const callSlice = createSlice({
       resetMediaWhenIdle(state);
     },
 
-    // True or the sid of the call being joined while a join runs, false once it is over
     setIsJoining: (state, action: PayloadAction<boolean | string>) => {
       state.isJoining = !!action.payload;
       state.joiningCallSid = typeof action.payload === 'string' ? action.payload : null;
       if (!state.isJoining) resetMediaWhenIdle(state);
     },
 
-    // On an account switch the account left's rings no longer apply; the call this device
-    // is on carries on, and keeps the account it belongs to so its later requests still go
-    // there. Calls already known to belong to the account entered stay.
     keepOnlyLocalCall: (
       state,
       action: PayloadAction<{ leaving?: number | null; entering?: number | null }>,

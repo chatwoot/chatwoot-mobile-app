@@ -133,8 +133,6 @@ export const settingsActions = {
     },
   ),
 
-  // The VoIP push token rings this phone for calls while the app is closed; it is a
-  // separate subscription from the FCM one because Apple delivers it through PushKit
   saveVoipToken: createAsyncThunk<{ voipToken: string | null }, void>(
     'settings/saveVoipToken',
     async () => {

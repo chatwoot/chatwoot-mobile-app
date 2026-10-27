@@ -54,14 +54,12 @@ export type VoiceCallStatus =
   | 'failed'
   | 'rejected';
 
-// Live call state embedded in a voice_call message, mirrors Call#push_event_data
 export type MessageCall = {
   id: number;
   providerCallId: string;
   provider: VoiceCallProvider;
   direction: 'incoming' | 'outgoing' | 'inbound' | 'outbound';
   status: VoiceCallStatus;
-  // The provider's own last status; Twilio reports when the far handset is ringing
   providerStatus?: string | null;
   durationSeconds: number | null;
   endReason: string | null;
@@ -76,7 +74,6 @@ export type MessageCall = {
   transcript: string | null;
 };
 
-// Snapshot written into content_attributes.data when the call message is created or updated
 export type VoiceCallContentData = {
   callId?: number;
   callSid?: string;

@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import {
-  ImageProps,
-  ImageSourcePropType,
-  ImageURISource,
-  Text,
-  View,
-  ViewProps,
-} from 'react-native';
+import { ImageSourcePropType, ImageURISource, Text, View, ViewProps } from 'react-native';
+import type { ImageProps } from 'expo-image';
 
 import { avatarTheme, tailwind } from '@/theme';
 import { Channel } from '@/types';
@@ -31,22 +25,21 @@ export const removeEmoji = (text: string) => {
   return '';
 };
 
-function getInitials(name: string, size: AvatarSizes) {
+export function getInitials(name: string) {
   const userNameWithoutEmoji = removeEmoji(name).trimStart();
   if (!userNameWithoutEmoji) {
     return;
   }
   const [firstName, lastName] = userNameWithoutEmoji.split(' ');
-  const oneLetterInitialSizes = ['xs', 'sm', 'md'];
   const initials =
     firstName && lastName
       ? `${firstName.charAt(0)}${lastName.charAt(0)}`
       : `${firstName.charAt(0)}${firstName.charAt(1)}`;
 
-  return oneLetterInitialSizes.includes(size)
-    ? initials.toUpperCase().charAt(0)
-    : initials.toUpperCase();
+  return initials.toUpperCase();
 }
+
+const ONE_LETTER_INITIAL_SIZES: AvatarSizes[] = ['xs', 'sm', 'md'];
 
 export interface AvatarProps extends ViewProps {
   /**
@@ -90,6 +83,10 @@ export interface AvatarProps extends ViewProps {
    * The Avatar Channel Indicator, more likely for
    */
   channel: Channel;
+  /**
+   * Content shown in place of the initials, behind the image while it loads and after it fails
+   */
+  fallback: React.ReactNode;
 }
 
 export const Avatar: React.FC<Partial<AvatarProps>> = props => {
@@ -102,6 +99,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
     parentsBackground = 'text-white',
     imageProps = {},
     channel,
+    fallback,
     style,
     ...boxProps
   } = props;
@@ -122,7 +120,22 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
         styleAdapter(style),
       ]}
       {...boxProps}>
-      {imageAvailable && src ? (
+      {fallback !== undefined ? (
+        <>
+          {fallback}
+          {imageAvailable && src ? (
+            <View style={tailwind.style('absolute inset-0')}>
+              <AvatarImage
+                size={size}
+                imageProps={imageProps}
+                src={src as ImageURISource}
+                squared={isSquared}
+                handleFallback={loadFallback}
+              />
+            </View>
+          ) : null}
+        </>
+      ) : imageAvailable && src ? (
         <AvatarImage
           size={size}
           imageProps={imageProps}
@@ -143,7 +156,9 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
           ]}
           adjustsFontSizeToFit
           allowFontScaling={false}>
-          {getInitials(name, size)}
+          {ONE_LETTER_INITIAL_SIZES.includes(size)
+            ? getInitials(name)?.charAt(0)
+            : getInitials(name)}
         </Text>
       ) : null}
       {status && <AvatarStatus parentsBackground={parentsBackground} size={size} status={status} />}

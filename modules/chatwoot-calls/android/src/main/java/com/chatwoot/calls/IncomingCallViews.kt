@@ -22,8 +22,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 
-// The native call screen's views: the header, the caller with the sonar discs, and the
-// two trays. The activity owns the state and tells this what to show.
 internal class IncomingCallViews(private val context: Context) {
   var stateLabel: TextView? = null
     private set
@@ -78,7 +76,6 @@ internal class IncomingCallViews(private val context: Context) {
     return root
   }
 
-  // Decline and Answer as two wide buttons side by side
   fun showRingingTray(onDecline: () -> Unit, onAnswer: () -> Unit) {
     trayHost?.setPadding(dp(16), dp(16), dp(16), dp(16))
     val tray = LinearLayout(context).apply {
@@ -96,7 +93,6 @@ internal class IncomingCallViews(private val context: Context) {
     replaceTray(tray)
   }
 
-  // The in-call controls, faded while the call connects; End works throughout
   fun showInCallTray(
     muted: Boolean,
     speakerOn: Boolean,
@@ -128,7 +124,6 @@ internal class IncomingCallViews(private val context: Context) {
     )
     val hold = callButton("Hold", null, R.drawable.cw_call_hold, GLYPH_DISABLED, false) {}
     val end = callButton("End call", DECLINE, R.drawable.cw_call_decline, WHITE, onPress = onEnd)
-    // Four 60dp columns spread across the tray, the outer ones against its edges
     val columns = listOf(mute, speaker, hold, end)
     columns.forEachIndexed { index, column ->
       tray.addView(column, LinearLayout.LayoutParams(dp(60), WRAP))
@@ -139,7 +134,6 @@ internal class IncomingCallViews(private val context: Context) {
     replaceTray(tray)
   }
 
-  // The caller's photo, once it has been fetched, in place of the initial
   fun showAvatar(bitmap: Bitmap) {
     val frame = avatarView ?: return
     frame.removeAllViews()
@@ -162,7 +156,6 @@ internal class IncomingCallViews(private val context: Context) {
     trayHost?.addView(tray, FrameLayout.LayoutParams(MATCH, WRAP))
   }
 
-  // The light ground with a soft wash of the ring colour behind the caller
   private fun washBackground(): Drawable {
     val width = context.resources.displayMetrics.widthPixels
     val wash = GradientDrawable(
@@ -199,7 +192,6 @@ internal class IncomingCallViews(private val context: Context) {
     return row
   }
 
-  // While ringing, two translucent discs swell out from behind the avatar and dissolve
   private fun avatarWithSonar(callerName: String): View {
     val holder = FrameLayout(context).apply { clipChildren = false; clipToPadding = false }
     for (index in 0 until 2) {
@@ -230,7 +222,6 @@ internal class IncomingCallViews(private val context: Context) {
     return holder
   }
 
-  // The initial in the ring colours until the photo arrives
   private fun avatar(callerName: String): View {
     val initial = callerName.trim().take(1).uppercase().ifEmpty { "?" }
     val frame = FrameLayout(context).apply {
@@ -280,8 +271,6 @@ internal class IncomingCallViews(private val context: Context) {
     return row
   }
 
-  // A tile with its label underneath. A null fill draws the outline of a control that has
-  // nothing to act on yet.
   private fun callButton(
     label: String,
     fill: String?,

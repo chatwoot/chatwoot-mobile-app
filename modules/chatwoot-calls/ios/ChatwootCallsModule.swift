@@ -4,8 +4,6 @@ import ExpoModulesCore
 import TwilioVoice
 import WebRTC
 
-// Receives Twilio call callbacks and forwards them as a single state event, with the call
-// they belong to so a late callback from an ended call can be told apart.
 private final class TwilioCallHandler: NSObject, CallDelegate {
   var onState: ((Call, String, String?) -> Void)?
 
@@ -49,16 +47,12 @@ public class ChatwootCallsModule: Module {
   private let audioDevice = DefaultAudioDevice()
   private let handler = TwilioCallHandler()
   private var activeCall: Call?
-  // The Chatwoot call sid the current Twilio leg belongs to
   private var activeCallSid: String?
   private var ringbackPlayer: AVAudioPlayer?
   private var ringbackWanted = false
-  // The audio session is active with WebRTC as the call's media engine
   private var webrtcSessionActive = false
 
-  // WebRTC's audio stays off while the ringback plays: its voice processing turns other
-  // audio down to almost nothing, and before the contact answers there is nothing to send
-  // or hear. The ringback waits for the session to be active.
+  // WebRTC voice processing suppresses ringback audio.
   private func applyRingback() {
     let rtcSession = RTCAudioSession.sharedInstance()
     if ringbackWanted && webrtcSessionActive {
@@ -83,13 +77,10 @@ public class ChatwootCallsModule: Module {
     "failed": .failed,
   ]
 
-  // The Bluetooth headset taken off the session while the earpiece is chosen, by name, so
-  // it stays on offer
+  // Retain hidden headsets for route selection.
   static var heldBackBluetooth: String?
 
-  // During a call iOS keeps a connected Bluetooth headset over the input the app prefers,
-  // so choosing the earpiece takes Bluetooth off the session's routes and choosing the
-  // headset puts it back
+  // Bluetooth overrides preferred input during calls.
   static func allowBluetooth(_ allowed: Bool) {
     let session = AVAudioSession.sharedInstance()
     var options = session.categoryOptions
@@ -101,8 +92,7 @@ public class ChatwootCallsModule: Module {
       if let headset { heldBackBluetooth = headset.portName }
       options.remove(.allowBluetooth)
     }
-    // WebRTC applies its own configuration again whenever its audio starts, as when the
-    // ringback ends, so the choice is kept there too
+    // WebRTC reapplies configuration when audio starts.
     let webrtc = RTCAudioSessionConfiguration.webRTC()
     if allowed { webrtc.categoryOptions.insert(.allowBluetooth) } else { webrtc.categoryOptions.remove(.allowBluetooth) }
     RTCAudioSessionConfiguration.setWebRTC(webrtc)
@@ -110,7 +100,6 @@ public class ChatwootCallsModule: Module {
     try? session.setCategory(session.category, mode: session.mode, options: options)
   }
 
-  // The session's output as one of the app's route names, and the routes on offer
   static func audioRouteInfo() -> [String: Any] {
     let session = AVAudioSession.sharedInstance()
     let output = session.currentRoute.outputs.first?.portType
@@ -139,9 +128,7 @@ public class ChatwootCallsModule: Module {
     return ["current": current, "available": available, "names": names]
   }
 
-  // The double ring heard while the far end rings, as a WAV: 400 Hz and 450 Hz together,
-  // on 0.4 s, off 0.2 s, on 0.4 s, then 2 s of silence. Each burst fades in and out over
-  // 10 ms so it starts and stops without a click.
+  // Fades prevent clicks at burst boundaries.
   static func ringbackWav() -> Data {
     let rate = 8000
     let fadeSamples = 80
@@ -179,7 +166,6 @@ public class ChatwootCallsModule: Module {
     sendEvent("onAudioRoute", Self.audioRouteInfo())
   }
 
-  // Voice-chat category and mode, applied before the system activates the session
   private static func configureWebrtcAudioSession() {
     let rtcSession = RTCAudioSession.sharedInstance()
     rtcSession.lockForConfiguration()
@@ -198,14 +184,12 @@ public class ChatwootCallsModule: Module {
 
     OnCreate {
       TwilioVoiceSDK.audioDevice = self.audioDevice
-      // CallKit owns the audio session: neither media engine starts audio on its own, each
-      // is switched on when the system activates the session and off when it deactivates
+      // CallKit owns both engines' audio activation.
       self.audioDevice.isEnabled = false
       let rtcSession = RTCAudioSession.sharedInstance()
       rtcSession.useManualAudio = true
       rtcSession.isAudioEnabled = false
       self.handler.onState = { [weak self] call, state, error in
-        // Only the current call reports; an earlier one ending late must not end this one
         guard let self, call === self.activeCall else { return }
         if state == "disconnected" || state == "failed" {
           self.activeCall = nil
@@ -220,13 +204,11 @@ public class ChatwootCallsModule: Module {
       }
       self.callKit.endMedia = { [weak self] provider, callSid in
         guard provider == "twilio", let self else { return }
-        // An end for another call leaves the current Twilio leg alone
         if let callSid, let current = self.activeCallSid, current != callSid { return }
         self.activeCall?.disconnect()
         self.activeCall = nil
         self.activeCallSid = nil
       }
-      // The session goes to one media engine at a time: the call's provider's
       self.callKit.audioSessionDidActivate = { [weak self] session, provider in
         let rtcSession = RTCAudioSession.sharedInstance()
         if provider == "twilio" {
@@ -243,7 +225,6 @@ public class ChatwootCallsModule: Module {
         }
       }
       self.callKit.audioSessionDidDeactivate = { [weak self] session, _ in
-        // The next call starts with a connected headset on offer again
         Self.allowBluetooth(true)
         self?.webrtcSessionActive = false
         self?.ringbackPlayer?.stop()
@@ -261,15 +242,14 @@ public class ChatwootCallsModule: Module {
       }
     }
 
-    // Starts WebRTC audio for a call that has no system call behind it, activating the
-    // session directly since CallKit will not
+    // Activate directly without a CallKit call.
     Function("activateWebrtcAudio") {
       Self.configureWebrtcAudioSession()
       let session = AVAudioSession.sharedInstance()
       try? session.setActive(true)
       let rtcSession = RTCAudioSession.sharedInstance()
       rtcSession.audioSessionDidActivate(session)
-      // The ringback state lives on the main queue
+      // Ringback state belongs to main queue.
       DispatchQueue.main.async {
         self.webrtcSessionActive = true
         rtcSession.isAudioEnabled = !self.ringbackWanted
@@ -289,12 +269,8 @@ public class ChatwootCallsModule: Module {
       try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 
-    // MARK: Twilio media
 
-    // Dials into the Twilio conference through the TwiML app. `params` become the
-    // TwiML request parameters (To, is_agent, conversation_id, call_sid).
-    // A call CallKit tracks is connected with its CallKit UUID, so Twilio leaves the audio
-    // session to CallKit and this module
+    // CallKit UUID delegates audio session ownership.
     AsyncFunction("twilioConnect") { (token: String, params: [String: String]) in
       self.activeCall?.disconnect()
       let callKitUuid = params["call_sid"].flatMap { sid in Self.onMain { self.callKit.call(forSid: sid)?.uuid } }
@@ -316,18 +292,14 @@ public class ChatwootCallsModule: Module {
       self.activeCall?.isMuted = muted
     }
 
-    // Held: Twilio stops sending and playing audio until the call is resumed
     Function("twilioSetHold") { (hold: Bool) in
       self.activeCall?.isOnHold = hold
     }
 
-    // Audio for a Twilio call with no system call behind it, which CallKit never activates
     Function("twilioSetAudioEnabled") { (enabled: Bool) in
       self.audioDevice.isEnabled = enabled
     }
 
-    // A ringback for a WhatsApp call this device placed, while the contact's phone rings.
-    // It plays into the call's audio session, so it follows the call's route.
     Function("startRingback") {
       DispatchQueue.main.async {
         self.ringbackWanted = true
@@ -343,14 +315,11 @@ public class ChatwootCallsModule: Module {
       }
     }
 
-    // Speaker routing for whichever engine holds the audio session
     Function("setSpeakerOn") { (enabled: Bool) in
       let session = AVAudioSession.sharedInstance()
       try? session.overrideOutputAudioPort(enabled ? .speaker : .none)
     }
 
-    // A named route: speaker, earpiece, bluetooth or wired. The session follows the
-    // preferred input, which is how a headset is chosen over the built-in microphone.
     Function("setAudioRoute") { (route: String) in
       let session = AVAudioSession.sharedInstance()
       switch route {
@@ -376,9 +345,7 @@ public class ChatwootCallsModule: Module {
       return Self.audioRouteInfo()
     }
 
-    // MARK: CallKit
 
-    // JS is listening; flush anything that happened before it attached
     Function("callKitReady") {
       DispatchQueue.main.async { self.callKit.markJsReady() }
     }
@@ -395,7 +362,6 @@ public class ChatwootCallsModule: Module {
       self.callKit.signedIn = signedIn
     }
 
-    // Shows the system incoming-call UI for a call that reached the app over the socket
     AsyncFunction("callKitReportIncoming") { (record: ReportCallRecord, promise: Promise) in
       _ = self.callKit.reportIncomingCall(
         callSid: record.callSid, provider: record.provider, displayName: record.displayName,
@@ -421,13 +387,11 @@ public class ChatwootCallsModule: Module {
       DispatchQueue.main.async { self.callKit.reportConnected(uuid: id) }
     }
 
-    // Ends the system call for a reason outside the user's action on this device
     Function("callKitEndCall") { (uuid: String, reason: String) in
       guard let id = UUID(uuidString: uuid) else { return }
       DispatchQueue.main.async { self.callKit.endCall(uuid: id, reason: Self.endReasons[reason] ?? .remoteEnded) }
     }
 
-    // User actions from our own UI go through CallKit so the system state stays in step
     AsyncFunction("callKitRequestAnswer") { (uuid: String, promise: Promise) in
       guard let id = UUID(uuidString: uuid) else { return promise.reject("ERR_CALLKIT", "Invalid uuid") }
       self.callKit.requestAnswer(uuid: id) { error in
@@ -442,8 +406,6 @@ public class ChatwootCallsModule: Module {
       }
     }.runOnQueue(.main)
 
-    // Hold and resume for a call CallKit tracks; the held action then applies the change.
-    // False when the call is not known to CallKit, so the caller holds the media itself.
     Function("holdCall") { (callSid: String) -> Bool in
       Self.onMain { self.requestHeld(callSid: callSid, onHold: true) }
     }
@@ -460,8 +422,7 @@ public class ChatwootCallsModule: Module {
     }.runOnQueue(.main)
   }
 
-  // CallKit's state lives on the main queue, where its own callbacks arrive; calls from
-  // JavaScript are moved there so its ring timers run and its state is not shared
+  // Main queue owns CallKit state.
   private static func onMain<T>(_ body: () -> T) -> T {
     Thread.isMainThread ? body() : DispatchQueue.main.sync(execute: body)
   }

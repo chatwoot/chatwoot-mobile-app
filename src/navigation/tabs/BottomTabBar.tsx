@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren } from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated, {
@@ -24,7 +25,6 @@ import {
   SettingsIconFilled,
   SettingsIconOutline,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import {
   IOS_DESIGN,
   useHaptic,
@@ -107,8 +107,9 @@ const CapsuleFill = ({
   blurAmount,
   blurType,
   radius = SIDE_TAB_BAR_WIDTH / 2,
-}: BlurViewProps & { radius?: number }) =>
-  useLiquidGlass ? (
+}: BlurViewProps & { radius?: number }) => {
+  const tailwind = useTailwind();
+  return useLiquidGlass ? (
     <GlassView
       glassEffectStyle="regular"
       isInteractive
@@ -119,8 +120,10 @@ const CapsuleFill = ({
       <BlurView {...{ blurAmount, blurType }} style={tailwind.style('flex-1 bg-white')} />
     </Animated.View>
   );
+};
 
 const TabBarBackground = (props: TabBarBackgroundProps) => {
+  const tailwind = useTailwind();
   const { children, style, blurAmount, blurType, capsule, capsuleRadius } = props;
 
   const currentState = useAppSelector(selectCurrentState);
@@ -181,6 +184,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TabItem = (props: any) => {
+  const tailwind = useTailwind();
   const { handlers, animatedStyle } = useScaleAnimation();
 
   const { onPress, onLongPress, isFocused, options, route, vertical, floating } = props;
@@ -252,6 +256,7 @@ const TabItem = (props: any) => {
  * the tabs (e.g. a chat opened from a notification) inside their own SideToolbarProvider.
  */
 export const SideToolbarSlot = () => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   const sideToolbarItems = useSideToolbarItems();
   const isSplit = useIsSplitLayout();
@@ -275,6 +280,7 @@ export const SideToolbarSlot = () => {
  * hides those in-between frames, then fades out once the new layout has settled.
  */
 export const LayoutChangeCover = () => {
+  const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();
   const wasSplit = React.useRef(isSplit);
   const opacity = useSharedValue(0);
@@ -286,7 +292,15 @@ export const LayoutChangeCover = () => {
   }, [isSplit, opacity]);
   const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
   return (
-    <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.cover, style]} />
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        StyleSheet.absoluteFill,
+        styles.cover,
+        { backgroundColor: tailwind.color('bg-white') },
+        style,
+      ]}
+    />
   );
 };
 
@@ -295,6 +309,7 @@ export const LayoutChangeCover = () => {
  * tabs, no split view), so the column reads as its own strip. Drawn once over the app.
  */
 export const SideColumnDivider = () => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   const isSplit = useIsSplitLayout();
   const { left, right } = useSafeAreaInsets();
@@ -312,6 +327,7 @@ export const SideColumnDivider = () => {
 };
 
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
   const { bottom } = useSafeAreaInsets();
@@ -356,7 +372,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       <SideToolbarSlot />
       <TabBarBackground
         blurAmount={25}
-        blurType="light"
+        blurType={tailwind.isDark ? 'dark' : 'light'}
         capsule={!!sideTabBar || floating}
         capsuleRadius={
           floating ? FLOATING_BAR_HEIGHT / 2 : sideTabBar ? sideTabBar.width / 2 : undefined

@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
 import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
@@ -16,6 +16,7 @@ type LastActivityTimeProps = {
 };
 
 export const LastActivityTime = ({ timestamp }: LastActivityTimeProps) => {
+  const tailwind = useTailwind();
   const iosText = useIOSListText();
   const [lastActivityTime, setLastActivityTime] = useState(
     formatTimeToShortForm(formatRelativeTime(timestamp)),

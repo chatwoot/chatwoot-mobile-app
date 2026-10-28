@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import Animated, {
@@ -6,7 +7,6 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { tailwind } from '@/theme';
 
 export interface TabItem {
   id: string;
@@ -29,6 +29,7 @@ type TabMeasurement = { x: number; width: number };
  * Features automatic scrolling to center the active tab and smooth transitions.
  */
 export const Tabs = ({ items, activeTabId, onTabPress }: TabsProps) => {
+  const tailwind = useTailwind();
   const scrollViewRef = useRef<ScrollView>(null);
   const containerWidthRef = useRef<number>(0);
   const measuresRef = useRef<Record<string, TabMeasurement>>({});

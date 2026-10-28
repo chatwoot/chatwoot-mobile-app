@@ -1,15 +1,16 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import { Pressable } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { VoiceNote } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
 import { VoiceRecordButtonProps } from '../types';
 import { ReplyGlassCircle } from './ReplyGlassCircle';
 import { voiceNoteIconEnterAnimation, voiceNoteIconExitAnimation } from '@/utils/customAnimations';
 
 export const VoiceRecordButton = ({ glass = false, ...props }: VoiceRecordButtonProps) => {
+  const tailwind = useTailwind();
   const { animatedStyle, handlers } = useScaleAnimation();
 
   return (
@@ -24,10 +25,10 @@ export const VoiceRecordButton = ({ glass = false, ...props }: VoiceRecordButton
         ]}>
         {glass ? (
           <ReplyGlassCircle>
-            <Icon icon={<VoiceNote />} size={22} />
+            <Icon icon={<VoiceNote stroke={tailwind.color('text-gray-950')} />} size={22} />
           </ReplyGlassCircle>
         ) : (
-          <Icon icon={<VoiceNote />} size={24} />
+          <Icon icon={<VoiceNote stroke={tailwind.color('text-gray-950')} />} size={24} />
         )}
       </Animated.View>
     </Pressable>

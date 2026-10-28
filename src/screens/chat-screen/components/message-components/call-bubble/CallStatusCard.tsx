@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import {
   CaretRightBoldGlyph,
@@ -11,15 +11,7 @@ import {
   PhoneOutgoingIcon,
 } from '@/svg-icons';
 
-import {
-  CALL_BLUE,
-  CALL_BUBBLE_TONES,
-  CALL_GREEN,
-  CARD_INK,
-  CARD_MUTED,
-  CARD_SURFACE,
-  type CallBubbleState,
-} from './callBubbleTheme';
+import { CALL_BLUE, CALL_BUBBLE_TONES, CALL_GREEN, type CallBubbleState } from './callBubbleTheme';
 import { LiveDot } from './LiveDot';
 
 const StateIcon = ({
@@ -55,21 +47,29 @@ export const CallStatusCard = ({
   onOpenCall,
   children,
 }: CallStatusCardProps) => {
+  const tailwind = useTailwind();
   const tone = CALL_BUBBLE_TONES[state];
   const isRinging = state === 'ringing' && !isOutbound;
-  const iconColour = state === 'ended' && isOutbound ? CARD_INK : tone.icon;
+  const ink = tailwind.color('text-gray-950') as string;
+  const muted = tailwind.color('text-gray-900') as string;
+  const iconColour = state === 'ended' ? ink : tone.icon;
 
   const card = (
     <View
       style={[
         tailwind.style('-ml-[7px] -mr-[5px] -mt-[3px] rounded-[14px] px-3 py-[11px] gap-2.5'),
-        { backgroundColor: CARD_SURFACE },
+        { backgroundColor: tailwind.color('bg-white') },
       ]}>
       <View style={tailwind.style('flex-row items-center gap-3')}>
         <View
           style={[
             tailwind.style('h-[38px] w-[38px] rounded-[10px] items-center justify-center'),
-            { backgroundColor: tone.iconBox },
+            {
+              backgroundColor:
+                state === 'ended' && tailwind.isDark
+                  ? tailwind.color('bg-blackA-A3')
+                  : tone.iconBox,
+            },
           ]}>
           <StateIcon state={state} isOutbound={isOutbound} colour={iconColour} />
         </View>
@@ -77,10 +77,7 @@ export const CallStatusCard = ({
           <View style={tailwind.style('flex-row items-center gap-2')}>
             <Text
               numberOfLines={1}
-              style={[
-                tailwind.style('font-inter-580-24 text-[15px] leading-5'),
-                { color: CARD_INK },
-              ]}>
+              style={[tailwind.style('font-inter-580-24 text-[15px] leading-5'), { color: ink }]}>
               {title}
             </Text>
             {state === 'live' || isRinging ? (
@@ -93,7 +90,7 @@ export const CallStatusCard = ({
               <Text
                 style={[
                   tailwind.style('ml-auto font-inter-medium-24 text-[13px] leading-5 tabular-nums'),
-                  { color: CARD_MUTED },
+                  { color: muted },
                 ]}>
                 {duration}
               </Text>
@@ -104,7 +101,7 @@ export const CallStatusCard = ({
               numberOfLines={1}
               style={[
                 tailwind.style('font-inter-420-20 text-[13px] leading-[18px] mt-px'),
-                { color: CARD_MUTED },
+                { color: muted },
               ]}>
               {subtitle}
             </Text>
@@ -112,7 +109,7 @@ export const CallStatusCard = ({
         </View>
         {onOpenCall ? (
           <View style={tailwind.style('mt-px')}>
-            <CaretRightBoldGlyph color={CARD_MUTED} size={18} />
+            <CaretRightBoldGlyph color={muted} size={18} />
           </View>
         ) : null}
       </View>

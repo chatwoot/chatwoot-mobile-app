@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import { Icon } from '@/components-next';
 import i18n from '@/i18n';
 import { ChevronLeft } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 
 type TemplateFormHeaderProps = {
@@ -16,6 +16,7 @@ type TemplateFormHeaderProps = {
 };
 
 const TemplateFormHeader = ({ title, canSend, onBack, onSend }: TemplateFormHeaderProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
   const { animatedStyle, handlers } = useScaleAnimation();
 

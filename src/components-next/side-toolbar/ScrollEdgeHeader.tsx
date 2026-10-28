@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import Animated, {
@@ -128,6 +129,7 @@ export const ScrollEdgeHeader = ({
   insetSides = false,
   children,
 }: ScrollEdgeHeaderProps) => {
+  const tailwind = useTailwind();
   const [height, setHeight] = useState(0);
   // The header starts at the top of the screen so the blur also covers the status bar; its
   // content sits below the status bar.
@@ -152,13 +154,21 @@ export const ScrollEdgeHeader = ({
       }}>
       {height > 0 ? (
         <Animated.View pointerEvents="none" style={[styles.effect, { height: total }, effectStyle]}>
-          <BlurView blurType="light" blurAmount={16} style={[styles.blur, { height }]} />
+          <BlurView
+            blurType={tailwind.isDark ? 'dark' : 'light'}
+            blurAmount={16}
+            style={[styles.blur, { height }]}
+          />
           <Svg width="100%" height={total} style={StyleSheet.absoluteFill}>
             <Defs>
               <LinearGradient id="scrollEdge" x1="0" y1="0" x2="0" y2="1">
-                <Stop offset="0" stopColor="#FFFFFF" stopOpacity={0.9} />
-                <Stop offset={headerEnd} stopColor="#FFFFFF" stopOpacity={0.72} />
-                <Stop offset="1" stopColor="#FFFFFF" stopOpacity={0} />
+                <Stop offset="0" stopColor={tailwind.color('bg-white')} stopOpacity={0.9} />
+                <Stop
+                  offset={headerEnd}
+                  stopColor={tailwind.color('bg-white')}
+                  stopOpacity={0.72}
+                />
+                <Stop offset="1" stopColor={tailwind.color('bg-white')} stopOpacity={0} />
               </LinearGradient>
             </Defs>
             <Rect x="0" y="0" width="100%" height={total} fill="url(#scrollEdge)" />

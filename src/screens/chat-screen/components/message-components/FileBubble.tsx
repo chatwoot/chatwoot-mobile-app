@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet } from 'react-native';
 import FileViewer from 'react-native-file-viewer';
@@ -5,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import { FileIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -34,6 +34,7 @@ type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
 };
 
 export const FileBubblePreview = (props: FilePreviewProps) => {
+  const tailwind = useTailwind();
   const { fileSrc, fileSize, isComposed = false, variant } = props;
   const dirs = ReactNativeBlobUtil.fs.dirs;
 

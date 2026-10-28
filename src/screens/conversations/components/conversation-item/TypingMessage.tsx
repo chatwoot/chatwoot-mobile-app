@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 
 type TypingMessageProps = {
@@ -9,6 +9,7 @@ type TypingMessageProps = {
 };
 
 export const TypingMessage = (props: TypingMessageProps) => {
+  const tailwind = useTailwind();
   const { typingText } = props;
   return (
     <NativeView style={tailwind.style('flex-1 flex-row gap-1 items-start')}>

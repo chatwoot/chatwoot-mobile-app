@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { selectAllCannedResponses } from '@/store/canned-response/cannedResponseSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { cannedResponseActions } from '@/store/canned-response/cannedResponseActions';
@@ -22,6 +22,7 @@ const CannedResponseItem = ({
   item: CannedResponse;
   onSelect: (cannedResponse: CannedResponse) => void;
 }) => {
+  const tailwind = useTailwind();
   return (
     <Pressable
       onPress={() => onSelect(item)}
@@ -39,6 +40,7 @@ const CannedResponseItem = ({
 };
 
 export const CannedResponses = (props: CannedResponsesProps) => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const cannedResponses = useAppSelector(selectAllCannedResponses);
 

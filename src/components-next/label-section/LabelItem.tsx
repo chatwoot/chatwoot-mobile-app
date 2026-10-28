@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Label } from '@/types';
 
 type LabelItemProps = {
@@ -11,6 +11,7 @@ type LabelItemProps = {
 };
 
 export const LabelItem = (props: LabelItemProps) => {
+  const tailwind = useTailwind();
   const { item } = props;
   return (
     <Animated.View

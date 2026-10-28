@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { HandsetIcon } from '@/svg-icons';
 
@@ -29,6 +29,7 @@ const TONES: Record<CallActionButtonProps['tone'], { idle: Colours; busy: Colour
 };
 
 export const CallActionButton = ({ label, tone, inFlight, onPress }: CallActionButtonProps) => {
+  const tailwind = useTailwind();
   const { background, foreground } = TONES[tone][inFlight ? 'busy' : 'idle'];
   const shownLabel =
     inFlight && tone === 'callback' ? i18n.t('CONVERSATION.VOICE_WIDGET.CALLING') : label;

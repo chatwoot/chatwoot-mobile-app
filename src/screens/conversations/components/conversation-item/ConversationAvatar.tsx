@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { memo } from 'react';
 import { ImageURISource } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import { isEqual } from 'lodash';
 
 import { Avatar, AvatarStatusType } from '@/components-next/common';
 import { AnimatedNativeView } from '@/components-next/native-components';
-import { tailwind } from '@/theme';
 import { AvailabilityStatus } from '@/types';
 import { useIOSListText } from '@/utils';
 
@@ -21,6 +21,7 @@ const checkIfPropsAreSame = (prev: ConversationAvatarProps, next: ConversationAv
 };
 
 export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
+  const tailwind = useTailwind();
   const { src, name, status } = props;
   // 40pt with 16pt initials (about 40% of the circle, like iOS monograms) on the iOS
   // list layout (iPhone Duo); 50pt elsewhere.

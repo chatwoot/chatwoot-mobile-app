@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState, useCallback } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MarkdownBubble } from './MarkdownBubble';
 import { EmailMeta } from './EmailMeta';
@@ -17,6 +17,7 @@ export type TextBubbleProps = {
 };
 
 export const TextBubble = (props: TextBubbleProps) => {
+  const tailwind = useTailwind();
   const messageItem = props.item as Message;
   const { variant, timeReserve } = props;
 

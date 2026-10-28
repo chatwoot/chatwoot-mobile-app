@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { Image } from 'expo-image';
 
 type TypingIndicatorProps = {
@@ -9,6 +9,7 @@ type TypingIndicatorProps = {
 };
 
 export const TypingIndicator = ({ typingText }: TypingIndicatorProps) => {
+  const tailwind = useTailwind();
   return (
     <View style={tailwind.style('absolute w-full items-center -top-14')}>
       <View

@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { View } from 'react-native';
 import Animated, { EntryAnimationsValues, withSpring } from 'react-native-reanimated';
@@ -8,7 +9,6 @@ import {
   SuggestReplyIcon,
   SummarizeIcon,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { COPILOT_ACTIONS } from '@/constants/copilot';
 import { REPLY_EDITOR_MODES } from '@/constants';
 import { CopilotMenuItem } from './CopilotMenuItem';
@@ -28,6 +28,7 @@ export const CopilotMenu = ({
   onSelectAction,
   onSelectChangeTone,
 }: CopilotMenuProps) => {
+  const tailwind = useTailwind();
   const hasContent = editorContent.trim().length > 0;
   const isReplyMode = editorMode === REPLY_EDITOR_MODES.REPLY;
 

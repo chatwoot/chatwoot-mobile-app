@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { SortTypes } from '@/types';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
@@ -21,6 +21,7 @@ type SortByCellProps = {
 const sortByList = Object.keys(SortOptions) as SortTypes[];
 
 const SortByCell = (props: SortByCellProps) => {
+  const tailwind = useTailwind();
   const { filtersModalSheetRef } = useRefsContext();
   const { value, index } = props;
   const filters = useAppSelector(selectFilters);
@@ -60,6 +61,7 @@ type SortByStackProps = {
 };
 
 const SortByStack = (props: SortByStackProps) => {
+  const tailwind = useTailwind();
   const { list } = props;
   return (
     <Animated.View style={tailwind.style('py-1 pl-3')}>

@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo } from 'react';
 import { Alert, Linking, Platform, Pressable, Text } from 'react-native';
 import {
@@ -22,7 +23,6 @@ import {
   PhotosIcon,
   WhatsAppMonochromeIcon,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { isAWhatsAppChannel, useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { MAXIMUM_FILE_UPLOAD_SIZE } from '@/constants';
@@ -207,6 +207,7 @@ type MenuOptionProps = {
 };
 
 const MenuOption = (props: MenuOptionProps) => {
+  const tailwind = useTailwind();
   const { index, menuOption } = props;
   const dispatch = useAppDispatch();
   const { macrosListSheetRef, whatsAppTemplatesSheetRef } = useRefsContext();
@@ -245,6 +246,7 @@ const MenuOption = (props: MenuOptionProps) => {
 };
 
 export const CommandOptionsMenu = () => {
+  const tailwind = useTailwind();
   const { bottom } = useSafeAreaInsets();
   const isAndroid = Platform.OS === 'android';
   const { conversationId } = useChatWindowContext();

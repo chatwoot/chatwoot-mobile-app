@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Avatar, Icon } from '@/components-next';
 import { CaretRight, UnassignedIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Agent } from '@/types';
 import i18n from '@/i18n';
 
@@ -22,6 +22,7 @@ const assigneeAvatar = (assignee: Agent | null) => {
 };
 
 const AssigneePanel = ({ assignee, onPress }: AssigneePanelProps) => {
+  const tailwind = useTailwind();
   const assigneeName = assignee ? assignee.name : i18n.t('CONVERSATION.ACTIONS.ASSIGNEE.EMPTY');
   const assigneeActionText = assignee
     ? i18n.t('CONVERSATION.ACTIONS.ASSIGNEE.EDIT')

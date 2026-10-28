@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { Icon, Spinner } from '@/components-next';
 import i18n from '@/i18n';
 import { ChevronLeft } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Agent, Macro } from '@/types';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { expandTabs } from '@/utils/expandTabs';
@@ -29,6 +29,7 @@ type MacroDetailsProps = {
 };
 
 const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
   const labels = useAppSelector(selectAllLabels);
   const teams = useAppSelector(selectAllTeams);

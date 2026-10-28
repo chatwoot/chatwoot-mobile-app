@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { forwardRef, useCallback } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { COPILOT_ACTIONS } from '@/constants/copilot';
 import type { CopilotActionKey } from '@/types/Copilot';
@@ -22,6 +22,7 @@ type ToneSelectionSheetProps = {
 
 export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
   ({ onSelectTone }, ref) => {
+    const tailwind = useTailwind();
     const hapticSelection = useHaptic();
 
     const handleSelectTone = useCallback(

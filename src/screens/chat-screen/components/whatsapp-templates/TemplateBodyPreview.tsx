@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo } from 'react';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { buildPreviewSegments } from '@/utils/messageTemplateUtils';
 import { expandTabs } from '@/utils/expandTabs';
 
@@ -11,6 +11,7 @@ type TemplateBodyPreviewProps = {
 };
 
 const TemplateBodyPreview = ({ body, values }: TemplateBodyPreviewProps) => {
+  const tailwind = useTailwind();
   // Segments render as one run of text, so each tab is expanded from the
   // column the preceding segments end on.
   const segments = useMemo(() => {

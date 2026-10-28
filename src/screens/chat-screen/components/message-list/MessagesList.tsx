@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useRef } from 'react';
 
 import Animated, {
@@ -11,7 +12,6 @@ import Animated, {
 import { useSlaPillVisibility } from '../../SlaPillVisibility';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
 import { useRefsContext } from '@/context';
@@ -27,6 +27,7 @@ const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Message | {
 type DateSectionProps = { item: { date: string } };
 
 const DateSection = ({ item }: DateSectionProps) => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex flex-row justify-center items-center py-4')}>
       <Animated.View style={tailwind.style('rounded-lg py-1 px-[7px] bg-blackA-A3')}>
@@ -64,6 +65,7 @@ export const MessagesList = ({
   isSearchNavigation = false,
   highlightedMessageId,
 }: MessagesListPresentationProps) => {
+  const tailwind = useTailwind();
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
   // The floating SLA pill shows only at the newest messages (the list is inverted, so that's an

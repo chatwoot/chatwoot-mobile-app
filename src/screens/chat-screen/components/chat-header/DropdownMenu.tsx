@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren, useRef } from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import * as DropdownMenu from 'zeego/dropdown-menu';
 
 import { BottomSheetHeader } from '@/components-next';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
-import { tailwind } from '@/theme';
 
 export type DashboardList = {
   title: string;
@@ -14,29 +14,35 @@ export type DashboardList = {
 };
 
 const DropdownMenuTrigger = DropdownMenu.create<React.ComponentProps<typeof DropdownMenu.Trigger>>(
-  props => (
-    <DropdownMenu.Trigger {...props} asChild>
-      <View aria-role="button" style={tailwind.style('ml-4')}>
-        {props.children}
-      </View>
-    </DropdownMenu.Trigger>
-  ),
+  props => {
+    const tailwind = useTailwind();
+    return (
+      <DropdownMenu.Trigger {...props} asChild>
+        <View aria-role="button" style={tailwind.style('ml-4')}>
+          {props.children}
+        </View>
+      </DropdownMenu.Trigger>
+    );
+  },
   'Trigger',
 );
 
 const DropdownMenuItem = DropdownMenu.create<React.ComponentProps<typeof DropdownMenu.Item>>(
-  props => (
-    <DropdownMenu.Item {...props}>
-      <View style={tailwind.style('flex flex-row items-center')}>
-        <DropdownMenu.ItemTitle
-          style={tailwind.style(
-            'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
-          )}>
-          {props.children}
-        </DropdownMenu.ItemTitle>
-      </View>
-    </DropdownMenu.Item>
-  ),
+  props => {
+    const tailwind = useTailwind();
+    return (
+      <DropdownMenu.Item {...props}>
+        <View style={tailwind.style('flex flex-row items-center')}>
+          <DropdownMenu.ItemTitle
+            style={tailwind.style(
+              'text-base text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] capitalize',
+            )}>
+            {props.children}
+          </DropdownMenu.ItemTitle>
+        </View>
+      </DropdownMenu.Item>
+    );
+  },
   'Item',
 );
 
@@ -60,6 +66,7 @@ type ChatDropdownMenuProps = {
 };
 
 export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>) => {
+  const tailwind = useTailwind();
   const { children, dropdownMenuList } = props;
 
   const contextMenuSheetRef = useRef<SheetRef>(null);

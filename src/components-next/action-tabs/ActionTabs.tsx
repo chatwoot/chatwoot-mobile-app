@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as DropdownMenu from 'zeego/dropdown-menu';
@@ -100,27 +101,31 @@ type ToolbarButtonProps = {
 };
 
 // A labeled toolbar button. It has no onPress of its own: it's the trigger of a native menu.
-const ToolbarButton = ({ label, glyph: Glyph, enabled }: ToolbarButtonProps) => (
-  <View
-    accessibilityRole="button"
-    accessibilityLabel={label}
-    accessibilityState={{ disabled: !enabled }}
-    style={tailwind.style('h-[50px] min-w-[72px] items-center justify-center gap-1')}>
-    <Icon size={22} icon={<Glyph stroke={enabled ? TINT : DISABLED} strokeWidth={1.6} />} />
-    <Text
-      style={[
-        tailwind.style('text-[11px] leading-[13px] font-inter-medium-24'),
-        { color: enabled ? TINT : DISABLED },
-      ]}>
-      {label}
-    </Text>
-  </View>
-);
+const ToolbarButton = ({ label, glyph: Glyph, enabled }: ToolbarButtonProps) => {
+  const tailwind = useTailwind();
+  return (
+    <View
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: !enabled }}
+      style={tailwind.style('h-[50px] min-w-[72px] items-center justify-center gap-1')}>
+      <Icon size={22} icon={<Glyph stroke={enabled ? TINT : DISABLED} strokeWidth={1.6} />} />
+      <Text
+        style={[
+          tailwind.style('text-[11px] leading-[13px] font-inter-medium-24'),
+          { color: enabled ? TINT : DISABLED },
+        ]}>
+        {label}
+      </Text>
+    </View>
+  );
+};
 
 // iOS: a Liquid Glass toolbar like Mail's edit mode, applying to every selected conversation.
 // Label and Assign open a full-height sheet with search; Status is a native menu. The buttons
 // are gray and inactive until something is selected.
 const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: number }) => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
   const selectedIds = useAppSelector(selectSelectedIds);
@@ -210,6 +215,7 @@ const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: number }) 
 };
 
 const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
+  const tailwind = useTailwind();
   const { children, blurAmount, blurType, style, glass } = props;
 
   const currentState = useAppSelector(selectCurrentState);
@@ -249,7 +255,7 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
           <Animated.View style={tailwind.style('absolute inset-0 rounded-full overflow-hidden')}>
             <BlurView
               blurAmount={25}
-              blurType="light"
+              blurType={tailwind.isDark ? 'dark' : 'light'}
               style={tailwind.style('flex-1 bg-[#00000009]')}
             />
           </Animated.View>
@@ -305,6 +311,7 @@ const ActionItem = (props: ActionItemProps) => {
 };
 
 export const ActionTabs = () => {
+  const tailwind = useTailwind();
   const { bottom, left } = useSafeAreaInsets();
   // Center within the area it's drawn in: the list pane in the split view, or the content
   // between the side insets elsewhere.
@@ -354,7 +361,7 @@ export const ActionTabs = () => {
   return (
     <ActionTabBarBackground
       blurAmount={25}
-      blurType="light"
+      blurType={tailwind.isDark ? 'dark' : 'light'}
       style={Platform.select({
         ios: [
           tailwind.style(

@@ -7,6 +7,7 @@ import { AppNavigator } from '@/navigation';
 import { AppErrorBoundary } from '@/components-next/error-boundary';
 
 import i18n from '@/i18n';
+import { AppearanceProvider } from '@/theme/appearance';
 
 const Chatwoot = () => {
   useEffect(() => {
@@ -33,9 +34,11 @@ const Chatwoot = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <AppErrorBoundary>
-          <AppNavigator />
-        </AppErrorBoundary>
+        <AppearanceProvider>
+          <AppErrorBoundary>
+            <AppNavigator />
+          </AppErrorBoundary>
+        </AppearanceProvider>
       </PersistGate>
     </Provider>
   );

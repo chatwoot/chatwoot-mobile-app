@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -20,7 +21,6 @@ import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
 import { SideToolbarProvider } from '@/context';
-import { tailwind } from '@/theme';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
@@ -99,6 +99,7 @@ const sidePageOptions = IOS_DESIGN
 const CustomTabBar = (props: BottomTabBarProps) => <BottomTabBar {...props} />;
 
 const Tabs = () => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const sideTabBar = useSideTabBarLayout();
   const user = useAppSelector(selectUser);

@@ -20,6 +20,7 @@ export const placeOutboundCall = async (dispatch: AppDispatch, params: StartOutb
       params.provider === VOICE_CALL_PROVIDERS.WHATSAPP
         ? 'CONVERSATION.HEADER.WHATSAPP_CALL_FAILED'
         : 'CONVERSATION.HEADER.VOICE_CALL_FAILED',
+      params.provider,
     );
   }
 };

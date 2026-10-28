@@ -4,6 +4,9 @@ import { openSettings } from 'react-native-permissions';
 
 import i18n from '@/i18n';
 import { isMediaUnavailableError, isMicrophoneDeniedError } from '@/services/voice/callErrors';
+import { captureVoiceFailure } from '@/services/voice/callTelemetry';
+import type { LiveCall } from '@/store/call/callTypes';
+import type { VoiceCallProvider } from '@/types';
 
 import { showToast } from './toastUtils';
 
@@ -49,7 +52,16 @@ export const flushMicrophonePrompt = async () => {
   showMicrophoneAlert();
 };
 
-export const reportAnswerFailure = (error: unknown) => {
+export const reportAnswerFailure = (
+  error: unknown,
+  source: string,
+  call?: Pick<LiveCall, 'provider' | 'callDirection'>,
+) => {
+  captureVoiceFailure(error, 'answer', {
+    source,
+    provider: call?.provider,
+    callDirection: call?.callDirection,
+  });
   if (isMicrophoneDeniedError(error)) {
     promptForMicrophone();
     return;
@@ -63,7 +75,12 @@ export const reportAnswerFailure = (error: unknown) => {
   });
 };
 
-export const reportOutboundFailure = (error: unknown, messageKey: string) => {
+export const reportOutboundFailure = (
+  error: unknown,
+  messageKey: string,
+  provider?: VoiceCallProvider,
+) => {
+  captureVoiceFailure(error, 'outbound', { provider, callDirection: 'outbound' });
   if (isMicrophoneDeniedError(error)) {
     promptForMicrophone();
     return;

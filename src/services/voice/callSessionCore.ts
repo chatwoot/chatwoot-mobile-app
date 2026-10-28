@@ -188,7 +188,7 @@ const applyCallAction = async (pending: PendingCallAction) => {
       reportNativeCallState('failed', pending.callSid);
     }
   } catch (error) {
-    reportAnswerFailure(error);
+    reportAnswerFailure(error, 'notification', call);
     reportNativeCallState('failed', pending.callSid);
     const failed = selectCalls(store.getState()).find(entry => entry.callSid === pending.callSid);
     if (failed && !failed.isActive) store.dispatch(removeCall(pending.callSid));

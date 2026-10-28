@@ -42,7 +42,7 @@ export const useRingingBehind = ({ call, isJoining }: Options) => {
         toastJoinOutcome(status);
         return status === 'joined' || status === 'requested';
       } catch (error) {
-        reportAnswerFailure(error);
+        reportAnswerFailure(error, 'ringing_behind', target);
         return false;
       } finally {
         endCallSwitch();

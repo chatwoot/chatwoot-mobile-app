@@ -24,6 +24,7 @@ import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import { isAwaitingTwilioContact } from '@/utils/voiceCallUtils';
 
 import { callEngine } from './callEngine';
+import { captureVoiceFailure } from './callTelemetry';
 import { selectCallerInfo } from './callerInfo';
 import {
   cancelJoin,
@@ -218,6 +219,7 @@ export const systemCall = {
       store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
     } catch (error) {
       console.warn('System call UI could not show the call', error);
+      captureVoiceFailure(error, 'system_ui_incoming', call);
       store.dispatch(markSystemUiFailed(call.callSid));
     }
   },
@@ -255,6 +257,7 @@ export const systemCall = {
       }
     } catch (error) {
       console.warn('System call UI could not start the call', error);
+      captureVoiceFailure(error, 'system_ui_outgoing', call);
     }
   },
 
@@ -361,7 +364,7 @@ export const systemCall = {
                 });
               }),
             ).catch(error => {
-              reportAnswerFailure(error);
+              reportAnswerFailure(error, 'system_ui', call);
               endSystemCall(event.uuid, 'failed');
             });
           }
@@ -432,7 +435,7 @@ const adoptSystemCall = (store: Store, system: SystemCall) => {
     const current = selectCalls(store.getState()).find(entry => entry.callSid === system.callSid);
     if (current && !current.isActive && selectLocalCallSid(store.getState()) !== system.callSid) {
       startJoin(store, system.callSid).catch(error => {
-        reportAnswerFailure(error);
+        reportAnswerFailure(error, 'system_ui_restore', current);
         endSystemCall(system.uuid, 'failed');
       });
     }

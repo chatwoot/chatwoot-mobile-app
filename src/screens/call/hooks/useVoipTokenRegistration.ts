@@ -5,6 +5,7 @@ import { useAppDispatch } from '@/hooks';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { systemCall } from '@/services/voice/systemCall';
 import { addVoipTokenListener, getVoipToken } from '@/services/voice/chatwootCalls';
+import { captureVoiceFailure } from '@/services/voice/callTelemetry';
 
 export const useVoipTokenRegistration = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +24,7 @@ export const useVoipTokenRegistration = () => {
         .then(() => {
           registeredTokenRef.current = token;
         })
-        .catch(() => {})
+        .catch(error => captureVoiceFailure(error, 'voip_token'))
         .finally(() => {
           if (pendingTokenRef.current === token) pendingTokenRef.current = null;
         });

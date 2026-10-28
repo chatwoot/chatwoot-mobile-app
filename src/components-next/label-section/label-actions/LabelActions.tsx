@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState, useEffect } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 import { LabelTag } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common/icon';
 import { SearchBar } from '@/components-next/common/search';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
@@ -26,6 +26,7 @@ interface LabelActionsProps {
 }
 
 export const LabelActions = (props: LabelActionsProps) => {
+  const tailwind = useTailwind();
   // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { labels, onLabelsUpdate, sheetRef, titleText, addLabelText, searchPlaceholderText } =

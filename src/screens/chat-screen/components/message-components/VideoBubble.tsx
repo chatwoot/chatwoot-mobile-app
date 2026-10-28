@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import { useVideoPlayer, VideoView, type VideoPlayerStatus } from 'expo-video';
 import { Image } from 'expo-image';
-import { tailwind } from '@/theme';
 import { Spinner } from '@/components-next/spinner';
 
 type VideoBubbleProps = {
@@ -15,6 +15,7 @@ type VideoPlayerProps = Pick<VideoBubbleProps, 'videoSrc'> & {
 };
 
 export const VideoBubblePlayer = (props: VideoPlayerProps) => {
+  const tailwind = useTailwind();
   const { videoSrc, playerEnabled = true } = props;
   const videoRef = useRef<VideoView>(null);
   const [playVideo, setPlayVideo] = useState(false);
@@ -89,6 +90,7 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
 // Fixed-size media thumbnail. Playback is handed to the fullscreen player, so the
 // inline view carries no controls.
 export const VideoThumbnail = (props: VideoBubbleProps) => {
+  const tailwind = useTailwind();
   const { videoSrc } = props;
   const videoRef = useRef<VideoView>(null);
   const [status, setStatus] = useState<VideoPlayerStatus>('loading');

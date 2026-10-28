@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
 import { View, ViewStyle } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { RenderPropType } from '@/types';
 
 export interface IconComponentProps {
@@ -22,6 +22,7 @@ export interface IconComponentProps {
 
 // Please take icons from https://icones.js.org/collection/fluent
 export const Icon: React.FC<Partial<IconComponentProps>> = props => {
+  const tailwind = useTailwind();
   const { icon, style, size } = props;
   const iconAspectRatio = 1;
   const sizer = typeof size === 'number' ? `w-[${size}px]` : typeof size === 'string' ? size : '';

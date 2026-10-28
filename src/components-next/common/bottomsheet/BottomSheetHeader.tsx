@@ -1,13 +1,13 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
-
-import { tailwind } from '@/theme';
 
 type BottomSheetHeaderProps = {
   headerText: string;
 };
 
 export const BottomSheetHeader = (props: BottomSheetHeaderProps) => {
+  const tailwind = useTailwind();
   const { headerText } = props;
   return (
     <Animated.View style={tailwind.style('flex-row justify-center items-center')}>

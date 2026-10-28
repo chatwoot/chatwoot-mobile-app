@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -6,7 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import i18n from '@/i18n';
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { Macro } from '@/types';
 import { useAppSelector } from '@/hooks';
 import { selectAllMacros } from '@/store/macro/macroSelectors';
@@ -18,6 +18,7 @@ import { MacroProvider } from './MacroContext';
 const LIST_BOTTOM_PADDING = 24;
 
 export const MacrosList = ({ conversationId }: { conversationId: number }) => {
+  const tailwind = useTailwind();
   const { bottom } = useSafeAreaInsets();
   const macros = useAppSelector(selectAllMacros);
   const [selectedMacro, setSelectedMacro] = useState<Macro | null>(null);

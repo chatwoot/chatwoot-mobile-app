@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren, useEffect, useMemo, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -23,7 +24,6 @@ import { MacrosPane } from '@/screens/chat-screen/components/macros/MacrosPane';
 import { ReplyBoxContainer } from '@/screens/chat-screen/components/reply-box/ReplyBoxContainer';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { ChatWindowProvider, ContainerWidthContext, RefsProvider } from '@/context';
-import { tailwind } from '@/theme';
 import { useIsSplitLayout } from '@/utils';
 import { useAppSelector } from '@/hooks';
 import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
@@ -80,14 +80,17 @@ const ConversationPane = ({ conversationId }: { conversationId: number }) => (
   </DetailPaneContext.Provider>
 );
 
-const EmptyPane = ({ icon, message }: { icon?: React.ReactElement; message?: string }) => (
-  <View style={tailwind.style('flex-1 items-center justify-center')}>
-    <SplitEmptyState
-      icon={icon ?? <ConversationPaneEmptyIcon />}
-      message={message ?? i18n.t('CONVERSATION.SPLIT_VIEW.EMPTY')}
-    />
-  </View>
-);
+const EmptyPane = ({ icon, message }: { icon?: React.ReactElement; message?: string }) => {
+  const tailwind = useTailwind();
+  return (
+    <View style={tailwind.style('flex-1 items-center justify-center')}>
+      <SplitEmptyState
+        icon={icon ?? <ConversationPaneEmptyIcon />}
+        message={message ?? i18n.t('CONVERSATION.SPLIT_VIEW.EMPTY')}
+      />
+    </View>
+  );
+};
 
 type SplitViewProps = PropsWithChildren<{
   // When this changes (e.g. the list's filters), the open conversation is closed: the
@@ -107,6 +110,7 @@ const SecondaryPane = ({
   column: SecondaryColumn;
   conversationId: number;
 }) => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
   const { right } = useSafeAreaInsets();
   // Actions and contact details use the iOS Settings style: light gray with flat white cards.
@@ -199,6 +203,7 @@ const SLIDE_SPRING = {
 };
 
 export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: SplitViewProps) => {
+  const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();
   const { width } = useWindowDimensions();
   const { right: safeRight } = useSafeAreaInsets();

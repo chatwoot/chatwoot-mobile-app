@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import { useRefsContext } from '@/context';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
@@ -27,6 +27,7 @@ export const status: StatusCollection[] = [
 ];
 
 const StatusCell = (props: StatusCellProps) => {
+  const tailwind = useTailwind();
   const { filtersModalSheetRef } = useRefsContext();
   const { value, index } = props;
   const filters = useAppSelector(selectFilters);
@@ -66,6 +67,7 @@ type StatusStackProps = {
 };
 
 const StatusStack = (props: StatusStackProps) => {
+  const tailwind = useTailwind();
   const { statusList } = props;
   const list = statusList;
   return (

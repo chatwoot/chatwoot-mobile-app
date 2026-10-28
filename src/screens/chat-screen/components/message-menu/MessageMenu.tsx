@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -5,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 import * as ContextMenu from 'zeego/context-menu';
 
-import { tailwind } from '@/theme';
 import { BottomSheetHeader, Icon } from '@/components-next/common';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
 
@@ -48,6 +48,7 @@ const MessageActionsSheet = ({
   menuOptions: MenuOption[];
   onClose: () => void;
 }) => {
+  const tailwind = useTailwind();
   const sheetRef = useRef<SheetRef>(null);
 
   useEffect(() => {

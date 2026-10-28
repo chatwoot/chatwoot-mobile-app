@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Channel, Message } from '@/types';
 import Animated from 'react-native-reanimated';
@@ -39,7 +40,6 @@ import { CopyIcon, Trash, ReplyIcon, TranslateIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { tailwind } from '@/theme';
 import { View, Text } from 'react-native';
 import { useContainerWidth } from '@/context';
 import { Avatar } from '@/components-next';
@@ -123,6 +123,17 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',
 };
 
+// Dark conversations use the dashboard's quieter hierarchy. Keep saturated blue
+// for actions and indicators rather than large customer-message surfaces.
+const darkVariantBaseMap: Record<string, string> = {
+  ...variantBaseMap,
+  [MESSAGE_VARIANTS.USER]: 'bg-[#25292C]',
+  [MESSAGE_VARIANTS.AGENT]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.BOT]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.PRIVATE]: 'bg-[#332B1C]',
+};
+
 const variantBorderMap = {
   [MESSAGE_VARIANTS.AGENT]: 'border-gray-100',
   [MESSAGE_VARIANTS.USER]: 'border-gray-100',
@@ -150,6 +161,7 @@ const MessageWrapper = ({
   inlineTime = false,
   isOwnMessage = false,
 }: MessageWrapperProps) => {
+  const tailwind = useTailwind();
   const paneRightInset = usePaneRightInset();
   const isInPane = useIsInDetailPane();
   const containerWidth = useContainerWidth();
@@ -190,6 +202,13 @@ const MessageWrapper = ({
     ? shouldShowAvatar && !!item.sameSenderAsBelow
     : shouldGroupWithPrevious && orientation === ORIENTATION.LEFT;
   const isRight = orientation === ORIENTATION.RIGHT;
+  const bubbleClass = tailwind.isDark
+    ? variant === MESSAGE_VARIANTS.EMAIL
+      ? isRight
+        ? darkVariantBaseMap[MESSAGE_VARIANTS.AGENT]
+        : darkVariantBaseMap[MESSAGE_VARIANTS.USER]
+      : darkVariantBaseMap[variant]
+    : variantBaseMap[variant];
   // iOS: the sender's name sits above their first message after someone else's (like group
   // chats in Messages), instead of inside each bubble next to the time.
   // Incoming (left) always; outgoing (right) when another agent or the bot sent it.
@@ -242,7 +261,7 @@ const MessageWrapper = ({
               style={tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${textMaxWidth}px]`}`,
-                variantBaseMap[variant],
+                bubbleClass,
                 variantBorderMap[variant],
                 shouldGroupWithNext && shouldGroupWithPrevious
                   ? orientation === ORIENTATION.LEFT
@@ -332,9 +351,7 @@ const MessageWrapper = ({
                 </View>
               )}
             </View>
-            {shouldShowTail ? (
-              <BubbleTail color={tailwind.color(variantBaseMap[variant]) as string} />
-            ) : null}
+            {shouldShowTail ? <BubbleTail color={tailwind.color(bubbleClass) as string} /> : null}
           </BubbleContainer>
         </MessageMenu>
         {/* Outgoing on iOS: the agent's (or bot's) avatar on the right, like the web app. */}

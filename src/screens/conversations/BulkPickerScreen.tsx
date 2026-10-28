@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,7 +8,6 @@ import { Avatar, Icon } from '@/components-next';
 import {
   GlassCircleButton,
   GlassPillButton,
-  HEADER_ICON_COLOR,
 } from '@/components-next/side-toolbar/GlassCircleButton';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
@@ -23,7 +23,6 @@ import {
 } from '@/store/conversation/conversationSelectedSlice';
 import { filterLabels } from '@/store/label/labelSelectors';
 import { CloseIcon, TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
 
@@ -45,6 +44,7 @@ const DIVIDER = 'border-b-[0.5px] border-b-blackA-A6';
 // photos, label colors). Assign applies on tap and closes; labels are added on tap (checked)
 // so several can be added, then Done.
 const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
+  const tailwind = useTailwind();
   const { kind } = route.params;
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
@@ -123,7 +123,7 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
         )}
         left={
           <GlassCircleButton
-            icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+            icon={<CloseIcon stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
             onPress={navigation.goBack}
             accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.CLOSE')}
           />

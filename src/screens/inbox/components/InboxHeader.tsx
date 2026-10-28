@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { Icon } from '@/components-next/common/icon';
 import { DoubleCheckIcon, InboxFilterIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { IOS_DESIGN, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import { InboxFilters } from './InboxFilters';
 import { InboxSortMenu, useIsInboxSortChanged } from './InboxSortMenu';
@@ -13,7 +13,6 @@ import i18n from '@/i18n';
 import { useRefsContext, useSideToolbar } from '@/context';
 import {
   GlassCircleButton,
-  HEADER_ICON_COLOR,
   LargeHeaderTitle,
   SideToolbarButton,
 } from '@/components-next/side-toolbar';
@@ -23,6 +22,7 @@ type InboxHeaderProps = {
 };
 
 export const InboxHeader = (props: InboxHeaderProps) => {
+  const tailwind = useTailwind();
   const { markAllAsRead } = props;
   const { inboxFiltersSheetRef } = useRefsContext();
   const handleToggleState = () => {
@@ -37,14 +37,14 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   const actionItems = (
     <>
       <SideToolbarButton
-        icon={<DoubleCheckIcon stroke={HEADER_ICON_COLOR} />}
+        icon={<DoubleCheckIcon stroke={tailwind.color('text-gray-950')} />}
         onPress={markAllAsRead}
         accessibilityLabel={i18n.t('NOTIFICATION.MARK_ALL')}
       />
       {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
       <InboxSortMenu>
         <SideToolbarButton
-          icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
+          icon={<InboxFilterIcon stroke={tailwind.color('text-gray-950')} />}
           showBadge={isSortChanged}
           accessibilityLabel={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')}
         />
@@ -67,7 +67,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
         <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
           <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
             <GlassCircleButton
-              icon={<DoubleCheckIcon stroke={HEADER_ICON_COLOR} />}
+              icon={<DoubleCheckIcon stroke={tailwind.color('text-gray-950')} />}
               onPress={markAllAsRead}
               accessibilityLabel={i18n.t('NOTIFICATION.MARK_ALL')}
             />
@@ -83,7 +83,7 @@ export const InboxHeader = (props: InboxHeaderProps) => {
             {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
             <InboxSortMenu>
               <GlassCircleButton
-                icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
+                icon={<InboxFilterIcon stroke={tailwind.color('text-gray-950')} />}
                 showBadge={isSortChanged}
                 accessibilityLabel={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')}
               />

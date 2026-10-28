@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Icon } from '@/components-next';
 import { CaretRight, TeamIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Team } from '@/types';
 import i18n from '@/i18n';
 
@@ -13,6 +13,7 @@ type TeamPanelProps = {
 };
 
 const TeamPanel = ({ team, onPress }: TeamPanelProps) => {
+  const tailwind = useTailwind();
   const teamName = team ? team.name : i18n.t('CONVERSATION.ACTIONS.TEAM.EMPTY');
   return (
     <Pressable

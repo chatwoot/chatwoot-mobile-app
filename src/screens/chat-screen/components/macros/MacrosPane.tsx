@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -7,7 +8,6 @@ import { Icon } from '@/components-next/common';
 import {
   GlassCircleButton,
   GlassPillButton,
-  HEADER_ICON_COLOR,
 } from '@/components-next/side-toolbar/GlassCircleButton';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
@@ -18,7 +18,6 @@ import { useSplitView } from '@/navigation/split/SplitViewContext';
 import { macroActions } from '@/store/macro/macroActions';
 import { selectAllMacros } from '@/store/macro/macroSelectors';
 import { ChevronLeft, InfoCircleIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Macro } from '@/types';
 import { useHaptic } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
@@ -43,6 +42,7 @@ type MacroListProps = {
 // shows its steps (the iOS detail disclosure pattern). The row itself isn't tappable, so a
 // stray tap can't run anything.
 const MacroList = ({ macros, onSelect, onRun, runningId }: MacroListProps) => {
+  const tailwind = useTailwind();
   if (macros.length === 0) {
     return (
       <View style={tailwind.style('pt-16')}>
@@ -114,6 +114,7 @@ const MacroList = ({ macros, onSelect, onRun, runningId }: MacroListProps) => {
 };
 
 const MacroSteps = ({ macro, conversationId }: { macro: Macro; conversationId: number }) => {
+  const tailwind = useTailwind();
   const steps = useMacroSteps(macro, conversationId);
   return (
     <Animated.View entering={FadeIn.duration(200)} style={tailwind.style(CARD)}>
@@ -149,6 +150,7 @@ export const MacrosPane = ({
   // Full-screen page (iPhone, closed Duo): closes the page; the list gets a Back button.
   onClose?: () => void;
 }) => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
   const splitView = useSplitView();
@@ -181,7 +183,7 @@ export const MacrosPane = ({
           title={selected.name}
           left={
             <GlassCircleButton
-              icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+              icon={<ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
               onPress={() => setSelected(null)}
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
             />

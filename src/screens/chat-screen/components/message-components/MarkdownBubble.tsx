@@ -1,3 +1,4 @@
+import { useTailwind, ThemeTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import type { ASTNode } from 'react-native-markdown-display';
@@ -5,7 +6,6 @@ import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
 import { expandTabs } from '@/utils/expandTabs';
 
-import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { appFont } from '@/theme/appFont';
 
@@ -73,7 +73,7 @@ const handleURL = (url: string) => {
   return true;
 };
 
-const buildStyles = (variant: string) => {
+const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
   const textStyle = tailwind.style(variantTextMap[variant]);
 
   return StyleSheet.create({
@@ -132,18 +132,20 @@ const buildStyles = (variant: string) => {
 // row does not invalidate the whole tree.
 const stylesByVariant = new Map<string, ReturnType<typeof buildStyles>>();
 
-const getStyles = (variant: string) => {
-  const cachedStyles = stylesByVariant.get(variant);
+const getStyles = (variant: string, tailwind: ThemeTailwind) => {
+  const cacheKey = `${tailwind.isDark}:${variant}`;
+  const cachedStyles = stylesByVariant.get(cacheKey);
   if (cachedStyles) {
     return cachedStyles;
   }
 
-  const styles = buildStyles(variant);
-  stylesByVariant.set(variant, styles);
+  const styles = buildStyles(variant, tailwind);
+  stylesByVariant.set(cacheKey, styles);
   return styles;
 };
 
 export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
+  const tailwind = useTailwind();
   const { variant, timeReserve } = props;
   const text = expandTabs(props.messageContent);
   const messageContent = timeReserve ? `${text}${TIME_RESERVE_MARK}` : text;
@@ -154,7 +156,7 @@ export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
       markdownit={markdownItInstance}
       onLinkPress={handleURL}
       rules={timeReserve ? RESERVE_RULES[timeReserve] : undefined}
-      style={getStyles(variant)}>
+      style={getStyles(variant, tailwind)}>
       {messageContent}
     </Markdown>
   );

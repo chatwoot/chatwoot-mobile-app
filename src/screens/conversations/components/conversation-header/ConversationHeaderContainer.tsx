@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useMemo } from 'react';
 import Animated, {
   interpolateColor,
@@ -7,7 +8,6 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useConversationListStateContext } from '@/context';
-import { tailwind } from '@/theme';
 import { IOS_DESIGN, useHaptic, useSideTabBarLayout } from '@/utils';
 import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
 import { selectUserId } from '@/store/auth/authSelectors';
@@ -42,6 +42,7 @@ const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterS
 };
 
 export const ConversationHeader = () => {
+  const tailwind = useTailwind();
   const currentState = useAppSelector(selectCurrentState);
   const sideTabBar = useSideTabBarLayout();
 

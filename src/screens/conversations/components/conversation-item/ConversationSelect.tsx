@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { memo } from 'react';
 import { LinearTransition } from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import { LinearTransition } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
 import { AnimatedNativeView } from '@/components-next/native-components';
 import { CheckedIcon, UncheckedIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 
 type ConversationSelectProps = {
   isSelected: boolean;
@@ -13,6 +13,7 @@ type ConversationSelectProps = {
 };
 
 export const ConversationSelect = memo((props: ConversationSelectProps) => {
+  const tailwind = useTailwind();
   const { isSelected, currentState } = props;
 
   return currentState === 'Select' ? (

@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
@@ -47,6 +48,7 @@ export const CopilotEditorSection = ({
   onAccept,
   onDiscard,
 }: CopilotEditorSectionProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
   const displayText = isGenerating ? originalContent : generatedContent;
   const showActions = !isGenerating && generatedContent.length > 0;

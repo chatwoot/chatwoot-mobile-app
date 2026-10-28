@@ -1,8 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Animated } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
-
-import { tailwind } from '@/theme';
 
 import { EmailMeta } from './EmailMeta';
 import { Message } from '@/types';
@@ -17,6 +16,7 @@ type EmailBubbleProps = {
 };
 
 export const EmailBubble = (props: EmailBubbleProps) => {
+  const tailwind = useTailwind();
   const messageItem = props.item as Message;
   const { sender, contentAttributes, messageType, content } = messageItem;
 

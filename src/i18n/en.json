@@ -429,7 +429,12 @@
     "LOGOUT": "Logout",
     "SUBMIT": "Submit",
     "SET_LANGUAGE": "Set Language",
-    "DEBUG_ACTIONS": "Debug Actions"
+    "DEBUG_ACTIONS": "Debug Actions",
+    "APPEARANCE": "Appearance",
+    "APPEARANCE_SYSTEM": "System",
+    "APPEARANCE_LIGHT": "Light",
+    "APPEARANCE_DARK": "Dark",
+    "APPEARANCE_SYSTEM_DESCRIPTION": "System follows your device’s appearance."
   },
   "NOTIFICATION": {
     "SPLIT_VIEW_EMPTY": "Select a notification to view the conversation",

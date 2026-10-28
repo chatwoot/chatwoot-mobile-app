@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { tailwind } from '@/theme';
 import { Label } from '@/types/common/Label';
 import { TickIcon } from '@/svg-icons';
 import { Icon } from '@/components-next/common/icon';
@@ -15,6 +15,7 @@ type LabelCellProps = {
 };
 
 export const LabelCell = (props: LabelCellProps) => {
+  const tailwind = useTailwind();
   const { value, isLastItem, handleLabelPress, isActive = false } = props;
 
   const handleOnPress = () => {

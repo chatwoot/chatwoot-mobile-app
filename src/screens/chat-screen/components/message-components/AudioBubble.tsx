@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
@@ -8,7 +9,6 @@ import {
   setCurrentPlayingAudioSrc,
 } from '@/store/conversation/audioPlayerSlice';
 
-import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
 import { FileErrorIcon } from '@/svg-icons';
@@ -58,6 +58,7 @@ type AudioPlayerProps = AudioBubbleProps;
 
 // eslint-disable-next-line react/display-name
 export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
+  const tailwind = useTailwind();
   const { audioSrc, contentType, extension, variant } = props;
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
@@ -249,6 +250,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
 // eslint-disable-next-line react/display-name
 export const AudioBubble = React.memo<AudioBubbleProps>(props => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('w-full flex flex-row items-center')}>
       <AudioBubblePlayer {...props} />

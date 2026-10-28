@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo, useState } from 'react';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { ScrollView, View } from 'react-native';
 
 import i18n from '@/i18n';
-import { tailwind } from '@/theme';
 import { NormalizedTemplate, TemplateSendParams } from '@/types';
 import {
   TemplateFormState,
@@ -29,16 +29,20 @@ type WhatsAppTemplateFormProps = {
   onSend: (payload: { message: string; templateParams: TemplateSendParams }) => void;
 };
 
-const SectionLabel = ({ label }: { label: string }) => (
-  <Animated.Text
-    style={tailwind.style(
-      'mb-3 text-[15px] font-inter-medium-24 tracking-[0.225px] text-gray-500',
-    )}>
-    {label}
-  </Animated.Text>
-);
+const SectionLabel = ({ label }: { label: string }) => {
+  const tailwind = useTailwind();
+  return (
+    <Animated.Text
+      style={tailwind.style(
+        'mb-3 text-[15px] font-inter-medium-24 tracking-[0.225px] text-gray-500',
+      )}>
+      {label}
+    </Animated.Text>
+  );
+};
 
 const WhatsAppTemplateForm = ({ template, onBack, onSend }: WhatsAppTemplateFormProps) => {
+  const tailwind = useTailwind();
   const [state, setState] = useState<TemplateFormState>(createEmptyFormState);
   const [focusedKey, setFocusedKey] = useState<string | null>(null);
 

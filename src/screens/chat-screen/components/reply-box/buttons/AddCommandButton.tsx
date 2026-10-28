@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated, { LinearTransition, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { Pressable } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { AddIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
 import { AddCommandButtonProps } from '../types';
 import { ReplyGlassCircle } from './ReplyGlassCircle';
 
@@ -13,6 +13,7 @@ export const AddCommandButton = ({
   glass = false,
   ...otherProps
 }: AddCommandButtonProps) => {
+  const tailwind = useTailwind();
   const { animatedStyle, handlers } = useScaleAnimation();
 
   const addIconAnimation = useAnimatedStyle(() => {
@@ -36,7 +37,7 @@ export const AddCommandButton = ({
         {glass ? (
           <ReplyGlassCircle>
             <Animated.View style={addIconAnimation}>
-              <Icon icon={<AddIcon />} size={22} />
+              <Icon icon={<AddIcon stroke={tailwind.color('text-gray-950')} />} size={22} />
             </Animated.View>
           </ReplyGlassCircle>
         ) : (
@@ -45,7 +46,7 @@ export const AddCommandButton = ({
               tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl'),
               addIconAnimation,
             ]}>
-            <Icon icon={<AddIcon />} size={24} />
+            <Icon icon={<AddIcon stroke={tailwind.color('text-gray-950')} />} size={24} />
           </Animated.View>
         )}
       </Pressable>

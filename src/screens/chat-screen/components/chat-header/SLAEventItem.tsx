@@ -1,6 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Text, Animated } from 'react-native';
-import { tailwind } from '@/theme';
 import { SLAEvent } from '@/types/common/SLA';
 import { format, fromUnixTime } from 'date-fns';
 
@@ -10,6 +10,7 @@ interface SlaEventsProps {
 }
 
 export const SlaEvents = ({ label, items }: SlaEventsProps) => {
+  const tailwind = useTailwind();
   const formatDate = (timestamp: number) =>
     format(fromUnixTime(timestamp), 'MMM dd, yyyy, hh:mm a');
 

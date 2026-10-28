@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { Switch, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
-import { tailwind } from '@/theme';
 import i18n from 'i18n';
 import { selectNotificationSettings } from '@/store/settings/settingsSelectors';
 import { settingsActions } from '@/store/settings/settingsActions';
@@ -35,6 +35,7 @@ const preferenceLabel = (item: string) => {
 };
 
 export const NotificationPreferences = () => {
+  const tailwind = useTailwind();
   const {
     all_push_flags: allPushFlags,
     selected_email_flags: selectedEmailFlags,

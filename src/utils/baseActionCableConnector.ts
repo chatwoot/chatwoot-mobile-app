@@ -53,6 +53,10 @@ class BaseActionCableConnector {
     this.consumer.disconnect();
   };
 
+  ensureConnected = (): void => {
+    this.consumer.ensureActiveConnection();
+  };
+
   protected isAValidEvent = (data: unknown): boolean => {
     const { account_id } = data as { account_id: number };
     return this.accountId === account_id;

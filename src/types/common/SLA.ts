@@ -10,6 +10,10 @@ export interface SLA {
   slaNextResponseTimeThreshold: number;
   slaOnlyDuringBusinessHours: boolean;
   slaResolutionTimeThreshold: number;
+  slaCompletedAt?: number | null;
+  slaFrtDueAt?: number | null;
+  slaNrtDueAt?: number | null;
+  slaRtDueAt?: number | null;
 }
 
 export interface SLAStatus {

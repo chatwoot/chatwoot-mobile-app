@@ -5,23 +5,23 @@ import { Message } from '@/types';
 import type { SheetRef } from '@/components-next/common/sheet/Sheet';
 
 interface RefsContextType {
-  userAvailabilityStatusSheetRef: React.RefObject<SheetRef>;
-  filtersModalSheetRef: React.RefObject<SheetRef>;
-  actionsModalSheetRef: React.RefObject<SheetRef>;
-  languagesModalSheetRef: React.RefObject<SheetRef>;
-  chatPagerView: React.RefObject<PagerView>;
-  addLabelSheetRef: React.RefObject<SheetRef>;
-  macrosListSheetRef: React.RefObject<SheetRef>;
-  notificationPreferencesSheetRef: React.RefObject<SheetRef>;
-  switchAccountSheetRef: React.RefObject<SheetRef>;
-  debugActionsSheetRef: React.RefObject<SheetRef>;
-  messageListRef: React.RefObject<FlashListRef<Message | { date: string }>>;
-  inboxFiltersSheetRef: React.RefObject<SheetRef>;
-  slaEventsSheetRef: React.RefObject<SheetRef>;
-  deliveryStatusSheetRef: React.RefObject<SheetRef>;
-  updateParticipantSheetRef: React.RefObject<SheetRef>;
-  toneSelectionSheetRef: React.RefObject<SheetRef>;
-  whatsAppTemplatesSheetRef: React.RefObject<SheetRef>;
+  userAvailabilityStatusSheetRef: React.RefObject<SheetRef | null>;
+  filtersModalSheetRef: React.RefObject<SheetRef | null>;
+  actionsModalSheetRef: React.RefObject<SheetRef | null>;
+  languagesModalSheetRef: React.RefObject<SheetRef | null>;
+  chatPagerView: React.RefObject<PagerView | null>;
+  addLabelSheetRef: React.RefObject<SheetRef | null>;
+  macrosListSheetRef: React.RefObject<SheetRef | null>;
+  notificationPreferencesSheetRef: React.RefObject<SheetRef | null>;
+  switchAccountSheetRef: React.RefObject<SheetRef | null>;
+  debugActionsSheetRef: React.RefObject<SheetRef | null>;
+  messageListRef: React.RefObject<FlashListRef<Message | { date: string }> | null>;
+  inboxFiltersSheetRef: React.RefObject<SheetRef | null>;
+  slaEventsSheetRef: React.RefObject<SheetRef | null>;
+  deliveryStatusSheetRef: React.RefObject<SheetRef | null>;
+  updateParticipantSheetRef: React.RefObject<SheetRef | null>;
+  toneSelectionSheetRef: React.RefObject<SheetRef | null>;
+  whatsAppTemplatesSheetRef: React.RefObject<SheetRef | null>;
 }
 
 const RefsContext = React.createContext<RefsContextType | undefined>(undefined);

@@ -9,6 +9,7 @@ import { Conversation } from '@/types';
 import i18n from '@/i18n';
 import { REPLY_POLICY } from '@/constants/url';
 import { openURL } from '@/utils/urlUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type ReplyWarningProps = {
   inbox: Inbox;
@@ -64,7 +65,7 @@ export const ReplyWarning = (props: ReplyWarningProps) => {
           style={tailwind.style(
             'text-sm tracking-[0.32px] leading-[15px] font-inter-420-20 text-white',
           )}>
-          {`${replyBannerMessage()} `}
+          {`${expandTabs(replyBannerMessage())} `}
           <Animated.Text
             onPress={() => openURL({ URL: replyWindowLink() })}
             style={tailwind.style(

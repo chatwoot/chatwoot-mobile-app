@@ -27,20 +27,27 @@ import {
   NotificationPreferences,
   SwitchAccount,
   SettingsList,
-  WorkPausedNote,
-  WorkPreferences,
 } from '@/components-next';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import {
+  ChatIcon,
+  ChatwootIcon,
+  NotificationIcon,
+  PhoneOutlineIcon,
+  SwitchIcon,
+  TranslateIcon,
+} from '@/svg-icons';
 import { GenericListType } from '@/types';
 
 import { useHaptic, useTabBarHeight } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
+import { WorkPausedNote } from './components/WorkPausedNote';
+import { useWorkPreferences } from './hooks/useWorkPreferences';
 import {
   selectCurrentUserAvailability,
   selectSupportsWorkPreferences,
@@ -126,6 +133,8 @@ const SettingsScreen = () => {
   const hasVoiceInbox = useAppSelector(state => selectAllInboxes(state).some(isVoiceCallEnabled));
   const supportsWorkPreferences = useAppSelector(selectSupportsWorkPreferences);
   const showWorkPreferences = hasVoiceInbox && supportsWorkPreferences;
+  const isOnline = availabilityStatus === 'online';
+  const { preferences: workPreferences, toggle: toggleWorkPreference } = useWorkPreferences();
 
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
@@ -206,15 +215,34 @@ const SettingsScreen = () => {
     dispatch(logout());
   }, [dispatch, pushToken]);
 
-  const preferencesList: GenericListType[] = [
+  const availabilityList: GenericListType[] = [
     {
       hasChevron: true,
-      title: i18n.t('SETTINGS.CHANGE_AVAILABILITY'),
+      title: i18n.t('SETTINGS.STATUS'),
       icon: <SwitchIcon />,
-      subtitle: '',
+      subtitle: i18n.t(`AVAILABILITY.${availabilityStatus.toUpperCase()}`),
       subtitleType: 'light',
       onPressListItem: () => openSheet(),
     },
+    {
+      title: i18n.t('SETTINGS.RECEIVE_CONVERSATIONS'),
+      icon: <ChatIcon />,
+      checked: workPreferences.accepts_conversations,
+      disabled: !showWorkPreferences,
+      inactive: !isOnline,
+      onPressListItem: () => toggleWorkPreference('accepts_conversations'),
+    },
+    {
+      title: i18n.t('SETTINGS.RECEIVE_VOICE_CALLS'),
+      icon: <PhoneOutlineIcon stroke="#858585" />,
+      checked: workPreferences.accepts_calls,
+      disabled: !showWorkPreferences,
+      inactive: !isOnline,
+      onPressListItem: () => toggleWorkPreference('accepts_calls'),
+    },
+  ];
+
+  const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.NOTIFICATIONS'),
@@ -298,6 +326,10 @@ const SettingsScreen = () => {
           </Animated.View>
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
+          <SettingsList sectionTitle={i18n.t('SETTINGS.AVAILABILITY')} list={availabilityList} />
+          {showWorkPreferences && !isOnline && <WorkPausedNote />}
+        </Animated.View>
+        <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
@@ -319,18 +351,12 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
-      <Sheet
-        ref={userAvailabilityStatusSheetRef}
-        height={!showWorkPreferences ? 190 : availabilityStatus === 'online' ? 320 : 260}>
+      <Sheet ref={userAvailabilityStatusSheetRef} height={190}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
           changeAvailabilityStatus={changeAvailabilityStatus}
           availabilityStatus={availabilityStatus}
-          onlineContent={
-            showWorkPreferences && availabilityStatus === 'online' ? <WorkPreferences /> : null
-          }
         />
-        {showWorkPreferences && availabilityStatus !== 'online' && <WorkPausedNote />}
       </Sheet>
       <Sheet ref={languagesModalSheetRef} detents={[0.7]} scrollable>
         <ScrollView showsVerticalScrollIndicator={false}>

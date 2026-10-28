@@ -27,6 +27,7 @@ import {
   NotificationPreferences,
   SwitchAccount,
   SettingsList,
+  WorkPreferences,
 } from '@/components-next';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { UserAvatar } from './components/UserAvatar';
@@ -58,6 +59,8 @@ import AnalyticsHelper from '@/utils/analyticsUtils';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import { isVoiceCallEnabled } from '@/utils/inboxUtils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { getVoipToken } from '@/services/voice/chatwootCalls';
 import { callActions } from '@/store/call/callActions';
@@ -118,6 +121,7 @@ const SettingsScreen = () => {
   };
 
   const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
+  const hasVoiceInbox = useAppSelector(state => selectAllInboxes(state).some(isVoiceCallEnabled));
 
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
@@ -311,12 +315,13 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
-      <Sheet ref={userAvailabilityStatusSheetRef} height={190}>
+      <Sheet ref={userAvailabilityStatusSheetRef} height={hasVoiceInbox ? 280 : 190}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
           changeAvailabilityStatus={changeAvailabilityStatus}
           availabilityStatus={availabilityStatus}
         />
+        {hasVoiceInbox && <WorkPreferences isOnline={availabilityStatus === 'online'} />}
       </Sheet>
       <Sheet ref={languagesModalSheetRef} detents={[0.7]} scrollable>
         <ScrollView showsVerticalScrollIndicator={false}>

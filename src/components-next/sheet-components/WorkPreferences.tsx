@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Switch } from 'react-native';
+import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
+import { Icon } from '@/components-next/common/icon';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { authActions } from '@/store/auth/authActions';
 import {
@@ -9,13 +10,22 @@ import {
   selectCurrentUserWorkPreferences,
 } from '@/store/auth/authSelectors';
 import { setCurrentUserWorkPreferences } from '@/store/auth/authSlice';
+import { PauseCircleIcon, TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import type { WorkPreferences as Preferences } from '@/types/common/AvailabilityStatus';
 import i18n from 'i18n';
 
 const PREFERENCES = [
-  { key: 'accepts_conversations', label: 'SETTINGS.RECEIVE_CONVERSATIONS' },
-  { key: 'accepts_calls', label: 'SETTINGS.RECEIVE_VOICE_CALLS' },
+  {
+    key: 'accepts_conversations',
+    label: 'SETTINGS.RECEIVE_CONVERSATIONS',
+    info: 'SETTINGS.RECEIVE_CONVERSATIONS_INFO',
+  },
+  {
+    key: 'accepts_calls',
+    label: 'SETTINGS.RECEIVE_VOICE_CALLS',
+    info: 'SETTINGS.RECEIVE_VOICE_CALLS_INFO',
+  },
 ] as const;
 
 export const WorkPreferences = ({ isOnline }: { isOnline: boolean }) => {
@@ -37,12 +47,20 @@ export const WorkPreferences = ({ isOnline }: { isOnline: boolean }) => {
 
   if (!isOnline) {
     return (
-      <Animated.Text
+      <Animated.View
         style={tailwind.style(
-          'mx-3 mt-1 mb-4 pt-3 pl-1 border-t-[1px] border-blackA-A3 text-sm leading-[18px] text-gray-700',
+          'flex-row items-start gap-2 mx-3 mt-2 mb-4 px-3 py-2.5 rounded-xl bg-amber-100',
         )}>
-        {i18n.t('SETTINGS.WORK_PAUSED')}
-      </Animated.Text>
+        <Animated.View style={tailwind.style('mt-px')}>
+          <Icon icon={<PauseCircleIcon />} size={16} />
+        </Animated.View>
+        <Animated.Text
+          style={tailwind.style(
+            'flex-1 text-sm leading-[18px] tracking-[0.16px] font-inter-420-20 text-amber-900',
+          )}>
+          {i18n.t('SETTINGS.WORK_PAUSED')}
+        </Animated.Text>
+      </Animated.View>
     );
   }
 
@@ -50,38 +68,41 @@ export const WorkPreferences = ({ isOnline }: { isOnline: boolean }) => {
 
   return (
     <Animated.View style={tailwind.style('mx-3 mt-1 mb-4 pt-1 border-t-[1px] border-blackA-A3')}>
-      {PREFERENCES.map(({ key, label }) => {
+      {PREFERENCES.map(({ key, label, info }) => {
         const value = preferences[key];
-        const isLastEnabled = value && enabledCount === 1;
+        const isLocked = value && enabledCount === 1;
         return (
-          <Animated.View
+          <Pressable
             key={key}
-            style={tailwind.style('flex flex-row items-center justify-between ml-1 mt-2')}>
-            <Animated.Text
+            disabled={isLocked}
+            accessibilityRole="checkbox"
+            accessibilityState={{ checked: value, disabled: isLocked }}
+            onPress={() => updatePreference(key, !value)}
+            style={tailwind.style('flex-row items-start gap-3 ml-1 pt-3')}>
+            <Animated.View
               style={tailwind.style(
-                'flex-1 text-base leading-[21px] tracking-[0.16px] font-inter-420-20 text-gray-950',
-                isLastEnabled && 'text-gray-700',
+                'mt-0.5 h-[18px] w-[18px] items-center justify-center rounded-[4px] border-[1.5px]',
+                value ? 'bg-blue-800 border-blue-800' : 'border-gray-500',
+                isLocked && 'bg-gray-500 border-gray-500',
               )}>
-              {i18n.t(label)}
-            </Animated.Text>
-            <Switch
-              trackColor={{ false: '#C9D7E3', true: '#1F93FF' }}
-              thumbColor="#FFFFFF"
-              style={styles.switch}
-              ios_backgroundColor="#C9D7E3"
-              disabled={isLastEnabled}
-              onValueChange={updated => updatePreference(key, updated)}
-              value={value}
-            />
-          </Animated.View>
+              {value && <Icon icon={<TickIcon stroke="#FFFFFF" />} size={14} />}
+            </Animated.View>
+            <Animated.View style={tailwind.style('flex-1')}>
+              <Animated.Text
+                style={tailwind.style(
+                  'text-base leading-[21px] tracking-[0.16px] font-inter-420-20',
+                  isLocked ? 'text-gray-700' : 'text-gray-950',
+                )}>
+                {i18n.t(label)}
+              </Animated.Text>
+              <Animated.Text
+                style={tailwind.style('text-sm leading-[18px] tracking-[0.16px] text-gray-700')}>
+                {i18n.t(info)}
+              </Animated.Text>
+            </Animated.View>
+          </Pressable>
         );
       })}
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  switch: {
-    transform: [{ scale: 0.6 }],
-  },
-});

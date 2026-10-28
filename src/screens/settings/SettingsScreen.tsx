@@ -318,7 +318,7 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
-      <Sheet ref={userAvailabilityStatusSheetRef} height={showWorkPreferences ? 280 : 190}>
+      <Sheet ref={userAvailabilityStatusSheetRef} height={showWorkPreferences ? 330 : 190}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
           changeAvailabilityStatus={changeAvailabilityStatus}

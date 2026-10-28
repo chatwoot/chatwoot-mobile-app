@@ -37,6 +37,15 @@ export interface SettingsState extends InstallationUrls {
   localeValue: string;
 }
 
+export interface VoipPushPayload {
+  subscription_type: 'apns_voip';
+  subscription_attributes: {
+    devicePlatform: string;
+    push_token: string;
+    device_id: string;
+  };
+}
+
 export interface PushPayload {
   subscription_type: string;
   subscription_attributes: {

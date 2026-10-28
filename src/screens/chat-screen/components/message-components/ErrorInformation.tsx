@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Animated } from 'react-native';
 import { tailwind } from '@/theme';
+import { expandTabs } from '@/utils/expandTabs';
 
 interface ErrorInformationProps {
   errorCode?: string;
@@ -21,7 +22,7 @@ export const ErrorInformation = ({ errorCode, errorMessage }: ErrorInformationPr
       style={tailwind.style(
         'text-md text-gray-950 font-inter-420-20 leading-[21px] tracking-[0.16px] mt-2',
       )}>
-      {errorMessage}
+      {expandTabs(errorMessage)}
     </Text>
   </Animated.View>
 );

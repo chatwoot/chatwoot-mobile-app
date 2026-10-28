@@ -93,7 +93,14 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
     if (!shouldShowStatusIndicator) {
       return false;
     }
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isASmsInbox || isAnInstagramChannel || isATiktokChannel) {
+    if (
+      isAWhatsappChannel ||
+      isATwilioChannel ||
+      isAFacebookChannel ||
+      isASmsInbox ||
+      isAnInstagramChannel ||
+      isATiktokChannel
+    ) {
       return sourceId && isDelivered;
     }
 
@@ -121,7 +128,13 @@ export const DeliveryStatus = (props: DeliveryStatusProps) => {
       return isRead;
     }
 
-    if (isAWhatsappChannel || isATwilioChannel || isAFacebookChannel || isAnInstagramChannel || isATiktokChannel) {
+    if (
+      isAWhatsappChannel ||
+      isATwilioChannel ||
+      isAFacebookChannel ||
+      isAnInstagramChannel ||
+      isATiktokChannel
+    ) {
       return sourceId && isRead;
     }
 

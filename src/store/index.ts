@@ -13,6 +13,7 @@ import {
 import { appReducer } from '@/store/reducers';
 import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
+import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
 
 // Disable this in testing environment
 const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
@@ -25,6 +26,7 @@ const persistConfig = {
   key: 'Root',
   version: CURRENT_VERSION,
   storage: AsyncStorage,
+  blacklist: ['calls'],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   migrate: async (state: any) => {
     // If the stored version is older or doesn't exist, return initial state
@@ -34,7 +36,7 @@ const persistConfig = {
         ...initialState,
       };
     }
-    return state;
+    return repairPersistedWebSocketUrl(state);
   },
 };
 

@@ -1,5 +1,5 @@
 import { getStore } from '@/store/storeAccessor';
-import { resolveAccountSwitch } from '@/utils/accountUtils';
+import { resolveAccountAccess, resolveAccountSwitch } from '@/utils/accountUtils';
 
 jest.mock('@/store/storeAccessor', () => ({
   getStore: jest.fn(),
@@ -20,22 +20,36 @@ const setActiveAccount = (accountId: number, accountIds: number[]) => {
   } as ReturnType<typeof getStore>);
 };
 
-describe('resolveAccountSwitch', () => {
+describe('resolveAccountAccess', () => {
   it('allows navigation without a switch for the active account', () => {
     setActiveAccount(1, [1, 2]);
 
-    expect(resolveAccountSwitch(1)).toEqual({ hasAccess: true, accountId: null });
+    expect(resolveAccountAccess(1)).toEqual({ hasAccess: true, accountId: null });
   });
 
   it('allows navigation and returns an accessible account to switch to', () => {
     setActiveAccount(1, [1, 2]);
 
-    expect(resolveAccountSwitch(2)).toEqual({ hasAccess: true, accountId: 2 });
+    expect(resolveAccountAccess(2)).toEqual({ hasAccess: true, accountId: 2 });
   });
 
   it('rejects navigation to an inaccessible account', () => {
     setActiveAccount(1, [1, 2]);
 
-    expect(resolveAccountSwitch(3)).toEqual({ hasAccess: false, accountId: null });
+    expect(resolveAccountAccess(3)).toEqual({ hasAccess: false, accountId: null });
+  });
+});
+
+describe('resolveAccountSwitch call-screen compatibility', () => {
+  it('returns only the target ID for an accessible different account', () => {
+    setActiveAccount(1, [1, 2]);
+    expect(resolveAccountSwitch(2)).toBe(2);
+  });
+
+  it('returns null for the current account, inaccessible accounts and absent targets', () => {
+    setActiveAccount(1, [1, 2]);
+    expect(resolveAccountSwitch(1)).toBeNull();
+    expect(resolveAccountSwitch(3)).toBeNull();
+    expect(resolveAccountSwitch()).toBeNull();
   });
 });

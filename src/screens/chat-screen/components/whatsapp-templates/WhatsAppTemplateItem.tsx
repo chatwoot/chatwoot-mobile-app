@@ -6,6 +6,7 @@ import { tailwind } from '@/theme';
 import { NormalizedTemplate } from '@/types';
 import { useHaptic } from '@/utils';
 import { getHeaderSubtitle, renderTemplateLabel } from '@/utils/messageTemplateUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type WhatsAppTemplateItemProps = {
   template: NormalizedTemplate;
@@ -33,7 +34,7 @@ const ActionChip = ({ label }: { label: string }) => (
       style={tailwind.style(
         'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-950',
       )}>
-      {label}
+      {expandTabs(label)}
     </Animated.Text>
   </View>
 );
@@ -78,7 +79,7 @@ const WhatsAppTemplateItem = ({ template, onPress, isLastItem }: WhatsAppTemplat
             style={tailwind.style(
               'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-800',
             )}>
-            {subtitle}
+            {expandTabs(subtitle)}
           </Animated.Text>
         )}
 
@@ -86,7 +87,7 @@ const WhatsAppTemplateItem = ({ template, onPress, isLastItem }: WhatsAppTemplat
           style={tailwind.style(
             'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-800',
           )}>
-          {bodyLabel}
+          {expandTabs(bodyLabel)}
         </Animated.Text>
 
         {template.actions && template.actions.length > 0 && (

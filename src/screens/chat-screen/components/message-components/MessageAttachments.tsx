@@ -115,7 +115,12 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
         <Animated.View
           key={`audio-${attachment.id ?? index}`}
           style={tailwind.style('flex flex-row items-center my-2', rowAlignment)}>
-          <AudioBubble audioSrc={attachment.dataUrl} variant={variant} />
+          <AudioBubble
+            audioSrc={attachment.dataUrl}
+            contentType={attachment.contentType}
+            extension={attachment.extension}
+            variant={variant}
+          />
         </Animated.View>
       ))}
 
@@ -126,7 +131,12 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
             'flex flex-row items-center relative max-w-[300px] my-2',
             rowAlignment,
           )}>
-          <FileBubblePreview fileSrc={attachment.dataUrl} isComposed variant={variant} />
+          <FileBubblePreview
+            fileSrc={attachment.dataUrl}
+            fileSize={attachment.fileSize}
+            isComposed
+            variant={variant}
+          />
         </Animated.View>
       ))}
 

@@ -18,7 +18,7 @@ interface SearchResultsListProps {
   hasMore: boolean;
   searchQuery: string;
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
-  listRef: React.RefObject<FlashListRef<SearchItem>>;
+  listRef: React.RefObject<FlashListRef<SearchItem> | null>;
   onEndReached: () => void;
 }
 

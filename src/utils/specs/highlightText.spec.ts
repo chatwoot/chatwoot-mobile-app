@@ -7,7 +7,9 @@ describe('highlightText', () => {
     });
 
     it('should return original text when search term is empty', () => {
-      expect(highlightText('hello world', '')).toEqual([{ text: 'hello world', isHighlight: false }]);
+      expect(highlightText('hello world', '')).toEqual([
+        { text: 'hello world', isHighlight: false },
+      ]);
     });
 
     it('should return original text when search term is whitespace', () => {

@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
 
 import { getMessaging, getToken } from '@react-native-firebase/messaging';
-import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 import {
   getSystemName,
   getManufacturer,
@@ -19,10 +18,12 @@ import type {
   NotificationSettingsPayload,
   InstallationUrls,
   PushPayload,
+  VoipPushPayload,
 } from './settingsTypes';
+import { getVoipToken, isSystemCallUiAvailable } from '@/services/voice/chatwootCalls';
 import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
-import { checkValidUrl, extractDomain, handleApiError } from './settingsUtils';
+import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { isUnactionablePushError } from '@/utils/sentryUtils';
 
@@ -45,13 +46,14 @@ export const settingsActions = {
     'settings/setInstallationUrl',
     async (url, { rejectWithValue }) => {
       try {
-        if (!checkValidUrl({ url })) {
+        const installationUrl = extractDomain({ url });
+        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
+        const WEB_SOCKET_URL = buildWebSocketUrl(installationUrl);
+
+        if (!checkValidUrl({ url: INSTALLATION_URL })) {
           throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
         }
 
-        const installationUrl = extractDomain({ url });
-        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
-        const WEB_SOCKET_URL = `wss://${url}/cable`;
         const isValid = await SettingsService.verifyInstallationUrl(INSTALLATION_URL);
 
         if (!isValid) {
@@ -100,12 +102,6 @@ export const settingsActions = {
         const brandName = await getBrand();
         const buildNumber = await getBuildNumber();
 
-        // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
-        const { status } = await checkNotifications();
-        if (status !== RESULTS.GRANTED) {
-          await requestNotifications(['alert', 'sound', 'badge']);
-        }
-
         const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
         // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
         // await messaging().registerDeviceForRemoteMessages();
@@ -134,6 +130,25 @@ export const settingsActions = {
           error instanceof Error ? error.message : 'Error saving device details',
         );
       }
+    },
+  ),
+
+  saveVoipToken: createAsyncThunk<{ voipToken: string | null }, void>(
+    'settings/saveVoipToken',
+    async () => {
+      if (!isSystemCallUiAvailable()) return { voipToken: null };
+      const voipToken = getVoipToken() ?? null;
+      if (!voipToken) return { voipToken: null };
+      const payload: VoipPushPayload = {
+        subscription_type: 'apns_voip',
+        subscription_attributes: {
+          devicePlatform: getSystemName(),
+          push_token: voipToken,
+          device_id: await getUniqueId(),
+        },
+      };
+      await SettingsService.saveVoipToken(payload);
+      return { voipToken };
     },
   ),
 

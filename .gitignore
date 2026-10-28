@@ -10,6 +10,8 @@ web-build/
 
 # Native
 *.orig.*
+*.aab
+*.ipa
 *.jks
 *.p8
 *.p12
@@ -41,3 +43,7 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.local
+
+!modules/chatwoot-calls/ios/
+!modules/chatwoot-calls/android/
+modules/chatwoot-calls/android/build/

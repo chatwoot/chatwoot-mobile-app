@@ -24,14 +24,16 @@ export const AnimatedCodeNumber: React.FC<AnimatedCodeNumberProps> = ({
   status,
 }) => {
   const correctColor = 'hsl(151, 40.2%, 54.1%)'; // green-600
+  const activeColor = 'hsl(206, 100%, 50%)'; // blue-800
   const defaultColor = 'hsl(0, 0%, 89.5%)'; // gray-300
 
   const rBoxStyle = useAnimatedStyle(() => {
+    const borderColor =
+      status.value === 'correct' ? correctColor : highlighted ? activeColor : defaultColor;
     return {
-      // Only show green border for correct status, default border for all other states
-      borderColor: withTiming(status.value === 'correct' ? correctColor : defaultColor),
+      borderColor: withTiming(borderColor),
     };
-  }, [correctColor, defaultColor]);
+  }, [correctColor, activeColor, defaultColor, highlighted]);
 
   return (
     <Animated.View style={[styles.container, rBoxStyle]}>

@@ -14,8 +14,34 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 import { clearAllParticipants } from '@/store/conversation-participant/conversationParticipantSlice';
 import { resetCopilot } from '@/store/copilot/copilotSlice';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
+import { keepOnlyLocalCall } from '@/store/call/callSlice';
+import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
+import {
+  selectActiveCall,
+  selectCallsState,
+  selectLocalCallSid,
+  selectPlacingCall,
+} from '@/store/call/callSelectors';
+import i18n from '@/i18n';
+import { showToast } from '@/utils/toastUtils';
+
+// Account switches interrupt the signaling socket.
+const accountWithCall = (): number | null => {
+  const state = getStore().getState();
+  const calls = selectCallsState(state);
+  const ownSid = calls.joiningCallSid ?? selectLocalCallSid(state);
+  const call = selectActiveCall(state) ?? calls.calls.find(entry => entry.callSid === ownSid);
+  const placing = selectPlacingCall(state);
+  if (!call && !placing && !calls.isJoining) return null;
+  return call?.accountId ?? placing?.accountId ?? selectCurrentUserAccountId(state) ?? null;
+};
 
 export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
+  const callAccountId = accountWithCall();
+  if (callAccountId != null && Number(callAccountId) !== Number(accountId)) {
+    showToast({ message: i18n.t('CONVERSATION.VOICE_WIDGET.END_CALL_TO_SWITCH_ACCOUNT') });
+    return false;
+  }
   dispatch(clearAllContacts());
   dispatch(clearAllConversations());
   dispatch(resetNotifications());
@@ -27,15 +53,21 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAllParticipants());
   dispatch(resetCopilot());
   dispatch(resetSentMessage());
+  dispatch((keep, getState) =>
+    keep(
+      keepOnlyLocalCall({ leaving: selectCurrentUserAccountId(getState()), entering: accountId }),
+    ),
+  );
   dispatch(setAccount(accountId));
   dispatch(authActions.setActiveAccount({ profile: { account_id: accountId } }));
+  return true;
 };
 
 type AccountSwitchResolution =
   | { hasAccess: false; accountId: null }
   | { hasAccess: true; accountId: number | null };
 
-export const resolveAccountSwitch = (accountId?: number | null): AccountSwitchResolution => {
+export const resolveAccountAccess = (accountId?: number | null): AccountSwitchResolution => {
   if (!accountId) {
     return { hasAccess: false, accountId: null };
   }
@@ -51,3 +83,7 @@ export const resolveAccountSwitch = (accountId?: number | null): AccountSwitchRe
   );
   return hasAccess ? { hasAccess: true, accountId } : { hasAccess: false, accountId: null };
 };
+
+// Call screens only need the account to switch to. Preserve their existing nullable-ID contract.
+export const resolveAccountSwitch = (accountId?: number | null): number | null =>
+  resolveAccountAccess(accountId).accountId;

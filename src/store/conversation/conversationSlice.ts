@@ -3,7 +3,7 @@ import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
 import { findPendingMessageIndex } from '@/utils/conversationUtils';
 
-import { MESSAGE_TYPES } from '@/constants';
+import { CONTENT_TYPES, MESSAGE_TYPES } from '@/constants';
 import { Message } from '@/types/Message';
 import { PendingMessage } from './conversationTypes';
 
@@ -60,7 +60,7 @@ const isOutdatedConversationUpdate = (
 const shouldKeepLocalStatusMarker = (
   existingConversation: Conversation | undefined,
   incomingConversation: Conversation,
-) => {
+): existingConversation is Conversation => {
   const localStatusUpdatedAt = existingConversation?.localStatusUpdatedAt;
   const existingUpdatedAt = existingConversation?.updatedAt;
   const incomingUpdatedAt = incomingConversation.updatedAt;
@@ -260,8 +260,18 @@ const conversationSlice = createSlice({
           conversation.messages.sort((a, b) => b.createdAt - a.createdAt);
           state.isAllNewerMessagesFetched = messages.length < 20;
         } else {
-          // First load or older pagination: prepend older messages.
-          conversation.messages.unshift(...messages);
+          // Fetched calls can carry newer statuses.
+          const heldIndex = new Map(conversation.messages.map((m, index) => [m.id, index]));
+          const unseen: Message[] = [];
+          messages.forEach(message => {
+            const index = heldIndex.get(message.id);
+            if (index === undefined) {
+              unseen.push(message);
+            } else if (message.contentType === CONTENT_TYPES.VOICE_CALL) {
+              conversation.messages[index] = message;
+            }
+          });
+          conversation.messages.unshift(...unseen);
           state.isAllMessagesFetched = messages.length < 20 || false;
           // A first load (no beforeId) lands on the latest messages.
           if (beforeId == null) {

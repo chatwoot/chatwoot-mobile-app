@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, type TextStyle, type StyleProp } from 'react-native';
 import { highlightText } from '@/utils/highlightText';
 import { tailwind } from '@/theme';
+import { expandTabs } from '@/utils/expandTabs';
 
 type HighlightedTextProps = {
   text: string;
@@ -11,12 +12,13 @@ type HighlightedTextProps = {
 };
 
 export const HighlightedText = ({
-  text,
+  text: rawText,
   searchQuery,
   style,
   numberOfLines,
 }: HighlightedTextProps) => {
-  if (!text) return null;
+  if (!rawText) return null;
+  const text = expandTabs(rawText);
 
   const hasQuery = searchQuery?.trim();
   if (!hasQuery) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
@@ -11,7 +11,7 @@ type AuthButtonProps = {
   handlePress?: () => void;
   disabled?: boolean;
   variant?: 'outline' | 'filled';
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const AuthButton = ({

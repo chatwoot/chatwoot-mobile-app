@@ -18,7 +18,7 @@ interface SearchListItemsProps {
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
   getItemId: (item: SearchItem) => string | number;
   useFlashList?: boolean;
-  listRef?: React.RefObject<FlashListRef<SearchItem>>;
+  listRef?: React.RefObject<FlashListRef<SearchItem> | null>;
   onEndReached?: () => void;
   isLoadingMore?: boolean;
 }

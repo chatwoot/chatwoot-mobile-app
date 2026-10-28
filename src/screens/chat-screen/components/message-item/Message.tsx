@@ -9,6 +9,7 @@ import { conversationActions } from '@/store/conversation/conversationActions';
 import { unixTimestampToReadableTime, useHaptic } from '@/utils';
 import {
   ComposedBubble,
+  CallBubble,
   DeliveryStatus,
   TextBubble,
   ActivityBubble,
@@ -34,7 +35,7 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash, ReplyIcon, TranslateIcon} from '@/svg-icons';
+import { CopyIcon, Trash, ReplyIcon, TranslateIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
@@ -43,6 +44,7 @@ import { Dimensions, View, Text } from 'react-native';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 import { useMessageEntrance } from './useMessageEntrance';
+import { BubbleTail } from './BubbleTail';
 
 // import { ImageMetadata } from '@/types';
 
@@ -59,6 +61,15 @@ const senderAvatarSource = (sender: Message['sender']) => {
   const thumbnail = 'thumbnail' in sender ? sender.thumbnail : null;
   return avatarUrl || thumbnail || null;
 };
+
+const firstName = (name?: string | null) => (name || '').trim().split(/\s+/)[0];
+
+// Upper-cases the first character of each word; caseless scripts and emoji are unchanged.
+const capitalizeWords = (text: string) =>
+  text.replace(
+    /(^|\s)(\S)/gu,
+    (_, space: string, char: string) => space + char.toLocaleUpperCase(),
+  );
 
 type MessageComponentProps = {
   item: Message;
@@ -144,11 +155,15 @@ const MessageWrapper = ({
   };
 
   const windowWidth = Dimensions.get('window').width;
-  // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
-  const EMAIL_WIDTH = windowWidth - 52;
+  // 56 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (8)
+  const EMAIL_WIDTH = windowWidth - 56;
 
   // Only the search-target row animates, so only it needs an Animated.View.
-  const Bubble = isTargetMessage ? Animated.View : View;
+  const BubbleContainer = isTargetMessage ? Animated.View : View;
+
+  const hasAvatar = !shouldGroupWithPrevious && shouldShowAvatar;
+  const shouldShowSenderName = hasAvatar && !!avatarInfo.name;
+  const shouldShowTail = hasAvatar && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
 
   return (
     <Animated.View
@@ -156,20 +171,20 @@ const MessageWrapper = ({
       style={tailwind.style(
         'my-[1px]',
         flexOrientationClass(),
-        shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
+        shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-8' : '',
         !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
         item.private ? 'my-1' : '',
       )}>
       <View style={tailwind.style('flex flex-row')}>
-        {!shouldGroupWithPrevious && shouldShowAvatar ? (
-          <View style={tailwind.style('flex items-end justify-end mr-1')}>
+        {hasAvatar ? (
+          <View style={tailwind.style('flex items-end justify-end mr-2')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
           </View>
         ) : null}
         <MessageMenu menuOptions={getMenuOptions(item)}>
-          <Bubble
-            style={[
-              tailwind.style(
+          <BubbleContainer style={[tailwind.style('relative'), isTargetMessage && zoomStyle]}>
+            <View
+              style={tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
                 variantBaseMap[variant],
@@ -189,42 +204,59 @@ const MessageWrapper = ({
                     ? 'rounded-bl-none'
                     : 'rounded-br-none'
                   : '',
-              ),
-              isTargetMessage && zoomStyle,
-            ]}>
-            {children}
-            {/* Highlight overlay for target message */}
-            {isTargetMessage && (
-              <Animated.View
-                style={[tailwind.style('absolute inset-0 bg-white rounded-2xl'), highlightStyle]}
-                pointerEvents="none"
-              />
-            )}
-            {!shouldGroupWithPrevious && (
-              <View
-                style={tailwind.style(
-                  'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-                )}>
-                <Text
-                  style={tailwind.style(
-                    'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                    variantTextMap[variant],
-                  )}>
-                  {unixTimestampToReadableTime(item.createdAt)}
-                </Text>
-                <DeliveryStatus
-                  isPrivate={item.private}
-                  status={item.status}
-                  messageType={item.messageType}
-                  channel={channel}
-                  sourceId={item.sourceId}
-                  errorMessage={item.contentAttributes?.externalError || ''}
-                  deliveredColor="text-gray-700"
-                  sentColor="text-gray-700"
+                shouldShowTail ? 'rounded-bl-none' : '',
+              )}>
+              {children}
+              {/* Highlight overlay for target message */}
+              {isTargetMessage && (
+                <Animated.View
+                  style={[tailwind.style('absolute inset-0 bg-white rounded-2xl'), highlightStyle]}
+                  pointerEvents="none"
                 />
-              </View>
-            )}
-          </Bubble>
+              )}
+              {!shouldGroupWithPrevious && (
+                <View
+                  style={tailwind.style(
+                    'h-[27px] pt-[11px] pb-0.5 flex flex-row items-baseline',
+                    shouldShowSenderName ? 'justify-between' : 'justify-end',
+                  )}>
+                  {shouldShowSenderName ? (
+                    <Text
+                      numberOfLines={1}
+                      style={tailwind.style(
+                        'flex-shrink text-xs font-inter-420-20 tracking-[0.32px] pr-10 opacity-85',
+                        variantTextMap[variant],
+                      )}>
+                      {capitalizeWords(firstName(avatarInfo.name))}
+                    </Text>
+                  ) : null}
+                  <View style={tailwind.style('flex flex-row items-center')}>
+                    <Text
+                      style={tailwind.style(
+                        'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                        variantTextMap[variant],
+                        orientation === ORIENTATION.LEFT ? 'opacity-85' : '',
+                      )}>
+                      {unixTimestampToReadableTime(item.createdAt)}
+                    </Text>
+                    <DeliveryStatus
+                      isPrivate={item.private}
+                      status={item.status}
+                      messageType={item.messageType}
+                      channel={channel}
+                      sourceId={item.sourceId}
+                      errorMessage={item.contentAttributes?.externalError || ''}
+                      deliveredColor="text-gray-700"
+                      sentColor="text-gray-700"
+                    />
+                  </View>
+                </View>
+              )}
+            </View>
+            {shouldShowTail ? (
+              <BubbleTail color={tailwind.color(variantBaseMap[variant]) as string} />
+            ) : null}
+          </BubbleContainer>
         </MessageMenu>
       </View>
       {item.status === MESSAGE_STATUS.FAILED ? (
@@ -304,7 +336,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
-  }
+  };
 
   // Mirrors the condition the reply box uses to decide between reply and note mode, so the retry
   // button is offered exactly where a public reply could still be composed.
@@ -333,7 +365,13 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const { messageType, content, attachments, private: isPrivate, status: messageStatus } = message;
+    const {
+      messageType,
+      content,
+      attachments,
+      private: isPrivate,
+      status: messageStatus,
+    } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
     const isDeleted = message.contentAttributes?.deleted;
@@ -480,6 +518,8 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     if (isUnsupported) {
       messageContent = <UnsupportedBubble />;
+    } else if (contentType === CONTENT_TYPES.VOICE_CALL) {
+      messageContent = <CallBubble item={item} variant={variant()} />;
     } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
       messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     } else if (isEmailInbox && !item.private) {

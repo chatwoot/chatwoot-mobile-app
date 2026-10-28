@@ -1,0 +1,28 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'com.chatwoot.calls'
+version = '0.1.0'
+
+android {
+  namespace "com.chatwoot.calls"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+    consumerProguardFiles 'proguard-rules.pro'
+  }
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation 'com.twilio:voice-android:6.10.4'
+  implementation 'androidx.core:core-ktx:1.13.1'
+  implementation 'androidx.appcompat:appcompat:1.7.0'
+  implementation 'androidx.core:core-telecom:1.0.0'
+  implementation 'com.google.firebase:firebase-messaging:24.0.0'
+  implementation project(':react-native-firebase_messaging')
+}

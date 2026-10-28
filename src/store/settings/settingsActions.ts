@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
 
 import { getMessaging, getToken } from '@react-native-firebase/messaging';
-import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 import {
   getSystemName,
   getManufacturer,
@@ -19,7 +18,9 @@ import type {
   NotificationSettingsPayload,
   InstallationUrls,
   PushPayload,
+  VoipPushPayload,
 } from './settingsTypes';
+import { getVoipToken, isSystemCallUiAvailable } from '@/services/voice/chatwootCalls';
 import I18n from '@/i18n';
 import { URL_TYPE } from '@/constants/url';
 import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
@@ -87,56 +88,69 @@ export const settingsActions = {
     ({ installationUrl }) => SettingsService.getChatwootVersion(installationUrl),
   ),
 
-  saveDeviceDetails: createAsyncThunk<
-    { fcmToken: string },
-    { requestPermission?: boolean } | undefined
-  >('settings/saveDeviceDetails', async (options, { rejectWithValue }) => {
-    try {
-      const deviceId = await getUniqueId();
-      const devicePlatform = getSystemName();
-      const manufacturer = await getManufacturer();
-      const model = await getModel();
-      const apiLevel = await getApiLevel();
-      const deviceName = `${manufacturer} ${model}`;
+  saveDeviceDetails: createAsyncThunk<{ fcmToken: string }, void>(
+    'settings/saveDeviceDetails',
+    async (_, { rejectWithValue }) => {
+      try {
+        const deviceId = await getUniqueId();
+        const devicePlatform = getSystemName();
+        const manufacturer = await getManufacturer();
+        const model = await getModel();
+        const apiLevel = await getApiLevel();
+        const deviceName = `${manufacturer} ${model}`;
 
-      const brandName = await getBrand();
-      const buildNumber = await getBuildNumber();
+        const brandName = await getBrand();
+        const buildNumber = await getBuildNumber();
 
-      // Covers the iOS prompt and Android 13+ POST_NOTIFICATIONS in one call.
-      const { status } = await checkNotifications();
-      if (status !== RESULTS.GRANTED && options?.requestPermission !== false) {
-        await requestNotifications(['alert', 'sound', 'badge']);
+        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
+        // await messaging().registerDeviceForRemoteMessages();
+        await sleep(1000);
+        const fcmToken = await getToken(getMessaging());
+
+        const pushData: PushPayload = {
+          subscription_type: 'fcm',
+          subscription_attributes: {
+            deviceName,
+            devicePlatform,
+            apiLevel: apiLevel.toString(),
+            brandName,
+            buildNumber,
+            push_token: fcmToken,
+            device_id: deviceId,
+          },
+        };
+        await SettingsService.saveDeviceDetails(pushData);
+        return { fcmToken };
+      } catch (error) {
+        if (!isUnactionablePushError(error)) {
+          Sentry.captureException(error);
+        }
+        return rejectWithValue(
+          error instanceof Error ? error.message : 'Error saving device details',
+        );
       }
+    },
+  ),
 
-      const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-      // https://github.com/invertase/react-native-firebase/issues/6893#issuecomment-1427998691
-      // await messaging().registerDeviceForRemoteMessages();
-      await sleep(1000);
-      const fcmToken = await getToken(getMessaging());
-
-      const pushData: PushPayload = {
-        subscription_type: 'fcm',
+  saveVoipToken: createAsyncThunk<{ voipToken: string | null }, void>(
+    'settings/saveVoipToken',
+    async () => {
+      if (!isSystemCallUiAvailable()) return { voipToken: null };
+      const voipToken = getVoipToken() ?? null;
+      if (!voipToken) return { voipToken: null };
+      const payload: VoipPushPayload = {
+        subscription_type: 'apns_voip',
         subscription_attributes: {
-          deviceName,
-          devicePlatform,
-          apiLevel: apiLevel.toString(),
-          brandName,
-          buildNumber,
-          push_token: fcmToken,
-          device_id: deviceId,
+          devicePlatform: getSystemName(),
+          push_token: voipToken,
+          device_id: await getUniqueId(),
         },
       };
-      await SettingsService.saveDeviceDetails(pushData);
-      return { fcmToken };
-    } catch (error) {
-      if (!isUnactionablePushError(error)) {
-        Sentry.captureException(error);
-      }
-      return rejectWithValue(
-        error instanceof Error ? error.message : 'Error saving device details',
-      );
-    }
-  }),
+      await SettingsService.saveVoipToken(payload);
+      return { voipToken };
+    },
+  ),
 
   removeDevice: createSettingsThunk<void, { pushToken: string }>(
     'settings/removeDevice',

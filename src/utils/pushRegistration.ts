@@ -4,14 +4,20 @@ import { getMessaging, onTokenRefresh } from '@react-native-firebase/messaging';
 // Re-register after token rotation or a failed startup request. Serialize requests so an
 // older token cannot overwrite a newer registration, and stop queued work on logout.
 export function subscribePushRegistration(
-  register: (requestPermission: boolean) => Promise<unknown>,
+  register: () => Promise<unknown>,
+  prepare: () => Promise<void>,
 ) {
   let disposed = false;
-  let queue = Promise.resolve();
-  const refresh = (requestPermission = false) => {
+  // Keep the existing notification prompt, inbox load and call readiness ahead of startup.
+  let queue = Promise.resolve()
+    .then(async () => {
+      if (!disposed) await prepare();
+    })
+    .catch(() => {}); // A failed permission/readiness check must not prevent registration.
+  const refresh = () => {
     queue = queue
       .then(async () => {
-        if (!disposed) await register(requestPermission);
+        if (!disposed) await register();
       })
       .catch(() => {}); // The registration thunk reports errors and the next event retries.
   };
@@ -21,7 +27,7 @@ export function subscribePushRegistration(
     if (nextState === 'active' && previousState !== 'active') refresh();
     previousState = nextState;
   });
-  refresh(true);
+  refresh();
   return () => {
     disposed = true;
     unsubscribeToken();

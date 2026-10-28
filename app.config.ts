@@ -111,6 +111,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         'expo-build-properties',
         {
+          // iOS 27 requires the scene lifecycle when building with Xcode 27.
+          ios: { enableSceneSupport: true },
           // compileSdk/targetSdk 36 = Expo SDK 54 / RN 0.81 default (Android 16).
           // notifee (issue #808) needs compileSdk >= 35, satisfied by 36.
           android: {

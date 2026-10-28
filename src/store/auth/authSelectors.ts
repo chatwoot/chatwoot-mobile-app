@@ -49,6 +49,13 @@ export const selectCurrentUserReceivesCalls = createSelector(selectAuth, auth =>
   return currentAccount?.availability === 'online' && currentAccount.accepts_calls !== false;
 });
 
+// Servers without work preferences send neither field.
+export const selectSupportsWorkPreferences = createSelector(selectAuth, auth => {
+  const { account_id, accounts = [] } = auth.user ?? {};
+  const currentAccount = accounts.find(account => account.id === account_id);
+  return currentAccount?.accepts_conversations !== undefined;
+});
+
 // Missing preferences mean both are on.
 export const selectCurrentUserWorkPreferences = createSelector(selectAuth, auth => {
   const { account_id, accounts = [] } = auth.user ?? {};

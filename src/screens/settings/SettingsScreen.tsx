@@ -42,6 +42,7 @@ import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
 import {
   selectCurrentUserAvailability,
+  selectSupportsWorkPreferences,
   selectUser,
   selectAccounts,
 } from '@/store/auth/authSelectors';
@@ -122,6 +123,8 @@ const SettingsScreen = () => {
 
   const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
   const hasVoiceInbox = useAppSelector(state => selectAllInboxes(state).some(isVoiceCallEnabled));
+  const supportsWorkPreferences = useAppSelector(selectSupportsWorkPreferences);
+  const showWorkPreferences = hasVoiceInbox && supportsWorkPreferences;
 
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
@@ -315,13 +318,13 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
-      <Sheet ref={userAvailabilityStatusSheetRef} height={hasVoiceInbox ? 280 : 190}>
+      <Sheet ref={userAvailabilityStatusSheetRef} height={showWorkPreferences ? 280 : 190}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
           changeAvailabilityStatus={changeAvailabilityStatus}
           availabilityStatus={availabilityStatus}
         />
-        {hasVoiceInbox && <WorkPreferences isOnline={availabilityStatus === 'online'} />}
+        {showWorkPreferences && <WorkPreferences isOnline={availabilityStatus === 'online'} />}
       </Sheet>
       <Sheet ref={languagesModalSheetRef} detents={[0.7]} scrollable>
         <ScrollView showsVerticalScrollIndicator={false}>

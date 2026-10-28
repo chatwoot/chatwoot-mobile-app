@@ -30,7 +30,7 @@ export const CopilotMenuItem = ({ icon, label, onPress }: CopilotMenuItemProps) 
           </Animated.View>
           <Text
             style={tailwind.style(
-              'text-base font-inter-normal-20 leading-[18px] tracking-[0.24px] text-gray-950',
+              'text-base font-inter-normal-20 leading-[18px] tracking-[0.24px] text-gray-950 dark:text-grayDark-950',
             )}>
             {label}
           </Text>

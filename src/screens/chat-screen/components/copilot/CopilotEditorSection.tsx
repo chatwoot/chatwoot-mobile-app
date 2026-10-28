@@ -4,6 +4,7 @@ import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { Icon } from '@/components-next/common';
 import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
+import { useTheme } from '@/context/ThemeContext';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { expandTabs } from '@/utils/expandTabs';
@@ -16,26 +17,39 @@ type CopilotEditorSectionProps = {
   onDiscard: () => void;
 };
 
-const markdownStyles = StyleSheet.create({
-  body: {
-    fontSize: 14,
-    fontFamily: 'Inter-400-20',
-    lineHeight: 21,
-    letterSpacing: -0.1,
-    color: tailwind.color('text-slate-950') as string,
-  },
-  paragraph: {
-    marginTop: 0,
-    marginBottom: 0,
-  },
-  strong: {
-    fontFamily: 'Inter-600-20',
-    fontWeight: '600',
-  },
-  em: {
-    fontStyle: 'italic',
-  },
-});
+const buildMarkdownStyles = () =>
+  StyleSheet.create({
+    body: {
+      fontSize: 14,
+      fontFamily: 'Inter-400-20',
+      lineHeight: 21,
+      letterSpacing: -0.1,
+      color: tailwind.color('text-slate-950 dark:text-slateDark-950') as string,
+    },
+    paragraph: {
+      marginTop: 0,
+      marginBottom: 0,
+    },
+    strong: {
+      fontFamily: 'Inter-600-20',
+      fontWeight: '600',
+    },
+    em: {
+      fontStyle: 'italic',
+    },
+  });
+
+// Built once per colour scheme: Markdown compares its style prop by identity.
+const markdownStylesByScheme = new Map<string, ReturnType<typeof buildMarkdownStyles>>();
+
+const getMarkdownStyles = (colorScheme: string) => {
+  let styles = markdownStylesByScheme.get(colorScheme);
+  if (!styles) {
+    styles = buildMarkdownStyles();
+    markdownStylesByScheme.set(colorScheme, styles);
+  }
+  return styles;
+};
 
 const markdownIt = MarkdownIt({ typographer: true });
 
@@ -47,6 +61,7 @@ export const CopilotEditorSection = ({
   onDiscard,
 }: CopilotEditorSectionProps) => {
   const hapticSelection = useHaptic();
+  const { colorScheme } = useTheme();
   const displayText = isGenerating ? originalContent : generatedContent;
   const showActions = !isGenerating && generatedContent.length > 0;
 
@@ -79,9 +94,11 @@ export const CopilotEditorSection = ({
         <Animated.View style={tailwind.style('w-10')} />
       )}
       <ScrollView
-        style={tailwind.style('flex-1 max-h-[120px] border border-blackA-A3 rounded-2xl')}
+        style={tailwind.style(
+          'flex-1 max-h-[120px] border border-blackA-A3 dark:border-whiteA-A3 rounded-2xl',
+        )}
         contentContainerStyle={tailwind.style('px-3 py-2')}>
-        <Markdown style={markdownStyles} markdownit={markdownIt}>
+        <Markdown style={getMarkdownStyles(colorScheme)} markdownit={markdownIt}>
           {expandTabs(displayText)}
         </Markdown>
       </ScrollView>

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Tabs, type TabItem } from '@/components-next/common/tabs';
 
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import { useSearchScreen } from './hooks/useSearchScreen';
 import { SearchHeader } from './components/header/SearchHeader';
 import { SearchContent } from './components/views/SearchContent';
@@ -14,6 +15,7 @@ import { createRenderItem } from './utils/renderItem';
 import i18n from 'i18n';
 
 const SearchScreen = () => {
+  useTheme();
   const {
     searchText,
     recentSearches,
@@ -69,7 +71,7 @@ const SearchScreen = () => {
   );
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white dark:bg-grayDark-50')}>
       <SearchHeader
         searchText={searchText}
         isLoading={isLoading}

@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     version: '4.10.1',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     scheme: 'chatwootapp',
     ios: {
       supportsTablet: true,
@@ -85,6 +85,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           image: './assets/splash.png',
           resizeMode: 'contain',
           backgroundColor: '#ffffff',
+          dark: { backgroundColor: '#1b1b1b' },
           enableFullScreenImage_legacy: true,
         },
       ],
@@ -110,6 +111,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       [
         'expo-build-properties',
         {
+          // iOS 27 requires the scene lifecycle when building with Xcode 27.
+          ios: { enableSceneSupport: true },
           // compileSdk/targetSdk 36 = Expo SDK 54 / RN 0.81 default (Android 16).
           // notifee (issue #808) needs compileSdk >= 35, satisfied by 36.
           android: {

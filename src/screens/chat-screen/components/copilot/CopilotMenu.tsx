@@ -74,7 +74,9 @@ export const CopilotMenu = ({
             },
           };
         }}
-        style={tailwind.style('bg-white border-t border-t-blackA-A3 mx-1 pt-2 items-start')}>
+        style={tailwind.style(
+          'bg-white dark:bg-grayDark-50 border-t border-t-blackA-A3 dark:border-t-whiteA-A3 mx-1 pt-2 items-start',
+        )}>
         {menuItems.map(item => (
           <CopilotMenuItem
             key={item.label}

@@ -70,7 +70,8 @@ export const ChatHeader = ({
   };
 
   return (
-    <Animated.View style={tailwind.style('border-b-[1px] border-b-slate-100')}>
+    <Animated.View
+      style={tailwind.style('border-b-[1px] border-b-slate-100 dark:border-b-slateDark-100')}>
       <Animated.View style={tailwind.style('flex flex-row items-center gap-3 px-4 pt-2 pb-[13px]')}>
         <Pressable
           hitSlop={8}
@@ -85,7 +86,7 @@ export const ChatHeader = ({
           <Animated.Text
             numberOfLines={1}
             style={tailwind.style(
-              'flex-shrink text-[17px] font-inter-medium-24 tracking-[0.34px] text-gray-950',
+              'flex-shrink text-[17px] font-inter-medium-24 tracking-[0.34px] text-gray-950 dark:text-grayDark-950',
             )}>
             {name}
           </Animated.Text>
@@ -120,13 +121,13 @@ export const ChatHeader = ({
           {inboxName ? (
             <Animated.View
               style={tailwind.style(
-                'flex-shrink flex-row items-center gap-1.5 h-8 pl-2 pr-3 rounded-lg bg-white border border-gray-300',
+                'flex-shrink flex-row items-center gap-1.5 h-8 pl-2 pr-3 rounded-lg bg-white dark:bg-grayDark-50 border border-gray-300 dark:border-grayDark-300',
               )}>
               {channelIcon ? <Icon icon={channelIcon} size={16} /> : null}
               <Animated.Text
                 numberOfLines={1}
                 style={tailwind.style(
-                  'flex-shrink max-w-[160px] text-[15px] font-inter-normal-20 tracking-[0.3px] text-gray-950',
+                  'flex-shrink max-w-[160px] text-[15px] font-inter-normal-20 tracking-[0.3px] text-gray-950 dark:text-grayDark-950',
                 )}>
                 {inboxName}
               </Animated.Text>
@@ -141,14 +142,16 @@ export const ChatHeader = ({
                 hitSlop={4}
                 onPress={toggleSlaEventsSheet}
                 style={tailwind.style(
-                  'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100',
+                  'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100 dark:bg-grayDark-100',
                 )}>
                 <Icon icon={<SLAIcon color={isSlaMissed ? '#E13D45' : '#858585'} />} size={16} />
                 {slaType ? (
                   <Animated.Text
                     style={tailwind.style(
                       'text-[15px] font-inter-medium-24 tracking-[0.225px]',
-                      isSlaMissed ? 'text-ruby-800' : 'text-gray-950',
+                      isSlaMissed
+                        ? 'text-ruby-800 dark:text-rubyDark-800'
+                        : 'text-gray-950 dark:text-grayDark-950',
                     )}>
                     {slaType}
                   </Animated.Text>
@@ -159,12 +162,12 @@ export const ChatHeader = ({
               hitSlop={4}
               onPress={onToggleChatStatus}
               style={tailwind.style(
-                'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100',
+                'flex-row items-center gap-1.5 h-8 pl-[9px] pr-3 rounded-lg bg-gray-100 dark:bg-grayDark-100',
               )}>
               <Icon icon={isOpen ? <StatusResolvedIcon /> : <StatusOpenIcon />} size={16} />
               <Animated.Text
                 style={tailwind.style(
-                  'text-[15px] font-inter-medium-24 tracking-[0.225px] text-gray-950',
+                  'text-[15px] font-inter-medium-24 tracking-[0.225px] text-gray-950 dark:text-grayDark-950',
                 )}>
                 {isOpen
                   ? i18n.t('CONVERSATION.RESOLVE')

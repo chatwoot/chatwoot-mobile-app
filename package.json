@@ -64,10 +64,10 @@
     "cross-env": "^7.0.3",
     "date-fns": "2.21.1",
     "diff": "8.0.3",
-    "expo": "~57.0.7",
+    "expo": "57.0.23",
     "expo-application": "~57.0.2",
     "expo-auth-session": "~57.0.4",
-    "expo-build-properties": "~57.0.6",
+    "expo-build-properties": "57.0.22",
     "expo-constants": "^57.0.6",
     "expo-crypto": "~57.0.1",
     "expo-device": "~57.0.1",
@@ -191,8 +191,8 @@
       "@react-native-menu/menu@1.2.3": "patches/@react-native-menu__menu@1.2.3.patch",
       "@react-native-clipboard/clipboard@1.16.2": "patches/@react-native-clipboard__clipboard@1.16.2.patch",
       "react-native-modal": "patches/react-native-modal.patch",
-      "expo-modules-jsi@57.0.3": "patches/expo-modules-jsi@57.0.3.patch",
-      "react-native-reanimated@4.5.5": "patches/react-native-reanimated@4.5.5.patch"
+      "react-native-reanimated@4.5.5": "patches/react-native-reanimated@4.5.5.patch",
+      "react-native-ios-context-menu@3.2.1": "patches/react-native-ios-context-menu@3.2.1.patch"
     },
     "overrides": {
       "@expo/dom-webview": "57.0.1",

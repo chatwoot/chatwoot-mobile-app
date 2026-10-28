@@ -81,7 +81,7 @@ export function SearchContent({
         <View style={tailwind.style('flex-1 items-center justify-center px-4')}>
           <Text
             style={tailwind.style(
-              'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-700 text-center',
+              'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-700 dark:text-grayDark-700 text-center',
             )}>
             {i18n.t('SEARCH.HINT')}
           </Text>

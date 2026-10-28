@@ -2,8 +2,11 @@ import React from 'react';
 import { Path, Svg } from 'react-native-svg';
 
 import { IconProps } from '../../types';
+import { tailwind } from '@/theme';
 
-export const CaretBottomSmall = ({ fill = '#303030' }: IconProps): JSX.Element => {
+export const CaretBottomSmall = ({
+  fill = tailwind.color('text-[#303030] dark:text-grayDark-950'),
+}: IconProps): JSX.Element => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 8 5" fill="none">
       <Path

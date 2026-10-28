@@ -22,6 +22,7 @@ import {
   ConversationListStateProvider,
   useConversationListStateContext,
   useRefsContext,
+  useTheme,
 } from '@/context';
 
 import { tailwind } from '@/theme';
@@ -63,6 +64,7 @@ type FlashListRenderItemType = {
 
 const ConversationList = () => {
   const dispatch = useAppDispatch();
+  const { colorScheme } = useTheme();
   const tabBarHeight = useTabBarHeight();
   const [appState, setAppState] = useState(AppState.currentState);
 
@@ -225,7 +227,10 @@ const ConversationList = () => {
         `pb-[${tabBarHeight}px]`,
       )}>
       <EmptyStateIcon />
-      <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
+      <Animated.Text
+        style={tailwind.style(
+          'pt-6 text-md  tracking-[0.32px] text-gray-800 dark:text-grayDark-800',
+        )}>
         {i18n.t('CONVERSATION.EMPTY')}
       </Animated.Text>
     </Animated.ScrollView>
@@ -234,6 +239,7 @@ const ConversationList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       showsVerticalScrollIndicator={false}
       data={allConversations}
+      extraData={colorScheme}
       onScrollBeginDrag={handleScrollBeginDrag}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
@@ -249,6 +255,7 @@ const ConversationList = () => {
 const ConversationScreen = () => {
   const currentBottomSheet = useAppSelector(selectBottomSheetState);
   const dispatch = useAppDispatch();
+  const { isDark } = useTheme();
 
   const { filtersModalSheetRef } = useRefsContext();
 
@@ -277,11 +284,11 @@ const ConversationScreen = () => {
   })();
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white dark:bg-grayDark-50')}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={tailwind.color('bg-white dark:bg-grayDark-50')}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
       />
       <ConversationListStateProvider>
         <ConversationHeader />

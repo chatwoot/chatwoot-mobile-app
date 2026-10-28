@@ -1,6 +1,7 @@
 import React from 'react';
 import Animated from 'react-native-reanimated';
 
+import { useTheme } from '@/context/ThemeContext';
 import { tailwind } from '@/theme';
 import { unixTimestampToReadableTime } from '@/utils/dateTimeUtils';
 import { expandTabs } from '@/utils/expandTabs';
@@ -12,11 +13,12 @@ type ActivityBubbleProps = {
 
 export const ActivityBubble = (props: ActivityBubbleProps) => {
   const { text, timeStamp } = props;
+  useTheme();
   return (
     <Animated.View style={tailwind.style('flex flex-row flex-wrap justify-center py-1 px-10')}>
       <Animated.Text
         style={tailwind.style(
-          'text-cxs font-inter-420-20 tracking-[0.32px] leading-[18px] text-blackA-A11 text-center',
+          'text-cxs font-inter-420-20 tracking-[0.32px] leading-[18px] text-blackA-A11 dark:text-whiteA-A11 text-center',
         )}>
         {expandTabs(text || '')} {unixTimestampToReadableTime(timeStamp)}
       </Animated.Text>

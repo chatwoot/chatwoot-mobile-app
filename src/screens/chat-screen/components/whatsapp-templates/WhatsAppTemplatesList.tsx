@@ -29,7 +29,7 @@ const EmptyState = ({ label }: { label: string }) => (
   <Animated.View style={tailwind.style('flex-1 items-center justify-center px-6 pt-6')}>
     <Animated.Text
       style={tailwind.style(
-        'text-md font-inter-420-20 tracking-[0.16px] text-gray-700 text-center',
+        'text-md font-inter-420-20 tracking-[0.16px] text-gray-700 dark:text-grayDark-700 text-center',
       )}>
       {label}
     </Animated.Text>

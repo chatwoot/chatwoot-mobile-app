@@ -14,12 +14,14 @@ type WhatsAppTemplateItemProps = {
   isLastItem: boolean;
 };
 
-const MetaSeparator = () => <View style={tailwind.style('w-px h-[10px] bg-gray-300')} />;
+const MetaSeparator = () => (
+  <View style={tailwind.style('w-px h-[10px] bg-gray-300 dark:bg-grayDark-300')} />
+);
 
 const MetaChip = ({ label }: { label: string }) => (
   <Animated.Text
     style={tailwind.style(
-      'text-[14px] font-inter-420-20 leading-[20px] tracking-[0.07px] text-gray-700',
+      'text-[14px] font-inter-420-20 leading-[20px] tracking-[0.07px] text-gray-700 dark:text-grayDark-700',
     )}>
     {label}
   </Animated.Text>
@@ -28,11 +30,11 @@ const MetaChip = ({ label }: { label: string }) => (
 const ActionChip = ({ label }: { label: string }) => (
   <View
     style={tailwind.style(
-      'h-7 px-3 rounded-lg bg-white border border-blackA-A3 items-center justify-center',
+      'h-7 px-3 rounded-lg bg-white dark:bg-grayDark-50 border border-blackA-A3 dark:border-whiteA-A3 items-center justify-center',
     )}>
     <Animated.Text
       style={tailwind.style(
-        'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-950',
+        'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-950 dark:text-grayDark-950',
       )}>
       {expandTabs(label)}
     </Animated.Text>
@@ -55,13 +57,13 @@ const WhatsAppTemplateItem = ({ template, onPress, isLastItem }: WhatsAppTemplat
       <View
         style={tailwind.style(
           'py-4 pr-2 gap-[10px]',
-          !isLastItem ? 'border-b-[1px] border-b-blackA-A3' : '',
+          !isLastItem ? 'border-b-[1px] border-b-blackA-A3 dark:border-b-whiteA-A3' : '',
         )}>
         <View style={tailwind.style('flex-row items-center gap-2')}>
           <Animated.Text
             numberOfLines={1}
             style={tailwind.style(
-              'flex-1 text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
+              'flex-1 text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950 dark:text-grayDark-950',
             )}>
             {template.name}
           </Animated.Text>
@@ -77,7 +79,7 @@ const WhatsAppTemplateItem = ({ template, onPress, isLastItem }: WhatsAppTemplat
         {subtitle && (
           <Animated.Text
             style={tailwind.style(
-              'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-800',
+              'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-800 dark:text-grayDark-800',
             )}>
             {expandTabs(subtitle)}
           </Animated.Text>
@@ -85,7 +87,7 @@ const WhatsAppTemplateItem = ({ template, onPress, isLastItem }: WhatsAppTemplat
 
         <Animated.Text
           style={tailwind.style(
-            'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-800',
+            'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-800 dark:text-grayDark-800',
           )}>
           {expandTabs(bodyLabel)}
         </Animated.Text>

@@ -43,11 +43,10 @@ type SheetProps = {
   onPresent?: () => void;
 };
 
-const GRABBER_OPTIONS = {
+const GRABBER_SIZE = {
   width: 32,
   height: 4,
   cornerRadius: 11,
-  color: tailwind.color('bg-blackA-A6') as string,
 };
 
 /**
@@ -111,9 +110,12 @@ export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
       dimmed={dimmed}
       dismissible={dismissible}
       cornerRadius={26}
-      backgroundColor={tailwind.color('bg-white') as string}
+      backgroundColor={tailwind.color('bg-white dark:bg-grayDark-50') as string}
       grabber
-      grabberOptions={GRABBER_OPTIONS}
+      grabberOptions={{
+        ...GRABBER_SIZE,
+        color: tailwind.color('bg-blackA-A6 dark:bg-whiteA-A6') as string,
+      }}
       style={[styles.content, contentStyle]}
       onDidDismiss={onDismiss}
       onDidPresent={onPresent}>

@@ -12,17 +12,17 @@ type FallbackProps = {
 };
 
 const Fallback = ({ resetError }: FallbackProps) => (
-  <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
+  <SafeAreaView style={tailwind.style('flex-1 bg-white dark:bg-grayDark-50')}>
     <Animated.View style={tailwind.style('flex-1 items-center justify-center px-6')}>
       <Animated.Text
         style={tailwind.style(
-          'text-lg font-inter-medium-24 tracking-[0.16px] text-gray-950 text-center',
+          'text-lg font-inter-medium-24 tracking-[0.16px] text-gray-950 dark:text-grayDark-950 text-center',
         )}>
         {i18n.t('ERRORS.UNEXPECTED_TITLE')}
       </Animated.Text>
       <Animated.Text
         style={tailwind.style(
-          'pt-2 text-md font-inter-420-20 tracking-[0.16px] text-gray-700 text-center',
+          'pt-2 text-md font-inter-420-20 tracking-[0.16px] text-gray-700 dark:text-grayDark-700 text-center',
         )}>
         {i18n.t('ERRORS.UNEXPECTED_DESCRIPTION')}
       </Animated.Text>

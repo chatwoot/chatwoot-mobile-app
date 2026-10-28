@@ -41,7 +41,7 @@ export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
           <Animated.View style={tailwind.style('items-center pt-1 pb-4')}>
             <Text
               style={tailwind.style(
-                'text-[15px] font-inter-580-24 leading-[17px] tracking-[0.3px] text-gray-700 text-center',
+                'text-[15px] font-inter-580-24 leading-[17px] tracking-[0.3px] text-gray-700 dark:text-grayDark-700 text-center',
               )}>
               {i18n.t('COPILOT.SELECT_TONE')}
             </Text>
@@ -50,10 +50,12 @@ export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
             <Pressable
               key={option.key}
               onPress={() => handleSelectTone(option.key as CopilotActionKey)}
-              style={tailwind.style('h-[60px] justify-center pl-4 pr-3 border-b border-slate-200')}>
+              style={tailwind.style(
+                'h-[60px] justify-center pl-4 pr-3 border-b border-slate-200 dark:border-slateDark-200',
+              )}>
               <Text
                 style={tailwind.style(
-                  'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-950',
+                  'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-950 dark:text-grayDark-950',
                 )}>
                 {i18n.t(option.labelKey)}
               </Text>

@@ -4,7 +4,7 @@ import Animated, { SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
-import { InboxListStateProvider } from '@/context';
+import { InboxListStateProvider, useTheme } from '@/context';
 import type { Notification } from '@/types/Notification';
 import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -29,6 +29,7 @@ const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Notificatio
 
 const InboxList = () => {
   const tabBarHeight = useTabBarHeight();
+  const { colorScheme } = useTheme();
   const [pageNumber, setPageNumber] = useState(1);
 
   const [isFlashListReady, setFlashListReady] = useState(false);
@@ -141,7 +142,10 @@ const InboxList = () => {
         `pb-[${tabBarHeight}px]`,
       )}>
       <EmptyStateIcon />
-      <Animated.Text style={tailwind.style('pt-6 text-md tracking-[0.32px] text-gray-800')}>
+      <Animated.Text
+        style={tailwind.style(
+          'pt-6 text-md tracking-[0.32px] text-gray-800 dark:text-grayDark-800',
+        )}>
         {i18n.t('NOTIFICATION.EMPTY')}
       </Animated.Text>
     </Animated.ScrollView>
@@ -150,6 +154,7 @@ const InboxList = () => {
       refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       showsVerticalScrollIndicator={false}
       data={notifications}
+      extraData={colorScheme}
       onScrollBeginDrag={handleScrollBeginDrag}
       onEndReached={handleOnEndReached}
       onEndReachedThreshold={0.5}
@@ -162,6 +167,7 @@ const InboxList = () => {
 
 const InboxScreen = () => {
   const dispatch = useAppDispatch();
+  const { isDark } = useTheme();
 
   // Memoize the markAllAsRead callback
   const markAllAsRead = useCallback(async () => {
@@ -172,11 +178,11 @@ const InboxScreen = () => {
   }, [dispatch]);
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white dark:bg-grayDark-50')}>
       <StatusBar
         translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        backgroundColor={tailwind.color('bg-white dark:bg-grayDark-50')}
+        barStyle={isDark ? 'light-content' : 'dark-content'}
       />
       <InboxListStateProvider>
         <InboxHeader markAllAsRead={markAllAsRead} />

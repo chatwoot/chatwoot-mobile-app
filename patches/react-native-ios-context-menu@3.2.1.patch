@@ -1,0 +1,8 @@
+diff --git a/ios/RNIContextMenu/RNIMenuActionItem.swift b/ios/RNIContextMenu/RNIMenuActionItem.swift
+--- a/ios/RNIContextMenu/RNIMenuActionItem.swift
++++ b/ios/RNIContextMenu/RNIMenuActionItem.swift
+@@ -184,3 +184,3 @@ extension RNIMenuActionItem {
+     #if swift(>=5.5)
+-    if #available(iOS 15.0, *) {
++    if #available(iOS 16.0, *) {
+       action.subtitle =

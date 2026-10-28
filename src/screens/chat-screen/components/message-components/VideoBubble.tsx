@@ -114,7 +114,9 @@ export const VideoThumbnail = (props: VideoBubbleProps) => {
 
   return (
     <Animated.View
-      style={tailwind.style('h-[72px] w-[72px] rounded-xl bg-gray-100 overflow-hidden')}>
+      style={tailwind.style(
+        'h-[72px] w-[72px] rounded-xl bg-gray-100 dark:bg-grayDark-100 overflow-hidden',
+      )}>
       <VideoView
         style={tailwind.style('h-full w-full')}
         ref={videoRef}

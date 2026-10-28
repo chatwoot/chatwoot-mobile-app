@@ -15,6 +15,7 @@ import {
   SnoozedFilledIcon,
 } from '@/svg-icons';
 import { tailwind } from '@/theme';
+import { useTheme } from '@/context/ThemeContext';
 import i18n from '@/i18n';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
@@ -34,29 +35,29 @@ const ACTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 4;
 
 const conversationActionOptions: ConversationActionOptionsType[] = [
   {
-    backgroundActionColor: 'bg-gray-100',
-    backgroundActionPressedColor: 'bg-gray-200',
-    borderActionColor: 'bg-gray-700',
+    backgroundActionColor: 'bg-gray-100 dark:bg-grayDark-100',
+    backgroundActionPressedColor: 'bg-gray-200 dark:bg-grayDark-200',
+    borderActionColor: 'bg-gray-700 dark:bg-grayDark-700',
     actionIcon: <StatusOpenIcon />,
     actionStatus: 'open',
   },
   {
-    backgroundActionColor: 'bg-amber-100',
-    backgroundActionPressedColor: 'bg-amber-200',
+    backgroundActionColor: 'bg-amber-100 dark:bg-amberDark-100',
+    backgroundActionPressedColor: 'bg-amber-200 dark:bg-amberDark-200',
     borderActionColor: 'bg-amber-700',
     actionIcon: <PendingFilledIcon />,
     actionStatus: 'pending',
   },
   {
-    backgroundActionColor: 'bg-indigo-100',
-    backgroundActionPressedColor: 'bg-indigo-200',
+    backgroundActionColor: 'bg-indigo-100 dark:bg-indigoDark-100',
+    backgroundActionPressedColor: 'bg-indigo-200 dark:bg-indigoDark-200',
     borderActionColor: 'bg-indigo-700',
     actionIcon: <SnoozedFilledIcon />,
     actionStatus: 'snoozed',
   },
   {
-    backgroundActionColor: 'bg-green-100',
-    backgroundActionPressedColor: 'bg-green-200',
+    backgroundActionColor: 'bg-green-100 dark:bg-greenDark-100',
+    backgroundActionPressedColor: 'bg-green-200 dark:bg-greenDark-200',
     borderActionColor: 'bg-green-700',
     actionIcon: <StatusResolvedIcon />,
     actionStatus: 'resolved',
@@ -73,6 +74,7 @@ type ConversationActionOptionProps = {
 
 const ConversationActionOption = (props: ConversationActionOptionProps) => {
   const { index, conversationAction, status, updateConversationStatus, isMuted } = props;
+  useTheme();
 
   const hapticSelection = useHaptic();
 
@@ -98,7 +100,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
     return {
       borderColor: interpolateColor(actionActive.value, [0, 1], ['transparent', actionBorderColor]),
     };
-  });
+  }, [actionBorderColor]);
 
   return (
     <Animated.View
@@ -127,7 +129,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
         <Icon icon={conversationAction.actionIcon} size={32} />
         <Animated.Text
           style={tailwind.style(
-            'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 capitalize text-gray-950 ',
+            'text-md font-inter-normal-20 leading-[17px] tracking-[0.32px] text-center pt-5 capitalize text-gray-950 dark:text-grayDark-950',
           )}>
           {i18n.t(`CONVERSATION_ACTION.OPTIONS.${conversationAction.actionStatus.toUpperCase()}`)}
         </Animated.Text>

@@ -9,6 +9,7 @@ interface RefsContextType {
   filtersModalSheetRef: React.RefObject<SheetRef | null>;
   actionsModalSheetRef: React.RefObject<SheetRef | null>;
   languagesModalSheetRef: React.RefObject<SheetRef | null>;
+  themeSheetRef: React.RefObject<SheetRef | null>;
   chatPagerView: React.RefObject<PagerView | null>;
   addLabelSheetRef: React.RefObject<SheetRef | null>;
   macrosListSheetRef: React.RefObject<SheetRef | null>;
@@ -42,6 +43,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
   const filtersModalSheetRef = useRef<SheetRef>(null);
   const actionsModalSheetRef = useRef<SheetRef>(null);
   const languagesModalSheetRef = useRef<SheetRef>(null);
+  const themeSheetRef = useRef<SheetRef>(null);
   const notificationPreferencesSheetRef = useRef<SheetRef>(null);
   const addLabelSheetRef = useRef<SheetRef>(null);
   const macrosListSheetRef = useRef<SheetRef>(null);
@@ -63,6 +65,7 @@ const RefsProvider: React.FC<Partial<RefsContextType & { children: React.ReactNo
     filtersModalSheetRef,
     actionsModalSheetRef,
     languagesModalSheetRef,
+    themeSheetRef,
     notificationPreferencesSheetRef,
     chatPagerView,
     addLabelSheetRef,

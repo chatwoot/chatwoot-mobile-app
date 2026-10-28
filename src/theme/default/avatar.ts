@@ -1,5 +1,5 @@
 export const avatarTheme = {
-  base: 'relative items-center justify-center bg-gray-100',
+  base: 'relative items-center justify-center bg-gray-100 dark:bg-grayDark-100',
   size: {
     xs: 'h-4 w-4',
     sm: 'h-5 w-5',
@@ -10,7 +10,8 @@ export const avatarTheme = {
     '3xl': 'h-12 w-12',
     '4xl': 'h-[50px] w-[50px]',
   },
-  image: 'w-full h-full',
+  // Avatar images are drawn for a light backdrop; keep one behind transparent images in dark mode.
+  image: 'w-full h-full bg-gray-100',
   // Having style objects because specific value not present as tailwind classnames
   borderRadius: {
     size: {
@@ -37,7 +38,7 @@ export const avatarTheme = {
     '4xl': 'w-6',
   },
   initials: {
-    base: 'text-center uppercase text-gray-800',
+    base: 'text-center uppercase text-gray-800 dark:text-grayDark-800',
     size: {
       xs: 'font-inter-medium-24 text-xs',
       sm: 'font-inter-medium-24 text-cxs',
@@ -61,7 +62,8 @@ export const avatarTheme = {
       '4xl': -0.5,
     },
     active: {
-      container: 'absolute border-[1.5px] border-white bg-white rounded-full',
+      container:
+        'absolute border-[1.5px] border-white dark:border-grayDark-50 bg-white dark:bg-grayDark-50 rounded-full',
       base: 'bg-green-700 rounded-full',
       size: {
         xs: 'h-1 w-1',
@@ -75,8 +77,9 @@ export const avatarTheme = {
       },
     },
     away: {
-      container: 'absolute border-[1.5px] border-white bg-white rounded-full bottom-0 right-0',
-      base: 'bg-white rounded-full',
+      container:
+        'absolute border-[1.5px] border-white dark:border-grayDark-50 bg-white dark:bg-grayDark-50 rounded-full bottom-0 right-0',
+      base: 'bg-white dark:bg-grayDark-50 rounded-full',
       size: {
         xs: 'h-1 w-1',
         sm: 'h-[5px] w-[5px]',
@@ -89,8 +92,9 @@ export const avatarTheme = {
       },
     },
     sleep: {
-      container: 'absolute border-[1.5px] border-white bg-white rounded-full bottom-0 right-0',
-      base: 'bg-white rounded-full',
+      container:
+        'absolute border-[1.5px] border-white dark:border-grayDark-50 bg-white dark:bg-grayDark-50 rounded-full bottom-0 right-0',
+      base: 'bg-white dark:bg-grayDark-50 rounded-full',
       size: {
         xs: 'h-1 w-1',
         sm: 'h-[5px] w-[5px]',
@@ -103,8 +107,9 @@ export const avatarTheme = {
       },
     },
     typing: {
-      container: 'absolute border-[1.5px] border-white bg-white rounded-full bottom-0 right-0',
-      base: 'rounded-full flex flex-row justify-evenly items-center bg-gray-800',
+      container:
+        'absolute border-[1.5px] border-white dark:border-grayDark-50 bg-white dark:bg-grayDark-50 rounded-full bottom-0 right-0',
+      base: 'rounded-full flex flex-row justify-evenly items-center bg-gray-800 dark:bg-grayDark-800',
       size: {
         xs: 'w-2 h-[5px]',
         sm: 'w-[9px] h-1.5',
@@ -130,7 +135,8 @@ export const avatarTheme = {
       },
     },
     icon: {
-      container: 'absolute border-[1.5px] border-white bg-white rounded-full bottom-0 right-0',
+      container:
+        'absolute border-[1.5px] border-white dark:border-grayDark-50 bg-white dark:bg-grayDark-50 rounded-full bottom-0 right-0',
       size: {
         xs: 'w-[9px]',
         sm: 'w-2.5',

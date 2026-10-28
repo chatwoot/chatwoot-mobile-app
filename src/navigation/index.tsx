@@ -6,7 +6,6 @@ import {
   onNotificationOpenedApp,
   setBackgroundMessageHandler,
 } from '@react-native-firebase/messaging';
-import { getStateFromPath } from '@react-navigation/native';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -15,14 +14,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import { OngoingCallBar } from '@/screens/call';
 import { isCallPush } from '@/utils/callNotifications';
+import { getConversationParamsFromPath, getLinkingPrefixes, linkingConfig } from './linking';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
 import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
-import { extractConversationIdFromUrl } from '@/utils/conversationUtils';
 import { useAppSelector } from '@/hooks';
 import { selectInstallationUrl, selectLocale } from '@/store/settings/settingsSelectors';
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
-import { resolveAccountSwitch, switchAccount } from '@/utils/accountUtils';
+import { resolveAccountAccess, switchAccount } from '@/utils/accountUtils';
 import { SSO_CALLBACK_URL } from '@/constants';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { RefsProvider } from '@/context';
@@ -49,22 +48,10 @@ export const AppNavigationContainer = () => {
   const currentAccountId = useAppSelector(selectCurrentUserAccountId);
 
   const linking = {
-    prefixes: [installationUrl, SSO_CALLBACK_URL],
-    config: {
-      screens: {
-        ChatScreen: {
-          path: 'app/accounts/:accountId/conversations/:conversationId/:primaryActorId?/:primaryActorType?',
-          parse: {
-            accountId: (accountId: string) => parseInt(accountId),
-            conversationId: (conversationId: string) => parseInt(conversationId),
-            primaryActorId: (primaryActorId: string) => parseInt(primaryActorId),
-            primaryActorType: (primaryActorType: string) => decodeURIComponent(primaryActorType),
-          },
-        },
-      },
-    },
+    prefixes: getLinkingPrefixes(installationUrl),
+    config: linkingConfig,
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
-    getStateFromPath: (path: string, config: Parameters<typeof getStateFromPath>[1]) => {
+    getStateFromPath: (path: string) => {
       // Handle SSO callback - App running, receives deep link
       if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
         const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
@@ -74,28 +61,16 @@ export const AppNavigationContainer = () => {
         return undefined;
       }
 
-      let primaryActorId = null;
-      let primaryActorType = null;
-      let accountId = null;
-      const state = getStateFromPath(path, config);
-      const { routes } = state || {};
-
-      const conversationId = extractConversationIdFromUrl({
-        url: path,
-      });
-
-      if (!conversationId) {
+      const params = getConversationParamsFromPath(path);
+      if (!params) {
         return;
       }
 
-      if (routes && routes[0]) {
-        const { params } = routes[0];
-        primaryActorId = (params as { primaryActorId?: number })?.primaryActorId;
-        primaryActorType = (params as { primaryActorType?: string })?.primaryActorType;
-        accountId = (params as { accountId?: number })?.accountId;
-      }
+      const { accountId, conversationId, primaryActorId, primaryActorType } = params;
 
-      const targetAccountId = resolveAccountSwitch(accountId);
+      const { hasAccess, accountId: targetAccountId } = resolveAccountAccess(accountId);
+      if (!hasAccess) return undefined;
+      // Calls can refuse a cross-account switch; do not open that conversation in the old account.
       if (targetAccountId && !switchAccount(dispatch, targetAccountId)) return undefined;
 
       return {

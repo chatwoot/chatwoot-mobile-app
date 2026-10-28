@@ -1,12 +1,5 @@
-import React, { FC, useCallback, useEffect, useMemo } from 'react';
-import {
-  BlurEvent,
-  FocusEvent,
-  Platform,
-  Pressable,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
+import { BlurEvent, FocusEvent, Platform, Pressable, StyleSheet, ScrollView } from 'react-native';
 import Animated, {
   LayoutAnimationConfig,
   LinearTransition,
@@ -177,7 +170,9 @@ export const MessageTextInput = ({
     }
   };
 
-  const renderSuggestions: (suggestions: Agent[]) => FC<MentionSuggestionsProps> =
+  const renderSuggestions: (
+    suggestions: Agent[],
+  ) => (props: MentionSuggestionsProps) => ReactNode =
     suggestions =>
     // eslint-disable-next-line react/display-name
     ({ keyword, onSuggestionPress }) => {

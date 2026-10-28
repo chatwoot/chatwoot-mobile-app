@@ -46,6 +46,14 @@ function deviceHeaders(): Record<string, string> {
   };
 }
 
+export type AccountScopedRequestConfig = AxiosRequestConfig & {
+  accountId?: number;
+  quietStatuses?: number[];
+};
+
+const namesItsAccount = (config?: AxiosRequestConfig) =>
+  !!(config as AccountScopedRequestConfig | undefined)?.accountId;
+
 class APIService {
   private static instance: APIService;
   private api = axios.create();
@@ -82,7 +90,8 @@ class APIService {
         const store = getStore();
         const state = store.getState();
         config.baseURL = state.settings?.installationUrl;
-        const accountId = state.auth.user?.account_id;
+        const accountId =
+          (config as AccountScopedRequestConfig).accountId ?? state.auth.user?.account_id;
         if (accountId && config.url && !nonAccountRoutes.includes(config.url)) {
           config.url = `api/v1/accounts/${accountId}/${config.url}`;
         } else if (nonAccountRoutes.includes(config.url || '')) {
@@ -102,7 +111,7 @@ class APIService {
     this.api.interceptors.response.use(
       (response: AxiosResponse) => {
         // Drop responses for a previous account so stale data can't repopulate the UI.
-        if (isForPreviousAccount(response.config.url)) {
+        if (!namesItsAccount(response.config) && isForPreviousAccount(response.config.url)) {
           return Promise.reject(
             new axios.CanceledError('Ignoring response for a previous account'),
           );
@@ -115,14 +124,17 @@ class APIService {
         }
         // Ignore errors for a previous account before global handling (avoids a stale 401
         // logging out or a stale error toast for the account just switched away from).
-        if (isForPreviousAccount(error.config?.url)) {
+        if (!namesItsAccount(error.config) && isForPreviousAccount(error.config?.url)) {
           return Promise.reject(new axios.CanceledError('Ignoring error for a previous account'));
         }
         if (error.response?.status === 401) {
           const store = getStore();
           store.dispatch({ type: 'auth/logout' });
         } else {
-          showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });
+          const quiet = (error.config as AccountScopedRequestConfig | undefined)?.quietStatuses;
+          if (!quiet?.includes(error.response?.status ?? -1)) {
+            showToast({ message: I18n.t('ERRORS.COMMON_ERROR') });
+          }
         }
         return Promise.reject(error);
       },

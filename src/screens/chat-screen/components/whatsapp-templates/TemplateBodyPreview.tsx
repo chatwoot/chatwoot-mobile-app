@@ -3,6 +3,7 @@ import Animated from 'react-native-reanimated';
 
 import { tailwind } from '@/theme';
 import { buildPreviewSegments } from '@/utils/messageTemplateUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type TemplateBodyPreviewProps = {
   body: string;
@@ -10,7 +11,16 @@ type TemplateBodyPreviewProps = {
 };
 
 const TemplateBodyPreview = ({ body, values }: TemplateBodyPreviewProps) => {
-  const segments = useMemo(() => buildPreviewSegments(body, values), [body, values]);
+  // Segments render as one run of text, so each tab is expanded from the
+  // column the preceding segments end on.
+  const segments = useMemo(() => {
+    let rawPrefix = '';
+    return buildPreviewSegments(body, values).map(segment => {
+      const expandedPrefix = expandTabs(rawPrefix);
+      rawPrefix += segment.text;
+      return { ...segment, text: expandTabs(rawPrefix).slice(expandedPrefix.length) };
+    });
+  }, [body, values]);
 
   return (
     <Animated.Text

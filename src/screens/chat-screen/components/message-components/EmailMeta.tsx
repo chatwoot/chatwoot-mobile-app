@@ -5,6 +5,7 @@ import i18n from '@/i18n';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageContentAttributes } from '@/types';
+import { expandTabs } from '@/utils/expandTabs';
 
 type EmailMetaProps = {
   contentAttributes: MessageContentAttributes;
@@ -65,7 +66,7 @@ export const EmailMeta = (props: EmailMetaProps) => {
       {subject && (
         <Animated.Text
           style={tailwind.style('text-md text-gray-950 font-inter-normal-20 tracking-[0.32px]')}>
-          {i18n.t('CONVERSATION.EMAIL_HEADER.SUBJECT')}: {subject}
+          {i18n.t('CONVERSATION.EMAIL_HEADER.SUBJECT')}: {expandTabs(subject)}
         </Animated.Text>
       )}
       <Animated.View style={tailwind.style('h-[1px] my-2 bg-gray-300')} />

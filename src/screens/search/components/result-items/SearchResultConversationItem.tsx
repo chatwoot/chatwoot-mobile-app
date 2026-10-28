@@ -4,6 +4,7 @@ import Animated from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';
 import { tailwind } from '@/theme';
+import type { Channel } from '@/types';
 import type { Conversation } from '@/types/Conversation';
 import { HighlightedText } from '../shared/HighlightedText';
 import { useScaleAnimation } from '@/utils';
@@ -15,7 +16,7 @@ import { ConversationId } from '@/screens/conversations/components/conversation-
 type SearchConversation = Conversation & {
   contact?: { name?: string; email?: string };
   additionalAttributes?: { mailSubject?: string; emailSubject?: string; type?: string };
-  inbox?: { name?: string; channelType?: string; medium?: string; id?: number };
+  inbox?: { name?: string; channelType?: Channel; medium?: string; id?: number };
 };
 
 type SearchResultConversationItemProps = {

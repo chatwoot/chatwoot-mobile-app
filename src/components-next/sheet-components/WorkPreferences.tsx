@@ -28,7 +28,24 @@ const PREFERENCES = [
   },
 ] as const;
 
-export const WorkPreferences = ({ isOnline }: { isOnline: boolean }) => {
+export const WorkPausedNote = () => (
+  <Animated.View
+    style={tailwind.style(
+      'flex-row items-start gap-2 mx-3 mt-2 mb-4 px-3 py-2.5 rounded-xl bg-amber-100',
+    )}>
+    <Animated.View style={tailwind.style('mt-px')}>
+      <Icon icon={<PauseCircleIcon />} size={16} />
+    </Animated.View>
+    <Animated.Text
+      style={tailwind.style(
+        'flex-1 text-sm leading-[18px] tracking-[0.16px] font-inter-420-20 text-amber-900',
+      )}>
+      {i18n.t('SETTINGS.WORK_PAUSED')}
+    </Animated.Text>
+  </Animated.View>
+);
+
+export const WorkPreferences = () => {
   const dispatch = useAppDispatch();
   const accountId = useAppSelector(selectCurrentUserAccountId);
   const preferences = useAppSelector(selectCurrentUserWorkPreferences);
@@ -45,40 +62,22 @@ export const WorkPreferences = ({ isOnline }: { isOnline: boolean }) => {
     }
   };
 
-  if (!isOnline) {
-    return (
-      <Animated.View
-        style={tailwind.style(
-          'flex-row items-start gap-2 mx-3 mt-2 mb-4 px-3 py-2.5 rounded-xl bg-amber-100',
-        )}>
-        <Animated.View style={tailwind.style('mt-px')}>
-          <Icon icon={<PauseCircleIcon />} size={16} />
-        </Animated.View>
-        <Animated.Text
-          style={tailwind.style(
-            'flex-1 text-sm leading-[18px] tracking-[0.16px] font-inter-420-20 text-amber-900',
-          )}>
-          {i18n.t('SETTINGS.WORK_PAUSED')}
-        </Animated.Text>
-      </Animated.View>
-    );
-  }
-
   const enabledCount = PREFERENCES.filter(({ key }) => preferences[key]).length;
 
   return (
-    <Animated.View style={tailwind.style('mx-3 mt-1 mb-4 pt-1 border-t-[1px] border-blackA-A3')}>
+    <Animated.View style={tailwind.style('pb-3 pr-3 gap-3')}>
       {PREFERENCES.map(({ key, label, info }) => {
         const value = preferences[key];
         const isLocked = value && enabledCount === 1;
         return (
           <Pressable
             key={key}
-            disabled={isLocked}
             accessibilityRole="checkbox"
             accessibilityState={{ checked: value, disabled: isLocked }}
-            onPress={() => updatePreference(key, !value)}
-            style={tailwind.style('flex-row items-start gap-3 ml-1 pt-3')}>
+            onPress={() => {
+              if (!isLocked) updatePreference(key, !value);
+            }}
+            style={tailwind.style('flex-row items-start gap-3')}>
             <Animated.View
               style={tailwind.style(
                 'mt-0.5 h-[18px] w-[18px] items-center justify-center rounded-[4px] border-[1.5px]',

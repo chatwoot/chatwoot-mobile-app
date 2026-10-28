@@ -27,6 +27,7 @@ import {
   NotificationPreferences,
   SwitchAccount,
   SettingsList,
+  WorkPausedNote,
   WorkPreferences,
 } from '@/components-next';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
@@ -318,13 +319,18 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
-      <Sheet ref={userAvailabilityStatusSheetRef} height={showWorkPreferences ? 330 : 190}>
+      <Sheet
+        ref={userAvailabilityStatusSheetRef}
+        height={!showWorkPreferences ? 190 : availabilityStatus === 'online' ? 320 : 260}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
           changeAvailabilityStatus={changeAvailabilityStatus}
           availabilityStatus={availabilityStatus}
+          onlineContent={
+            showWorkPreferences && availabilityStatus === 'online' ? <WorkPreferences /> : null
+          }
         />
-        {showWorkPreferences && <WorkPreferences isOnline={availabilityStatus === 'online'} />}
+        {showWorkPreferences && availabilityStatus !== 'online' && <WorkPausedNote />}
       </Sheet>
       <Sheet ref={languagesModalSheetRef} detents={[0.7]} scrollable>
         <ScrollView showsVerticalScrollIndicator={false}>

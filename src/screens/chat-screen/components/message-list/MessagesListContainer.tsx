@@ -25,6 +25,7 @@ import { Message } from '@/types';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectUserId } from '@/store/auth/authSelectors';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 
 type DateSeparator = { date: string; type: 'date' };
 type MessageOrDate = Message | DateSeparator;
@@ -68,10 +69,25 @@ const shouldGroupWithNext = (index: number, searchList: MessageOrDate[]) => {
   return Math.floor(next.createdAt / 60) === Math.floor(current.createdAt / 60);
 };
 
+/** Whether the message above (older, the next item) is from the same sender; no time limit. */
+const isSameSenderAsAbove = (index: number, list: MessageOrDate[]) => {
+  const current = list[index];
+  const above = list[index + 1];
+  if (!current || !above || 'date' in current || 'date' in above) return false;
+  const currentSenderId = current.senderId ?? current.sender?.id;
+  const aboveSenderId = above.senderId ?? above.sender?.id;
+  return (
+    !!currentSenderId &&
+    currentSenderId === aboveSenderId &&
+    current.messageType === above.messageType
+  );
+};
+
 const PlatformSpecificKeyboardWrapperComponent =
   Platform.OS === 'android' ? Animated.View : KeyboardGestureArea;
 
 export const MessagesListContainer = () => {
+  const paneRightInset = usePaneRightInset();
   const [appState, setAppState] = useState(AppState.currentState);
   const { conversationId, messageId, scrollToMessageId, setScrollToMessageId } =
     useChatWindowContext();
@@ -279,6 +295,8 @@ export const MessagesListContainer = () => {
       ...message,
       groupWithNext: shouldGroupWithNext(index, allMessages as MessageOrDate[]),
       groupWithPrevious: shouldGroupWithNext(index - 1, allMessages as MessageOrDate[]),
+      sameSenderAsAbove: isSameSenderAsAbove(index, allMessages as MessageOrDate[]),
+      sameSenderAsBelow: isSameSenderAsAbove(index - 1, allMessages as MessageOrDate[]),
     };
   });
 
@@ -318,7 +336,13 @@ export const MessagesListContainer = () => {
     <PlatformSpecificKeyboardWrapperComponent
       style={tailwind.style('flex-1 bg-white')}
       interpolator="linear">
-      <View style={[tailwind.style('flex-1'), !isListVisible && messageId ? { opacity: 0 } : {}]}>
+      <View
+        style={[
+          tailwind.style('flex-1'),
+          // Split view pane: keep messages clear of the status bar column.
+          { paddingRight: paneRightInset },
+          !isListVisible && messageId ? { opacity: 0 } : {},
+        ]}>
         <MessagesList
           // Key forces remount when messageId changes, ensuring correct scroll position
           key={messageId ? `search-${messageId}` : 'normal-chat'}

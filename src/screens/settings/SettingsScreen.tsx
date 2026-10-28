@@ -1,6 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, Pressable, ScrollView } from 'react-native';
-import Animated from 'react-native-reanimated';
+import {
+  StatusBar,
+  Text,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -36,7 +44,7 @@ import { useRefsContext } from '@/context';
 import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
-import { useHaptic, useTabBarHeight } from '@/utils';
+import { IOS_DESIGN, useHaptic, useIsSplitLayout, useTabBarHeight } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
 import {
@@ -59,6 +67,10 @@ import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { showToast } from '@/utils/toastUtils';
+import { PaneHeader } from '@/navigation/split/PaneHeader';
+import { PageHeader } from '@/navigation/split/FullScreenPage';
+import { SwipeBackPage } from '@/navigation/split/SwipeBackPage';
 import { getVoipToken } from '@/services/voice/chatwootCalls';
 import { callActions } from '@/store/call/callActions';
 
@@ -68,12 +80,38 @@ const appVersion = Application.nativeApplicationVersion;
 const buildNumber = Application.nativeBuildVersion;
 const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
+// Settings shown in the detail pane of the split view (iPhone Duo), like iPad Settings.
+type SettingsPane = 'availability' | 'notifications' | 'language' | 'account';
+
 const SettingsScreen = () => {
   const navigation = useNavigation();
+  const isSplit = useIsSplitLayout();
+  const { width } = useWindowDimensions();
+  // The first item is selected by default so the detail pane is never empty.
+  const [pane, setPane] = useState<SettingsPane>('availability');
+  // iOS without the split view: the same options as the detail pane, as a page that slides
+  // in from the right (like Settings on iPhone) instead of a sheet.
+  const [iosPage, setIosPage] = useState<SettingsPane | null>(null);
+  // In the split view rows open their options in the detail pane instead of a sheet.
+  const openPane = (next: SettingsPane, openSheetInstead: () => void) => () => {
+    if (isSplit) {
+      hapticSelection?.();
+      setPane(next);
+    } else if (IOS_DESIGN) {
+      hapticSelection?.();
+      setIosPage(next);
+    } else {
+      openSheetInstead();
+    }
+  };
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
-  const availabilityStatus =
+  const savedAvailabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
+  // Shown right away when you pick a status, while the change is saved; cleared once it's done
+  // (the saved status then matches) or reverted if it fails.
+  const [pendingAvailability, setPendingAvailability] = useState<AvailabilityStatus | null>(null);
+  const availabilityStatus = pendingAvailability ?? savedAvailabilityStatus;
 
   // const { bottom } = useSafeAreaInsets();
 
@@ -151,9 +189,13 @@ const SettingsScreen = () => {
       to: updatedStatus,
     });
     const payload = { profile: { availability: updatedStatus, account_id: activeAccountId } };
+    setPendingAvailability(updatedStatus as AvailabilityStatus);
     // TODO: Fix this later
     // @ts-expect-error TODO: Fix typing for dispatch
-    dispatch(authActions.updateAvailability(payload));
+    dispatch(authActions.updateAvailability(payload))
+      .unwrap()
+      .catch(() => showToast({ message: i18n.t('SETTINGS.AVAILABILITY_ERROR') }))
+      .finally(() => setPendingAvailability(null));
   };
 
   const onChangeLanguage = (locale: string) => {
@@ -205,7 +247,8 @@ const SettingsScreen = () => {
       icon: <SwitchIcon />,
       subtitle: '',
       subtitleType: 'light',
-      onPressListItem: () => openSheet(),
+      isSelected: isSplit && pane === 'availability',
+      onPressListItem: openPane('availability', openSheet),
     },
     {
       hasChevron: true,
@@ -214,7 +257,10 @@ const SettingsScreen = () => {
       subtitle: '',
       subtitleType: 'light',
       disabled: !hasConversationPermission,
-      onPressListItem: () => notificationPreferencesSheetRef.current?.present(),
+      isSelected: isSplit && pane === 'notifications',
+      onPressListItem: openPane('notifications', () =>
+        notificationPreferencesSheetRef.current?.present(),
+      ),
       // onPressListItem: openSystemSettings,
     },
     {
@@ -223,7 +269,8 @@ const SettingsScreen = () => {
       icon: <TranslateIcon />,
       subtitle: LANGUAGES[activeLocale as keyof typeof LANGUAGES],
       subtitleType: 'light',
-      onPressListItem: () => languagesModalSheetRef.current?.present(),
+      isSelected: isSplit && pane === 'language',
+      onPressListItem: openPane('language', () => languagesModalSheetRef.current?.present()),
     },
     {
       hasChevron: enableAccountSwitch,
@@ -231,9 +278,10 @@ const SettingsScreen = () => {
       icon: <SwitchIcon />,
       subtitle: activeAccountName,
       subtitleType: 'light',
+      isSelected: isSplit && pane === 'account',
       onPressListItem: () => {
         if (enableAccountSwitch) {
-          switchAccountSheetRef.current?.present();
+          openPane('account', () => switchAccountSheetRef.current?.present())();
         }
       },
     },
@@ -258,8 +306,15 @@ const SettingsScreen = () => {
     },
   ];
 
-  return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
+  const listContent = (
+    <SafeAreaView
+      // In the split view the list ends at the divider, so it skips the right inset.
+      edges={isSplit ? ['top', 'left', 'bottom'] : undefined}
+      // iPhone Settings: light gray page with white cards (the open Duo's list stays white).
+      style={tailwind.style(
+        'flex-1 font-inter-normal-20',
+        IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white',
+      )}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
@@ -324,9 +379,12 @@ const SettingsScreen = () => {
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </ScrollView>
       </Sheet>
-      <Sheet ref={notificationPreferencesSheetRef} detents={[0.52]}>
-        <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
-        <NotificationPreferences />
+      {/* Scrolls, since the number of notification types comes from the server. */}
+      <Sheet ref={notificationPreferencesSheetRef} detents={[0.7]} scrollable>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
+          <NotificationPreferences />
+        </ScrollView>
       </Sheet>
       <Sheet ref={switchAccountSheetRef} detents={[0.5]}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SWITCH_ACCOUNT')} />
@@ -354,6 +412,88 @@ const SettingsScreen = () => {
           />
         )}
     </SafeAreaView>
+  );
+
+  const titleFor = (p: SettingsPane) =>
+    ({
+      availability: i18n.t('SETTINGS.SET_AVAILABILITY'),
+      notifications: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
+      language: i18n.t('SETTINGS.SET_LANGUAGE'),
+      account: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
+    })[p];
+
+  // A setting's options in a white rounded card, shared by the detail pane and the iOS page.
+  const renderPaneCard = (p: SettingsPane) => (
+    <View style={tailwind.style('rounded-[13px] bg-white overflow-hidden')}>
+      {p === 'availability' ? (
+        <AvailabilityStatusList
+          changeAvailabilityStatus={changeAvailabilityStatus}
+          availabilityStatus={availabilityStatus}
+        />
+      ) : null}
+      {p === 'notifications' ? <NotificationPreferences /> : null}
+      {p === 'language' ? (
+        <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
+      ) : null}
+      {p === 'account' ? (
+        <SwitchAccount
+          currentAccountId={activeAccountId}
+          changeAccount={changeAccount}
+          accounts={accounts}
+        />
+      ) : null}
+    </View>
+  );
+
+  // One layout tree for both the split view and a single column, so folding or unfolding the
+  // Duo resizes the list instead of remounting it. Split view (like iPad Settings): the list on
+  // the left (40%) and the selected setting's options on the right. Single column on iOS: the
+  // options slide in as a page over the list.
+  return (
+    <View style={tailwind.style('flex-1 flex-row bg-white')}>
+      <View
+        style={
+          isSplit ? { width: Math.max(320, Math.round(width * 0.4)) } : tailwind.style('flex-1')
+        }>
+        {listContent}
+      </View>
+      {isSplit ? (
+        <>
+          <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
+          {/* Detail pane: light gray background (as the other panes) with the options in a
+              white rounded card, and no divider under the header. */}
+          <SafeAreaView
+            edges={['top', 'right', 'bottom']}
+            style={tailwind.style('flex-1 bg-gray-50')}>
+            <PaneHeader title={titleFor(pane)} />
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+              {renderPaneCard(pane)}
+            </ScrollView>
+          </SafeAreaView>
+        </>
+      ) : null}
+      {!isSplit && IOS_DESIGN && iosPage ? (
+        <Animated.View
+          entering={SlideInRight.duration(280)}
+          exiting={SlideOutRight.duration(240)}
+          style={tailwind.style('absolute inset-0')}>
+          <SwipeBackPage
+            onBack={() => setIosPage(null)}
+            style={tailwind.style('flex-1 bg-gray-50')}>
+            <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1')}>
+              <PageHeader title={titleFor(iosPage)} onBack={() => setIosPage(null)} />
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+                {renderPaneCard(iosPage)}
+              </ScrollView>
+            </SafeAreaView>
+          </SwipeBackPage>
+        </Animated.View>
+      ) : null}
+    </View>
   );
 };
 

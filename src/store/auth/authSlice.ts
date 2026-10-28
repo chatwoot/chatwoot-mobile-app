@@ -165,6 +165,17 @@ export const authSlice = createSlice({
           ...state.user,
           ...action.payload.user,
         };
+        // The response can still carry the old status (the server applies it asynchronously and
+        // reports it later over the socket), so set the saved status on the active account here.
+        const availability = action.meta.arg?.profile?.availability;
+        const accountId = state.user?.account_id;
+        if (availability && state.user?.accounts) {
+          state.user.accounts = state.user.accounts.map(account =>
+            account.id === accountId
+              ? { ...account, availability, availability_status: availability }
+              : account,
+          );
+        }
       })
       .addCase(authActions.verifyMfa.pending, state => {
         state.uiFlags.isVerifyingMfa = true;

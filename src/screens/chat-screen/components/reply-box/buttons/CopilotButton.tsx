@@ -13,15 +13,19 @@ import { Icon } from '@/components-next/common';
 import { SparkleIcon, AnimatedSparkleIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
 import { tailwind } from '@/theme';
+import { ReplyGlassCircle } from './ReplyGlassCircle';
 
 type CopilotButtonProps = PressableProps & {
   isActive?: boolean;
   isThinking?: boolean;
+  // iPhone Duo reply bar: round Liquid Glass button.
+  glass?: boolean;
 };
 
 export const CopilotButton = ({
   isActive = false,
   isThinking = false,
+  glass = false,
   ...props
 }: CopilotButtonProps) => {
   const { animatedStyle, handlers } = useScaleAnimation();
@@ -58,14 +62,30 @@ export const CopilotButton = ({
         {...props}
         style={({ pressed }) => [tailwind.style(pressed ? 'opacity-70' : '')]}
         {...(props.disabled ? {} : handlers)}>
-        <Animated.View
-          style={tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl')}>
-          {isThinking ? (
-            <AnimatedSparkleIcon smallStarStyle={smallStarStyle} largeStarStyle={largeStarStyle} />
-          ) : (
-            <Icon icon={<SparkleIcon filled={isActive} />} size={24} />
-          )}
-        </Animated.View>
+        {glass ? (
+          <ReplyGlassCircle>
+            {isThinking ? (
+              <AnimatedSparkleIcon
+                smallStarStyle={smallStarStyle}
+                largeStarStyle={largeStarStyle}
+              />
+            ) : (
+              <Icon icon={<SparkleIcon filled={isActive} />} size={22} />
+            )}
+          </ReplyGlassCircle>
+        ) : (
+          <Animated.View
+            style={tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl')}>
+            {isThinking ? (
+              <AnimatedSparkleIcon
+                smallStarStyle={smallStarStyle}
+                largeStarStyle={largeStarStyle}
+              />
+            ) : (
+              <Icon icon={<SparkleIcon filled={isActive} />} size={24} />
+            )}
+          </Animated.View>
+        )}
       </Pressable>
     </Animated.View>
   );

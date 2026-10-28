@@ -8,11 +8,20 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
+import {
+  GlassCircleButton,
+  GlassPillButton,
+  HEADER_ICON_COLOR,
+  LargeHeaderTitle,
+  SideToolbarButton,
+} from '@/components-next/side-toolbar';
+import { useSideToolbar } from '@/context';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon, SearchIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
-import { useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useIsSplitLayout, useScaleAnimation } from '@/utils';
 import { useHeaderAnimation } from '@/hooks/useHeaderAnimation';
+import { ConversationFilterMenu } from '../conversation-filters/ConversationFilterMenu';
 
 type HeaderState = 'Search' | 'Filter' | 'Select' | 'none';
 
@@ -23,6 +32,8 @@ type ConversationHeaderPresenterProps = {
   onLeftIconPress: () => void;
   onRightIconPress: () => void;
   onClearFilter: () => void;
+  // Conversations picked in select mode (shown as "3 Selected" in the iOS header).
+  selectedCount?: number;
 };
 
 type RightSectionProps = {
@@ -175,6 +186,46 @@ const RightSection = ({
   );
 };
 
+// Select-all or Clear, shown next to the large title because they act on the list.
+const SideLayoutListAction = ({
+  currentState,
+  isSelectedAll,
+  filtersAppliedCount,
+  onLeftIconPress,
+  onClearFilter,
+}: Omit<ConversationHeaderPresenterProps, 'onRightIconPress'>) => {
+  if (currentState === 'Select') {
+    // A text button like Mail's (Done is the side toolbar's close button).
+    return (
+      <Pressable onPress={onLeftIconPress} hitSlop={12} accessibilityRole="button">
+        <Text
+          style={tailwind.style('text-[17px] leading-[22px] font-inter-medium-24 text-blue-800')}>
+          {i18n.t(
+            isSelectedAll
+              ? 'CONVERSATION.HEADER.DESELECT_ALL'
+              : 'CONVERSATION.HEADER.SELECT_ALL_TITLE',
+          )}
+        </Text>
+      </Pressable>
+    );
+  }
+  if (currentState === 'Filter') {
+    return (
+      <Pressable onPress={onClearFilter} disabled={filtersAppliedCount === 0} hitSlop={16}>
+        <Text
+          style={tailwind.style(
+            'text-md font-inter-medium-24 leading-[17px] tracking-[0.24px]',
+            filtersAppliedCount === 0 ? 'text-gray-700' : 'text-blue-800',
+          )}>
+          {i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
+          {filtersAppliedCount > 0 ? ` (${filtersAppliedCount})` : ''}
+        </Text>
+      </Pressable>
+    );
+  }
+  return null;
+};
+
 export const ConversationHeaderPresenter = ({
   currentState,
   isSelectedAll,
@@ -182,8 +233,153 @@ export const ConversationHeaderPresenter = ({
   onLeftIconPress,
   onRightIconPress,
   onClearFilter,
+  selectedCount = 0,
 }: ConversationHeaderPresenterProps) => {
   const { handlers, animatedStyle } = useScaleAnimation();
+  const isModal = currentState === 'Filter' || currentState === 'Select';
+
+  // With tabs on the side (iPhone Duo), search and filter (or close) move to the side
+  // toolbar. In the split view they stay above the list, next to the content they affect.
+  const isSplit = useIsSplitLayout();
+  const actionItems = isModal ? (
+    <SideToolbarButton
+      icon={<CloseIcon stroke={HEADER_ICON_COLOR} />}
+      onPress={onRightIconPress}
+      accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
+    />
+  ) : (
+    <>
+      <SideToolbarButton
+        icon={<SearchIcon stroke={HEADER_ICON_COLOR} />}
+        onPress={onLeftIconPress}
+        accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
+      />
+      {/* Native filter menu (iOS pull-down) instead of the filter mode. */}
+      <ConversationFilterMenu>
+        <SideToolbarButton
+          icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
+          showBadge={filtersAppliedCount > 0}
+          accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
+        />
+      </ConversationFilterMenu>
+    </>
+  );
+  const isSideLayout = useSideToolbar(
+    actionItems,
+    [isModal, filtersAppliedCount, onLeftIconPress, onRightIconPress],
+    !isSplit,
+  );
+
+  if ((isSplit || (IOS_DESIGN && !isSideLayout)) && currentState === 'Select') {
+    // Select mode, like Mail: text buttons (Select All / Deselect All and Done) around a count.
+    return (
+      <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
+        <Animated.View style={tailwind.style('w-[124px] flex-row items-center')}>
+          <GlassPillButton
+            label={i18n.t(
+              isSelectedAll
+                ? 'CONVERSATION.HEADER.DESELECT_ALL'
+                : 'CONVERSATION.HEADER.SELECT_ALL_TITLE',
+            )}
+            onPress={onLeftIconPress}
+          />
+        </Animated.View>
+        <Text
+          numberOfLines={1}
+          accessibilityRole="header"
+          style={tailwind.style(
+            'flex-1 text-[17px] leading-[22px] font-inter-semibold-20 text-center text-gray-950',
+          )}>
+          {selectedCount > 0
+            ? i18n.t('CONVERSATION.HEADER.SELECTED_COUNT', { count: selectedCount })
+            : i18n.t('CONVERSATION.HEADER.SELECT_ITEMS')}
+        </Text>
+        <Animated.View style={tailwind.style('w-[124px] flex-row items-center justify-end')}>
+          <GlassPillButton label={i18n.t('CONVERSATION.HEADER.DONE')} onPress={onRightIconPress} />
+        </Animated.View>
+      </Animated.View>
+    );
+  }
+
+  if (isSplit || (IOS_DESIGN && !isSideLayout)) {
+    // Split view and iPhone: small centered title with round glass buttons on each side,
+    // above the list they act on.
+    return (
+      <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
+        <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
+          {currentState === 'Filter' ? (
+            <GlassPillButton
+              label={i18n.t('CONVERSATION.HEADER.CLEAR_FILTER')}
+              onPress={onClearFilter}
+              disabled={filtersAppliedCount === 0}
+              count={filtersAppliedCount}
+            />
+          ) : currentState === 'Select' ? (
+            <GlassCircleButton
+              icon={
+                isSelectedAll ? (
+                  <CheckedIcon />
+                ) : (
+                  <UncheckedIcon stroke={tailwind.color('text-gray-800')} />
+                )
+              }
+              onPress={onLeftIconPress}
+              iconSize={18}
+              accessibilityLabel={i18n.t('CONVERSATION.HEADER.SELECT_ALL')}
+            />
+          ) : (
+            <GlassCircleButton
+              icon={<SearchIcon stroke={HEADER_ICON_COLOR} />}
+              onPress={onLeftIconPress}
+              accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
+            />
+          )}
+        </Animated.View>
+        <HeaderTitle />
+        <Animated.View style={tailwind.style('w-24 flex-row items-center justify-end')}>
+          {isModal ? (
+            <GlassCircleButton
+              icon={<CloseIcon stroke={HEADER_ICON_COLOR} />}
+              onPress={onRightIconPress}
+              accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
+            />
+          ) : (
+            // Native filter menu (iOS pull-down) instead of the filter mode.
+            <ConversationFilterMenu>
+              <GlassCircleButton
+                icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
+                showBadge={filtersAppliedCount > 0}
+                accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
+              />
+            </ConversationFilterMenu>
+          )}
+        </Animated.View>
+      </Animated.View>
+    );
+  }
+
+  if (isSideLayout) {
+    return (
+      <Animated.View style={tailwind.style('flex flex-row items-center gap-3 px-4 pt-2 pb-3')}>
+        <LargeHeaderTitle
+          title={
+            currentState !== 'Select'
+              ? i18n.t('CONVERSATION.HEADER.TITLE')
+              : selectedCount > 0
+                ? i18n.t('CONVERSATION.HEADER.SELECTED_COUNT', { count: selectedCount })
+                : i18n.t('CONVERSATION.HEADER.SELECT_ITEMS')
+          }
+        />
+        <SideLayoutListAction
+          currentState={currentState}
+          isSelectedAll={isSelectedAll}
+          filtersAppliedCount={filtersAppliedCount}
+          onLeftIconPress={onLeftIconPress}
+          onClearFilter={onClearFilter}
+        />
+      </Animated.View>
+    );
+  }
 
   return (
     <Animated.View

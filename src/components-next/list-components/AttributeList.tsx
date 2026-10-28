@@ -11,6 +11,8 @@ import { Icon } from '@/components-next/common';
 import { showToast } from '@/utils/toastUtils';
 import { formatAttributeValue } from '@/utils/attributeUtils';
 import { expandTabs } from '@/utils/expandTabs';
+import { IOS_DESIGN } from '@/utils';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 type AttributeItemProps = {
   listItem: AttributeListType;
@@ -101,6 +103,8 @@ type AttributeListProps = {
   list: AttributeListType[];
 };
 export const AttributeList = (props: AttributeListProps) => {
+  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { list, sectionTitle } = props;
 
   return (
@@ -115,7 +119,12 @@ export const AttributeList = (props: AttributeListProps) => {
           </Animated.Text>
         </Animated.View>
       ) : null}
-      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+      <Animated.View
+        // Flat (no shadow) on the split view pane's gray page, like iOS Settings.
+        style={[
+          tailwind.style('rounded-[13px] mx-4 bg-white'),
+          isInPane ? null : styles.listShadow,
+        ]}>
         {list.map(
           (listItem, index) =>
             !listItem.disabled &&

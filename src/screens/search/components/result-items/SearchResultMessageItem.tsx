@@ -6,7 +6,7 @@ import { Icon } from '@/components-next/common';
 import { tailwind } from '@/theme';
 import type { Message } from '@/types/Message';
 import { HighlightedText } from '../shared/HighlightedText';
-import { useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, IOS_LIST_TEXT, useScaleAnimation } from '@/utils';
 import { getPlainText } from '@/utils/messageFormatterUtils';
 import { getChannelIcon } from '@/utils/getChannelIcon';
 import { LockIcon } from '@/svg-icons';
@@ -53,6 +53,79 @@ export const SearchResultMessageItem = ({
   const messageContent = getPlainText(rawContent);
 
   const { animatedStyle, handlers } = useScaleAnimation();
+
+  if (IOS_DESIGN) {
+    // iOS list row: the sender as a 17pt title with the time, the message in 15pt (two
+    // lines), and the conversation, inbox and private note flag in a footnote.
+    return (
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => tailwind.style('pl-4', pressed && 'bg-gray-100')}>
+        <Animated.View
+          style={tailwind.style(
+            'py-3 pr-4 gap-0.5',
+            !isLast && 'border-b-[0.5px] border-b-blackA-A6',
+          )}>
+          <Animated.View style={tailwind.style('flex-row items-center gap-2')}>
+            <Animated.Text
+              numberOfLines={1}
+              style={tailwind.style(
+                'flex-1 text-gray-950',
+                IOS_LIST_TEXT.title,
+                IOS_LIST_TEXT.readTitle,
+              )}>
+              {senderName}
+            </Animated.Text>
+            {createdAt && <LastActivityTime timestamp={createdAt} />}
+          </Animated.View>
+          {messageContent ? (
+            <HighlightedText
+              text={messageContent}
+              searchQuery={searchQuery}
+              style={tailwind.style('font-inter-normal-20 text-gray-700', IOS_LIST_TEXT.body)}
+              numberOfLines={2}
+            />
+          ) : null}
+          <Animated.View style={tailwind.style('flex-row items-center gap-1.5 mt-0.5')}>
+            <ConversationId id={conversationId} />
+            {inboxName ? (
+              <>
+                {inbox && channelType && (
+                  <Animated.View
+                    style={tailwind.style(
+                      'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
+                    )}>
+                    <Icon icon={getChannelIcon(channelType, medium, additionalType)} size={10} />
+                  </Animated.View>
+                )}
+                <Animated.Text
+                  numberOfLines={1}
+                  style={tailwind.style(
+                    'font-inter-normal-20 text-gray-700 flex-shrink',
+                    IOS_LIST_TEXT.footnote,
+                  )}>
+                  {inboxName}
+                </Animated.Text>
+              </>
+            ) : null}
+            {message.private && (
+              <Animated.View style={tailwind.style('flex-row items-center gap-1')}>
+                <Icon icon={<LockIcon fill={tailwind.color('text-amber-700')} />} size={12} />
+                <Animated.Text
+                  numberOfLines={1}
+                  style={tailwind.style(
+                    'font-inter-normal-20 text-amber-700',
+                    IOS_LIST_TEXT.footnote,
+                  )}>
+                  Private note
+                </Animated.Text>
+              </Animated.View>
+            )}
+          </Animated.View>
+        </Animated.View>
+      </Pressable>
+    );
+  }
 
   return (
     <Pressable

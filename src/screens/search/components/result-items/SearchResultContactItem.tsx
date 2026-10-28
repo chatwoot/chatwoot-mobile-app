@@ -7,7 +7,7 @@ import { tailwind } from '@/theme';
 import type { Contact } from '@/types/Contact';
 import { HighlightedText } from '../shared/HighlightedText';
 import { expandTabs } from '@/utils/expandTabs';
-import { useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, IOS_LIST_TEXT, useScaleAnimation } from '@/utils';
 
 type SearchResultContactItemProps = {
   contact: Contact;
@@ -66,6 +66,64 @@ export const SearchResultContactItem = ({
 
     return items;
   }, [contact.email, contact.phoneNumber, formattedLocation]);
+
+  if (IOS_DESIGN) {
+    // iOS list row like the conversation list: 40pt avatar, 17pt name, 15pt details and a
+    // hairline divider that starts at the text.
+    const detailStyle = tailwind.style(
+      'font-inter-normal-20 text-gray-700 flex-shrink',
+      IOS_LIST_TEXT.body,
+    );
+    return (
+      <Pressable
+        onPress={onPress}
+        style={({ pressed }) => tailwind.style('flex-row pl-4', pressed && 'bg-gray-100')}>
+        <Animated.View style={tailwind.style('py-3')}>
+          <Avatar
+            src={contact.thumbnail ? { uri: contact.thumbnail } : undefined}
+            name={contact.name || ''}
+            size="2xl"
+            initialsClassName="text-[14px]"
+          />
+        </Animated.View>
+        <Animated.View
+          style={tailwind.style(
+            'flex-1 ml-3 py-3 pr-4 gap-0.5 justify-center',
+            !isLast && 'border-b-[0.5px] border-b-blackA-A6',
+          )}>
+          <HighlightedText
+            text={contact.name || ''}
+            searchQuery={searchQuery}
+            style={tailwind.style('text-gray-950', IOS_LIST_TEXT.title, IOS_LIST_TEXT.readTitle)}
+            numberOfLines={1}
+          />
+          {contactInfoItems.length > 0 && (
+            <Animated.View style={tailwind.style('flex-row flex-wrap items-center gap-x-1.5')}>
+              {contactInfoItems.map((item, index) =>
+                item.type === 'separator' ? (
+                  <Animated.Text key={`separator-${index}`} style={detailStyle}>
+                    ·
+                  </Animated.Text>
+                ) : item.isHighlighted ? (
+                  <HighlightedText
+                    key={`text-${index}`}
+                    text={item.content || ''}
+                    searchQuery={searchQuery}
+                    style={detailStyle}
+                    numberOfLines={1}
+                  />
+                ) : (
+                  <Animated.Text key={`text-${index}`} style={detailStyle} numberOfLines={1}>
+                    {expandTabs(item.content || '')}
+                  </Animated.Text>
+                ),
+              )}
+            </Animated.View>
+          )}
+        </Animated.View>
+      </Pressable>
+    );
+  }
 
   return (
     <Pressable

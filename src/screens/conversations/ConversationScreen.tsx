@@ -2,6 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { SplitView } from '@/navigation/split/SplitView';
+import { SplitEmptyState } from '@/navigation/split/SplitEmptyState';
+import {
+  HeaderSpacer,
+  PullToRefreshIndicator,
+  ScrollEdgeHeader,
+  useScrollEdge,
+} from '@/components-next/side-toolbar';
 import { FlashList } from '@shopify/flash-list';
 
 import {
@@ -48,7 +56,7 @@ import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentS
 import i18n from '@/i18n';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { getCurrentRouteName } from '@/utils/navigationUtils';
-import { useTabBarHeight } from '@/utils';
+import { IOS_DESIGN, useTabBarHeight, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // The screen list thats need to be checked for refreshing the conversations list
@@ -61,7 +69,26 @@ type FlashListRenderItemType = {
   index: number;
 };
 
-const ConversationList = () => {
+// With tabs on the side (iPhone Duo) the header floats over the list with a scroll edge
+// effect: `overlayHeaderHeight` adds a spacer so the rows start below the header and
+// offsets the refresh spinner to match, and `onScroll` drives the effect. `splitEmpty` uses
+// the split view's empty state.
+type OverlayListProps = {
+  overlayHeaderHeight?: number;
+  splitEmpty?: boolean;
+  // Drives the pull-to-refresh spinner drawn below the floating header.
+  scrollY?: SharedValue<number>;
+  isDragging?: SharedValue<number>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onScroll?: any;
+};
+const ConversationList = ({
+  overlayHeaderHeight = 0,
+  splitEmpty = false,
+  onScroll,
+  scrollY,
+  isDragging,
+}: OverlayListProps) => {
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
   const [appState, setAppState] = useState(AppState.currentState);
@@ -83,18 +110,25 @@ const ConversationList = () => {
   // This is used to check if all the conversations are fetched
   const isAllConversationsFetched = useAppSelector(selectIsAllConversationsFetched);
 
-  const handleRender = useCallback(({ item, index }: FlashListRenderItemType) => {
-    return (
-      <ConversationItemContainer
-        index={index}
-        conversationItem={item}
-        openedRowIndex={openedRowIndex as SharedValue<number | null>}
-      />
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const filters = useAppSelector(selectFilters);
+
+  const allConversations = useAppSelector(state =>
+    getFilteredConversations(state, filters, userId),
+  );
+
+  const handleRender = useCallback(
+    ({ item, index }: FlashListRenderItemType) => {
+      return (
+        <ConversationItemContainer
+          index={index}
+          conversationItem={item}
+          nextConversationId={allConversations[index + 1]?.id}
+          openedRowIndex={openedRowIndex as SharedValue<number | null>}
+        />
+      );
+    },
+    [allConversations, openedRowIndex],
+  );
 
   // Reset last active timestamp when the conversation screen is opened
   useEffect(() => {
@@ -206,10 +240,6 @@ const ConversationList = () => {
     }
   }, [isFlashListReady, openedRowIndex]);
 
-  const allConversations = useAppSelector(state =>
-    getFilteredConversations(state, filters, userId),
-  );
-
   const shouldShowEmptyLoader = isConversationsLoading && allConversations.length === 0;
 
   return shouldShowEmptyLoader ? (
@@ -218,35 +248,91 @@ const ConversationList = () => {
       <ActivityIndicator />
     </Animated.View>
   ) : allConversations.length === 0 ? (
-    <Animated.ScrollView
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      contentContainerStyle={tailwind.style(
-        'flex-1 items-center justify-center',
-        `pb-[${tabBarHeight}px]`,
-      )}>
-      <EmptyStateIcon />
-      <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
-        {i18n.t('CONVERSATION.EMPTY')}
-      </Animated.Text>
-    </Animated.ScrollView>
+    <Animated.View style={tailwind.style('flex-1')}>
+      <Animated.ScrollView
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            // Under the floating header the spinner is drawn by PullToRefreshIndicator.
+            tintColor={overlayHeaderHeight ? 'transparent' : undefined}
+          />
+        }
+        contentContainerStyle={tailwind.style(
+          'flex-1 items-center justify-center',
+          `pb-[${tabBarHeight}px]`,
+        )}>
+        {splitEmpty ? (
+          <SplitEmptyState message={i18n.t('CONVERSATION.EMPTY')} />
+        ) : (
+          <>
+            <EmptyStateIcon />
+            <Animated.Text style={tailwind.style('pt-6 text-md  tracking-[0.32px] text-gray-800')}>
+              {i18n.t('CONVERSATION.EMPTY')}
+            </Animated.Text>
+          </>
+        )}
+      </Animated.ScrollView>
+      {overlayHeaderHeight && scrollY && isDragging ? (
+        <PullToRefreshIndicator
+          scrollY={scrollY}
+          isDragging={isDragging}
+          top={overlayHeaderHeight}
+          refreshing={isRefreshing}
+        />
+      ) : null}
+    </Animated.View>
   ) : (
-    <AnimatedFlashList
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-      showsVerticalScrollIndicator={false}
-      data={allConversations}
-      onScrollBeginDrag={handleScrollBeginDrag}
-      onEndReached={handleOnEndReached}
-      onEndReachedThreshold={0.5}
-      ListFooterComponent={ListFooterComponent}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      renderItem={handleRender}
-      contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}
-    />
+    <Animated.View style={tailwind.style('flex-1')}>
+      <AnimatedFlashList
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={handleRefresh}
+            // Under the floating header the spinner is drawn by PullToRefreshIndicator.
+            tintColor={overlayHeaderHeight ? 'transparent' : undefined}
+          />
+        }
+        onScroll={onScroll}
+        scrollEventThrottle={16}
+        // Start below the floating header: a spacer the header's height sits above the rows.
+        ListHeaderComponent={
+          overlayHeaderHeight ? <HeaderSpacer height={overlayHeaderHeight} /> : null
+        }
+        scrollIndicatorInsets={overlayHeaderHeight ? { top: overlayHeaderHeight } : undefined}
+        showsVerticalScrollIndicator={false}
+        data={allConversations}
+        onScrollBeginDrag={handleScrollBeginDrag}
+        onEndReached={handleOnEndReached}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={ListFooterComponent}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        renderItem={handleRender}
+        contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}
+      />
+      {overlayHeaderHeight && scrollY && isDragging ? (
+        <PullToRefreshIndicator
+          scrollY={scrollY}
+          isDragging={isDragging}
+          top={overlayHeaderHeight}
+          refreshing={isRefreshing}
+        />
+      ) : null}
+    </Animated.View>
   );
 };
 
 const ConversationScreen = () => {
+  const isSplit = useIsSplitLayout();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  // The header floats over the list on iOS (and with tabs on the side).
+  const sideTabBar = useSideTabBarLayout();
+  const hasOverlayHeader = IOS_DESIGN || sideTabBar !== null;
+  const scrollEdge = useScrollEdge();
+  const filters = useAppSelector(selectFilters);
   const currentBottomSheet = useAppSelector(selectBottomSheetState);
   const dispatch = useAppDispatch();
 
@@ -277,39 +363,81 @@ const ConversationScreen = () => {
   })();
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
-      <StatusBar
-        translucent
-        backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
-      />
-      <ConversationListStateProvider>
-        <ConversationHeader />
-        <Animated.View
-          style={tailwind.style('flex-1')}
-          layout={LinearTransition.springify().damping(22).stiffness(180)}>
-          <ConversationList />
-        </Animated.View>
-        <Sheet
-          ref={filtersModalSheetRef}
-          height={isInbox ? undefined : filterHeight}
-          detents={isInbox ? [0.7] : undefined}
-          scrollable={isInbox}
-          onDismiss={handleOnDismiss}>
-          {isInbox ? (
-            <InboxFilters />
+    <SplitView resetKey={filters}>
+      {/* In the split view the list ends at the divider, not the screen edge, so it
+          skips the right inset (SafeAreaView applies screen insets regardless of position). */}
+      <SafeAreaView
+        // With the floating header, the list runs under the status bar too and the header
+        // pads itself below it (ScrollEdgeHeader).
+        edges={
+          hasOverlayHeader
+            ? isSplit
+              ? ['left']
+              : ['left', 'right']
+            : isSplit
+              ? ['top', 'left']
+              : ['top', 'left', 'right']
+        }
+        style={tailwind.style('flex-1 bg-white')}>
+        <StatusBar
+          translucent
+          backgroundColor={tailwind.color('bg-white')}
+          barStyle={'dark-content'}
+        />
+        <ConversationListStateProvider>
+          {hasOverlayHeader ? (
+            // Header floats over the list with a scroll edge effect (Apple HIG, Scroll views).
+            <>
+              <Animated.View style={tailwind.style('flex-1')}>
+                {/* Wait for the header's height so the list opens at the right offset. */}
+                {headerHeight ? (
+                  <ConversationList
+                    overlayHeaderHeight={headerHeight}
+                    splitEmpty={isSplit}
+                    onScroll={scrollEdge.onScroll}
+                    scrollY={scrollEdge.scrollY}
+                    isDragging={scrollEdge.isDragging}
+                  />
+                ) : null}
+              </Animated.View>
+              <ScrollEdgeHeader
+                scrollY={scrollEdge.scrollY}
+                onHeightChange={setHeaderHeight}
+                insetSides={!isSplit}>
+                <ConversationHeader />
+              </ScrollEdgeHeader>
+            </>
           ) : (
             <>
-              {currentBottomSheet === 'status' ? <StatusFilters /> : null}
-              {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
-              {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
+              <ConversationHeader />
+              <Animated.View
+                style={tailwind.style('flex-1')}
+                layout={LinearTransition.springify().damping(22).stiffness(180)}>
+                <ConversationList />
+              </Animated.View>
             </>
           )}
-        </Sheet>
-        <ActionBottomSheet />
-        <ActionTabs />
-      </ConversationListStateProvider>
-    </SafeAreaView>
+          <Sheet
+            ref={filtersModalSheetRef}
+            height={isInbox ? undefined : filterHeight}
+            detents={isInbox ? [0.7] : undefined}
+            scrollable={isInbox}
+            onDismiss={handleOnDismiss}>
+            {isInbox ? (
+              <InboxFilters />
+            ) : (
+              <>
+                {currentBottomSheet === 'status' ? <StatusFilters /> : null}
+                {currentBottomSheet === 'sort_by' ? <SortByFilters /> : null}
+                {currentBottomSheet === 'assignee_type' ? <AssigneeTypeFilters /> : null}
+              </>
+            )}
+          </Sheet>
+          <ActionBottomSheet />
+          <ActionTabs />
+        </ConversationListStateProvider>
+      </SafeAreaView>
+    </SplitView>
   );
 };
 

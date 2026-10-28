@@ -10,6 +10,8 @@ const radixUIDarkColors = require('./colors/dark');
 const blackA = require('./colors/blackA');
 // White with alpha variations
 const whiteA = require('./colors/whiteA');
+const { plugin } = require('twrnc');
+const { appFont, useSystemFont } = require('./appFont');
 // Call screen colours the Radix palette above does not have
 const callColors = require('./colors/call');
 
@@ -41,14 +43,33 @@ export const twConfig = {
       // - Between Medium and Semi-bold: "inter-580-24" (600)
       // - Semi-bold: "inter-semibold-24" (600)
       // -  Last numbers (20, 24 etc) are optical sizes.
-      fontFamily: {
-        'inter-normal-20': ['Inter-400-20'],
-        'inter-420-20': ['Inter-420-20'],
-        'inter-medium-24': ['Inter-500-24'],
-        'inter-580-24': ['Inter-580-24'],
-        'inter-semibold-20': ['Inter-600-20'],
-      },
+      // On iOS (system font trial) these names map to the system font below instead.
+      fontFamily: useSystemFont
+        ? {}
+        : {
+            'inter-normal-20': ['Inter-400-20'],
+            'inter-420-20': ['Inter-420-20'],
+            'inter-medium-24': ['Inter-500-24'],
+            'inter-580-24': ['Inter-580-24'],
+            'inter-semibold-20': ['Inter-600-20'],
+          },
     },
   },
-  plugins: [],
+  // TRIAL: on iOS the Inter class names use Apple's system font at the matching weight, so
+  // no screen needs to change. See src/theme/appFont.ts to switch back.
+  plugins: useSystemFont
+    ? [
+        plugin(
+          ({ addUtilities }: { addUtilities: (utilities: Record<string, object>) => void }) => {
+            addUtilities({
+              'font-inter-normal-20': appFont('Inter-400-20'),
+              'font-inter-420-20': appFont('Inter-420-20'),
+              'font-inter-medium-24': appFont('Inter-500-24'),
+              'font-inter-580-24': appFont('Inter-580-24'),
+              'font-inter-semibold-20': appFont('Inter-600-20'),
+            });
+          },
+        ),
+      ]
+    : [],
 };

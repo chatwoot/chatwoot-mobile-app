@@ -89,13 +89,38 @@
     "HEADER": {
       "TITLE": "Conversations",
       "CLEAR_FILTER": "Clear",
+      "SEARCH": "Search",
+      "FILTER": "Filter",
+      "CLOSE": "Close",
+      "SELECT_ALL": "Select all",
+      "SELECT_ALL_TITLE": "Select All",
+      "DESELECT_ALL": "Deselect All",
+      "SELECT_ITEMS": "Select Items",
+      "SELECTED_COUNT": "%{count} Selected",
+      "DONE": "Done",
+      "MORE": "More",
+      "BACK_TO_MESSAGES": "Back to messages",
+      "BACK": "Back",
       "VOICE_CALL_FAILED": "Could not start the call.",
       "WHATSAPP_CALL_FAILED": "Could not start the WhatsApp call.",
       "WHATSAPP_CALL_PERMISSION_REQUESTED": "Sent a call permission request to the contact. Try again once they accept.",
       "WHATSAPP_CALL_PERMISSION_PENDING": "Call permission request already sent recently. Try again once the contact accepts.",
       "CALL_UNAVAILABLE": "Calling from the app is not available yet. Start the call from the web app."
     },
+    "BULK": {
+      "LABEL": "Label",
+      "ASSIGN": "Assign",
+      "STATUS": "Status",
+      "ADD_LABEL": "Add Label",
+      "ASSIGN_TO": "Assign To",
+      "SEARCH_AGENTS": "Search agents",
+      "SEARCH_LABELS": "Search labels"
+    },
+    "SPLIT_VIEW": {
+      "EMPTY": "Select a conversation to view it here"
+    },
     "FILTERS": {
+      "RESET": "Reset filters",
       "AGENT": {
         "SEARCH_AGENT": "Search agents"
       },
@@ -160,6 +185,13 @@
     "TODAY": "Today",
     "YESTERDAY": "Yesterday",
     "TYPE_MESSAGE": "Type message",
+    "EXPAND_REPLY": "Expand reply",
+    "COMPOSE": {
+      "REPLY": "Reply",
+      "PRIVATE_NOTE": "Private note",
+      "CLOSE": "Close",
+      "SEND": "Send"
+    },
     "TYPING": "typing",
     "ALL_CONVERSATION_LOADED": "All conversations loaded",
     "ASSIGN": "Assign conversation",
@@ -170,18 +202,24 @@
     "ASSIGNED_AGENT": "Assigned agent",
     "TEAM": "Team",
     "PRIVATE_MSG_INPUT": "This will be visible only to Agents",
+    "PRIVATE_NOTE_SHORT": "Private note",
     "UNSUPPORTED_MESSAGE": "This message is unsupported. You can view this message on the Facebook / Instagram app.",
     "NOT_FOUND": {
       "TITLE": "Unable to fetch conversation",
       "RETRY": "Retry",
       "BACK_TO_HOME": "Go back to home",
+      "CLOSE": "Close",
+      "PANE_DESCRIPTION": "Check your connection and try again. The conversation may also have been deleted or moved.",
       "DESCRIPTION": "It seems like that conversation is not able fetch properly. It could be due to a network issue or the conversation is not available anymore. Please click on the retry button to try again."
     },
     "BOT": "Bot",
     "EMAIL_HEAD": {
       "TO": "To",
       "CC": "Cc",
-      "BCC": "Bcc"
+      "BCC": "Bcc",
+      "CC_BCC": "Cc/Bcc",
+      "REMOVE_CC": "Remove Cc and Bcc",
+      "REMOVE_BCC": "Remove Bcc"
     },
     "SELF_ASSIGN": "Assign to me",
     "UN_ASSIGN": "Unassign conversation",
@@ -379,6 +417,7 @@
     "HEADER_TITLE": "Settings",
     "SET_AVAILABILITY": "Set yourself as",
     "CHANGE_AVAILABILITY": "Set availability",
+    "AVAILABILITY_ERROR": "Couldn't change your status. Please try again.",
     "PREFERENCES": "Preferences",
     "ABOUT": "About",
     "SUPPORT": "Support",
@@ -394,6 +433,7 @@
     "DEBUG_ACTIONS": "Debug Actions"
   },
   "NOTIFICATION": {
+    "SPLIT_VIEW_EMPTY": "Select a notification to view the conversation",
     "HEADER_TITLE": "Notifications",
     "INBOX": "Inbox",
     "EMPTY": "No notifications yet.",
@@ -443,8 +483,8 @@
     "PUSH": "Push Notifications",
     "CONVERSATION_CREATE_PUSH": "A new conversation is created",
     "CONVERSATION_ASSIGNEE_PUSH": "A conversation is assigned to you",
-    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "You are mentioned in a conversation",
-    "CONVERSATION_MENTION": "A new message is created in an assigned conversation",
+    "CONVERSATION_ASSIGNED_NEW_MESSAGE_PUSH": "A new message is created in an assigned conversation",
+    "CONVERSATION_MENTION": "You are mentioned in a conversation",
     "CONVERSATION_PARTICIPATING_NEW_MESSAGE_PUSH": "A new message is created in a participating conversation",
     "CONVERSATION_SLA_MISSED_FIRST_RESPONSE": "A conversation misses first response SLA",
     "CONVERSATION_SLA_MISSED_NEXT_RESPONSE": "A conversation misses next response SLA",

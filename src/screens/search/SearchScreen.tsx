@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Tabs, type TabItem } from '@/components-next/common/tabs';
 
+import { FullScreenPage } from '@/navigation/split/FullScreenPage';
 import { tailwind } from '@/theme';
+import { IOS_DESIGN } from '@/utils';
 import { useSearchScreen } from './hooks/useSearchScreen';
 import { SearchHeader } from './components/header/SearchHeader';
+import { SearchScopeTabs } from './components/header/SearchScopeTabs';
 import { SearchContent } from './components/views/SearchContent';
 import { FadeInView } from './components/shared/FadeInView';
 import type { SearchSectionType } from '@/store/search/searchTypes';
@@ -69,7 +71,9 @@ const SearchScreen = () => {
   );
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    // FullScreenPage gives the page its own side toolbar on iPhone Duo (for Back) and is a
+    // plain safe area view elsewhere.
+    <FullScreenPage>
       <SearchHeader
         searchText={searchText}
         isLoading={isLoading}
@@ -77,11 +81,14 @@ const SearchScreen = () => {
         onClear={() => handleSearchChange('')}
         onBackPress={handleBackPress}
       />
-      {searchText.trim().length >= 2 && (
-        <View style={tailwind.style('pl-4 py-6')}>
-          <Tabs items={tabItems} activeTabId={activeTab} onTabPress={handleTabChange} />
-        </View>
-      )}
+      {searchText.trim().length >= 2 &&
+        (IOS_DESIGN ? (
+          <SearchScopeTabs items={tabItems} activeTabId={activeTab} onTabPress={handleTabChange} />
+        ) : (
+          <View style={tailwind.style('pl-4 py-6')}>
+            <Tabs items={tabItems} activeTabId={activeTab} onTabPress={handleTabChange} />
+          </View>
+        ))}
       <FadeInView key={activeTab} style={tailwind.style('flex-1')}>
         <SearchContent
           showRecentSearches={showRecentSearches}
@@ -106,7 +113,7 @@ const SearchScreen = () => {
           renderItem={renderItem}
         />
       </FadeInView>
-    </SafeAreaView>
+    </FullScreenPage>
   );
 };
 

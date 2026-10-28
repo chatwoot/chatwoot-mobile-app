@@ -1,14 +1,16 @@
 import React, { useMemo, useRef } from 'react';
-import { Dimensions, Pressable, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, type StyleProp, type ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Icon, IconButton } from '@/components-next';
 
 import { MailIcon, PhoneIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import i18n from '@/i18n';
 import { openNumber, openEmail } from '@/utils/urlUtils';
+import { useContainerWidth } from '@/context';
+import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import type { SheetRef } from '@/components-next/common/sheet/Sheet';
 import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
@@ -34,10 +36,11 @@ type ContactOptionProps = {
   disabled?: boolean;
 };
 
-const SCREEN_WIDTH = Dimensions.get('screen').width;
-const OPTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 2;
-
 const ContactOptionComponent = (props: ContactOptionProps) => {
+  // White buttons on the gray page in the contact column and on iOS.
+  const isInContactPane = useIsInContactPane() || IOS_DESIGN;
+  // Sized to the container (e.g. the split view's contact column), not the whole screen.
+  const OPTION_WIDTH = (useContainerWidth() - 32 - 12 * 3) / 2;
   const { option, handleOptionPress, disabled = false } = props;
 
   const { handlers, animatedStyle } = useScaleAnimation();
@@ -53,7 +56,9 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
       <Pressable
         style={({ pressed }) => [
           tailwind.style(
-            'flex items-center justify-center flex-1 rounded-xl bg-gray-50 py-3',
+            'flex items-center justify-center flex-1 rounded-xl py-3',
+            // White on the split view column's gray background, light gray elsewhere.
+            isInContactPane ? 'bg-white' : 'bg-gray-50',
             `w-[${OPTION_WIDTH}px]`,
             pressed ? 'bg-gray-100' : '',
             disabled ? 'opacity-40' : '',
@@ -86,6 +91,8 @@ type ContactBasicActionsProps = {
 };
 
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
+  // White buttons on the gray page in the contact column and on iOS.
+  const isInContactPane = useIsInContactPane() || IOS_DESIGN;
   const { phoneNumber, email, contactId, conversation, caller, style } = props;
   const dispatch = useAppDispatch();
   const inboxes = useAppSelector(selectAllInboxes);
@@ -194,6 +201,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
         <IconButton
           text={i18n.t('CONTACT_DETAILS.CALL')}
           variant="secondary"
+          secondaryBackground={isInContactPane ? 'bg-white' : undefined}
           handlePress={onCallPress}
           disabled={isCallDisabled}
         />
@@ -207,7 +215,9 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
       <IconButton
         text={i18n.t('CONTACT_DETAILS.EMAIL')}
         variant="secondary"
+        secondaryBackground={isInContactPane ? 'bg-white' : undefined}
         handlePress={onEmailPress}
+        icon={<MailIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />}
       />
     </Animated.View>
   );

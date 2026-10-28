@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
+import { View } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -18,16 +18,24 @@ import {
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 
 import { getUserPermissions } from '@/utils/permissionUtils';
+import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
+import { SideToolbarProvider } from '@/context';
+import { tailwind } from '@/theme';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { AuthStack, ConversationStack, SettingsStack, InboxStack } from '../stack';
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
+import ComposeScreen from '@/screens/chat-screen/ComposeScreen';
+import MacrosScreen from '@/screens/chat-screen/MacrosScreen';
+import BulkPickerScreen from '@/screens/conversations/BulkPickerScreen';
+import ConversationActionsScreen from '@/screens/chat-screen/ConversationActionsScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import SearchScreen from '@/screens/search/SearchScreen';
 
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
-import { BottomTabBar } from './BottomTabBar';
+import { BottomTabBar, LayoutChangeCover, SideColumnDivider } from './BottomTabBar';
+import { GlassToastHost } from '@/components-next/toast';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { selectChatwootVersion } from '@/store/settings/settingsSelectors';
 import { checkServerSupport } from '@/utils/serverUtils';
@@ -64,8 +72,14 @@ export type TabBarExcludedScreenParamList = {
     primaryActorId?: number;
     primaryActorType?: string;
     messageId?: number;
+    // Shown without the slide, e.g. when folding the Duo moves the open conversation here.
+    instant?: boolean;
   };
   ContactDetails: { conversationId?: number; contactId?: number };
+  ComposeScreen: { conversationId: number };
+  MacrosScreen: { conversationId: number };
+  ConversationActionsScreen: { conversationId: number };
+  BulkPicker: { kind: 'assign' | 'label' };
   ConversationActions: undefined;
   Dashboard: { url: string };
   Login: undefined;
@@ -76,10 +90,17 @@ export type TabBarExcludedScreenParamList = {
 };
 const Stack = createNativeStackNavigator<TabBarExcludedScreenParamList>();
 
+// Pages that open in the split view's side column on the open Duo open as full-screen pages
+// on iOS (pushed from the right) and as sheets on Android.
+const sidePageOptions = IOS_DESIGN
+  ? ({ animation: 'slide_from_right' } as const)
+  : ({ presentation: 'modal', animation: 'slide_from_bottom' } as const);
+
 const CustomTabBar = (props: BottomTabBarProps) => <BottomTabBar {...props} />;
 
 const Tabs = () => {
   const dispatch = useAppDispatch();
+  const sideTabBar = useSideTabBarLayout();
   const user = useAppSelector(selectUser);
   const installationUrl = useAppSelector(selectInstallationUrl);
   const chatwootVersion = useAppSelector(selectChatwootVersion);
@@ -192,19 +213,34 @@ const Tabs = () => {
   }, []);
 
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
-      {hasConversationPermission && (
-        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
-      )}
-      {hasConversationPermission && (
-        <Tab.Screen
-          name="Conversations"
-          options={{ headerShown: false }}
-          component={ConversationStack}
-        />
-      )}
-      <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
-    </Tab.Navigator>
+    <SideToolbarProvider>
+      <Tab.Navigator
+        tabBar={CustomTabBar}
+        initialRouteName="Inbox"
+        // With a side tab bar (iPhone Duo), keep tab screens clear of the capsule and the
+        // rounded top corners.
+        sceneContainerStyle={
+          sideTabBar
+            ? {
+                backgroundColor: tailwind.color('bg-white'),
+                [sideTabBar.edge === 'right' ? 'paddingRight' : 'paddingLeft']:
+                  sideTabBar.contentPadding,
+              }
+            : undefined
+        }>
+        {hasConversationPermission && (
+          <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+        )}
+        {hasConversationPermission && (
+          <Tab.Screen
+            name="Conversations"
+            options={{ headerShown: false }}
+            component={ConversationStack}
+          />
+        )}
+        <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
+      </Tab.Navigator>
+    </SideToolbarProvider>
   );
 };
 
@@ -213,29 +249,43 @@ export const AppTabs = () => {
 
   if (isLoggedIn) {
     return (
-      <React.Fragment>
+      <View style={{ flex: 1 }}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Tab" component={Tabs} />
           <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
+            options={({ route }) => ({
+              animation: route.params?.instant ? 'none' : 'slide_from_right',
+            })}
             name="ChatScreen"
             component={ChatScreen}
           />
           <Stack.Screen
-            options={{
-              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-              animation: 'slide_from_bottom',
-            }}
+            options={sidePageOptions}
             name="ContactDetails"
             component={ContactDetailsScreen}
           />
+          <Stack.Screen options={sidePageOptions} name="Dashboard" component={DashboardScreen} />
           <Stack.Screen
-            options={{
-              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-              animation: 'slide_from_bottom',
-            }}
-            name="Dashboard"
-            component={DashboardScreen}
+            // Full reply editor (iOS): a full-screen page like the split view's compose column.
+            options={{ animation: 'slide_from_right' }}
+            name="ComposeScreen"
+            component={ComposeScreen}
+          />
+          <Stack.Screen
+            options={{ animation: 'slide_from_right' }}
+            name="MacrosScreen"
+            component={MacrosScreen}
+          />
+          <Stack.Screen
+            options={{ animation: 'slide_from_right' }}
+            name="ConversationActionsScreen"
+            component={ConversationActionsScreen}
+          />
+          <Stack.Screen
+            // Bulk Assign/Label picker: a full-height sheet with search (iOS page sheet).
+            options={{ presentation: 'modal' }}
+            name="BulkPicker"
+            component={BulkPickerScreen}
           />
           <Stack.Screen
             options={{ headerShown: false, animation: 'slide_from_right' }}
@@ -243,10 +293,18 @@ export const AppTabs = () => {
             component={SearchScreen}
           />
         </Stack.Navigator>
+        <SideColumnDivider />
+        <LayoutChangeCover />
         <InAppCallScreen />
-      </React.Fragment>
+        <GlassToastHost />
+      </View>
     );
   } else {
-    return <AuthStack />;
+    return (
+      <View style={{ flex: 1 }}>
+        <AuthStack />
+        <GlassToastHost />
+      </View>
+    );
   }
 };

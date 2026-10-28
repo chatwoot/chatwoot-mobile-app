@@ -11,6 +11,7 @@ import { RecentSearchesView } from './RecentSearchesView';
 import { AllResultsView } from './AllResultsView';
 import { SearchResultsList } from './SearchResultsList';
 import { SearchEmptyState } from '../shared/SearchEmptyState';
+import { IOS_DESIGN } from '@/utils';
 import i18n from 'i18n';
 
 interface SearchContentProps {
@@ -78,10 +79,16 @@ export function SearchContent({
             onClear={onClearRecentSearches}
           />
         )}
-        <View style={tailwind.style('flex-1 items-center justify-center px-4')}>
+        <View
+          style={tailwind.style(
+            'flex-1 items-center justify-center',
+            IOS_DESIGN ? 'px-8' : 'px-4',
+          )}>
           <Text
             style={tailwind.style(
-              'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-700 text-center',
+              IOS_DESIGN
+                ? 'max-w-[400px] text-[15px] leading-[20px] font-inter-normal-20 text-gray-700 text-center'
+                : 'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-700 text-center',
             )}>
             {i18n.t('SEARCH.HINT')}
           </Text>

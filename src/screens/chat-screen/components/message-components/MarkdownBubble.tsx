@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+import type { ASTNode } from 'react-native-markdown-display';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
 import { expandTabs } from '@/utils/expandTabs';
 
 import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
+import { appFont } from '@/theme/appFont';
 
 // Shared parser instance; the options are static.
 const markdownItInstance = MarkdownIt({ linkify: true, typographer: true, breaks: true });
@@ -13,7 +15,48 @@ const markdownItInstance = MarkdownIt({ linkify: true, typographer: true, breaks
 type MarkdownBubbleProps = {
   messageContent: string;
   variant: string;
+  // Reserve room at the end of the last line for the time drawn over the bubble's corner
+  // (inline time on iOS): 'time' for the time only, 'ticks' for time and delivery ticks.
+  timeReserve?: 'time' | 'ticks';
 };
+
+// Marks the end of the text so the text rule can add the reserved room there. A private-use
+// character: markdown leaves it alone (unlike trailing spaces, which it trims).
+const TIME_RESERVE_MARK = '\uE000';
+// Invisible copy of a time label in the same 11pt size, so the room matches the real one.
+const RESERVE_TEXT = { time: '\u2002\u200200:00 PM', ticks: '\u2002\u200200:00 PM\u2002✓✓' };
+
+const reserveStyle = StyleSheet.create({
+  reserve: { color: 'transparent', fontSize: 11, letterSpacing: 0 },
+});
+
+// Rules that turn the end mark into the invisible time; built once per kind so Markdown keeps
+// its cached tree.
+const buildReserveRules = (kind: 'time' | 'ticks') => ({
+  text: (
+    node: ASTNode,
+    _children: React.ReactNode[],
+    _parent: ASTNode[],
+    styles: Record<string, object>,
+    inheritedStyles: object = {},
+  ) => {
+    const content = node.content ?? '';
+    if (!content.endsWith(TIME_RESERVE_MARK)) {
+      return (
+        <Text key={node.key} style={[inheritedStyles, styles.text]}>
+          {content}
+        </Text>
+      );
+    }
+    return (
+      <Text key={node.key} style={[inheritedStyles, styles.text]}>
+        {content.slice(0, -TIME_RESERVE_MARK.length)}
+        <Text style={reserveStyle.reserve}>{RESERVE_TEXT[kind]}</Text>
+      </Text>
+    );
+  },
+});
+const RESERVE_RULES = { time: buildReserveRules('time'), ticks: buildReserveRules('ticks') };
 
 const variantTextMap = {
   [MESSAGE_VARIANTS.AGENT]: 'text-gray-950',
@@ -44,7 +87,7 @@ const buildStyles = (variant: string) => {
       ...textStyle,
     },
     strong: {
-      fontFamily: 'Inter-600-20',
+      ...appFont('Inter-600-20'),
       fontWeight: '600',
     },
     em: {
@@ -53,7 +96,7 @@ const buildStyles = (variant: string) => {
     paragraph: {
       marginTop: 0,
       marginBottom: 0,
-      fontFamily: 'Inter-400-20',
+      ...appFont('Inter-400-20'),
     },
     bullet_list: {
       minWidth: 200,
@@ -101,14 +144,16 @@ const getStyles = (variant: string) => {
 };
 
 export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
-  const { variant } = props;
-  const messageContent = expandTabs(props.messageContent);
+  const { variant, timeReserve } = props;
+  const text = expandTabs(props.messageContent);
+  const messageContent = timeReserve ? `${text}${TIME_RESERVE_MARK}` : text;
 
   return (
     <Markdown
       mergeStyle
       markdownit={markdownItInstance}
       onLinkPress={handleURL}
+      rules={timeReserve ? RESERVE_RULES[timeReserve] : undefined}
       style={getStyles(variant)}>
       {messageContent}
     </Markdown>

@@ -1,5 +1,13 @@
 import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
-import { BlurEvent, FocusEvent, Platform, Pressable, StyleSheet, ScrollView } from 'react-native';
+import {
+  BlurEvent,
+  FocusEvent,
+  Platform,
+  Pressable,
+  StyleSheet,
+  ScrollView,
+  useWindowDimensions,
+} from 'react-native';
 import Animated, {
   LayoutAnimationConfig,
   LinearTransition,
@@ -7,6 +15,8 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import Svg, { Path, Rect } from 'react-native-svg';
+import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { ExpandComposeIcon } from '@/svg-icons';
 
 import { useChatWindowContext } from '@/context';
 import { tailwind } from '@/theme';
@@ -34,10 +44,18 @@ type MessageTextInputProps = {
   selectedCannedResponse?: string | null;
   agents: Agent[];
   messageContent: string;
+  // iPhone Duo reply bar: iOS Messages-style capsule field with the private note lock inside
+  // it on the right.
+  iosStyle?: boolean;
+  // Email replies on iPhone Duo: opens the full editor in the side column.
+  onExpand?: () => void;
+  // The full editor in the side column: a plain text area filling the space, without the
+  // capsule (the lock moves to the editor's toolbar).
+  composer?: boolean;
 };
 type AgentSuggestion = Omit<Agent, 'id'> & Suggestion;
 
-const Unlock = () => {
+export const Unlock = () => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 29 30" fill="none">
       <Path
@@ -52,10 +70,11 @@ const Unlock = () => {
   );
 };
 
-const Locked = () => {
+// `plain` drops the white circle (iPhone Duo reply bar, where the field is the highlight).
+export const Locked = ({ plain = false }: { plain?: boolean }) => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 29 30" fill="none">
-      <Rect y="0.5" width="29" height="29" rx="14.5" fill="white" />
+      {plain ? null : <Rect y="0.5" width="29" height="29" rx="14.5" fill="white" />}
       <Path
         d="M18.6667 14.1667V11.6667C18.6667 10.5616 18.2277 9.50179 17.4463 8.72039C16.6649 7.93899 15.6051 7.5 14.5 7.5C13.395 7.5 12.3352 7.93899 11.5538 8.72039C10.7724 9.50179 10.3334 10.5616 10.3334 11.6667V14.1667M11.8334 22.5H17.1667C18.5667 22.5 19.2667 22.5 19.8017 22.2275C20.2721 21.9878 20.6545 21.6054 20.8942 21.135C21.1667 20.6 21.1667 19.9 21.1667 18.5V18.1667C21.1667 16.7667 21.1667 16.0667 20.8942 15.5317C20.6545 15.0613 20.2721 14.6788 19.8017 14.4392C19.2667 14.1667 18.5667 14.1667 17.1667 14.1667H11.8334C10.4334 14.1667 9.73337 14.1667 9.19837 14.4392C8.72799 14.6788 8.34555 15.0613 8.10587 15.5317C7.83337 16.0667 7.83337 16.7667 7.83337 18.1667V18.5C7.83337 19.9 7.83337 20.6 8.10587 21.135C8.34555 21.6054 8.72799 21.9878 9.19837 22.2275C9.73337 22.5 10.4334 22.5 11.8334 22.5Z"
         stroke="black"
@@ -68,6 +87,9 @@ const Locked = () => {
   );
 };
 const TYPING_INDICATOR_IDLE_TIME = 4000;
+const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
+// Private notes tint the glass amber (amber-300 at 45%).
+const PRIVATE_GLASS_TINT = 'hsla(40, 100%, 81.5%, 0.45)';
 
 // eslint-disable-next-line no-empty-pattern
 export const MessageTextInput = ({
@@ -75,9 +97,15 @@ export const MessageTextInput = ({
   replyEditorMode,
   selectedCannedResponse,
   agents,
+  iosStyle = false,
+  onExpand,
+  composer = false,
 }: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
+  // iPhone Duo: the field grows with the message up to 40% of the screen, then scrolls.
+  const { height: windowHeight } = useWindowDimensions();
+  const iosMaxHeight = Math.max(124, Math.round(windowHeight * 0.4));
 
   const lockIconAnimatedPosition = useAnimatedStyle(() => {
     return {
@@ -139,6 +167,18 @@ export const MessageTextInput = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
+
+  // The full editor focuses its field once it has slid in, so the keyboard animation doesn't
+  // run on top of the page/column transition and the editor's first render (dropped frames).
+  useEffect(() => {
+    if (!composer) return;
+    const timer = setTimeout(() => {
+      // @ts-expect-error TextInput ref focus method may not be properly typed
+      textInputRef?.current?.focus();
+    }, 380);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [composer]);
 
   useEffect(() => {
     if (selectedCannedResponse) onChangeText(selectedCannedResponse);
@@ -217,7 +257,30 @@ export const MessageTextInput = ({
     <LayoutAnimationConfig skipEntering={true}>
       <Animated.View
         layout={LinearTransition.springify().mass(1).damping(15).stiffness(70)}
-        style={[tailwind.style('flex-1 my-0.5')]}>
+        style={[
+          composer
+            ? tailwind.style('flex-1')
+            : iosStyle
+              ? // The capsule is a row, so the lock lines up with the last line of text.
+                tailwind.style(
+                  'flex-1 flex-row items-end rounded-[18px]',
+                  // Liquid Glass like the round buttons; a flat capsule where it isn't available.
+                  useLiquidGlass
+                    ? ''
+                    : isPrivateMessage
+                      ? 'bg-amber-100 border-[0.5px] border-amber-500'
+                      : 'bg-white border-[0.5px] border-blackA-A6',
+                )
+              : tailwind.style('flex-1 my-0.5'),
+        ]}>
+        {iosStyle && !composer && useLiquidGlass ? (
+          <GlassView
+            glassEffectStyle="regular"
+            isInteractive
+            tintColor={isPrivateMessage ? PRIVATE_GLASS_TINT : undefined}
+            style={[StyleSheet.absoluteFill, { borderRadius: 18 }]}
+          />
+        ) : null}
         <MentionInput
           // @ts-expect-error MentionInput ref typing issue with forwardRef
           ref={textInputRef}
@@ -232,23 +295,46 @@ export const MessageTextInput = ({
               isInsertSpaceAfterMention: true,
             },
           ]}
-          maxNumberOfLines={3}
+          maxNumberOfLines={iosStyle ? 5 : 3}
+          containerStyle={
+            composer
+              ? tailwind.style('flex-1 self-stretch')
+              : iosStyle
+                ? tailwind.style('flex-1')
+                : undefined
+          }
           multiline
           enablesReturnKeyAutomatically
           style={[
-            tailwind.style(
-              'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
-              'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl text-gray-950',
-              'min-h-9 max-h-[76px]',
-              isPrivateMessage ? 'bg-amber-100' : 'bg-blackA-A4',
-            ),
+            composer
+              ? tailwind.style(
+                  'flex-1 px-4 pt-3 pb-3 text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
+                )
+              : iosStyle
+                ? // 17pt Body text, 36pt tall when empty.
+                  [
+                    tailwind.style(
+                      'text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
+                      'pt-[7px] pb-[7px] pl-3.5 pr-1 min-h-9',
+                    ),
+                    { maxHeight: iosMaxHeight },
+                  ]
+                : tailwind.style(
+                    'text-base font-inter-normal-20 tracking-[0.24px] leading-[20px] android:leading-[18px]',
+                    'ml-[5px] mr-2 py-2 pl-3 pr-[36px] rounded-2xl text-gray-950',
+                    'min-h-9 max-h-[76px]',
+                    isPrivateMessage ? 'bg-amber-100' : 'bg-blackA-A4',
+                  ),
             // TODO: Try settings includeFontPadding to false and have a single lineHeight value of 20
           ]}
           placeholderTextColor={tailwind.color('bg-gray-800')}
           maxLength={maxLength}
           placeholder={
             isPrivateMessage
-              ? `${i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}`
+              ? // iOS keeps placeholders short so they fit on one line.
+                i18n.t(
+                  iosStyle ? 'CONVERSATION.PRIVATE_NOTE_SHORT' : 'CONVERSATION.PRIVATE_MSG_INPUT',
+                )
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
           }
           onSubmitEditing={() => setMessageContent('')}
@@ -259,21 +345,49 @@ export const MessageTextInput = ({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
         />
+        {iosStyle && !composer && onExpand ? (
+          <Pressable
+            hitSlop={5}
+            onPress={onExpand}
+            accessibilityRole="button"
+            accessibilityLabel={i18n.t('CONVERSATION.EXPAND_REPLY')}
+            style={tailwind.style('h-9 w-[30px] items-center justify-center')}>
+            <Icon size={20} icon={<ExpandComposeIcon />} />
+          </Pressable>
+        ) : null}
+        {iosStyle && !composer ? (
+          <Pressable
+            hitSlop={5}
+            onPress={toggleReplyMode}
+            accessibilityRole="button"
+            accessibilityState={{ selected: isPrivateMessage }}
+            accessibilityLabel={i18n.t('CONVERSATION.PRIVATE_NOTE_SHORT')}
+            accessibilityHint={i18n.t('CONVERSATION.PRIVATE_MSG_INPUT')}
+            style={tailwind.style('h-9 w-[34px] pr-1 items-center justify-center')}>
+            {isPrivateMessage ? (
+              <Icon size={29} icon={<Locked plain />} />
+            ) : (
+              <Icon size={29} icon={<Unlock />} />
+            )}
+          </Pressable>
+        ) : null}
       </Animated.View>
-      <Animated.View
-        style={[
-          // Pre calculated value to position the lock
-          tailwind.style('absolute right-13px]'),
-          lockIconAnimatedPosition,
-        ]}>
-        <Pressable hitSlop={5} onPress={toggleReplyMode}>
-          {isPrivateMessage ? (
-            <Icon size={29} icon={<Locked />} />
-          ) : (
-            <Icon size={29} icon={<Unlock />} />
-          )}
-        </Pressable>
-      </Animated.View>
+      {iosStyle ? null : (
+        <Animated.View
+          style={[
+            // Pre calculated value to position the lock
+            tailwind.style('absolute right-13px]'),
+            lockIconAnimatedPosition,
+          ]}>
+          <Pressable hitSlop={5} onPress={toggleReplyMode}>
+            {isPrivateMessage ? (
+              <Icon size={29} icon={<Locked />} />
+            ) : (
+              <Icon size={29} icon={<Unlock />} />
+            )}
+          </Pressable>
+        </Animated.View>
+      )}
     </LayoutAnimationConfig>
   );
 };

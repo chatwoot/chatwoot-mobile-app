@@ -1,3 +1,4 @@
+import { subscribePushRegistration } from '@/utils/pushRegistration';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -94,7 +95,10 @@ const Tabs = () => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
     const inboxesLoaded = dispatch(inboxActions.fetchInboxes());
-    askForPermissions(inboxesLoaded);
+    const stopPushRegistration = subscribePushRegistration(
+      () => dispatch(settingsActions.saveDeviceDetails()),
+      () => askForPermissions(inboxesLoaded),
+    );
     initActionCable();
     dispatch(labelActions.fetchLabels());
     dispatch(setCurrentState('none'));
@@ -104,6 +108,7 @@ const Tabs = () => {
     initAnalytics();
     initSentry();
     initPushNotifications();
+    return stopPushRegistration;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -116,7 +121,6 @@ const Tabs = () => {
     } catch {
       // Prompt failures must not prevent registration.
     }
-    dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

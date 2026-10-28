@@ -21,8 +21,12 @@ export const ReplyWarning = (props: ReplyWarningProps) => {
   const channel = conversation?.meta?.channel;
   const isAPIChannel = channel === INBOX_TYPES.API;
   const isAWhatsappChannel = channel === INBOX_TYPES.WHATSAPP;
+  const isAnonymousCaller = !!conversation?.anonymousCaller;
 
   const replyBannerMessage = () => {
+    if (isAnonymousCaller) {
+      return i18n.t('BANNER.ANONYMOUS_CALLER_CANNOT_REPLY');
+    }
     if (isAWhatsappChannel) {
       return i18n.t('BANNER.TWILIO_WHATSAPP_CAN_REPLY');
     }
@@ -48,6 +52,9 @@ export const ReplyWarning = (props: ReplyWarningProps) => {
   };
 
   const replyWindowLinkText = () => {
+    if (isAnonymousCaller) {
+      return '';
+    }
     if (isAWhatsappChannel) {
       return i18n.t('BANNER.24_HOURS_WINDOW');
     }

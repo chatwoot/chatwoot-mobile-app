@@ -316,6 +316,7 @@ export const VOICE_CALL_PROVIDERS = {
 
 export const VOICE_CALL_END_REASON = {
   AGENT_REJECTED: 'agent_rejected',
+  OUTSIDE_WORKING_HOURS: 'outside_working_hours',
 } as const;
 
 export const ORIENTATION = {

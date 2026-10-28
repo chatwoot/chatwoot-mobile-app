@@ -172,6 +172,8 @@ export const getVoiceCallDisplay = (message: Message): VoiceCallDisplay => {
   } else if (isFailed) {
     if (isOutbound) {
       subtextKey = 'CONVERSATION.VOICE_CALL.NO_ANSWER_OUTBOUND_SUBTEXT';
+    } else if (facts.endReason === VOICE_CALL_END_REASON.OUTSIDE_WORKING_HOURS) {
+      subtextKey = 'CONVERSATION.VOICE_CALL.MISSED_CALL_OUTSIDE_HOURS';
     } else if (wasDeclinedByAgent && handlerName) {
       subtextKey = 'CONVERSATION.VOICE_CALL.MISSED_CALL_DECLINED_BY';
       subtextParams = { agentName: handlerName };

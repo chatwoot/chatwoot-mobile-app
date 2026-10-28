@@ -306,6 +306,7 @@
       "CALL_BACK": "Call back",
       "MISSED_CALL_INBOUND_SUBTEXT": "No agent picked up",
       "MISSED_CALL_DECLINED_BY": "Declined by %{agentName}",
+      "MISSED_CALL_OUTSIDE_HOURS": "Outside business hours",
       "CALL_ENDED": "Call ended",
       "HANDLED_BY": "Handled by %{agentName}",
       "NOT_ANSWERED_YET": "Not answered yet",
@@ -575,7 +576,8 @@
     "TWILIO_WHATSAPP_CAN_REPLY": "You can only reply to this conversation using a template message due to",
     "TWILIO_WHATSAPP_24_HOURS_WINDOW": "24 hour message window restriction",
     "24_HOURS_WINDOW": "24 hour message window restriction",
-    "CANNOT_REPLY": "You cannot reply due to"
+    "CANNOT_REPLY": "You cannot reply due to",
+    "ANONYMOUS_CALLER_CANNOT_REPLY": "Messages cannot be sent because this caller’s phone number is unavailable."
   },
   "SLA": {
     "FRT": "FRT",

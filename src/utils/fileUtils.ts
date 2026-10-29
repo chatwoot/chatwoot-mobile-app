@@ -4,3 +4,11 @@ export const findFileSize = (bytes: number) => {
   }
   return bytes / (1024 * 1024);
 };
+
+export const decodeFileName = (fileName: string) => {
+  try {
+    return decodeURIComponent(fileName);
+  } catch {
+    return fileName;
+  }
+};

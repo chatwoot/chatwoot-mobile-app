@@ -10,7 +10,7 @@ import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { errorMessage } from '@/utils/errorUtils';
-import { decodeFileName } from '@/utils/fileUtils';
+import { getDisplayFileName } from '@/utils/fileUtils';
 import i18n from '@/i18n';
 
 const generateUniqueFileName = (url: string, originalFileName: string) => {
@@ -138,7 +138,7 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
               ),
               style.androidTextOnlyStyle,
             ]}>
-            {decodeFileName(fileName)}
+            {getDisplayFileName(fileName)}
           </Animated.Text>
           <Animated.View
             style={[

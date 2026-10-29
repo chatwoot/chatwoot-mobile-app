@@ -1,3 +1,5 @@
+import { expandTabs } from './expandTabs';
+
 export const findFileSize = (bytes: number) => {
   if (bytes === 0) {
     return 0;
@@ -5,10 +7,10 @@ export const findFileSize = (bytes: number) => {
   return bytes / (1024 * 1024);
 };
 
-export const decodeFileName = (fileName: string) => {
+export const getDisplayFileName = (fileName: string) => {
   try {
-    return decodeURIComponent(fileName);
+    return expandTabs(decodeURIComponent(fileName));
   } catch {
-    return fileName;
+    return expandTabs(fileName);
   }
 };

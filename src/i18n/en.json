@@ -340,7 +340,7 @@
       "RESUME": "Resume",
       "INCOMING_CALLS_COUNT": "%{count} incoming calls",
       "END_AND_ANSWER": "End & answer",
-      "DECLINE_ALL": "Decline all",
+      "DISMISS_ALL": "Dismiss all",
       "ANSWERING_ENDS_CURRENT": "Answering ends your ongoing call",
       "SWIPE_HINT": "Swipe right to answer, left to decline.",
       "SWIPE_HINT_ENDS_CURRENT": "Answering ends your ongoing call.\nSwipe right to answer, left to decline.",

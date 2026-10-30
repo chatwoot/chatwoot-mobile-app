@@ -4,6 +4,7 @@ import { useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { store } from '@/store';
 import { selectIncomingCalls } from '@/store/call/callSelectors';
+import { dismissCall } from '@/store/call/callSlice';
 import type { LiveCall } from '@/store/call/callTypes';
 import { beginCallSwitch, endCallSwitch } from '@/services/voice/callSessionCore';
 import { systemCall } from '@/services/voice/systemCall';
@@ -65,14 +66,14 @@ export const useRingingBehind = ({ call, isJoining }: Options) => {
     [hapticSelection],
   );
 
-  // Resolves with the calls whose decline failed
-  const declineAll = useCallback(async () => {
+  // Stops the ringing on this device only; the calls keep ringing for other agents
+  const dismissAll = useCallback(() => {
     cancelCallNotification();
-    const results = await Promise.allSettled(calls.map(target => systemCall.end(store, target)));
-    return calls
-      .filter((_, index) => results[index].status === 'rejected')
-      .map(target => target.callSid);
+    calls.forEach(target => {
+      systemCall.ended(target, 'remote');
+      store.dispatch(dismissCall(target.callSid));
+    });
   }, [calls]);
 
-  return { calls, rungBySystem, answer, decline, declineAll };
+  return { calls, rungBySystem, answer, decline, dismissAll };
 };

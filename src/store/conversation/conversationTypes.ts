@@ -174,7 +174,8 @@ export interface BulkActionFields {
 }
 
 export interface BulkActionLabels {
-  add: string[];
+  add?: string[];
+  remove?: string[];
 }
 
 export interface AssigneePayload {

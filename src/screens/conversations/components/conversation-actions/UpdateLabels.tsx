@@ -6,10 +6,15 @@ import { SearchBar } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
 import { Label } from '@/types/common/Label';
-import { selectSelectedIds } from '@/store/conversation/conversationSelectedSlice';
+import {
+  selectSelectedIds,
+  selectSelectedConversations,
+} from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
+import { selectConversationsState } from '@/store/conversation/conversationSelectors';
 import { LabelCell } from '@/components-next/label-section';
 import i18n from '@/i18n';
+import { commonLabels, toggleLabel } from './labelSelection';
 
 type LabelStackProps = {
   labelList: Label[];
@@ -41,38 +46,26 @@ export const LabelStack = (props: LabelStackProps) => {
 export const UpdateLabels = () => {
   const dispatch = useAppDispatch();
   const selectedIds = useAppSelector(selectSelectedIds);
+  const conversations = useAppSelector(selectSelectedConversations);
+  const entities = useAppSelector(selectConversationsState).entities;
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const [selectedLabels, setSelectedLabels] = useState<string[]>(() =>
+    commonLabels(conversations.map(conversation => entities[conversation.id] ?? conversation)),
+  );
 
   const allLabels = useAppSelector(state => filterLabels(state, searchTerm));
 
-  // The selected label text is received
-  /**
-   * The handleLabelPress function dismisses a modal sheet with overshoot clamping.
-   * @param {string} _selectedLabel - The _selectedLabel parameter is a string that represents the label
-   * that was selected.
-   */
-
   const handleLabelPress = (_selectedLabel: string) => {
-    setSelectedLabels(prevLabels => {
-      const updatedLabels = prevLabels.includes(_selectedLabel)
-        ? prevLabels.filter(item => item !== _selectedLabel)
-        : [...prevLabels, _selectedLabel];
-
-      // If label is already selected, return current labels without changes
-      if (prevLabels.includes(_selectedLabel)) {
-        return prevLabels;
-      }
-
-      const payload = {
+    const result = toggleLabel(selectedLabels, _selectedLabel);
+    setSelectedLabels(result.selected);
+    dispatch(
+      conversationActions.bulkAction({
         type: 'Conversation',
         ids: selectedIds,
-        labels: { add: [_selectedLabel] },
-      };
-      dispatch(conversationActions.bulkAction(payload));
-      return updatedLabels;
-    });
+        labels: result.action,
+      }),
+    );
   };
 
   const handleSearch = useCallback((text: string) => {

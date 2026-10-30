@@ -32,7 +32,12 @@ const AccountCell = ({
   const isSelected = item.id === currentAccountId;
 
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable
+      onPress={handlePress}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={`${item.name}, ${item.role}`}
+    >
       <Animated.View style={tailwind.style('flex flex-row items-center')}>
         <Animated.View
           style={tailwind.style(

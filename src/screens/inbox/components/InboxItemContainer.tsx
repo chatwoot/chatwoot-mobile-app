@@ -138,6 +138,12 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       handlePress={onPressAction}
       triggerOverswipeOnFlick
       rightElementBgColor="bg-ruby-800"
+      leftActionAccessibilityLabel={
+        isRead
+          ? i18n.t('NOTIFICATION.ALERTS.MARK_AS_UNREAD')
+          : i18n.t('NOTIFICATION.ALERTS.MARK_AS_READ')
+      }
+      rightActionAccessibilityLabel={i18n.t('NOTIFICATION.DELETE')}
       {...{ index, openedRowIndex }}>
       <InboxItem
         isRead={isRead}

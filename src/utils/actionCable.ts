@@ -18,7 +18,7 @@ import {
   transformNotificationRemovedResponse,
 } from './camelCaseKeys';
 import { addNotification } from '@/store/notification/notificationSlice';
-import { setCurrentUserAvailability } from '@/store/auth/authSlice';
+import { setCurrentUserAvailability, setCurrentUserWorkPreferences } from '@/store/auth/authSlice';
 import { removeNotification } from '@/store/notification/notificationSlice';
 import {
   NotificationCreatedResponse,
@@ -325,7 +325,7 @@ class ActionCableConnector extends BaseActionCableConnector {
   };
 
   onPresenceUpdate = (data: PresenceUpdateData) => {
-    const { contacts, users } = data;
+    const { contacts, users, work_preferences: workPreferences } = data;
     store.dispatch(
       updateContactsPresence({
         contacts,
@@ -336,6 +336,9 @@ class ActionCableConnector extends BaseActionCableConnector {
         users,
       }),
     );
+    if (workPreferences) {
+      store.dispatch(setCurrentUserWorkPreferences(workPreferences));
+    }
   };
 }
 

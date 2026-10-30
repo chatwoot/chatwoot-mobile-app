@@ -9,6 +9,7 @@ import type {
   ResetPasswordPayload,
   ResetPasswordResponse,
   AvailabilityPayload,
+  WorkPreferencesPayload,
   ProfileResponse,
   ApiErrorResponse,
   SetActiveAccountPayload,
@@ -58,6 +59,11 @@ export const authActions = {
   updateAvailability: createAuthThunk<ProfileResponse, AvailabilityPayload>(
     'auth/updateAvailability',
     AuthService.updateAvailability,
+  ),
+
+  updateWorkPreferences: createAuthThunk<ProfileResponse, WorkPreferencesPayload>(
+    'auth/updateWorkPreferences',
+    AuthService.updateWorkPreferences,
   ),
 
   setActiveAccount: createAuthThunk<ProfileResponse, SetActiveAccountPayload>(

@@ -33,14 +33,24 @@ import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import {
+  ChatIcon,
+  ChatwootIcon,
+  NotificationIcon,
+  PhoneOutlineIcon,
+  SwitchIcon,
+  TranslateIcon,
+} from '@/svg-icons';
 import { GenericListType } from '@/types';
 
 import { useHaptic, useTabBarHeight } from '@/utils';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
+import { WorkPausedNote } from './components/WorkPausedNote';
+import { useWorkPreferences } from './hooks/useWorkPreferences';
 import {
   selectCurrentUserAvailability,
+  selectSupportsWorkPreferences,
   selectUser,
   selectAccounts,
 } from '@/store/auth/authSelectors';
@@ -58,6 +68,8 @@ import AnalyticsHelper from '@/utils/analyticsUtils';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import { isVoiceCallEnabled } from '@/utils/inboxUtils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { getVoipToken } from '@/services/voice/chatwootCalls';
 import { callActions } from '@/store/call/callActions';
@@ -118,6 +130,11 @@ const SettingsScreen = () => {
   };
 
   const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
+  const hasVoiceInbox = useAppSelector(state => selectAllInboxes(state).some(isVoiceCallEnabled));
+  const supportsWorkPreferences = useAppSelector(selectSupportsWorkPreferences);
+  const showWorkPreferences = hasVoiceInbox && supportsWorkPreferences;
+  const isOnline = availabilityStatus === 'online';
+  const { preferences: workPreferences, toggle: toggleWorkPreference } = useWorkPreferences();
 
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
@@ -198,15 +215,34 @@ const SettingsScreen = () => {
     dispatch(logout());
   }, [dispatch, pushToken]);
 
-  const preferencesList: GenericListType[] = [
+  const availabilityList: GenericListType[] = [
     {
       hasChevron: true,
-      title: i18n.t('SETTINGS.CHANGE_AVAILABILITY'),
+      title: i18n.t('SETTINGS.STATUS'),
       icon: <SwitchIcon />,
-      subtitle: '',
+      subtitle: i18n.t(`AVAILABILITY.${availabilityStatus.toUpperCase()}`),
       subtitleType: 'light',
       onPressListItem: () => openSheet(),
     },
+    {
+      title: i18n.t('SETTINGS.RECEIVE_CONVERSATIONS'),
+      icon: <ChatIcon />,
+      checked: workPreferences.accepts_conversations,
+      disabled: !showWorkPreferences,
+      inactive: !isOnline,
+      onPressListItem: () => toggleWorkPreference('accepts_conversations'),
+    },
+    {
+      title: i18n.t('SETTINGS.RECEIVE_VOICE_CALLS'),
+      icon: <PhoneOutlineIcon stroke="#858585" />,
+      checked: workPreferences.accepts_calls,
+      disabled: !showWorkPreferences,
+      inactive: !isOnline,
+      onPressListItem: () => toggleWorkPreference('accepts_calls'),
+    },
+  ];
+
+  const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.NOTIFICATIONS'),
@@ -288,6 +324,10 @@ const SettingsScreen = () => {
               {email}
             </Animated.Text>
           </Animated.View>
+        </Animated.View>
+        <Animated.View style={tailwind.style('pt-6')}>
+          <SettingsList sectionTitle={i18n.t('SETTINGS.AVAILABILITY')} list={availabilityList} />
+          {showWorkPreferences && !isOnline && <WorkPausedNote />}
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />

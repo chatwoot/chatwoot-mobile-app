@@ -5,8 +5,7 @@ import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { SlaMissedIcon } from '@/svg-icons';
 import { SLA, SLAEvent, SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus as evaluateLegacySLAStatus } from '@chatwoot/utils';
-import { evaluateSLAStatus, hasSLADueTimes } from '@/utils/slaUtils';
+import { evaluateSLAStatus } from '@/utils/slaUtils';
 import i18n from '@/i18n';
 
 const REFRESH_INTERVAL = 60000;
@@ -33,31 +32,11 @@ export const SLAIndicator = ({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateSlaStatus = useCallback(() => {
-    const status = hasSLADueTimes(appliedSla)
-      ? evaluateSLAStatus({
-          appliedSla,
-          chat: appliedSlaConversationDetails,
-          slaEvents,
-        })
-      : evaluateLegacySLAStatus({
-          appliedSla: {
-            id: appliedSla.id,
-            name: appliedSla.slaName,
-            description: appliedSla.slaDescription,
-            sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
-            sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
-            sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
-            only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
-            created_at: appliedSla.createdAt,
-          },
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          chat: {
-            first_reply_created_at: appliedSlaConversationDetails.firstReplyCreatedAt,
-            waiting_since: appliedSlaConversationDetails.waitingSince,
-            status: appliedSlaConversationDetails.status,
-          },
-        });
+    const status = evaluateSLAStatus({
+      appliedSla,
+      chat: appliedSlaConversationDetails,
+      slaEvents,
+    });
     setSlaStatus(status);
     onSLAStatusChange(status?.threshold ? true : false);
   }, [appliedSla, appliedSlaConversationDetails, slaEvents, onSLAStatusChange]);

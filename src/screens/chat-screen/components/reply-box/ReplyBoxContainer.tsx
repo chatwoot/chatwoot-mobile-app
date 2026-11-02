@@ -28,7 +28,7 @@ import {
   isAnInstagramChannel,
 } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { CONTENT_TYPES, MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
+import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
 import { tailwind } from '@/theme';
 import {
   selectMessageContent,
@@ -56,6 +56,7 @@ import { CommandOptionsMenu } from '../message-components/CommandOptionsMenu';
 import { AttachmentFile, SendMessagePayload } from '@/store/conversation/conversationTypes';
 import { TypingIndicator } from './TypingIndicator';
 import { getLastMessage, getTypingUsersText } from '@/utils';
+import { isVoiceCallMessage } from '@/utils/voiceCallRouting';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 import { Agent, CannedResponse, Conversation } from '@/types';
 import AnalyticsHelper from '@/utils/analyticsUtils';
@@ -222,7 +223,8 @@ const BottomSheetContent = () => {
   const [opensOnCall, setOpensOnCall] = useState<boolean>();
   useEffect(() => {
     if (opensOnCall !== undefined || !conversation) return;
-    setOpensOnCall(getLastMessage(conversation)?.contentType === CONTENT_TYPES.VOICE_CALL);
+    const lastMessage = getLastMessage(conversation);
+    setOpensOnCall(isVoiceCallMessage(lastMessage));
   }, [conversation, opensOnCall]);
 
   useEffect(() => {

@@ -172,6 +172,8 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
+  const canCallContact = voiceCallProvider !== null && !conversation?.anonymousCaller;
+
   const startCall = async () => {
     if (!voiceCallProvider || !inbox || isStartingCall) return;
     setIsStartingCall(true);
@@ -228,7 +230,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       slaType={slaType}
       slaEvents={slaEvents}
       statusText={slaStatusText()}
-      showCallButton={voiceCallProvider !== null && !conversation?.anonymousCaller}
+      showCallButton={canCallContact}
       isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
       onCallPress={startCall}
       onBackPress={handleBackPress}

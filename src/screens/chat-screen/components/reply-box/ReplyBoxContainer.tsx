@@ -227,8 +227,9 @@ const BottomSheetContent = () => {
     setOpensOnCall(isVoiceCallMessage(lastMessage));
   }, [conversation, opensOnCall]);
 
+  const canSendReply = !!canReply || (!!inbox && isAWhatsAppChannel(inbox));
   useEffect(() => {
-    if (canReply || (inbox && isAWhatsAppChannel(inbox))) {
+    if (canSendReply) {
       setReplyEditorMode(REPLY_EDITOR_MODES.REPLY);
       dispatch(togglePrivateMessage(!!opensOnCall));
     } else {
@@ -236,7 +237,7 @@ const BottomSheetContent = () => {
       dispatch(togglePrivateMessage(true));
       dispatch(setQuoteMessage(null));
     }
-  }, [inbox, canReply, opensOnCall, dispatch]);
+  }, [canSendReply, opensOnCall, dispatch]);
 
   // Clear quote state when switching conversations to prevent cross-conversation replies
   useEffect(() => {

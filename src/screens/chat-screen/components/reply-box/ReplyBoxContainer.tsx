@@ -219,15 +219,12 @@ const BottomSheetContent = () => {
     conversation: conversation as Conversation,
   });
 
-  // Set once per open, so a later message never switches the mode under the agent
   const [opensOnCall, setOpensOnCall] = useState<boolean>();
   useEffect(() => {
     if (opensOnCall !== undefined || !conversation) return;
     setOpensOnCall(getLastMessage(conversation)?.contentType === CONTENT_TYPES.VOICE_CALL);
   }, [conversation, opensOnCall]);
 
-  // A call conversation opens on a private note so call notes are not sent to the contact;
-  // the agent can still switch to a reply
   useEffect(() => {
     if (canReply || (inbox && isAWhatsAppChannel(inbox))) {
       setReplyEditorMode(REPLY_EDITOR_MODES.REPLY);

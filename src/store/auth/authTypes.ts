@@ -61,6 +61,14 @@ export interface ProfileResponse {
   user: User;
 }
 
+export interface WorkPreferencesPayload {
+  profile: {
+    account_id: number;
+    accepts_conversations: boolean;
+    accepts_calls: boolean;
+  };
+}
+
 export interface ApiErrorResponse {
   success: boolean;
   errors: string[];

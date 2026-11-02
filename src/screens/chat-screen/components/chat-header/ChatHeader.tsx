@@ -3,7 +3,14 @@ import { ImageSourcePropType, Keyboard, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Avatar, Icon } from '@/components-next';
-import { ChevronLeft, Overflow, SLAIcon, StatusOpenIcon, StatusResolvedIcon } from '@/svg-icons';
+import {
+  ChevronLeft,
+  Overflow,
+  PhoneOutlineIcon,
+  SLAIcon,
+  StatusOpenIcon,
+  StatusResolvedIcon,
+} from '@/svg-icons';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
@@ -26,6 +33,9 @@ type ChatHeaderProps = {
   slaEvents?: SLAEvent[];
   dashboardsList: DashboardList[];
   statusText?: string;
+  showCallButton?: boolean;
+  isCallDisabled?: boolean;
+  onCallPress?: () => void;
   onBackPress: () => void;
   onContactDetailsPress: () => void;
   onToggleChatStatus: () => void;
@@ -45,6 +55,9 @@ export const ChatHeader = ({
   slaType,
   statusText,
   dashboardsList,
+  showCallButton = false,
+  isCallDisabled = false,
+  onCallPress,
   onBackPress,
   onContactDetailsPress,
   onToggleChatStatus,
@@ -77,6 +90,19 @@ export const ChatHeader = ({
             {name}
           </Animated.Text>
         </Pressable>
+        {showCallButton && (
+          <Pressable
+            hitSlop={8}
+            disabled={isCallDisabled}
+            accessibilityRole="button"
+            onPress={onCallPress}
+            style={tailwind.style(
+              'h-8 w-8 items-center justify-center',
+              isCallDisabled ? 'opacity-40' : '',
+            )}>
+            <Icon icon={<PhoneOutlineIcon />} size={24} />
+          </Pressable>
+        )}
         {dashboardsList.length > 0 && (
           <Animated.View style={tailwind.style('h-8 w-8 items-center justify-center')}>
             <ChatDropdownMenu dropdownMenuList={dashboardsList}>

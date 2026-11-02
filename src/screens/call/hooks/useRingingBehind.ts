@@ -67,7 +67,7 @@ export const useRingingBehind = ({ call, isJoining }: Options) => {
   );
 
   // Stops the ringing on this device only; the calls keep ringing for other agents
-  const dismissAll = useCallback(() => {
+  const silenceAll = useCallback(() => {
     cancelCallNotification();
     calls.forEach(target => {
       systemCall.ended(target, 'remote');
@@ -75,5 +75,5 @@ export const useRingingBehind = ({ call, isJoining }: Options) => {
     });
   }, [calls]);
 
-  return { calls, rungBySystem, answer, decline, dismissAll };
+  return { calls, rungBySystem, answer, decline, silenceAll };
 };

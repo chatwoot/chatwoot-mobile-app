@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { GestureDetector } from 'react-native-gesture-handler';
-import Animated, { FadeIn, FadeOut, SlideInDown, useSharedValue } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, SlideInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { tailwind } from '@/theme';
@@ -17,19 +17,20 @@ import {
   SHEET_SHADOW,
 } from '../../constants/callTheme';
 import { SHEET_CLOSE_MS } from '../../constants/sheet';
-import { SWIPE_ROW_HEIGHT } from '../../constants/swipeRow';
 import { useCallerInfo } from '../../hooks/useCallerInfo';
 import { useSheetDismissal } from '../../hooks/useSheetDismissal';
 import { IncomingCallActions } from '../IncomingCallActions';
 import { PulseDot } from '../PulseDot';
 import { CollapsedCallsStrip } from './CollapsedCallsStrip';
-import { DismissAllButton } from './DismissAllButton';
 import { RingingRow } from './RingingRow';
+import { SilenceAllButton } from './SilenceAllButton';
 import { SingleCallerCard } from './SingleCallerCard';
 
 const HINT_TEXT = 'font-inter-420-20 text-center text-[13px] leading-[18px]';
+const ROW_HEIGHT = 72;
+const OPEN_ROW_EXTRA_HEIGHT = 120;
 const LIST_VISIBLE_ROWS = 4;
-const LIST_MAX_HEIGHT = LIST_VISIBLE_ROWS * (SWIPE_ROW_HEIGHT + 1) + 1;
+const LIST_MAX_HEIGHT = LIST_VISIBLE_ROWS * (ROW_HEIGHT + 1) + 1;
 
 type IncomingCallsSheetProps = {
   calls: LiveCall[];
@@ -38,7 +39,7 @@ type IncomingCallsSheetProps = {
   answerDisabled?: boolean;
   onAnswer: (call: LiveCall) => Promise<boolean>;
   onDecline: (call: LiveCall) => Promise<boolean>;
-  onDismissAll: () => void;
+  onSilenceAll: () => void;
 };
 
 export const IncomingCallsSheet = ({
@@ -48,14 +49,14 @@ export const IncomingCallsSheet = ({
   answerDisabled,
   onAnswer,
   onDecline,
-  onDismissAll,
+  onSilenceAll,
 }: IncomingCallsSheetProps) => {
   const insets = useSafeAreaInsets();
   const single = calls.length === 1 ? calls[0] : null;
   const singleInfo = useCallerInfo(single);
   const sheet = useSheetDismissal(startCollapsed);
-  const openedRowIndex = useSharedValue<number | null>(null);
-  const [dismissingSids, setDismissingSids] = useState<string[]>([]);
+  const [openSid, setOpenSid] = useState<string | null>(null);
+  const [silencingSids, setSilencingSids] = useState<string[]>([]);
   const hapticSelection = useHaptic();
 
   const answerRow = async (call: LiveCall) => {
@@ -74,12 +75,16 @@ export const IncomingCallsSheet = ({
     const ok = await onDecline(single);
     if (!ok) sheet.expand();
   };
-  // The sheet slides away before the calls are dismissed, so no row leaves mid-slide
-  const dismissAll = () => {
+  const toggleRow = (callSid: string) => {
     hapticSelection?.();
-    setDismissingSids(calls.map(entry => entry.callSid));
+    setOpenSid(current => (current === callSid ? null : callSid));
+  };
+  // The sheet slides away before the calls are silenced, so no row leaves mid-slide
+  const silenceAll = () => {
+    hapticSelection?.();
+    setSilencingSids(calls.map(entry => entry.callSid));
     sheet.closeSheet();
-    setTimeout(onDismissAll, SHEET_CLOSE_MS);
+    setTimeout(onSilenceAll, SHEET_CLOSE_MS);
   };
 
   const title = single
@@ -90,7 +95,7 @@ export const IncomingCallsSheet = ({
     : i18n.t('CONVERSATION.VOICE_WIDGET.JOIN_CALL');
 
   if (sheet.collapsed) {
-    const waiting = calls.filter(entry => !dismissingSids.includes(entry.callSid)).length;
+    const waiting = calls.filter(entry => !silencingSids.includes(entry.callSid)).length;
     if (!waiting) return null;
     const label =
       waiting === 1
@@ -143,7 +148,10 @@ export const IncomingCallsSheet = ({
               <ScrollView
                 style={[
                   tailwind.style('mt-4 border-t border-b'),
-                  { maxHeight: LIST_MAX_HEIGHT, borderColor: CALL_DIVIDER },
+                  {
+                    maxHeight: LIST_MAX_HEIGHT + (openSid ? OPEN_ROW_EXTRA_HEIGHT : 0),
+                    borderColor: CALL_DIVIDER,
+                  },
                 ]}
                 contentContainerStyle={[
                   tailwind.style('gap-px'),
@@ -152,12 +160,14 @@ export const IncomingCallsSheet = ({
                 showsVerticalScrollIndicator={false}
                 scrollEnabled={calls.length > LIST_VISIBLE_ROWS}
                 bounces={calls.length > LIST_VISIBLE_ROWS}>
-                {calls.map((entry, index) => (
+                {calls.map(entry => (
                   <RingingRow
                     key={entry.callSid}
                     call={entry}
-                    index={index}
-                    openedRowIndex={openedRowIndex}
+                    isOpen={openSid === entry.callSid}
+                    hasActiveCall={hasActiveCall}
+                    answerDisabled={answerDisabled}
+                    onPress={() => toggleRow(entry.callSid)}
                     onAnswer={() => answerRow(entry)}
                     onDecline={() => onDecline(entry)}
                   />
@@ -186,14 +196,10 @@ export const IncomingCallsSheet = ({
                 <>
                   <Text
                     style={[tailwind.style(HINT_TEXT, 'py-4 px-5'), { color: CALL_LABEL_TEXT }]}>
-                    {i18n.t(
-                      hasActiveCall
-                        ? 'CONVERSATION.VOICE_WIDGET.SWIPE_HINT_ENDS_CURRENT'
-                        : 'CONVERSATION.VOICE_WIDGET.SWIPE_HINT',
-                    )}
+                    {i18n.t('CONVERSATION.VOICE_WIDGET.TAP_HINT')}
                   </Text>
                   <View style={tailwind.style('flex-row mx-5')}>
-                    <DismissAllButton onPress={dismissAll} />
+                    <SilenceAllButton onPress={silenceAll} />
                   </View>
                 </>
               )}

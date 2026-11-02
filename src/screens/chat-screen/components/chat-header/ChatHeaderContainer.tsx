@@ -228,7 +228,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       slaType={slaType}
       slaEvents={slaEvents}
       statusText={slaStatusText()}
-      showCallButton={voiceCallProvider !== null}
+      showCallButton={voiceCallProvider !== null && !conversation?.anonymousCaller}
       isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
       onCallPress={startCall}
       onBackPress={handleBackPress}

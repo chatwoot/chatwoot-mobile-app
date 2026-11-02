@@ -98,7 +98,7 @@ export const FullScreenCall = ({
           answerDisabled={isJoining}
           onAnswer={ringingBehind.answer}
           onDecline={ringingBehind.decline}
-          onDismissAll={ringingBehind.dismissAll}
+          onSilenceAll={ringingBehind.silenceAll}
         />
       ) : null}
     </>

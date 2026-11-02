@@ -1,4 +1,5 @@
 import conversationReducer, { addConversation, updateConversation } from '../conversationSlice';
+import type { Message } from '@/types/Message';
 import { conversation } from './conversationMockData';
 import { conversationActions } from '../conversationActions';
 
@@ -251,5 +252,45 @@ describe('conversation reducer', () => {
 
     expect(state.entities[conversation.id]?.status).toBe('resolved');
     expect(state.entities[conversation.id]?.updatedAt).toBe(200);
+  });
+});
+
+describe('fetchPreviousMessages first load', () => {
+  const message = (id: number, content: string, contentType = 'text') =>
+    ({ id, content, contentType, createdAt: id * 100 }) as unknown as Message;
+
+  const load = (held: Message[], fetched: Message[]) => {
+    let state = conversationReducer(
+      undefined,
+      addConversation({ ...conversation, messages: held }),
+    );
+    state = conversationReducer(
+      state,
+      conversationActions.fetchPreviousMessages.fulfilled(
+        { messages: fetched, conversationId: conversation.id, meta: {} } as never,
+        'request-id',
+        { conversationId: conversation.id } as never,
+      ),
+    );
+    return state.entities[conversation.id]?.messages ?? [];
+  };
+
+  it('prepends only unseen messages and keeps the held order', () => {
+    const messages = load(
+      [message(3, 'held three'), message(4, 'held four')],
+      [message(1, 'one'), message(3, 'fetched three')],
+    );
+
+    expect(messages.map(m => m.id)).toEqual([1, 3, 4]);
+    expect(messages[1].content).toBe('held three');
+  });
+
+  it('takes the fetched copy of a call message whose status moved on', () => {
+    const messages = load(
+      [message(5, 'ringing', 'voice_call')],
+      [message(5, 'ended', 'voice_call')],
+    );
+
+    expect(messages.map(m => m.content)).toEqual(['ended']);
   });
 });

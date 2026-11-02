@@ -5,6 +5,7 @@ import type {
   NotificationSettings,
   NotificationSettingsPayload,
   PushPayload,
+  VoipPushPayload,
   RemoveDevicePayload,
 } from './settingsTypes';
 
@@ -41,6 +42,10 @@ export class SettingsService {
       payload,
     );
     return response.data;
+  }
+
+  static async saveVoipToken(payload: VoipPushPayload): Promise<void> {
+    await apiService.post('notification_subscriptions', payload);
   }
 
   static async removeDevice(payload: RemoveDevicePayload): Promise<void> {

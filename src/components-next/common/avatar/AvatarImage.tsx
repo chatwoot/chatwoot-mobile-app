@@ -39,9 +39,6 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
         avatarTheme.borderRadius.size[size],
         tailwind.style(cx(avatarTheme.image, !squared ? avatarTheme.circular : '')),
       ]}
-      // Seems to be tricky to set the right type here, but as we are not
-      // doing anything with the error data, we can ignore the TS here
-      // @ts-expect-error Image onError expects ImageErrorEventData but we only need the callback
       onError={onError}
       {...imageProps}
     />

@@ -42,7 +42,14 @@ import { customAttributeActions } from '@/store/custom-attribute/customAttribute
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { AppUpdatePrompt, RequiredUpdateScreen } from '@/components-next/app-update';
 import { useRequiredAppUpdate } from '@/hooks/useRequiredAppUpdate';
-import { markServerPolicyLoaded, markSignedInThisSession } from '@/utils/appUpdateUtils';
+import {
+  markNotificationRequestSettled,
+  markServerPolicyLoaded,
+  markSignedInThisSession,
+} from '@/utils/appUpdateUtils';
+import { InAppCallScreen } from '@/screens/call';
+import { runCallReadiness } from '@/screens/call/utils/callReadiness';
+import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
 
 const Tab = createBottomTabNavigator();
 
@@ -93,8 +100,8 @@ const Tabs = () => {
   useEffect(() => {
     // Here is the place we are loading all the data for the app first time first time or user switches account
     dispatch(authActions.getProfile());
-    dispatch(settingsActions.saveDeviceDetails());
-    dispatch(inboxActions.fetchInboxes());
+    const inboxesLoaded = dispatch(inboxActions.fetchInboxes());
+    askForPermissions(inboxesLoaded);
     initActionCable();
     dispatch(labelActions.fetchLabels());
     dispatch(setCurrentState('none'));
@@ -104,6 +111,20 @@ const Tabs = () => {
     initAnalytics();
     initSentry();
     initPushNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const askForPermissions = useCallback(async (inboxesLoaded: Promise<unknown>) => {
+    try {
+      const { status } = await checkNotifications();
+      if (status !== RESULTS.GRANTED) await requestNotifications(['alert', 'sound', 'badge']);
+      await inboxesLoaded;
+      await runCallReadiness();
+    } catch {
+      // Prompt failures must not prevent registration.
+    }
+    markNotificationRequestSettled();
+    dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -233,35 +254,38 @@ export const AppTabs = () => {
 
   if (isLoggedIn) {
     return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Tab" component={Tabs} />
-        <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
-          name="ChatScreen"
-          component={ChatScreen}
-        />
-        <Stack.Screen
-          options={{
-            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-            animation: 'slide_from_bottom',
-          }}
-          name="ContactDetails"
-          component={ContactDetailsScreen}
-        />
-        <Stack.Screen
-          options={{
-            presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
-            animation: 'slide_from_bottom',
-          }}
-          name="Dashboard"
-          component={DashboardScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false, animation: 'slide_from_right' }}
-          name="SearchScreen"
-          component={SearchScreen}
-        />
-      </Stack.Navigator>
+      <React.Fragment>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Tab" component={Tabs} />
+          <Stack.Screen
+            options={{ animation: 'slide_from_right' }}
+            name="ChatScreen"
+            component={ChatScreen}
+          />
+          <Stack.Screen
+            options={{
+              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+              animation: 'slide_from_bottom',
+            }}
+            name="ContactDetails"
+            component={ContactDetailsScreen}
+          />
+          <Stack.Screen
+            options={{
+              presentation: Platform.OS === 'ios' ? 'formSheet' : 'modal',
+              animation: 'slide_from_bottom',
+            }}
+            name="Dashboard"
+            component={DashboardScreen}
+          />
+          <Stack.Screen
+            options={{ headerShown: false, animation: 'slide_from_right' }}
+            name="SearchScreen"
+            component={SearchScreen}
+          />
+        </Stack.Navigator>
+        <InAppCallScreen />
+      </React.Fragment>
     );
   } else {
     return <AuthStack />;

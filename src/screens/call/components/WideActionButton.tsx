@@ -6,6 +6,7 @@ import { tailwind } from '@/theme';
 type WideActionButtonProps = {
   label: string;
   fill: string;
+  labelColor?: string;
   disabled?: boolean;
   onPress: () => void;
   children: React.ReactNode;
@@ -14,6 +15,7 @@ type WideActionButtonProps = {
 export const WideActionButton = ({
   label,
   fill,
+  labelColor = '#FFFFFF',
   disabled,
   onPress,
   children,
@@ -30,7 +32,8 @@ export const WideActionButton = ({
       disabled || pressed ? tailwind.style('opacity-60') : null,
     ]}>
     <View style={tailwind.style('h-[18px] w-[18px]')}>{children}</View>
-    <Text style={tailwind.style('font-inter-580-24 text-[15px] leading-5 text-white')}>
+    <Text
+      style={[tailwind.style('font-inter-580-24 text-[15px] leading-5'), { color: labelColor }]}>
       {label}
     </Text>
   </Pressable>

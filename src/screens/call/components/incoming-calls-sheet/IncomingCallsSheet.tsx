@@ -23,7 +23,7 @@ import { useSheetDismissal } from '../../hooks/useSheetDismissal';
 import { IncomingCallActions } from '../IncomingCallActions';
 import { PulseDot } from '../PulseDot';
 import { CollapsedCallsStrip } from './CollapsedCallsStrip';
-import { DeclineAllButton } from './DeclineAllButton';
+import { DismissAllButton } from './DismissAllButton';
 import { RingingRow } from './RingingRow';
 import { SingleCallerCard } from './SingleCallerCard';
 
@@ -38,7 +38,7 @@ type IncomingCallsSheetProps = {
   answerDisabled?: boolean;
   onAnswer: (call: LiveCall) => Promise<boolean>;
   onDecline: (call: LiveCall) => Promise<boolean>;
-  onDeclineAll: () => Promise<string[]>;
+  onDismissAll: () => void;
 };
 
 export const IncomingCallsSheet = ({
@@ -48,14 +48,14 @@ export const IncomingCallsSheet = ({
   answerDisabled,
   onAnswer,
   onDecline,
-  onDeclineAll,
+  onDismissAll,
 }: IncomingCallsSheetProps) => {
   const insets = useSafeAreaInsets();
   const single = calls.length === 1 ? calls[0] : null;
   const singleInfo = useCallerInfo(single);
   const sheet = useSheetDismissal(startCollapsed);
   const openedRowIndex = useSharedValue<number | null>(null);
-  const [decliningSids, setDecliningSids] = useState<string[]>([]);
+  const [dismissingSids, setDismissingSids] = useState<string[]>([]);
   const hapticSelection = useHaptic();
 
   const answerRow = async (call: LiveCall) => {
@@ -74,16 +74,12 @@ export const IncomingCallsSheet = ({
     const ok = await onDecline(single);
     if (!ok) sheet.expand();
   };
-  // The sheet slides away before the calls end, so no row leaves mid-slide; only a
-  // call whose decline fails comes back to the collapsed strip
-  const declineAll = () => {
+  // The sheet slides away before the calls are dismissed, so no row leaves mid-slide
+  const dismissAll = () => {
     hapticSelection?.();
-    setDecliningSids(calls.map(entry => entry.callSid));
+    setDismissingSids(calls.map(entry => entry.callSid));
     sheet.closeSheet();
-    setTimeout(async () => {
-      const failed = await onDeclineAll();
-      setDecliningSids(current => current.filter(sid => !failed.includes(sid)));
-    }, SHEET_CLOSE_MS);
+    setTimeout(onDismissAll, SHEET_CLOSE_MS);
   };
 
   const title = single
@@ -94,7 +90,7 @@ export const IncomingCallsSheet = ({
     : i18n.t('CONVERSATION.VOICE_WIDGET.JOIN_CALL');
 
   if (sheet.collapsed) {
-    const waiting = calls.filter(entry => !decliningSids.includes(entry.callSid)).length;
+    const waiting = calls.filter(entry => !dismissingSids.includes(entry.callSid)).length;
     if (!waiting) return null;
     const label =
       waiting === 1
@@ -197,7 +193,7 @@ export const IncomingCallsSheet = ({
                     )}
                   </Text>
                   <View style={tailwind.style('flex-row mx-5')}>
-                    <DeclineAllButton onPress={declineAll} />
+                    <DismissAllButton onPress={dismissAll} />
                   </View>
                 </>
               )}

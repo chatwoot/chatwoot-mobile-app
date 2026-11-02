@@ -2,6 +2,7 @@ export * from './AnswerGlyph';
 export * from './CaretLeftGlyph';
 export * from './CaretRightBoldGlyph';
 export * from './CheckGlyph';
+export * from './CloseGlyph';
 export * from './EarpieceGlyph';
 export * from './EndGlyph';
 export * from './HeadsetGlyph';

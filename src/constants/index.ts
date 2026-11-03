@@ -319,6 +319,13 @@ export const VOICE_CALL_END_REASON = {
   OUTSIDE_WORKING_HOURS: 'outside_working_hours',
 } as const;
 
+export const VOICE_CALL_FAILURES = {
+  SYSTEM_UI_INCOMING: 'system_ui_incoming',
+  SYSTEM_UI_OUTGOING: 'system_ui_outgoing',
+  TWILIO_CALL_FAILED: 'twilio_call_failed',
+  WEBRTC_CONNECTION_LOST: 'webrtc_connection_lost',
+} as const;
+
 export const ORIENTATION = {
   LEFT: 'left',
   RIGHT: 'right',

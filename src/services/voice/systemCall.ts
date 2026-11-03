@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 
 import type { AppDispatch, RootState } from '@/store';
-import { VOICE_CALL_PROVIDERS } from '@/constants';
+import { VOICE_CALL_FAILURES, VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
 import { CallService } from '@/store/call/callService';
 import {
@@ -219,7 +219,7 @@ export const systemCall = {
       store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
     } catch (error) {
       console.warn('System call UI could not show the call', error);
-      callLogger.reportFailure('system_ui_incoming', error);
+      callLogger.reportFailure(VOICE_CALL_FAILURES.SYSTEM_UI_INCOMING, error);
       store.dispatch(markSystemUiFailed(call.callSid));
     }
   },
@@ -257,7 +257,7 @@ export const systemCall = {
       }
     } catch (error) {
       console.warn('System call UI could not start the call', error);
-      callLogger.reportFailure('system_ui_outgoing', error);
+      callLogger.reportFailure(VOICE_CALL_FAILURES.SYSTEM_UI_OUTGOING, error);
     }
   },
 

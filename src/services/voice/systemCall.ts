@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import * as Sentry from '@sentry/react-native';
 
 import type { AppDispatch, RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
@@ -24,7 +25,6 @@ import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import { isAwaitingTwilioContact } from '@/utils/voiceCallUtils';
 
 import { callEngine } from './callEngine';
-import { captureVoiceFailure } from './callTelemetry';
 import { selectCallerInfo } from './callerInfo';
 import {
   cancelJoin,
@@ -219,7 +219,7 @@ export const systemCall = {
       store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
     } catch (error) {
       console.warn('System call UI could not show the call', error);
-      captureVoiceFailure(error, 'system_ui_incoming', call);
+      Sentry.captureException(error, { tags: { 'voice.failure': 'system_ui_incoming' } });
       store.dispatch(markSystemUiFailed(call.callSid));
     }
   },
@@ -257,7 +257,7 @@ export const systemCall = {
       }
     } catch (error) {
       console.warn('System call UI could not start the call', error);
-      captureVoiceFailure(error, 'system_ui_outgoing', call);
+      Sentry.captureException(error, { tags: { 'voice.failure': 'system_ui_outgoing' } });
     }
   },
 
@@ -364,7 +364,7 @@ export const systemCall = {
                 });
               }),
             ).catch(error => {
-              reportAnswerFailure(error, 'system_ui', call);
+              reportAnswerFailure(error);
               endSystemCall(event.uuid, 'failed');
             });
           }
@@ -435,7 +435,7 @@ const adoptSystemCall = (store: Store, system: SystemCall) => {
     const current = selectCalls(store.getState()).find(entry => entry.callSid === system.callSid);
     if (current && !current.isActive && selectLocalCallSid(store.getState()) !== system.callSid) {
       startJoin(store, system.callSid).catch(error => {
-        reportAnswerFailure(error, 'system_ui_restore', current);
+        reportAnswerFailure(error);
         endSystemCall(system.uuid, 'failed');
       });
     }

@@ -18,7 +18,7 @@ export const useCallActions = (call: LiveCall, isJoining: boolean) => {
       const { status } = await systemCall.answer(store, call);
       toastJoinOutcome(status);
     } catch (error) {
-      reportAnswerFailure(error, 'call_screen', call);
+      reportAnswerFailure(error);
     }
   }, [call, hapticSelection, isJoining]);
 

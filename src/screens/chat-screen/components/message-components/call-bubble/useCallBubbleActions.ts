@@ -86,7 +86,7 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
       const { status } = await systemCall.answer(store, entry);
       toastJoinOutcome(status);
     } catch (error) {
-      reportAnswerFailure(error, 'call_bubble', entry);
+      reportAnswerFailure(error);
     }
   };
 

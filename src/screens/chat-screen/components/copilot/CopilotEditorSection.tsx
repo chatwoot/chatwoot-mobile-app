@@ -7,6 +7,7 @@ import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { expandTabs } from '@/utils/expandTabs';
+import { appFont } from '@/theme/appFont';
 
 type CopilotEditorSectionProps = {
   isGenerating: boolean;
@@ -19,7 +20,7 @@ type CopilotEditorSectionProps = {
 const markdownStyles = StyleSheet.create({
   body: {
     fontSize: 14,
-    fontFamily: 'Inter-400-20',
+    ...appFont('Inter-400-20'),
     lineHeight: 21,
     letterSpacing: -0.1,
     color: tailwind.color('text-slate-950') as string,
@@ -29,7 +30,7 @@ const markdownStyles = StyleSheet.create({
     marginBottom: 0,
   },
   strong: {
-    fontFamily: 'Inter-600-20',
+    ...appFont('Inter-600-20'),
     fontWeight: '600',
   },
   em: {

@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
-import Animated from 'react-native-reanimated';
+import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { SlaPillVisibilityContext } from './SlaPillVisibility';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -35,6 +37,11 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { WhatsAppTemplatesList } from './components/whatsapp-templates';
 import { macroActions } from '@/store/macro/macroActions';
+import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
+import { IOS_DESIGN, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
+import { handOffToSplitView } from '@/navigation/split/splitHandoff';
+import { SideToolbarProvider } from '@/context';
+import { SideToolbarSlot } from '@/navigation/tabs/BottomTabBar';
 
 export const ChatWindow = (props: ChatScreenProps) => {
   return (
@@ -50,28 +57,51 @@ export const ChatWindow = (props: ChatScreenProps) => {
 type ChatScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'ChatScreen'>;
 
 const ConversationPagerView = (props: ChatScreenProps) => {
+  const isInDetailPane = useIsInDetailPane();
   const { chatPagerView } = useRefsContext();
   const { setPagerViewIndex } = useChatWindowContext();
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
     setPagerViewIndex(e.nativeEvent.position);
   };
-  return (
+  // iOS: a clear leftward swipe on the messages opens the actions page (like the split view's
+  // swipe that opens the actions column). Only leftward drags start it, so the edge swipe back
+  // and scrolling the messages aren't affected.
+  const navigation = useNavigation();
+  const { conversationId } = useChatWindowContext();
+  const openActions = () =>
+    navigation.dispatch(StackActions.push('ConversationActionsScreen', { conversationId }));
+  const swipeToActions = Gesture.Pan()
+    .activeOffsetX([-20, 10000])
+    .failOffsetY([-12, 12])
+    .onEnd(event => {
+      if (event.translationX < -60 || event.velocityX < -500) runOnJS(openActions)();
+    });
+  const pager = (
     <PagerView
       ref={chatPagerView}
       orientation="horizontal"
       overdrag
       style={tailwind.style('flex-1')}
-      scrollEnabled
+      // In the split view pane actions open as a column instead of a swipe-left page.
+      // iOS opens actions as a page, so the chat doesn't swipe sideways (that's Back).
+      scrollEnabled={!isInDetailPane && !IOS_DESIGN}
       initialPage={0}
       onPageSelected={onPageSelected}>
       <ChatWindow {...props} />
       <ConversationActions />
     </PagerView>
   );
+  if (!IOS_DESIGN || isInDetailPane) return pager;
+  return (
+    <GestureDetector gesture={swipeToActions}>
+      <Animated.View style={tailwind.style('flex-1')}>{pager}</Animated.View>
+    </GestureDetector>
+  );
 };
 
 const ChatScreenWrapper = (props: ChatScreenProps) => {
   const dispatch = useAppDispatch();
+  const slaPillVisibility = useSharedValue(1);
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
@@ -87,14 +117,81 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
   }, [inboxId]);
 
   return (
-    <React.Fragment>
+    <SlaPillVisibilityContext.Provider value={slaPillVisibility}>
       <ChatHeaderContainer name={name || ''} imageSrc={{ uri: thumbnail || '' }} />
       <ConversationPagerView {...props} />
-    </React.Fragment>
+    </SlaPillVisibilityContext.Provider>
   );
 };
+// Error state for the split view's conversation pane: compact and quiet, in the same
+// type scale as the chat (17pt title, 15pt body, rounded button) instead of the
+// full-screen phone layout.
+const PaneErrorState = ({
+  title,
+  onRetry,
+  onClose,
+}: {
+  title: string;
+  onRetry: () => void;
+  onClose: () => void;
+}) => (
+  <Animated.View style={tailwind.style('flex-1 bg-gray-50 items-center justify-center px-8')}>
+    <Animated.View style={tailwind.style('items-center gap-3 max-w-[320px]')}>
+      <Animated.View style={tailwind.style('h-10 w-10 items-center justify-center')}>
+        <Animated.View style={{ transform: [{ scale: 0.5 }] }}>
+          <ErrorIcon />
+        </Animated.View>
+      </Animated.View>
+      <Animated.Text
+        style={tailwind.style(
+          'text-[17px] leading-[22px] font-inter-semibold-20 text-gray-950 text-center',
+        )}>
+        {title}
+      </Animated.Text>
+      <Animated.Text
+        style={tailwind.style(
+          'text-[15px] leading-[20px] font-inter-normal-20 text-gray-700 text-center',
+        )}>
+        {i18n.t('CONVERSATION.NOT_FOUND.PANE_DESCRIPTION')}
+      </Animated.Text>
+      <Animated.View style={tailwind.style('flex-row items-center gap-2 mt-2')}>
+        <Pressable
+          onPress={onRetry}
+          accessibilityRole="button"
+          style={({ pressed }) =>
+            tailwind.style(
+              'h-9 min-w-[88px] px-5 rounded-full items-center justify-center border border-blue-800 bg-blue-800',
+              pressed && 'opacity-80',
+            )
+          }>
+          <Animated.Text style={tailwind.style('text-[15px] font-inter-medium-24 text-white')}>
+            {i18n.t('CONVERSATION.NOT_FOUND.RETRY')}
+          </Animated.Text>
+        </Pressable>
+        <Pressable
+          onPress={onClose}
+          accessibilityRole="button"
+          style={({ pressed }) =>
+            tailwind.style(
+              'h-9 min-w-[88px] px-5 rounded-full items-center justify-center border border-gray-300 bg-white',
+              pressed && 'opacity-80',
+            )
+          }>
+          <Animated.Text style={tailwind.style('text-[15px] font-inter-medium-24 text-gray-950')}>
+            {i18n.t('CONVERSATION.NOT_FOUND.CLOSE')}
+          </Animated.Text>
+        </Pressable>
+      </Animated.View>
+    </Animated.View>
+  </Animated.View>
+);
+
 const ChatScreen = (props: ChatScreenProps) => {
   const navigation = useNavigation();
+  const isInDetailPane = useIsInDetailPane();
+  const splitView = useSplitView();
+  const sideTabBar = useSideTabBarLayout();
+  const paneTopMargin = sideTabBar?.contentTopPadding ?? 0;
   const { conversationId, primaryActorId, primaryActorType } = props.route.params;
   const dispatch = useAppDispatch();
 
@@ -133,6 +230,25 @@ const ChatScreen = (props: ChatScreenProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [primaryActorId, primaryActorType]);
 
+  // Unfolding the Duo while this chat is open full screen: close it and open the same
+  // conversation in the list's split view, so the list shows on the left. Only on the change
+  // (folded to unfolded), so chats opened on the open Duo (search, notifications) stay.
+  const isSplitLayout = useIsSplitLayout();
+  const wasSplitLayout = useRef(isSplitLayout);
+  useEffect(() => {
+    const unfolded = !wasSplitLayout.current && isSplitLayout;
+    wasSplitLayout.current = isSplitLayout;
+    if (!unfolded || isInDetailPane || !navigation.isFocused()) return;
+    handOffToSplitView(conversationId);
+    // Close without the slide: the window is already resizing as the Duo unfolds.
+    // (The option applies on the next render, so pop a frame later.)
+    navigation.setOptions({ animation: 'none' });
+    requestAnimationFrame(() => {
+      if (navigation.canGoBack()) navigation.dispatch(StackActions.pop());
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSplitLayout]);
+
   const handleBackPress = () => {
     if (navigation.canGoBack()) {
       navigation.dispatch(StackActions.pop());
@@ -143,8 +259,14 @@ const ChatScreen = (props: ChatScreenProps) => {
 
   if (conversation) {
     const { messageId } = props.route.params;
-    return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    const screen = (
+      <SafeAreaView
+        // In the split view pane the chat runs to the display edge; its parts pad their content.
+        edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
+        style={tailwind.style('flex-1 bg-white')}>
+        {/* With tabs on the side (split view pane or full screen), match the list header's top
+            margin so the headers line up and stay out of the rounded corner. */}
+        {isInDetailPane || sideTabBar ? <Animated.View style={{ height: paneTopMargin }} /> : null}
         {/* Remount the chat subtree when the conversation or account changes so its
             account-scoped data (agents, teams, participants, canned responses) refetches. */}
         <ChatWindowProvider
@@ -156,6 +278,19 @@ const ChatScreen = (props: ChatScreenProps) => {
         <ActionBottomSheet />
       </SafeAreaView>
     );
+    // Full screen with tabs on the side (e.g. opened from a notification): the tab bar isn't
+    // shown, so the chat draws its own side toolbar for its header actions.
+    if (!isInDetailPane && sideTabBar) {
+      return (
+        <SideToolbarProvider>
+          <Animated.View style={tailwind.style('flex-1')}>
+            {screen}
+            <SideToolbarSlot />
+          </Animated.View>
+        </SideToolbarProvider>
+      );
+    }
+    return screen;
   }
 
   if (conversationFetching) {
@@ -167,9 +302,35 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
+  if ((conversationError || !conversation) && isInDetailPane) {
+    return (
+      <PaneErrorState
+        title={conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
+        onRetry={fetchConversation}
+        onClose={() => splitView?.closeConversation()}
+      />
+    );
+  }
+
+  if ((conversationError || !conversation) && IOS_DESIGN) {
+    // iOS: the same compact error state as the split view pane; Close goes back.
+    return (
+      <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-gray-50')}>
+        <PaneErrorState
+          title={conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
+          onRetry={fetchConversation}
+          onClose={handleBackPress}
+        />
+      </SafeAreaView>
+    );
+  }
+
   if (conversationError || !conversation) {
     return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView
+        // In the split view pane the chat runs to the display edge; its parts pad their content.
+        edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
+        style={tailwind.style('flex-1 bg-white')}>
         <Animated.View
           style={tailwind.style(
             'flex-1 items-center justify-center gap-8 px-4',

@@ -11,13 +11,26 @@ import { CloseIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { User } from '@/types/User';
+import { PaneHeader } from '@/navigation/split/PaneHeader';
+import { FullScreenPage, PageHeader } from '@/navigation/split/FullScreenPage';
+import { IOS_DESIGN } from '@/utils';
 
-const DashboardScreen = () => {
+type DashboardScreenProps = {
+  // Set when shown in the split view's secondary column (iPhone Duo) instead of as a screen.
+  paneParams?: {
+    conversation: Conversation;
+    currentUser: User;
+    title?: string;
+    url: string;
+  };
+};
+
+const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {
   const route = useRoute();
   const navigation = useNavigation();
   const webviewRef = useRef<WebView>(null);
 
-  const { conversation, currentUser, title, url } = route.params as {
+  const { conversation, currentUser, title, url } = (paneParams ?? route.params) as {
     conversation: Conversation;
     currentUser: User;
     title: string;
@@ -50,11 +63,41 @@ const DashboardScreen = () => {
     data,
   )}}));`;
 
+  const webview = (
+    <WebView
+      ref={webviewRef}
+      originWhitelist={['*']}
+      source={{ uri: url }}
+      startInLoadingState={true}
+      javaScriptEnabled={true}
+      onLoadEnd={() => {
+        webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
+      }}
+      onMessage={event => {
+        if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
+          webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
+        }
+      }}
+    />
+  );
+
+  // iOS full screen: a page like the split view's dashboard column, with Back.
+  if (IOS_DESIGN && !paneParams) {
+    return (
+      <FullScreenPage>
+        <PageHeader title={title ?? ''} onBack={handleBackPress} />
+        {webview}
+      </FullScreenPage>
+    );
+  }
+
   return (
     <Animated.View style={tailwind.style('flex-1')}>
+      {paneParams ? <PaneHeader title={title ?? ''} /> : null}
       <Animated.View
         style={tailwind.style(
           'flex flex-row items-center justify-between px-4 border-b-[1px] border-b-blackA-A3 py-[12px] bg-white',
+          paneParams ? 'hidden' : '',
         )}>
         <Pressable hitSlop={16} onPress={handleBackPress}>
           <Animated.View>
@@ -75,21 +118,7 @@ const DashboardScreen = () => {
           </Animated.View>
         </Pressable>
       </Animated.View>
-      <WebView
-        ref={webviewRef}
-        originWhitelist={['*']}
-        source={{ uri: url }}
-        startInLoadingState={true}
-        javaScriptEnabled={true}
-        onLoadEnd={() => {
-          webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
-        }}
-        onMessage={event => {
-          if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
-            webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
-          }
-        }}
-      />
+      {webview}
     </Animated.View>
   );
 };

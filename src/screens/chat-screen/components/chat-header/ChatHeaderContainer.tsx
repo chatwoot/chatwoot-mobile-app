@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
@@ -21,7 +22,7 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectHasActiveCall, selectHasIncomingCall } from '@/store/call/callSelectors';
 import { getVoiceCallProvider } from '@/utils/inboxUtils';
 import { placeOutboundCall } from '@/utils/placeOutboundCall';
-import { getChannelIcon } from '@/utils';
+import { IOS_DESIGN, getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
 
 type ChatScreenHeaderProps = {
@@ -32,6 +33,8 @@ type ChatScreenHeaderProps = {
 const REFRESH_INTERVAL = 60000;
 
 export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
+  const isInDetailPane = useIsInDetailPane();
+  const splitView = useSplitView();
   const { name, imageSrc } = props;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -137,11 +140,25 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   };
 
   const handleNavigationToContactDetails = () => {
+    // Split view: push contact details as a column on the right instead of a sheet.
+    if (isInDetailPane && splitView) {
+      splitView.openContact();
+      return;
+    }
     const navigateToScreen = StackActions.push('ContactDetails', { conversationId });
     navigation.dispatch(navigateToScreen);
   };
 
   const handleNavigation = (url?: string, title?: string) => {
+    // Split view: dashboard apps and conversation actions open as a column on the right.
+    if (isInDetailPane && splitView) {
+      if (url) {
+        splitView.openDashboard({ url, title, conversation, currentUser });
+      } else {
+        splitView.openActions();
+      }
+      return;
+    }
     if (url) {
       const navigateToScreen = StackActions.push('Dashboard', {
         url,
@@ -150,6 +167,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         currentUser,
       });
       navigation.dispatch(navigateToScreen);
+    } else if (IOS_DESIGN) {
+      // iOS: actions are a pushed page (the chat no longer swipes to them).
+      navigation.dispatch(StackActions.push('ConversationActionsScreen', { conversationId }));
     } else {
       chatPagerView.current?.setPage(1);
     }
@@ -228,12 +248,22 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       slaType={slaType}
       slaEvents={slaEvents}
       statusText={slaStatusText()}
+      slaTime={slaStatus?.threshold}
       showCallButton={voiceCallProvider !== null}
       isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
       onCallPress={startCall}
-      onBackPress={handleBackPress}
+      // In the split view's conversation pane, back closes the conversation.
+      onBackPress={isInDetailPane && splitView ? splitView.closeConversation : handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
+      // Actions open as a column in the split view and as the actions page elsewhere on iOS.
+      onOpenActions={
+        isInDetailPane && splitView
+          ? splitView.openActions
+          : IOS_DESIGN
+            ? () => handleNavigation()
+            : undefined
+      }
     />
   );
 };

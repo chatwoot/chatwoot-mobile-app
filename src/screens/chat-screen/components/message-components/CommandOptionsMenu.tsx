@@ -67,7 +67,7 @@ export const handleOpenPhotosLibrary = async (dispatch: AppDispatch) => {
   }
 };
 
-const handleLaunchCamera = async (dispatch: AppDispatch) => {
+export const handleLaunchCamera = async (dispatch: AppDispatch) => {
   request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then(
     async result => {
       if (RESULTS.BLOCKED === result) {
@@ -126,7 +126,7 @@ const mapObject = (originalObject: DocumentPickerResponse): Asset[] => {
   ];
 };
 
-const handleAttachFile = async (dispatch: AppDispatch) => {
+export const handleAttachFile = async (dispatch: AppDispatch) => {
   try {
     const result = await pick({
       type: [

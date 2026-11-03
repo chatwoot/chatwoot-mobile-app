@@ -17,12 +17,16 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useSplitView } from '@/navigation/split/SplitViewContext';
+import { SelectedRowBackground } from '@/navigation/split/SelectedRowBackground';
 import { conversationActions } from '@/store/conversation/conversationActions';
 
 type InboxItemContainerProps = {
   item: Notification;
   index: number;
   openedRowIndex: SharedValue<number | null>;
+  // The next row's conversation, so this row can hide its divider above a selected row.
+  nextConversationId?: number;
 };
 
 const UnreadComponent = React.memo(() => {
@@ -53,10 +57,11 @@ const DeleteComponent = React.memo(() => {
 });
 
 export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
-  const { index, item, openedRowIndex } = props;
+  const { index, item, openedRowIndex, nextConversationId } = props;
   const dispatch = useAppDispatch();
 
   const navigation = useNavigation();
+  const splitView = useSplitView();
   const meta = item.primaryActor?.meta;
   const inboxId = item.primaryActor?.inboxId;
   const isRead = !!item.readAt;
@@ -66,7 +71,14 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       shouldShowToast: false,
     });
     if (item.primaryActor?.id) {
+      // Already open in the split view's pane: refetching would replace its messages and
+      // reset the chat, so leave it as is.
+      if (splitView?.selectedConversationId === item.primaryActor.id) return;
       await dispatch(conversationActions.fetchConversation(item.primaryActor?.id));
+      if (splitView) {
+        splitView.openConversation(item.primaryActor.id);
+        return;
+      }
       const pushToChatScreen = StackActions.push('ChatScreen', {
         conversationId: item.primaryActor?.id,
         isConversationOpenedExternally: false,
@@ -139,18 +151,26 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       triggerOverswipeOnFlick
       rightElementBgColor="bg-ruby-800"
       {...{ index, openedRowIndex }}>
-      <InboxItem
-        isRead={isRead}
-        assignee={assignee}
-        lastActivityAt={lastActivityAt}
-        sender={sender}
-        conversationId={conversationId}
-        priority={priority}
-        inbox={inbox || null}
-        additionalAttributes={additionalAttributes}
-        pushMessageTitle={pushTitle}
-        notificationType={notificationType}
-      />
+      <SelectedRowBackground
+        selected={
+          !!item.primaryActor?.id && splitView?.selectedConversationId === item.primaryActor.id
+        }
+        beforeSelected={
+          !!nextConversationId && splitView?.selectedConversationId === nextConversationId
+        }>
+        <InboxItem
+          isRead={isRead}
+          assignee={assignee}
+          lastActivityAt={lastActivityAt}
+          sender={sender}
+          conversationId={conversationId}
+          priority={priority}
+          inbox={inbox || null}
+          additionalAttributes={additionalAttributes}
+          pushMessageTitle={pushTitle}
+          notificationType={notificationType}
+        />
+      </SelectedRowBackground>
     </Swipeable>
   );
 };

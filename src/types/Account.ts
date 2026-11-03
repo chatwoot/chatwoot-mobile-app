@@ -2,6 +2,7 @@ export interface Account {
   active_at: string;
   auto_offline: boolean;
   accepts_calls?: boolean;
+  accepts_conversations?: boolean;
   availability: string;
   availability_status: string;
   custom_role?: string;

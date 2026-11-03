@@ -71,6 +71,7 @@ export const store = configureStore({
           PURGE,
           REGISTER,
           'auth/setCurrentUserAvailability',
+          'auth/setCurrentUserWorkPreferences',
           'contact/updateContactsPresence',
         ],
       },

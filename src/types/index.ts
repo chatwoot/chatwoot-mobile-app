@@ -23,9 +23,11 @@ export interface GenericListType {
   subtitle?: string;
   subtitleType?: 'dark' | 'light';
   hasChevron?: boolean;
+  checked?: boolean;
   disabled?: boolean;
   // Shown as selected, e.g. the row open in the Settings split view's detail pane.
   isSelected?: boolean;
+  inactive?: boolean;
   link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {

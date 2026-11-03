@@ -20,17 +20,18 @@ type ListItemProps = {
 
 const ListItem = (props: ListItemProps) => {
   const { listItem, index, isLastItem } = props;
+  const isDisabled = listItem.inactive || listItem.locked;
 
   return (
     <Pressable
       onPress={() => listItem.onPressListItem && listItem.onPressListItem()}
       key={index}
-      disabled={listItem.inactive}
+      disabled={isDisabled}
       accessibilityRole={listItem.checked === undefined ? undefined : 'checkbox'}
       accessibilityState={
         listItem.checked === undefined
-          ? { disabled: listItem.inactive }
-          : { checked: listItem.checked, disabled: listItem.inactive }
+          ? { disabled: isDisabled }
+          : { checked: listItem.checked, disabled: isDisabled }
       }
       style={({ pressed }) => [
         tailwind.style(
@@ -55,7 +56,8 @@ const ListItem = (props: ListItemProps) => {
           <Animated.View>
             <Animated.Text
               style={tailwind.style(
-                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
+                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px]',
+                listItem.locked ? 'text-slate-900' : 'text-gray-950',
               )}>
               {listItem.title}
             </Animated.Text>
@@ -73,7 +75,9 @@ const ListItem = (props: ListItemProps) => {
               <Animated.View
                 style={tailwind.style(
                   'h-[22px] w-[22px] items-center justify-center rounded-[6px] border-[1.5px]',
-                  listItem.checked ? 'bg-blue-800 border-blue-800' : 'border-gray-600',
+                  listItem.checked && listItem.locked ? 'bg-slate-600 border-slate-600' : '',
+                  listItem.checked && !listItem.locked ? 'bg-blue-800 border-blue-800' : '',
+                  !listItem.checked ? 'border-gray-600' : '',
                 )}>
                 {listItem.checked ? <Icon icon={<TickIcon stroke="#FFFFFF" />} size={14} /> : null}
               </Animated.View>

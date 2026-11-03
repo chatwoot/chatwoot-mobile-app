@@ -55,7 +55,8 @@ import { AttachedMedia } from '../message-components/AttachedMedia';
 import { CommandOptionsMenu } from '../message-components/CommandOptionsMenu';
 import { AttachmentFile, SendMessagePayload } from '@/store/conversation/conversationTypes';
 import { TypingIndicator } from './TypingIndicator';
-import { getTypingUsersText } from '@/utils';
+import { getLastMessage, getTypingUsersText } from '@/utils';
+import { isVoiceCallMessage } from '@/utils/voiceCallRouting';
 import { selectTypingUsersByConversationId } from '@/store/conversation/conversationTypingSlice';
 import { Agent, CannedResponse, Conversation } from '@/types';
 import AnalyticsHelper from '@/utils/analyticsUtils';
@@ -219,16 +220,24 @@ const BottomSheetContent = () => {
     conversation: conversation as Conversation,
   });
 
+  const [opensOnCall, setOpensOnCall] = useState<boolean>();
   useEffect(() => {
-    if (canReply || (inbox && isAWhatsAppChannel(inbox))) {
+    if (opensOnCall !== undefined || !conversation) return;
+    const lastMessage = getLastMessage(conversation);
+    setOpensOnCall(isVoiceCallMessage(lastMessage));
+  }, [conversation, opensOnCall]);
+
+  const canSendReply = !!canReply || (!!inbox && isAWhatsAppChannel(inbox));
+  useEffect(() => {
+    if (canSendReply) {
       setReplyEditorMode(REPLY_EDITOR_MODES.REPLY);
-      dispatch(togglePrivateMessage(false));
+      dispatch(togglePrivateMessage(!!opensOnCall));
     } else {
       setReplyEditorMode(REPLY_EDITOR_MODES.NOTE);
       dispatch(togglePrivateMessage(true));
       dispatch(setQuoteMessage(null));
     }
-  }, [inbox, canReply, dispatch]);
+  }, [canSendReply, opensOnCall, dispatch]);
 
   // Clear quote state when switching conversations to prevent cross-conversation replies
   useEffect(() => {

@@ -1,5 +1,4 @@
 import { Platform } from 'react-native';
-import * as Sentry from '@sentry/react-native';
 
 import type { AppDispatch, RootState } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
@@ -25,6 +24,7 @@ import { reportAnswerFailure } from '@/utils/voiceCallFeedback';
 import { isAwaitingTwilioContact } from '@/utils/voiceCallUtils';
 
 import { callEngine } from './callEngine';
+import { callLogger } from './callLogger';
 import { selectCallerInfo } from './callerInfo';
 import {
   cancelJoin,
@@ -219,7 +219,7 @@ export const systemCall = {
       store.dispatch(setSystemUuid({ callSid: call.callSid, systemUuid }));
     } catch (error) {
       console.warn('System call UI could not show the call', error);
-      Sentry.captureException(error, { tags: { 'voice.failure': 'system_ui_incoming' } });
+      callLogger.reportFailure('system_ui_incoming', error);
       store.dispatch(markSystemUiFailed(call.callSid));
     }
   },
@@ -257,7 +257,7 @@ export const systemCall = {
       }
     } catch (error) {
       console.warn('System call UI could not start the call', error);
-      Sentry.captureException(error, { tags: { 'voice.failure': 'system_ui_outgoing' } });
+      callLogger.reportFailure('system_ui_outgoing', error);
     }
   },
 

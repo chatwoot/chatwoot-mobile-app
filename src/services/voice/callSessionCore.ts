@@ -1,5 +1,3 @@
-import * as Sentry from '@sentry/react-native';
-
 import { store } from '@/store';
 import { VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
@@ -25,6 +23,7 @@ import {
   selectLocalCallSid,
 } from '@/store/call/callSelectors';
 import { callEngine } from '@/services/voice/callEngine';
+import { callLogger } from '@/services/voice/callLogger';
 import {
   setMicrophoneGrantedHandler,
   setWebrtcConnectionLostHandler,
@@ -204,9 +203,7 @@ const install = () => {
     const active = selectActiveCall(state);
     if (!active || !localCallSid || active.callSid !== localCallSid) return;
     if (active.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
-    Sentry.captureException(new Error('WhatsApp call connection lost'), {
-      tags: { 'voice.failure': 'webrtc_connection_lost' },
-    });
+    callLogger.reportFailure('webrtc_connection_lost', new Error('WhatsApp call connection lost'));
     store.dispatch(callActions.endCall());
   });
 
@@ -222,9 +219,10 @@ const install = () => {
       return;
     }
     if (event.state === 'failed') {
-      Sentry.captureException(new Error(event.error || 'Twilio call failed'), {
-        tags: { 'voice.failure': 'twilio_call_failed' },
-      });
+      callLogger.reportFailure(
+        'twilio_call_failed',
+        new Error(event.error || 'Twilio call failed'),
+      );
     }
     store.dispatch(callActions.endCall());
   });

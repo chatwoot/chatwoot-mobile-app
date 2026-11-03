@@ -1,7 +1,7 @@
 import { createListenerMiddleware, isAnyOf, type SerializedError } from '@reduxjs/toolkit';
-import * as Sentry from '@sentry/react-native';
 
 import { isMicrophoneDeniedError } from '@/services/voice/callErrors';
+import { callLogger } from '@/services/voice/callLogger';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { isUnreportableSerializedError } from '@/utils/sentryUtils';
 
@@ -36,6 +36,6 @@ callListenerMiddleware.startListening({
   effect: action => {
     if (isExpectedFailure(action.error)) return;
     const failure = action.type.replace(/\/rejected$/, '');
-    Sentry.captureException(toError(action.error), { tags: { 'voice.failure': failure } });
+    callLogger.reportFailure(failure, toError(action.error));
   },
 });

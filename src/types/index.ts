@@ -26,6 +26,7 @@ export interface GenericListType {
   checked?: boolean;
   disabled?: boolean;
   inactive?: boolean;
+  locked?: boolean;
   link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {

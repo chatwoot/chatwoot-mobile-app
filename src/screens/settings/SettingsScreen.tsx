@@ -134,7 +134,11 @@ const SettingsScreen = () => {
   const supportsWorkPreferences = useAppSelector(selectSupportsWorkPreferences);
   const showWorkPreferences = hasVoiceInbox && supportsWorkPreferences;
   const isOnline = availabilityStatus === 'online';
-  const { preferences: workPreferences, toggle: toggleWorkPreference } = useWorkPreferences();
+  const {
+    preferences: workPreferences,
+    isLocked: isWorkPreferenceLocked,
+    toggle: toggleWorkPreference,
+  } = useWorkPreferences();
 
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
@@ -230,6 +234,7 @@ const SettingsScreen = () => {
       checked: workPreferences.accepts_conversations,
       disabled: !showWorkPreferences,
       inactive: !isOnline,
+      locked: isWorkPreferenceLocked('accepts_conversations'),
       onPressListItem: () => toggleWorkPreference('accepts_conversations'),
     },
     {
@@ -238,6 +243,7 @@ const SettingsScreen = () => {
       checked: workPreferences.accepts_calls,
       disabled: !showWorkPreferences,
       inactive: !isOnline,
+      locked: isWorkPreferenceLocked('accepts_calls'),
       onPressListItem: () => toggleWorkPreference('accepts_calls'),
     },
   ];

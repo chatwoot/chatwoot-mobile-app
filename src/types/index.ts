@@ -28,6 +28,7 @@ export interface GenericListType {
   // Shown as selected, e.g. the row open in the Settings split view's detail pane.
   isSelected?: boolean;
   inactive?: boolean;
+  locked?: boolean;
   link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {

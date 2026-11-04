@@ -46,6 +46,7 @@ describe('callSlice', () => {
       audioRoute: { current: 'earpiece', available: ['earpiece', 'speaker'], names: {} },
       isMinimised: false,
       placingCall: null,
+      pendingPlacements: 0,
     });
   });
 

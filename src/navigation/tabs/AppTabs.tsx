@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
-import { Platform } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { BottomTabBarProps, createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -16,6 +16,7 @@ import {
   selectCurrentUserAccountId,
 } from '@/store/auth/authSelectors';
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
+import { selectIsCallInProgress } from '@/store/call/callSelectors';
 
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
@@ -40,6 +41,13 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
+import { AppUpdatePrompt, RequiredUpdateScreen } from '@/components-next/app-update';
+import { useRequiredAppUpdate } from '@/hooks/useRequiredAppUpdate';
+import {
+  markNotificationRequestSettled,
+  markServerPolicyLoaded,
+  markSignedInThisSession,
+} from '@/utils/appUpdateUtils';
 import { InAppCallScreen } from '@/screens/call';
 import { runCallReadiness } from '@/screens/call/utils/callReadiness';
 import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
@@ -116,6 +124,7 @@ const Tabs = () => {
     } catch {
       // Prompt failures must not prevent registration.
     }
+    markNotificationRequestSettled();
     dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -165,11 +174,6 @@ const Tabs = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);
 
-  useEffect(() => {
-    dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [installationUrl]);
-
   const userPermissions = user ? getUserPermissions(user, user.account_id) : [];
 
   // Checking if user has conversation permission to show inbox and conversations tabs
@@ -192,24 +196,62 @@ const Tabs = () => {
   }, []);
 
   return (
-    <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
-      {hasConversationPermission && (
-        <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
-      )}
-      {hasConversationPermission && (
-        <Tab.Screen
-          name="Conversations"
-          options={{ headerShown: false }}
-          component={ConversationStack}
-        />
-      )}
-      <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator tabBar={CustomTabBar} initialRouteName="Inbox">
+        {hasConversationPermission && (
+          <Tab.Screen name="Inbox" component={InboxStack} options={{ headerShown: false }} />
+        )}
+        {hasConversationPermission && (
+          <Tab.Screen
+            name="Conversations"
+            options={{ headerShown: false }}
+            component={ConversationStack}
+          />
+        )}
+        <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
+      </Tab.Navigator>
+      <AppUpdatePrompt />
+    </>
   );
 };
 
 export const AppTabs = () => {
+  const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectLoggedIn);
+  const installationUrl = useAppSelector(selectInstallationUrl);
+  const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
+  const isCallInProgress = useAppSelector(selectIsCallInProgress);
+
+  // Refetched on every foreground; only the latest request marks the policy loaded.
+  const latestServerInfoRequestRef = useRef<Promise<unknown> | null>(null);
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const fetchServerInfo = () => {
+      const request = dispatch(settingsActions.getChatwootVersion({ installationUrl }));
+      latestServerInfoRequestRef.current = request;
+      request.finally(() => {
+        if (latestServerInfoRequestRef.current === request) markServerPolicyLoaded();
+      });
+    };
+    fetchServerInfo();
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') fetchServerInfo();
+    });
+    return () => subscription.remove();
+  }, [dispatch, installationUrl, isLoggedIn]);
+
+  const wasLoggedInRef = useRef(isLoggedIn);
+  useEffect(() => {
+    if (isLoggedIn && !wasLoggedInRef.current) {
+      markSignedInThisSession();
+    }
+    wasLoggedInRef.current = isLoggedIn;
+  }, [isLoggedIn]);
+
+  // The call screen and its session live inside the navigator, so the gate waits for calls to end.
+  if (isLoggedIn && isUpdateRequired && minVersion && !isCallInProgress) {
+    return <RequiredUpdateScreen currentVersion={currentVersion} minVersion={minVersion} />;
+  }
 
   if (isLoggedIn) {
     return (

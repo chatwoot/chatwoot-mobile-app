@@ -38,6 +38,10 @@ yarn-error.*
 
 ios/
 android/
+# Local Expo modules keep their native sources in the repo
+!modules/*/ios/
+!modules/*/android/
+modules/*/android/build/
 
 google-services.json
 GoogleService-Info.plist

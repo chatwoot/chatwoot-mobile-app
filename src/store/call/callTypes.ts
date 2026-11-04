@@ -60,6 +60,8 @@ export type CallState = {
   };
   isMinimised: boolean;
   placingCall: PlacingCall | null;
+  // Outbound placements whose request, or cancellation of a late response, hasn't finished.
+  pendingPlacements: number;
 };
 
 export type PlacingCall = {

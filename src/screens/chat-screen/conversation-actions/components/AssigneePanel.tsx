@@ -15,7 +15,11 @@ type AssigneePanelProps = {
 const assigneeAvatar = (assignee: Agent | null) => {
   if (assignee) {
     return (
-      <Avatar size={'md'} src={{ uri: assignee?.thumbnail || '' }} name={assignee?.name || ''} />
+      <Avatar
+        size="md"
+        src={assignee.thumbnail ? { uri: assignee.thumbnail } : undefined}
+        name={assignee.name || ''}
+      />
     );
   }
   return <Icon icon={<UnassignedIcon />} />;

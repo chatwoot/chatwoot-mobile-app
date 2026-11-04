@@ -11,15 +11,12 @@ import { MESSAGE_VARIANTS } from '@/constants';
 export type TextBubbleProps = {
   item: Message;
   variant: string;
-  // Keep room at the end of the last line for the time drawn over the bubble's corner
-  // (WhatsApp-style inline time on iOS): time only, or time and delivery ticks.
-  timeReserve?: 'time' | 'ticks';
 };
 
 export const TextBubble = (props: TextBubbleProps) => {
   const tailwind = useTailwind();
   const messageItem = props.item as Message;
-  const { variant, timeReserve } = props;
+  const { variant } = props;
 
   const { private: isPrivate, content, contentAttributes, sender } = messageItem;
 
@@ -42,7 +39,7 @@ export const TextBubble = (props: TextBubbleProps) => {
 
   const renderContent = () => (
     <React.Fragment>
-      <MarkdownBubble messageContent={displayContent} variant={variant} timeReserve={timeReserve} />
+      <MarkdownBubble messageContent={displayContent} variant={variant} />
       {hasTranslations && (
         <Pressable onPress={toggleTranslation} hitSlop={4}>
           <Animated.Text

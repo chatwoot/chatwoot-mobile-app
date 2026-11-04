@@ -155,6 +155,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
           style={[
             tailwind.style(
               cx(
+                'w-full',
                 avatarTheme.initials.base,
                 avatarTheme.initials.size[size],
                 'font-inter-medium-24',
@@ -162,7 +163,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
               ),
             ),
           ]}
-          adjustsFontSizeToFit
+          numberOfLines={1}
           allowFontScaling={false}>
           {ONE_LETTER_INITIAL_SIZES.includes(size)
             ? getInitials(name)?.charAt(0)

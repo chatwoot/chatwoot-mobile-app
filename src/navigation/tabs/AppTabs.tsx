@@ -16,6 +16,7 @@ import {
   selectCurrentUserAccountId,
 } from '@/store/auth/authSelectors';
 import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
+import { selectIsCallInProgress } from '@/store/call/callSelectors';
 
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
@@ -219,6 +220,7 @@ export const AppTabs = () => {
   const isLoggedIn = useAppSelector(selectLoggedIn);
   const installationUrl = useAppSelector(selectInstallationUrl);
   const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
+  const isCallInProgress = useAppSelector(selectIsCallInProgress);
 
   // Refetched on every foreground so a minimum version raised while the app stayed in memory
   // still applies. Only the latest request signals that the policy is loaded, since the store
@@ -248,7 +250,8 @@ export const AppTabs = () => {
     wasLoggedInRef.current = isLoggedIn;
   }, [isLoggedIn]);
 
-  if (isLoggedIn && isUpdateRequired && minVersion) {
+  // The call screen and its session live inside the navigator, so the gate waits for calls to end.
+  if (isLoggedIn && isUpdateRequired && minVersion && !isCallInProgress) {
     return <RequiredUpdateScreen currentVersion={currentVersion} minVersion={minVersion} />;
   }
 

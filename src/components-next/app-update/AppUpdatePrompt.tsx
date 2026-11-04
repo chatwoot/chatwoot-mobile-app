@@ -7,7 +7,9 @@ import * as Application from 'expo-application';
 import * as Device from 'expo-device';
 
 import i18n from '@/i18n';
+import { useAppSelector } from '@/hooks';
 import type { RootState } from '@/store';
+import { selectIsCallInProgress } from '@/store/call/callSelectors';
 import { selectMobileAppMinVersion } from '@/store/settings/settingsSelectors';
 import { showToast } from '@/utils/toastUtils';
 import {
@@ -81,6 +83,7 @@ export const AppUpdatePrompt = () => {
 
   const isFocusedRef = useRef(isFocused);
   isFocusedRef.current = isFocused;
+  const isCallInProgress = useAppSelector(selectIsCallInProgress);
   const lastCheckedAtRef = useRef(0);
 
   useEffect(() => {
@@ -205,15 +208,17 @@ export const AppUpdatePrompt = () => {
     [checkForUpdate],
   );
 
-  // A restart is safe on the main tabs: in the foreground with the keyboard closed, or in the
-  // background when the user left from them (Play then installs silently). Leaving from a
-  // conversation would discard reply state that isn't persisted (recipients, editor mode).
+  // A restart is safe on the main tabs with no call ringing, connecting or live: in the
+  // foreground with the keyboard closed, or in the background when the user left from them (Play
+  // then installs silently). Leaving from a conversation would discard reply state that isn't
+  // persisted (recipients, editor mode). The call screen overlays the tabs without blurring them.
   const canInstallSafely = useCallback(
     () =>
       isMountedRef.current &&
       isFocusedRef.current &&
+      !selectIsCallInProgress(store.getState()) &&
       (AppState.currentState === 'background' || !Keyboard.isVisible()),
-    [],
+    [store],
   );
 
   const installUpdate = useCallback(async () => {
@@ -273,8 +278,9 @@ export const AppUpdatePrompt = () => {
     };
   }, []);
 
-  // Installs as soon as the user is back on the main tabs with the keyboard closed.
-  const canInstallNow = downloadState === 'downloaded' && isFocused && !isKeyboardVisible;
+  // Installs as soon as the user is back on the main tabs with the keyboard closed and no call.
+  const canInstallNow =
+    downloadState === 'downloaded' && isFocused && !isKeyboardVisible && !isCallInProgress;
   useEffect(() => {
     if (canInstallNow) installUpdate();
   }, [canInstallNow, installUpdate]);

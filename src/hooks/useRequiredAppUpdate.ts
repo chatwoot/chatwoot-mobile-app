@@ -11,10 +11,6 @@ const currentVersion = Application.nativeApplicationVersion ?? '';
 
 type StoreAvailability = 'unknown' | 'available' | 'unavailable';
 
-/**
- * Whether the App Store offers a release that satisfies `minVersion` and installs on this
- * device's iOS version. A lookup that fails or finds nothing is 'unknown'.
- */
 const checkAppStoreAvailability = async (minVersion: string): Promise<StoreAvailability> => {
   try {
     const release = await fetchAppStoreRelease();
@@ -26,16 +22,8 @@ const checkAppStoreAvailability = async (minVersion: string): Promise<StoreAvail
   }
 };
 
-/**
- * Decides whether the app must be blocked until it is updated, which requires the installed
- * version to be below the server's minimum.
- *
- * - Android blocks on the version alone: Play reports only version codes, so it can't confirm
- *   which release it offers. Admins set the minimum once that release is live.
- * - iOS also waits for the App Store to confirm a release that meets the minimum and installs
- *   on this device. Until then (lookup pending or failing) nothing is blocked; a confirmed
- *   answer is kept when a later re-check on foreground fails.
- */
+// Android blocks on the version alone, since Play reports only version codes. iOS blocks only
+// once the App Store confirms an installable release that meets the minimum.
 export const useRequiredAppUpdate = () => {
   const minVersion = useAppSelector(selectMobileAppMinVersion);
   const [storeAvailability, setStoreAvailability] = useState<StoreAvailability>('unknown');

@@ -22,10 +22,6 @@ type RequiredUpdateScreenProps = {
   minVersion: string;
 };
 
-/**
- * Opens the update: Play's immediate flow when Play allows it, otherwise the store page.
- * Resolves once the store UI is showing (or the Play flow returns).
- */
 const openUpdate = async (): Promise<void> => {
   if (Platform.OS === 'android') {
     const result = await startPlayUpdate('immediate').catch(() => 'not_allowed' as const);
@@ -35,10 +31,6 @@ const openUpdate = async (): Promise<void> => {
   await openStorePage();
 };
 
-/**
- * Blocking screen shown in place of the app when the server requires a newer app version.
- * It has no close action, and Android back is consumed.
- */
 export const RequiredUpdateScreen = ({ currentVersion, minVersion }: RequiredUpdateScreenProps) => {
   const logout = useLogout();
   const [isOpening, setIsOpening] = useState(false);
@@ -53,7 +45,6 @@ export const RequiredUpdateScreen = ({ currentVersion, minVersion }: RequiredUpd
     setHasError(false);
     setIsOpening(true);
     try {
-      // Lets the next launch confirm the new version once the update has installed.
       await markRestartForUpdate(currentVersion);
       await openUpdate();
     } catch {

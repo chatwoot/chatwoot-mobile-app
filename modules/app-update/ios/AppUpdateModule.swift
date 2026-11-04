@@ -1,10 +1,6 @@
 import ExpoModulesCore
 import StoreKit
 
-/**
- Presents the app's App Store page in-app. The promise resolves once the store
- sheet is on screen and rejects if the product page can't be loaded.
- */
 public class AppUpdateModule: Module {
   private let storeDelegate = StoreProductDelegate()
 

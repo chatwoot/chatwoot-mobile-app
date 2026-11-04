@@ -61,13 +61,6 @@ const downloadStateFor = (status: InstallStatus): DownloadState | null => {
   }
 };
 
-/**
- * Optional store-update flow for the main tabs. Checks on launch and again on foreground at most
- * once a day: iOS shows the update sheet; Android starts Play's flexible update, shows a
- * downloading pill, and installs once the download finishes and the user is on the main tabs
- * (or left the app from them), falling back to the sheet when Play can't run the flow. Mount it
- * inside the main tabs screen so it only appears there.
- */
 export const AppUpdatePrompt = () => {
   const isFocused = useIsFocused();
   const sheetRef = useRef<SheetRef>(null);
@@ -93,14 +86,12 @@ export const AppUpdatePrompt = () => {
     };
   }, []);
 
-  // Versions below the server minimum belong to the required-update screen.
   const isBelowServerMinimum = useCallback(() => {
     const minVersion = selectMobileAppMinVersion(store.getState());
     return !!minVersion && isVersionLower(currentVersion, minVersion);
   }, [store]);
 
-  // Re-read right before any sheet or Play UI, since checks await the store in between. The
-  // launch check also skips the launch where the user signed in.
+  // Re-checked right before showing any UI, since state can change while checks await.
   const canPrompt = useCallback(
     (isLaunchCheck: boolean) =>
       isMountedRef.current &&
@@ -144,7 +135,6 @@ export const AppUpdatePrompt = () => {
           return;
         }
       }
-      // Play can't run the flexible flow here, so offer the store listing instead.
       if (canPrompt(isLaunchCheck)) presentSheet(null);
     },
     [canPrompt, presentSheet],
@@ -162,9 +152,7 @@ export const AppUpdatePrompt = () => {
     [canPrompt, presentSheet],
   );
 
-  // One check at a time, claimed before any await so a foreground check can't run alongside the
-  // launch check. It waits for this launch's server minimum and notification permission request,
-  // so it neither shows under the required-update screen nor stacks on the permission dialog.
+  // Waits for the minimum version and the notification prompt so it never shows under either.
   const checkForUpdate = useCallback(
     async (isLaunchCheck: boolean) => {
       if (isCheckingRef.current) return;
@@ -181,8 +169,6 @@ export const AppUpdatePrompt = () => {
     [checkAndroid, checkIOS, isBelowServerMinimum],
   );
 
-  // On launch: confirm a finished update and look for a new one. The check starts right away so
-  // it claims the one-at-a-time guard before any foreground check can.
   useEffect(() => {
     consumeUpdatedVersion(currentVersion)
       .then(updatedVersion => {
@@ -196,9 +182,6 @@ export const AppUpdatePrompt = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Look again after each server info refresh, at most once per interval, so a session kept in
-  // memory for days still sees new releases once a snooze has ended. AppTabs refreshes on every
-  // foreground, so this runs on return with the refreshed minimum already applied.
   useEffect(
     () =>
       onServerPolicyLoaded(() => {
@@ -208,10 +191,8 @@ export const AppUpdatePrompt = () => {
     [checkForUpdate],
   );
 
-  // A restart is safe on the main tabs with no call ringing, connecting or live: in the
-  // foreground with the keyboard closed, or in the background when the user left from them (Play
-  // then installs silently). Leaving from a conversation would discard reply state that isn't
-  // persisted (recipients, editor mode). The call screen overlays the tabs without blurring them.
+  // Restarting off the main tabs loses unsaved reply state. The call screen overlays the tabs
+  // without blurring them, so calls are checked separately.
   const canInstallSafely = useCallback(
     () =>
       isMountedRef.current &&
@@ -226,7 +207,6 @@ export const AppUpdatePrompt = () => {
     isInstallingRef.current = true;
     try {
       await markRestartForUpdate(currentVersion);
-      // The user may have opened a conversation while the marker was being written.
       if (!canInstallSafely()) {
         isInstallingRef.current = false;
         return;
@@ -250,7 +230,6 @@ export const AppUpdatePrompt = () => {
         return;
       }
       if (state !== 'active') return;
-      // A download can finish, or a background install can fail, while the app is away.
       getPlayUpdateInfo()
         .then(info => {
           const nextState = info && downloadStateFor(info.installStatus);
@@ -278,7 +257,6 @@ export const AppUpdatePrompt = () => {
     };
   }, []);
 
-  // Installs as soon as the user is back on the main tabs with the keyboard closed and no call.
   const canInstallNow =
     downloadState === 'downloaded' && isFocused && !isKeyboardVisible && !isCallInProgress;
   useEffect(() => {

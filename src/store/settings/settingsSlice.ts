@@ -19,7 +19,6 @@ interface SettingsState {
   theme: Theme;
   version: string;
   mobileAppMinVersions: MobileAppMinVersions;
-  // The latest server info request; older responses are ignored.
   serverInfoRequestId: string;
   pushToken: string;
 }
@@ -96,8 +95,7 @@ export const settingsSlice = createSlice({
         state.serverInfoRequestId = action.meta.requestId;
       })
       .addCase(settingsActions.getChatwootVersion.fulfilled, (state, action) => {
-        // Responses from an older request, or from a server the user has switched away from,
-        // would overwrite the current minimum version.
+        // Ignore stale responses and responses from a previous server.
         if (action.meta.requestId !== state.serverInfoRequestId) return;
         if (action.meta.arg.installationUrl !== state.installationUrl) return;
         const { version, mobile_app: mobileApp } = action.payload;

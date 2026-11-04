@@ -14,7 +14,7 @@ const SNOOZE_DAYS = 3;
 
 let hasSignedInThisSession = false;
 
-/** Records a sign-in after launch; update prompts wait for the next launch so they don't stack on onboarding prompts. */
+// Update prompts skip the sign-in launch so they don't stack on onboarding prompts.
 export const markSignedInThisSession = (): void => {
   hasSignedInThisSession = true;
 };
@@ -28,16 +28,13 @@ const serverPolicyLoaded = new Promise<void>(resolve => {
 
 const serverPolicyListeners = new Set<() => void>();
 
-/** Records that a server info request has settled, so the stored minimum version is current. */
 export const markServerPolicyLoaded = (): void => {
   resolveServerPolicyLoaded();
   serverPolicyListeners.forEach(listener => listener());
 };
 
-/** Resolves once this launch's first server info request has settled. */
 export const waitForServerPolicy = (): Promise<void> => serverPolicyLoaded;
 
-/** Calls `listener` each time a server info request settles. Returns an unsubscribe function. */
 export const onServerPolicyLoaded = (listener: () => void): (() => void) => {
   serverPolicyListeners.add(listener);
   return () => {
@@ -50,10 +47,8 @@ const notificationRequestSettled = new Promise<void>(resolve => {
   resolveNotificationRequestSettled = resolve;
 });
 
-/** Records that this launch's notification permission request has finished, whatever the answer. */
 export const markNotificationRequestSettled = (): void => resolveNotificationRequestSettled();
 
-/** Resolves once this launch's notification permission request has finished. */
 export const waitForNotificationRequest = (): Promise<void> => notificationRequestSettled;
 const SNOOZED_UNTIL_KEY = 'appUpdate.snoozedUntil';
 const RESTARTED_FROM_VERSION_KEY = 'appUpdate.restartedFromVersion';
@@ -63,7 +58,7 @@ const toSemver = (version?: string | null): string | null => {
   return semver.valid(version) ?? semver.valid(semver.coerce(version)) ?? null;
 };
 
-/** True when `version` is a valid version lower than `target`. Invalid input compares as false. */
+// Invalid input compares as false.
 export const isVersionLower = (version?: string | null, target?: string | null): boolean => {
   const current = toSemver(version);
   const other = toSemver(target);
@@ -73,7 +68,6 @@ export const isVersionLower = (version?: string | null, target?: string | null):
 
 export type MobileAppMinVersions = { ios?: string | null; android?: string | null };
 
-/** Minimum app version the server requires for this platform, or null when it sets none. */
 export const getMinVersionForPlatform = (
   minVersions: MobileAppMinVersions | null | undefined,
   platform: string = Platform.OS,
@@ -82,11 +76,10 @@ export const getMinVersionForPlatform = (
   return toSemver(value) ? (value as string) : null;
 };
 
-/** Localized name of this platform's app store. */
 export const getStoreName = (): string =>
   i18n.t(Platform.OS === 'ios' ? 'APP_UPDATE.STORE_NAME.IOS' : 'APP_UPDATE.STORE_NAME.ANDROID');
 
-/** Wraps text in Unicode first-strong isolates so version numbers stay LTR inside RTL strings. */
+// Keeps version numbers LTR inside RTL strings.
 export const isolateBidi = (text: string): string => `⁨${text}⁩`;
 
 export type AppStoreRelease = {
@@ -94,7 +87,6 @@ export type AppStoreRelease = {
   minimumOsVersion: string;
 };
 
-/** Latest App Store release of the app, or null when the lookup finds nothing. */
 export const fetchAppStoreRelease = async (): Promise<AppStoreRelease | null> => {
   const url = `https://itunes.apple.com/lookup?id=${APP_STORE_ID}&_=${Date.now()}`;
   const response = await fetch(url, { headers: { 'Cache-Control': 'no-cache' } });
@@ -110,7 +102,6 @@ export const fetchAppStoreRelease = async (): Promise<AppStoreRelease | null> =>
   };
 };
 
-/** True when the device OS meets the release's minimum OS version. */
 export const canInstallRelease = (release: AppStoreRelease, osVersion: string): boolean =>
   !isVersionLower(osVersion, release.minimumOsVersion);
 
@@ -124,20 +115,14 @@ export const snoozeUpdatePrompt = async (now: number = Date.now()): Promise<void
   await AsyncStorage.setItem(SNOOZED_UNTIL_KEY, String(until));
 };
 
-// The in-flight read of the previous marker. Writes wait for it, so its removal can't delete a
-// marker written while it runs.
+// Marker writes wait for this read so its removal can't delete a newer marker.
 let pendingMarkerRead: Promise<unknown> = Promise.resolve();
 
-/** Records the running version before an update restart so the next launch can confirm it. */
 export const markRestartForUpdate = async (currentVersion: string): Promise<void> => {
   await pendingMarkerRead;
   await AsyncStorage.setItem(RESTARTED_FROM_VERSION_KEY, currentVersion);
 };
 
-/**
- * Returns the running version if the app was restarted for an update and is now newer,
- * clearing the marker either way.
- */
 export const consumeUpdatedVersion = (currentVersion: string): Promise<string | null> => {
   const read = (async () => {
     const previousVersion = await AsyncStorage.getItem(RESTARTED_FROM_VERSION_KEY);
@@ -157,10 +142,6 @@ const openPlayStoreListing = async (): Promise<void> => {
   }
 };
 
-/**
- * Opens the store page for the app: the in-app App Store sheet on iOS (falling back to the
- * App Store app), the Play Store listing on Android.
- */
 export const openStorePage = async (): Promise<void> => {
   if (Platform.OS !== 'ios') {
     await openPlayStoreListing();

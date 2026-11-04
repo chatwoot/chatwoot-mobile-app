@@ -222,9 +222,7 @@ export const AppTabs = () => {
   const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
   const isCallInProgress = useAppSelector(selectIsCallInProgress);
 
-  // Refetched on every foreground so a minimum version raised while the app stayed in memory
-  // still applies. Only the latest request signals that the policy is loaded, since the store
-  // ignores older responses.
+  // Refetched on every foreground; only the latest request marks the policy loaded.
   const latestServerInfoRequestRef = useRef<Promise<unknown> | null>(null);
   useEffect(() => {
     if (!isLoggedIn) return;

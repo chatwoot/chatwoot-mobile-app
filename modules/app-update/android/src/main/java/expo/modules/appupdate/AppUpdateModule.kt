@@ -18,10 +18,6 @@ import expo.modules.kotlin.modules.ModuleDefinition
 private const val UPDATE_REQUEST_CODE = 7341
 private const val INSTALL_STATUS_EVENT = "onInstallStatusChange"
 
-/**
- * Google Play in-app updates (flexible and immediate). The flexible flow never
- * installs on its own: JS decides when to call completeUpdate().
- */
 class AppUpdateModule : Module() {
   private var appUpdateManager: AppUpdateManager? = null
   private var pendingStartPromise: Promise? = null
@@ -62,8 +58,7 @@ class AppUpdateModule : Module() {
         promise.reject(CodedException("An update flow is already in progress"))
         return@AsyncFunction
       }
-      // Reserved before the Play info lookup so a second call can't start alongside this one.
-      // Every path that won't produce an activity result releases it.
+      // Reserved before the async lookup; every exit without an activity result releases it.
       pendingStartPromise = promise
       fun release(settle: () -> Unit) {
         pendingStartPromise = null
@@ -79,7 +74,6 @@ class AppUpdateModule : Module() {
 
       updateManager.appUpdateInfo
         .addOnSuccessListener { info ->
-          // An immediate update already in progress is resumed without re-checking whether it is allowed.
           val canStart = when (info.updateAvailability()) {
             UpdateAvailability.UPDATE_AVAILABLE -> info.isUpdateTypeAllowed(updateType)
             UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS -> updateType == AppUpdateType.IMMEDIATE
@@ -96,7 +90,7 @@ class AppUpdateModule : Module() {
           }
           try {
             val options = AppUpdateOptions.newBuilder(updateType).build()
-            // false means Play didn't start the flow, so no activity result will arrive.
+            // false: Play didn't start the flow, so no activity result will arrive.
             if (!updateManager.startUpdateFlowForResult(info, activity, options, UPDATE_REQUEST_CODE)) {
               release { promise.resolve("not_allowed") }
             }

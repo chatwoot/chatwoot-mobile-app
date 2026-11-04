@@ -27,7 +27,6 @@ type AppUpdateEvents = {
 };
 
 type AppUpdateNativeModule = {
-  // Android
   getUpdateInfo?: () => Promise<PlayUpdateInfo>;
   startUpdate?: (type: 'flexible' | 'immediate') => Promise<StartUpdateResult>;
   completeUpdate?: () => Promise<void>;
@@ -35,7 +34,6 @@ type AppUpdateNativeModule = {
     eventName: K,
     listener: AppUpdateEvents[K],
   ) => { remove: () => void };
-  // iOS
   presentStorePage?: (appStoreId: string) => Promise<void>;
 };
 

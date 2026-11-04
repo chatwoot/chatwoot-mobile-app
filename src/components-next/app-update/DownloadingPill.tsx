@@ -9,10 +9,6 @@ import { Spinner } from '../spinner';
 
 import { SNACKBAR_SURFACE } from './constants';
 
-/**
- * Indeterminate "Downloading update…" pill floating 8dp above the tab bar. It is not
- * interactive, so touches pass through to the list underneath.
- */
 export const DownloadingPill = () => {
   const tabBarHeight = useTabBarHeight();
 

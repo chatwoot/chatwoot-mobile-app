@@ -9,7 +9,6 @@ import { callActions } from '@/store/call/callActions';
 import { settingsActions } from '@/store/settings/settingsActions';
 import { selectPushToken } from '@/store/settings/settingsSelectors';
 
-/** Signs the user out: clears local session data, unregisters push, then resets auth state. */
 export const useLogout = () => {
   const dispatch = useAppDispatch();
   const pushToken = useAppSelector(selectPushToken);

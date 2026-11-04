@@ -16,7 +16,6 @@ const BADGE = {
   72: { ring: 30, badge: 26, arrow: 14, radius: 18 },
 };
 
-/** The Chatwoot app icon with an arrow-up badge on its bottom end corner. */
 export const AppUpdateIcon = ({ size }: AppUpdateIconProps) => {
   const { ring, badge, arrow, radius } = BADGE[size];
 

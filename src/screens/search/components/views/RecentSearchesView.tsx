@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
 import { Icon } from '@/components-next/common/icon';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { IOS_DESIGN } from '@/utils';
 import i18n from 'i18n';
 import { ClockIcon } from '../shared/ClockIcon';
@@ -18,6 +18,7 @@ export function RecentSearchesView({
   onSearchSelect,
   onClear,
 }: RecentSearchesViewProps) {
+  const tailwind = useTailwind();
   if (IOS_DESIGN) {
     // iOS search history: a section header with a blue Clear action, then plain list rows
     // with a clock and hairline dividers inset from the text.

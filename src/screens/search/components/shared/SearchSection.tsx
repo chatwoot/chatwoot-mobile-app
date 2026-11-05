@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { CaretBottomSmall } from '@/svg-icons';
 import { Icon } from '@/components-next/common';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
@@ -60,6 +60,7 @@ export function SearchSection({
   onTabChange,
   renderItem,
 }: SearchSectionProps) {
+  const tailwind = useTailwind();
   // All hooks must be called before any early returns
   const rotation = useSharedValue(isExpanded ? 0 : 180);
 

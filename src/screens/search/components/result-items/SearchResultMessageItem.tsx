@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import type { Message } from '@/types/Message';
 import { HighlightedText } from '../shared/HighlightedText';
 import { IOS_DESIGN, IOS_LIST_TEXT, useScaleAnimation } from '@/utils';
@@ -28,6 +28,7 @@ export const SearchResultMessageItem = ({
   onPress,
   isLast = false,
 }: SearchResultMessageItemProps) => {
+  const tailwind = useTailwind();
   const senderName = message.sender?.name || 'Bot';
   const conversationId = message.conversationId;
   const inboxId = message.inboxId;

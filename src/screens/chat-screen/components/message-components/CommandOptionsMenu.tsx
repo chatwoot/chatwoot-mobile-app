@@ -1,4 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
+import { useSplitView } from '@/navigation/split/SplitViewContext';
 import React, { useMemo } from 'react';
 import { Alert, Linking, Platform, Pressable, Text } from 'react-native';
 import {
@@ -211,6 +212,7 @@ const MenuOption = (props: MenuOptionProps) => {
   const { index, menuOption } = props;
   const dispatch = useAppDispatch();
   const { macrosListSheetRef, whatsAppTemplatesSheetRef } = useRefsContext();
+  const splitView = useSplitView();
 
   const { animatedStyle, handlers } = useScaleAnimation();
   const hapticSelection = useHaptic();
@@ -219,7 +221,8 @@ const MenuOption = (props: MenuOptionProps) => {
     hapticSelection?.();
     menuOption?.handlePress(dispatch);
     if (menuOption.id === 'macros') {
-      macrosListSheetRef.current?.present();
+      if (splitView) splitView.openMacros();
+      else macrosListSheetRef.current?.present();
     }
     if (menuOption.id === 'whatsapp_templates') {
       whatsAppTemplatesSheetRef.current?.present();

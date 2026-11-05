@@ -1,14 +1,15 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import { Pressable } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { PhotosIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
 import { PhotosCommandButtonProps } from '../types';
 import { photoIconEnterAnimation, photoIconExitAnimation } from '@/utils/customAnimations';
 
 export const PhotosCommandButton = (props: PhotosCommandButtonProps) => {
+  const tailwind = useTailwind();
   const { animatedStyle, handlers } = useScaleAnimation();
 
   return (

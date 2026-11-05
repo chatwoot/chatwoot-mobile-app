@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 
 import { Icon } from '@/components-next/common/icon';
-import { tailwind } from '@/theme';
 import { useSideTabBarLayout } from '@/utils';
 
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
@@ -32,6 +32,7 @@ export const SideToolbarButton = ({
   iconSize = 24,
   disabled,
 }: SideToolbarButtonProps) => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   const size = sideTabBar?.width ?? 40;
   const drawnIconSize = Math.round(iconSize * (sideTabBar?.iconScale ?? 1));

@@ -4,11 +4,11 @@ import Animated from 'react-native-reanimated';
 
 import { SearchBar } from '@/components-next/common/search';
 import { Icon } from '@/components-next';
-import { HEADER_ICON_COLOR, SideToolbarButton } from '@/components-next/side-toolbar';
+import { SideToolbarButton } from '@/components-next/side-toolbar';
 import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
 import { useSideToolbar } from '@/context';
 import { ChevronLeft } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
 import i18n from 'i18n';
 import { IOSSearchField } from './IOSSearchField';
@@ -30,10 +30,11 @@ const IOSSearchHeader = ({
   onClear,
   onBackPress,
 }: SearchHeaderProps) => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   const isSide = useSideToolbar(
     <SideToolbarButton
-      icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+      icon={<ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
       onPress={onBackPress}
       accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
     />,
@@ -44,7 +45,7 @@ const IOSSearchHeader = ({
       <View style={tailwind.style('flex-row items-center gap-3 px-4 pt-1 pb-3')}>
         {isSide ? null : (
           <GlassCircleButton
-            icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+            icon={<ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
             onPress={onBackPress}
             accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
           />
@@ -61,13 +62,14 @@ const IOSSearchHeader = ({
 };
 
 export function SearchHeader(props: SearchHeaderProps) {
+  const tailwind = useTailwind();
   const { searchText, isLoading, onSearchChange, onClear, onBackPress } = props;
   return (
     <>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
       />
       {IOS_DESIGN ? (
         <IOSSearchHeader {...props} />

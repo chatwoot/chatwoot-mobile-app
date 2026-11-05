@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { Animated, TextInput, Text, Pressable, View } from 'react-native';
 import i18n from '@/i18n';
 
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { CloseIcon } from '@/svg-icons';
 
@@ -32,38 +32,45 @@ const VALUE = 'text-[17px] leading-[22px] font-inter-normal-20 text-gray-950';
 // Rows run to the edge with a hairline under each, inset on the left like Mail's compose.
 const ROW = 'flex-row items-center min-h-11 pr-3 border-b-[0.5px] border-b-blackA-A6';
 
-const IOSField = ({ label, value, onChange, accessory }: Omit<IOSFieldProps, 'showDivider'>) => (
-  <View style={tailwind.style(ROW)}>
-    <Text style={tailwind.style(LABEL)}>{`${label}:`}</Text>
-    <TextInput
-      style={tailwind.style('flex-1 py-[11px] pr-2', VALUE)}
-      value={value}
-      onChangeText={onChange}
-      autoCapitalize="none"
-      autoCorrect={false}
-      keyboardType="email-address"
-      placeholder="Emails separated by commas"
-      placeholderTextColor={tailwind.color('text-gray-600')}
-    />
-    {accessory}
-  </View>
-);
+const IOSField = ({ label, value, onChange, accessory }: Omit<IOSFieldProps, 'showDivider'>) => {
+  const tailwind = useTailwind();
+  return (
+    <View style={tailwind.style(ROW)}>
+      <Text style={tailwind.style(LABEL)}>{`${label}:`}</Text>
+      <TextInput
+        style={tailwind.style('flex-1 py-[11px] pr-2', VALUE)}
+        value={value}
+        onChangeText={onChange}
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="email-address"
+        placeholder="Emails separated by commas"
+        placeholderTextColor={tailwind.color('text-gray-600')}
+      />
+      {accessory}
+    </View>
+  );
+};
 
 // Small × that removes a row (and clears its addresses).
-const RemoveRowButton = ({ onPress, label }: { onPress: () => void; label: string }) => (
-  <Pressable
-    hitSlop={8}
-    onPress={onPress}
-    accessibilityRole="button"
-    accessibilityLabel={label}
-    style={({ pressed }) =>
-      tailwind.style('h-7 w-7 ml-1 items-center justify-center', pressed && 'opacity-50')
-    }>
-    <Icon size={16} icon={<CloseIcon strokeWidth={1.5} />} />
-  </Pressable>
-);
+const RemoveRowButton = ({ onPress, label }: { onPress: () => void; label: string }) => {
+  const tailwind = useTailwind();
+  return (
+    <Pressable
+      hitSlop={8}
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      style={({ pressed }) =>
+        tailwind.style('h-7 w-7 ml-1 items-center justify-center', pressed && 'opacity-50')
+      }>
+      <Icon size={16} icon={<CloseIcon strokeWidth={1.5} />} />
+    </Pressable>
+  );
+};
 
 const IOSEmailHead = (props: EmailMetaProps) => {
+  const tailwind = useTailwind();
   const { ccEmails, bccEmails, toEmails, onUpdateCC, onUpdateBCC, onUpdateTo, contactEmail } =
     props;
   // Like Mail: Cc and Bcc stay folded into one "Cc/Bcc" row until you need them.
@@ -157,6 +164,7 @@ export const ReplyEmailHead = (props: EmailMetaProps) => {
 };
 
 const DefaultEmailHead = (props: EmailMetaProps) => {
+  const tailwind = useTailwind();
   const { ccEmails, bccEmails, toEmails, onUpdateCC, onUpdateBCC, onUpdateTo } = props;
 
   const [showBcc, setShowBcc] = useState(false);

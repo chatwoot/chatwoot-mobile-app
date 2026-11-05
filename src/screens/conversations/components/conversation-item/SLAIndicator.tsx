@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { SlaMissedIcon } from '@/svg-icons';
 import { SLA, SLAStatus } from '@/types/common/SLA';
@@ -32,6 +32,7 @@ export const SLAIndicator = ({
   };
   onSLAStatusChange: (hasThreshold: boolean) => void;
 }) => {
+  const tailwind = useTailwind();
   const iosText = useIOSListText();
   // Recorded SLA misses: with these a missed SLA is measured from when it was missed (as in
   // the header), rather than from a due time that may belong to an earlier cycle.

@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Pressable, ScrollView, Text } from 'react-native';
 
 import type { TabItem } from '@/components-next/common/tabs';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 
 type SearchScopeTabsProps = {
   items: TabItem[];
@@ -13,6 +13,7 @@ type SearchScopeTabsProps = {
 // iOS search scopes: a scrolling row of capsules, the selected one filled dark (like the
 // filter capsules in Photos and Music), with the result count after the label.
 export const SearchScopeTabs = ({ items, activeTabId, onTabPress }: SearchScopeTabsProps) => {
+  const tailwind = useTailwind();
   const scrollRef = useRef<ScrollView>(null);
   const offsets = useRef<Record<string, number>>({});
 
@@ -49,7 +50,7 @@ export const SearchScopeTabs = ({ items, activeTabId, onTabPress }: SearchScopeT
             <Text
               style={tailwind.style(
                 'text-[15px] leading-[20px] font-inter-medium-24',
-                isActive ? 'text-white' : 'text-gray-950',
+                isActive ? (tailwind.isDark ? 'text-gray-50' : 'text-white') : 'text-gray-950',
               )}>
               {item.label}
               {item.count ? (

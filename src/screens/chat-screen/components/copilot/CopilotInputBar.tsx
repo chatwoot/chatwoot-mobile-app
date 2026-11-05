@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState, useRef } from 'react';
 import { TextInput, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 
 type CopilotInputBarProps = {
@@ -11,6 +11,7 @@ type CopilotInputBarProps = {
 };
 
 const ThinkingText = () => {
+  const tailwind = useTailwind();
   const [dots, setDots] = useState('');
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -39,6 +40,7 @@ export const CopilotInputBar = ({
   onSendFollowUp,
   onFollowUpTextChange,
 }: CopilotInputBarProps) => {
+  const tailwind = useTailwind();
   const [followUpText, setFollowUpText] = useState('');
 
   useEffect(() => {

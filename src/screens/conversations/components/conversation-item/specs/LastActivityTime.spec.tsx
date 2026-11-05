@@ -9,6 +9,8 @@ jest.mock('@/components-next/native-components', () => {
   return { NativeView: View };
 });
 
+jest.mock('@/theme/appearance', () => ({ useAppAppearance: () => 'light' }));
+
 const NOW = new Date('2026-10-13T20:30:00Z').getTime();
 const secondsAgo = (s: number) => Math.floor(NOW / 1000) - s;
 

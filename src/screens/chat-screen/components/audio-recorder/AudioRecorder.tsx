@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { Alert, PermissionsAndroid, Platform, Pressable } from 'react-native';
 import AudioRecorderPlayer, {
@@ -12,7 +13,6 @@ import ReactNativeBlobUtil from 'react-native-blob-util';
 import { TEXT_INPUT_CONTAINER_HEIGHT } from '@/constants';
 import { useChatWindowContext, useContainerWidth } from '@/context';
 import { SendIcon, Trash } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next';
 import { PauseIcon, PlayIcon } from '../message-components';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -66,6 +66,7 @@ export const AudioRecorder = ({
   onRecordingComplete: (audioFile: AttachmentFile) => void;
   audioFormat: 'audio/m4a' | 'audio/wav';
 }) => {
+  const tailwind = useTailwind();
   const RecorderSegmentWidth = useContainerWidth() - usePaneRightInset() - 8 - 80 - 12;
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();

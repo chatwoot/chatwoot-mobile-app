@@ -1,7 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { createContext, PropsWithChildren, useContext } from 'react';
 import { View } from 'react-native';
-
-import { tailwind } from '@/theme';
 
 // Persistent highlight for the list row that's open in the split view's conversation
 // pane (Apple HIG, Split views: "persistently highlight the current selection").
@@ -27,18 +26,21 @@ export const SelectedRowBackground = ({
   selected: boolean;
   // The next row is the selected one: hide this row's divider too.
   beforeSelected?: boolean;
-}>) => (
-  <SelectedRowContext.Provider value={selected || beforeSelected}>
-    <View>
-      {selected ? (
-        <View
-          pointerEvents="none"
-          style={tailwind.style(
-            'absolute -top-px bottom-0 left-1.5 right-1.5 rounded-[10px] bg-[#EBEBEB]',
-          )}
-        />
-      ) : null}
-      {children}
-    </View>
-  </SelectedRowContext.Provider>
-);
+}>) => {
+  const tailwind = useTailwind();
+  return (
+    <SelectedRowContext.Provider value={selected || beforeSelected}>
+      <View>
+        {selected ? (
+          <View
+            pointerEvents="none"
+            style={tailwind.style(
+              'absolute -top-px bottom-0 left-1.5 right-1.5 rounded-[10px] bg-[#EBEBEB]',
+            )}
+          />
+        ) : null}
+        {children}
+      </View>
+    </SelectedRowContext.Provider>
+  );
+};

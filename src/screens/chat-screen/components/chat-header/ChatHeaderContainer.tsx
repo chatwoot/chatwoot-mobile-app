@@ -192,6 +192,8 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
     });
   };
 
+  const canCallContact = voiceCallProvider !== null && !conversation?.anonymousCaller;
+
   const startCall = async () => {
     if (!voiceCallProvider || !inbox || isStartingCall) return;
     setIsStartingCall(true);
@@ -249,7 +251,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       slaEvents={slaEvents}
       statusText={slaStatusText()}
       slaTime={slaStatus?.threshold}
-      showCallButton={voiceCallProvider !== null}
+      showCallButton={canCallContact}
       isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
       onCallPress={startCall}
       // In the split view's conversation pane, back closes the conversation.

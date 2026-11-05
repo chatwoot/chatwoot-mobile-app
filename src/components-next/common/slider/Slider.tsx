@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -13,8 +14,6 @@ import Animated, {
   WithSpringConfig,
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
-
-import { tailwind } from '@/theme';
 
 const DefaultSpringConfig: WithSpringConfig = {
   mass: 1,
@@ -33,6 +32,7 @@ type SliderProps = {
 };
 
 export const Slider = (props: SliderProps) => {
+  const tailwind = useTailwind();
   const {
     currentPosition,
     totalDuration,

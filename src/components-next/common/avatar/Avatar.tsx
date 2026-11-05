@@ -1,8 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { ImageSourcePropType, ImageURISource, Text, View, ViewProps } from 'react-native';
 import type { ImageProps } from 'expo-image';
 
-import { avatarTheme, tailwind } from '@/theme';
+import { avatarTheme } from '@/theme';
 import { Channel } from '@/types';
 import { cx, styleAdapter } from '@/utils';
 
@@ -94,6 +95,7 @@ export interface AvatarProps extends ViewProps {
 }
 
 export const Avatar: React.FC<Partial<AvatarProps>> = props => {
+  const tailwind = useTailwind();
   const {
     size = 'xl',
     squared = false,
@@ -153,6 +155,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
           style={[
             tailwind.style(
               cx(
+                'w-full',
                 avatarTheme.initials.base,
                 avatarTheme.initials.size[size],
                 'font-inter-medium-24',
@@ -160,7 +163,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
               ),
             ),
           ]}
-          adjustsFontSizeToFit
+          numberOfLines={1}
           allowFontScaling={false}>
           {ONE_LETTER_INITIAL_SIZES.includes(size)
             ? getInitials(name)?.charAt(0)

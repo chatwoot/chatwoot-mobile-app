@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Channel, Message } from '@/types';
 import Animated from 'react-native-reanimated';
@@ -39,13 +40,13 @@ import { CopyIcon, Trash, ReplyIcon, TranslateIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { tailwind } from '@/theme';
 import { View, Text } from 'react-native';
 import { useContainerWidth } from '@/context';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 import { useMessageEntrance } from './useMessageEntrance';
 import { BubbleTail } from './BubbleTail';
+import { CaptainAvatar } from './CaptainAvatar';
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
@@ -90,21 +91,19 @@ type MessageWrapperProps = {
   shouldGroupWithNext: boolean;
   shouldShowAvatar: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  avatarInfo: { name: string | null | undefined; src: any }; // Updated type
+  avatarInfo: { name: string | null | undefined; src?: any; isBot?: boolean }; // Updated type
   getMenuOptions: (message: Message) => MenuOption[];
   variant: string;
   channel?: Channel;
   isTargetMessage?: boolean;
   onRetry: () => void;
   canSendPublicReply: boolean;
-  // iOS plain text: the time and ticks sit inside the last line (WhatsApp-style), not in a
-  // footer row. The text keeps room for them (TextBubble timeSpacer).
-  inlineTime?: boolean;
   // Sent by the signed-in agent (no name label on the right).
   isOwnMessage?: boolean;
 };
 
 const variantTextMap = {
+  [MESSAGE_VARIANTS.PRIVATE]: 'text-amber-900',
   [MESSAGE_VARIANTS.AGENT]: 'text-gray-700',
   [MESSAGE_VARIANTS.USER]: 'text-white',
   [MESSAGE_VARIANTS.BOT]: 'text-gray-700',
@@ -121,6 +120,17 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.ERROR]: 'bg-ruby-700',
   [MESSAGE_VARIANTS.EMAIL]: 'bg-gray-100',
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',
+};
+
+// Dark conversations use the dashboard's quieter hierarchy. Keep saturated blue
+// for actions and indicators rather than large customer-message surfaces.
+const darkVariantBaseMap: Record<string, string> = {
+  ...variantBaseMap,
+  [MESSAGE_VARIANTS.USER]: 'bg-[#25292C]',
+  [MESSAGE_VARIANTS.AGENT]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.BOT]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.PRIVATE]: 'bg-[#332B1C]',
 };
 
 const variantBorderMap = {
@@ -147,9 +157,9 @@ const MessageWrapper = ({
   isTargetMessage = false,
   onRetry,
   canSendPublicReply,
-  inlineTime = false,
   isOwnMessage = false,
 }: MessageWrapperProps) => {
+  const tailwind = useTailwind();
   const paneRightInset = usePaneRightInset();
   const isInPane = useIsInDetailPane();
   const containerWidth = useContainerWidth();
@@ -190,6 +200,13 @@ const MessageWrapper = ({
     ? shouldShowAvatar && !!item.sameSenderAsBelow
     : shouldGroupWithPrevious && orientation === ORIENTATION.LEFT;
   const isRight = orientation === ORIENTATION.RIGHT;
+  const bubbleClass = tailwind.isDark
+    ? variant === MESSAGE_VARIANTS.EMAIL
+      ? isRight
+        ? darkVariantBaseMap[MESSAGE_VARIANTS.AGENT]
+        : darkVariantBaseMap[MESSAGE_VARIANTS.USER]
+      : darkVariantBaseMap[variant]
+    : variantBaseMap[variant];
   // iOS: the sender's name sits above their first message after someone else's (like group
   // chats in Messages), instead of inside each bubble next to the time.
   // Incoming (left) always; outgoing (right) when another agent or the bot sent it.
@@ -233,7 +250,11 @@ const MessageWrapper = ({
       <View style={tailwind.style('flex flex-row')}>
         {hasAvatar && !isRight ? (
           <View style={tailwind.style('flex items-end justify-end mr-2')}>
-            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+            {avatarInfo.isBot ? (
+              <CaptainAvatar />
+            ) : (
+              <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+            )}
           </View>
         ) : null}
         <MessageMenu menuOptions={getMenuOptions(item)}>
@@ -242,7 +263,7 @@ const MessageWrapper = ({
               style={tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
                 `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${textMaxWidth}px]`}`,
-                variantBaseMap[variant],
+                bubbleClass,
                 variantBorderMap[variant],
                 shouldGroupWithNext && shouldGroupWithPrevious
                   ? orientation === ORIENTATION.LEFT
@@ -269,31 +290,7 @@ const MessageWrapper = ({
                   pointerEvents="none"
                 />
               )}
-              {inlineTime ? (
-                <View
-                  pointerEvents="none"
-                  style={tailwind.style('absolute right-2.5 bottom-[7px] flex-row items-center')}>
-                  <Text
-                    style={tailwind.style(
-                      'text-[11px] leading-[14px] font-inter-420-20 pr-1',
-                      variantTextMap[variant],
-                      orientation === ORIENTATION.LEFT ? 'opacity-75' : 'opacity-90',
-                    )}>
-                    {unixTimestampToReadableTime(item.createdAt)}
-                  </Text>
-                  <DeliveryStatus
-                    isPrivate={item.private}
-                    status={item.status}
-                    messageType={item.messageType}
-                    channel={channel}
-                    sourceId={item.sourceId}
-                    errorMessage={item.contentAttributes?.externalError || ''}
-                    deliveredColor="text-gray-700"
-                    sentColor="text-gray-700"
-                  />
-                </View>
-              ) : null}
-              {!inlineTime && !shouldGroupWithPrevious && (
+              {(IOS_DESIGN || !shouldGroupWithPrevious) && (
                 <View
                   style={tailwind.style(
                     'h-[27px] pt-[11px] pb-0.5 flex flex-row items-baseline',
@@ -332,15 +329,17 @@ const MessageWrapper = ({
                 </View>
               )}
             </View>
-            {shouldShowTail ? (
-              <BubbleTail color={tailwind.color(variantBaseMap[variant]) as string} />
-            ) : null}
+            {shouldShowTail ? <BubbleTail color={tailwind.color(bubbleClass) as string} /> : null}
           </BubbleContainer>
         </MessageMenu>
         {/* Outgoing on iOS: the agent's (or bot's) avatar on the right, like the web app. */}
         {hasAvatar && isRight ? (
           <View style={tailwind.style('flex items-end justify-end ml-2')}>
-            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+            {avatarInfo.isBot ? (
+              <CaptainAvatar />
+            ) : (
+              <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+            )}
           </View>
         ) : null}
       </View>
@@ -561,11 +560,10 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const avatarInfo = () => {
-    if (!sender || sender.type === SENDER_TYPES.AGENT_BOT) {
+    if (!sender || isBotSender(sender.type)) {
       return {
         name: i18n.t('CONVERSATION.BOT'),
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        src: require('../../../../assets/local/bot-avatar.png'),
+        isBot: true,
       };
     }
 
@@ -607,14 +605,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     const attachments = item.attachments;
     const isReplyMessage = item.contentAttributes?.inReplyTo;
-    // WhatsApp-style time inside the last line, for plain text on iOS (translated messages keep
-    // the footer, since their toggle is the last line).
-    const hasTranslations = !!item.contentAttributes?.translations;
-    const useInlineTime =
-      IOS_DESIGN &&
-      !hasTranslations &&
-      contentType !== CONTENT_TYPES.INCOMING_EMAIL &&
-      !(isEmailInbox && !item.private);
     const isUnsupported = item.contentAttributes?.isUnsupported;
     let messageContent;
 
@@ -636,16 +626,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
         <ComposedBubble item={item} variant={variant()} orientation={orientation()} />
       );
     } else if (item.content) {
-      messageContent = (
-        <TextBubble
-          item={item}
-          variant={variant()}
-          // Room for the time (and the ticks on sent messages) at the end of the last line.
-          timeReserve={
-            useInlineTime ? (messageType === MESSAGE_TYPES.OUTGOING ? 'ticks' : 'time') : undefined
-          }
-        />
-      );
+      messageContent = <TextBubble item={item} variant={variant()} />;
     } else {
       return <View />;
     }
@@ -664,13 +645,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
         channel={channel}
         isTargetMessage={isTargetMessage}
         onRetry={handleRetryMessage}
-        inlineTime={
-          useInlineTime &&
-          !isUnsupported &&
-          !!item.content &&
-          !attachments?.length &&
-          !isReplyMessage
-        }
         canSendPublicReply={canSendPublicReply}>
         {messageContent}
       </MessageWrapper>

@@ -6,6 +6,7 @@ import React, {
   useId,
   useState,
 } from 'react';
+import { useAppAppearance } from '@/theme/appearance';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useSideTabBarLayout } from '@/utils';
@@ -47,6 +48,7 @@ export const useSideToolbar = (
   deps: React.DependencyList,
   enabled = true,
 ) => {
+  const appearance = useAppAppearance();
   const setEntry = useContext(SetToolbarContext);
   const owner = useId();
   const isFocused = useIsFocused();
@@ -58,7 +60,7 @@ export const useSideToolbar = (
     setEntry({ owner, items });
     return () => setEntry(current => (current?.owner === owner ? null : current));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, setEntry, owner, ...deps]);
+  }, [active, setEntry, owner, appearance, ...deps]);
 
   return isSide;
 };

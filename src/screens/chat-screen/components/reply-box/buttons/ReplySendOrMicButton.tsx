@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -6,7 +7,6 @@ import { Icon } from '@/components-next/common';
 import { useAppSelector } from '@/hooks';
 import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
 import { SendIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 
 import { VoiceRecordButton } from './VoiceRecordButton';
 
@@ -26,6 +26,7 @@ export const ReplySendOrMicButton = ({
   onSend,
   onMic,
 }: ReplySendOrMicButtonProps) => {
+  const tailwind = useTailwind();
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
   const progress = useSharedValue(showSend ? 1 : 0);
 

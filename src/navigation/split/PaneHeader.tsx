@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { useSideTabBarLayout } from '@/utils';
 
 // Header for split view panes and columns (iPhone Duo), matching the list headers: the same
@@ -18,6 +18,7 @@ export const PaneHeader = ({
   left?: React.ReactNode;
   right?: React.ReactNode;
 }) => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   // Equal side slots keep the title centered. They take only the room they need, so long
   // titles fit: none when empty, one round button, or a wider action (e.g. Run).

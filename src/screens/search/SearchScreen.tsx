@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Tabs, type TabItem } from '@/components-next/common/tabs';
 
 import { FullScreenPage } from '@/navigation/split/FullScreenPage';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { IOS_DESIGN } from '@/utils';
 import { useSearchScreen } from './hooks/useSearchScreen';
 import { SearchHeader } from './components/header/SearchHeader';
@@ -16,6 +16,7 @@ import { createRenderItem } from './utils/renderItem';
 import i18n from 'i18n';
 
 const SearchScreen = () => {
+  const tailwind = useTailwind();
   const {
     searchText,
     recentSearches,

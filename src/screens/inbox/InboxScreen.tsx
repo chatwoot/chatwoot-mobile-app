@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, RefreshControl, StatusBar } from 'react-native';
 import Animated, { SharedValue } from 'react-native-reanimated';
@@ -14,7 +15,6 @@ import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
 import { InboxListStateProvider } from '@/context';
 import type { Notification } from '@/types/Notification';
-import { tailwind } from '@/theme';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { notificationActions } from '@/store/notification/notificationAction';
 import {
@@ -55,6 +55,7 @@ const InboxList = ({
   scrollY,
   isDragging,
 }: OverlayListProps) => {
+  const tailwind = useTailwind();
   const tabBarHeight = useTabBarHeight();
   const [pageNumber, setPageNumber] = useState(1);
 
@@ -238,6 +239,7 @@ const InboxList = ({
 };
 
 const InboxScreen = () => {
+  const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();
   const [headerHeight, setHeaderHeight] = useState(0);
   // The header floats over the list on iOS (and with tabs on the side).
@@ -278,7 +280,7 @@ const InboxScreen = () => {
         <StatusBar
           translucent
           backgroundColor={tailwind.color('bg-white')}
-          barStyle={'dark-content'}
+          barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
         />
         <InboxListStateProvider>
           {hasOverlayHeader ? (

@@ -13,9 +13,10 @@ export const useWorkPreferences = () => {
   const preferences = useAppSelector(selectCurrentUserWorkPreferences);
   const enabledCount = Object.values(preferences).filter(Boolean).length;
 
+  const isLocked = (key: keyof WorkPreferences) => preferences[key] && enabledCount === 1;
+
   const toggle = async (key: keyof WorkPreferences) => {
-    // At least one preference stays on
-    if (!accountId || (preferences[key] && enabledCount === 1)) return;
+    if (!accountId || isLocked(key)) return;
     const updated = { ...preferences, [key]: !preferences[key] };
     dispatch(setCurrentUserWorkPreferences(updated));
     const result = await dispatch(
@@ -26,5 +27,5 @@ export const useWorkPreferences = () => {
     }
   };
 
-  return { preferences, toggle };
+  return { preferences, isLocked, toggle };
 };

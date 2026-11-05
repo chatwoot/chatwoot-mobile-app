@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { memo } from 'react';
 import { ImageURISource } from 'react-native';
 
 import { NativeView } from '@/components-next/native-components';
-import { tailwind } from '@/theme';
 import {
   Agent,
   AvailabilityStatus,
@@ -84,6 +84,7 @@ export const ConversationItem = memo(
     allLabels,
     typingText,
   }: ConversationItemProps) => {
+    const tailwind = useTailwind();
     const iosList = useIOSListText();
     return (
       <NativeView

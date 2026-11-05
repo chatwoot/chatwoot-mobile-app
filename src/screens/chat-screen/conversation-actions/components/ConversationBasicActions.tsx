@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, {
@@ -14,7 +15,6 @@ import {
   PendingFilledIcon,
   SnoozedFilledIcon,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
@@ -76,6 +76,7 @@ type ConversationActionOptionProps = {
 };
 
 const ConversationActionOption = (props: ConversationActionOptionProps) => {
+  const tailwind = useTailwind();
   const ACTION_WIDTH = (useContainerWidth() - usePaneRightInset() - 32 - 12 * 3) / 4;
   const { index, conversationAction, status, updateConversationStatus, isMuted } = props;
 
@@ -212,6 +213,7 @@ type ConversationBasicActionsProps = {
 };
 
 export const ConversationBasicActions = (props: ConversationBasicActionsProps) => {
+  const tailwind = useTailwind();
   const { status, updateConversationStatus, isMuted } = props;
 
   return (

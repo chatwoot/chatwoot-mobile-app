@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useTailwind } from '@/theme/useTailwind';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import {
   StatusBar,
   Text,
@@ -25,7 +26,6 @@ import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
 import { openURL } from '@/utils/urlUtils';
-import { tailwind } from '@/theme';
 
 import {
   BottomSheetHeader,
@@ -36,6 +36,10 @@ import {
   SwitchAccount,
   SettingsList,
 } from '@/components-next';
+import { AppearancePicker } from './components/AppearancePicker';
+import { Theme } from '@/types/common/Theme';
+import { selectTheme } from '@/store/settings/settingsSelectors';
+import { SheetRef } from '@/components-next/common/sheet/Sheet';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { UserAvatar } from './components/UserAvatar';
 
@@ -93,10 +97,13 @@ const buildNumber = Application.nativeBuildVersion;
 const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
 // Settings shown in the detail pane of the split view (iPhone Duo), like iPad Settings.
-type SettingsPane = 'availability' | 'notifications' | 'language' | 'account';
+type SettingsPane = 'availability' | 'notifications' | 'language' | 'account' | 'appearance';
 
 const SettingsScreen = () => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
+  const appearance = useAppSelector(selectTheme) ?? 'system';
+  const appearanceSheetRef = useRef<SheetRef>(null);
   const isSplit = useIsSplitLayout();
   const { width } = useWindowDimensions();
   // The first item is selected by default so the detail pane is never empty.
@@ -172,7 +179,11 @@ const SettingsScreen = () => {
   const supportsWorkPreferences = useAppSelector(selectSupportsWorkPreferences);
   const showWorkPreferences = hasVoiceInbox && supportsWorkPreferences;
   const isOnline = availabilityStatus === 'online';
-  const { preferences: workPreferences, toggle: toggleWorkPreference } = useWorkPreferences();
+  const {
+    preferences: workPreferences,
+    isLocked: isWorkPreferenceLocked,
+    toggle: toggleWorkPreference,
+  } = useWorkPreferences();
 
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
@@ -273,6 +284,7 @@ const SettingsScreen = () => {
       checked: workPreferences.accepts_conversations,
       disabled: !showWorkPreferences,
       inactive: !isOnline,
+      locked: isWorkPreferenceLocked('accepts_conversations'),
       onPressListItem: () => toggleWorkPreference('accepts_conversations'),
     },
     {
@@ -281,11 +293,25 @@ const SettingsScreen = () => {
       checked: workPreferences.accepts_calls,
       disabled: !showWorkPreferences,
       inactive: !isOnline,
+      locked: isWorkPreferenceLocked('accepts_calls'),
       onPressListItem: () => toggleWorkPreference('accepts_calls'),
     },
   ];
 
   const preferencesList: GenericListType[] = [
+    {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.APPEARANCE'),
+      icon: (
+        <View style={tailwind.style('h-6 w-6 items-center justify-center')}>
+          <Text style={tailwind.style('text-xl text-gray-900')}>◐</Text>
+        </View>
+      ),
+      subtitle: i18n.t(`SETTINGS.APPEARANCE_${(appearance as Theme).toUpperCase()}`),
+      subtitleType: 'light',
+      isSelected: isSplit && pane === 'appearance',
+      onPressListItem: openPane('appearance', () => appearanceSheetRef.current?.present()),
+    },
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.NOTIFICATIONS'),
@@ -354,7 +380,7 @@ const SettingsScreen = () => {
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
       />
       <SettingsHeader />
       <Animated.ScrollView
@@ -406,6 +432,10 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
+      <Sheet ref={appearanceSheetRef} autoSize>
+        <BottomSheetHeader headerText={i18n.t('SETTINGS.APPEARANCE')} />
+        <AppearancePicker />
+      </Sheet>
       <Sheet ref={userAvailabilityStatusSheetRef} height={190}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
@@ -456,6 +486,7 @@ const SettingsScreen = () => {
 
   const titleFor = (p: SettingsPane) =>
     ({
+      appearance: i18n.t('SETTINGS.APPEARANCE'),
       availability: i18n.t('SETTINGS.SET_AVAILABILITY'),
       notifications: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
       language: i18n.t('SETTINGS.SET_LANGUAGE'),
@@ -465,6 +496,7 @@ const SettingsScreen = () => {
   // A setting's options in a white rounded card, shared by the detail pane and the iOS page.
   const renderPaneCard = (p: SettingsPane) => (
     <View style={tailwind.style('rounded-[13px] bg-white overflow-hidden')}>
+      {p === 'appearance' ? <AppearancePicker /> : null}
       {p === 'availability' ? (
         <AvailabilityStatusList
           changeAvailabilityStatus={changeAvailabilityStatus}

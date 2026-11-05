@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Text, Animated, View } from 'react-native';
 import { format, fromUnixTime } from 'date-fns';
 import { Icon } from '@/components-next';
 import { SLAIcon } from '@/svg-icons';
 import { IOS_DESIGN } from '@/utils';
-import { tailwind } from '@/theme';
 import { SLAEvent } from '@/types/common/SLA';
 import { SLA_MISS_TYPES } from '@/constants';
 import { SlaEvents as SlaEventItem } from './SLAEventItem';
@@ -19,6 +19,7 @@ interface SlaEventsProps {
 // iOS: a status header with a tinted SLA icon, then the misses as a rounded list (type on the
 // left, when on the right), like an iOS info sheet.
 const IOSSlaEvents = ({ slaEvents, statusText, isMissed }: SlaEventsProps) => {
+  const tailwind = useTailwind();
   const rows = [
     { type: SLA_MISS_TYPES.FRT, label: i18n.t('SLA.MISSES.FRT') },
     { type: SLA_MISS_TYPES.NRT, label: i18n.t('SLA.MISSES.NRT') },
@@ -88,6 +89,7 @@ const IOSSlaEvents = ({ slaEvents, statusText, isMissed }: SlaEventsProps) => {
 };
 
 export const SlaEvents = (props: SlaEventsProps) => {
+  const tailwind = useTailwind();
   if (IOS_DESIGN) return <IOSSlaEvents {...props} />;
   const { slaEvents, statusText } = props;
   const frtMisses = slaEvents?.filter(slaEvent => slaEvent.eventType === SLA_MISS_TYPES.FRT);

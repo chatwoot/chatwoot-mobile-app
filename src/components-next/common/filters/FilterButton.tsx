@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import { useRefsContext } from '@/context';
 
 import { CaretBottomSmall } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../icon';
 
@@ -15,6 +15,7 @@ type FilterButtonProps = {
 };
 
 export const FilterButton = (props: FilterButtonProps) => {
+  const tailwind = useTailwind();
   const { value, handleOnPress } = props;
   const { handlers, animatedStyle } = useScaleAnimation();
   const { filtersModalSheetRef } = useRefsContext();

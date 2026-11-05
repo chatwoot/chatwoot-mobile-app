@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import { Alert, Platform, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -13,7 +14,6 @@ import {
   UpdateParticipant,
 } from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { errorMessage } from '@/utils/errorUtils';
 import { ConversationStatus } from '@/types';
@@ -37,6 +37,7 @@ import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
+  const tailwind = useTailwind();
   // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   // 32pt between sections in the pane, 40pt elsewhere.

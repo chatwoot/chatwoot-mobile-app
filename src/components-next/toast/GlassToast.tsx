@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
@@ -13,7 +14,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
 import { useSideTabBarLayout } from '@/utils';
 
-import { tailwind } from '@/theme';
 import { subscribeToToasts, type ToastMessage } from '@/utils/toastEvents';
 
 // iOS toast: a small frosted glass capsule that stays about two seconds and fades away. On
@@ -26,6 +26,7 @@ const VISIBLE_MS = 2200;
 
 /** Renders the toasts; place once above the app's screens. */
 export const GlassToastHost = () => {
+  const tailwind = useTailwind();
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const { top, bottom, left, right } = useSafeAreaInsets();
   const { height: keyboardHeight } = useReanimatedKeyboardAnimation();

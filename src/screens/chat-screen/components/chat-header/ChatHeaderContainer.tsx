@@ -12,8 +12,7 @@ import { ChatHeader } from './ChatHeader';
 import { DashboardList } from './DropdownMenu';
 import { ImageSourcePropType } from 'react-native';
 import { SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus as evaluateLegacySLAStatus } from '@chatwoot/utils';
-import { evaluateSLAStatus, hasSLADueTimes } from '@/utils/slaUtils';
+import { evaluateSLAStatus } from '@/utils/slaUtils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
@@ -70,41 +69,17 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       setSlaStatus(null);
       return;
     }
-    if (hasSLADueTimes(appliedSla)) {
-      setSlaStatus(
-        evaluateSLAStatus({
-          appliedSla,
-          chat: {
-            status: conversation?.status,
-            firstReplyCreatedAt: conversation?.firstReplyCreatedAt,
-            waitingSince: conversation?.waitingSince,
-          },
-          slaEvents,
-        }),
-      );
-      return;
-    }
-    // Servers without due-at timestamps are evaluated from the policy thresholds.
-    const status = evaluateLegacySLAStatus({
-      appliedSla: {
-        id: appliedSla.id,
-        name: appliedSla.slaName,
-        description: appliedSla.slaDescription,
-        sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
-        sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
-        sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
-        only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
-        created_at: appliedSla.createdAt,
-      },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      chat: {
-        first_reply_created_at: conversation?.firstReplyCreatedAt,
-        waiting_since: conversation?.waitingSince,
-        status: conversation?.status,
-      },
-    });
-    setSlaStatus(status);
+    setSlaStatus(
+      evaluateSLAStatus({
+        appliedSla,
+        chat: {
+          status: conversation?.status,
+          firstReplyCreatedAt: conversation?.firstReplyCreatedAt,
+          waitingSince: conversation?.waitingSince,
+        },
+        slaEvents,
+      }),
+    );
   }, [appliedSla, conversation, slaEvents]);
 
   const { chatPagerView } = useRefsContext();

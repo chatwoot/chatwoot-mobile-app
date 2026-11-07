@@ -16,7 +16,7 @@ import { UnreadIndicator } from './UnreadIndicator';
 import { SLAIndicator } from './SLAIndicator';
 import { LabelIndicator } from './LabelIndicator';
 import { LastActivityTime } from './LastActivityTime';
-import { SLA } from '@/types/common/SLA';
+import { SLA, SLAEvent } from '@/types/common/SLA';
 import { Inbox } from '@/types/Inbox';
 import { TypingMessage } from './TypingMessage';
 
@@ -39,6 +39,7 @@ type ConversationDetailSubCellProps = Pick<
         status: string;
       }
     | Record<string, never>;
+  slaEvents?: SLAEvent[];
   additionalAttributes?: ConversationAdditionalAttributes;
   allLabels: Label[];
   typingText?: string;
@@ -66,6 +67,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
     inbox,
     appliedSla,
     appliedSlaConversationDetails,
+    slaEvents,
     additionalAttributes,
     allLabels,
     typingText,
@@ -140,6 +142,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
                       status: string;
                     }
                   }
+                  slaEvents={slaEvents}
                   onSLAStatusChange={setShouldShowSLA}
                 />
               )}

@@ -31,7 +31,6 @@ import { Agent } from '@/types';
 type MessageTextInputProps = {
   maxLength: number;
   replyEditorMode: string;
-  selectedCannedResponse?: string | null;
   agents: Agent[];
   messageContent: string;
 };
@@ -70,12 +69,7 @@ const Locked = () => {
 const TYPING_INDICATOR_IDLE_TIME = 4000;
 
 // eslint-disable-next-line no-empty-pattern
-export const MessageTextInput = ({
-  maxLength,
-  replyEditorMode,
-  selectedCannedResponse,
-  agents,
-}: MessageTextInputProps) => {
+export const MessageTextInput = ({ maxLength, replyEditorMode, agents }: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
 
@@ -139,11 +133,6 @@ export const MessageTextInput = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
-
-  useEffect(() => {
-    if (selectedCannedResponse) onChangeText(selectedCannedResponse);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCannedResponse]);
 
   useEffect(() => {
     if (quoteMessage !== null) {

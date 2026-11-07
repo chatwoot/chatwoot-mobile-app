@@ -1,6 +1,7 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
+  Platform,
   Text,
   TextInput,
   TextInputSelectionChangeEventData,
@@ -29,6 +30,24 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
 
     const { plainText, parts } = useMemo(() => parseValue(value, partTypes), [value, partTypes]);
 
+    // Text last reported by the native input; any other text was set from JS
+    const lastNativeText = useRef(plainText);
+    const [contentKey, setContentKey] = useState(0);
+
+    /**
+     * iOS Fabric: BaseTextInputShadowNode measures the attributed string from its previous state,
+     * and text set from JS (canned responses, mentions) never round-trips a native state update,
+     * so the height stays stale. A second commit re-measures with the updated state, hence the
+     * layout effect. Android measures the current text and doesn't need this.
+     */
+    useLayoutEffect(() => {
+      if (Platform.OS !== 'ios' || plainText === lastNativeText.current) {
+        return;
+      }
+      lastNativeText.current = plainText;
+      setContentKey(key => key + 1);
+    }, [plainText]);
+
     const handleSelectionChange = (
       event: NativeSyntheticEvent<TextInputSelectionChangeEventData>,
     ) => {
@@ -43,6 +62,7 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
      * @param changedText
      */
     const onChangeInput = (changedText: string) => {
+      lastNativeText.current = changedText;
       onChange(generateValueFromPartsAndChangedText(parts, plainText, changedText));
     };
 
@@ -124,7 +144,7 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
           ref={handleTextInputRef}
           onChangeText={onChangeInput}
           onSelectionChange={handleSelectionChange}>
-          <Text>
+          <Text key={contentKey}>
             {parts.map(({ text, partType, data }, index) =>
               partType ? (
                 <Text

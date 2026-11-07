@@ -38,7 +38,14 @@ export const AuthButton = ({
   };
 
   return (
-    <Pressable style={[getButtonStyles(), style]} onPress={handlePress} disabled={disabled}>
+    <Pressable
+      style={[getButtonStyles(), style]}
+      onPress={handlePress}
+      disabled={disabled}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={text}
+    >
       <Icon size={16} icon={icon} />
       <Animated.Text style={getTextStyles()}>{text}</Animated.Text>
     </Pressable>

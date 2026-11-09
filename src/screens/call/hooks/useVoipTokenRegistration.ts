@@ -8,22 +8,21 @@ import { addVoipTokenListener, getVoipToken } from '@/services/voice/chatwootCal
 
 export const useVoipTokenRegistration = () => {
   const dispatch = useAppDispatch();
-  const registeredTokenRef = useRef<string | null>(null);
+  const settledTokenRef = useRef<string | null>(null);
   const pendingTokenRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!systemCall.isAvailable()) return undefined;
     const register = (token: string | null) => {
-      if (!token || token === registeredTokenRef.current || token === pendingTokenRef.current) {
+      if (!token || token === settledTokenRef.current || token === pendingTokenRef.current) {
         return;
       }
       pendingTokenRef.current = token;
       dispatch(settingsActions.saveVoipToken())
-        .unwrap()
-        .then(() => {
-          registeredTokenRef.current = token;
+        .then(result => {
+          // A server answer settles the token; a request that got no answer is retried
+          if (result.payload) settledTokenRef.current = token;
         })
-        .catch(() => {})
         .finally(() => {
           if (pendingTokenRef.current === token) pendingTokenRef.current = null;
         });

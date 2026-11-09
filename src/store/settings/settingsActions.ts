@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
+import axios from 'axios';
 
 import { getMessaging, getToken } from '@react-native-firebase/messaging';
 import {
@@ -133,24 +134,33 @@ export const settingsActions = {
     },
   ),
 
-  saveVoipToken: createAsyncThunk<{ voipToken: string | null }, void>(
-    'settings/saveVoipToken',
-    async () => {
-      if (!isSystemCallUiAvailable()) return { voipToken: null };
-      const voipToken = getVoipToken() ?? null;
-      if (!voipToken) return { voipToken: null };
-      const payload: VoipPushPayload = {
-        subscription_type: 'apns_voip',
-        subscription_attributes: {
-          devicePlatform: getSystemName(),
-          push_token: voipToken,
-          device_id: await getUniqueId(),
-        },
-      };
+  saveVoipToken: createAsyncThunk<
+    { voipToken: string | null },
+    void,
+    { rejectValue: { status: number } }
+  >('settings/saveVoipToken', async (_, { rejectWithValue }) => {
+    if (!isSystemCallUiAvailable()) return { voipToken: null };
+    const voipToken = getVoipToken() ?? null;
+    if (!voipToken) return { voipToken: null };
+    const payload: VoipPushPayload = {
+      subscription_type: 'apns_voip',
+      subscription_attributes: {
+        devicePlatform: getSystemName(),
+        push_token: voipToken,
+        device_id: await getUniqueId(),
+      },
+    };
+    try {
       await SettingsService.saveVoipToken(payload);
-      return { voipToken };
-    },
-  ),
+    } catch (error) {
+      // Servers without calls refuse the subscription
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue({ status: error.response.status });
+      }
+      throw error;
+    }
+    return { voipToken };
+  }),
 
   removeDevice: createSettingsThunk<void, { pushToken: string }>(
     'settings/removeDevice',

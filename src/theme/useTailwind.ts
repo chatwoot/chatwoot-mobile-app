@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 import { create } from 'twrnc';
 import { twConfig } from './tailwind.config';
 import { tailwind } from './tailwind';
 import { useSystemFont } from './appFont';
 import { useAppAppearance } from './appearance';
+import darkPalette from './colors/dark';
 
-const darkPalette: Record<string, Record<string, string>> = require('./colors/dark');
 const darkColors = Object.fromEntries(
   Object.entries(darkPalette).map(([name, shades]) => [name.replace(/Dark$/, ''), shades]),
 );

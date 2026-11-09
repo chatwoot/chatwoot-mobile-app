@@ -26,7 +26,6 @@ interface LabelActionsProps {
 }
 
 export const LabelActions = (props: LabelActionsProps) => {
-  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { labels, onLabelsUpdate, sheetRef, titleText, addLabelText, searchPlaceholderText } =
     props;

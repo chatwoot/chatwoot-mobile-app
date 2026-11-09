@@ -5,7 +5,6 @@ import { tailwind } from '@/theme';
 import { expandTabs } from '@/utils/expandTabs';
 import { IOS_DESIGN } from '@/utils';
 
-// iOS marks matches with weight only, like system search; Android keeps the blue tint.
 const HIGHLIGHT_STYLE = tailwind.style(
   IOS_DESIGN ? 'font-inter-semibold-20 text-gray-950' : 'font-inter-medium-24 text-blue-800',
 );

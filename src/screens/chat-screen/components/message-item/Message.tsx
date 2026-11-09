@@ -97,10 +97,7 @@ type MessageWrapperProps = {
   isTargetMessage?: boolean;
   onRetry: () => void;
   canSendPublicReply: boolean;
-  // iOS plain text: the time and ticks sit inside the last line (WhatsApp-style), not in a
-  // footer row. The text keeps room for them (TextBubble timeSpacer).
   inlineTime?: boolean;
-  // Sent by the signed-in agent (no name label on the right).
   isOwnMessage?: boolean;
 };
 
@@ -170,8 +167,6 @@ const MessageWrapper = ({
   const windowWidth = containerWidth - paneRightInset;
   // 56 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (8)
   const EMAIL_WIDTH = windowWidth - 56;
-  // Text bubbles: 300pt on phones. In the split view's wider conversation pane, up to 80% of
-  // the visible width so long messages use the space.
   const textMaxWidth = isInPane
     ? Math.max(TEXT_MAX_WIDTH, Math.round(windowWidth * 0.8))
     : TEXT_MAX_WIDTH;
@@ -179,20 +174,13 @@ const MessageWrapper = ({
   // Only the search-target row animates, so only it needs an Animated.View.
   const BubbleContainer = isTargetMessage ? Animated.View : View;
 
-  // iOS groups by sender like Messages: the avatar beside the last message of a person's run,
-  // the others lined up with it, 2pt between them and 10pt when the sender changes. Elsewhere
-  // grouping is by sender within the same minute.
   const hasAvatar = IOS_DESIGN
     ? shouldShowAvatar && !item.sameSenderAsBelow
     : !shouldGroupWithPrevious && shouldShowAvatar;
-  // Earlier bubbles in a run line up with the one that has the avatar (left or right side).
   const isIndented = IOS_DESIGN
     ? shouldShowAvatar && !!item.sameSenderAsBelow
     : shouldGroupWithPrevious && orientation === ORIENTATION.LEFT;
   const isRight = orientation === ORIENTATION.RIGHT;
-  // iOS: the sender's name sits above their first message after someone else's (like group
-  // chats in Messages), instead of inside each bubble next to the time.
-  // Incoming (left) always; outgoing (right) when another agent or the bot sent it.
   const showNameAbove =
     IOS_DESIGN &&
     !item.sameSenderAsAbove &&
@@ -200,7 +188,6 @@ const MessageWrapper = ({
     ((orientation === ORIENTATION.LEFT && shouldShowAvatar) ||
       (orientation === ORIENTATION.RIGHT && !isOwnMessage));
   const shouldShowSenderName = !IOS_DESIGN && hasAvatar && !!avatarInfo.name;
-  // The tail points left, so only left-side bubbles get it.
   const shouldShowTail = hasAvatar && !isRight && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
 
   return (
@@ -224,7 +211,6 @@ const MessageWrapper = ({
           numberOfLines={1}
           style={[
             tailwind.style('mb-0.5 text-[12px] leading-[16px] font-inter-normal-20 text-gray-700'),
-            // Lined up with the bubble's text: past the avatar column when this bubble has one.
             isRight ? { marginRight: hasAvatar ? 44 : 12 } : { marginLeft: hasAvatar ? 44 : 12 },
           ]}>
           {capitalizeWords(firstName(avatarInfo.name))}
@@ -337,7 +323,6 @@ const MessageWrapper = ({
             ) : null}
           </BubbleContainer>
         </MessageMenu>
-        {/* Outgoing on iOS: the agent's (or bot's) avatar on the right, like the web app. */}
         {hasAvatar && isRight ? (
           <View style={tailwind.style('flex items-end justify-end ml-2')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
@@ -511,7 +496,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const shouldShowAvatar = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
-    // iOS shows avatars on both sides (outgoing on the right), like the web app.
     if (orientation() === ORIENTATION.RIGHT && !IOS_DESIGN) return false;
     return true;
   };
@@ -535,7 +519,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const orientation = () => {
-    // iOS: outgoing (any agent or the bot) on the right, incoming on the left, like the web app.
     if (IOS_DESIGN) {
       if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
       if (messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.TEMPLATE)
@@ -607,8 +590,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     const attachments = item.attachments;
     const isReplyMessage = item.contentAttributes?.inReplyTo;
-    // WhatsApp-style time inside the last line, for plain text on iOS (translated messages keep
-    // the footer, since their toggle is the last line).
     const hasTranslations = !!item.contentAttributes?.translations;
     const useInlineTime =
       IOS_DESIGN &&
@@ -640,7 +621,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
         <TextBubble
           item={item}
           variant={variant()}
-          // Room for the time (and the ticks on sent messages) at the end of the last line.
           timeReserve={
             useInlineTime ? (messageType === MESSAGE_TYPES.OUTGOING ? 'ticks' : 'time') : undefined
           }

@@ -43,7 +43,6 @@ export const twConfig = {
       // - Between Medium and Semi-bold: "inter-580-24" (600)
       // - Semi-bold: "inter-semibold-24" (600)
       // -  Last numbers (20, 24 etc) are optical sizes.
-      // On iOS (system font trial) these names map to the system font below instead.
       fontFamily: useSystemFont
         ? {}
         : {
@@ -55,8 +54,6 @@ export const twConfig = {
           },
     },
   },
-  // TRIAL: on iOS the Inter class names use Apple's system font at the matching weight, so
-  // no screen needs to change. See src/theme/appFont.ts to switch back.
   plugins: useSystemFont
     ? [
         plugin(

@@ -17,7 +17,6 @@ interface SearchEmptyStateProps {
   onRetry?: () => void;
   entering?: BaseAnimationBuilder;
   exiting?: BaseAnimationBuilder;
-  // iOS: a one-line note under a section header in the All view instead of a page state.
   inline?: boolean;
 }
 
@@ -59,7 +58,6 @@ export function SearchEmptyState({
       );
     }
 
-    // Compact page state like the split view's empty states: small icon, 15pt text.
     return (
       <Animated.View
         entering={entering}

@@ -29,8 +29,6 @@ export const InboxHeader = (props: InboxHeaderProps) => {
     inboxFiltersSheetRef.current?.present();
   };
 
-  // With tabs on the side (iPhone Duo), the header actions move to the side toolbar. In
-  // the split view they stay above the list, next to the content they affect.
   const isSplit = useIsSplitLayout();
   const isSortChanged = useIsInboxSortChanged();
   const sideTabBar = useSideTabBarLayout();
@@ -42,7 +40,6 @@ export const InboxHeader = (props: InboxHeaderProps) => {
           onPress={markAllAsRead}
           accessibilityLabel={i18n.t('NOTIFICATION.MARK_ALL')}
         />
-        {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
         <InboxSortMenu>
           <SideToolbarButton
             icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
@@ -59,14 +56,10 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   return (
     <Animated.View
       style={[
-        // On iOS (and with tabs on the side) the header floats over the list and the scroll
-        // edge effect separates it, so it has no divider of its own.
         IOS_DESIGN || sideTabBar ? null : tailwind.style('border-b-[1px] border-b-blackA-A3'),
-        // Keep header controls out of the rounded corner when the status bar is on the side.
         { paddingTop: sideTabBar?.contentTopPadding ?? 0 },
       ]}>
       {isSplit || (IOS_DESIGN && !isSideLayout) ? (
-        // Split view and iPhone: small centered title with round glass buttons.
         <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
           <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
             <GlassCircleButton
@@ -83,7 +76,6 @@ export const InboxHeader = (props: InboxHeaderProps) => {
             {i18n.t('NOTIFICATION.INBOX')}
           </Animated.Text>
           <Animated.View style={tailwind.style('w-24 flex-row items-center justify-end')}>
-            {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
             <InboxSortMenu>
               <GlassCircleButton
                 icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}

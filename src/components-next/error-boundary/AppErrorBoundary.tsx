@@ -13,8 +13,6 @@ type FallbackProps = {
   resetError: () => void;
 };
 
-// iOS: the same compact look as the conversation pane's "Could not fetch
-// conversation" state (small icon, 17pt title, 15pt gray text, round button).
 const SplitFallback = ({ resetError }: FallbackProps) => (
   <View style={tailwind.style('flex-1 bg-gray-50 items-center justify-center px-8')}>
     <View style={tailwind.style('items-center gap-3 max-w-[320px]')}>
@@ -74,7 +72,6 @@ const PhoneFallback = ({ resetError }: FallbackProps) => (
   </SafeAreaView>
 );
 
-// iOS uses the compact style everywhere, matching the conversation error state.
 const FallbackContent = ({ resetError }: FallbackProps) =>
   IOS_DESIGN ? (
     <SplitFallback resetError={resetError} />

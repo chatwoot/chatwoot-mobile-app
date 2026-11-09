@@ -25,7 +25,6 @@ type InboxItemContainerProps = {
   item: Notification;
   index: number;
   openedRowIndex: SharedValue<number | null>;
-  // The next row's conversation, so this row can hide its divider above a selected row.
   nextConversationId?: number;
 };
 

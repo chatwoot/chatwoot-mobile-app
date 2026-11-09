@@ -66,8 +66,6 @@ export const MessagesList = ({
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
-  // The floating SLA pill shows only at the newest messages (the list is inverted, so that's an
-  // offset near 0) and hides as soon as you scroll away, either way.
   const slaPill = useSlaPillVisibility();
   const isPillShown = useSharedValue(1);
   const onScroll = useAnimatedScrollHandler({

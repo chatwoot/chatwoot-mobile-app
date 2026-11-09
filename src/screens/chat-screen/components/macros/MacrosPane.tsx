@@ -25,10 +25,6 @@ import { showToast } from '@/utils/toastUtils';
 
 import { useMacroSteps } from './useMacroSteps';
 
-// Macros in the split view's side column (iPhone Duo), opened from the reply bar's + menu.
-// Styled like the Actions column: a light gray page with flat white iOS list cards. Tapping
-// a macro shows its steps, with Back and Run in the header.
-
 const CARD = 'rounded-[13px] mx-4 bg-white overflow-hidden';
 const ROW_DIVIDER = 'border-b-[0.5px] border-b-blackA-A6';
 
@@ -39,9 +35,6 @@ type MacroListProps = {
   runningId: number | null;
 };
 
-// Each row has a Run button, so a macro can run without opening it, and an info button that
-// shows its steps (the iOS detail disclosure pattern). The row itself isn't tappable, so a
-// stray tap can't run anything.
 const MacroList = ({ macros, onSelect, onRun, runningId }: MacroListProps) => {
   if (macros.length === 0) {
     return (
@@ -146,7 +139,6 @@ export const MacrosPane = ({
   onClose,
 }: {
   conversationId: number;
-  // Full-screen page (iPhone, closed Duo): closes the page; the list gets a Back button.
   onClose?: () => void;
 }) => {
   const dispatch = useAppDispatch();

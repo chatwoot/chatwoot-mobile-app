@@ -140,7 +140,6 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   };
 
   const handleNavigationToContactDetails = () => {
-    // Split view: push contact details as a column on the right instead of a sheet.
     if (isInDetailPane && splitView) {
       splitView.openContact();
       return;
@@ -150,7 +149,6 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   };
 
   const handleNavigation = (url?: string, title?: string) => {
-    // Split view: dashboard apps and conversation actions open as a column on the right.
     if (isInDetailPane && splitView) {
       if (url) {
         splitView.openDashboard({ url, title, conversation, currentUser });
@@ -168,7 +166,6 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       });
       navigation.dispatch(navigateToScreen);
     } else if (IOS_DESIGN) {
-      // iOS: actions are a pushed page (the chat no longer swipes to them).
       navigation.dispatch(StackActions.push('ConversationActionsScreen', { conversationId }));
     } else {
       chatPagerView.current?.setPage(1);
@@ -254,11 +251,9 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       showCallButton={canCallContact}
       isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
       onCallPress={startCall}
-      // In the split view's conversation pane, back closes the conversation.
       onBackPress={isInDetailPane && splitView ? splitView.closeConversation : handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
-      // Actions open as a column in the split view and as the actions page elsewhere on iOS.
       onOpenActions={
         isInDetailPane && splitView
           ? splitView.openActions

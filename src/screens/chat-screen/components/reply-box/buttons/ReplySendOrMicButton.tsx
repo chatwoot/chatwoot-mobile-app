@@ -17,9 +17,8 @@ type ReplySendOrMicButtonProps = {
   onMic: () => void;
 };
 
-// iPhone Duo reply bar: the mic and send buttons share one spot. The mic stays mounted and
-// the send button fades and scales in over it, so swapping them as you type doesn't
-// remount the glass or shift the layout (which made it flicker).
+// The mic stays mounted and the send button fades and scales in over it, so swapping them
+// as you type doesn't remount the glass or shift the layout.
 export const ReplySendOrMicButton = ({
   showSend,
   showMic,

@@ -10,13 +10,10 @@ type SearchScopeTabsProps = {
   onTabPress: (tabId: string) => void;
 };
 
-// iOS search scopes: a scrolling row of capsules, the selected one filled dark (like the
-// filter capsules in Photos and Music), with the result count after the label.
 export const SearchScopeTabs = ({ items, activeTabId, onTabPress }: SearchScopeTabsProps) => {
   const scrollRef = useRef<ScrollView>(null);
   const offsets = useRef<Record<string, number>>({});
 
-  // Keep the selected scope in view when it changes from outside (e.g. "View more").
   useEffect(() => {
     const x = offsets.current[activeTabId];
     if (x !== undefined) scrollRef.current?.scrollTo({ x: Math.max(0, x - 16), animated: true });

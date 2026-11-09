@@ -22,8 +22,6 @@ const checkIfPropsAreSame = (prev: ConversationAvatarProps, next: ConversationAv
 
 export const ConversationAvatar = memo((props: ConversationAvatarProps) => {
   const { src, name, status } = props;
-  // 40pt with 16pt initials (about 40% of the circle, like iOS monograms) on the iOS
-  // list layout (iPhone Duo); 50pt elsewhere.
   const iosList = useIOSListText();
   const size = iosList ? '2xl' : '4xl';
   return (

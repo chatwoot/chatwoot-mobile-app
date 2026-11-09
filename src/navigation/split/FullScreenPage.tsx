@@ -13,12 +13,6 @@ import { useSideTabBarLayout } from '@/utils';
 
 import { PaneHeader } from './PaneHeader';
 
-// Pages that open in the split view's side column on the open iPhone Duo (contact details,
-// dashboard apps, macros) open full screen on iPhone and the closed Duo, with the same
-// content and a header like the column's. With tabs on the side, Back goes in the side
-// toolbar like the chat's; otherwise it's a glass button in the header.
-
-/** Full-screen page frame: safe area, background, and its own side toolbar when needed. */
 export const FullScreenPage = ({
   background = 'bg-white',
   children,
@@ -40,7 +34,6 @@ export const FullScreenPage = ({
   );
 };
 
-/** Header for a FullScreenPage: centered title, Back, and an optional trailing action. */
 export const PageHeader = ({
   title,
   onBack,

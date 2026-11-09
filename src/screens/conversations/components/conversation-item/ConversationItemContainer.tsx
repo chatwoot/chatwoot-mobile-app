@@ -35,7 +35,6 @@ type ConversationItemContainerProps = {
   conversationItem: Conversation;
   index: number;
   openedRowIndex: SharedValue<number | null>;
-  // The next row's conversation, so this row can hide its divider above a selected row.
   nextConversationId?: number;
 };
 
@@ -184,7 +183,6 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       handlePress={onPressAction}
       triggerOverswipeOnFlick
       {...{ index, openedRowIndex }}>
-      {/* In select mode the checkboxes show the selection, so the open row isn't highlighted. */}
       <SelectedRowBackground
         selected={currentState !== 'Select' && splitView?.selectedConversationId === id}
         beforeSelected={

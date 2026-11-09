@@ -14,7 +14,6 @@ import {
 
 export type MacroStep = { name: string; value: string };
 
-/** A macro's steps as readable names and values (labels, teams and agents by name). */
 export const useMacroSteps = (macro: Macro | null, conversationId: number): MacroStep[] => {
   const labels = useAppSelector(selectAllLabels);
   const teams = useAppSelector(selectAllTeams);

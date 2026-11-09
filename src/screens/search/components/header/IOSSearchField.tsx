@@ -18,8 +18,6 @@ type IOSSearchFieldProps = {
   placeholder?: string;
 };
 
-// Search field in the same glass capsule as the reply bar's text field (44pt, 17pt text),
-// with the system search field's magnifier, clear button and a spinner while loading.
 export const IOSSearchField = ({
   value,
   isLoading,

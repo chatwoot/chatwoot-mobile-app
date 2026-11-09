@@ -27,10 +27,6 @@ export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProp
     navigation.dispatch(StackActions.pop());
   };
 
-  // Split view column: no title bar; the centered profile starts at the same top margin as
-  // the other panes' headers. No close button or divider (the side toolbar's back button
-  // closes the column).
-  // iOS full screen: the same profile under a page header with Back.
   if (isInContactPane || IOS_DESIGN) {
     const isFullScreen = !isInContactPane;
     return (

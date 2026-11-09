@@ -36,7 +36,6 @@ const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
 
 type ActionTabBarBackgroundProps = Partial<BlurViewProps> &
   PropsWithChildren & {
-    // iOS: Liquid Glass instead of the blur.
     glass?: boolean;
   };
 
@@ -99,7 +98,6 @@ type ToolbarButtonProps = {
   enabled: boolean;
 };
 
-// A labeled toolbar button. It has no onPress of its own: it's the trigger of a native menu.
 const ToolbarButton = ({ label, glyph: Glyph, enabled }: ToolbarButtonProps) => (
   <View
     accessibilityRole="button"
@@ -117,9 +115,6 @@ const ToolbarButton = ({ label, glyph: Glyph, enabled }: ToolbarButtonProps) => 
   </View>
 );
 
-// iOS: a Liquid Glass toolbar like Mail's edit mode, applying to every selected conversation.
-// Label and Assign open a full-height sheet with search; Status is a native menu. The buttons
-// are gray and inactive until something is selected.
 const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: number }) => {
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
@@ -164,7 +159,6 @@ const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: number }) 
         ),
         { bottom, left: barLeft },
       ]}>
-      {/* Label and Assign open a full-height sheet with search (lists can be long). */}
       <Pressable
         disabled={!hasSelection}
         onPress={() => openPicker('label')}
@@ -214,8 +208,6 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
 
   const currentState = useAppSelector(selectCurrentState);
   const { bottom } = useSafeAreaInsets();
-  // Move far enough to hide the bar and its shadow even without a bottom tab bar
-  // covering it (side tab layout on iPhone Duo).
   const hiddenOffset = bottom + 8 + ACTION_TAB_HEIGHT + 24;
 
   const derivedAnimatedState = useDerivedValue(() =>
@@ -306,8 +298,6 @@ const ActionItem = (props: ActionItemProps) => {
 
 export const ActionTabs = () => {
   const { bottom, left } = useSafeAreaInsets();
-  // Center within the area it's drawn in: the list pane in the split view, or the content
-  // between the side insets elsewhere.
   const containerWidth = useContainerWidth();
   const barLeft = left + (containerWidth - 220) / 2;
   const dispatch = useAppDispatch();

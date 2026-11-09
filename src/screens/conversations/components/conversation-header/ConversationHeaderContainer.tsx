@@ -126,12 +126,9 @@ export const ConversationHeader = () => {
   return (
     <Animated.View
       style={[
-        // On iOS (and with tabs on the side) the header floats over the list and the scroll
-        // edge effect separates it, so it has no background or divider of its own.
         IOS_DESIGN || sideTabBar
           ? tailwind.style('z-10')
           : [tailwind.style('border-b-[1px] bg-white z-10'), headerBorderAnimation],
-        // Keep header controls out of the rounded corner when the status bar is on the side.
         { paddingTop: sideTabBar?.contentTopPadding ?? 0 },
       ]}>
       <ConversationHeaderPresenter

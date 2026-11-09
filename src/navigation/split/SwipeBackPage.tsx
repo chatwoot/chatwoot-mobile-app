@@ -9,10 +9,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-// Edge swipe back for pages drawn inside a screen (e.g. Settings options on iPhone), which
-// don't get the navigation stack's gesture. Drag from the left edge: the page follows the
-// finger; past a third of the width (or a quick flick) it slides away and `onBack` runs,
-// otherwise it springs back.
 export const SwipeBackPage = ({
   onBack,
   style,
@@ -22,7 +18,6 @@ export const SwipeBackPage = ({
   const translateX = useSharedValue(0);
 
   const pan = Gesture.Pan()
-    // Only from the left edge, like the system gesture, so rows and switches still work.
     .hitSlop({ left: 0, width: 24 })
     .activeOffsetX(8)
     .failOffsetY([-12, 12])

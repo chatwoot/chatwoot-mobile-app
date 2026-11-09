@@ -46,7 +46,6 @@ type ChatHeaderProps = {
   slaEvents?: SLAEvent[];
   dashboardsList: DashboardList[];
   statusText?: string;
-  // SLA time left or overdue (e.g. "2h 53m"), shown with the SLA label in the pane header.
   slaTime?: string;
   showCallButton?: boolean;
   isCallDisabled?: boolean;
@@ -54,12 +53,9 @@ type ChatHeaderProps = {
   onBackPress: () => void;
   onContactDetailsPress: () => void;
   onToggleChatStatus: () => void;
-  // Opens conversation actions (split view pane: a column on the right).
   onOpenActions?: () => void;
 };
 
-// Line weight for side toolbar icons drawn at 24pt: about 1.5pt on screen, matching the
-// tab bar icons, so both capsules read as one monochrome set.
 const TOOLBAR_STROKE = 1.5;
 
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
@@ -112,8 +108,6 @@ const FloatingSlaPill = ({
   );
 };
 
-// The SLA sheet fits its content on iOS; elsewhere it keeps its fixed height.
-// On wide screens (the open Duo) it's capped to a readable width instead of spanning the display.
 const SLA_SHEET_SIZE = IOS_DESIGN
   ? { autoSize: true, maxWidth: 440 }
   : { detents: [0.36], maxWidth: 440 };
@@ -144,12 +138,7 @@ export const ChatHeader = ({
   const iosList = useIOSListText();
   const { slaEventsSheetRef } = useRefsContext();
 
-  // In the split view's conversation pane (iPhone Duo), the header only shows who and
-  // where; its actions move to the side toolbar below the status bar, ordered like Apple's
-  // vertical toolbars: Close first, then Resolve/Reopen, then More.
   const isInPane = useIsInDetailPane();
-  // With tabs on the side (iPhone Duo), the actions always go in the side toolbar, in the
-  // split view pane or with the chat full screen.
   const sideTabBar = useSideTabBarLayout();
   const hasSideToolbar = isInPane || sideTabBar !== null;
   const paneRightInset = usePaneRightInset();
@@ -158,16 +147,10 @@ export const ChatHeader = ({
     : isResolved
       ? i18n.t('CONVERSATION.REOPEN')
       : i18n.t('CONVERSATION.OPEN');
-  // On the actions page (swiped left) the toolbar shrinks to one back button that returns
-  // to the messages.
   const { chatPagerView } = useRefsContext();
   const isOnActionsPage = !showDetailsRow;
-  // In the pane, actions have their own toolbar button; More lists only dashboard apps.
   const paneMenuList = useMemo(() => dashboardsList.filter(item => !!item.url), [dashboardsList]);
-  // With a secondary column open (contact, actions or a dashboard app), the toolbar is just a
-  // back button.
   const splitView = useSplitView();
-  // Switches as soon as a column starts opening or closing (not after the slide lands).
   const isColumnOpen = useIsColumnOpen();
   const isContactOpen = isColumnOpen ?? !!splitView?.isSecondaryOpen;
   const toolbarItems = useMemo(
@@ -196,7 +179,6 @@ export const ChatHeader = ({
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
             />
           ) : (
-            // Full screen chat: back to the list.
             <SideToolbarButton
               icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
               iconSize={24}
@@ -268,14 +250,8 @@ export const ChatHeader = ({
     slaEventsSheetRef.current?.present();
   };
 
-  // Split view pane: one compact row lined up with the list header next to it (its center
-  // sits where the list header's 36pt row is centered). Avatar, then the name with the
-  // inbox as a subtitle, and the SLA chip at the end. Actions are in the side toolbar.
   if (actionsInToolbar) {
-    // Split view pane: one row centered on the list header's title row next to it. Avatar
-    // and name with the inbox under it, and the SLA status at the end.
     return (
-      // No divider, matching the list header next to it.
       <Animated.View>
         <Animated.View
           style={[
@@ -287,7 +263,6 @@ export const ChatHeader = ({
             accessibilityRole="button"
             style={[tailwind.style('flex-row items-center gap-3'), { flexShrink: 1 }]}>
             <Avatar size="xl" initialsClassName="text-[11px]" src={imageSrc} name={name} />
-            {/* Name, with the inbox (channel icon and name) as a second line. */}
             <Animated.View style={{ flexShrink: 1 }}>
               <Animated.Text
                 numberOfLines={1}
@@ -299,7 +274,6 @@ export const ChatHeader = ({
               {inboxName ? (
                 <Animated.View style={tailwind.style('flex-row items-center gap-1')}>
                   {channelIcon ? <Icon icon={channelIcon} size={13} /> : null}
-                  {/* One line; truncated with "…" when there isn't room. */}
                   <Animated.Text
                     numberOfLines={1}
                     style={tailwind.style(
@@ -312,7 +286,6 @@ export const ChatHeader = ({
             </Animated.View>
           </Pressable>
           <Animated.View style={tailwind.style('flex-1')} />
-          {/* SLA like in the conversation list: icon and label with its time, no pill. */}
           {hasSla ? (
             <Pressable
               hitSlop={8}
@@ -340,12 +313,8 @@ export const ChatHeader = ({
   }
 
   if (IOS_DESIGN) {
-    // iPhone (and the Duo without the split view): one row like Messages, with round glass
-    // buttons. Back, then who and where, then Resolve/Reopen and Actions or More. The SLA, when
-    // there is one, floats below.
     const slaLabel = hasSla && slaType ? (slaTime ? `${slaType}: ${slaTime}` : slaType) : null;
     return (
-      // Above the messages so the floating SLA pill can overlap them.
       <Animated.View style={tailwind.style('z-10')}>
         <Animated.View style={tailwind.style('flex-row items-center gap-2 px-4 pt-1 pb-3')}>
           <GlassCircleButton
@@ -407,8 +376,6 @@ export const ChatHeader = ({
                 onPress={onToggleChatStatus}
                 accessibilityLabel={statusLabel}
               />
-              {/* Two buttons at most so the name and inbox have room on a phone: with
-                  dashboard apps, Actions joins them in the More menu (its first item). */}
               {paneMenuList.length === 0 && onOpenActions ? (
                 <GlassCircleButton
                   icon={<InfoCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
@@ -429,9 +396,6 @@ export const ChatHeader = ({
             </>
           )}
         </Animated.View>
-        {/* SLA floats under the header on glass, centered, over the messages; it slides away
-            while you scroll down and comes back when you scroll up. Tapping it shows the SLA
-            events. */}
         {slaLabel && !isOnActionsPage ? (
           <FloatingSlaPill
             label={slaLabel}
@@ -460,8 +424,6 @@ export const ChatHeader = ({
         <Pressable
           onPress={onContactDetailsPress}
           style={tailwind.style('flex flex-row items-center gap-2 flex-1')}>
-          {/* On the iOS list layout (iPhone Duo) a 32pt avatar with two-letter initials,
-              matching the conversation list; 24pt with one letter elsewhere. */}
           <Avatar
             size={iosList ? 'xl' : 'md'}
             initialsClassName={iosList ? 'text-[11px]' : undefined}

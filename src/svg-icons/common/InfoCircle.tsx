@@ -2,10 +2,6 @@ import React from 'react';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { IconProps } from '../../types';
 
-// Outlined round symbols for the side toolbar on iPhone Duo. They share one circle size and
-// line weight so the toolbar reads as one monochrome set (Apple HIG, Toolbars).
-
-/** Info (circle with an "i"): conversation actions. */
 export const InfoCircleIcon = ({ stroke = '#858585', strokeWidth = 2 }: IconProps): JSX.Element => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
@@ -16,7 +12,6 @@ export const InfoCircleIcon = ({ stroke = '#858585', strokeWidth = 2 }: IconProp
   );
 };
 
-/** Check in a circle: resolve. */
 export const CheckCircleIcon = ({
   stroke = '#858585',
   strokeWidth = 2,
@@ -35,7 +30,6 @@ export const CheckCircleIcon = ({
   );
 };
 
-/** Circular arrow: reopen. */
 export const ReopenCircleIcon = ({
   stroke = '#858585',
   strokeWidth = 2,

@@ -42,9 +42,6 @@ type PickerRow = {
 };
 const DIVIDER = 'border-b-[0.5px] border-b-blackA-A6';
 
-// Full-height sheet for bulk Assign and Label on iOS: a search field and the list (agent
-// photos, label colors). Assign applies on tap and closes; labels are added on tap (checked)
-// so several can be added, then Done.
 const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
   const { kind } = route.params;
   const dispatch = useAppDispatch();

@@ -16,8 +16,6 @@ interface SlaEventsProps {
   isMissed?: boolean;
 }
 
-// iOS: a status header with a tinted SLA icon, then the misses as a rounded list (type on the
-// left, when on the right), like an iOS info sheet.
 const IOSSlaEvents = ({ slaEvents, statusText, isMissed }: SlaEventsProps) => {
   const rows = [
     { type: SLA_MISS_TYPES.FRT, label: i18n.t('SLA.MISSES.FRT') },

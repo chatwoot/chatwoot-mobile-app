@@ -7,7 +7,6 @@ interface ToastParams {
   message: string;
 }
 
-// iOS: a glass capsule under the status bar (GlassToastHost). Android keeps the snackbar.
 export const showToast = ({ message }: ToastParams): void => {
   if (Platform.OS === 'ios') {
     emitToast(message);

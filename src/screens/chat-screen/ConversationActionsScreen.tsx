@@ -14,9 +14,6 @@ type ConversationActionsScreenProps = NativeStackScreenProps<
   'ConversationActionsScreen'
 >;
 
-// Conversation actions as their own page on iPhone and the closed Duo (a column on the open
-// Duo), pushed from the chat. The chat no longer swipes sideways to them, so the swipe-back
-// gesture always returns to the list.
 const ConversationActionsScreen = ({ route, navigation }: ConversationActionsScreenProps) => (
   <FullScreenPage background="bg-gray-50">
     <PageHeader title={i18n.t('CONVERSATION_ACTION.TITLE')} onBack={navigation.goBack} />

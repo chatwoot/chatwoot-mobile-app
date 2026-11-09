@@ -228,7 +228,6 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   const content = (
     <View
       style={tailwind.style(
-        // In the split view column the pane header provides the top spacing.
         isInContactPane || IOS_DESIGN
           ? 'flex-1'
           : `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
@@ -265,7 +264,6 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
       </Animated.ScrollView>
     </View>
   );
-  // iOS: a full-screen page (like the split view's contact column) instead of a sheet.
   if (IOS_DESIGN && !isInContactPane) {
     return <FullScreenPage background="bg-gray-50">{content}</FullScreenPage>;
   }

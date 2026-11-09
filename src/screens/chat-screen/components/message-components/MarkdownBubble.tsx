@@ -15,15 +15,12 @@ const markdownItInstance = MarkdownIt({ linkify: true, typographer: true, breaks
 type MarkdownBubbleProps = {
   messageContent: string;
   variant: string;
-  // Reserve room at the end of the last line for the time drawn over the bubble's corner
-  // (inline time on iOS): 'time' for the time only, 'ticks' for time and delivery ticks.
   timeReserve?: 'time' | 'ticks';
 };
 
 // Marks the end of the text so the text rule can add the reserved room there. A private-use
 // character: markdown leaves it alone (unlike trailing spaces, which it trims).
 const TIME_RESERVE_MARK = '\uE000';
-// Invisible copy of a time label in the same 11pt size, so the room matches the real one.
 const RESERVE_TEXT = { time: '\u2002\u200200:00 PM', ticks: '\u2002\u200200:00 PM\u2002✓✓' };
 
 const reserveStyle = StyleSheet.create({

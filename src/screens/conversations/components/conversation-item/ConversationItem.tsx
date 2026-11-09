@@ -87,10 +87,7 @@ export const ConversationItem = memo(
     const iosList = useIOSListText();
     return (
       <NativeView
-        // iOS list layout: 16pt left margin; on the right the row (and its divider) ends where
-        // the selection highlight ends (6pt), and the details add 10pt so content keeps 16pt.
         style={tailwind.style('gap-3 flex-row justify-between', iosList ? 'pl-4 pr-1.5' : 'px-3')}>
-        {/* Avatar top-aligns with the name (rows vary in height), like Mail. */}
         <NativeView style={tailwind.style('py-3 flex flex-row')}>
           <ConversationSelect {...{ isSelected, currentState }} />
           <ConversationAvatar

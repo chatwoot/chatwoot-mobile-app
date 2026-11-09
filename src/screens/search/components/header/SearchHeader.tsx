@@ -21,8 +21,6 @@ interface SearchHeaderProps {
   onBackPress: () => void;
 }
 
-// iOS: a glass Back button and a glass search capsule, laid out like PageHeader (same
-// margins, 36pt row, no divider). With tabs on the side, Back goes in the side toolbar.
 const IOSSearchHeader = ({
   searchText,
   isLoading,

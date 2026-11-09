@@ -72,7 +72,6 @@ export type TabBarExcludedScreenParamList = {
     primaryActorId?: number;
     primaryActorType?: string;
     messageId?: number;
-    // Shown without the slide, e.g. when folding the Duo moves the open conversation here.
     instant?: boolean;
   };
   ContactDetails: { conversationId?: number; contactId?: number };
@@ -90,8 +89,6 @@ export type TabBarExcludedScreenParamList = {
 };
 const Stack = createNativeStackNavigator<TabBarExcludedScreenParamList>();
 
-// Pages that open in the split view's side column on the open Duo open as full-screen pages
-// on iOS (pushed from the right) and as sheets on Android.
 const sidePageOptions = IOS_DESIGN
   ? ({ animation: 'slide_from_right' } as const)
   : ({ presentation: 'modal', animation: 'slide_from_bottom' } as const);
@@ -217,8 +214,6 @@ const Tabs = () => {
       <Tab.Navigator
         tabBar={CustomTabBar}
         initialRouteName="Inbox"
-        // With a side tab bar (iPhone Duo), keep tab screens clear of the capsule and the
-        // rounded top corners.
         sceneContainerStyle={
           sideTabBar
             ? {
@@ -266,7 +261,6 @@ export const AppTabs = () => {
           />
           <Stack.Screen options={sidePageOptions} name="Dashboard" component={DashboardScreen} />
           <Stack.Screen
-            // Full reply editor (iOS): a full-screen page like the split view's compose column.
             options={{ animation: 'slide_from_right' }}
             name="ComposeScreen"
             component={ComposeScreen}
@@ -282,7 +276,6 @@ export const AppTabs = () => {
             component={ConversationActionsScreen}
           />
           <Stack.Screen
-            // Bulk Assign/Label picker: a full-height sheet with search (iOS page sheet).
             options={{ presentation: 'modal' }}
             name="BulkPicker"
             component={BulkPickerScreen}

@@ -3,8 +3,6 @@ import { Text } from 'react-native';
 
 import { tailwind } from '@/theme';
 
-// Left-aligned large title used in place of the centered title bar when header
-// actions live in the side toolbar (iPhone Duo).
 export const LargeHeaderTitle = ({ title }: { title: string }) => (
   <Text
     numberOfLines={1}

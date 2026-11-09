@@ -55,8 +55,6 @@ export const SearchResultMessageItem = ({
   const { animatedStyle, handlers } = useScaleAnimation();
 
   if (IOS_DESIGN) {
-    // iOS list row: the sender as a 17pt title with the time, the message in 15pt (two
-    // lines), and the conversation, inbox and private note flag in a footnote.
     return (
       <Pressable
         onPress={onPress}

@@ -71,8 +71,6 @@ const SearchScreen = () => {
   );
 
   return (
-    // FullScreenPage gives the page its own side toolbar on iPhone Duo (for Back) and is a
-    // plain safe area view elsewhere.
     <FullScreenPage>
       <SearchHeader
         searchText={searchText}

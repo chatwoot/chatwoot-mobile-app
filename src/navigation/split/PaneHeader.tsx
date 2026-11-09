@@ -4,11 +4,6 @@ import { Text, View } from 'react-native';
 import { tailwind } from '@/theme';
 import { useSideTabBarLayout } from '@/utils';
 
-// Header for split view panes and columns (iPhone Duo), matching the list headers: the same
-// top margin, a 36pt row with a small centered title, and no divider. Actions live in the
-// side toolbar, so the side slots are usually empty; a column with its own navigation (e.g.
-// macro details) can put Back and an action in them. They're equal width to keep the title
-// centered.
 export const PaneHeader = ({
   title,
   left,
@@ -19,8 +14,6 @@ export const PaneHeader = ({
   right?: React.ReactNode;
 }) => {
   const sideTabBar = useSideTabBarLayout();
-  // Equal side slots keep the title centered. They take only the room they need, so long
-  // titles fit: none when empty, one round button, or a wider action (e.g. Run).
   const slot = !left && !right ? 'w-0' : right ? 'w-24' : 'w-11';
   return (
     <View style={{ paddingTop: sideTabBar?.contentTopPadding ?? 0 }}>

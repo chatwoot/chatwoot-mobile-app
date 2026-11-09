@@ -92,19 +92,14 @@ const appVersion = Application.nativeApplicationVersion;
 const buildNumber = Application.nativeBuildVersion;
 const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
-// Settings shown in the detail pane of the split view (iPhone Duo), like iPad Settings.
 type SettingsPane = 'availability' | 'notifications' | 'language' | 'account';
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const isSplit = useIsSplitLayout();
   const { width } = useWindowDimensions();
-  // The first item is selected by default so the detail pane is never empty.
   const [pane, setPane] = useState<SettingsPane>('availability');
-  // iOS without the split view: the same options as the detail pane, as a page that slides
-  // in from the right (like Settings on iPhone) instead of a sheet.
   const [iosPage, setIosPage] = useState<SettingsPane | null>(null);
-  // In the split view rows open their options in the detail pane instead of a sheet.
   const openPane = (next: SettingsPane, openSheetInstead: () => void) => () => {
     if (isSplit) {
       hapticSelection?.();
@@ -120,8 +115,6 @@ const SettingsScreen = () => {
   const tabBarHeight = useTabBarHeight();
   const savedAvailabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
-  // Shown right away when you pick a status, while the change is saved; cleared once it's done
-  // (the saved status then matches) or reverted if it fails.
   const [pendingAvailability, setPendingAvailability] = useState<AvailabilityStatus | null>(null);
   const availabilityStatus = pendingAvailability ?? savedAvailabilityStatus;
 
@@ -350,9 +343,7 @@ const SettingsScreen = () => {
 
   const listContent = (
     <SafeAreaView
-      // In the split view the list ends at the divider, so it skips the right inset.
       edges={isSplit ? ['top', 'left', 'bottom'] : undefined}
-      // iPhone Settings: light gray page with white cards (the open Duo's list stays white).
       style={tailwind.style(
         'flex-1 font-inter-normal-20',
         IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white',
@@ -425,7 +416,6 @@ const SettingsScreen = () => {
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </ScrollView>
       </Sheet>
-      {/* Scrolls, since the number of notification types comes from the server. */}
       <Sheet ref={notificationPreferencesSheetRef} detents={[0.7]} scrollable>
         <ScrollView showsVerticalScrollIndicator={false}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
@@ -468,7 +458,6 @@ const SettingsScreen = () => {
       account: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
     })[p];
 
-  // A setting's options in a white rounded card, shared by the detail pane and the iOS page.
   const renderPaneCard = (p: SettingsPane) => (
     <View style={tailwind.style('rounded-[13px] bg-white overflow-hidden')}>
       {p === 'availability' ? (
@@ -492,9 +481,7 @@ const SettingsScreen = () => {
   );
 
   // One layout tree for both the split view and a single column, so folding or unfolding the
-  // Duo resizes the list instead of remounting it. Split view (like iPad Settings): the list on
-  // the left (40%) and the selected setting's options on the right. Single column on iOS: the
-  // options slide in as a page over the list.
+  // Duo resizes the list instead of remounting it.
   return (
     <View style={tailwind.style('flex-1 flex-row bg-white')}>
       <View
@@ -506,8 +493,6 @@ const SettingsScreen = () => {
       {isSplit ? (
         <>
           <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
-          {/* Detail pane: light gray background (as the other panes) with the options in a
-              white rounded card, and no divider under the header. */}
           <SafeAreaView
             edges={['top', 'right', 'bottom']}
             style={tailwind.style('flex-1 bg-gray-50')}>

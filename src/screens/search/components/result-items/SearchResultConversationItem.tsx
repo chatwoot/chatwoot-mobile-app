@@ -54,8 +54,6 @@ export const SearchResultConversationItem = ({
   const { animatedStyle, handlers } = useScaleAnimation();
 
   if (IOS_DESIGN) {
-    // iOS list row: the contact as a 17pt title with the time, then the subject and email
-    // in 15pt, and the id and inbox in a footnote. Hairline divider inset from the text.
     return (
       <Pressable
         onPress={onPress}

@@ -51,7 +51,6 @@ export const IconButton = ({
   secondaryBackground,
 }: ButtonProps & {
   icon?: React.ReactElement;
-  // Background for the secondary variant, e.g. white on a gray page.
   secondaryBackground?: string;
 }) => {
   const { handlers, animatedStyle } = useScaleAnimation();
@@ -76,7 +75,6 @@ export const IconButton = ({
         accessibilityState={{ disabled }}
         style={({ pressed }) => getButtonStyles(isPrimary, pressed, disabled, secondaryBackground)}
         {...handlers}>
-        {/* Defaults to the phone icon (its original use, Call); pass one for other actions. */}
         <Icon
           icon={icon ?? <PhoneIcon strokeWidth={2} stroke={tailwind.color('bg-blue-800')} />}
           size={24}

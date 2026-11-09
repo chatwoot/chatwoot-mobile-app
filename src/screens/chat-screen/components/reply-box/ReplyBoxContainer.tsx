@@ -127,15 +127,11 @@ const SHEET_APPEAR_SPRING_CONFIG = {
 const AnimatedKeyboardStickyView = Animated.createAnimatedComponent(KeyboardStickyView);
 const BottomSheetContent = () => {
   const paneRightInset = usePaneRightInset();
-  // iOS Messages-style reply bar on every iPhone.
   const iosStyle = IOS_DESIGN;
   const navigation = useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList>>();
-  // The full editor in the side column (iPhone Duo). While it's open, the reply bar under
-  // the messages is hidden so there's one editor; both share the draft in the store.
   const isComposer = useIsInComposePane();
   const splitView = useSplitView();
   const isComposeColumnOpen = splitView?.secondary?.kind === 'compose';
-  // The full editor opens in the side column on the Duo and as a sheet on iPhone.
   const openComposer = () =>
     splitView ? splitView.openCompose() : navigation.navigate('ComposeScreen', { conversationId });
   const closeComposer = () => (splitView ? splitView.closeSecondary() : navigation.goBack());
@@ -197,8 +193,6 @@ const BottomSheetContent = () => {
   const agents = inboxId ? selectAgents(inboxId, '') : [];
 
   const [replyEditorMode, setReplyEditorMode] = useState(REPLY_EDITOR_MODES.REPLY);
-  // Email recipients live in the store so they survive moving between the reply bar and
-  // the compose column.
   const emailDraft = useAppSelector(selectEmailDraft);
   const isDraftForThisConversation = emailDraft.conversationId === conversationId;
   const ccEmails = isDraftForThisConversation ? emailDraft.cc : '';
@@ -223,8 +217,6 @@ const BottomSheetContent = () => {
 
   useEffect(() => {
     if (!lastEmail) return;
-    // Already filled in from this email (e.g. the editor moved to the compose column):
-    // keep the recipients as edited.
     if (isDraftForThisConversation && emailDraft.sourceMessageId === lastEmail.id) return;
     const emailAttributes = lastEmail.contentAttributes?.email;
     if (!emailAttributes) return;
@@ -567,14 +559,12 @@ const BottomSheetContent = () => {
 
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
 
-  // The reply bar steps aside while the full editor is open in the side column.
   if (iosStyle && !isComposer && isComposeColumnOpen) return null;
 
   if (isComposer) {
     const canSend = messageContent.trim().length > 0 || attachmentsLength > 0;
     const canTogglePrivate = replyEditorMode === REPLY_EDITOR_MODES.REPLY;
     return (
-      // Private notes tint the whole editor amber, like the note bubbles.
       <KeyboardAvoidingView
         behavior="padding"
         style={tailwind.style('flex-1', isPrivate ? 'bg-amber-50' : 'bg-white')}>
@@ -634,7 +624,6 @@ const BottomSheetContent = () => {
           />
         </View>
         {attachmentsLength > 0 ? <AttachedMedia /> : null}
-        {/* Toolbar under the text, like Mail's: attachments, Copilot, and private note. */}
         <Animated.View
           style={[
             tailwind.style('flex-row items-center gap-2 px-3 pt-2 pb-2'),
@@ -716,7 +705,6 @@ const BottomSheetContent = () => {
             iosStyle ? 'pb-2' : 'pb-2 border-t-[1px] border-t-blackA-A3',
             shouldShowReplyHeader && !iosStyle ? 'pt-0' : 'pt-2',
           ),
-          // Split view pane: the top line runs to the display edge, the content keeps clear.
           { paddingRight: paneRightInset },
         ]}>
         {quoteMessage && !isPrivate && (
@@ -725,8 +713,6 @@ const BottomSheetContent = () => {
           </Animated.View>
         )}
 
-        {/* On the Duo, recipients are edited in the expanded editor (compose column); replies
-            from the bar still use them. */}
         {shouldShowReplyHeader && !iosStyle && (
           <ReplyEmailHead
             ccEmails={ccEmails}

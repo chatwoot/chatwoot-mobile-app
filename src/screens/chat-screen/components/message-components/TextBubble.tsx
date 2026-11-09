@@ -11,8 +11,6 @@ import { MESSAGE_VARIANTS } from '@/constants';
 export type TextBubbleProps = {
   item: Message;
   variant: string;
-  // Keep room at the end of the last line for the time drawn over the bubble's corner
-  // (WhatsApp-style inline time on iOS): time only, or time and delivery ticks.
   timeReserve?: 'time' | 'ticks';
 };
 

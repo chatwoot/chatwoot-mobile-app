@@ -32,7 +32,6 @@ type ConversationHeaderPresenterProps = {
   onLeftIconPress: () => void;
   onRightIconPress: () => void;
   onClearFilter: () => void;
-  // Conversations picked in select mode (shown as "3 Selected" in the iOS header).
   selectedCount?: number;
 };
 
@@ -186,7 +185,6 @@ const RightSection = ({
   );
 };
 
-// Select-all or Clear, shown next to the large title because they act on the list.
 const SideLayoutListAction = ({
   currentState,
   isSelectedAll,
@@ -195,7 +193,6 @@ const SideLayoutListAction = ({
   onClearFilter,
 }: Omit<ConversationHeaderPresenterProps, 'onRightIconPress'>) => {
   if (currentState === 'Select') {
-    // A text button like Mail's (Done is the side toolbar's close button).
     return (
       <Pressable onPress={onLeftIconPress} hitSlop={12} accessibilityRole="button">
         <Text
@@ -238,8 +235,6 @@ export const ConversationHeaderPresenter = ({
   const { handlers, animatedStyle } = useScaleAnimation();
   const isModal = currentState === 'Filter' || currentState === 'Select';
 
-  // With tabs on the side (iPhone Duo), search and filter (or close) move to the side
-  // toolbar. In the split view they stay above the list, next to the content they affect.
   const isSplit = useIsSplitLayout();
   const actionItems = useMemo(
     () =>
@@ -256,7 +251,6 @@ export const ConversationHeaderPresenter = ({
             onPress={onLeftIconPress}
             accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
           />
-          {/* Native filter menu (iOS pull-down) instead of the filter mode. */}
           <ConversationFilterMenu>
             <SideToolbarButton
               icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
@@ -271,7 +265,6 @@ export const ConversationHeaderPresenter = ({
   const isSideLayout = useSideToolbar(actionItems, !isSplit);
 
   if ((isSplit || (IOS_DESIGN && !isSideLayout)) && currentState === 'Select') {
-    // Select mode, like Mail: text buttons (Select All / Deselect All and Done) around a count.
     return (
       <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
         <Animated.View style={tailwind.style('w-[124px] flex-row items-center')}>
@@ -302,8 +295,6 @@ export const ConversationHeaderPresenter = ({
   }
 
   if (isSplit || (IOS_DESIGN && !isSideLayout)) {
-    // Split view and iPhone: small centered title with round glass buttons on each side,
-    // above the list they act on.
     return (
       <Animated.View style={tailwind.style('flex flex-row items-center px-4 pt-1 pb-3')}>
         <Animated.View style={tailwind.style('w-24 flex-row items-center')}>
@@ -331,7 +322,6 @@ export const ConversationHeaderPresenter = ({
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
             />
           ) : (
-            // Native filter menu (iOS pull-down) instead of the filter mode.
             <ConversationFilterMenu>
               <GlassCircleButton
                 icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}

@@ -13,22 +13,9 @@ import { BlurView } from '@react-native-community/blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
-// A floating header with an iOS "scroll edge effect" (Apple HIG, Scroll views): the list
-// scrolls underneath, and once content is behind the header it's blurred and faded so
-// the title and buttons stay legible. There's no solid bar or divider (HIG: reduce
-// toolbar backgrounds). The header has a text title outside glass buttons, so this uses
-// a fairly opaque effect, like the system's automatic style.
-
-// How far below the header the effect fades out.
 const FADE_HEIGHT = 20;
-// Scroll distance over which the effect appears.
 const APPEAR_DISTANCE = 12;
 
-/**
- * Space at the top of a list that sits under a ScrollEdgeHeader. When the header grows
- * or shrinks (e.g. the filter bar opens) the space springs to the new height, so the
- * list glides instead of jumping. The first height applies immediately.
- */
 export const HeaderSpacer = ({ height }: { height: number }) => {
   const animatedHeight = useSharedValue(height);
   const isFirst = useRef(true);
@@ -44,12 +31,6 @@ export const HeaderSpacer = ({ height }: { height: number }) => {
   return <Animated.View style={style} />;
 };
 
-/**
- * Pull-to-refresh spinner for a list under a ScrollEdgeHeader. The system spinner can't
- * sit below a floating header (iOS reserves its space at the very top, behind the
- * header), so the list hides it (transparent tint) and this one is drawn in the gap that
- * opens below the header as you pull, centered in it while refreshing.
- */
 export const PullToRefreshIndicator = ({
   scrollY,
   isDragging,
@@ -76,7 +57,6 @@ export const PullToRefreshIndicator = ({
     if (!refreshing) isDragging.value = 0;
   }, [refreshing, isDragging]);
 
-  // Visible only during an active pull or a running refresh.
   const style = useAnimatedStyle(() => {
     const pull = Math.max(-scrollY.value, 0);
     const pullOpacity = interpolate(pull, [8, 48], [0, 1], Extrapolation.CLAMP);
@@ -93,10 +73,8 @@ export const PullToRefreshIndicator = ({
   );
 };
 
-/** Tracks the list's scroll position for ScrollEdgeHeader. */
 export const useScrollEdge = () => {
   const scrollY = useSharedValue(0);
-  // 1 while a finger is on the list, so the refresh spinner only follows an active pull.
   const isDragging = useSharedValue(0);
   const onScroll = useAnimatedScrollHandler({
     onScroll: event => {
@@ -114,10 +92,7 @@ export const useScrollEdge = () => {
 
 type ScrollEdgeHeaderProps = PropsWithChildren<{
   scrollY: SharedValue<number>;
-  // Reports the header's height so the list can start below it.
   onHeightChange: (height: number) => void;
-  // Keep the content clear of the side safe areas (e.g. the side status column on the closed
-  // Duo); the blur still spans the full width.
   insetSides?: boolean;
 }>;
 
@@ -128,8 +103,6 @@ export const ScrollEdgeHeader = ({
   children,
 }: ScrollEdgeHeaderProps) => {
   const [height, setHeight] = useState(0);
-  // The header starts at the top of the screen so the blur also covers the status bar; its
-  // content sits below the status bar.
   const { top, left, right } = useSafeAreaInsets();
 
   const effectStyle = useAnimatedStyle(() => ({
@@ -137,7 +110,6 @@ export const ScrollEdgeHeader = ({
   }));
 
   const total = height + FADE_HEIGHT;
-  // Where the header ends within the gradient (0–1).
   const headerEnd = total > 0 ? height / total : 0;
 
   return (

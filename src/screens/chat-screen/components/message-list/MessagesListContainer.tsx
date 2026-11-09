@@ -69,7 +69,6 @@ const shouldGroupWithNext = (index: number, searchList: MessageOrDate[]) => {
   return Math.floor(next.createdAt / 60) === Math.floor(current.createdAt / 60);
 };
 
-/** Whether the message above (older, the next item) is from the same sender; no time limit. */
 const isSameSenderAsAbove = (index: number, list: MessageOrDate[]) => {
   const current = list[index];
   const above = list[index + 1];
@@ -339,7 +338,6 @@ export const MessagesListContainer = () => {
       <View
         style={[
           tailwind.style('flex-1'),
-          // Split view pane: keep messages clear of the status bar column.
           { paddingRight: paneRightInset },
           !isListVisible && messageId ? { opacity: 0 } : {},
         ]}>

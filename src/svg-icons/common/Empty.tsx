@@ -29,10 +29,6 @@ export const EmptyStateIcon = () => {
   );
 };
 
-// Empty state for the split view's conversation pane: two incoming bubbles with a reply
-// tucked in front of them, showing a typing indicator. The reply is filled and outlined
-// in the background color first, so the lines behind it stop short with a small gap
-// instead of crossing. Same size and outline style as EmptyStateIcon.
 export const ConversationPaneEmptyIcon = ({
   backgroundColor = '#F9F9F9',
 }: {
@@ -76,8 +72,6 @@ export const ConversationPaneEmptyIcon = ({
   );
 };
 
-// Empty state for the Inbox split view's conversation pane: an inbox tray with a message
-// above it, drawn small inside the same 74×44 frame and outline style as EmptyStateIcon.
 export const NotificationPaneEmptyIcon = () => {
   return (
     <Svg width="74" height="44" viewBox="0 0 74 44" fill="none">

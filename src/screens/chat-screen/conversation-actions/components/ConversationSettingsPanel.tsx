@@ -27,11 +27,9 @@ export const ConversationSettingsPanel = ({
   onChangeTeamAssignee,
   onChangePriority,
 }: ConversationSettingsPanelProps) => {
-  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   return (
     <Animated.View
-      // Flat (no shadow) on the split view pane's gray page, like iOS Settings.
       style={[tailwind.style('rounded-[13px] mx-4 bg-white'), isInPane ? null : styles.listShadow]}>
       <AssigneePanel assignee={assignee} onPress={onChangeAssignee} />
       <TeamPanel team={team} onPress={onChangeTeamAssignee} />

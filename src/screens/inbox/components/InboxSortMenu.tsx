@@ -16,15 +16,9 @@ const MenuLabel = DropdownMenu.Label as unknown as React.FC<{ children: string }
 
 const sortOrders = Object.keys(InboxSortOptions) as InboxSortTypes[];
 
-/** True when the Inbox sort differs from the default (newest first). */
 export const useIsInboxSortChanged = () =>
   useAppSelector(selectSortOrder) !== defaultFilterState.sortOrder;
 
-/**
- * Native iOS pull-down menu for the Inbox sort order, matching the Conversations filter
- * menu. Used with tabs on the side (iPhone Duo) instead of the bottom sheet. Wraps the
- * header button so tapping it opens the menu.
- */
 export const InboxSortMenu = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch();
   const sortOrder = useAppSelector(selectSortOrder);

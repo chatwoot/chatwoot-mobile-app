@@ -44,13 +44,8 @@ type MessageTextInputProps = {
   selectedCannedResponse?: string | null;
   agents: Agent[];
   messageContent: string;
-  // iPhone Duo reply bar: iOS Messages-style capsule field with the private note lock inside
-  // it on the right.
   iosStyle?: boolean;
-  // Email replies on iPhone Duo: opens the full editor in the side column.
   onExpand?: () => void;
-  // The full editor in the side column: a plain text area filling the space, without the
-  // capsule (the lock moves to the editor's toolbar).
   composer?: boolean;
 };
 type AgentSuggestion = Omit<Agent, 'id'> & Suggestion;
@@ -70,7 +65,6 @@ export const Unlock = () => {
   );
 };
 
-// `plain` drops the white circle (iPhone Duo reply bar, where the field is the highlight).
 export const Locked = ({ plain = false }: { plain?: boolean }) => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 29 30" fill="none">
@@ -88,7 +82,6 @@ export const Locked = ({ plain = false }: { plain?: boolean }) => {
 };
 const TYPING_INDICATOR_IDLE_TIME = 4000;
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
-// Private notes tint the glass amber (amber-300 at 45%).
 const PRIVATE_GLASS_TINT = 'hsla(40, 100%, 81.5%, 0.45)';
 
 // eslint-disable-next-line no-empty-pattern
@@ -103,7 +96,6 @@ export const MessageTextInput = ({
 }: MessageTextInputProps) => {
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
-  // iPhone Duo: the field grows with the message up to 40% of the screen, then scrolls.
   const { height: windowHeight } = useWindowDimensions();
   const iosMaxHeight = Math.max(124, Math.round(windowHeight * 0.4));
 
@@ -260,10 +252,8 @@ export const MessageTextInput = ({
           composer
             ? tailwind.style('flex-1')
             : iosStyle
-              ? // The capsule is a row, so the lock lines up with the last line of text.
-                tailwind.style(
+              ? tailwind.style(
                   'flex-1 flex-row items-end rounded-[18px]',
-                  // Liquid Glass like the round buttons; a flat capsule where it isn't available.
                   useLiquidGlass
                     ? ''
                     : isPrivateMessage
@@ -310,8 +300,7 @@ export const MessageTextInput = ({
                   'flex-1 px-4 pt-3 pb-3 text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
                 )
               : iosStyle
-                ? // 17pt Body text, 36pt tall when empty.
-                  [
+                ? [
                     tailwind.style(
                       'text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
                       'pt-[7px] pb-[7px] pl-3.5 pr-1 min-h-9',
@@ -330,8 +319,7 @@ export const MessageTextInput = ({
           maxLength={maxLength}
           placeholder={
             isPrivateMessage
-              ? // iOS keeps placeholders short so they fit on one line.
-                i18n.t(
+              ? i18n.t(
                   iosStyle ? 'CONVERSATION.PRIVATE_NOTE_SHORT' : 'CONVERSATION.PRIVATE_MSG_INPUT',
                 )
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`

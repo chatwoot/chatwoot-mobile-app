@@ -16,15 +16,9 @@ import { useSideTabBarLayout } from '@/utils';
 import { tailwind } from '@/theme';
 import { subscribeToToasts, type ToastMessage } from '@/utils/toastEvents';
 
-// iOS toast: a small frosted glass capsule that stays about two seconds and fades away. On
-// iPhone it drops down under the Dynamic Island (swipe up to dismiss); on iPhone Duo, where
-// the status bar is on the side, it rises near the bottom above the reply bar and keyboard
-// (swipe down to dismiss). It never blocks taps elsewhere; a new message replaces the old.
-
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
 const VISIBLE_MS = 2200;
 
-/** Renders the toasts; place once above the app's screens. */
 export const GlassToastHost = () => {
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const { top, bottom, left, right } = useSafeAreaInsets();
@@ -56,7 +50,6 @@ export const GlassToastHost = () => {
     };
   }, [dragY, hide, progress]);
 
-  // Swipe toward the edge it came from to dismiss.
   const swipeAway = Gesture.Pan()
     .onUpdate(event => {
       dragY.value = fromBottom ? Math.max(0, event.translationY) : Math.min(0, event.translationY);
@@ -69,7 +62,6 @@ export const GlassToastHost = () => {
       else dragY.value = withSpring(0);
     });
 
-  // From the bottom it rises with the keyboard (its height is negative while open).
   const style = useAnimatedStyle(() => ({
     opacity: progress.value,
     transform: [
@@ -83,8 +75,6 @@ export const GlassToastHost = () => {
 
   if (!toast) return null;
 
-  // Top: just below the Dynamic Island. Bottom (Duo): clear of the reply bar.
-  // Centered on the content, not the whole display: clear of the side status column (Duo).
   const position = {
     left,
     right,

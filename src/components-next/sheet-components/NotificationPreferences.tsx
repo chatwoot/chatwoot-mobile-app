@@ -21,9 +21,6 @@ const addOrRemoveItemFromArray = <T,>(array: T[], key: T): T[] => {
 
 type NotificationPreferenceType = keyof typeof NOTIFICATION_PREFERENCE_TYPES;
 
-// Label for a push notification type. Types the app doesn't know yet (the server can add
-// new ones) get a readable label from their name instead of a missing-translation text,
-// e.g. "push_bot_handoff" becomes "Bot handoff".
 const preferenceLabel = (item: string) => {
   const key = NOTIFICATION_PREFERENCE_TYPES[item as NotificationPreferenceType];
   if (key) return i18n.t(`NOTIFICATION_PREFERENCE.${key}`);
@@ -80,8 +77,6 @@ export const NotificationPreferences = () => {
   const typedPushFlags = allPushFlags as NotificationPreferenceType[];
   const iosList = useIOSListText();
 
-  // iOS Settings rows (iPhone Duo layout): 17pt label, 44pt minimum height, 16pt margins,
-  // inset dividers and a full-size native switch.
   if (iosList) {
     return (
       <Animated.View>
@@ -98,9 +93,6 @@ export const NotificationPreferences = () => {
                 )}>
                 {preferenceLabel(item)}
               </Animated.Text>
-              {/* Native iOS switch tinted with the app's blue, scaled to 80% (iOS has one
-                  size, and it's large next to these labels). The negative margin keeps it
-                  aligned to the row's right edge after scaling. */}
               <Switch
                 style={styles.compactSwitch}
                 trackColor={{ true: tailwind.color('bg-blue-800') as string }}

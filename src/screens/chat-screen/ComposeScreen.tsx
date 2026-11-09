@@ -13,9 +13,6 @@ import { ReplyBoxContainer } from './components/reply-box/ReplyBoxContainer';
 
 type ComposeScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'ComposeScreen'>;
 
-// Full reply editor on iPhone and the closed Duo (on the open Duo it opens in the side column).
-// Close to read the thread again; the draft is kept in the store, so it's all there when you
-// expand again.
 const ComposeScreen = ({ route }: ComposeScreenProps) => {
   const isPrivate = useAppSelector(selectIsPrivateMessage);
   return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ScrollView } from 'react-native';
 import Animated, { LinearTransition, withTiming } from 'react-native-reanimated';
 import { tailwind } from '@/theme';
 import { FilterButton } from './FilterButton';
@@ -40,11 +41,26 @@ export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: Filter
   };
 
   return (
-    <Animated.View
-      exiting={exiting}
-      style={tailwind.style('px-3 pt-2 pb-1.5 h-[46px] flex flex-row')}>
-      {allFilters.map((value, index) => {
-        if (value.type === 'inbox_id') {
+    <Animated.View exiting={exiting} style={tailwind.style('h-[46px]')}>
+      {/* Scrolls so the chips aren't clipped once they outgrow the screen width */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={tailwind.style('px-3 pt-2 pb-1.5 flex flex-row')}>
+        {allFilters.map((value, index) => {
+          if (value.type === 'inbox_id') {
+            return (
+              <Animated.View
+                layout={LinearTransition.springify().mass(1).stiffness(115).damping(18)}
+                key={index}
+                style={tailwind.style('pr-2')}>
+                <FilterButton
+                  handleOnPress={() => onFilterPress(value.type)}
+                  value={value.options[selectedFilters[value.type] as keyof typeof value.options]}
+                />
+              </Animated.View>
+            );
+          }
           return (
             <Animated.View
               layout={LinearTransition.springify().mass(1).stiffness(115).damping(18)}
@@ -52,23 +68,12 @@ export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: Filter
               style={tailwind.style('pr-2')}>
               <FilterButton
                 handleOnPress={() => onFilterPress(value.type)}
-                value={value.options[selectedFilters[value.type] as keyof typeof value.options]}
+                value={getFilterTitle(value)}
               />
             </Animated.View>
           );
-        }
-        return (
-          <Animated.View
-            layout={LinearTransition.springify().mass(1).stiffness(115).damping(18)}
-            key={index}
-            style={tailwind.style('pr-2')}>
-            <FilterButton
-              handleOnPress={() => onFilterPress(value.type)}
-              value={getFilterTitle(value)}
-            />
-          </Animated.View>
-        );
-      })}
+        })}
+      </ScrollView>
     </Animated.View>
   );
 };

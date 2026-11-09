@@ -23,7 +23,6 @@ type IOSFieldProps = {
   label: string;
   value: string;
   onChange: (value: string) => void;
-  showDivider: boolean;
   accessory?: React.ReactNode;
 };
 
@@ -32,7 +31,7 @@ const VALUE = 'text-[17px] leading-[22px] font-inter-normal-20 text-gray-950';
 // Rows run to the edge with a hairline under each, inset on the left like Mail's compose.
 const ROW = 'flex-row items-center min-h-11 pr-3 border-b-[0.5px] border-b-blackA-A6';
 
-const IOSField = ({ label, value, onChange, accessory }: Omit<IOSFieldProps, 'showDivider'>) => (
+const IOSField = ({ label, value, onChange, accessory }: IOSFieldProps) => (
   <View style={tailwind.style(ROW)}>
     <Text style={tailwind.style(LABEL)}>{`${label}:`}</Text>
     <TextInput

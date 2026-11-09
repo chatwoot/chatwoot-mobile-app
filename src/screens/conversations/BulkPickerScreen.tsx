@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { shallowEqual } from 'react-redux';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { Avatar, Icon } from '@/components-next';
@@ -51,7 +52,7 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
   const [query, setQuery] = useState('');
   const [added, setAdded] = useState<string[]>([]);
   const selectedIds = useAppSelector(selectSelectedIds);
-  const selectedInboxes = useAppSelector(selectSelectedInboxes);
+  const selectedInboxes = useAppSelector(selectSelectedInboxes, shallowEqual);
   const agents = useAppSelector(state =>
     selectAssignableAgentsByInboxId(state, selectedInboxes, query),
   );
@@ -61,34 +62,39 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
     if (kind === 'assign' && selectedInboxes.length > 0) {
       dispatch(assignableAgentActions.fetchAgents({ inboxIds: selectedInboxes }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, kind, selectedInboxes]);
 
-  const assign = async (agentId: number) => {
-    haptic?.();
-    await dispatch(
-      conversationActions.bulkAction({
-        type: 'Conversation',
-        ids: selectedIds,
-        fields: { assignee_id: agentId },
-      }),
-    );
-    showToast({ message: i18n.t('CONVERSATION.ASSIGN_CHANGE') });
-    navigation.goBack();
-  };
+  const assign = useCallback(
+    async (agentId: number) => {
+      haptic?.();
+      await dispatch(
+        conversationActions.bulkAction({
+          type: 'Conversation',
+          ids: selectedIds,
+          fields: { assignee_id: agentId },
+        }),
+      );
+      showToast({ message: i18n.t('CONVERSATION.ASSIGN_CHANGE') });
+      navigation.goBack();
+    },
+    [haptic, dispatch, selectedIds, navigation],
+  );
 
-  const addLabel = (title: string) => {
-    if (added.includes(title)) return;
-    haptic?.();
-    setAdded(current => [...current, title]);
-    dispatch(
-      conversationActions.bulkAction({
-        type: 'Conversation',
-        ids: selectedIds,
-        labels: { add: [title] },
-      }),
-    );
-  };
+  const addLabel = useCallback(
+    (title: string) => {
+      if (added.includes(title)) return;
+      haptic?.();
+      setAdded(current => [...current, title]);
+      dispatch(
+        conversationActions.bulkAction({
+          type: 'Conversation',
+          ids: selectedIds,
+          labels: { add: [title] },
+        }),
+      );
+    },
+    [added, haptic, dispatch, selectedIds],
+  );
 
   const rows = useMemo<PickerRow[]>(
     () =>
@@ -111,8 +117,7 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
             onPress: () => addLabel(label.title),
             checked: added.includes(label.title),
           })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [kind, agents, labels, added],
+    [kind, agents, labels, added, assign, addLabel],
   );
 
   return (

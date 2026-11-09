@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -50,14 +50,17 @@ export const PageHeader = ({
   onBack: () => void;
   right?: React.ReactNode;
 }) => {
-  const isSide = useSideToolbar(
-    <SideToolbarButton
-      icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
-      onPress={onBack}
-      accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
-    />,
+  const backItem = useMemo(
+    () => (
+      <SideToolbarButton
+        icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+        onPress={onBack}
+        accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
+      />
+    ),
     [onBack],
   );
+  const isSide = useSideToolbar(backItem);
   return (
     <PaneHeader
       title={title}

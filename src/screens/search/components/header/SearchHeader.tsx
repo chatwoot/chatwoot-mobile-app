@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StatusBar, Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -31,14 +31,17 @@ const IOSSearchHeader = ({
   onBackPress,
 }: SearchHeaderProps) => {
   const sideTabBar = useSideTabBarLayout();
-  const isSide = useSideToolbar(
-    <SideToolbarButton
-      icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
-      onPress={onBackPress}
-      accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
-    />,
+  const backItem = useMemo(
+    () => (
+      <SideToolbarButton
+        icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+        onPress={onBackPress}
+        accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
+      />
+    ),
     [onBackPress],
   );
+  const isSide = useSideToolbar(backItem);
   return (
     <View style={{ paddingTop: sideTabBar?.contentTopPadding ?? 0 }}>
       <View style={tailwind.style('flex-row items-center gap-3 px-4 pt-1 pb-3')}>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
@@ -34,24 +34,27 @@ export const InboxHeader = (props: InboxHeaderProps) => {
   const isSplit = useIsSplitLayout();
   const isSortChanged = useIsInboxSortChanged();
   const sideTabBar = useSideTabBarLayout();
-  const actionItems = (
-    <>
-      <SideToolbarButton
-        icon={<DoubleCheckIcon stroke={HEADER_ICON_COLOR} />}
-        onPress={markAllAsRead}
-        accessibilityLabel={i18n.t('NOTIFICATION.MARK_ALL')}
-      />
-      {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
-      <InboxSortMenu>
+  const actionItems = useMemo(
+    () => (
+      <>
         <SideToolbarButton
-          icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
-          showBadge={isSortChanged}
-          accessibilityLabel={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')}
+          icon={<DoubleCheckIcon stroke={HEADER_ICON_COLOR} />}
+          onPress={markAllAsRead}
+          accessibilityLabel={i18n.t('NOTIFICATION.MARK_ALL')}
         />
-      </InboxSortMenu>
-    </>
+        {/* Native sort menu (iOS pull-down) instead of the bottom sheet. */}
+        <InboxSortMenu>
+          <SideToolbarButton
+            icon={<InboxFilterIcon stroke={HEADER_ICON_COLOR} />}
+            showBadge={isSortChanged}
+            accessibilityLabel={i18n.t('CONVERSATION.FILTERS.SORT_BY.TITLE')}
+          />
+        </InboxSortMenu>
+      </>
+    ),
+    [markAllAsRead, isSortChanged],
   );
-  const isSideLayout = useSideToolbar(actionItems, [markAllAsRead, isSortChanged], !isSplit);
+  const isSideLayout = useSideToolbar(actionItems, !isSplit);
 
   return (
     <Animated.View

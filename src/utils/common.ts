@@ -65,7 +65,6 @@ export const useSideTabBarLayout = (): SideTabBarLayout | null => {
 // tabs are (side tab bar, split view, columns) is decided separately by
 // useSideTabBarLayout / useIsSplitLayout.
 export const IOS_DESIGN = Platform.OS === 'ios';
-export const useIOSDesign = () => IOS_DESIGN;
 
 // Show the list and the open conversation side by side, like Mail or WhatsApp on the
 // open iPhone Duo (Apple HIG: split views expand on the inner display and collapse to a

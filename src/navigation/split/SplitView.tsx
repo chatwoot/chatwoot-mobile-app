@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useMemo, useRef, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   cancelAnimation,
@@ -14,6 +14,7 @@ import { ColumnOpenStoreContext, createColumnOpenStore } from './columnOpenStore
 
 import { InteractionManager, useWindowDimensions, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import ChatScreen from '@/screens/chat-screen/ChatScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
@@ -107,7 +108,8 @@ const SecondaryPane = ({
   column: SecondaryColumn;
   conversationId: number;
 }) => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList, 'ContactDetails'>>();
   const { right } = useSafeAreaInsets();
   // Actions and contact details use the iOS Settings style: light gray with flat white cards.
   const isPrivateNote = useAppSelector(selectIsPrivateMessage);
@@ -125,17 +127,14 @@ const SecondaryPane = ({
   if (column.kind === 'contact') {
     const route = {
       key: `contact-${conversationId}`,
-      name: 'ContactDetails',
+      name: 'ContactDetails' as const,
       params: { conversationId },
     };
     content = (
       <ContactPaneContext.Provider value={true}>
         {/* Pane styling for its shared lists (flat cards); the column handles the right inset. */}
         <DetailPaneContext.Provider value={true}>
-          <ContactDetailsScreen
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            {...({ route, navigation } as any)}
-          />
+          <ContactDetailsScreen route={route} navigation={navigation} />
         </DetailPaneContext.Provider>
       </ContactPaneContext.Provider>
     );
@@ -221,6 +220,18 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
   }, [selectedConversationId]);
   const isSecondaryOpen = isColumnShown && !isPreviewing;
   const [totalWidth, setTotalWidth] = useState<number | null>(null);
+  const offset = useSharedValue(0);
+  const generationSV = useSharedValue(0);
+  // After a slide lands: record the column as open (the pre-built actions if none was set) or
+  // clear it, unless a newer slide or swipe has started since.
+  const settleColumn = useCallback(
+    (open: boolean, generation: number) => {
+      if (generation !== generationSV.value) return;
+      setPreviewing(false);
+      setSecondary(current => (open ? (current ?? { kind: 'actions' }) : null));
+    },
+    [generationSV],
+  );
 
   const value = useMemo(
     () => ({
@@ -265,8 +276,17 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
         });
       },
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selectedConversationId, secondary, isSecondaryOpen, isActionsWarm, listWidth],
+    [
+      selectedConversationId,
+      secondary,
+      isSecondaryOpen,
+      isActionsWarm,
+      listWidth,
+      columnOpenStore,
+      generationSV,
+      offset,
+      settleColumn,
+    ],
   );
 
   // Folding the Duo collapses the split view: keep the open conversation on screen by pushing
@@ -324,21 +344,12 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
   const detailWidth = wideWidth !== null ? wideWidth - safeRight : null;
   const contactWidth = listWidth + safeRight;
   const openOffset = -(listWidth + 1);
-  const offset = useSharedValue(0);
   // Settles the strip when the column opens or closes, unless a swipe is driving it.
   useEffect(() => {
     if (isPreviewing) return;
     offset.value = withSpring(isSecondaryOpen ? openOffset : 0, SLIDE_SPRING);
   }, [isSecondaryOpen, isPreviewing, openOffset, offset]);
   const stripStyle = useAnimatedStyle(() => ({ transform: [{ translateX: offset.value }] }));
-  const generationSV = useSharedValue(0);
-  // After a slide lands: record the column as open (the pre-built actions if none was set) or
-  // clear it, unless a newer slide or swipe has started since.
-  const settleColumn = (open: boolean, generation: number) => {
-    if (generation !== generationSV.value) return;
-    setPreviewing(false);
-    setSecondary(current => (open ? (current ?? { kind: 'actions' }) : null));
-  };
   // The column shows whenever the strip has moved off its resting place and hides once it's
   // back, all on the UI thread: it never lingers (or appears late) waiting for a state update.
   // Hidden once only its last sliver would show, so it's gone as the slide lands rather than
@@ -460,7 +471,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
                       tailwind.style(selectedConversationId ? 'bg-white' : 'bg-gray-50'),
                     ]}>
                     {/* The actions column is built ahead (hidden) so a swipe can slide it in at
-                      once; building it at the start of the swipe stalled the slide. */}
+                      once. */}
                     {selectedConversationId && (secondary || isActionsWarm) ? (
                       <Animated.View
                         style={[tailwind.style('flex-1'), columnStyle]}

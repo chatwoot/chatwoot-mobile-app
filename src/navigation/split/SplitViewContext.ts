@@ -1,5 +1,8 @@
 import { createContext, useContext } from 'react';
 
+import { Conversation } from '@/types';
+import { User } from '@/types/User';
+
 export type SplitViewContextValue = {
   selectedConversationId: number | null;
   openConversation: (conversationId: number) => void;
@@ -21,10 +24,8 @@ export type SplitViewContextValue = {
 export type DashboardColumnParams = {
   url: string;
   title?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  conversation: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  currentUser: any;
+  conversation: Conversation;
+  currentUser: User | null;
 };
 
 export type SecondaryColumn =

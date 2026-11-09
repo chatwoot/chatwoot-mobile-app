@@ -38,7 +38,6 @@ export const HeaderSpacer = ({ height }: { height: number }) => {
       animatedHeight.value = height;
       return;
     }
-    // Same spring the list used when the header pushed it down.
     animatedHeight.value = withSpring(height, { damping: 22, stiffness: 180 });
   }, [height, animatedHeight]);
   const style = useAnimatedStyle(() => ({ height: animatedHeight.value }));

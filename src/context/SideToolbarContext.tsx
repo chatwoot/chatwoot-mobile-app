@@ -38,15 +38,12 @@ export const useSideToolbarItems = () => useContext(ToolbarItemsContext);
 
 /**
  * Shows `items` in the side toolbar while the calling screen is focused and tabs are
- * on the side. Pass every value the items depend on in `deps`. Pass `enabled: false`
- * to keep the items in the header instead (e.g. above the list in a split view).
- * Returns true when tabs are on the side, so the header can switch to its side layout.
+ * on the side. Memoize `items`: the toolbar updates whenever they change. Pass
+ * `enabled: false` to keep the items in the header instead (e.g. above the list in a
+ * split view). Returns true when tabs are on the side, so the header can switch to its
+ * side layout.
  */
-export const useSideToolbar = (
-  items: React.ReactNode,
-  deps: React.DependencyList,
-  enabled = true,
-) => {
+export const useSideToolbar = (items: React.ReactNode, enabled = true) => {
   const setEntry = useContext(SetToolbarContext);
   const owner = useId();
   const isFocused = useIsFocused();
@@ -57,8 +54,7 @@ export const useSideToolbar = (
     if (!active || !setEntry) return;
     setEntry({ owner, items });
     return () => setEntry(current => (current?.owner === owner ? null : current));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, setEntry, owner, ...deps]);
+  }, [active, setEntry, owner, items]);
 
   return isSide;
 };

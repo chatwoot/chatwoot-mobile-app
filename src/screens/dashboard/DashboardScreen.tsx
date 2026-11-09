@@ -12,17 +12,13 @@ import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { User } from '@/types/User';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
+import type { DashboardColumnParams } from '@/navigation/split/SplitViewContext';
 import { FullScreenPage, PageHeader } from '@/navigation/split/FullScreenPage';
 import { IOS_DESIGN } from '@/utils';
 
 type DashboardScreenProps = {
   // Set when shown in the split view's secondary column (iPhone Duo) instead of as a screen.
-  paneParams?: {
-    conversation: Conversation;
-    currentUser: User;
-    title?: string;
-    url: string;
-  };
+  paneParams?: DashboardColumnParams;
 };
 
 const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {

@@ -164,9 +164,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [primaryActorId, primaryActorType]);
 
-  // Unfolding the Duo while this chat is open full screen: close it and open the same
-  // conversation in the list's split view, so the list shows on the left. Only on the change
-  // (folded to unfolded), so chats opened on the open Duo (search, notifications) stay.
+  // Unfolding hands chat to split view.
   const isSplitLayout = useIsSplitLayout();
   const wasSplitLayout = useRef(isSplitLayout);
   useEffect(() => {
@@ -174,8 +172,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     wasSplitLayout.current = isSplitLayout;
     if (!unfolded || isInDetailPane || !navigation.isFocused()) return;
     handOffToSplitView(conversationId);
-    // Close without the slide: the window is already resizing as the Duo unfolds.
-    // (The option applies on the next render, so pop a frame later.)
+    // Pop next frame; option applies later.
     navigation.setOptions({ animation: 'none' });
     requestAnimationFrame(() => {
       if (navigation.canGoBack()) navigation.dispatch(StackActions.pop());

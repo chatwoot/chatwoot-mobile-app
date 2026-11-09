@@ -178,8 +178,7 @@ export const authSlice = createSlice({
           ...state.user,
           ...action.payload.user,
         };
-        // The response can still carry the old status (the server applies it asynchronously and
-        // reports it later over the socket), so set the saved status on the active account here.
+        // Server applies status asynchronously.
         const availability = action.meta.arg?.profile?.availability;
         const accountId = state.user?.account_id;
         if (availability && state.user?.accounts) {

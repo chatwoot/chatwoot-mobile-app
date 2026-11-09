@@ -81,9 +81,7 @@ export const MessagesList = ({
     FlashListRef<Message | { date: string }>
   >;
 
-  // FlashList keeps the visible messages in place when new ones are added, so a message you
-  // just sent would land below the view. When the newest message is one you sent, scroll to
-  // it once it's in the list.
+  // FlashList keeps position; scroll to sent.
   const newest = messages[0];
   const newestId = newest && !('date' in newest) ? newest.id : null;
   const lastNewestId = useRef(newestId);

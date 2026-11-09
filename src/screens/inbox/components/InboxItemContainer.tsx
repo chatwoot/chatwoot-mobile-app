@@ -70,8 +70,7 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       shouldShowToast: false,
     });
     if (item.primaryActor?.id) {
-      // Already open in the split view's pane: refetching would replace its messages and
-      // reset the chat, so leave it as is.
+      // Refetching would reset the open chat.
       if (splitView?.selectedConversationId === item.primaryActor.id) return;
       await dispatch(conversationActions.fetchConversation(item.primaryActor?.id));
       if (splitView) {

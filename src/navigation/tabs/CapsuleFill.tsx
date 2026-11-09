@@ -7,8 +7,7 @@ import { tailwind } from '@/theme';
 import { SIDE_TAB_BAR_WIDTH } from '@/constants';
 
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
-// Background of a side capsule. The blur is clipped by its own wrapper so the capsule
-// itself can draw a shadow.
+// Wrapper clips blur; capsule keeps shadow.
 export const CapsuleFill = ({
   blurAmount,
   blurType,

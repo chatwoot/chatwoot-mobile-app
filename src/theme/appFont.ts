@@ -1,7 +1,6 @@
 import { Platform, TextStyle } from 'react-native';
 
-// TRIAL: use Apple's system font (SF Pro) on iOS instead of Inter. Android keeps Inter.
-// Flip to false to go back to Inter everywhere.
+// TRIAL: system font on iOS.
 export const USE_SYSTEM_FONT_ON_IOS = true;
 
 export const useSystemFont = Platform.OS === 'ios' && USE_SYSTEM_FONT_ON_IOS;

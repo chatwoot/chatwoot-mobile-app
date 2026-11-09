@@ -30,13 +30,7 @@ export const SideToolbarProvider = ({ children }: PropsWithChildren) => {
 
 export const useSideToolbarItems = () => useContext(ToolbarItemsContext);
 
-/**
- * Shows `items` in the side toolbar while the calling screen is focused and tabs are
- * on the side. Memoize `items`: the toolbar updates whenever they change. Pass
- * `enabled: false` to keep the items in the header instead (e.g. above the list in a
- * split view). Returns true when tabs are on the side, so the header can switch to its
- * side layout.
- */
+// Callers must memoize items.
 export const useSideToolbar = (items: React.ReactNode, enabled = true) => {
   const setEntry = useContext(SetToolbarContext);
   const owner = useId();

@@ -18,8 +18,7 @@ type MarkdownBubbleProps = {
   timeReserve?: 'time' | 'ticks';
 };
 
-// Marks the end of the text so the text rule can add the reserved room there. A private-use
-// character: markdown leaves it alone (unlike trailing spaces, which it trims).
+// Private-use char survives markdown trimming.
 const TIME_RESERVE_MARK = '\uE000';
 const RESERVE_TEXT = { time: '\u2002\u200200:00 PM', ticks: '\u2002\u200200:00 PM\u2002✓✓' };
 
@@ -27,8 +26,7 @@ const reserveStyle = StyleSheet.create({
   reserve: { color: 'transparent', fontSize: 11, letterSpacing: 0 },
 });
 
-// Rules that turn the end mark into the invisible time; built once per kind so Markdown keeps
-// its cached tree.
+// Built once to keep Markdown cache.
 const buildReserveRules = (kind: 'time' | 'ticks') => ({
   text: (
     node: ASTNode,

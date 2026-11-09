@@ -11,7 +11,7 @@ import {
 } from '@/store/notification/notificationFilterSlice';
 import { InboxSortOptions, InboxSortTypes } from '@/store/notification/notificationTypes';
 
-// zeego's Label typings include web-only props; on iOS it only needs the section title.
+// zeego Label types include web props.
 const MenuLabel = DropdownMenu.Label as unknown as React.FC<{ children: string }>;
 
 const sortOrders = Object.keys(InboxSortOptions) as InboxSortTypes[];

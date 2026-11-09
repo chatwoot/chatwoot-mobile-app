@@ -32,8 +32,7 @@ export const SLAIndicator = ({
   onSLAStatusChange: (hasThreshold: boolean) => void;
 }) => {
   const iosText = useIOSListText();
-  // Recorded SLA misses: with these a missed SLA is measured from when it was missed (as in
-  // the header), rather than from a due time that may belong to an earlier cycle.
+  // Measure misses from recorded SLA events.
   const slaEvents = useAppSelector(state =>
     conversationId ? selectConversationById(state, conversationId)?.slaEvents : undefined,
   );
@@ -42,9 +41,7 @@ export const SLAIndicator = ({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateSlaStatus = useCallback(() => {
-    // Prefer the server's per-conversation due times (they account for business hours),
-    // like the conversation header, so both show the same SLA status. Older servers
-    // without due times are evaluated from the policy thresholds.
+    // Server due times include business hours.
     if (hasSLADueTimes(appliedSla)) {
       const dueStatus = evaluateDueSLAStatus({
         appliedSla,

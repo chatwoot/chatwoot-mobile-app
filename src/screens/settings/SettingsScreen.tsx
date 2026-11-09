@@ -480,8 +480,7 @@ const SettingsScreen = () => {
     </View>
   );
 
-  // One layout tree for both the split view and a single column, so folding or unfolding the
-  // Duo resizes the list instead of remounting it.
+  // One tree so folding doesn't remount.
   return (
     <View style={tailwind.style('flex-1 flex-row bg-white')}>
       <View

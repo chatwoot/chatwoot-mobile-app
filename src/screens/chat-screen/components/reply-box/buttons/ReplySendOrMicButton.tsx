@@ -17,8 +17,7 @@ type ReplySendOrMicButtonProps = {
   onMic: () => void;
 };
 
-// The mic stays mounted and the send button fades and scales in over it, so swapping them
-// as you type doesn't remount the glass or shift the layout.
+// Mic stays mounted to avoid flicker.
 export const ReplySendOrMicButton = ({
   showSend,
   showMic,

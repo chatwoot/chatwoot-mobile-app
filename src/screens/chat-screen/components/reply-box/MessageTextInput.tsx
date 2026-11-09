@@ -160,8 +160,7 @@ export const MessageTextInput = ({
     [],
   );
 
-  // The full editor focuses its field once it has slid in, so the keyboard animation doesn't
-  // run on top of the page/column transition and the editor's first render (dropped frames).
+  // Focus after slide-in to avoid jank.
   useEffect(() => {
     if (!composer) return;
     const timer = setTimeout(() => {

@@ -18,9 +18,7 @@ export const PullToRefreshIndicator = ({
   top: number;
   refreshing: boolean;
 }) => {
-  // A refresh can swap the list out for a loader mid-pull, so the "finger lifted" and
-  // final scroll events never arrive. Reset the tracking when this list mounts or
-  // unmounts and whenever a refresh finishes, so nothing is left on screen.
+  // Reset tracking; refreshes can drop events.
   useEffect(() => {
     isDragging.value = 0;
     scrollY.value = 0;

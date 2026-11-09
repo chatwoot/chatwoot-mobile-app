@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 import type { AudioRoute } from '@/services/voice/chatwootCalls';
@@ -15,7 +15,7 @@ import { CallHeader } from './components/CallHeader';
 import { CALL_GLASS, CallSurface } from './components/CallSurface';
 import { CallerIdentity } from './components/CallerIdentity';
 import { IncomingCallActions } from './components/IncomingCallActions';
-import { CARD_SHADOW, callTrayBottom } from './constants/callTheme';
+import { callTrayBottom, CARD_SHADOW } from './constants/callTheme';
 import { useAudioRoutePicker } from './hooks/useAudioRoutePicker';
 import type { CallerInfo } from './hooks/useCallerInfo';
 import { useHardwareBackToMinimise } from './hooks/useHardwareBackToMinimise';
@@ -76,6 +76,7 @@ export const ActiveCallScreen = ({
   onOpenConversation,
   onRoutePickerOpenChange,
 }: ActiveCallScreenProps) => {
+  const tailwind = useTailwind();
   const insets = useSafeAreaInsets();
   useHardwareBackToMinimise(onLockScreen, onMinimise);
 

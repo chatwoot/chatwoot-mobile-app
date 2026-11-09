@@ -1,16 +1,18 @@
 import React from 'react';
 import { View, useWindowDimensions } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { Defs, Ellipse, RadialGradient, Stop, Svg } from 'react-native-svg';
 
-import { CALL_TONES, type CallTone } from '../constants/callTheme';
+import { useCallTheme, type CallTone } from '../constants/callTheme';
 
 export const CallBackdrop = ({ tone }: { tone: CallTone }) => {
+  const tailwind = useTailwind();
+  const { CALL_BACKDROP, CALL_TONES } = useCallTheme();
   const { width, height } = useWindowDimensions();
   const { wash: colour, washTop, washLow } = CALL_TONES[tone];
   return (
-    <View style={tailwind.style('absolute inset-0 bg-[#F4F4F6]')}>
+    <View style={[tailwind.style('absolute inset-0'), { backgroundColor: CALL_BACKDROP }]}>
       <Svg width={width} height={height}>
         <Defs>
           <RadialGradient id="washTop" cx="50%" cy="50%" r="50%">

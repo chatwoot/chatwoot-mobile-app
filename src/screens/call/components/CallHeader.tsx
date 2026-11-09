@@ -2,12 +2,12 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import i18n from '@/i18n';
 import { CaretLeftGlyph } from '@/svg-icons';
 import { IOS_DESIGN } from '@/utils';
 
-import { CALL_INK, PILL_SHADOW } from '../constants/callTheme';
+import { PILL_SHADOW, useCallTheme } from '../constants/callTheme';
 import { CallSurface } from './CallSurface';
 import { ChatwootMark } from './ChatwootMark';
 
@@ -17,6 +17,8 @@ type CallHeaderProps = {
 };
 
 export const CallHeader = ({ canMinimise, onMinimise }: CallHeaderProps) => {
+  const tailwind = useTailwind();
+  const { CALL_INK } = useCallTheme();
   const insets = useSafeAreaInsets();
   return (
     <View

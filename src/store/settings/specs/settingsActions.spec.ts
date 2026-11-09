@@ -1,5 +1,3 @@
-import { AxiosError, AxiosHeaders } from 'axios';
-
 import { settingsActions } from '../settingsActions';
 import { SettingsService } from '../settingsService';
 
@@ -32,13 +30,7 @@ jest.mock('@/utils/toastUtils', () => ({
 jest.mock('../settingsService', () => ({
   SettingsService: {
     verifyInstallationUrl: jest.fn(),
-    saveVoipToken: jest.fn(),
   },
-}));
-
-jest.mock('@/services/voice/chatwootCalls', () => ({
-  getVoipToken: () => 'voip-token',
-  isSystemCallUiAvailable: () => true,
 }));
 
 const setInstallationUrl = (url: string) =>
@@ -85,48 +77,5 @@ describe('setInstallationUrl', () => {
 
     expect(action.type).toBe('settings/setInstallationUrl/rejected');
     expect(SettingsService.verifyInstallationUrl).not.toHaveBeenCalled();
-  });
-});
-
-const saveVoipToken = () => settingsActions.saveVoipToken()(jest.fn(), () => ({}), undefined);
-
-const axiosError = (status?: number) =>
-  new AxiosError(
-    'Request failed',
-    status ? 'ERR_BAD_REQUEST' : 'ERR_NETWORK',
-    undefined,
-    undefined,
-    status
-      ? { status, statusText: '', data: {}, headers: {}, config: { headers: new AxiosHeaders() } }
-      : undefined,
-  );
-
-describe('saveVoipToken', () => {
-  beforeEach(() => jest.clearAllMocks());
-
-  it('returns the saved token', async () => {
-    (SettingsService.saveVoipToken as jest.Mock).mockResolvedValue(undefined);
-
-    const action = await saveVoipToken();
-
-    expect(action.payload).toEqual({ voipToken: 'voip-token' });
-  });
-
-  it('rejects with the status the server answered', async () => {
-    (SettingsService.saveVoipToken as jest.Mock).mockRejectedValue(axiosError(422));
-
-    const action = await saveVoipToken();
-
-    expect(action.type).toBe('settings/saveVoipToken/rejected');
-    expect(action.payload).toEqual({ status: 422 });
-  });
-
-  it('rejects without a payload when the server never answered', async () => {
-    (SettingsService.saveVoipToken as jest.Mock).mockRejectedValue(axiosError());
-
-    const action = await saveVoipToken();
-
-    expect(action.type).toBe('settings/saveVoipToken/rejected');
-    expect(action.payload).toBeUndefined();
   });
 });

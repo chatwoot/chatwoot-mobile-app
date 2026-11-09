@@ -132,6 +132,6 @@ Preserve the folder structure on `develop`. Do not add top-level folders under `
 
 - Branch from `develop` and target `develop` in PRs. Do not commit, push, publish builds or release without authorization. Never force-push or discard someone else's work.
 - Use Conventional Commits: `type(scope): subject`, with an optional scope. Never use `--no-verify`.
-- Follow the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Explain what changed, why and reproducible verification commands; add screenshots for UI changes.
+- Follow the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Explain what changed, why and reproducible verification commands; add screenshots or screen recordings for UI changes.
 - Write PR descriptions independently of the working conversation. Raise validation limits with the requester.
 - No AI attribution, co-author trailers for assistants, or session/transcript links in code, commits, PRs or issues. Remove such trailers from commits being rewritten before an authorized push.

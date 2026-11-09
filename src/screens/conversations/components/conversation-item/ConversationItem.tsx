@@ -17,7 +17,7 @@ import { Inbox } from '@/types/Inbox';
 import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
-import { SLA } from '@/types/common/SLA';
+import { SLA, SLAEvent } from '@/types/common/SLA';
 
 export type ConversationItemProps = {
   // Basic info
@@ -47,6 +47,7 @@ export type ConversationItemProps = {
         status: string;
       }
     | Record<string, never>;
+  slaEvents?: SLAEvent[];
 
   // Additional data
   additionalAttributes?: ConversationAdditionalAttributes;
@@ -79,6 +80,7 @@ export const ConversationItem = memo(
     slaPolicyId = null,
     appliedSla = null,
     appliedSlaConversationDetails = {},
+    slaEvents,
     additionalAttributes,
     allLabels,
     typingText,
@@ -108,6 +110,7 @@ export const ConversationItem = memo(
             inboxId,
             appliedSla,
             appliedSlaConversationDetails,
+            slaEvents,
             additionalAttributes,
             slaPolicyId,
             currentState,

@@ -4,8 +4,8 @@ import { Text } from 'react-native';
 import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { SlaMissedIcon } from '@/svg-icons';
-import { SLA, SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus } from '@chatwoot/utils';
+import { SLA, SLAEvent, SLAStatus } from '@/types/common/SLA';
+import { evaluateSLAStatus } from '@/utils/slaUtils';
 import i18n from '@/i18n';
 
 const REFRESH_INTERVAL = 60000;
@@ -14,6 +14,7 @@ export const SLAIndicator = ({
   slaPolicyId,
   appliedSla,
   appliedSlaConversationDetails,
+  slaEvents,
   onSLAStatusChange,
 }: {
   slaPolicyId: number;
@@ -23,6 +24,7 @@ export const SLAIndicator = ({
     waitingSince: number;
     status: string;
   };
+  slaEvents?: SLAEvent[];
   onSLAStatusChange: (hasThreshold: boolean) => void;
 }) => {
   const [slaStatus, setSlaStatus] = useState<SLAStatus | null>(null);
@@ -31,27 +33,13 @@ export const SLAIndicator = ({
 
   const updateSlaStatus = useCallback(() => {
     const status = evaluateSLAStatus({
-      appliedSla: {
-        id: appliedSla.id,
-        name: appliedSla.slaName,
-        description: appliedSla.slaDescription,
-        sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
-        sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
-        sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
-        only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
-        created_at: appliedSla.createdAt,
-      },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      chat: {
-        first_reply_created_at: appliedSlaConversationDetails.firstReplyCreatedAt,
-        waiting_since: appliedSlaConversationDetails.waitingSince,
-        status: appliedSlaConversationDetails.status,
-      },
+      appliedSla,
+      chat: appliedSlaConversationDetails,
+      slaEvents,
     });
     setSlaStatus(status);
     onSLAStatusChange(status?.threshold ? true : false);
-  }, [appliedSla, appliedSlaConversationDetails, onSLAStatusChange]);
+  }, [appliedSla, appliedSlaConversationDetails, slaEvents, onSLAStatusChange]);
 
   const createTimer = useCallback(() => {
     timerRef.current = setTimeout(() => {

@@ -1,11 +1,10 @@
+import { useTailwind, ThemeTailwind } from '@/theme/useTailwind';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
-import type { ASTNode } from 'react-native-markdown-display';
+import { StyleSheet } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
 import { expandTabs } from '@/utils/expandTabs';
 
-import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { appFont } from '@/theme/appFont';
 
@@ -15,43 +14,7 @@ const markdownItInstance = MarkdownIt({ linkify: true, typographer: true, breaks
 type MarkdownBubbleProps = {
   messageContent: string;
   variant: string;
-  timeReserve?: 'time' | 'ticks';
 };
-
-// Private-use char survives markdown trimming.
-const TIME_RESERVE_MARK = '\uE000';
-const RESERVE_TEXT = { time: '\u2002\u200200:00 PM', ticks: '\u2002\u200200:00 PM\u2002✓✓' };
-
-const reserveStyle = StyleSheet.create({
-  reserve: { color: 'transparent', fontSize: 11, letterSpacing: 0 },
-});
-
-// Built once to keep Markdown cache.
-const buildReserveRules = (kind: 'time' | 'ticks') => ({
-  text: (
-    node: ASTNode,
-    _children: React.ReactNode[],
-    _parent: ASTNode[],
-    styles: Record<string, object>,
-    inheritedStyles: object = {},
-  ) => {
-    const content = node.content ?? '';
-    if (!content.endsWith(TIME_RESERVE_MARK)) {
-      return (
-        <Text key={node.key} style={[inheritedStyles, styles.text]}>
-          {content}
-        </Text>
-      );
-    }
-    return (
-      <Text key={node.key} style={[inheritedStyles, styles.text]}>
-        {content.slice(0, -TIME_RESERVE_MARK.length)}
-        <Text style={reserveStyle.reserve}>{RESERVE_TEXT[kind]}</Text>
-      </Text>
-    );
-  },
-});
-const RESERVE_RULES = { time: buildReserveRules('time'), ticks: buildReserveRules('ticks') };
 
 const variantTextMap = {
   [MESSAGE_VARIANTS.AGENT]: 'text-gray-950',
@@ -68,7 +31,7 @@ const handleURL = (url: string) => {
   return true;
 };
 
-const buildStyles = (variant: string) => {
+const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
   const textStyle = tailwind.style(variantTextMap[variant]);
 
   return StyleSheet.create({
@@ -87,6 +50,10 @@ const buildStyles = (variant: string) => {
     },
     em: {
       fontStyle: 'italic',
+    },
+    blockquote: {
+      backgroundColor: tailwind.color('bg-blackA-A3'),
+      borderColor: tailwind.color('text-blackA-A6'),
     },
     paragraph: {
       marginTop: 0,
@@ -127,30 +94,30 @@ const buildStyles = (variant: string) => {
 // row does not invalidate the whole tree.
 const stylesByVariant = new Map<string, ReturnType<typeof buildStyles>>();
 
-const getStyles = (variant: string) => {
-  const cachedStyles = stylesByVariant.get(variant);
+const getStyles = (variant: string, tailwind: ThemeTailwind) => {
+  const cacheKey = `${tailwind.isDark}:${variant}`;
+  const cachedStyles = stylesByVariant.get(cacheKey);
   if (cachedStyles) {
     return cachedStyles;
   }
 
-  const styles = buildStyles(variant);
-  stylesByVariant.set(variant, styles);
+  const styles = buildStyles(variant, tailwind);
+  stylesByVariant.set(cacheKey, styles);
   return styles;
 };
 
 export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
-  const { variant, timeReserve } = props;
+  const tailwind = useTailwind();
+  const { variant } = props;
   const text = expandTabs(props.messageContent);
-  const messageContent = timeReserve ? `${text}${TIME_RESERVE_MARK}` : text;
 
   return (
     <Markdown
       mergeStyle
       markdownit={markdownItInstance}
       onLinkPress={handleURL}
-      rules={timeReserve ? RESERVE_RULES[timeReserve] : undefined}
-      style={getStyles(variant)}>
-      {messageContent}
+      style={getStyles(variant, tailwind)}>
+      {text}
     </Markdown>
   );
 });

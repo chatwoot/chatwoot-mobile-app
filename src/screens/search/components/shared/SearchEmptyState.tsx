@@ -4,7 +4,7 @@ import { Pressable } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import type { BaseAnimationBuilder } from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { InfoIcon, SearchIcon } from '@/svg-icons';
 import { Icon } from '@/components-next';
 import { IOS_DESIGN } from '@/utils';
@@ -29,6 +29,7 @@ export function SearchEmptyState({
   exiting = FadeOut.duration(200),
   inline = false,
 }: SearchEmptyStateProps) {
+  const tailwind = useTailwind();
   const message =
     errorMessage ||
     i18n.t('SEARCH.NO_RESULTS', { sectionLabel: sectionLabel.toLowerCase(), searchQuery });

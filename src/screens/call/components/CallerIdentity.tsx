@@ -2,9 +2,9 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import type { LiveCall } from '@/store/call/callTypes';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 
-import { CALL_MUTED_TEXT, CALL_TONES, type CallTone } from '../constants/callTheme';
+import { useCallTheme, type CallTone } from '../constants/callTheme';
 import type { CallerInfo } from '../hooks/useCallerInfo';
 import { useCallStatusText } from '../hooks/useCallStatusText';
 import type { CallStatusFlags } from '../utils/callStatusText';
@@ -30,43 +30,48 @@ export const CallerIdentity = ({
   tone,
   aura,
   onOpenConversation,
-}: CallerIdentityProps) => (
-  <View
-    style={tailwind.style('absolute inset-0 items-center justify-center pb-[110px] px-8')}
-    pointerEvents="box-none">
-    <CallStatusLine call={call} activeSince={activeSince} flags={statusFlags} tone={tone} />
-    <CallAvatar name={info.name} uri={info.avatar || undefined} tone={tone} aura={aura} />
-    <Text
-      numberOfLines={1}
-      style={tailwind.style(
-        'font-inter-580-24 text-[30px] leading-9 tracking-[-0.2px] text-gray-950 mt-[26px]',
-      )}>
-      {info.name}
-    </Text>
-    {info.phone ? (
+}: CallerIdentityProps) => {
+  const tailwind = useTailwind();
+  const { CALL_MUTED_TEXT } = useCallTheme();
+  return (
+    <View
+      style={tailwind.style('absolute inset-0 items-center justify-center pb-[110px] px-8')}
+      pointerEvents="box-none">
+      <CallStatusLine call={call} activeSince={activeSince} flags={statusFlags} tone={tone} />
+      <CallAvatar name={info.name} uri={info.avatar || undefined} tone={tone} aura={aura} />
       <Text
+        numberOfLines={1}
         style={tailwind.style(
-          'font-inter-420-20 text-[17px] leading-[22px] text-[#737373] mt-1.5 tabular-nums',
+          'font-inter-580-24 text-[30px] leading-9 tracking-[-0.2px] text-gray-950 mt-[26px]',
         )}>
-        {info.phone}
+        {info.name}
       </Text>
-    ) : null}
-    {info.inboxName ? (
-      <View style={tailwind.style('flex-row items-center gap-2 mt-1.5 max-w-full')}>
-        <InboxChannelIcon channelType={info.channelType} medium={info.medium} size={18} />
+      {info.phone ? (
         <Text
-          numberOfLines={1}
           style={[
-            tailwind.style('font-inter-420-20 text-[17px] leading-[22px] shrink'),
+            tailwind.style('font-inter-420-20 text-[17px] leading-[22px] mt-1.5 tabular-nums'),
             { color: CALL_MUTED_TEXT },
           ]}>
-          {info.inboxName}
+          {info.phone}
         </Text>
-      </View>
-    ) : null}
-    {onOpenConversation ? <GoToConversationButton onPress={onOpenConversation} /> : null}
-  </View>
-);
+      ) : null}
+      {info.inboxName ? (
+        <View style={tailwind.style('flex-row items-center gap-2 mt-1.5 max-w-full')}>
+          <InboxChannelIcon channelType={info.channelType} medium={info.medium} size={18} />
+          <Text
+            numberOfLines={1}
+            style={[
+              tailwind.style('font-inter-420-20 text-[17px] leading-[22px] shrink'),
+              { color: CALL_MUTED_TEXT },
+            ]}>
+            {info.inboxName}
+          </Text>
+        </View>
+      ) : null}
+      {onOpenConversation ? <GoToConversationButton onPress={onOpenConversation} /> : null}
+    </View>
+  );
+};
 
 const CallStatusLine = ({
   call,
@@ -79,6 +84,8 @@ const CallStatusLine = ({
   flags: CallStatusFlags;
   tone: CallTone;
 }) => {
+  const tailwind = useTailwind();
+  const { CALL_TONES } = useCallTheme();
   const text = useCallStatusText(call, activeSince, flags);
   return (
     <Text

@@ -4,7 +4,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 
 import { Icon, Avatar } from '@/components-next/common';
 import { CloseIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { expandTabs } from '@/utils/expandTabs';
 import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
 import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
@@ -17,6 +17,7 @@ type ContactDetailsScreenHeaderProps = {
 };
 
 export const ContactDetailsScreenHeader = (props: ContactDetailsScreenHeaderProps) => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
   const isInContactPane = useIsInContactPane();
   const sideTabBar = useSideTabBarLayout();

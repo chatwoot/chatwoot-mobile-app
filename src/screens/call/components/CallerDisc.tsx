@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { Avatar, getInitials } from '@/components-next/common/avatar/Avatar';
 
-import { CALL_TONES, type CallTone } from '../constants/callTheme';
+import { useCallTheme, type CallTone } from '../constants/callTheme';
 
 type CallerDiscProps = {
   name: string;
@@ -17,6 +17,8 @@ type CallerDiscProps = {
 const IMAGE_PROPS = { cachePolicy: 'memory-disk', transition: 0, contentFit: 'cover' } as const;
 
 export const CallerDisc = ({ name, uri, tone, box, text }: CallerDiscProps) => {
+  const tailwind = useTailwind();
+  const { CALL_TONES } = useCallTheme();
   const colours = CALL_TONES[tone];
   const initials = getInitials(name) || '?';
   return (

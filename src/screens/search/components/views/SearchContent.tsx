@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { FlashListRef } from '@shopify/flash-list';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import type { TabType } from '../../hooks/useSearchScreen';
@@ -69,6 +69,7 @@ export function SearchContent({
   onEndReached,
   renderItem,
 }: SearchContentProps) {
+  const tailwind = useTailwind();
   if (searchText.trim().length < 2) {
     return (
       <View style={tailwind.style('flex-1')}>

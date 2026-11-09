@@ -1,11 +1,12 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 
 import i18n from 'i18n';
-import { tailwind } from '@/theme';
 import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
 
 export const SettingsHeader = () => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
 
   if (sideTabBar || IOS_DESIGN) {

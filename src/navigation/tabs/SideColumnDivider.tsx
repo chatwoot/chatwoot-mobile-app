@@ -1,11 +1,12 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { tailwind } from '@/theme';
 import { useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 
 export const SideColumnDivider = () => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   const isSplit = useIsSplitLayout();
   const { left, right } = useSafeAreaInsets();

@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
@@ -6,7 +7,6 @@ import { Image } from 'expo-image';
 
 import { useRefsContext } from '@/context';
 import { CloseIcon, FileIcon, VoiceNote } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { isMarkdown } from '@/utils';
 import { expandTabs } from '@/utils/expandTabs';
 import { Icon } from '@/components-next/common';
@@ -20,6 +20,7 @@ import { Message } from '@/types';
 import { appFont } from '@/theme/appFont';
 
 const AudioIcon = () => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex-1 justify-center items-center')}>
       <Icon
@@ -30,6 +31,7 @@ const AudioIcon = () => {
   );
 };
 const File = () => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex-1  justify-center items-center')}>
       <Icon icon={<FileIcon fill={tailwind.color('text-blue-800')} />} size={24} />
@@ -38,6 +40,7 @@ const File = () => {
 };
 
 export const QuoteReply = () => {
+  const tailwind = useTailwind();
   const quoteMessage = useAppSelector(selectQuoteMessage);
   const dispatch = useAppDispatch();
 

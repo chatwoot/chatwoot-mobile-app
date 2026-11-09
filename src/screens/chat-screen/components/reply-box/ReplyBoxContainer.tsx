@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Keyboard, Pressable, TextInput, View } from 'react-native';
 import {
@@ -31,7 +32,6 @@ import {
 } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
-import { tailwind } from '@/theme';
 import {
   selectMessageContent,
   selectAttachments,
@@ -48,10 +48,7 @@ import {
 } from '@/store/conversation/sendMessageSlice';
 import { useIsInComposePane, useSplitView } from '@/navigation/split/SplitViewContext';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
-import {
-  GlassCircleButton,
-  HEADER_ICON_COLOR,
-} from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
 import { GlassPillButton } from '@/components-next/side-toolbar/GlassPillButton';
 import { CloseIcon } from '@/svg-icons';
 import { Locked, Unlock } from './MessageTextInput';
@@ -127,6 +124,7 @@ const SHEET_APPEAR_SPRING_CONFIG = {
 
 const AnimatedKeyboardStickyView = Animated.createAnimatedComponent(KeyboardStickyView);
 const BottomSheetContent = () => {
+  const tailwind = useTailwind();
   const paneRightInset = usePaneRightInset();
   const iosStyle = IOS_DESIGN;
   const navigation = useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList>>();
@@ -575,7 +573,7 @@ const BottomSheetContent = () => {
           )}
           left={
             <GlassCircleButton
-              icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+              icon={<CloseIcon stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
               onPress={closeComposer}
               accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.CLOSE')}
             />
@@ -648,7 +646,7 @@ const BottomSheetContent = () => {
               {shouldShowFileUpload && (
                 <AddAttachmentMenu>
                   <ReplyGlassCircle>
-                    <Icon icon={<AddIcon />} size={22} />
+                    <Icon icon={<AddIcon stroke={tailwind.color('text-gray-950')} />} size={22} />
                   </ReplyGlassCircle>
                 </AddAttachmentMenu>
               )}
@@ -660,7 +658,10 @@ const BottomSheetContent = () => {
                   editorMode={replyEditorMode}
                   onSelectAction={handleCopilotAction}>
                   <ReplyGlassCircle>
-                    <Icon icon={<SparkleIcon />} size={22} />
+                    <Icon
+                      icon={<SparkleIcon stroke={tailwind.color('text-gray-950')} />}
+                      size={22}
+                    />
                   </ReplyGlassCircle>
                 </CopilotReplyMenu>
               )}
@@ -755,7 +756,7 @@ const BottomSheetContent = () => {
             {iosStyle && !isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
               <AddAttachmentMenu>
                 <ReplyGlassCircle>
-                  <Icon icon={<AddIcon />} size={22} />
+                  <Icon icon={<AddIcon stroke={tailwind.color('text-gray-950')} />} size={22} />
                 </ReplyGlassCircle>
               </AddAttachmentMenu>
             )}
@@ -772,7 +773,7 @@ const BottomSheetContent = () => {
                 editorMode={replyEditorMode}
                 onSelectAction={handleCopilotAction}>
                 <ReplyGlassCircle>
-                  <Icon icon={<SparkleIcon />} size={22} />
+                  <Icon icon={<SparkleIcon stroke={tailwind.color('text-gray-950')} />} size={22} />
                 </ReplyGlassCircle>
               </CopilotReplyMenu>
             ) : (

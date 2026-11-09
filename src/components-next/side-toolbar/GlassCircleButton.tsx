@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 
 import { Icon } from '@/components-next/common/icon';
-import { tailwind } from '@/theme';
 
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
 export const SIZE = 36;
@@ -28,6 +28,7 @@ export const GlassCircleButton = ({
   iconSize = 20,
   disabled = false,
 }: GlassCircleButtonProps) => {
+  const tailwind = useTailwind();
   const Container = onPress ? Pressable : View;
   const content = (
     <View>
@@ -52,6 +53,7 @@ export const GlassCircleButton = ({
       )}>
       {useLiquidGlass ? (
         <GlassView
+          colorScheme={tailwind.isDark ? 'dark' : 'light'}
           glassEffectStyle="regular"
           isInteractive={!disabled}
           style={[tailwind.style('absolute inset-0'), { borderRadius: SIZE / 2 }]}

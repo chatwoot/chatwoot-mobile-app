@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -12,7 +13,6 @@ import { MacrosPane } from '@/screens/chat-screen/components/macros/MacrosPane';
 import { ReplyBoxContainer } from '@/screens/chat-screen/components/reply-box/ReplyBoxContainer';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { ChatWindowProvider, RefsProvider } from '@/context';
-import { tailwind } from '@/theme';
 import { useAppSelector } from '@/hooks';
 import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
 import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
@@ -30,6 +30,7 @@ export const SecondaryPane = ({
   column: SecondaryColumn;
   conversationId: number;
 }) => {
+  const tailwind = useTailwind();
   const navigation =
     useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList, 'ContactDetails'>>();
   const { right } = useSafeAreaInsets();

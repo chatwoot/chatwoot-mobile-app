@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useMemo } from 'react';
 import { Pressable, Text, ViewStyle } from 'react-native';
 import Animated, {
@@ -11,13 +12,11 @@ import { Icon } from '@/components-next/common';
 import {
   GlassCircleButton,
   GlassPillButton,
-  HEADER_ICON_COLOR,
   LargeHeaderTitle,
   SideToolbarButton,
 } from '@/components-next/side-toolbar';
 import { useSideToolbar } from '@/context';
 import { CheckedIcon, CloseIcon, FilterIcon, UncheckedIcon, SearchIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { IOS_DESIGN, useIsSplitLayout, useScaleAnimation } from '@/utils';
 import { useHeaderAnimation } from '@/hooks/useHeaderAnimation';
@@ -52,17 +51,20 @@ type LeftSlotProps = {
   animatedStyle: ViewStyle | AnimatedStyle<ViewStyle>;
 };
 
-const HeaderTitle = () => (
-  <Animated.View style={tailwind.style('flex-2')}>
-    <Text
-      numberOfLines={1}
-      style={tailwind.style(
-        'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
-      )}>
-      {i18n.t('CONVERSATION.HEADER.TITLE')}
-    </Text>
-  </Animated.View>
-);
+const HeaderTitle = () => {
+  const tailwind = useTailwind();
+  return (
+    <Animated.View style={tailwind.style('flex-2')}>
+      <Text
+        numberOfLines={1}
+        style={tailwind.style(
+          'text-[17px] font-inter-medium-24 tracking-[0.32px] leading-[17px] text-center text-gray-950',
+        )}>
+        {i18n.t('CONVERSATION.HEADER.TITLE')}
+      </Text>
+    </Animated.View>
+  );
+};
 
 const CROSSFADE_MS = 180;
 
@@ -75,6 +77,7 @@ const LeftSlot = ({
   handlers,
   animatedStyle,
 }: LeftSlotProps) => {
+  const tailwind = useTailwind();
   const searchActive = currentState === 'none';
   const clearActive = currentState === 'Filter';
   const selectActive = currentState === 'Select';
@@ -160,6 +163,7 @@ const RightSection = ({
   filtersAppliedCount,
   onRightIconPress,
 }: RightSectionProps) => {
+  const tailwind = useTailwind();
   const { entering, exiting } = useHeaderAnimation();
 
   return (
@@ -195,6 +199,7 @@ export const ConversationHeaderPresenter = ({
   onClearFilter,
   selectedCount = 0,
 }: ConversationHeaderPresenterProps) => {
+  const tailwind = useTailwind();
   const { handlers, animatedStyle } = useScaleAnimation();
   const isModal = currentState === 'Filter' || currentState === 'Select';
 
@@ -203,27 +208,27 @@ export const ConversationHeaderPresenter = ({
     () =>
       isModal ? (
         <SideToolbarButton
-          icon={<CloseIcon stroke={HEADER_ICON_COLOR} />}
+          icon={<CloseIcon stroke={tailwind.color('text-gray-950')} />}
           onPress={onRightIconPress}
           accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
         />
       ) : (
         <>
           <SideToolbarButton
-            icon={<SearchIcon stroke={HEADER_ICON_COLOR} />}
+            icon={<SearchIcon stroke={tailwind.color('text-gray-950')} />}
             onPress={onLeftIconPress}
             accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
           />
           <ConversationFilterMenu>
             <SideToolbarButton
-              icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
+              icon={<FilterIcon stroke={tailwind.color('text-gray-950')} />}
               showBadge={filtersAppliedCount > 0}
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
             />
           </ConversationFilterMenu>
         </>
       ),
-    [isModal, filtersAppliedCount, onLeftIconPress, onRightIconPress],
+    [isModal, filtersAppliedCount, onLeftIconPress, onRightIconPress, tailwind],
   );
   const isSideLayout = useSideToolbar(actionItems, !isSplit);
 
@@ -270,7 +275,7 @@ export const ConversationHeaderPresenter = ({
             />
           ) : (
             <GlassCircleButton
-              icon={<SearchIcon stroke={HEADER_ICON_COLOR} />}
+              icon={<SearchIcon stroke={tailwind.color('text-gray-950')} />}
               onPress={onLeftIconPress}
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
             />
@@ -280,14 +285,14 @@ export const ConversationHeaderPresenter = ({
         <Animated.View style={tailwind.style('w-24 flex-row items-center justify-end')}>
           {isModal ? (
             <GlassCircleButton
-              icon={<CloseIcon stroke={HEADER_ICON_COLOR} />}
+              icon={<CloseIcon stroke={tailwind.color('text-gray-950')} />}
               onPress={onRightIconPress}
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
             />
           ) : (
             <ConversationFilterMenu>
               <GlassCircleButton
-                icon={<FilterIcon stroke={HEADER_ICON_COLOR} />}
+                icon={<FilterIcon stroke={tailwind.color('text-gray-950')} />}
                 showBadge={filtersAppliedCount > 0}
                 accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
               />

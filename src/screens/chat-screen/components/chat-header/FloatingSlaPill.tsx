@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import { useSlaPillVisibility } from '../../SlaPillVisibility';
@@ -5,7 +6,6 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next';
 import { SLAIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
 
@@ -18,6 +18,7 @@ export const FloatingSlaPill = ({
   isMissed: boolean;
   onPress: () => void;
 }) => {
+  const tailwind = useTailwind();
   const visibility = useSlaPillVisibility();
   const style = useAnimatedStyle(() => {
     const shown = visibility ? visibility.value : 1;
@@ -39,6 +40,7 @@ export const FloatingSlaPill = ({
         }>
         {useLiquidGlass ? (
           <GlassView
+            colorScheme={tailwind.isDark ? 'dark' : 'light'}
             glassEffectStyle="regular"
             isInteractive
             style={[StyleSheet.absoluteFill, { borderRadius: 16 }]}

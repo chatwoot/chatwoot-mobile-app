@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Icon } from '@/components-next';
 import { CaretRight, NoPriorityIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { ConversationPriority } from '@/types';
 import { getPriorityIcon } from '@/utils/priorityIcon';
 import i18n from '@/i18n';
@@ -22,6 +22,7 @@ const priorityAvatar = (priority: ConversationPriority) => {
 };
 
 const PriorityPanel = ({ priority, onPress }: PriorityPanelProps) => {
+  const tailwind = useTailwind();
   const priorityName = priority ? priority : i18n.t('CONVERSATION.ACTIONS.PRIORITY.EMPTY');
   return (
     <Pressable

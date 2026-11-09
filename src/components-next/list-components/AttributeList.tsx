@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo } from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import * as Sentry from '@sentry/react-native';
 
 import { CaretRight } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { AttributeListType } from '@/types';
 import { Icon } from '@/components-next/common';
 import { showToast } from '@/utils/toastUtils';
@@ -21,6 +21,7 @@ type AttributeItemProps = {
 };
 
 const AttributeItem = (props: AttributeItemProps) => {
+  const tailwind = useTailwind();
   const { listItem, index, isLastItem } = props;
 
   const handlePress = () => {
@@ -103,6 +104,7 @@ type AttributeListProps = {
   list: AttributeListType[];
 };
 export const AttributeList = (props: AttributeListProps) => {
+  const tailwind = useTailwind();
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { list, sectionTitle } = props;
 
@@ -152,7 +154,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useRef, useState } from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { AddParticipant, CloseIcon, Overflow } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Avatar, Icon } from '@/components-next';
 import { Agent } from '@/types';
 import i18n from '@/i18n';
@@ -23,6 +23,7 @@ type ListItemProps = {
 };
 
 const ListItem = (props: ListItemProps) => {
+  const tailwind = useTailwind();
   const { listItem, index, onRemove, removeDisabled } = props;
   return (
     <Pressable
@@ -32,7 +33,11 @@ const ListItem = (props: ListItemProps) => {
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
         <Animated.View>
-          <Avatar src={{ uri: listItem.thumbnail || undefined }} size="lg" />
+          <Avatar
+            src={listItem.thumbnail ? { uri: listItem.thumbnail } : undefined}
+            name={listItem.name ?? ''}
+            size="lg"
+          />
         </Animated.View>
         <Animated.View
           style={tailwind.style(
@@ -58,6 +63,7 @@ const ListItem = (props: ListItemProps) => {
 };
 
 const ParticipantOverflowCell = ({ count }: { count: number }) => {
+  const tailwind = useTailwind();
   return (
     <Pressable style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
@@ -84,6 +90,7 @@ type AddParticipantListProps = {
 };
 
 export const AddParticipantList = (props: AddParticipantListProps) => {
+  const tailwind = useTailwind();
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { conversationParticipants, onAddParticipant, conversationId } = props;
   const dispatch = useAppDispatch();
@@ -184,7 +191,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

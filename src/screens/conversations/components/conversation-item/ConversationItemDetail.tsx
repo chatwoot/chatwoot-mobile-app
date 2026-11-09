@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { memo, useState } from 'react';
 import { ImageURISource, Text } from 'react-native';
@@ -6,7 +7,6 @@ import { isEqual } from 'lodash';
 
 import { Avatar } from '@/components-next/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
-import { tailwind } from '@/theme';
 import { Agent, Conversation, ConversationAdditionalAttributes, Label, Message } from '@/types';
 
 import { ConversationId } from './ConversationId';
@@ -53,6 +53,7 @@ const checkIfPropsAreSame = (
 };
 
 export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
+  const tailwind = useTailwind();
   const iosText = useIOSListText();
   const isRowSelected = useIsRowSelected();
   const {

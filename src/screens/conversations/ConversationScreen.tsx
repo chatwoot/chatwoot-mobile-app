@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, AppState, RefreshControl, StatusBar } from 'react-native';
 import Animated, { LinearTransition, SharedValue } from 'react-native-reanimated';
@@ -32,7 +33,6 @@ import {
   useRefsContext,
 } from '@/context';
 
-import { tailwind } from '@/theme';
 import { Conversation } from '@/types';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
@@ -83,6 +83,7 @@ const ConversationList = ({
   scrollY,
   isDragging,
 }: OverlayListProps) => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
   const [appState, setAppState] = useState(AppState.currentState);
@@ -317,6 +318,7 @@ const ConversationList = ({
 };
 
 const ConversationScreen = () => {
+  const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();
   const [headerHeight, setHeaderHeight] = useState(0);
   const sideTabBar = useSideTabBarLayout();
@@ -368,7 +370,7 @@ const ConversationScreen = () => {
         <StatusBar
           translucent
           backgroundColor={tailwind.color('bg-white')}
-          barStyle={'dark-content'}
+          barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
         />
         <ConversationListStateProvider>
           {hasOverlayHeader ? (

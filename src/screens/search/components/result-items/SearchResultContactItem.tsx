@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Avatar } from '@/components-next/common/avatar';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import type { Contact } from '@/types/Contact';
 import { HighlightedText } from '../shared/HighlightedText';
 import { expandTabs } from '@/utils/expandTabs';
@@ -22,6 +22,7 @@ export const SearchResultContactItem = ({
   onPress,
   isLast = false,
 }: SearchResultContactItemProps) => {
+  const tailwind = useTailwind();
   const city = contact.additionalAttributes?.city;
   const country = contact.additionalAttributes?.country;
 

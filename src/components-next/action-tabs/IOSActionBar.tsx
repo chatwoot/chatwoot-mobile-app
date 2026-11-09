@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import * as DropdownMenu from 'zeego/dropdown-menu';
@@ -11,11 +12,10 @@ import { ConversationStatus, StatusOptions } from '@/types';
 import { CheckCircleIcon, PersonCircleGlyph, TagGlyph } from '@/svg-icons';
 import i18n from '@/i18n';
 
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { ToolbarButton } from './ToolbarButton';
 import { ACTION_TAB_HEIGHT, IOS_BAR_WIDTH } from './actionTabsLayout';
+import { ToolbarButton } from './ToolbarButton';
 import { ActionTabBarBackground } from './ActionTabBarBackground';
 
 // zeego Label types include web props.
@@ -29,6 +29,7 @@ const STATUS_OPTIONS: { id: ConversationStatus; icon: string }[] = [
 ];
 
 export const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: number }) => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
   const selectedIds = useAppSelector(selectSelectedIds);

@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -5,10 +6,7 @@ import { shallowEqual } from 'react-redux';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { Avatar, Icon } from '@/components-next';
-import {
-  GlassCircleButton,
-  HEADER_ICON_COLOR,
-} from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
 import { GlassPillButton } from '@/components-next/side-toolbar/GlassPillButton';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
@@ -24,7 +22,6 @@ import {
 } from '@/store/conversation/conversationSelectedSlice';
 import { filterLabels } from '@/store/label/labelSelectors';
 import { CloseIcon, TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
 
@@ -43,6 +40,7 @@ type PickerRow = {
 const DIVIDER = 'border-b-[0.5px] border-b-blackA-A6';
 
 const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
+  const tailwind = useTailwind();
   const { kind } = route.params;
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
@@ -125,7 +123,7 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
         )}
         left={
           <GlassCircleButton
-            icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+            icon={<CloseIcon stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
             onPress={navigation.goBack}
             accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.CLOSE')}
           />

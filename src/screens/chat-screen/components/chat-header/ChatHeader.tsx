@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo } from 'react';
 import { ImageSourcePropType, Keyboard, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -16,7 +17,6 @@ import {
   StatusResolvedIcon,
 } from '@/svg-icons';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { ChatDropdownMenu, DashboardList } from './DropdownMenu';
 import { SLAEvent } from '@/types/common';
@@ -25,7 +25,7 @@ import { SlaEvents } from './SlaEvents';
 import { IOS_DESIGN, useIOSListText, useSideTabBarLayout } from '@/utils';
 import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
 import { useSideToolbar } from '@/context';
-import { HEADER_ICON_COLOR, SideToolbarButton } from '@/components-next/side-toolbar';
+import { SideToolbarButton } from '@/components-next/side-toolbar';
 import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 import { useIsColumnOpen } from '@/navigation/split/columnOpenStore';
@@ -84,6 +84,7 @@ export const ChatHeader = ({
   onToggleChatStatus,
   onOpenActions,
 }: ChatHeaderProps) => {
+  const tailwind = useTailwind();
   const iosList = useIOSListText();
   const { slaEventsSheetRef } = useRefsContext();
 
@@ -106,14 +107,18 @@ export const ChatHeader = ({
     () =>
       isContactOpen ? (
         <SideToolbarButton
-          icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+          icon={
+            <ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={TOOLBAR_STROKE} />
+          }
           iconSize={24}
           onPress={() => splitView?.closeSecondary()}
           accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
         />
       ) : isOnActionsPage ? (
         <SideToolbarButton
-          icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+          icon={
+            <ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={TOOLBAR_STROKE} />
+          }
           iconSize={24}
           onPress={() => chatPagerView.current?.setPage(0)}
           accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK_TO_MESSAGES')}
@@ -122,14 +127,19 @@ export const ChatHeader = ({
         <>
           {isInPane ? (
             <SideToolbarButton
-              icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.2} />}
+              icon={<CloseIcon stroke={tailwind.color('text-gray-950')} strokeWidth={1.2} />}
               iconSize={28}
               onPress={onBackPress}
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
             />
           ) : (
             <SideToolbarButton
-              icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+              icon={
+                <ChevronLeft
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
+              }
               iconSize={24}
               onPress={onBackPress}
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
@@ -137,7 +147,12 @@ export const ChatHeader = ({
           )}
           {showCallButton ? (
             <SideToolbarButton
-              icon={<PhoneOutlineIcon />}
+              icon={
+                <PhoneOutlineIcon
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
+              }
               iconSize={24}
               onPress={onCallPress}
               disabled={isCallDisabled}
@@ -147,9 +162,15 @@ export const ChatHeader = ({
           <SideToolbarButton
             icon={
               isOpen ? (
-                <CheckCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+                <CheckCircleIcon
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
               ) : (
-                <ReopenCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+                <ReopenCircleIcon
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
               )
             }
             iconSize={24}
@@ -158,7 +179,12 @@ export const ChatHeader = ({
           />
           {onOpenActions ? (
             <SideToolbarButton
-              icon={<InfoCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+              icon={
+                <InfoCircleIcon
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
+              }
               iconSize={24}
               onPress={onOpenActions}
               accessibilityLabel={i18n.t('CONVERSATION_ACTION.TITLE')}
@@ -167,7 +193,7 @@ export const ChatHeader = ({
           {paneMenuList.length > 0 ? (
             <ChatDropdownMenu dropdownMenuList={paneMenuList} plainTrigger>
               <SideToolbarButton
-                icon={<Overflow stroke={HEADER_ICON_COLOR} strokeWidth={1.3} />}
+                icon={<Overflow stroke={tailwind.color('text-gray-950')} strokeWidth={1.3} />}
                 iconSize={26}
                 accessibilityLabel={i18n.t('CONVERSATION.HEADER.MORE')}
               />
@@ -190,6 +216,7 @@ export const ChatHeader = ({
       statusLabel,
       onOpenActions,
       paneMenuList,
+      tailwind,
     ],
   );
   const actionsInToolbar = useSideToolbar(toolbarItems, hasSideToolbar) && hasSideToolbar;
@@ -267,7 +294,9 @@ export const ChatHeader = ({
       <Animated.View style={tailwind.style('z-10')}>
         <Animated.View style={tailwind.style('flex-row items-center gap-2 px-4 pt-1 pb-3')}>
           <GlassCircleButton
-            icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+            icon={
+              <ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={TOOLBAR_STROKE} />
+            }
             onPress={isOnActionsPage ? () => chatPagerView.current?.setPage(0) : onBackPress}
             accessibilityLabel={i18n.t(
               isOnActionsPage ? 'CONVERSATION.HEADER.BACK_TO_MESSAGES' : 'CONVERSATION.HEADER.BACK',
@@ -306,7 +335,12 @@ export const ChatHeader = ({
             <>
               {showCallButton ? (
                 <GlassCircleButton
-                  icon={<PhoneOutlineIcon />}
+                  icon={
+                    <PhoneOutlineIcon
+                      stroke={tailwind.color('text-gray-950')}
+                      strokeWidth={TOOLBAR_STROKE}
+                    />
+                  }
                   iconSize={22}
                   onPress={onCallPress}
                   disabled={isCallDisabled}
@@ -316,9 +350,15 @@ export const ChatHeader = ({
               <GlassCircleButton
                 icon={
                   isOpen ? (
-                    <CheckCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+                    <CheckCircleIcon
+                      stroke={tailwind.color('text-gray-950')}
+                      strokeWidth={TOOLBAR_STROKE}
+                    />
                   ) : (
-                    <ReopenCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />
+                    <ReopenCircleIcon
+                      stroke={tailwind.color('text-gray-950')}
+                      strokeWidth={TOOLBAR_STROKE}
+                    />
                   )
                 }
                 iconSize={22}
@@ -327,7 +367,12 @@ export const ChatHeader = ({
               />
               {paneMenuList.length === 0 && onOpenActions ? (
                 <GlassCircleButton
-                  icon={<InfoCircleIcon stroke={HEADER_ICON_COLOR} strokeWidth={TOOLBAR_STROKE} />}
+                  icon={
+                    <InfoCircleIcon
+                      stroke={tailwind.color('text-gray-950')}
+                      strokeWidth={TOOLBAR_STROKE}
+                    />
+                  }
                   iconSize={22}
                   onPress={onOpenActions}
                   accessibilityLabel={i18n.t('CONVERSATION_ACTION.TITLE')}
@@ -336,7 +381,7 @@ export const ChatHeader = ({
               {paneMenuList.length > 0 ? (
                 <ChatDropdownMenu dropdownMenuList={dashboardsList} plainTrigger>
                   <GlassCircleButton
-                    icon={<Overflow stroke={HEADER_ICON_COLOR} strokeWidth={1.3} />}
+                    icon={<Overflow stroke={tailwind.color('text-gray-950')} strokeWidth={1.3} />}
                     iconSize={22}
                     accessibilityLabel={i18n.t('CONVERSATION.HEADER.MORE')}
                   />
@@ -397,7 +442,15 @@ export const ChatHeader = ({
               'h-8 w-8 items-center justify-center',
               isCallDisabled ? 'opacity-40' : '',
             )}>
-            <Icon icon={<PhoneOutlineIcon />} size={24} />
+            <Icon
+              icon={
+                <PhoneOutlineIcon
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
+              }
+              size={24}
+            />
           </Pressable>
         )}
         {!actionsInToolbar && dashboardsList.length > 0 && (

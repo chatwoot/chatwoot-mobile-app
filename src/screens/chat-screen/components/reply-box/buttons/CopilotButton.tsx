@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import Animated, {
   LinearTransition,
@@ -12,7 +13,6 @@ import { Pressable, PressableProps } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { SparkleIcon, AnimatedSparkleIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
 import { ReplyGlassCircle } from './ReplyGlassCircle';
 
 type CopilotButtonProps = PressableProps & {
@@ -27,6 +27,7 @@ export const CopilotButton = ({
   glass = false,
   ...props
 }: CopilotButtonProps) => {
+  const tailwind = useTailwind();
   const { animatedStyle, handlers } = useScaleAnimation();
   const starPhase = useSharedValue(0);
 
@@ -69,7 +70,10 @@ export const CopilotButton = ({
                 largeStarStyle={largeStarStyle}
               />
             ) : (
-              <Icon icon={<SparkleIcon filled={isActive} />} size={22} />
+              <Icon
+                icon={<SparkleIcon stroke={tailwind.color('text-gray-950')} filled={isActive} />}
+                size={22}
+              />
             )}
           </ReplyGlassCircle>
         ) : (
@@ -81,7 +85,10 @@ export const CopilotButton = ({
                 largeStarStyle={largeStarStyle}
               />
             ) : (
-              <Icon icon={<SparkleIcon filled={isActive} />} size={24} />
+              <Icon
+                icon={<SparkleIcon stroke={tailwind.color('text-gray-950')} filled={isActive} />}
+                size={24}
+              />
             )}
           </Animated.View>
         )}

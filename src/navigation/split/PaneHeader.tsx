@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { useSideTabBarLayout } from '@/utils';
 
 export const PaneHeader = ({
@@ -13,6 +13,7 @@ export const PaneHeader = ({
   left?: React.ReactNode;
   right?: React.ReactNode;
 }) => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   const slot = !left && !right ? 'w-0' : right ? 'w-24' : 'w-11';
   return (

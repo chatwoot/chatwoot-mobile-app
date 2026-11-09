@@ -1,10 +1,12 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { ImageSourcePropType, ImageURISource, Text, View, ViewProps } from 'react-native';
 import type { ImageProps } from 'expo-image';
 
-import { avatarTheme, tailwind } from '@/theme';
+import { avatarTheme } from '@/theme';
 import { Channel } from '@/types';
-import { cx, styleAdapter } from '@/utils';
+import { UserIcon } from '@/svg-icons';
+import { cx, isPhoneNumberName, styleAdapter } from '@/utils';
 
 import { AvatarImage } from './AvatarImage';
 import { AvatarStatus } from './AvatarStatus';
@@ -91,6 +93,7 @@ export interface AvatarProps extends ViewProps {
 }
 
 export const Avatar: React.FC<Partial<AvatarProps>> = props => {
+  const tailwind = useTailwind();
   const {
     size = 'xl',
     squared = false,
@@ -145,11 +148,16 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
           squared={isSquared}
           handleFallback={loadFallback}
         />
-      ) : name ? (
+      ) : !name || isPhoneNumberName(name) ? (
+        <View style={tailwind.style(avatarTheme.defaultUserIcon[size], 'aspect-square')}>
+          <UserIcon stroke={tailwind.color('text-gray-800')} />
+        </View>
+      ) : (
         <Text
           style={[
             tailwind.style(
               cx(
+                'w-full',
                 avatarTheme.initials.base,
                 avatarTheme.initials.size[size],
                 'font-inter-medium-24',
@@ -157,13 +165,13 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
               ),
             ),
           ]}
-          adjustsFontSizeToFit
+          numberOfLines={1}
           allowFontScaling={false}>
           {ONE_LETTER_INITIAL_SIZES.includes(size)
             ? getInitials(name)?.charAt(0)
             : getInitials(name)}
         </Text>
-      ) : null}
+      )}
       {status && <AvatarStatus parentsBackground={parentsBackground} size={size} status={status} />}
     </View>
   );

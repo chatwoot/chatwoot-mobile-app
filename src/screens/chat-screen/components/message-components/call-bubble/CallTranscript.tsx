@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 
 import { CALL_LINK, bubbleInk, bubbleMuted } from './callBubbleTheme';
@@ -9,8 +9,9 @@ import { CALL_LINK, bubbleInk, bubbleMuted } from './callBubbleTheme';
 const PREVIEW_LINES = 3;
 
 export const CallTranscript = ({ text, lightOnDark }: { text: string; lightOnDark: boolean }) => {
+  const tailwind = useTailwind();
   const [expanded, setExpanded] = useState(false);
-  const muted = bubbleMuted(lightOnDark);
+  const muted = bubbleMuted(lightOnDark || tailwind.isDark);
 
   return (
     <View style={tailwind.style('gap-[3px]')}>
@@ -25,7 +26,7 @@ export const CallTranscript = ({ text, lightOnDark }: { text: string; lightOnDar
         numberOfLines={expanded ? undefined : PREVIEW_LINES}
         style={[
           tailwind.style('font-inter-420-20 text-[13px] leading-[19px]'),
-          { color: bubbleInk(lightOnDark) },
+          { color: bubbleInk(lightOnDark || tailwind.isDark) },
         ]}>
         {text}
       </Text>

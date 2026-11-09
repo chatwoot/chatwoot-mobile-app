@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { memo, useCallback, useMemo } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -25,7 +26,6 @@ import { Icon, Swipeable } from '@/components-next/common';
 
 import { ConversationItem } from './ConversationItem';
 import { MarkAsUnRead, StatusIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { MarkAsRead } from '@/svg-icons';
 import i18n from '@/i18n';
 import { useSplitView } from '@/navigation/split/SplitViewContext';
@@ -39,6 +39,7 @@ type ConversationItemContainerProps = {
 };
 
 const ReadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsRead />} size={24} />
@@ -47,6 +48,7 @@ const ReadComponent = React.memo(() => {
 });
 
 const UnreadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsUnRead />} size={24} />
@@ -55,6 +57,7 @@ const UnreadComponent = React.memo(() => {
 });
 
 const StatusComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center ')}>
       <Icon icon={<StatusIcon />} size={24} />

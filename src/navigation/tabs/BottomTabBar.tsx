@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren } from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, {
@@ -21,7 +22,6 @@ import {
   SettingsIconFilled,
   SettingsIconOutline,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import {
   IOS_DESIGN,
   useHaptic,
@@ -32,8 +32,8 @@ import {
 
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
-import { SideToolbarSlot } from './SideToolbarSlot';
 import { CapsuleFill } from './CapsuleFill';
+import { SideToolbarSlot } from './SideToolbarSlot';
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
@@ -87,6 +87,7 @@ const capsuleShadow = useLiquidGlass
 const capsuleBorder = useLiquidGlass ? '' : 'border border-blackA-A3';
 
 const TabBarBackground = (props: TabBarBackgroundProps) => {
+  const tailwind = useTailwind();
   const { children, style, blurAmount, blurType, capsule, capsuleRadius } = props;
 
   const currentState = useAppSelector(selectCurrentState);
@@ -144,6 +145,7 @@ const TabBarBackground = (props: TabBarBackgroundProps) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const TabItem = (props: any) => {
+  const tailwind = useTailwind();
   const { handlers, animatedStyle } = useScaleAnimation();
 
   const { onPress, onLongPress, isFocused, options, route, vertical, floating } = props;
@@ -204,6 +206,7 @@ const TabItem = (props: any) => {
 };
 
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
   const { bottom } = useSafeAreaInsets();
@@ -247,7 +250,7 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
       <SideToolbarSlot />
       <TabBarBackground
         blurAmount={25}
-        blurType="light"
+        blurType={tailwind.isDark ? 'dark' : 'light'}
         capsule={!!sideTabBar || floating}
         capsuleRadius={
           floating ? FLOATING_BAR_HEIGHT / 2 : sideTabBar ? sideTabBar.width / 2 : undefined

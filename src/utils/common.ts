@@ -48,6 +48,8 @@ export const useSideTabBarLayout = (): SideTabBarLayout | null => {
 
 export const IOS_DESIGN = Platform.OS === 'ios';
 
+export const isPhoneNumberName = (name?: string | null) => /^[\d\s+().-]*$/.test(name ?? '');
+
 export const useIsSplitLayout = () => {
   const { width } = useWindowDimensions();
   const { left, right } = useSafeAreaInsets();

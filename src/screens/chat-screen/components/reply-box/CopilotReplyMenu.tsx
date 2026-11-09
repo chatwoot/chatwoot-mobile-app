@@ -57,7 +57,7 @@ export const CopilotReplyMenu = ({
       : []),
     {
       key: 'summarize',
-      title: i18n.t('COPILOT.SUMMARIZE'),
+      title: i18n.t('COPILOT.SUMMARIZE_SHORT'),
       icon: 'text.alignleft',
       onSelect: run(COPILOT_ACTIONS.SUMMARIZE),
     },

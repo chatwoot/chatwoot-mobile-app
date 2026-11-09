@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -7,13 +8,13 @@ import { useAppSelector } from '@/hooks';
 import { ComposePaneContext } from '@/navigation/split/SplitViewContext';
 import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
-import { tailwind } from '@/theme';
 
 import { ReplyBoxContainer } from './components/reply-box/ReplyBoxContainer';
 
 type ComposeScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'ComposeScreen'>;
 
 const ComposeScreen = ({ route }: ComposeScreenProps) => {
+  const tailwind = useTailwind();
   const isPrivate = useAppSelector(selectIsPrivateMessage);
   return (
     <SafeAreaView

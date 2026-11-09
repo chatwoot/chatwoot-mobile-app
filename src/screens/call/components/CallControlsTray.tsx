@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import i18n from '@/i18n';
 import {
   EndGlyph,
@@ -13,19 +13,11 @@ import {
 } from '@/svg-icons';
 import type { AudioRoute } from '@/services/voice/chatwootCalls';
 
-import {
-  CALL_END,
-  CONTROL_DISABLED_GLYPH,
-  CONTROL_HOLD_GLYPH,
-  CONTROL_OFF_GLYPH,
-  CONTROL_ON_GLYPH,
-} from '../constants/callTheme';
+import { useCallTheme } from '../constants/callTheme';
 import { isHeadsetRoute } from '../utils/audioRoutes';
 import { AudioRouteIcon } from './AudioRouteIcon';
 import { CallControl } from './CallControl';
 import { CALL_GLASS } from './CallSurface';
-
-const END_GLYPH = CALL_GLASS ? CALL_END : '#FFFFFF';
 
 type CallControlsTrayProps = {
   isConnected: boolean;
@@ -57,62 +49,73 @@ export const CallControlsTray = ({
   onToggleRoutePicker,
   onToggleHold,
   onEnd,
-}: CallControlsTrayProps) => (
-  <View style={tailwind.style('flex-row justify-between')}>
-    <CallControl
-      label={i18n.t(
-        isMuted ? 'CONVERSATION.VOICE_WIDGET.UNMUTE' : 'CONVERSATION.VOICE_WIDGET.MUTE',
-      )}
-      tone="off"
-      onPress={onToggleMute}>
-      {isMuted ? (
-        <MicOffGlyph color={CONTROL_OFF_GLYPH} size={26} />
-      ) : (
-        <MicOnGlyph color={CONTROL_OFF_GLYPH} size={26} />
-      )}
-    </CallControl>
-    {hasHeadset ? (
+}: CallControlsTrayProps) => {
+  const tailwind = useTailwind();
+  const {
+    CALL_END,
+    CONTROL_DISABLED_GLYPH,
+    CONTROL_HOLD_GLYPH,
+    CONTROL_OFF_GLYPH,
+    CONTROL_ON_GLYPH,
+  } = useCallTheme();
+  const END_GLYPH = CALL_GLASS ? CALL_END : '#FFFFFF';
+  return (
+    <View style={tailwind.style('flex-row justify-between')}>
       <CallControl
-        label={
-          isHeadsetRoute(currentRoute)
-            ? routeLabel(currentRoute)
-            : i18n.t('CONVERSATION.VOICE_WIDGET.AUDIO_ROUTE')
-        }
-        tone={currentRoute !== 'earpiece' ? 'on' : 'off'}
-        onPress={onToggleRoutePicker}>
-        <AudioRouteIcon
-          route={currentRoute}
-          color={currentRoute !== 'earpiece' ? CONTROL_ON_GLYPH : CONTROL_OFF_GLYPH}
-          size={26}
-        />
+        label={i18n.t(
+          isMuted ? 'CONVERSATION.VOICE_WIDGET.UNMUTE' : 'CONVERSATION.VOICE_WIDGET.MUTE',
+        )}
+        tone="off"
+        onPress={onToggleMute}>
+        {isMuted ? (
+          <MicOffGlyph color={CONTROL_OFF_GLYPH} size={26} />
+        ) : (
+          <MicOnGlyph color={CONTROL_OFF_GLYPH} size={26} />
+        )}
       </CallControl>
-    ) : (
-      <CallControl
-        label={i18n.t('CONVERSATION.VOICE_WIDGET.SPEAKER')}
-        tone={isSpeakerOn ? 'on' : 'off'}
-        onPress={onToggleSpeaker}>
-        <SpeakerGlyph color={isSpeakerOn ? CONTROL_ON_GLYPH : CONTROL_OFF_GLYPH} size={26} />
-      </CallControl>
-    )}
-    <CallControl
-      label={i18n.t(
-        isOnHold ? 'CONVERSATION.VOICE_WIDGET.RESUME' : 'CONVERSATION.VOICE_WIDGET.HOLD',
-      )}
-      tone={isOnHold ? 'hold' : 'off'}
-      inactive={!isConnected}
-      onPress={onToggleHold}>
-      {isOnHold ? (
-        <ResumeGlyph color={CONTROL_HOLD_GLYPH} size={26} />
+      {hasHeadset ? (
+        <CallControl
+          label={
+            isHeadsetRoute(currentRoute)
+              ? routeLabel(currentRoute)
+              : i18n.t('CONVERSATION.VOICE_WIDGET.AUDIO_ROUTE')
+          }
+          tone={currentRoute !== 'earpiece' ? 'on' : 'off'}
+          onPress={onToggleRoutePicker}>
+          <AudioRouteIcon
+            route={currentRoute}
+            color={currentRoute !== 'earpiece' ? CONTROL_ON_GLYPH : CONTROL_OFF_GLYPH}
+            size={26}
+          />
+        </CallControl>
       ) : (
-        <HoldGlyph color={isConnected ? CONTROL_OFF_GLYPH : CONTROL_DISABLED_GLYPH} size={26} />
+        <CallControl
+          label={i18n.t('CONVERSATION.VOICE_WIDGET.SPEAKER')}
+          tone={isSpeakerOn ? 'on' : 'off'}
+          onPress={onToggleSpeaker}>
+          <SpeakerGlyph color={isSpeakerOn ? CONTROL_ON_GLYPH : CONTROL_OFF_GLYPH} size={26} />
+        </CallControl>
       )}
-    </CallControl>
-    <CallControl
-      label={i18n.t('CONVERSATION.VOICE_WIDGET.END_CALL')}
-      tone="end"
-      disabled={isEnding}
-      onPress={onEnd}>
-      <EndGlyph color={END_GLYPH} size={26} />
-    </CallControl>
-  </View>
-);
+      <CallControl
+        label={i18n.t(
+          isOnHold ? 'CONVERSATION.VOICE_WIDGET.RESUME' : 'CONVERSATION.VOICE_WIDGET.HOLD',
+        )}
+        tone={isOnHold ? 'hold' : 'off'}
+        inactive={!isConnected}
+        onPress={onToggleHold}>
+        {isOnHold ? (
+          <ResumeGlyph color={CONTROL_HOLD_GLYPH} size={26} />
+        ) : (
+          <HoldGlyph color={isConnected ? CONTROL_OFF_GLYPH : CONTROL_DISABLED_GLYPH} size={26} />
+        )}
+      </CallControl>
+      <CallControl
+        label={i18n.t('CONVERSATION.VOICE_WIDGET.END_CALL')}
+        tone="end"
+        disabled={isEnding}
+        onPress={onEnd}>
+        <EndGlyph color={END_GLYPH} size={26} />
+      </CallControl>
+    </View>
+  );
+};

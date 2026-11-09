@@ -1,5 +1,5 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { Pressable, Text } from 'react-native';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import type { ConversationHeaderPresenterProps } from './ConversationHeaderPresenter';
 
@@ -10,6 +10,7 @@ export const SideLayoutListAction = ({
   onLeftIconPress,
   onClearFilter,
 }: Omit<ConversationHeaderPresenterProps, 'onRightIconPress'>) => {
+  const tailwind = useTailwind();
   if (currentState === 'Select') {
     return (
       <Pressable onPress={onLeftIconPress} hitSlop={12} accessibilityRole="button">

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+import radixUIDarkColors from './colors/dark';
+
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 // Light theme colors
 const radixUILightColors = require('./colors/light');
-// Dark theme colors
-const radixUIDarkColors = require('./colors/dark');
 
 // Black with alpha variations
 const blackA = require('./colors/blackA');

@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { PropsWithChildren } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
@@ -10,7 +11,6 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 
-import { tailwind } from '@/theme';
 import { useAppSelector } from '@/hooks';
 import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
 import { ACTION_TAB_HEIGHT } from './actionTabsLayout';
@@ -26,6 +26,7 @@ type ActionTabBarBackgroundProps = Partial<BlurViewProps> &
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
 
 export const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
+  const tailwind = useTailwind();
   const { children, blurAmount, blurType, style, glass } = props;
 
   const currentState = useAppSelector(selectCurrentState);
@@ -56,6 +57,7 @@ export const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
         style={[style, animatedTabBarStyle, useLiquidGlass ? null : styles.listShadow]}>
         {useLiquidGlass ? (
           <GlassView
+            colorScheme={tailwind.isDark ? 'dark' : 'light'}
             glassEffectStyle="regular"
             style={[StyleSheet.absoluteFill, { borderRadius: ACTION_TAB_HEIGHT / 2 }]}
           />
@@ -63,7 +65,7 @@ export const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
           <Animated.View style={tailwind.style('absolute inset-0 rounded-full overflow-hidden')}>
             <BlurView
               blurAmount={25}
-              blurType="light"
+              blurType={tailwind.isDark ? 'dark' : 'light'}
               style={tailwind.style('flex-1 bg-[#00000009]')}
             />
           </Animated.View>
@@ -98,7 +100,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

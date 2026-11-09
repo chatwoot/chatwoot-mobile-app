@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import { Avatar } from '@/components-next';
-import { tailwind } from '@/theme';
 import type { NotificationType } from '@/types/Notification';
 import { ConversationPriority } from '@/types/common';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
@@ -33,6 +33,7 @@ type InboxItemProps = {
 };
 
 export const InboxItemComponent = (props: InboxItemProps) => {
+  const tailwind = useTailwind();
   const iosText = useIOSListText();
   const isRowSelected = useIsRowSelected();
   const {
@@ -55,7 +56,7 @@ export const InboxItemComponent = (props: InboxItemProps) => {
       style={tailwind.style(
         'py-3 border-b-[1px]',
         iosText ? 'ml-4 mr-1.5 pr-2.5' : 'ml-3 pr-4',
-        iosText && isRead ? 'opacity-50' : '',
+        iosText && isRead ? (tailwind.isDark ? 'opacity-80' : 'opacity-50') : '',
         isRowSelected ? 'border-b-transparent' : 'border-b-blackA-A3',
       )}>
       <Animated.View style={tailwind.style('')}>

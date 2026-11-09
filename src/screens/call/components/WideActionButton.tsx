@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 
 import { CALL_GLASS, CallSurface } from './CallSurface';
 
@@ -21,8 +21,9 @@ export const WideActionButton = ({
   disabled,
   onPress,
   children,
-}: WideActionButtonProps) =>
-  CALL_GLASS ? (
+}: WideActionButtonProps) => {
+  const tailwind = useTailwind();
+  return CALL_GLASS ? (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
@@ -60,3 +61,4 @@ export const WideActionButton = ({
       </Text>
     </Pressable>
   );
+};

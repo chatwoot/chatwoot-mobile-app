@@ -1,11 +1,12 @@
+import { useTailwind } from '@/theme/useTailwind';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { useIsSplitLayout, useSideTabBarLayout } from '@/utils';
 import { SIDE_STATUS_BAR_CLEARANCE, SIDE_STATUS_BAR_CLEARANCE_COMPACT } from '@/constants';
 import { useSideToolbarItems } from '@/context';
 
 export const SideToolbarSlot = () => {
+  const tailwind = useTailwind();
   const sideTabBar = useSideTabBarLayout();
   const sideToolbarItems = useSideToolbarItems();
   const isSplit = useIsSplitLayout();

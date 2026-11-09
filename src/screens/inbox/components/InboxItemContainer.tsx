@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { useCallback } from 'react';
 import { SharedValue } from 'react-native-reanimated';
@@ -11,7 +12,6 @@ import { MarkAsRead, MarkAsUnRead, DeleteIcon } from '@/svg-icons';
 import { InboxItem } from './InboxItem';
 import { formatRelativeTime } from '@/utils/dateTimeUtils';
 import { formatTimeToShortForm } from '@/utils/dateTimeUtils';
-import { tailwind } from '@/theme';
 import { Icon, Swipeable } from '@/components-next';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
@@ -29,6 +29,7 @@ type InboxItemContainerProps = {
 };
 
 const UnreadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsRead />} size={24} />
@@ -37,6 +38,7 @@ const UnreadComponent = React.memo(() => {
 });
 
 const ReadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsUnRead />} size={24} />
@@ -45,6 +47,7 @@ const ReadComponent = React.memo(() => {
 });
 
 const DeleteComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<DeleteIcon />} size={24} />
@@ -70,13 +73,12 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       shouldShowToast: false,
     });
     if (item.primaryActor?.id) {
-      // Refetching would reset the open chat.
-      if (splitView?.selectedConversationId === item.primaryActor.id) return;
-      await dispatch(conversationActions.fetchConversation(item.primaryActor?.id));
       if (splitView) {
+        // Open now; avoid stale selection races.
         splitView.openConversation(item.primaryActor.id);
         return;
       }
+      await dispatch(conversationActions.fetchConversation(item.primaryActor.id));
       const pushToChatScreen = StackActions.push('ChatScreen', {
         conversationId: item.primaryActor?.id,
         isConversationOpenedExternally: false,

@@ -4,7 +4,7 @@ import Animated from 'react-native-reanimated';
 import { SearchBar } from '@/components-next/common/search';
 import { Icon } from '@/components-next';
 import { ChevronLeft } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { IOS_DESIGN } from '@/utils';
 import i18n from 'i18n';
 import { IOSSearchHeader } from './IOSSearchHeader';
@@ -18,13 +18,14 @@ export interface SearchHeaderProps {
 }
 
 export function SearchHeader(props: SearchHeaderProps) {
+  const tailwind = useTailwind();
   const { searchText, isLoading, onSearchChange, onClear, onBackPress } = props;
   return (
     <>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
       />
       {IOS_DESIGN ? (
         <IOSSearchHeader {...props} />

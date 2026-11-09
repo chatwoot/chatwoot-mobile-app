@@ -1,14 +1,15 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useEffect, useState } from 'react';
 import { Text, Pressable, View } from 'react-native';
 import i18n from '@/i18n';
 
-import { tailwind } from '@/theme';
-import { RemoveRowButton } from './RemoveRowButton';
 import { LABEL, VALUE, ROW } from './emailHeadStyles';
+import { RemoveRowButton } from './RemoveRowButton';
 import { IOSField } from './IOSField';
 import type { EmailMetaProps } from './ReplyEmailHead';
 
 export const IOSEmailHead = (props: EmailMetaProps) => {
+  const tailwind = useTailwind();
   const { ccEmails, bccEmails, toEmails, onUpdateCC, onUpdateBCC, onUpdateTo, contactEmail } =
     props;
   const [isCcOpen, setIsCcOpen] = useState(!!ccEmails || !!bccEmails);

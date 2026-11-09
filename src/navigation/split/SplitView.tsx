@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -15,7 +16,6 @@ import { ColumnOpenStoreContext, createColumnOpenStore } from './columnOpenStore
 import { InteractionManager, useWindowDimensions, View } from 'react-native';
 
 import { ContainerWidthContext } from '@/context';
-import { tailwind } from '@/theme';
 import { useIsSplitLayout } from '@/utils';
 import { DashboardColumnParams, SecondaryColumn, SplitViewContext } from './SplitViewContext';
 import { ConversationPane } from './ConversationPane';
@@ -41,6 +41,7 @@ const SLIDE_SPRING = {
 };
 
 export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: SplitViewProps) => {
+  const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();
   const { width } = useWindowDimensions();
   const { right: safeRight } = useSafeAreaInsets();
@@ -71,22 +72,37 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
     [generationSV],
   );
 
+  // Invalidate pending slides before opening.
+  const openColumn = useCallback(
+    (column: SecondaryColumn) => {
+      generationSV.value += 1;
+      setPreviewing(false);
+      setSecondary(column);
+    },
+    [generationSV],
+  );
+
   const value = useMemo(
     () => ({
       selectedConversationId,
       openConversation: (id: number) => {
+        generationSV.value += 1;
         setPreviewing(false);
         setSecondary(null);
         setSelectedConversationId(id);
       },
       closeConversation: () => {
+        generationSV.value += 1;
+        setPreviewing(false);
         setSecondary(null);
         setSelectedConversationId(null);
       },
       secondary,
       isSecondaryOpen,
-      openContact: () => setSecondary({ kind: 'contact' }),
+      openContact: () => openColumn({ kind: 'contact' }),
       openActions: () => {
+        generationSV.value += 1;
+        setPreviewing(false);
         columnOpenStore.set(true);
         if (isActionsWarm && !secondary) {
           generationSV.value += 1;
@@ -98,10 +114,10 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
           setSecondary({ kind: 'actions' });
         }
       },
-      openMacros: () => setSecondary({ kind: 'macros' }),
-      openCompose: () => setSecondary({ kind: 'compose' }),
+      openMacros: () => openColumn({ kind: 'macros' }),
+      openCompose: () => openColumn({ kind: 'compose' }),
       openDashboard: (params: DashboardColumnParams) =>
-        setSecondary({ kind: 'dashboard', ...params }),
+        openColumn({ kind: 'dashboard', ...params }),
       // Clear the column after sliding out.
       closeSecondary: () => {
         columnOpenStore.set(false);
@@ -122,6 +138,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       generationSV,
       offset,
       settleColumn,
+      openColumn,
     ],
   );
 

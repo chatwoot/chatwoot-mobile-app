@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useTailwind } from '@/theme/useTailwind';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import {
   StatusBar,
   Text,
@@ -25,7 +26,6 @@ import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
 import { openURL } from '@/utils/urlUtils';
-import { tailwind } from '@/theme';
 
 import {
   BottomSheetHeader,
@@ -36,12 +36,17 @@ import {
   SwitchAccount,
   SettingsList,
 } from '@/components-next';
+import { AppearancePicker } from './components/AppearancePicker';
+import { Theme } from '@/types/common/Theme';
+import { selectTheme } from '@/store/settings/settingsSelectors';
+import { SheetRef } from '@/components-next/common/sheet/Sheet';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES } from '@/constants';
 import { useRefsContext } from '@/context';
 import {
+  AppearanceIcon,
   ChatIcon,
   ChatwootIcon,
   NotificationIcon,
@@ -51,7 +56,14 @@ import {
 } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
-import { IOS_DESIGN, useHaptic, useIsSplitLayout, useTabBarHeight } from '@/utils';
+import {
+  IOS_DESIGN,
+  useHaptic,
+  useIsSplitLayout,
+  useSideTabBarLayout,
+  useTabBarHeight,
+} from '@/utils';
+import { HeaderSpacer, ScrollEdgeHeader, useScrollEdge } from '@/components-next/side-toolbar';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
 import { WorkPausedNote } from './components/WorkPausedNote';
@@ -92,10 +104,13 @@ const appVersion = Application.nativeApplicationVersion;
 const buildNumber = Application.nativeBuildVersion;
 const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
-type SettingsPane = 'availability' | 'notifications' | 'language' | 'account';
+type SettingsPane = 'availability' | 'notifications' | 'language' | 'account' | 'appearance';
 
 const SettingsScreen = () => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
+  const appearance = useAppSelector(selectTheme) ?? 'system';
+  const appearanceSheetRef = useRef<SheetRef>(null);
   const isSplit = useIsSplitLayout();
   const { width } = useWindowDimensions();
   const [pane, setPane] = useState<SettingsPane>('availability');
@@ -113,6 +128,11 @@ const SettingsScreen = () => {
   };
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
+  const sideTabBar = useSideTabBarLayout();
+  const hasOverlayHeader = IOS_DESIGN || sideTabBar !== null;
+  const scrollEdge = useScrollEdge();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const pageBackground = IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white';
   const savedAvailabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
   const [pendingAvailability, setPendingAvailability] = useState<AvailabilityStatus | null>(null);
@@ -287,6 +307,15 @@ const SettingsScreen = () => {
   const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
+      title: i18n.t('SETTINGS.APPEARANCE'),
+      icon: <AppearanceIcon />,
+      subtitle: i18n.t(`SETTINGS.APPEARANCE_${(appearance as Theme).toUpperCase()}`),
+      subtitleType: 'light',
+      isSelected: isSplit && pane === 'appearance',
+      onPressListItem: openPane('appearance', () => appearanceSheetRef.current?.present()),
+    },
+    {
+      hasChevron: true,
       title: i18n.t('SETTINGS.NOTIFICATIONS'),
       icon: <NotificationIcon />,
       subtitle: '',
@@ -343,28 +372,36 @@ const SettingsScreen = () => {
 
   const listContent = (
     <SafeAreaView
-      edges={isSplit ? ['top', 'left', 'bottom'] : undefined}
-      style={tailwind.style(
-        'flex-1 font-inter-normal-20',
-        IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white',
-      )}>
+      edges={
+        hasOverlayHeader
+          ? isSplit
+            ? ['left', 'bottom']
+            : ['left', 'right', 'bottom']
+          : isSplit
+            ? ['top', 'left', 'bottom']
+            : undefined
+      }
+      style={tailwind.style('flex-1 font-inter-normal-20', pageBackground)}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
       />
-      <SettingsHeader />
+      {hasOverlayHeader ? null : <SettingsHeader />}
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
+        onScroll={hasOverlayHeader ? scrollEdge.onScroll : undefined}
+        scrollEventThrottle={16}
+        scrollIndicatorInsets={hasOverlayHeader ? { top: headerHeight } : undefined}
         contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}>
+        {hasOverlayHeader ? <HeaderSpacer height={headerHeight} /> : null}
         <Animated.View style={tailwind.style('flex justify-center items-center pt-4 gap-4')}>
-          <Animated.View>
-            <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />
-            <Animated.View
-              style={tailwind.style(
-                'absolute border-[2px] border-white rounded-full -bottom-[2px] right-[10px]',
-              )}></Animated.View>
-          </Animated.View>
+          <UserAvatar
+            src={avatarUrl}
+            name={name}
+            status={availabilityStatus}
+            parentsBackground={pageBackground}
+          />
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
               {name}
@@ -403,6 +440,19 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
+      {hasOverlayHeader ? (
+        <ScrollEdgeHeader
+          scrollY={scrollEdge.scrollY}
+          onHeightChange={setHeaderHeight}
+          insetSides={!isSplit}
+          background={pageBackground}>
+          <SettingsHeader />
+        </ScrollEdgeHeader>
+      ) : null}
+      <Sheet ref={appearanceSheetRef} autoSize>
+        <BottomSheetHeader headerText={i18n.t('SETTINGS.APPEARANCE')} />
+        <AppearancePicker />
+      </Sheet>
       <Sheet ref={userAvailabilityStatusSheetRef} height={190}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
@@ -452,6 +502,7 @@ const SettingsScreen = () => {
 
   const titleFor = (p: SettingsPane) =>
     ({
+      appearance: i18n.t('SETTINGS.APPEARANCE'),
       availability: i18n.t('SETTINGS.SET_AVAILABILITY'),
       notifications: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
       language: i18n.t('SETTINGS.SET_LANGUAGE'),
@@ -460,6 +511,7 @@ const SettingsScreen = () => {
 
   const renderPaneCard = (p: SettingsPane) => (
     <View style={tailwind.style('rounded-[13px] bg-white overflow-hidden')}>
+      {p === 'appearance' ? <AppearancePicker /> : null}
       {p === 'availability' ? (
         <AvailabilityStatusList
           changeAvailabilityStatus={changeAvailabilityStatus}

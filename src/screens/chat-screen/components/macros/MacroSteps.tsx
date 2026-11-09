@@ -1,13 +1,14 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Macro } from '@/types';
 
 import { useMacroSteps } from './useMacroSteps';
 import { CARD, ROW_DIVIDER } from './macroStyles';
 
 export const MacroSteps = ({ macro, conversationId }: { macro: Macro; conversationId: number }) => {
+  const tailwind = useTailwind();
   const steps = useMacroSteps(macro, conversationId);
   return (
     <Animated.View entering={FadeIn.duration(200)} style={tailwind.style(CARD)}>

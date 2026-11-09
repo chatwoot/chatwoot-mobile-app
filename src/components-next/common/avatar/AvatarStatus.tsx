@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { View } from 'react-native';
 import Animated, {
@@ -10,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { avatarTheme, tailwind } from '@/theme';
+import { avatarTheme } from '@/theme';
 import { cx } from '@/utils';
 
 import { AvatarProps, AvatarSizes } from './Avatar';
@@ -26,6 +27,7 @@ interface AnimatedDotProps {
 }
 
 const AnimatedDot: React.FC<AnimatedDotProps> = ({ size, delay }) => {
+  const tailwind = useTailwind();
   const dotAnimation = useSharedValue(0);
   React.useEffect(() => {
     dotAnimation.value = withDelay(
@@ -62,6 +64,7 @@ const AnimatedDot: React.FC<AnimatedDotProps> = ({ size, delay }) => {
 };
 
 const TypingComponent: React.FC<TypingStatusProps> = ({ size, parentsBackground }) => {
+  const tailwind = useTailwind();
   const delays = ['xl', '2xl', '3xl', '4xl'].includes(size) ? [0, 333, 667] : [0, 500];
 
   return (
@@ -92,6 +95,7 @@ export const AvatarStatus: React.FC<Pick<AvatarProps, 'status' | 'size' | 'paren
   size,
   parentsBackground,
 }) => {
+  const tailwind = useTailwind();
   switch (status) {
     case 'online': {
       return (

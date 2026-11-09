@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import type { Channel } from '@/types';
 import type { Conversation } from '@/types/Conversation';
 import { HighlightedText } from '../shared/HighlightedText';
@@ -32,6 +32,7 @@ export const SearchResultConversationItem = ({
   onPress,
   isLast = false,
 }: SearchResultConversationItemProps) => {
+  const tailwind = useTailwind();
   const contactName = conversation.meta?.sender?.name || conversation.contact?.name || '';
   const contactEmail = conversation.meta?.sender?.email || conversation.contact?.email || '';
   const emailSubject =

@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { StyleProp, Text, ViewStyle } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import {
   AudioIcon,
@@ -20,6 +20,7 @@ import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
 import { getVoiceCallDisplay } from '@/utils/voiceCallUtils';
 
 const VoiceCallPreview = ({ message }: { message: Message }) => {
+  const tailwind = useTailwind();
   const display = getVoiceCallDisplay(message);
   const color = display.isFailed
     ? (tailwind.color('text-ruby-800') as string)
@@ -69,6 +70,7 @@ const getAttachmentIcon = (fileType: string) => {
 };
 
 const MessageType = ({ message, style }: { message: Message; style?: StyleProp<ViewStyle> }) => {
+  const tailwind = useTailwind();
   const { private: isPrivate } = message;
   const isOutgoing = message?.messageType === MESSAGE_TYPES.OUTGOING;
 
@@ -93,6 +95,7 @@ const MessageContent = ({
   message: Message;
   numberOfLines: number;
 }) => {
+  const tailwind = useTailwind();
   const iosText = useIOSListText();
   const { contentAttributes } = message || {};
   const { email: { subject = '' } = {} } = contentAttributes || {};
@@ -171,6 +174,7 @@ const MessageContent = ({
 };
 
 export const ConversationLastMessage = (props: ConversationLastMessageProps) => {
+  const tailwind = useTailwind();
   const { numberOfLines, lastMessage } = props;
   return (
     <NativeView style={tailwind.style('flex-1 flex-row gap-1 items-start')}>

@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 
-import { tailwind } from '@/theme';
 import { SIDE_TAB_BAR_WIDTH } from '@/constants';
 
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
@@ -12,9 +12,11 @@ export const CapsuleFill = ({
   blurAmount,
   blurType,
   radius = SIDE_TAB_BAR_WIDTH / 2,
-}: BlurViewProps & { radius?: number }) =>
-  useLiquidGlass ? (
+}: BlurViewProps & { radius?: number }) => {
+  const tailwind = useTailwind();
+  return useLiquidGlass ? (
     <GlassView
+      colorScheme={tailwind.isDark ? 'dark' : 'light'}
       glassEffectStyle="regular"
       isInteractive
       style={[tailwind.style('absolute inset-0'), { borderRadius: radius }]}
@@ -24,3 +26,4 @@ export const CapsuleFill = ({
       <BlurView {...{ blurAmount, blurType }} style={tailwind.style('flex-1 bg-white')} />
     </Animated.View>
   );
+};

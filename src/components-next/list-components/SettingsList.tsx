@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { CaretRight, TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { GenericListType } from '@/types';
 import { Icon } from '@/components-next/common/icon';
 import { useIOSListText, useIsSplitLayout } from '@/utils';
@@ -21,6 +21,7 @@ type ListItemProps = {
 };
 
 const ListItem = (props: ListItemProps) => {
+  const tailwind = useTailwind();
   const { listItem, index, isLastItem, hideDivider } = props;
   const isDisabled = listItem.inactive || listItem.locked;
 
@@ -94,6 +95,7 @@ const ListItem = (props: ListItemProps) => {
 };
 
 export const SettingsList = (props: GenericListProps) => {
+  const tailwind = useTailwind();
   const { list, sectionTitle } = props;
   const iosList = useIOSListText();
   const isSplit = useIsSplitLayout();
@@ -142,7 +144,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

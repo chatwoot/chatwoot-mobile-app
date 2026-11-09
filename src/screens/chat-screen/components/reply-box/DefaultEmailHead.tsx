@@ -1,11 +1,12 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useState } from 'react';
 import { Animated, TextInput, Text, Pressable } from 'react-native';
 import i18n from '@/i18n';
 
-import { tailwind } from '@/theme';
 import type { EmailMetaProps } from './ReplyEmailHead';
 
 export const DefaultEmailHead = (props: EmailMetaProps) => {
+  const tailwind = useTailwind();
   const { ccEmails, bccEmails, toEmails, onUpdateCC, onUpdateBCC, onUpdateTo } = props;
 
   const [showBcc, setShowBcc] = useState(false);

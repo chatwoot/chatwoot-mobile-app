@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
 
@@ -10,6 +10,7 @@ type ConversationIdProps = {
 };
 
 export const ConversationId = (props: ConversationIdProps) => {
+  const tailwind = useTailwind();
   const iosText = useIOSListText();
   const { id } = props;
   return (

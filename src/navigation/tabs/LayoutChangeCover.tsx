@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, {
@@ -11,6 +12,7 @@ import { useIsSplitLayout } from '@/utils';
 
 // Hides fold layout transition frames.
 export const LayoutChangeCover = () => {
+  const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();
   const wasSplit = React.useRef(isSplit);
   const opacity = useSharedValue(0);
@@ -22,7 +24,15 @@ export const LayoutChangeCover = () => {
   }, [isSplit, opacity]);
   const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
   return (
-    <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.cover, style]} />
+    <Animated.View
+      pointerEvents="none"
+      style={[
+        StyleSheet.absoluteFill,
+        styles.cover,
+        { backgroundColor: tailwind.color('bg-white') },
+        style,
+      ]}
+    />
   );
 };
 

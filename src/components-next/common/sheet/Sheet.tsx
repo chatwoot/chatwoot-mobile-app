@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { StyleSheet, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
 import { TrueSheet, type SheetDetent } from '@lodev09/react-native-true-sheet';
@@ -57,6 +58,7 @@ const GRABBER_OPTIONS = {
  * call sites pass a plain px height, autoSize, or explicit detents.
  */
 export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
+  const tailwind = useTailwind();
   const {
     children,
     name,
@@ -116,7 +118,7 @@ export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
       cornerRadius={26}
       backgroundColor={tailwind.color('bg-white') as string}
       grabber
-      grabberOptions={GRABBER_OPTIONS}
+      grabberOptions={{ ...GRABBER_OPTIONS, color: tailwind.color('text-gray-700') as string }}
       style={[styles.content, contentStyle]}
       onDidDismiss={onDismiss}
       onDidPresent={onPresent}>

@@ -1,11 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import {
-  GlassCircleButton,
-  HEADER_ICON_COLOR,
-} from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
 import { GlassPillButton } from '@/components-next/side-toolbar/GlassPillButton';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
@@ -15,7 +13,6 @@ import { useSplitView } from '@/navigation/split/SplitViewContext';
 import { macroActions } from '@/store/macro/macroActions';
 import { selectAllMacros } from '@/store/macro/macroSelectors';
 import { ChevronLeft } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Macro } from '@/types';
 import { useHaptic } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
@@ -30,6 +27,7 @@ export const MacrosPane = ({
   conversationId: number;
   onClose?: () => void;
 }) => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
   const splitView = useSplitView();
@@ -62,7 +60,7 @@ export const MacrosPane = ({
           title={selected.name}
           left={
             <GlassCircleButton
-              icon={<ChevronLeft stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+              icon={<ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
               onPress={() => setSelected(null)}
               accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
             />

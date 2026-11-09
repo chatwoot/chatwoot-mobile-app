@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { Text, View } from 'react-native';
 
 import { tailwind } from '@/theme';
@@ -12,19 +13,22 @@ type ToolbarButtonProps = {
   enabled: boolean;
 };
 
-export const ToolbarButton = ({ label, glyph: Glyph, enabled }: ToolbarButtonProps) => (
-  <View
-    accessibilityRole="button"
-    accessibilityLabel={label}
-    accessibilityState={{ disabled: !enabled }}
-    style={tailwind.style('h-[50px] min-w-[72px] items-center justify-center gap-1')}>
-    <Icon size={22} icon={<Glyph stroke={enabled ? TINT : DISABLED} strokeWidth={1.6} />} />
-    <Text
-      style={[
-        tailwind.style('text-[11px] leading-[13px] font-inter-medium-24'),
-        { color: enabled ? TINT : DISABLED },
-      ]}>
-      {label}
-    </Text>
-  </View>
-);
+export const ToolbarButton = ({ label, glyph: Glyph, enabled }: ToolbarButtonProps) => {
+  const tailwind = useTailwind();
+  return (
+    <View
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: !enabled }}
+      style={tailwind.style('h-[50px] min-w-[72px] items-center justify-center gap-1')}>
+      <Icon size={22} icon={<Glyph stroke={enabled ? TINT : DISABLED} strokeWidth={1.6} />} />
+      <Text
+        style={[
+          tailwind.style('text-[11px] leading-[13px] font-inter-medium-24'),
+          { color: enabled ? TINT : DISABLED },
+        ]}>
+        {label}
+      </Text>
+    </View>
+  );
+};

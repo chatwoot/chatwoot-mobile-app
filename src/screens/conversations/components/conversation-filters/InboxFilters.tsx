@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next/common';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
@@ -20,6 +20,7 @@ type InboxCellProps = {
 };
 
 const InboxCell = (props: InboxCellProps) => {
+  const tailwind = useTailwind();
   const { filtersModalSheetRef } = useRefsContext();
   const dispatch = useAppDispatch();
   const { value, isLastItem } = props;
@@ -63,6 +64,7 @@ const InboxCell = (props: InboxCellProps) => {
 };
 
 export const InboxFilters = () => {
+  const tailwind = useTailwind();
   const inboxes = useAppSelector(selectAllInboxes);
   const inboxList = [
     {

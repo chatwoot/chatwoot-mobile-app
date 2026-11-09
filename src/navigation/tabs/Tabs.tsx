@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useCallback, useEffect, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -17,7 +18,6 @@ import { selectWebSocketUrl } from '@/store/settings/settingsSelectors';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { useSideTabBarLayout } from '@/utils';
 import { SideToolbarProvider } from '@/context';
-import { tailwind } from '@/theme';
 import { CONVERSATION_PERMISSIONS } from 'constants/permissions';
 
 import { ConversationStack, SettingsStack, InboxStack } from '../stack';
@@ -42,6 +42,7 @@ import { CustomTabBar } from './CustomTabBar';
 const Tab = createBottomTabNavigator();
 
 export const Tabs = () => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const sideTabBar = useSideTabBarLayout();
   const user = useAppSelector(selectUser);

@@ -6,6 +6,7 @@ import React, {
   useId,
   useState,
 } from 'react';
+import { useAppAppearance } from '@/theme/appearance';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useSideTabBarLayout } from '@/utils';
@@ -32,6 +33,7 @@ export const useSideToolbarItems = () => useContext(ToolbarItemsContext);
 
 // Callers must memoize items.
 export const useSideToolbar = (items: React.ReactNode, enabled = true) => {
+  const appearance = useAppAppearance();
   const setEntry = useContext(SetToolbarContext);
   const owner = useId();
   const isFocused = useIsFocused();
@@ -42,7 +44,7 @@ export const useSideToolbar = (items: React.ReactNode, enabled = true) => {
     if (!active || !setEntry) return;
     setEntry({ owner, items });
     return () => setEntry(current => (current?.owner === owner ? null : current));
-  }, [active, setEntry, owner, items]);
+  }, [active, setEntry, owner, items, appearance]);
 
   return isSide;
 };

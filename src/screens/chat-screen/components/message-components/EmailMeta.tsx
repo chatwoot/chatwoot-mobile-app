@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Animated } from 'react-native';
 import i18n from '@/i18n';
 
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageContentAttributes } from '@/types';
 import { expandTabs } from '@/utils/expandTabs';
@@ -13,6 +13,7 @@ type EmailMetaProps = {
 };
 
 export const EmailMeta = (props: EmailMetaProps) => {
+  const tailwind = useTailwind();
   const { contentAttributes, sender } = props;
 
   const fromEmail = contentAttributes?.email?.from ?? [];

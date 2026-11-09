@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
 import { Icon } from '@/components-next/common';
 import i18n from '@/i18n';
 import { SplitEmptyState } from '@/navigation/split/SplitEmptyState';
 import { InfoCircleIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Macro } from '@/types';
 
 import { CARD, ROW_DIVIDER } from './macroStyles';
@@ -17,6 +17,7 @@ type MacroListProps = {
 };
 
 export const MacroList = ({ macros, onSelect, onRun, runningId }: MacroListProps) => {
+  const tailwind = useTailwind();
   if (macros.length === 0) {
     return (
       <View style={tailwind.style('pt-16')}>

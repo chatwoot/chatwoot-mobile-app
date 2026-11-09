@@ -1,6 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
-import { tailwind } from '@/theme';
 import { AnimatedNativeView, NativeView } from '@/components-next/native-components';
 import { Label } from '@/types';
 import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
@@ -20,6 +20,7 @@ interface LayoutChangeEvent {
 }
 
 const LabelText = ({ labelText, labelColor }: { labelText: string; labelColor: string }) => {
+  const tailwind = useTailwind();
   const iosText = useIOSListText();
   return (
     // Exact line height avoids clipping descenders.
@@ -37,6 +38,7 @@ const LabelText = ({ labelText, labelColor }: { labelText: string; labelColor: s
 };
 
 export const LabelIndicator = ({ labels, allLabels }: { labels: string[]; allLabels: Label[] }) => {
+  const tailwind = useTailwind();
   // Store the container width
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
 

@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { useEffect, useRef } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
 import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
@@ -13,7 +14,6 @@ import { ReplyBoxContainer } from './components';
 import { MessagesListContainer } from './components';
 import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/context';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
-import { tailwind } from '@/theme';
 import {
   selectConversationById,
   selectConversationFetching,
@@ -45,6 +45,7 @@ import { SideToolbarSlot } from '@/navigation/tabs/SideToolbarSlot';
 import { PaneErrorState } from './PaneErrorState';
 
 export const ChatWindow = (props: ChatScreenProps) => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex-1')}>
       <MessagesListContainer />
@@ -58,6 +59,7 @@ export const ChatWindow = (props: ChatScreenProps) => {
 type ChatScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'ChatScreen'>;
 
 const ConversationPagerView = (props: ChatScreenProps) => {
+  const tailwind = useTailwind();
   const isInDetailPane = useIsInDetailPane();
   const { chatPagerView } = useRefsContext();
   const { setPagerViewIndex } = useChatWindowContext();
@@ -121,6 +123,7 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
 };
 
 const ChatScreen = (props: ChatScreenProps) => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
   const isInDetailPane = useIsInDetailPane();
   const splitView = useSplitView();

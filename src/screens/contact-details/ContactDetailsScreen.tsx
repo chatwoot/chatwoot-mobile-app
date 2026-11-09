@@ -18,7 +18,7 @@ import {
   GithubIcon,
   LinkedinIcon,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { AttributeListType, CustomAttribute, GenericListType } from '@/types';
 
 import {
@@ -120,6 +120,7 @@ const processContactAttributes = (
 };
 
 const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
+  const tailwind = useTailwind();
   const isInContactPane = useIsInContactPane();
   const { conversationId, contactId: routeContactId } = props.route.params;
   const dispatch = useAppDispatch();

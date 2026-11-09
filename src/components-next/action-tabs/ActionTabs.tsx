@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -5,7 +6,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
 import { useContainerWidth, useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../common';
 import { useAppDispatch } from '@/hooks';
@@ -84,6 +84,7 @@ const ActionItem = (props: ActionItemProps) => {
 };
 
 export const ActionTabs = () => {
+  const tailwind = useTailwind();
   const { bottom, left } = useSafeAreaInsets();
   const containerWidth = useContainerWidth();
   const barLeft = left + (containerWidth - 220) / 2;
@@ -131,7 +132,7 @@ export const ActionTabs = () => {
   return (
     <ActionTabBarBackground
       blurAmount={25}
-      blurType="light"
+      blurType={tailwind.isDark ? 'dark' : 'light'}
       style={Platform.select({
         ios: [
           tailwind.style(

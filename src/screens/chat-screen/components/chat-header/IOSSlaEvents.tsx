@@ -1,13 +1,14 @@
+import { useTailwind } from '@/theme/useTailwind';
 import { Text, View } from 'react-native';
 import { format, fromUnixTime } from 'date-fns';
 import { Icon } from '@/components-next';
 import { SLAIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { SLA_MISS_TYPES } from '@/constants';
 import i18n from '@/i18n';
 import type { SlaEventsProps } from './SlaEvents';
 
 export const IOSSlaEvents = ({ slaEvents, statusText, isMissed }: SlaEventsProps) => {
+  const tailwind = useTailwind();
   const rows = [
     { type: SLA_MISS_TYPES.FRT, label: i18n.t('SLA.MISSES.FRT') },
     { type: SLA_MISS_TYPES.NRT, label: i18n.t('SLA.MISSES.NRT') },

@@ -19,12 +19,6 @@ Please delete options that are not relevant.
 
 Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
 
-## Screenshots / Screen Recordings
-
-For UI changes, attach screenshots or a short screen recording of the affected flow. Include before and after views when helpful, and label each attachment with its platform (iOS or Android).
-
-For changes without a visual impact, write `N/A`.
-
 ## Checklist:
 
 - [ ] I have performed a self-review of my own code

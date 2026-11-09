@@ -38,7 +38,6 @@ export const CONTROL_DISABLED_LABEL = token('text-call-disabled-label');
 type ToneColours = {
   wash: string;
   washTop: number;
-  washLow: number;
   status: string;
   avatarFill: string;
   avatarInk: string;
@@ -49,7 +48,6 @@ export const CALL_TONES: Record<CallTone, ToneColours> = {
   ringing: {
     wash: RINGING,
     washTop: 0.26,
-    washLow: 0.14,
     status: CALL_RING_TEXT,
     avatarFill: CONTROL_ON_FILL,
     avatarInk: token('text-call-ringing-ink'),
@@ -58,7 +56,6 @@ export const CALL_TONES: Record<CallTone, ToneColours> = {
   live: {
     wash: LIVE,
     washTop: 0.22,
-    washLow: 0.12,
     status: token('text-call-live-ink'),
     avatarFill: token('bg-call-live-fill'),
     avatarInk: token('text-call-live-ink'),
@@ -67,7 +64,6 @@ export const CALL_TONES: Record<CallTone, ToneColours> = {
   held: {
     wash: HELD,
     washTop: 0.32,
-    washLow: 0.18,
     status: CONTROL_HOLD_GLYPH,
     avatarFill: CONTROL_HOLD_FILL,
     avatarInk: CONTROL_HOLD_GLYPH,

@@ -17,6 +17,7 @@ import { selectQuoteMessage, setQuoteMessage } from '@/store/conversation/sendMe
 
 import { VideoBubblePlayer } from '../message-components';
 import { Message } from '@/types';
+import { appFont } from '@/theme/appFont';
 
 const AudioIcon = () => {
   return (
@@ -52,7 +53,7 @@ export const QuoteReply = () => {
       ...textStyle,
     },
     strong: {
-      fontFamily: 'Inter-600-20',
+      ...appFont('Inter-600-20'),
       fontWeight: '600',
     },
     em: {
@@ -61,7 +62,7 @@ export const QuoteReply = () => {
     paragraph: {
       marginTop: 0,
       marginBottom: 0,
-      fontFamily: 'Inter-400-20',
+      ...appFont('Inter-400-20'),
     },
     bullet_list: {
       minWidth: 200,

@@ -1,32 +1,18 @@
-import React, { PropsWithChildren } from 'react';
-import { Dimensions, Platform, Pressable, StyleSheet } from 'react-native';
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useDerivedValue,
-  withSpring,
-} from 'react-native-reanimated';
+import React from 'react';
+import { Platform, Pressable } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
-import { BlurView, BlurViewProps } from '@react-native-community/blur';
 
-import { TAB_BAR_HEIGHT } from '@/constants';
-import { useRefsContext } from '@/context';
+import { useContainerWidth, useRefsContext } from '@/context';
 import { tailwind } from '@/theme';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import { Icon } from '../common';
-import { useAppDispatch, useAppSelector } from '@/hooks';
-import { selectCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { useAppDispatch } from '@/hooks';
 import { setActionState } from '@/store/conversation/conversationActionSlice';
-
-const ACTION_TAB_HEIGHT = 58;
-
-const SCREEN_WIDTH = Dimensions.get('screen').width;
-
-const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
-const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
-
-type ActionTabBarBackgroundProps = BlurViewProps & PropsWithChildren;
+import { ACTION_TAB_HEIGHT, IOS_BAR_WIDTH } from './actionTabsLayout';
+import { ActionTabBarBackground } from './ActionTabBarBackground';
+import { IOSActionBar } from './IOSActionBar';
 
 const ActionLabelTag = () => (
   <Svg width="29" height="28" viewBox="0 0 29 28" fill="none">
@@ -66,43 +52,6 @@ const ActionStatusIcon = () => (
   </Svg>
 );
 
-const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
-  const { children, blurAmount, blurType, style } = props;
-
-  const currentState = useAppSelector(selectCurrentState);
-
-  const derivedAnimatedState = useDerivedValue(() =>
-    currentState === 'Select'
-      ? withSpring(0, tabEnterSpringConfig)
-      : withSpring(1, tabExitSpringConfig),
-  );
-
-  const animatedTabBarStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(derivedAnimatedState.value, [0, 1], [0, TAB_BAR_HEIGHT]),
-        },
-      ],
-    };
-  });
-
-  // Layout and shadow sit on the Animated.View. BlurView fills it as a
-  // background, clipped to the corner radius by its own wrapper.
-  return Platform.OS === 'ios' ? (
-    <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
-      <Animated.View style={tailwind.style('absolute inset-0 rounded-[30px] overflow-hidden')}>
-        <BlurView {...{ blurAmount, blurType }} style={tailwind.style('flex-1 bg-[#00000009]')} />
-      </Animated.View>
-      {children}
-    </Animated.View>
-  ) : (
-    <Animated.View style={[style, animatedTabBarStyle, styles.listShadow]}>
-      {children}
-    </Animated.View>
-  );
-};
-
 type ActionItemProps = {
   actionItem: {
     action: string;
@@ -135,7 +84,9 @@ const ActionItem = (props: ActionItemProps) => {
 };
 
 export const ActionTabs = () => {
-  const { bottom } = useSafeAreaInsets();
+  const { bottom, left } = useSafeAreaInsets();
+  const containerWidth = useContainerWidth();
+  const barLeft = left + (containerWidth - 220) / 2;
   const dispatch = useAppDispatch();
 
   const { actionsModalSheetRef } = useRefsContext();
@@ -171,6 +122,12 @@ export const ActionTabs = () => {
     },
   ];
 
+  if (IOS_DESIGN) {
+    return (
+      <IOSActionBar barLeft={left + (containerWidth - IOS_BAR_WIDTH) / 2} bottom={bottom + 8} />
+    );
+  }
+
   return (
     <ActionTabBarBackground
       blurAmount={25}
@@ -179,17 +136,13 @@ export const ActionTabs = () => {
         ios: [
           tailwind.style(
             'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px]',
-            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
-              (SCREEN_WIDTH - 220) / 2
-            }px]`,
+            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${barLeft}px]`,
           ),
         ],
         android: [
           tailwind.style(
             'flex flex-row rounded-[30px] items-center absolute justify-between w-[220px] px-6 py-[15px] bg-white',
-            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${
-              (SCREEN_WIDTH - 220) / 2
-            }px]`,
+            `h-[${ACTION_TAB_HEIGHT}px] bottom-[${bottom + 8}px] left-[${barLeft}px]`,
           ),
         ],
       })}>
@@ -199,19 +152,3 @@ export const ActionTabs = () => {
     </ActionTabBarBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  listShadow:
-    Platform.select({
-      ios: {
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 8 },
-        shadowRadius: 10,
-        shadowOpacity: 0.25,
-      },
-      android: {
-        elevation: 4,
-        backgroundColor: 'white',
-      },
-    }) || {}, // Add fallback empty object
-});

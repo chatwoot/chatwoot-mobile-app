@@ -11,11 +11,12 @@ import { MESSAGE_VARIANTS } from '@/constants';
 export type TextBubbleProps = {
   item: Message;
   variant: string;
+  timeReserve?: 'time' | 'ticks';
 };
 
 export const TextBubble = (props: TextBubbleProps) => {
   const messageItem = props.item as Message;
-  const { variant } = props;
+  const { variant, timeReserve } = props;
 
   const { private: isPrivate, content, contentAttributes, sender } = messageItem;
 
@@ -38,7 +39,7 @@ export const TextBubble = (props: TextBubbleProps) => {
 
   const renderContent = () => (
     <React.Fragment>
-      <MarkdownBubble messageContent={displayContent} variant={variant} />
+      <MarkdownBubble messageContent={displayContent} variant={variant} timeReserve={timeReserve} />
       {hasTranslations && (
         <Pressable onPress={toggleTranslation} hitSlop={4}>
           <Animated.Text

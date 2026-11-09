@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import Animated, { interpolate, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import Animated, {
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import { useSlaPillVisibility } from '../../SlaPillVisibility';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 import { useAppKeyboardAnimation } from '@/utils';
 import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
 import { useRefsContext } from '@/context';
+import { MESSAGE_TYPES } from '@/constants';
 
 export type FlashListRenderProps = {
   item: { date: string } | Message;
@@ -57,9 +66,37 @@ export const MessagesList = ({
 }: MessagesListPresentationProps) => {
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
+  const slaPill = useSlaPillVisibility();
+  const isPillShown = useSharedValue(1);
+  const onScroll = useAnimatedScrollHandler({
+    onScroll: event => {
+      if (!slaPill) return;
+      const shouldShow = event.contentOffset.y < 8 ? 1 : 0;
+      if (shouldShow === isPillShown.value) return;
+      isPillShown.value = shouldShow;
+      slaPill.value = withTiming(shouldShow, { duration: 180 });
+    },
+  });
   const typedMessageListRef = messageListRef as React.RefObject<
     FlashListRef<Message | { date: string }>
   >;
+
+  // FlashList keeps position; scroll to sent.
+  const newest = messages[0];
+  const newestId = newest && !('date' in newest) ? newest.id : null;
+  const lastNewestId = useRef(newestId);
+  useEffect(() => {
+    if (newestId === lastNewestId.current) return;
+    const isFirstLoad = lastNewestId.current === null;
+    lastNewestId.current = newestId;
+    if (isFirstLoad || !newest || 'date' in newest) return;
+    const senderId = newest.sender?.id ?? newest.senderId;
+    if (newest.messageType !== MESSAGE_TYPES.OUTGOING || senderId !== currentUserId) return;
+    const frame = requestAnimationFrame(() => {
+      typedMessageListRef.current?.scrollToOffset({ offset: 0, animated: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [newestId, newest, currentUserId, typedMessageListRef]);
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
     if ('date' in item) {
@@ -108,6 +145,8 @@ export const MessagesList = ({
         // Data is newest-first, so inverted renders index 0 at the visual bottom.
         // Older history loads via onEndReached, newer via onStartReached.
         inverted
+        onScroll={onScroll}
+        scrollEventThrottle={16}
         getItemType={item => ('date' in item ? 'date' : 'message')}
         drawDistance={500}
         showsVerticalScrollIndicator={false}

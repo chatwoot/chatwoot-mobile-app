@@ -6,6 +6,7 @@ import { CaretRight, TickIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { GenericListType } from '@/types';
 import { Icon } from '@/components-next/common/icon';
+import { useIOSListText, useIsSplitLayout } from '@/utils';
 
 type GenericListProps = {
   sectionTitle?: string;
@@ -16,10 +17,11 @@ type ListItemProps = {
   listItem: GenericListType;
   index: number;
   isLastItem: boolean;
+  hideDivider?: boolean;
 };
 
 const ListItem = (props: ListItemProps) => {
-  const { listItem, index, isLastItem } = props;
+  const { listItem, index, isLastItem, hideDivider } = props;
   const isDisabled = listItem.inactive || listItem.locked;
 
   return (
@@ -35,8 +37,9 @@ const ListItem = (props: ListItemProps) => {
       }
       style={({ pressed }) => [
         tailwind.style(
-          pressed ? 'bg-gray-100' : '',
+          listItem.isSelected ? 'bg-[#EBEBEB]' : pressed ? 'bg-gray-100' : '',
           listItem.inactive ? 'opacity-40' : '',
+
           index === 0 ? 'rounded-t-[13px]' : '',
           isLastItem ? 'rounded-b-[13px]' : '',
         ),
@@ -51,7 +54,8 @@ const ListItem = (props: ListItemProps) => {
           style={tailwind.style(
             'flex-1 flex-row items-center justify-between py-[11px]',
             listItem.icon ? 'ml-3' : '',
-            !isLastItem ? 'border-b-[1px] border-b-blackA-A3' : '',
+            !isLastItem ? 'border-b-[1px]' : '',
+            !isLastItem && (hideDivider ? 'border-b-transparent' : 'border-b-blackA-A3'),
           )}>
           <Animated.View>
             <Animated.Text
@@ -91,6 +95,8 @@ const ListItem = (props: ListItemProps) => {
 
 export const SettingsList = (props: GenericListProps) => {
   const { list, sectionTitle } = props;
+  const iosList = useIOSListText();
+  const isSplit = useIsSplitLayout();
 
   return (
     <Animated.View>
@@ -104,7 +110,11 @@ export const SettingsList = (props: GenericListProps) => {
           </Animated.Text>
         </Animated.View>
       ) : null}
-      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+      <Animated.View
+        style={[
+          tailwind.style('rounded-[13px] mx-4', iosList && isSplit ? 'bg-gray-50' : 'bg-white'),
+          iosList ? null : styles.listShadow,
+        ]}>
         {list.map(
           (listItem, index) =>
             !listItem.disabled && (
@@ -112,6 +122,7 @@ export const SettingsList = (props: GenericListProps) => {
                 key={index}
                 {...{ listItem, index }}
                 isLastItem={index === list.length - 1}
+                hideDivider={!!listItem.isSelected || !!list[index + 1]?.isSelected}
               />
             ),
         )}

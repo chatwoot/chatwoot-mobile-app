@@ -57,6 +57,7 @@ export interface AvatarProps extends ViewProps {
    * @default xl
    */
   size: AvatarSizes;
+  initialsClassName?: string;
   /**
    * If `true`, Avatar looks like a squared.
    *
@@ -101,6 +102,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
     channel,
     fallback,
     style,
+    initialsClassName,
     ...boxProps
   } = props;
 
@@ -151,6 +153,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
                 avatarTheme.initials.base,
                 avatarTheme.initials.size[size],
                 'font-inter-medium-24',
+                initialsClassName,
               ),
             ),
           ]}

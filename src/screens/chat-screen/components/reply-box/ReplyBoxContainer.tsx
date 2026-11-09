@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Keyboard, TextInput } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Alert, Keyboard, Pressable, TextInput, View } from 'react-native';
 import {
+  KeyboardAvoidingView,
   KeyboardStickyView,
   useReanimatedKeyboardAnimation,
 } from 'react-native-keyboard-controller';
@@ -16,6 +17,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useChatWindowContext, useRefsContext } from '@/context';
 import {
+  IOS_DESIGN,
   useHaptic,
   isAWhatsAppChannel,
   isAnEmailChannel,
@@ -39,7 +41,20 @@ import {
   togglePrivateMessage,
   setMessageContent,
   setQuoteMessage,
+  selectEmailDraft,
+  setEmailDraft,
+  updateEmailDraft,
+  clearEmailRecipients,
 } from '@/store/conversation/sendMessageSlice';
+import { useIsInComposePane, useSplitView } from '@/navigation/split/SplitViewContext';
+import { PaneHeader } from '@/navigation/split/PaneHeader';
+import {
+  GlassCircleButton,
+  HEADER_ICON_COLOR,
+} from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassPillButton } from '@/components-next/side-toolbar/GlassPillButton';
+import { CloseIcon } from '@/svg-icons';
+import { Locked, Unlock } from './MessageTextInput';
 import { selectUserId, selectUserName, selectUserThumbnail } from '@/store/auth/authSelectors';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
@@ -74,6 +89,12 @@ import { selectAssignableParticipantsByInboxId } from '@/store/assignable-agent/
 import { AudioRecorder } from '../audio-recorder/AudioRecorder';
 import { VoiceRecordButton } from './buttons/VoiceRecordButton';
 import { CopilotButton } from './buttons/CopilotButton';
+import { ReplyGlassCircle } from './buttons/ReplyGlassCircle';
+import { ReplySendOrMicButton } from './buttons/ReplySendOrMicButton';
+import { CopilotReplyMenu } from './CopilotReplyMenu';
+import { AddAttachmentMenu } from './AddAttachmentMenu';
+import { Icon } from '@/components-next/common';
+import { AddIcon, SparkleIcon } from '@/svg-icons';
 import { CopilotMenu } from '../copilot/CopilotMenu';
 import { CopilotEditorSection } from '../copilot/CopilotEditorSection';
 import { CopilotInputBar } from '../copilot/CopilotInputBar';
@@ -89,6 +110,10 @@ import {
 } from '@/store/copilot/copilotSlice';
 import { executeCopilotAction, sendCopilotFollowUp } from '@/store/copilot/copilotActions';
 import type { CopilotActionKey } from '@/types/Copilot';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 
 const SHEET_APPEAR_SPRING_CONFIG = {
   damping: 20,
@@ -102,6 +127,15 @@ const SHEET_APPEAR_SPRING_CONFIG = {
 
 const AnimatedKeyboardStickyView = Animated.createAnimatedComponent(KeyboardStickyView);
 const BottomSheetContent = () => {
+  const paneRightInset = usePaneRightInset();
+  const iosStyle = IOS_DESIGN;
+  const navigation = useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList>>();
+  const isComposer = useIsInComposePane();
+  const splitView = useSplitView();
+  const isComposeColumnOpen = splitView?.secondary?.kind === 'compose';
+  const openComposer = () =>
+    splitView ? splitView.openCompose() : navigation.navigate('ComposeScreen', { conversationId });
+  const closeComposer = () => (splitView ? splitView.closeSecondary() : navigation.goBack());
   const hapticSelection = useHaptic();
   const dispatch = useAppDispatch();
   const { bottom } = useSafeAreaInsets();
@@ -160,9 +194,14 @@ const BottomSheetContent = () => {
   const agents = inboxId ? selectAgents(inboxId, '') : [];
 
   const [replyEditorMode, setReplyEditorMode] = useState(REPLY_EDITOR_MODES.REPLY);
-  const [ccEmails, setCCEmails] = useState('');
-  const [bccEmails, setBCCEmails] = useState('');
-  const [toEmails, setToEmails] = useState('');
+  const emailDraft = useAppSelector(selectEmailDraft);
+  const isDraftForThisConversation = emailDraft.conversationId === conversationId;
+  const ccEmails = isDraftForThisConversation ? emailDraft.cc : '';
+  const bccEmails = isDraftForThisConversation ? emailDraft.bcc : '';
+  const toEmails = isDraftForThisConversation ? emailDraft.to : '';
+  const setCCEmails = (cc: string) => dispatch(updateEmailDraft({ conversationId, cc }));
+  const setBCCEmails = (bcc: string) => dispatch(updateEmailDraft({ conversationId, bcc }));
+  const setToEmails = (to: string) => dispatch(updateEmailDraft({ conversationId, to }));
   const [selectedCannedResponse, setSelectedCannedResponse] = useState<string | null>(null);
   const [copilotFollowUpText, setCopilotFollowUpText] = useState('');
 
@@ -179,6 +218,7 @@ const BottomSheetContent = () => {
 
   useEffect(() => {
     if (!lastEmail) return;
+    if (isDraftForThisConversation && emailDraft.sourceMessageId === lastEmail.id) return;
     const emailAttributes = lastEmail.contentAttributes?.email;
     if (!emailAttributes) return;
 
@@ -210,9 +250,15 @@ const BottomSheetContent = () => {
     bcc = [...new Set(bcc)];
     cc = [...new Set(cc)];
     to = [...new Set(to)];
-    setCCEmails(cc.join(', '));
-    setBCCEmails(bcc.join(', '));
-    setToEmails(to.join(', '));
+    dispatch(
+      setEmailDraft({
+        conversationId,
+        sourceMessageId: lastEmail.id,
+        to: to.join(', '),
+        cc: cc.join(', '),
+        bcc: bcc.join(', '),
+      }),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastEmail]);
 
@@ -455,9 +501,8 @@ const BottomSheetContent = () => {
     dispatch(resetSentMessage());
     setSelectedCannedResponse(null);
     dispatch(setMessageContent(''));
-    setCCEmails('');
-    setBCCEmails('');
-    setToEmails('');
+    dispatch(clearEmailRecipients());
+    if (isComposer) closeComposer();
     messageListRef?.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
@@ -515,6 +560,130 @@ const BottomSheetContent = () => {
 
   const shouldShowCannedResponses = messageContent?.charAt(0) === '/';
 
+  if (iosStyle && !isComposer && isComposeColumnOpen) return null;
+
+  if (isComposer) {
+    const canSend = messageContent.trim().length > 0 || attachmentsLength > 0;
+    const canTogglePrivate = replyEditorMode === REPLY_EDITOR_MODES.REPLY;
+    return (
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={tailwind.style('flex-1', isPrivate ? 'bg-amber-50' : 'bg-white')}>
+        <PaneHeader
+          title={i18n.t(
+            isPrivate ? 'CONVERSATION.COMPOSE.PRIVATE_NOTE' : 'CONVERSATION.COMPOSE.REPLY',
+          )}
+          left={
+            <GlassCircleButton
+              icon={<CloseIcon stroke={HEADER_ICON_COLOR} strokeWidth={1.5} />}
+              onPress={closeComposer}
+              accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.CLOSE')}
+            />
+          }
+          right={
+            <GlassPillButton
+              label={i18n.t('CONVERSATION.COMPOSE.SEND')}
+              onPress={() => confirmOnSendReply(null)}
+              disabled={!canSend || isCopilotActive}
+            />
+          }
+        />
+        {shouldShowReplyHeader && (
+          <ReplyEmailHead
+            ccEmails={ccEmails}
+            bccEmails={bccEmails}
+            toEmails={toEmails}
+            onUpdateCC={setCCEmails}
+            onUpdateBCC={setBCCEmails}
+            onUpdateTo={setToEmails}
+            contactEmail={conversation?.meta?.sender?.email || undefined}
+            iosStyle
+          />
+        )}
+        {quoteMessage && !isPrivate && <QuoteReply />}
+        {shouldShowCannedResponses && (
+          <CannedResponses searchKey={messageContent} onSelect={onSelectCannedResponse} />
+        )}
+        {isCopilotActive && (
+          <CopilotEditorSection
+            isGenerating={isGenerating}
+            generatedContent={generatedContent}
+            originalContent={originalContent}
+            onAccept={handleCopilotAccept}
+            onDiscard={handleCopilotDiscard}
+          />
+        )}
+        <View style={tailwind.style('flex-1 flex-row')}>
+          <MessageTextInput
+            composer
+            iosStyle
+            maxLength={maxLength()}
+            replyEditorMode={replyEditorMode}
+            selectedCannedResponse={selectedCannedResponse}
+            agents={agents as Agent[]}
+            messageContent={messageContent}
+          />
+        </View>
+        {attachmentsLength > 0 ? <AttachedMedia /> : null}
+        <Animated.View
+          style={[
+            tailwind.style('flex-row items-center gap-2 px-3 pt-2 pb-2'),
+            animatedInputWrapperStyle,
+          ]}>
+          {isCopilotActive ? (
+            <>
+              <CopilotInputBar
+                isGenerating={isGenerating}
+                onSendFollowUp={handleCopilotFollowUp}
+                onFollowUpTextChange={setCopilotFollowUpText}
+              />
+              <SendMessageButton
+                variant="copilot"
+                onPress={() => handleCopilotFollowUp(copilotFollowUpText)}
+                disabled={isGenerating || copilotFollowUpText.trim().length === 0}
+              />
+            </>
+          ) : (
+            <>
+              {shouldShowFileUpload && (
+                <AddAttachmentMenu>
+                  <ReplyGlassCircle>
+                    <Icon icon={<AddIcon />} size={22} />
+                  </ReplyGlassCircle>
+                </AddAttachmentMenu>
+              )}
+              {isGenerating ? (
+                <CopilotButton isThinking glass disabled />
+              ) : (
+                <CopilotReplyMenu
+                  editorContent={messageContent}
+                  editorMode={replyEditorMode}
+                  onSelectAction={handleCopilotAction}>
+                  <ReplyGlassCircle>
+                    <Icon icon={<SparkleIcon />} size={22} />
+                  </ReplyGlassCircle>
+                </CopilotReplyMenu>
+              )}
+              <View style={tailwind.style('flex-1')} />
+              {canTogglePrivate ? (
+                <Pressable
+                  onPress={() => dispatch(togglePrivateMessage(!isPrivate))}
+                  accessibilityRole="button"
+                  accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.PRIVATE_NOTE')}
+                  accessibilityState={{ selected: isPrivate }}>
+                  <ReplyGlassCircle>
+                    <Icon size={29} icon={isPrivate ? <Locked plain /> : <Unlock />} />
+                  </ReplyGlassCircle>
+                </Pressable>
+              ) : null}
+            </>
+          )}
+        </Animated.View>
+        <ToneSelectionSheet ref={toneSelectionSheetRef} onSelectTone={handleToneSelected} />
+      </KeyboardAvoidingView>
+    );
+  }
+
   return (
     <AnimatedKeyboardStickyView style={[tailwind.style('bg-white'), animatedInputWrapperStyle]}>
       {!canReply && inbox && conversation && (
@@ -532,16 +701,20 @@ const BottomSheetContent = () => {
             ? undefined
             : LinearTransition.springify().mass(1).damping(29).stiffness(140)
         }
-        style={tailwind.style(
-          `pb-2 border-t-[1px] border-t-blackA-A3 ${shouldShowReplyHeader ? 'pt-0' : 'pt-2'}`,
-        )}>
+        style={[
+          tailwind.style(
+            iosStyle ? 'pb-2' : 'pb-2 border-t-[1px] border-t-blackA-A3',
+            shouldShowReplyHeader && !iosStyle ? 'pt-0' : 'pt-2',
+          ),
+          { paddingRight: paneRightInset },
+        ]}>
         {quoteMessage && !isPrivate && (
           <Animated.View entering={FadeIn.duration(250)} exiting={FadeOut.duration(10)}>
             <QuoteReply />
           </Animated.View>
         )}
 
-        {shouldShowReplyHeader && (
+        {shouldShowReplyHeader && !iosStyle && (
           <ReplyEmailHead
             ccEmails={ccEmails}
             bccEmails={bccEmails}
@@ -574,19 +747,43 @@ const BottomSheetContent = () => {
                 ? undefined
                 : LinearTransition.springify().mass(1).damping(15).stiffness(105)
             }
-            style={tailwind.style('flex flex-row px-1 items-end z-20 relative')}>
-            {!isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
+            style={tailwind.style(
+              iosStyle
+                ? 'flex flex-row px-3 gap-2 items-end z-20 relative'
+                : 'flex flex-row px-1 items-end z-20 relative',
+            )}>
+            {iosStyle && !isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
+              <AddAttachmentMenu>
+                <ReplyGlassCircle>
+                  <Icon icon={<AddIcon />} size={22} />
+                </ReplyGlassCircle>
+              </AddAttachmentMenu>
+            )}
+            {!iosStyle && !isCopilotActive && attachmentsLength === 0 && shouldShowFileUpload && (
               <AddCommandButton
                 onPress={handleShowAddMenuOption}
                 derivedAddMenuOptionStateValue={derivedAddMenuOptionStateValue}
+                glass={iosStyle}
               />
             )}
-            <CopilotButton
-              isActive={isCopilotMenuOpen || isCopilotActive}
-              isThinking={isGenerating}
-              onPress={isCopilotActive ? undefined : handleToggleCopilotMenu}
-              disabled={isCopilotActive}
-            />
+            {iosStyle && !isCopilotActive && !isGenerating ? (
+              <CopilotReplyMenu
+                editorContent={messageContent}
+                editorMode={replyEditorMode}
+                onSelectAction={handleCopilotAction}>
+                <ReplyGlassCircle>
+                  <Icon icon={<SparkleIcon />} size={22} />
+                </ReplyGlassCircle>
+              </CopilotReplyMenu>
+            ) : (
+              <CopilotButton
+                isActive={isCopilotMenuOpen || isCopilotActive}
+                isThinking={isGenerating}
+                onPress={isCopilotActive ? undefined : handleToggleCopilotMenu}
+                disabled={isCopilotActive}
+                glass={iosStyle}
+              />
+            )}
             {isCopilotActive ? (
               <>
                 <CopilotInputBar
@@ -598,6 +795,24 @@ const BottomSheetContent = () => {
                   variant="copilot"
                   onPress={() => handleCopilotFollowUp(copilotFollowUpText)}
                   disabled={isGenerating || copilotFollowUpText.trim().length === 0}
+                />
+              </>
+            ) : iosStyle ? (
+              <>
+                <MessageTextInput
+                  iosStyle
+                  onExpand={inbox && isAnEmailChannel(inbox) ? openComposer : undefined}
+                  maxLength={maxLength()}
+                  replyEditorMode={replyEditorMode}
+                  selectedCannedResponse={selectedCannedResponse}
+                  agents={agents as Agent[]}
+                  messageContent={messageContent}
+                />
+                <ReplySendOrMicButton
+                  showSend={messageContent.length > 0 || attachmentsLength > 0}
+                  showMic={!!shouldShowFileUpload}
+                  onSend={() => confirmOnSendReply(null)}
+                  onMic={onPressVoiceRecordIcon}
                 />
               </>
             ) : (

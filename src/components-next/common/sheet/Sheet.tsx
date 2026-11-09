@@ -31,6 +31,7 @@ type SheetProps = {
   autoSize?: boolean;
   /** Cap on content height: a 0-1 fraction of the screen, or px. */
   maxHeight?: number;
+  maxWidth?: number;
   /** Render children with native scrolling (child should be a ScrollView/FlatList). */
   scrollable?: boolean;
   /** Show the dimmed backdrop (default true). */
@@ -63,6 +64,7 @@ export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
     detents,
     autoSize,
     maxHeight,
+    maxWidth,
     scrollable = false,
     dimmed = true,
     dismissible = true,
@@ -107,6 +109,7 @@ export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
       name={name}
       detents={resolvedDetents}
       maxContentHeight={maxContentHeight}
+      maxContentWidth={maxWidth}
       scrollable={scrollable}
       dimmed={dimmed}
       dismissible={dismissible}

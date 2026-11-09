@@ -6,6 +6,7 @@ import * as DropdownMenu from 'zeego/dropdown-menu';
 import { BottomSheetHeader } from '@/components-next';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
 import { tailwind } from '@/theme';
+import { DropdownMenuTriggerPlain } from './DropdownMenuTriggerPlain';
 
 export type DashboardList = {
   title: string;
@@ -43,6 +44,7 @@ const DropdownMenuItem = DropdownMenu.create<React.ComponentProps<typeof Dropdow
 type ChatDropdownMenuProps = {
   dropdownMenuList: DashboardList[];
   children: React.ReactNode | JSX.Element;
+  plainTrigger?: boolean;
 };
 
 export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>) => {
@@ -101,9 +103,10 @@ export const ChatDropdownMenu = (props: PropsWithChildren<ChatDropdownMenuProps>
     );
   }
 
+  const Trigger = props.plainTrigger ? DropdownMenuTriggerPlain : DropdownMenuTrigger;
   return (
     <DropdownMenu.Root>
-      <DropdownMenuTrigger>{children}</DropdownMenuTrigger>
+      <Trigger>{children}</Trigger>
       <DropdownMenu.Content>
         {dropdownMenuList.map(menuOption => {
           const handleOnOptionSelect = () => {

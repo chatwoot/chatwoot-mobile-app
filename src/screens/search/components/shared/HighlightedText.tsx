@@ -3,6 +3,11 @@ import { Text, type TextStyle, type StyleProp } from 'react-native';
 import { highlightText } from '@/utils/highlightText';
 import { tailwind } from '@/theme';
 import { expandTabs } from '@/utils/expandTabs';
+import { IOS_DESIGN } from '@/utils';
+
+const HIGHLIGHT_STYLE = tailwind.style(
+  IOS_DESIGN ? 'font-inter-semibold-20 text-gray-950' : 'font-inter-medium-24 text-blue-800',
+);
 
 type HighlightedTextProps = {
   text: string;
@@ -44,11 +49,7 @@ export const HighlightedText = ({
   return (
     <Text style={style} numberOfLines={numberOfLines}>
       {validSegments.map((segment, index) => (
-        <Text
-          key={index}
-          style={
-            segment.isHighlight ? tailwind.style('font-inter-medium-24 text-blue-800') : undefined
-          }>
+        <Text key={index} style={segment.isHighlight ? HIGHLIGHT_STYLE : undefined}>
           {segment.text}
         </Text>
       ))}

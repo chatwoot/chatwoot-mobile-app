@@ -11,6 +11,13 @@ export const SCREENS = {
 };
 
 export const TAB_BAR_HEIGHT = 83;
+export const SIDE_TAB_BAR_WIDTH = 40;
+// Measured inset of side status items.
+export const SIDE_STATUS_COLUMN_SHIFT = 5;
+export const SIDE_TAB_BAR_GAP = 8;
+// Side status bar height, measured.
+export const SIDE_STATUS_BAR_CLEARANCE = 168;
+export const SIDE_STATUS_BAR_CLEARANCE_COMPACT = 214;
 export const TEXT_INPUT_CONTAINER_HEIGHT = 57;
 
 export const userStatusList = [

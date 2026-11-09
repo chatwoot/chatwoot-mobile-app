@@ -1,17 +1,21 @@
-import React from 'react';
 import { Text, Animated } from 'react-native';
+import { IOS_DESIGN } from '@/utils';
 import { tailwind } from '@/theme';
 import { SLAEvent } from '@/types/common/SLA';
 import { SLA_MISS_TYPES } from '@/constants';
 import { SlaEvents as SlaEventItem } from './SLAEventItem';
 import i18n from '@/i18n';
+import { IOSSlaEvents } from './IOSSlaEvents';
 
-interface SlaEventsProps {
+export interface SlaEventsProps {
   slaEvents?: SLAEvent[];
   statusText: string;
+  isMissed?: boolean;
 }
 
-export const SlaEvents = ({ slaEvents, statusText }: SlaEventsProps) => {
+export const SlaEvents = (props: SlaEventsProps) => {
+  if (IOS_DESIGN) return <IOSSlaEvents {...props} />;
+  const { slaEvents, statusText } = props;
   const frtMisses = slaEvents?.filter(slaEvent => slaEvent.eventType === SLA_MISS_TYPES.FRT);
   const nrtMisses = slaEvents?.filter(slaEvent => slaEvent.eventType === SLA_MISS_TYPES.NRT);
   const rtMisses = slaEvents?.filter(slaEvent => slaEvent.eventType === SLA_MISS_TYPES.RT);

@@ -8,7 +8,7 @@ import { COPILOT_ACTIONS } from '@/constants/copilot';
 import type { CopilotActionKey } from '@/types/Copilot';
 import i18n from '@/i18n';
 
-const TONE_OPTIONS = [
+export const TONE_OPTIONS = [
   { key: COPILOT_ACTIONS.PROFESSIONAL, labelKey: 'COPILOT.TONE_PROFESSIONAL' },
   { key: COPILOT_ACTIONS.FRIENDLY, labelKey: 'COPILOT.TONE_FRIENDLY' },
   { key: COPILOT_ACTIONS.STRAIGHTFORWARD, labelKey: 'COPILOT.TONE_STRAIGHTFORWARD' },

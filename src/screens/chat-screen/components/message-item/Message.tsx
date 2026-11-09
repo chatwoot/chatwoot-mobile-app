@@ -6,7 +6,7 @@ import { selectConversationById } from '@/store/conversation/conversationSelecto
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { useChatWindowContext } from '@/context';
 import { conversationActions } from '@/store/conversation/conversationActions';
-import { unixTimestampToReadableTime, useHaptic } from '@/utils';
+import { IOS_DESIGN, unixTimestampToReadableTime, useHaptic } from '@/utils';
 import {
   ComposedBubble,
   CallBubble,
@@ -40,11 +40,14 @@ import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { tailwind } from '@/theme';
-import { Dimensions, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
+import { useContainerWidth } from '@/context';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
 import { useMessageEntrance } from './useMessageEntrance';
 import { BubbleTail } from './BubbleTail';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 // import { ImageMetadata } from '@/types';
 
@@ -94,6 +97,8 @@ type MessageWrapperProps = {
   isTargetMessage?: boolean;
   onRetry: () => void;
   canSendPublicReply: boolean;
+  inlineTime?: boolean;
+  isOwnMessage?: boolean;
 };
 
 const variantTextMap = {
@@ -139,7 +144,12 @@ const MessageWrapper = ({
   isTargetMessage = false,
   onRetry,
   canSendPublicReply,
+  inlineTime = false,
+  isOwnMessage = false,
 }: MessageWrapperProps) => {
+  const paneRightInset = usePaneRightInset();
+  const isInPane = useIsInDetailPane();
+  const containerWidth = useContainerWidth();
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
   });
@@ -154,29 +164,60 @@ const MessageWrapper = ({
     return map[orientation];
   };
 
-  const windowWidth = Dimensions.get('window').width;
+  const windowWidth = containerWidth - paneRightInset;
   // 56 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (8)
   const EMAIL_WIDTH = windowWidth - 56;
+  const textMaxWidth = isInPane
+    ? Math.max(TEXT_MAX_WIDTH, Math.round(windowWidth * 0.8))
+    : TEXT_MAX_WIDTH;
 
   // Only the search-target row animates, so only it needs an Animated.View.
   const BubbleContainer = isTargetMessage ? Animated.View : View;
 
-  const hasAvatar = !shouldGroupWithPrevious && shouldShowAvatar;
-  const shouldShowSenderName = hasAvatar && !!avatarInfo.name;
-  const shouldShowTail = hasAvatar && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
+  const hasAvatar = IOS_DESIGN
+    ? shouldShowAvatar && !item.sameSenderAsBelow
+    : !shouldGroupWithPrevious && shouldShowAvatar;
+  const isIndented = IOS_DESIGN
+    ? shouldShowAvatar && !!item.sameSenderAsBelow
+    : shouldGroupWithPrevious && orientation === ORIENTATION.LEFT;
+  const isRight = orientation === ORIENTATION.RIGHT;
+  const showNameAbove =
+    IOS_DESIGN &&
+    !item.sameSenderAsAbove &&
+    !!avatarInfo.name &&
+    ((orientation === ORIENTATION.LEFT && shouldShowAvatar) ||
+      (orientation === ORIENTATION.RIGHT && !isOwnMessage));
+  const shouldShowSenderName = !IOS_DESIGN && hasAvatar && !!avatarInfo.name;
+  const shouldShowTail = hasAvatar && !isRight && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
 
   return (
     <Animated.View
       entering={entering}
       style={tailwind.style(
-        'my-[1px]',
         flexOrientationClass(),
-        shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-8' : '',
-        !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-        item.private ? 'my-1' : '',
+        isIndented ? (isRight ? 'mr-8' : 'ml-8') : '',
+        IOS_DESIGN
+          ? item.sameSenderAsAbove
+            ? 'mt-[2px]'
+            : 'mt-2.5'
+          : [
+              'my-[1px]',
+              !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+              item.private ? 'my-1' : '',
+            ].join(' '),
       )}>
+      {showNameAbove ? (
+        <Text
+          numberOfLines={1}
+          style={[
+            tailwind.style('mb-0.5 text-[12px] leading-[16px] font-inter-normal-20 text-gray-700'),
+            isRight ? { marginRight: hasAvatar ? 44 : 12 } : { marginLeft: hasAvatar ? 44 : 12 },
+          ]}>
+          {capitalizeWords(firstName(avatarInfo.name))}
+        </Text>
+      ) : null}
       <View style={tailwind.style('flex flex-row')}>
-        {hasAvatar ? (
+        {hasAvatar && !isRight ? (
           <View style={tailwind.style('flex items-end justify-end mr-2')}>
             <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
           </View>
@@ -186,7 +227,7 @@ const MessageWrapper = ({
             <View
               style={tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
+                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${textMaxWidth}px]`}`,
                 variantBaseMap[variant],
                 variantBorderMap[variant],
                 shouldGroupWithNext && shouldGroupWithPrevious
@@ -214,7 +255,31 @@ const MessageWrapper = ({
                   pointerEvents="none"
                 />
               )}
-              {!shouldGroupWithPrevious && (
+              {inlineTime ? (
+                <View
+                  pointerEvents="none"
+                  style={tailwind.style('absolute right-2.5 bottom-[7px] flex-row items-center')}>
+                  <Text
+                    style={tailwind.style(
+                      'text-[11px] leading-[14px] font-inter-420-20 pr-1',
+                      variantTextMap[variant],
+                      orientation === ORIENTATION.LEFT ? 'opacity-75' : 'opacity-90',
+                    )}>
+                    {unixTimestampToReadableTime(item.createdAt)}
+                  </Text>
+                  <DeliveryStatus
+                    isPrivate={item.private}
+                    status={item.status}
+                    messageType={item.messageType}
+                    channel={channel}
+                    sourceId={item.sourceId}
+                    errorMessage={item.contentAttributes?.externalError || ''}
+                    deliveredColor="text-gray-700"
+                    sentColor="text-gray-700"
+                  />
+                </View>
+              ) : null}
+              {!inlineTime && !shouldGroupWithPrevious && (
                 <View
                   style={tailwind.style(
                     'h-[27px] pt-[11px] pb-0.5 flex flex-row items-baseline',
@@ -258,6 +323,11 @@ const MessageWrapper = ({
             ) : null}
           </BubbleContainer>
         </MessageMenu>
+        {hasAvatar && isRight ? (
+          <View style={tailwind.style('flex items-end justify-end ml-2')}>
+            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+          </View>
+        ) : null}
       </View>
       {item.status === MESSAGE_STATUS.FAILED ? (
         <MessageError
@@ -426,7 +496,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const shouldShowAvatar = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
-    if (orientation() === ORIENTATION.RIGHT) return false;
+    if (orientation() === ORIENTATION.RIGHT && !IOS_DESIGN) return false;
     return true;
   };
 
@@ -449,6 +519,13 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const orientation = () => {
+    if (IOS_DESIGN) {
+      if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
+      if (messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.TEMPLATE)
+        return ORIENTATION.RIGHT;
+      if (isMyMessage()) return ORIENTATION.RIGHT;
+      return ORIENTATION.LEFT;
+    }
     if (isMyMessage()) {
       return ORIENTATION.RIGHT;
     }
@@ -513,6 +590,12 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     const attachments = item.attachments;
     const isReplyMessage = item.contentAttributes?.inReplyTo;
+    const hasTranslations = !!item.contentAttributes?.translations;
+    const useInlineTime =
+      IOS_DESIGN &&
+      !hasTranslations &&
+      contentType !== CONTENT_TYPES.INCOMING_EMAIL &&
+      !(isEmailInbox && !item.private);
     const isUnsupported = item.contentAttributes?.isUnsupported;
     let messageContent;
 
@@ -534,7 +617,15 @@ export const MessageComponent = (props: MessageComponentProps) => {
         <ComposedBubble item={item} variant={variant()} orientation={orientation()} />
       );
     } else if (item.content) {
-      messageContent = <TextBubble item={item} variant={variant()} />;
+      messageContent = (
+        <TextBubble
+          item={item}
+          variant={variant()}
+          timeReserve={
+            useInlineTime ? (messageType === MESSAGE_TYPES.OUTGOING ? 'ticks' : 'time') : undefined
+          }
+        />
+      );
     } else {
       return <View />;
     }
@@ -546,12 +637,20 @@ export const MessageComponent = (props: MessageComponentProps) => {
         shouldGroupWithPrevious={shouldGroupWithPrevious()}
         shouldGroupWithNext={shouldGroupWithNext()}
         shouldShowAvatar={shouldShowAvatar()}
+        isOwnMessage={isMyMessage()}
         avatarInfo={avatarInfo()}
         getMenuOptions={getMenuOptions}
         variant={variant()}
         channel={channel}
         isTargetMessage={isTargetMessage}
         onRetry={handleRetryMessage}
+        inlineTime={
+          useInlineTime &&
+          !isUnsupported &&
+          !!item.content &&
+          !attachments?.length &&
+          !isReplyMessage
+        }
         canSendPublicReply={canSendPublicReply}>
         {messageContent}
       </MessageWrapper>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
@@ -7,9 +7,9 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Avatar, Icon } from '@/components-next';
 import {
   GlassCircleButton,
-  GlassPillButton,
   HEADER_ICON_COLOR,
 } from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassPillButton } from '@/components-next/side-toolbar/GlassPillButton';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { PaneHeader } from '@/navigation/split/PaneHeader';

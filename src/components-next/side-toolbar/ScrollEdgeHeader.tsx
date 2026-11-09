@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { PropsWithChildren, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -7,7 +7,6 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
 } from 'react-native-reanimated';
 import { BlurView } from '@react-native-community/blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,63 +14,6 @@ import Svg, { Defs, LinearGradient, Rect, Stop } from 'react-native-svg';
 
 const FADE_HEIGHT = 20;
 const APPEAR_DISTANCE = 12;
-
-export const HeaderSpacer = ({ height }: { height: number }) => {
-  const animatedHeight = useSharedValue(height);
-  const isFirst = useRef(true);
-  useEffect(() => {
-    if (isFirst.current) {
-      isFirst.current = false;
-      animatedHeight.value = height;
-      return;
-    }
-    animatedHeight.value = withSpring(height, { damping: 22, stiffness: 180 });
-  }, [height, animatedHeight]);
-  const style = useAnimatedStyle(() => ({ height: animatedHeight.value }));
-  return <Animated.View style={style} />;
-};
-
-export const PullToRefreshIndicator = ({
-  scrollY,
-  isDragging,
-  top,
-  refreshing,
-}: {
-  scrollY: SharedValue<number>;
-  isDragging: SharedValue<number>;
-  top: number;
-  refreshing: boolean;
-}) => {
-  // A refresh can swap the list out for a loader mid-pull, so the "finger lifted" and
-  // final scroll events never arrive. Reset the tracking when this list mounts or
-  // unmounts and whenever a refresh finishes, so nothing is left on screen.
-  useEffect(() => {
-    isDragging.value = 0;
-    scrollY.value = 0;
-    return () => {
-      isDragging.value = 0;
-      scrollY.value = 0;
-    };
-  }, [isDragging, scrollY]);
-  useEffect(() => {
-    if (!refreshing) isDragging.value = 0;
-  }, [refreshing, isDragging]);
-
-  const style = useAnimatedStyle(() => {
-    const pull = Math.max(-scrollY.value, 0);
-    const pullOpacity = interpolate(pull, [8, 48], [0, 1], Extrapolation.CLAMP);
-    const visible = refreshing || isDragging.value === 1;
-    return {
-      height: visible ? pull : 0,
-      opacity: refreshing ? 1 : visible ? pullOpacity : 0,
-    };
-  });
-  return (
-    <Animated.View pointerEvents="none" style={[styles.refresh, { top }, style]}>
-      <ActivityIndicator animating />
-    </Animated.View>
-  );
-};
 
 export const useScrollEdge = () => {
   const scrollY = useSharedValue(0);
@@ -145,12 +87,4 @@ const styles = StyleSheet.create({
   container: { position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 },
   effect: { position: 'absolute', top: 0, left: 0, right: 0 },
   blur: { position: 'absolute', top: 0, left: 0, right: 0 },
-  refresh: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
-  },
 });

@@ -13,161 +13,20 @@ import { takeSplitHandoff, useSplitHandoffSignal } from './splitHandoff';
 import { ColumnOpenStoreContext, createColumnOpenStore } from './columnOpenStore';
 
 import { InteractionManager, useWindowDimensions, View } from 'react-native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import ChatScreen from '@/screens/chat-screen/ChatScreen';
-import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
-import DashboardScreen from '@/screens/dashboard/DashboardScreen';
-import { ConversationActions } from '@/screens/chat-screen/conversation-actions';
-import { MacrosPane } from '@/screens/chat-screen/components/macros/MacrosPane';
-import { ReplyBoxContainer } from '@/screens/chat-screen/components/reply-box/ReplyBoxContainer';
-import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
-import { ChatWindowProvider, ContainerWidthContext, RefsProvider } from '@/context';
+import { ContainerWidthContext } from '@/context';
 import { tailwind } from '@/theme';
 import { useIsSplitLayout } from '@/utils';
-import { useAppSelector } from '@/hooks';
-import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
-import i18n from '@/i18n';
-import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
-import {
-  ComposePaneContext,
-  ContactPaneContext,
-  DashboardColumnParams,
-  DetailPaneContext,
-  SecondaryColumn,
-  SplitViewContext,
-  useSplitView,
-} from './SplitViewContext';
-import { SplitEmptyState } from './SplitEmptyState';
-import { ConversationPaneEmptyIcon } from '@/svg-icons';
-
-const PaneStack = createNativeStackNavigator<Pick<TabBarExcludedScreenParamList, 'ChatScreen'>>();
-
-type PaneChatProps = React.ComponentProps<typeof ChatScreen>;
-
-// Reads the conversation from the split view's selection rather than its route params.
-// A nested navigator's state is kept by its parent screen, so a remounted pane would
-// restore the first conversation it showed and ignore new params. ChatScreen already
-// handles its conversation changing (it refetches and resets its content).
-const PaneChat = (props: PaneChatProps) => {
-  const selectedConversationId = useSplitView()?.selectedConversationId;
-  const route = {
-    ...props.route,
-    params: { ...props.route.params, conversationId: selectedConversationId ?? 0 },
-  };
-  return <ChatScreen {...props} route={route} />;
-};
-
-// The chat runs in its own small stack so ChatScreen keeps its usual route and
-// navigation props. Screens it opens (contact details, dashboard apps) are not in this
-// stack, so those navigations go up to the app stack. Its own RefsProvider keeps the
-// chat's sheets and pager separate from the list's.
-const ConversationPane = ({ conversationId }: { conversationId: number }) => (
-  <DetailPaneContext.Provider value={true}>
-    <RefsProvider>
-      <PaneStack.Navigator screenOptions={{ headerShown: false }}>
-        <PaneStack.Screen
-          name="ChatScreen"
-          component={PaneChat}
-          initialParams={{ conversationId }}
-        />
-      </PaneStack.Navigator>
-    </RefsProvider>
-  </DetailPaneContext.Provider>
-);
-
-const EmptyPane = ({ icon, message }: { icon?: React.ReactElement; message?: string }) => (
-  <View style={tailwind.style('flex-1 items-center justify-center')}>
-    <SplitEmptyState
-      icon={icon ?? <ConversationPaneEmptyIcon />}
-      message={message ?? i18n.t('CONVERSATION.SPLIT_VIEW.EMPTY')}
-    />
-  </View>
-);
+import { DashboardColumnParams, SecondaryColumn, SplitViewContext } from './SplitViewContext';
+import { ConversationPane } from './ConversationPane';
+import { EmptyPane } from './EmptyPane';
+import { SecondaryPane } from './SecondaryPane';
 
 type SplitViewProps = PropsWithChildren<{
   resetKey?: unknown;
   emptyIcon?: React.ReactElement;
   emptyMessage?: string;
 }>;
-
-const SecondaryPane = ({
-  column,
-  conversationId,
-}: {
-  column: SecondaryColumn;
-  conversationId: number;
-}) => {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList, 'ContactDetails'>>();
-  const { right } = useSafeAreaInsets();
-  const isPrivateNote = useAppSelector(selectIsPrivateMessage);
-  const background =
-    column.kind === 'compose'
-      ? isPrivateNote
-        ? 'bg-amber-50'
-        : 'bg-white'
-      : column.kind === 'dashboard'
-        ? 'bg-white'
-        : 'bg-gray-50';
-
-  let content: React.ReactNode = null;
-  if (column.kind === 'contact') {
-    const route = {
-      key: `contact-${conversationId}`,
-      name: 'ContactDetails' as const,
-      params: { conversationId },
-    };
-    content = (
-      <ContactPaneContext.Provider value={true}>
-        <DetailPaneContext.Provider value={true}>
-          <ContactDetailsScreen route={route} navigation={navigation} />
-        </DetailPaneContext.Provider>
-      </ContactPaneContext.Provider>
-    );
-  } else if (column.kind === 'actions') {
-    content = (
-      <DetailPaneContext.Provider value={true}>
-        <RefsProvider>
-          <ChatWindowProvider conversationId={conversationId}>
-            <ConversationActions />
-            <ActionBottomSheet />
-          </ChatWindowProvider>
-        </RefsProvider>
-      </DetailPaneContext.Provider>
-    );
-  } else if (column.kind === 'macros') {
-    content = <MacrosPane conversationId={conversationId} />;
-  } else if (column.kind === 'compose') {
-    content = (
-      <DetailPaneContext.Provider value={true}>
-        <ComposePaneContext.Provider value={true}>
-          <RefsProvider>
-            <ChatWindowProvider conversationId={conversationId}>
-              <ReplyBoxContainer />
-            </ChatWindowProvider>
-          </RefsProvider>
-        </ComposePaneContext.Provider>
-      </DetailPaneContext.Provider>
-    );
-  } else {
-    content = (
-      <DashboardScreen
-        paneParams={{
-          url: column.url,
-          title: column.title,
-          conversation: column.conversation,
-          currentUser: column.currentUser,
-        }}
-      />
-    );
-  }
-
-  return (
-    <View style={[tailwind.style('flex-1', background), { paddingRight: right }]}>{content}</View>
-  );
-};
 
 const WARM_ACTIONS_COLUMN: SecondaryColumn = { kind: 'actions' };
 const COLUMN_HIDE_DISTANCE = 24;

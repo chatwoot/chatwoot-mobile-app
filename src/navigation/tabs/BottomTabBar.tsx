@@ -1,16 +1,13 @@
 import React, { PropsWithChildren } from 'react';
-import { Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useDerivedValue,
   withSpring,
-  useSharedValue,
-  withDelay,
-  withTiming,
 } from 'react-native-reanimated';
 import { BlurView, BlurViewProps } from '@react-native-community/blur';
-import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
+import { isLiquidGlassAvailable } from 'expo-glass-effect';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { RouteProp } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -28,20 +25,15 @@ import { tailwind } from '@/theme';
 import {
   IOS_DESIGN,
   useHaptic,
-  useIsSplitLayout,
   useScaleAnimation,
   useSideTabBarLayout,
   useTabBarHeight,
 } from '@/utils';
-import {
-  SIDE_STATUS_BAR_CLEARANCE,
-  SIDE_STATUS_BAR_CLEARANCE_COMPACT,
-  SIDE_TAB_BAR_WIDTH,
-} from '@/constants';
-import { useSideToolbarItems } from '@/context';
 
 import { TabParamList } from './AppTabs';
 import { useAppSelector } from '@/hooks';
+import { SideToolbarSlot } from './SideToolbarSlot';
+import { CapsuleFill } from './CapsuleFill';
 
 const tabExitSpringConfig = { damping: 20, stiffness: 360, mass: 1 };
 const tabEnterSpringConfig = { damping: 30, stiffness: 360, mass: 1 };
@@ -93,25 +85,6 @@ const capsuleShadow = useLiquidGlass
     };
 
 const capsuleBorder = useLiquidGlass ? '' : 'border border-blackA-A3';
-
-// Background of a side capsule. The blur is clipped by its own wrapper so the capsule
-// itself can draw a shadow.
-const CapsuleFill = ({
-  blurAmount,
-  blurType,
-  radius = SIDE_TAB_BAR_WIDTH / 2,
-}: BlurViewProps & { radius?: number }) =>
-  useLiquidGlass ? (
-    <GlassView
-      glassEffectStyle="regular"
-      isInteractive
-      style={[tailwind.style('absolute inset-0'), { borderRadius: radius }]}
-    />
-  ) : (
-    <Animated.View style={tailwind.style('absolute inset-0 rounded-full overflow-hidden')}>
-      <BlurView {...{ blurAmount, blurType }} style={tailwind.style('flex-1 bg-white')} />
-    </Animated.View>
-  );
 
 const TabBarBackground = (props: TabBarBackgroundProps) => {
   const { children, style, blurAmount, blurType, capsule, capsuleRadius } = props;
@@ -230,61 +203,6 @@ const TabItem = (props: any) => {
   );
 };
 
-export const SideToolbarSlot = () => {
-  const sideTabBar = useSideTabBarLayout();
-  const sideToolbarItems = useSideToolbarItems();
-  const isSplit = useIsSplitLayout();
-  if (!sideTabBar || !sideToolbarItems) return null;
-  const top = isSplit ? SIDE_STATUS_BAR_CLEARANCE : SIDE_STATUS_BAR_CLEARANCE_COMPACT;
-  return (
-    <Animated.View
-      style={[
-        tailwind.style('absolute flex flex-col items-center gap-2.5', `top-[${top}px]`),
-        sideTabBar.edge === 'right' ? { right: sideTabBar.offset } : { left: sideTabBar.offset },
-      ]}>
-      {sideToolbarItems}
-    </Animated.View>
-  );
-};
-
-/**
- * Covers the app while the Duo folds or unfolds: the layout switches between one column and
- * the split view, and screens close, open and re-measure over a few frames. A white cover
- * hides those in-between frames, then fades out once the new layout has settled.
- */
-export const LayoutChangeCover = () => {
-  const isSplit = useIsSplitLayout();
-  const wasSplit = React.useRef(isSplit);
-  const opacity = useSharedValue(0);
-  React.useEffect(() => {
-    if (wasSplit.current === isSplit) return;
-    wasSplit.current = isSplit;
-    opacity.value = 1;
-    opacity.value = withDelay(220, withTiming(0, { duration: 250 }));
-  }, [isSplit, opacity]);
-  const style = useAnimatedStyle(() => ({ opacity: opacity.value }));
-  return (
-    <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.cover, style]} />
-  );
-};
-
-export const SideColumnDivider = () => {
-  const sideTabBar = useSideTabBarLayout();
-  const isSplit = useIsSplitLayout();
-  const { left, right } = useSafeAreaInsets();
-  if (!sideTabBar || isSplit) return null;
-  return (
-    <Animated.View
-      pointerEvents="none"
-      style={[
-        tailwind.style('absolute top-0 bottom-0 bg-blackA-A3'),
-        { width: StyleSheet.hairlineWidth },
-        sideTabBar.edge === 'right' ? { right } : { left },
-      ]}
-    />
-  );
-};
-
 export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
   const hapticSelection = useHaptic();
   const tabBarHeight = useTabBarHeight();
@@ -392,7 +310,3 @@ export const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarPro
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  cover: { backgroundColor: '#FFFFFF', zIndex: 100 },
-});

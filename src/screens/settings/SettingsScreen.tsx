@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   StatusBar,
   Text,
@@ -81,7 +81,7 @@ import { isVoiceCallEnabled } from '@/utils/inboxUtils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { showToast } from '@/utils/toastUtils';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
-import { PageHeader } from '@/navigation/split/FullScreenPage';
+import { PageHeader } from '@/navigation/split/PageHeader';
 import { SwipeBackPage } from '@/navigation/split/SwipeBackPage';
 import { getVoipToken } from '@/services/voice/chatwootCalls';
 import { callActions } from '@/store/call/callActions';

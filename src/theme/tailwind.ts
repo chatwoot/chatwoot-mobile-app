@@ -5,9 +5,7 @@ import { useSystemFont } from './appFont';
 
 const tw = create(twConfig);
 
-// With Apple's system font (iOS trial), drop letter spacing: the system font sets its own
-// tracking for each size, and on iOS any explicit value (even 0) replaces it and turns
-// off kerning. The tracking-[…] classes were tuned for Inter.
+// Explicit tracking disables iOS kerning.
 if (useSystemFont) {
   const style = tw.style.bind(tw);
   tw.style = ((...args: Parameters<typeof tw.style>) => {

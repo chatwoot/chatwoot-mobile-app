@@ -10,11 +10,7 @@ import Animated, {
 
 import { useIsSplitLayout } from '@/utils';
 
-/**
- * Covers the app while the Duo folds or unfolds: the layout switches between one column and
- * the split view, and screens close, open and re-measure over a few frames. A white cover
- * hides those in-between frames, then fades out once the new layout has settled.
- */
+// Hides fold layout transition frames.
 export const LayoutChangeCover = () => {
   const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();

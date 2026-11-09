@@ -12,12 +12,10 @@ export const SCREENS = {
 
 export const TAB_BAR_HEIGHT = 83;
 export const SIDE_TAB_BAR_WIDTH = 40;
-// iOS centers the side status bar items a little inward of the safe-area column's center
-// (measured on iPhone Duo); the capsules line up with them.
+// Measured inset of side status items.
 export const SIDE_STATUS_COLUMN_SHIFT = 5;
 export const SIDE_TAB_BAR_GAP = 8;
-// Space the side status bar (time, Wi-Fi, battery) takes at the top of its column on
-// iPhone Duo. iOS doesn't report it, so the side toolbar starts below this. Measured on device.
+// Side status bar height, measured.
 export const SIDE_STATUS_BAR_CLEARANCE = 168;
 export const SIDE_STATUS_BAR_CLEARANCE_COMPACT = 214;
 export const TEXT_INPUT_CONTAINER_HEIGHT = 57;

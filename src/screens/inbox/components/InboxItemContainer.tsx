@@ -74,8 +74,7 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
     });
     if (item.primaryActor?.id) {
       if (splitView) {
-        // Open immediately. ChatScreen fetches the selected conversation itself; waiting here
-        // lets an older request steal the selection after a newer notification is tapped.
+        // Open now; avoid stale selection races.
         splitView.openConversation(item.primaryActor.id);
         return;
       }

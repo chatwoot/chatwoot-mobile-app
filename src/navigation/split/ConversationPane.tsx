@@ -7,10 +7,7 @@ import { PaneChat } from './PaneChat';
 
 const PaneStack = createNativeStackNavigator<Pick<TabBarExcludedScreenParamList, 'ChatScreen'>>();
 
-// The chat runs in its own small stack so ChatScreen keeps its usual route and
-// navigation props. Screens it opens (contact details, dashboard apps) are not in this
-// stack, so those navigations go up to the app stack. Its own RefsProvider keeps the
-// chat's sheets and pager separate from the list's.
+// Own stack keeps ChatScreen route props.
 export const ConversationPane = ({ conversationId }: { conversationId: number }) => (
   <DetailPaneContext.Provider value={true}>
     <RefsProvider>

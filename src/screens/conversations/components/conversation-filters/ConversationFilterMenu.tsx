@@ -14,7 +14,7 @@ import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { AssigneeOptions, SortOptions, StatusOptions } from '@/types/common/ConversationStatus';
 import { ConversationFilterOptions } from '@/types';
 
-// zeego's Label typings include web-only props; on iOS it only needs the section title.
+// zeego Label types include web props.
 const MenuLabel = DropdownMenu.Label as unknown as React.FC<{ children: string }>;
 
 const optionLabel = (section: 'ASSIGNEE_TYPE' | 'STATUS' | 'SORT_BY', id: string) =>
@@ -28,8 +28,7 @@ type SectionProps = {
   onSelect: (key: ConversationFilterOptions, value: string) => void;
 };
 
-// A plain function, not a component: zeego builds the native menu from its own elements
-// and skips custom components, so sections must be returned as zeego elements directly.
+// zeego needs elements, not components.
 const renderSection = ({ filterKey, title, options, selected, onSelect }: SectionProps) => (
   <DropdownMenu.Group key={`group-${filterKey}`}>
     <MenuLabel>{title}</MenuLabel>

@@ -1,3 +1,3 @@
-// twrnc drops the /opacity modifier on the palette's hsl colours
+// twrnc ignores /opacity on hsl.
 export const withAlpha = (colour: string, alpha: number) =>
   colour.replace(/^hsl\((.*)\)$/, `hsla($1, ${alpha})`);

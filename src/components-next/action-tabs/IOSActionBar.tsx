@@ -18,7 +18,7 @@ import { ACTION_TAB_HEIGHT, IOS_BAR_WIDTH } from './actionTabsLayout';
 import { ToolbarButton } from './ToolbarButton';
 import { ActionTabBarBackground } from './ActionTabBarBackground';
 
-// zeego's Label typings include web-only props; on iOS it only needs the section title.
+// zeego Label types include web props.
 const MenuLabel = DropdownMenu.Label as unknown as React.FC<{ children: string }>;
 
 const STATUS_OPTIONS: { id: ConversationStatus; icon: string }[] = [

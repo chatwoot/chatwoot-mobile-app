@@ -51,7 +51,7 @@ export const IOSSearchField = ({
         autoCorrect={false}
         returnKeyType="search"
         clearButtonMode="never"
-        // Single-line inputs center their text; a lineHeight would push it off center.
+        // lineHeight breaks single-line text centering.
         style={tailwind.style(
           'flex-1 h-full ml-1.5 py-0 text-[17px] font-inter-normal-20 text-gray-950',
         )}

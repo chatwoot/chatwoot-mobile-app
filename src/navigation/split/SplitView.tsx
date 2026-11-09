@@ -62,8 +62,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
   const [totalWidth, setTotalWidth] = useState<number | null>(null);
   const offset = useSharedValue(0);
   const generationSV = useSharedValue(0);
-  // After a slide lands: record the column as open (the pre-built actions if none was set) or
-  // clear it, unless a newer slide or swipe has started since.
+  // Ignore slides superseded by newer ones.
   const settleColumn = useCallback(
     (open: boolean, generation: number) => {
       if (generation !== generationSV.value) return;
@@ -73,8 +72,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
     [generationSV],
   );
 
-  // Invalidate a pending close/swipe before opening another column. Otherwise its
-  // completion callback can clear the newly selected Macros (or contact) pane.
+  // Invalidate pending slides before opening.
   const openColumn = useCallback(
     (column: SecondaryColumn) => {
       generationSV.value += 1;
@@ -120,8 +118,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       openCompose: () => openColumn({ kind: 'compose' }),
       openDashboard: (params: DashboardColumnParams) =>
         openColumn({ kind: 'dashboard', ...params }),
-      // Slide back first and clear the column when it's out of view, so its content doesn't
-      // change (or re-render) mid-slide.
+      // Clear the column after sliding out.
       closeSecondary: () => {
         columnOpenStore.set(false);
         generationSV.value += 1;
@@ -249,8 +246,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       });
     });
 
-  // The list keeps the same place in the tree whether or not the split view is showing, so
-  // folding or unfolding the Duo resizes it instead of remounting it (no refetch, scroll kept).
+  // Stable tree position avoids remounting.
   return (
     <SplitViewContext.Provider value={isSplit ? value : null}>
       <ColumnOpenStoreContext.Provider value={isSplit ? columnOpenStore : null}>
@@ -268,13 +264,12 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
                 <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
                 <ContainerWidthContext.Provider value={detailWidth}>
                   <Animated.View
-                    // The width changes in one step (hidden by the slide) instead of animating:
-                    // animating it re-lays out the whole chat every frame and drops frames.
+                    // Animating width drops frames.
                     style={[
                       tailwind.style(selectedConversationId ? 'bg-white' : 'bg-gray-50'),
                       { width: detailWidth ?? 0 },
                     ]}>
-                    {/* Wait for the pane's width so the chat doesn't first lay out at window width. */}
+                    {/* Avoid first layout at window width. */}
                     {selectedConversationId && detailWidth ? (
                       <GestureDetector gesture={swipe}>
                         <View style={tailwind.style('flex-1')}>
@@ -293,8 +288,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
                       { width: contactWidth },
                       tailwind.style(selectedConversationId ? 'bg-white' : 'bg-gray-50'),
                     ]}>
-                    {/* The actions column is built ahead (hidden) so a swipe can slide it in at
-                      once. */}
+                    {/* Prebuilt so swipes open instantly. */}
                     {selectedConversationId && (secondary || isActionsWarm) ? (
                       <Animated.View
                         style={[tailwind.style('flex-1'), columnStyle]}

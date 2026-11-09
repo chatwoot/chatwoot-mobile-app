@@ -1,8 +1,6 @@
 import { createContext, useContext, useSyncExternalStore } from 'react';
 
-// Whether the split view's side column is open (or opening), published the moment a slide
-// starts. The side toolbar reads this so its buttons switch right away, without waiting for the
-// split view's state, which updates after the slide lands (to keep the slide smooth).
+// Published when a slide starts.
 export type ColumnOpenStore = {
   get: () => boolean;
   set: (open: boolean) => void;

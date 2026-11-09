@@ -10,7 +10,7 @@ const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
 
 type SideToolbarButtonProps = {
   icon: React.ReactElement;
-  // Leave out when the button is a menu trigger, so the menu receives the tap.
+  // Omit for menu triggers.
   onPress?: () => void;
   accessibilityLabel: string;
   showBadge?: boolean;

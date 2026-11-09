@@ -1,5 +1,4 @@
-// Message channel between showToast (used anywhere, including store code) and the glass toast
-// on screen (GlassToastHost). Kept free of UI imports so store code and tests can use it.
+// Kept UI-free for store code.
 export type ToastMessage = { id: number; text: string };
 
 let nextId = 1;

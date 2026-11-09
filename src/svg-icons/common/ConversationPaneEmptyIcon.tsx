@@ -3,7 +3,7 @@ import Svg, { Circle, Path } from 'react-native-svg';
 export const ConversationPaneEmptyIcon = ({
   backgroundColor = '#F9F9F9',
 }: {
-  // Must match what the icon sits on (the pane's gray-50 by default).
+  // Must match the background colour.
   backgroundColor?: string;
 }) => {
   return (

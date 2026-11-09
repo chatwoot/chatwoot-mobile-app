@@ -23,8 +23,7 @@ const LabelText = ({ labelText, labelColor }: { labelText: string; labelColor: s
   const tailwind = useTailwind();
   const iosText = useIOSListText();
   return (
-    // On the iOS list layout the label is exactly its 18pt line height (no extra padding),
-    // so it fits the 20pt labels line without clipping letters like q and y.
+    // Exact line height avoids clipping descenders.
     <NativeView style={tailwind.style('flex-row items-center', iosText ? '' : 'py-[3px]')}>
       <NativeView style={tailwind.style('h-[5px] w-[5px] rounded-full', `bg-[${labelColor}]`)} />
       <Text

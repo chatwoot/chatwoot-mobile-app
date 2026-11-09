@@ -38,7 +38,7 @@ const dark = create({
   },
 });
 
-// Keep foreground white (sent messages, badges) white. Only white surfaces change.
+// Foreground white stays white in dark.
 export const darkClasses = (value: string) =>
   value
     .replace(/\bbg-white\b/g, 'bg-surface')

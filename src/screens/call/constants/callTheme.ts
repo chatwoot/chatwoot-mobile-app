@@ -9,7 +9,6 @@ export type CallTone = 'ringing' | 'live' | 'held';
 type ToneColours = {
   wash: string;
   washTop: number;
-  washLow: number;
   status: string;
   avatarFill: string;
   avatarInk: string;
@@ -48,7 +47,6 @@ const buildCallTheme = (tw: ThemeTailwind) => {
     ringing: {
       wash: RINGING,
       washTop: 0.26,
-      washLow: 0.14,
       status: CALL_RING_TEXT,
       avatarFill: CONTROL_ON_FILL,
       avatarInk: token('text-call-ringing-ink'),
@@ -57,7 +55,6 @@ const buildCallTheme = (tw: ThemeTailwind) => {
     live: {
       wash: LIVE,
       washTop: 0.22,
-      washLow: 0.12,
       status: token('text-call-live-ink'),
       avatarFill: token('bg-call-live-fill'),
       avatarInk: token('text-call-live-ink'),
@@ -66,7 +63,6 @@ const buildCallTheme = (tw: ThemeTailwind) => {
     held: {
       wash: HELD,
       washTop: 0.32,
-      washLow: 0.18,
       status: CONTROL_HOLD_GLYPH,
       avatarFill: CONTROL_HOLD_FILL,
       avatarInk: CONTROL_HOLD_GLYPH,

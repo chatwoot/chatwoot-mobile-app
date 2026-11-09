@@ -10,17 +10,13 @@ export const CallBackdrop = ({ tone }: { tone: CallTone }) => {
   const tailwind = useTailwind();
   const { CALL_BACKDROP, CALL_TONES } = useCallTheme();
   const { width, height } = useWindowDimensions();
-  const { wash: colour, washTop, washLow } = CALL_TONES[tone];
+  const { wash: colour, washTop } = CALL_TONES[tone];
   return (
     <View style={[tailwind.style('absolute inset-0'), { backgroundColor: CALL_BACKDROP }]}>
       <Svg width={width} height={height}>
         <Defs>
           <RadialGradient id="washTop" cx="50%" cy="50%" r="50%">
             <Stop offset="0" stopColor={colour} stopOpacity={washTop} />
-            <Stop offset="1" stopColor={colour} stopOpacity={0} />
-          </RadialGradient>
-          <RadialGradient id="washLow" cx="50%" cy="50%" r="50%">
-            <Stop offset="0" stopColor={colour} stopOpacity={washLow} />
             <Stop offset="1" stopColor={colour} stopOpacity={0} />
           </RadialGradient>
         </Defs>
@@ -30,13 +26,6 @@ export const CallBackdrop = ({ tone }: { tone: CallTone }) => {
           rx={width * 0.6}
           ry={height * 0.42}
           fill="url(#washTop)"
-        />
-        <Ellipse
-          cx={width * 0.8}
-          cy={height * 0.9}
-          rx={width * 0.5}
-          ry={height * 0.3}
-          fill="url(#washLow)"
         />
       </Svg>
     </View>

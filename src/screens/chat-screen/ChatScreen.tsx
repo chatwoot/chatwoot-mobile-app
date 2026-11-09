@@ -65,9 +65,6 @@ const ConversationPagerView = (props: ChatScreenProps) => {
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
     setPagerViewIndex(e.nativeEvent.position);
   };
-  // iOS: a clear leftward swipe on the messages opens the actions page (like the split view's
-  // swipe that opens the actions column). Only leftward drags start it, so the edge swipe back
-  // and scrolling the messages aren't affected.
   const navigation = useNavigation();
   const { conversationId } = useChatWindowContext();
   const openActions = () =>
@@ -84,8 +81,6 @@ const ConversationPagerView = (props: ChatScreenProps) => {
       orientation="horizontal"
       overdrag
       style={tailwind.style('flex-1')}
-      // In the split view pane actions open as a column instead of a swipe-left page.
-      // iOS opens actions as a page, so the chat doesn't swipe sideways (that's Back).
       scrollEnabled={!isInDetailPane && !IOS_DESIGN}
       initialPage={0}
       onPageSelected={onPageSelected}>
@@ -125,9 +120,6 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
     </SlaPillVisibilityContext.Provider>
   );
 };
-// Error state for the split view's conversation pane: compact and quiet, in the same
-// type scale as the chat (17pt title, 15pt body, rounded button) instead of the
-// full-screen phone layout.
 const PaneErrorState = ({
   title,
   onRetry,
@@ -266,11 +258,8 @@ const ChatScreen = (props: ChatScreenProps) => {
     const { messageId } = props.route.params;
     const screen = (
       <SafeAreaView
-        // In the split view pane the chat runs to the display edge; its parts pad their content.
         edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
         style={tailwind.style('flex-1 bg-white')}>
-        {/* With tabs on the side (split view pane or full screen), match the list header's top
-            margin so the headers line up and stay out of the rounded corner. */}
         {isInDetailPane || sideTabBar ? <Animated.View style={{ height: paneTopMargin }} /> : null}
         {/* Remount the chat subtree when the conversation or account changes so its
             account-scoped data (agents, teams, participants, canned responses) refetches. */}
@@ -283,8 +272,6 @@ const ChatScreen = (props: ChatScreenProps) => {
         <ActionBottomSheet />
       </SafeAreaView>
     );
-    // Full screen with tabs on the side (e.g. opened from a notification): the tab bar isn't
-    // shown, so the chat draws its own side toolbar for its header actions.
     if (!isInDetailPane && sideTabBar) {
       return (
         <SideToolbarProvider>
@@ -318,7 +305,6 @@ const ChatScreen = (props: ChatScreenProps) => {
   }
 
   if ((conversationError || !conversation) && IOS_DESIGN) {
-    // iOS: the same compact error state as the split view pane; Close goes back.
     return (
       <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-gray-50')}>
         <PaneErrorState
@@ -333,7 +319,6 @@ const ChatScreen = (props: ChatScreenProps) => {
   if (conversationError || !conversation) {
     return (
       <SafeAreaView
-        // In the split view pane the chat runs to the display edge; its parts pad their content.
         edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
         style={tailwind.style('flex-1 bg-white')}>
         <Animated.View

@@ -45,13 +45,8 @@ type MessageTextInputProps = {
   selectedCannedResponse?: string | null;
   agents: Agent[];
   messageContent: string;
-  // iPhone Duo reply bar: iOS Messages-style capsule field with the private note lock inside
-  // it on the right.
   iosStyle?: boolean;
-  // Email replies on iPhone Duo: opens the full editor in the side column.
   onExpand?: () => void;
-  // The full editor in the side column: a plain text area filling the space, without the
-  // capsule (the lock moves to the editor's toolbar).
   composer?: boolean;
 };
 type AgentSuggestion = Omit<Agent, 'id'> & Suggestion;
@@ -72,7 +67,6 @@ export const Unlock = () => {
   );
 };
 
-// `plain` drops the white circle (iPhone Duo reply bar, where the field is the highlight).
 export const Locked = ({ plain = false }: { plain?: boolean }) => {
   const tailwind = useTailwind();
   return (
@@ -107,7 +101,6 @@ export const MessageTextInput = ({
   const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const messageContent = useAppSelector(selectMessageContent);
-  // iPhone Duo: the field grows with the message up to 40% of the screen, then scrolls.
   const { height: windowHeight } = useWindowDimensions();
   const iosMaxHeight = Math.max(124, Math.round(windowHeight * 0.4));
 
@@ -264,10 +257,8 @@ export const MessageTextInput = ({
           composer
             ? tailwind.style('flex-1')
             : iosStyle
-              ? // The capsule is a row, so the lock lines up with the last line of text.
-                tailwind.style(
+              ? tailwind.style(
                   'flex-1 flex-row items-end rounded-[18px]',
-                  // Liquid Glass like the round buttons; a flat capsule where it isn't available.
                   useLiquidGlass
                     ? ''
                     : isPrivateMessage
@@ -320,8 +311,7 @@ export const MessageTextInput = ({
                   'flex-1 px-4 pt-3 pb-3 text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
                 )
               : iosStyle
-                ? // 17pt Body text, 36pt tall when empty.
-                  [
+                ? [
                     tailwind.style(
                       'text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
                       'pt-[7px] pb-[7px] pl-3.5 pr-1 min-h-9',

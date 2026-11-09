@@ -91,8 +91,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   return (
     <AnimatedNativeView
       layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}
-      // iOS list layout: every line box matches its line height (name 22, preview 20,
-      // labels/SLA 20) with the same 4pt gap between lines, and 12pt row padding.
       style={tailwind.style(
         'flex-1 border-b-[1px]',
         isRowSelected ? 'border-b-transparent' : 'border-b-blackA-A3',
@@ -104,7 +102,6 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           'flex flex-row justify-between items-center',
           iosText ? 'h-[22px]' : 'h-[24px]',
         )}>
-        {/* The name shrinks to fit; the id, indicators and time keep their size. */}
         <AnimatedNativeView
           style={tailwind.style(
             'flex flex-row flex-1 items-center gap-[5px] mr-2',

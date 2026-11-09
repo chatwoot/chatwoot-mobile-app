@@ -32,7 +32,6 @@ export const ColumnOpenStoreContext = createContext<ColumnOpenStore | null>(null
 
 const noopSubscribe = () => () => {};
 
-/** True while the side column is open or opening; null outside a split view. */
 export const useIsColumnOpen = (): boolean | null => {
   const store = useContext(ColumnOpenStoreContext);
   const open = useSyncExternalStore(store?.subscribe ?? noopSubscribe, () => store?.get() ?? false);

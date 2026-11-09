@@ -13,9 +13,7 @@ type EmailMetaProps = {
   onUpdateCC: (ccEmails: string) => void;
   onUpdateBCC: (bccEmails: string) => void;
   onUpdateTo: (toEmails: string) => void;
-  // iPhone Duo compose column: rows like Mail's compose header.
   iosStyle?: boolean;
-  // Shown in the To row when the reply simply goes to the conversation's contact.
   contactEmail?: string;
 };
 
@@ -28,7 +26,6 @@ type IOSFieldProps = {
 
 const LABEL = 'text-[17px] leading-[22px] font-inter-normal-20 text-gray-700 mr-1.5';
 const VALUE = 'text-[17px] leading-[22px] font-inter-normal-20 text-gray-950';
-// Rows run to the edge with a hairline under each, inset on the left like Mail's compose.
 const ROW = 'flex-row items-center min-h-11 pr-3 border-b-[0.5px] border-b-blackA-A6';
 
 const IOSField = ({ label, value, onChange, accessory }: IOSFieldProps) => {
@@ -51,7 +48,6 @@ const IOSField = ({ label, value, onChange, accessory }: IOSFieldProps) => {
   );
 };
 
-// Small × that removes a row (and clears its addresses).
 const RemoveRowButton = ({ onPress, label }: { onPress: () => void; label: string }) => {
   const tailwind = useTailwind();
   return (
@@ -72,10 +68,8 @@ const IOSEmailHead = (props: EmailMetaProps) => {
   const tailwind = useTailwind();
   const { ccEmails, bccEmails, toEmails, onUpdateCC, onUpdateBCC, onUpdateTo, contactEmail } =
     props;
-  // Like Mail: Cc and Bcc stay folded into one "Cc/Bcc" row until you need them.
   const [isCcOpen, setIsCcOpen] = useState(!!ccEmails || !!bccEmails);
   const [showBcc, setShowBcc] = useState(!!bccEmails);
-  // Addresses can arrive after mount (e.g. carried over from the last email): show them.
   useEffect(() => {
     if (ccEmails || bccEmails) setIsCcOpen(true);
     if (bccEmails) setShowBcc(true);
@@ -100,7 +94,6 @@ const IOSEmailHead = (props: EmailMetaProps) => {
           onChange={onUpdateTo}
         />
       ) : contactEmail ? (
-        // The reply goes to the contact: shown so you can see who receives it.
         <View style={tailwind.style(ROW)}>
           <Text style={tailwind.style(LABEL)}>{`${i18n.t('CONVERSATION.EMAIL_HEAD.TO')}:`}</Text>
           <Text numberOfLines={1} style={tailwind.style('flex-1 py-[11px]', VALUE)}>

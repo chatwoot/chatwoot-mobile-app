@@ -3,7 +3,6 @@ import Svg, { Path } from 'react-native-svg';
 
 import { IconProps } from '../../types';
 
-/** Diagonal arrows pointing out: expand the reply field. */
 export const ExpandComposeIcon = ({
   stroke = '#858585',
   strokeWidth = 1.5,

@@ -38,9 +38,7 @@ type ContactOptionProps = {
 
 const ContactOptionComponent = (props: ContactOptionProps) => {
   const tailwind = useTailwind();
-  // White buttons on the gray page in the contact column and on iOS.
   const isInContactPane = useIsInContactPane() || IOS_DESIGN;
-  // Sized to the container (e.g. the split view's contact column), not the whole screen.
   const OPTION_WIDTH = (useContainerWidth() - 32 - 12 * 3) / 2;
   const { option, handleOptionPress, disabled = false } = props;
 
@@ -58,7 +56,6 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
         style={({ pressed }) => [
           tailwind.style(
             'flex items-center justify-center flex-1 rounded-xl py-3',
-            // White on the split view column's gray background, light gray elsewhere.
             isInContactPane ? 'bg-white' : 'bg-gray-50',
             `w-[${OPTION_WIDTH}px]`,
             pressed ? 'bg-gray-100' : '',
@@ -93,7 +90,6 @@ type ContactBasicActionsProps = {
 
 export const ContactBasicActions = (props: ContactBasicActionsProps) => {
   const tailwind = useTailwind();
-  // White buttons on the gray page in the contact column and on iOS.
   const isInContactPane = useIsInContactPane() || IOS_DESIGN;
   const { phoneNumber, email, contactId, conversation, caller, style } = props;
   const dispatch = useAppDispatch();

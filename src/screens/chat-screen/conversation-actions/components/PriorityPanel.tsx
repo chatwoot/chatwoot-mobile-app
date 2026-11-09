@@ -32,7 +32,6 @@ const PriorityPanel = ({ priority, onPress }: PriorityPanelProps) => {
         {priorityAvatar(priority)}
         <Animated.View
           style={tailwind.style(
-            // Last row of its card: no divider (it would run into the rounded corners).
             'flex-1 flex-row items-center justify-between py-[11px] ml-[10px]',
           )}>
           <Animated.Text

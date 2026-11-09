@@ -59,9 +59,6 @@ export interface AvatarProps extends ViewProps {
    * @default xl
    */
   size: AvatarSizes;
-  /**
-   * Extra classes for the initials text, e.g. a smaller size in compact list rows
-   */
   initialsClassName?: string;
   /**
    * If `true`, Avatar looks like a squared.

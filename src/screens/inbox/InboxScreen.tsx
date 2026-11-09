@@ -35,14 +35,9 @@ import { InboxSortTypes } from '@/store/notification/notificationTypes';
 
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList<Notification>);
 
-// With tabs on the side (iPhone Duo) the header floats over the list with a scroll edge
-// effect: `overlayHeaderHeight` adds a spacer so the rows start below the header and
-// offsets the refresh spinner to match, and `onScroll` drives the effect. `splitEmpty` uses
-// the split view's empty state.
 type OverlayListProps = {
   overlayHeaderHeight?: number;
   splitEmpty?: boolean;
-  // Drives the pull-to-refresh spinner drawn below the floating header.
   scrollY?: SharedValue<number>;
   isDragging?: SharedValue<number>;
   onScroll?: ReturnType<typeof useScrollEdge>['onScroll'];
@@ -170,7 +165,6 @@ const InboxList = ({
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            // Under the floating header the spinner is drawn by PullToRefreshIndicator.
             tintColor={overlayHeaderHeight ? 'transparent' : undefined}
           />
         }
@@ -205,13 +199,11 @@ const InboxList = ({
           <RefreshControl
             refreshing={isRefreshing}
             onRefresh={handleRefresh}
-            // Under the floating header the spinner is drawn by PullToRefreshIndicator.
             tintColor={overlayHeaderHeight ? 'transparent' : undefined}
           />
         }
         onScroll={onScroll}
         scrollEventThrottle={16}
-        // Start below the floating header: a spacer the header's height sits above the rows.
         ListHeaderComponent={
           overlayHeaderHeight ? <HeaderSpacer height={overlayHeaderHeight} /> : null
         }
@@ -241,7 +233,6 @@ const InboxScreen = () => {
   const tailwind = useTailwind();
   const isSplit = useIsSplitLayout();
   const [headerHeight, setHeaderHeight] = useState(0);
-  // The header floats over the list on iOS (and with tabs on the side).
   const sideTabBar = useSideTabBarLayout();
   const hasOverlayHeader = IOS_DESIGN || sideTabBar !== null;
   const scrollEdge = useScrollEdge();
@@ -261,11 +252,7 @@ const InboxScreen = () => {
       resetKey={sortOrder}
       emptyIcon={<NotificationPaneEmptyIcon />}
       emptyMessage={i18n.t('NOTIFICATION.SPLIT_VIEW_EMPTY')}>
-      {/* In the split view the list ends at the divider, not the screen edge, so it
-          skips the right inset (SafeAreaView applies screen insets regardless of position). */}
       <SafeAreaView
-        // With the floating header, the list runs under the status bar too and the header
-        // pads itself below it (ScrollEdgeHeader).
         edges={
           hasOverlayHeader
             ? isSplit
@@ -283,10 +270,8 @@ const InboxScreen = () => {
         />
         <InboxListStateProvider>
           {hasOverlayHeader ? (
-            // Header floats over the list with a scroll edge effect (Apple HIG, Scroll views).
             <>
               <Animated.View style={tailwind.style('flex-1')}>
-                {/* Wait for the header's height so the list opens at the right offset. */}
                 {headerHeight ? (
                   <InboxList
                     overlayHeaderHeight={headerHeight}

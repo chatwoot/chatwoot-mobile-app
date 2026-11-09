@@ -38,9 +38,7 @@ export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
   const tailwind = useTailwind();
-  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
-  // 32pt between sections in the pane, 40pt elsewhere.
   const sectionGap = isInPane ? 'pt-8' : 'pt-10';
   const paneRightInset = usePaneRightInset();
   const SCREEN_WIDTH = useContainerWidth();
@@ -126,12 +124,9 @@ export const ConversationActions = () => {
   };
 
   return (
-    // In the split view pane: iOS Settings style, a light gray page with flat white cards.
     <Animated.View style={tailwind.style(isInPane ? 'bg-gray-50' : '', `w-[${SCREEN_WIDTH}px]`)}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        // Split view pane: the page is full width, its content keeps clear of the status bar
-        // column.
         contentContainerStyle={[
           tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`),
           { paddingRight: paneRightInset },

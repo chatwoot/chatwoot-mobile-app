@@ -69,8 +69,6 @@ const getAttachmentIcon = (fileType: string) => {
   }
 };
 
-// Shown inline before the preview text. On the iOS list layout callers add right padding
-// (padding is part of an inline view's width, margins may not be) to separate it from the text.
 const MessageType = ({ message, style }: { message: Message; style?: StyleProp<ViewStyle> }) => {
   const tailwind = useTailwind();
   const { private: isPrivate } = message;

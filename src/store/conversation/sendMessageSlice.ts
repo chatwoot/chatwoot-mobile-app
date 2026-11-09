@@ -3,11 +3,8 @@ import { Asset } from 'react-native-image-picker';
 import { Message } from '@/types';
 import { RootState } from '@/store';
 
-// Email recipients for the reply being written. Kept here (not in the reply bar) so the
-// draft carries over between the reply bar and the compose column on iPhone Duo.
 export type EmailDraft = {
   conversationId: number | null;
-  // The email the recipients were filled in from; a newer email refills them.
   sourceMessageId: number | null;
   to: string;
   cc: string;
@@ -45,7 +42,6 @@ const sendMessageSlice = createSlice({
     setEmailDraft: (state, action: PayloadAction<EmailDraft>) => {
       state.emailDraft = action.payload;
     },
-    // Edits one or more recipient fields; switching conversation starts from empty fields.
     updateEmailDraft: (
       state,
       action: PayloadAction<

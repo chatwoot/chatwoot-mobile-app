@@ -5,8 +5,6 @@ import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
 
-// 36pt round Liquid Glass background for the iPhone Duo reply bar's left buttons, like
-// the + button in Messages. Falls back to a light gray circle where glass isn't available.
 export const ReplyGlassCircle = ({ children }: PropsWithChildren) => {
   const tailwind = useTailwind();
   return (

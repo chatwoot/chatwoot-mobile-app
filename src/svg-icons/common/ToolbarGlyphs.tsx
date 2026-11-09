@@ -3,10 +3,6 @@ import Svg, { Circle, Path } from 'react-native-svg';
 
 import { IconProps } from '../../types';
 
-// Outline glyphs for iOS toolbars (bulk actions), drawn on a 24pt grid with one line weight so
-// they read as a set, like SF Symbols' tag and person.crop.circle.
-
-/** Tag: labels. */
 export const TagGlyph = ({ stroke = '#1F93FF', strokeWidth = 1.6 }: IconProps): JSX.Element => (
   <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
     <Path
@@ -19,7 +15,6 @@ export const TagGlyph = ({ stroke = '#1F93FF', strokeWidth = 1.6 }: IconProps): 
   </Svg>
 );
 
-/** Person in a circle: assign. */
 export const PersonCircleGlyph = ({
   stroke = '#1F93FF',
   strokeWidth = 1.6,

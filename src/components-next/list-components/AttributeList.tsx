@@ -105,7 +105,6 @@ type AttributeListProps = {
 };
 export const AttributeList = (props: AttributeListProps) => {
   const tailwind = useTailwind();
-  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { list, sectionTitle } = props;
 
@@ -122,7 +121,6 @@ export const AttributeList = (props: AttributeListProps) => {
         </Animated.View>
       ) : null}
       <Animated.View
-        // Flat (no shadow) on the split view pane's gray page, like iOS Settings.
         style={[
           tailwind.style('rounded-[13px] mx-4 bg-white'),
           isInPane ? null : styles.listShadow,

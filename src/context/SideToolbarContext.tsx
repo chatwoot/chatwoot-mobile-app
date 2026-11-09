@@ -11,11 +11,6 @@ import { useIsFocused } from '@react-navigation/native';
 
 import { useSideTabBarLayout } from '@/utils';
 
-// When tabs sit on the side (iPhone Duo), header actions move into a side toolbar
-// at the top of the same column (Apple HIG, "Designing for iPhone Duo"). The focused
-// tab screen hands its actions to this slot and the tab bar renders them, so the
-// buttons live at screen level next to the tab capsule.
-
 type ToolbarEntry = { owner: string; items: React.ReactNode };
 
 const ToolbarItemsContext = createContext<React.ReactNode>(null);
@@ -34,7 +29,6 @@ export const SideToolbarProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-/** Items to draw in the side toolbar, for the tab bar to render. */
 export const useSideToolbarItems = () => useContext(ToolbarItemsContext);
 
 /**

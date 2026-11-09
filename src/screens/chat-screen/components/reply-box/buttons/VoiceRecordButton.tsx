@@ -16,7 +16,6 @@ export const VoiceRecordButton = ({ glass = false, ...props }: VoiceRecordButton
   return (
     <Pressable {...props} {...handlers}>
       <Animated.View
-        // The glass variant stays mounted under the send button (ReplySendOrMicButton).
         entering={glass ? undefined : voiceNoteIconEnterAnimation}
         exiting={glass ? undefined : voiceNoteIconExitAnimation}
         style={[

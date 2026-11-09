@@ -13,18 +13,13 @@ type GlassCircleButtonProps = {
   // Leave out when the button is a menu trigger, so the menu receives the tap.
   onPress?: () => void;
   accessibilityLabel: string;
-  // Shows a small dot, e.g. when filters are applied.
   showBadge?: boolean;
-  // Icons drawn edge to edge (like the selection circles) read larger, so they use 18.
   iconSize?: number;
   disabled?: boolean;
 };
 
-// One color for every header button icon, matching the tab bar icons.
 export const HEADER_ICON_COLOR = '#171717';
 
-// Round header button in the system Liquid Glass style (like WhatsApp's header
-// buttons on iPhone Duo). Falls back to a light gray circle where glass isn't available.
 export const GlassCircleButton = ({
   icon,
   onPress,
@@ -75,11 +70,9 @@ type GlassPillButtonProps = {
   label: string;
   onPress: () => void;
   disabled?: boolean;
-  // Shown after the label in a small round count badge, e.g. applied filters.
   count?: number;
 };
 
-// Text action in the same glass style as GlassCircleButton, e.g. "Clear" in the header.
 export const GlassPillButton = ({ label, onPress, disabled, count }: GlassPillButtonProps) => {
   const tailwind = useTailwind();
   return (

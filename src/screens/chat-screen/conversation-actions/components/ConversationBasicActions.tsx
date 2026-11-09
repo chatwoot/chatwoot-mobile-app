@@ -29,7 +29,6 @@ type ConversationActionOptionsType = {
   backgroundActionPressedColor: string;
   borderActionColor: string;
   actionIcon: React.JSX.Element;
-  // Native height of icons drawn at a fixed size, so the compact row can scale them to fit.
   iconNativeSize?: number;
   actionStatus: ConversationStatus | 'open';
 };
@@ -89,10 +88,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
   const actionActive = useSharedValue(0);
 
   const { handlers, animatedStyle } = useScaleAnimation();
-  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
-  // Four buttons share the row; when each is under 100pt (e.g. the closed Duo) the label
-  // goes under the icon so it fits without truncating.
   const rowWidth = useContainerWidth() - usePaneRightInset();
   const isStacked = (rowWidth - 32 - 3 * 6) / 4 < 100;
 
@@ -112,8 +108,6 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
     };
   });
 
-  // Split view pane (iOS style): a compact 44pt row of buttons with the icon and label
-  // inline. White when not selected; the current status fills with its color.
   if (isInPane) {
     const isActive = conversationAction.actionStatus === status;
     return (
@@ -140,7 +134,6 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
           onPress={handleActionOptionPress}
           {...handlers}>
           {conversationAction.iconNativeSize ? (
-            // Fixed-size icon: scale it down into the 18pt slot.
             <View
               style={tailwind.style(
                 isStacked ? 'h-5 w-5' : 'h-[18px] w-[18px]',

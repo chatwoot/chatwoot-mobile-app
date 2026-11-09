@@ -18,7 +18,6 @@ import { FullScreenPage, PageHeader } from '@/navigation/split/FullScreenPage';
 import { IOS_DESIGN } from '@/utils';
 
 type DashboardScreenProps = {
-  // Set when shown in the split view's secondary column (iPhone Duo) instead of as a screen.
   paneParams?: DashboardColumnParams;
 };
 
@@ -81,7 +80,6 @@ const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {
     />
   );
 
-  // iOS full screen: a page like the split view's dashboard column, with Back.
   if (IOS_DESIGN && !paneParams) {
     return (
       <FullScreenPage>

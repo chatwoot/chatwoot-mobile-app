@@ -23,10 +23,6 @@ import {
   handleOpenPhotosLibrary,
 } from '../message-components/CommandOptionsMenu';
 
-// Native iOS pull-down menus for the iPhone Duo reply bar's + and Copilot buttons (Apple
-// HIG, Pull-down buttons), in place of the panels that slide up under the reply bar.
-// zeego builds the native menu from its own elements, so items are written out inline.
-
 type MenuItemSpec = { key: string; title: string; icon: string; onSelect: () => void };
 
 const renderItem = ({ key, title, icon, onSelect }: MenuItemSpec) => (
@@ -36,7 +32,6 @@ const renderItem = ({ key, title, icon, onSelect }: MenuItemSpec) => (
   </DropdownMenu.Item>
 );
 
-/** Wraps the + button so tapping it opens the attachments menu. */
 export const AddAttachmentMenu = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
@@ -73,7 +68,6 @@ export const AddAttachmentMenu = ({ children }: PropsWithChildren) => {
       key: 'macros',
       title: i18n.t('CONVERSATION_ATTACHMENT.OPTIONS.MACROS'),
       icon: 'bolt',
-      // Macros open in the side column on the open Duo and as a full-screen page otherwise.
       onSelect: () =>
         splitView
           ? splitView.openMacros()
@@ -108,7 +102,6 @@ type CopilotReplyMenuProps = PropsWithChildren<{
   onSelectAction: (actionKey: CopilotActionKey) => void;
 }>;
 
-/** Wraps the Copilot button so tapping it opens the Copilot actions, with tones in a submenu. */
 export const CopilotReplyMenu = ({
   editorContent,
   editorMode,

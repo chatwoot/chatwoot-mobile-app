@@ -101,7 +101,6 @@ type MessageWrapperProps = {
   isTargetMessage?: boolean;
   onRetry: () => void;
   canSendPublicReply: boolean;
-  // Sent by the signed-in agent (no name label on the right).
   isOwnMessage?: boolean;
 };
 
@@ -126,8 +125,6 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',
 };
 
-// Dark conversations use the dashboard's quieter hierarchy. Keep saturated blue
-// for actions and indicators rather than large customer-message surfaces.
 const darkVariantBaseMap: Record<string, string> = {
   ...variantBaseMap,
   [MESSAGE_VARIANTS.USER]: 'bg-[#25292C]',
@@ -184,8 +181,6 @@ const MessageWrapper = ({
   const windowWidth = containerWidth - paneRightInset;
   // 56 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (8)
   const EMAIL_WIDTH = windowWidth - 56;
-  // Text bubbles: 300pt on phones. In the split view's wider conversation pane, up to 80% of
-  // the visible width so long messages use the space.
   const textMaxWidth = isInPane
     ? Math.max(TEXT_MAX_WIDTH, Math.round(windowWidth * 0.8))
     : TEXT_MAX_WIDTH;
@@ -193,13 +188,9 @@ const MessageWrapper = ({
   // Only the search-target row animates, so only it needs an Animated.View.
   const BubbleContainer = isTargetMessage ? Animated.View : View;
 
-  // iOS groups by sender like Messages: the avatar beside the last message of a person's run,
-  // the others lined up with it, 2pt between them and 10pt when the sender changes. Elsewhere
-  // grouping is by sender within the same minute.
   const hasAvatar = IOS_DESIGN
     ? shouldShowAvatar && !item.sameSenderAsBelow
     : !shouldGroupWithPrevious && shouldShowAvatar;
-  // Earlier bubbles in a run line up with the one that has the avatar (left or right side).
   const isIndented = IOS_DESIGN
     ? shouldShowAvatar && !!item.sameSenderAsBelow
     : shouldGroupWithPrevious && orientation === ORIENTATION.LEFT;
@@ -211,9 +202,6 @@ const MessageWrapper = ({
         : darkVariantBaseMap[MESSAGE_VARIANTS.USER]
       : darkVariantBaseMap[variant]
     : variantBaseMap[variant];
-  // iOS: the sender's name sits above their first message after someone else's (like group
-  // chats in Messages), instead of inside each bubble next to the time.
-  // Incoming (left) always; outgoing (right) when another agent or the bot sent it.
   const showNameAbove =
     IOS_DESIGN &&
     !item.sameSenderAsAbove &&
@@ -221,7 +209,6 @@ const MessageWrapper = ({
     ((orientation === ORIENTATION.LEFT && shouldShowAvatar) ||
       (orientation === ORIENTATION.RIGHT && !isOwnMessage));
   const shouldShowSenderName = !IOS_DESIGN && hasAvatar && !!avatarInfo.name;
-  // The tail points left, so only left-side bubbles get it.
   const shouldShowTail = hasAvatar && !isRight && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
 
   return (
@@ -245,7 +232,6 @@ const MessageWrapper = ({
           numberOfLines={1}
           style={[
             tailwind.style('mb-0.5 text-[12px] leading-[16px] font-inter-normal-20 text-gray-700'),
-            // Lined up with the bubble's text: past the avatar column when this bubble has one.
             isRight ? { marginRight: hasAvatar ? 44 : 12 } : { marginLeft: hasAvatar ? 44 : 12 },
           ]}>
           {capitalizeWords(firstName(avatarInfo.name))}
@@ -336,7 +322,6 @@ const MessageWrapper = ({
             {shouldShowTail ? <BubbleTail color={tailwind.color(bubbleClass) as string} /> : null}
           </BubbleContainer>
         </MessageMenu>
-        {/* Outgoing on iOS: the agent's (or bot's) avatar on the right, like the web app. */}
         {hasAvatar && isRight ? (
           <View style={tailwind.style('flex items-end justify-end ml-2')}>
             {avatarInfo.isBot ? (
@@ -514,7 +499,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const shouldShowAvatar = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
-    // iOS shows avatars on both sides (outgoing on the right), like the web app.
     if (orientation() === ORIENTATION.RIGHT && !IOS_DESIGN) return false;
     return true;
   };
@@ -538,7 +522,6 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const orientation = () => {
-    // iOS: outgoing (any agent or the bot) on the right, incoming on the left, like the web app.
     if (IOS_DESIGN) {
       if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
       if (messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.TEMPLATE)

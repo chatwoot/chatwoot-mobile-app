@@ -69,8 +69,6 @@ export const SearchResultContactItem = ({
   }, [contact.email, contact.phoneNumber, formattedLocation]);
 
   if (IOS_DESIGN) {
-    // iOS list row like the conversation list: 40pt avatar, 17pt name, 15pt details and a
-    // hairline divider that starts at the text.
     const detailStyle = tailwind.style(
       'font-inter-normal-20 text-gray-700 flex-shrink',
       IOS_LIST_TEXT.body,

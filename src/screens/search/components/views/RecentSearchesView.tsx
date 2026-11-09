@@ -20,8 +20,6 @@ export function RecentSearchesView({
 }: RecentSearchesViewProps) {
   const tailwind = useTailwind();
   if (IOS_DESIGN) {
-    // iOS search history: a section header with a blue Clear action, then plain list rows
-    // with a clock and hairline dividers inset from the text.
     return (
       <View>
         <View style={tailwind.style('flex-row items-center justify-between px-4 pt-3 pb-1.5')}>

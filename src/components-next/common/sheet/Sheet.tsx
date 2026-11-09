@@ -32,7 +32,6 @@ type SheetProps = {
   autoSize?: boolean;
   /** Cap on content height: a 0-1 fraction of the screen, or px. */
   maxHeight?: number;
-  /** Cap on width on wide screens (e.g. the open iPhone Duo); ignored on phones in portrait. */
   maxWidth?: number;
   /** Render children with native scrolling (child should be a ScrollView/FlatList). */
   scrollable?: boolean;

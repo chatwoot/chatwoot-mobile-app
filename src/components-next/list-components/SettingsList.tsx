@@ -38,7 +38,6 @@ const ListItem = (props: ListItemProps) => {
       }
       style={({ pressed }) => [
         tailwind.style(
-          // Preserve the selected detail-pane row while supporting inactive controls.
           listItem.isSelected ? 'bg-[#EBEBEB]' : pressed ? 'bg-gray-100' : '',
           listItem.inactive ? 'opacity-40' : '',
 
@@ -98,8 +97,6 @@ const ListItem = (props: ListItemProps) => {
 export const SettingsList = (props: GenericListProps) => {
   const tailwind = useTailwind();
   const { list, sectionTitle } = props;
-  // iOS: flat cards, no shadow. In the open Duo's split view the list page is white, so the
-  // cards are light gray; elsewhere it's iPhone Settings: white cards on a light gray page.
   const iosList = useIOSListText();
   const isSplit = useIsSplitLayout();
 
@@ -127,8 +124,6 @@ export const SettingsList = (props: GenericListProps) => {
                 key={index}
                 {...{ listItem, index }}
                 isLastItem={index === list.length - 1}
-                // Like native lists, hide the dividers touching a selected row so the
-                // highlight doesn't meet a slightly different line.
                 hideDivider={!!listItem.isSelected || !!list[index + 1]?.isSelected}
               />
             ),

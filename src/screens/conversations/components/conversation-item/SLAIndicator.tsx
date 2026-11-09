@@ -21,7 +21,6 @@ export const SLAIndicator = ({
   appliedSlaConversationDetails,
   onSLAStatusChange,
 }: {
-  // Used to read the conversation's recorded SLA events, as the conversation header does.
   conversationId?: number;
   slaPolicyId: number;
   appliedSla: SLA;

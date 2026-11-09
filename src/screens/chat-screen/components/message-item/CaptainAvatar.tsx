@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { useTailwind } from '@/theme/useTailwind';
 
-// Reuse the dashboard's i-woot-captain artwork.
 export const CaptainAvatar = () => {
   const tailwind = useTailwind();
   return (

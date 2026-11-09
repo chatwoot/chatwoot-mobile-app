@@ -18,7 +18,6 @@ import { ReplyGlassCircle } from './ReplyGlassCircle';
 type CopilotButtonProps = PressableProps & {
   isActive?: boolean;
   isThinking?: boolean;
-  // iPhone Duo reply bar: round Liquid Glass button.
   glass?: boolean;
 };
 

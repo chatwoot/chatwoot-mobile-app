@@ -90,8 +90,6 @@ export function SearchSection({
   return (
     <Animated.View key={sectionId}>
       {IOS_DESIGN ? (
-        // iOS plain list section header: 13pt gray title (tap to collapse) and a blue
-        // text action on the right.
         <FadeInView
           style={tailwind.style('px-4 pt-5 pb-1.5 flex-row items-center justify-between')}>
           <Pressable

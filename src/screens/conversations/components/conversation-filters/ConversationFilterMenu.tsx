@@ -14,11 +14,6 @@ import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
 import { AssigneeOptions, SortOptions, StatusOptions } from '@/types/common/ConversationStatus';
 import { ConversationFilterOptions } from '@/types';
 
-// Native iOS pull-down menu for conversation filters (Apple HIG, Menus / Pull-down
-// buttons), like Mail and Files: one tap opens sections with checkmarks on the current
-// choice, and picking an option applies it. Used with tabs on the side (iPhone Duo)
-// instead of the filter mode with chips and bottom sheets.
-
 // zeego's Label typings include web-only props; on iOS it only needs the section title.
 const MenuLabel = DropdownMenu.Label as unknown as React.FC<{ children: string }>;
 
@@ -50,7 +45,6 @@ const renderSection = ({ filterKey, title, options, selected, onSelect }: Sectio
   </DropdownMenu.Group>
 );
 
-/** Wraps a header button so tapping it opens the filter menu. */
 export const ConversationFilterMenu = ({ children }: PropsWithChildren) => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector(selectFilters);

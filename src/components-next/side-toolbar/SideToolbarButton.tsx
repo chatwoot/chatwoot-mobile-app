@@ -13,17 +13,11 @@ type SideToolbarButtonProps = {
   // Leave out when the button is a menu trigger, so the menu receives the tap.
   onPress?: () => void;
   accessibilityLabel: string;
-  // Shows a small dot, e.g. when filters are applied.
   showBadge?: boolean;
-  // Optical size: symbols with a lot of empty space (✕, …) need a larger box to look as
-  // big as round ones.
   iconSize?: number;
   disabled?: boolean;
 };
 
-// A round Liquid Glass button for the side toolbar used when tabs sit on the side (iPhone
-// Duo). Each action is its own circle, so the toolbar doesn't read as a second tab bar.
-// As wide as the tab capsule, and larger when the Duo is closed.
 export const SideToolbarButton = ({
   icon,
   onPress,
@@ -85,7 +79,6 @@ export const SideToolbarButton = ({
       style={({ pressed }) => [
         tailwind.style('items-center justify-center'),
         circle,
-        // Glass shows its own press response; the fallback dims.
         !useLiquidGlass && pressed ? tailwind.style('opacity-70') : null,
       ]}>
       {background}

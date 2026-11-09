@@ -70,9 +70,7 @@ const ParticipantOverflowCell = ({ count }: { count: number }) => {
         <Animated.View>
           <Icon icon={<Overflow stroke={tailwind.color('text-gray-600')} />} size={28} />
         </Animated.View>
-        <Animated.View
-          // Last row of its card: no divider (it would run into the rounded corners).
-          style={tailwind.style('flex-1 py-[11px] ml-2')}>
+        <Animated.View style={tailwind.style('flex-1 py-[11px] ml-2')}>
           <Animated.Text
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
@@ -93,7 +91,6 @@ type AddParticipantListProps = {
 
 export const AddParticipantList = (props: AddParticipantListProps) => {
   const tailwind = useTailwind();
-  // iOS Settings style (flat white cards on a gray page) in the split view and on iOS.
   const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { conversationParticipants, onAddParticipant, conversationId } = props;
   const dispatch = useAppDispatch();
@@ -134,7 +131,6 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
         </Animated.Text>
       </Animated.View>
       <Animated.View
-        // Flat (no shadow) on the split view pane's gray page, like iOS Settings.
         style={[
           tailwind.style('rounded-[13px] mx-4 bg-white'),
           isInPane ? null : styles.listShadow,

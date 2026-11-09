@@ -8,7 +8,6 @@ import { MacrosPane } from './components/macros/MacrosPane';
 
 type MacrosScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'MacrosScreen'>;
 
-// Macros full screen on iPhone and the closed Duo; the same page as the split view's column.
 const MacrosScreen = ({ route, navigation }: MacrosScreenProps) => (
   <FullScreenPage background="bg-gray-50">
     <MacrosPane conversationId={route.params.conversationId} onClose={navigation.goBack} />

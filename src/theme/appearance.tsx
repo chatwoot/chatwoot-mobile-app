@@ -11,7 +11,6 @@ export const AppearanceProvider = ({ children }: PropsWithChildren) => {
   const scheme =
     preference === 'system' ? (systemScheme === 'dark' ? 'dark' : 'light') : preference;
 
-  // Native menus, glass, keyboard and alerts follow the same choice as the app.
   useLayoutEffect(() => {
     Appearance.setColorScheme(preference === 'system' ? 'unspecified' : preference);
     return () => Appearance.setColorScheme('unspecified');

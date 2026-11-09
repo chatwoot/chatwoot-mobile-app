@@ -65,7 +65,6 @@ export const useSideTabBarLayout = (): SideTabBarLayout | null => {
 // tabs are (side tab bar, split view, columns) is decided separately by
 // useSideTabBarLayout / useIsSplitLayout.
 export const IOS_DESIGN = Platform.OS === 'ios';
-export const useIOSDesign = () => IOS_DESIGN;
 
 export const isPhoneNumberName = (name?: string | null) => /^[\d\s+().-]*$/.test(name ?? '');
 

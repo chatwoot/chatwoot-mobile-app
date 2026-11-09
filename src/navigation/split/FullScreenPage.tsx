@@ -1,5 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -52,14 +52,17 @@ export const PageHeader = ({
   right?: React.ReactNode;
 }) => {
   const tailwind = useTailwind();
-  const isSide = useSideToolbar(
-    <SideToolbarButton
-      icon={<ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
-      onPress={onBack}
-      accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
-    />,
-    [onBack],
+  const backItem = useMemo(
+    () => (
+      <SideToolbarButton
+        icon={<ChevronLeft stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
+        onPress={onBack}
+        accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
+      />
+    ),
+    [onBack, tailwind],
   );
+  const isSide = useSideToolbar(backItem);
   return (
     <PaneHeader
       title={title}

@@ -1,5 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -35,12 +35,12 @@ export const GlassToastHost = () => {
   const dragY = useSharedValue(0);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const clear = () => setToast(null);
-  const hide = () => {
+  const hide = useCallback(() => {
+    const clear = () => setToast(null);
     progress.value = withTiming(0, { duration: 220 }, finished => {
       if (finished) runOnJS(clear)();
     });
-  };
+  }, [progress]);
 
   useEffect(() => {
     const listener = (next: ToastMessage) => {
@@ -55,8 +55,7 @@ export const GlassToastHost = () => {
       unsubscribe();
       if (hideTimer.current) clearTimeout(hideTimer.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dragY, hide, progress]);
 
   // Swipe toward the edge it came from to dismiss.
   const swipeAway = Gesture.Pan()

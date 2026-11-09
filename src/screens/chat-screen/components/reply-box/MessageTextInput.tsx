@@ -181,8 +181,7 @@ export const MessageTextInput = ({
       textInputRef?.current?.focus();
     }, 380);
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [composer]);
+  }, [composer, textInputRef]);
 
   useEffect(() => {
     if (selectedCannedResponse) onChangeText(selectedCannedResponse);

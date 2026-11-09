@@ -1,5 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ImageSourcePropType, Keyboard, Platform, Pressable, StyleSheet } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 import { useSlaPillVisibility } from '../../SlaPillVisibility';
@@ -166,15 +166,15 @@ export const ChatHeader = ({
   const { chatPagerView } = useRefsContext();
   const isOnActionsPage = !showDetailsRow;
   // In the pane, actions have their own toolbar button; More lists only dashboard apps.
-  const paneMenuList = dashboardsList.filter(item => !!item.url);
+  const paneMenuList = useMemo(() => dashboardsList.filter(item => !!item.url), [dashboardsList]);
   // With a secondary column open (contact, actions or a dashboard app), the toolbar is just a
   // back button.
   const splitView = useSplitView();
   // Switches as soon as a column starts opening or closing (not after the slide lands).
   const isColumnOpen = useIsColumnOpen();
   const isContactOpen = isColumnOpen ?? !!splitView?.isSecondaryOpen;
-  const actionsInToolbar =
-    useSideToolbar(
+  const toolbarItems = useMemo(
+    () =>
       isContactOpen ? (
         <SideToolbarButton
           icon={
@@ -272,21 +272,25 @@ export const ChatHeader = ({
           ) : null}
         </>
       ),
-      [
-        isOpen,
-        isResolved,
-        dashboardsList,
-        onBackPress,
-        onToggleChatStatus,
-        isOnActionsPage,
-        isContactOpen,
-        onOpenActions,
-        showCallButton,
-        isCallDisabled,
-        onCallPress,
-      ],
-      hasSideToolbar,
-    ) && hasSideToolbar;
+    [
+      isContactOpen,
+      splitView,
+      isOnActionsPage,
+      chatPagerView,
+      isInPane,
+      onBackPress,
+      showCallButton,
+      onCallPress,
+      isCallDisabled,
+      isOpen,
+      onToggleChatStatus,
+      statusLabel,
+      onOpenActions,
+      paneMenuList,
+      tailwind,
+    ],
+  );
+  const actionsInToolbar = useSideToolbar(toolbarItems, hasSideToolbar) && hasSideToolbar;
 
   const toggleSlaEventsSheet = () => {
     Keyboard.dismiss();

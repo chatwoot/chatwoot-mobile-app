@@ -45,8 +45,7 @@ type OverlayListProps = {
   // Drives the pull-to-refresh spinner drawn below the floating header.
   scrollY?: SharedValue<number>;
   isDragging?: SharedValue<number>;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onScroll?: any;
+  onScroll?: ReturnType<typeof useScrollEdge>['onScroll'];
 };
 const InboxList = ({
   overlayHeaderHeight = 0,

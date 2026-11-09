@@ -252,8 +252,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     requestAnimationFrame(() => {
       if (navigation.canGoBack()) navigation.dispatch(StackActions.pop());
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSplitLayout]);
+  }, [isSplitLayout, conversationId, isInDetailPane, navigation]);
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {

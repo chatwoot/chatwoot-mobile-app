@@ -1,5 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Pressable, Text, ViewStyle } from 'react-native';
 import Animated, {
   AnimatedStyle,
@@ -247,34 +247,34 @@ export const ConversationHeaderPresenter = ({
   // With tabs on the side (iPhone Duo), search and filter (or close) move to the side
   // toolbar. In the split view they stay above the list, next to the content they affect.
   const isSplit = useIsSplitLayout();
-  const actionItems = isModal ? (
-    <SideToolbarButton
-      icon={<CloseIcon stroke={tailwind.color('text-gray-950')} />}
-      onPress={onRightIconPress}
-      accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
-    />
-  ) : (
-    <>
-      <SideToolbarButton
-        icon={<SearchIcon stroke={tailwind.color('text-gray-950')} />}
-        onPress={onLeftIconPress}
-        accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
-      />
-      {/* Native filter menu (iOS pull-down) instead of the filter mode. */}
-      <ConversationFilterMenu>
+  const actionItems = useMemo(
+    () =>
+      isModal ? (
         <SideToolbarButton
-          icon={<FilterIcon stroke={tailwind.color('text-gray-950')} />}
-          showBadge={filtersAppliedCount > 0}
-          accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
+          icon={<CloseIcon stroke={tailwind.color('text-gray-950')} />}
+          onPress={onRightIconPress}
+          accessibilityLabel={i18n.t('CONVERSATION.HEADER.CLOSE')}
         />
-      </ConversationFilterMenu>
-    </>
+      ) : (
+        <>
+          <SideToolbarButton
+            icon={<SearchIcon stroke={tailwind.color('text-gray-950')} />}
+            onPress={onLeftIconPress}
+            accessibilityLabel={i18n.t('CONVERSATION.HEADER.SEARCH')}
+          />
+          {/* Native filter menu (iOS pull-down) instead of the filter mode. */}
+          <ConversationFilterMenu>
+            <SideToolbarButton
+              icon={<FilterIcon stroke={tailwind.color('text-gray-950')} />}
+              showBadge={filtersAppliedCount > 0}
+              accessibilityLabel={i18n.t('CONVERSATION.HEADER.FILTER')}
+            />
+          </ConversationFilterMenu>
+        </>
+      ),
+    [isModal, filtersAppliedCount, onLeftIconPress, onRightIconPress, tailwind],
   );
-  const isSideLayout = useSideToolbar(
-    actionItems,
-    [isModal, filtersAppliedCount, onLeftIconPress, onRightIconPress],
-    !isSplit,
-  );
+  const isSideLayout = useSideToolbar(actionItems, !isSplit);
 
   if ((isSplit || (IOS_DESIGN && !isSideLayout)) && currentState === 'Select') {
     // Select mode, like Mail: text buttons (Select All / Deselect All and Done) around a count.
@@ -319,19 +319,6 @@ export const ConversationHeaderPresenter = ({
               onPress={onClearFilter}
               disabled={filtersAppliedCount === 0}
               count={filtersAppliedCount}
-            />
-          ) : currentState === 'Select' ? (
-            <GlassCircleButton
-              icon={
-                isSelectedAll ? (
-                  <CheckedIcon />
-                ) : (
-                  <UncheckedIcon stroke={tailwind.color('text-gray-800')} />
-                )
-              }
-              onPress={onLeftIconPress}
-              iconSize={18}
-              accessibilityLabel={i18n.t('CONVERSATION.HEADER.SELECT_ALL')}
             />
           ) : (
             <GlassCircleButton

@@ -12,6 +12,7 @@ import { AudioRoutePicker } from './components/AudioRoutePicker';
 import { CallBackdrop } from './components/CallBackdrop';
 import { CallControlsTray } from './components/CallControlsTray';
 import { CallHeader } from './components/CallHeader';
+import { CALL_GLASS, CallSurface } from './components/CallSurface';
 import { CallerIdentity } from './components/CallerIdentity';
 import { IncomingCallActions } from './components/IncomingCallActions';
 import { CARD_SHADOW, callTrayBottom } from './constants/callTheme';
@@ -131,7 +132,11 @@ export const ActiveCallScreen = ({
           />
         ) : null}
 
-        <View style={[tailwind.style('rounded-3xl bg-white p-4'), CARD_SHADOW]}>
+        <CallSurface
+          radius={24}
+          shadow={CARD_SHADOW}
+          plain={CALL_GLASS}
+          style={tailwind.style('p-4')}>
           {isIncoming ? (
             <IncomingCallActions
               onDecline={onEnd}
@@ -156,7 +161,7 @@ export const ActiveCallScreen = ({
               onEnd={onEnd}
             />
           )}
-        </View>
+        </CallSurface>
       </View>
     </View>
   );

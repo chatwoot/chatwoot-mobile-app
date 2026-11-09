@@ -5,8 +5,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { CaretLeftGlyph } from '@/svg-icons';
+import { IOS_DESIGN } from '@/utils';
 
-import { CALL_INK } from '../constants/callTheme';
+import { CALL_INK, PILL_SHADOW } from '../constants/callTheme';
+import { CallSurface } from './CallSurface';
 import { ChatwootMark } from './ChatwootMark';
 
 type CallHeaderProps = {
@@ -22,7 +24,20 @@ export const CallHeader = ({ canMinimise, onMinimise }: CallHeaderProps) => {
         tailwind.style('absolute left-0 right-0 h-11 px-5 flex-row items-center gap-3'),
         { top: insets.top },
       ]}>
-      {canMinimise ? (
+      {canMinimise && IOS_DESIGN ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={i18n.t('CONVERSATION.VOICE_WIDGET.MINIMISE')}
+          onPress={onMinimise}>
+          <CallSurface
+            radius={18}
+            shadow={PILL_SHADOW}
+            interactive
+            style={tailwind.style('h-9 w-9 items-center justify-center')}>
+            <CaretLeftGlyph color={CALL_INK} size={22} />
+          </CallSurface>
+        </Pressable>
+      ) : canMinimise ? (
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={i18n.t('CONVERSATION.VOICE_WIDGET.MINIMISE')}

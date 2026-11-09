@@ -3,6 +3,8 @@ import { Pressable, Text, View } from 'react-native';
 
 import { tailwind } from '@/theme';
 
+import { CALL_GLASS, CallSurface } from './CallSurface';
+
 import {
   CALL_END,
   CALL_LABEL_TEXT,
@@ -40,23 +42,43 @@ export const CallControl = ({
   children,
 }: CallControlProps) => (
   <View style={tailwind.style('w-[60px] items-center gap-2')}>
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={label}
-      accessibilityState={{ disabled: !!disabled || !!inactive, selected: tone === 'on' }}
-      disabled={disabled || inactive}
-      onPress={onPress}
-      style={({ pressed }) => [
-        tailwind.style('h-[60px] w-[60px] rounded-[18px] items-center justify-center'),
-        inactive
-          ? { borderWidth: 1.5, borderColor: CONTROL_DISABLED_BORDER }
-          : { backgroundColor: CONTROL_FILL[tone] },
-        pressed && !inactive ? tailwind.style('opacity-70') : null,
-      ]}>
-      <View style={tailwind.style('h-[26px] w-[26px] items-center justify-center')}>
-        {children}
-      </View>
-    </Pressable>
+    {CALL_GLASS ? (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled: !!disabled || !!inactive, selected: tone === 'on' }}
+        disabled={disabled || inactive}
+        onPress={onPress}
+        style={inactive || disabled ? tailwind.style('opacity-50') : null}>
+        <CallSurface
+          radius={18}
+          shadow={{}}
+          interactive
+          style={tailwind.style('h-[60px] w-[60px] items-center justify-center')}>
+          <View style={tailwind.style('h-[26px] w-[26px] items-center justify-center')}>
+            {children}
+          </View>
+        </CallSurface>
+      </Pressable>
+    ) : (
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityState={{ disabled: !!disabled || !!inactive, selected: tone === 'on' }}
+        disabled={disabled || inactive}
+        onPress={onPress}
+        style={({ pressed }) => [
+          tailwind.style('h-[60px] w-[60px] rounded-[18px] items-center justify-center'),
+          inactive
+            ? { borderWidth: 1.5, borderColor: CONTROL_DISABLED_BORDER }
+            : { backgroundColor: CONTROL_FILL[tone] },
+          pressed && !inactive ? tailwind.style('opacity-70') : null,
+        ]}>
+        <View style={tailwind.style('h-[26px] w-[26px] items-center justify-center')}>
+          {children}
+        </View>
+      </Pressable>
+    )}
     <Text
       numberOfLines={1}
       style={[

@@ -14,6 +14,7 @@ import {
 import type { AudioRoute } from '@/services/voice/chatwootCalls';
 
 import {
+  CALL_END,
   CONTROL_DISABLED_GLYPH,
   CONTROL_HOLD_GLYPH,
   CONTROL_OFF_GLYPH,
@@ -22,8 +23,9 @@ import {
 import { isHeadsetRoute } from '../utils/audioRoutes';
 import { AudioRouteIcon } from './AudioRouteIcon';
 import { CallControl } from './CallControl';
+import { CALL_GLASS } from './CallSurface';
 
-const WHITE = '#FFFFFF';
+const END_GLYPH = CALL_GLASS ? CALL_END : '#FFFFFF';
 
 type CallControlsTrayProps = {
   isConnected: boolean;
@@ -110,7 +112,7 @@ export const CallControlsTray = ({
       tone="end"
       disabled={isEnding}
       onPress={onEnd}>
-      <EndGlyph color={WHITE} size={26} />
+      <EndGlyph color={END_GLYPH} size={26} />
     </CallControl>
   </View>
 );

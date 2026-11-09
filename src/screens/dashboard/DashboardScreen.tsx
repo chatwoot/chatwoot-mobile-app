@@ -2,13 +2,14 @@ import React, { useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import snakecaseKeys from 'snakecase-keys';
 
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { Icon } from '@/components-next';
 import { CloseIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { Conversation } from '@/types';
 import { User } from '@/types/User';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
@@ -26,6 +27,8 @@ type DashboardScreenProps = {
 };
 
 const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {
+  const tailwind = useTailwind();
+  const { top } = useSafeAreaInsets();
   const route = useRoute();
   const navigation = useNavigation();
   const webviewRef = useRef<WebView>(null);
@@ -70,6 +73,7 @@ const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {
       source={{ uri: url }}
       startInLoadingState={true}
       javaScriptEnabled={true}
+      autoManageStatusBarEnabled={false}
       onLoadEnd={() => {
         webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
       }}
@@ -92,7 +96,7 @@ const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {
   }
 
   return (
-    <Animated.View style={tailwind.style('flex-1')}>
+    <Animated.View style={tailwind.style('flex-1', paneParams ? '' : `bg-white pt-[${top}px]`)}>
       {paneParams ? <PaneHeader title={title ?? ''} /> : null}
       <Animated.View
         style={tailwind.style(

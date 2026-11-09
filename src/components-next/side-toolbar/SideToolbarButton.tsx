@@ -40,6 +40,7 @@ export const SideToolbarButton = ({
 
   const background = useLiquidGlass ? (
     <GlassView
+      colorScheme={tailwind.isDark ? 'dark' : 'light'}
       glassEffectStyle="regular"
       isInteractive={!!onPress && !disabled}
       style={[StyleSheet.absoluteFill, { borderRadius: size / 2 }]}

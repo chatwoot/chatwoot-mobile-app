@@ -109,6 +109,7 @@ export const GlassToastHost = () => {
           ]}>
           {useLiquidGlass ? (
             <GlassView
+              colorScheme={tailwind.isDark ? 'dark' : 'light'}
               glassEffectStyle="regular"
               style={[StyleSheet.absoluteFill, { borderRadius: 22 }]}
             />

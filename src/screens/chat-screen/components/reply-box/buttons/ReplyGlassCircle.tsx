@@ -13,6 +13,7 @@ export const ReplyGlassCircle = ({ children }: PropsWithChildren) => {
     <View style={tailwind.style('h-9 w-9 items-center justify-center')}>
       {useLiquidGlass ? (
         <GlassView
+          colorScheme={tailwind.isDark ? 'dark' : 'light'}
           glassEffectStyle="regular"
           isInteractive
           style={[tailwind.style('absolute inset-0'), { borderRadius: 18 }]}

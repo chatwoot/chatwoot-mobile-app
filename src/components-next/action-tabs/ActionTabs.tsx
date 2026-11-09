@@ -248,6 +248,7 @@ const ActionTabBarBackground = (props: ActionTabBarBackgroundProps) => {
         style={[style, animatedTabBarStyle, useLiquidGlass ? null : styles.listShadow]}>
         {useLiquidGlass ? (
           <GlassView
+            colorScheme={tailwind.isDark ? 'dark' : 'light'}
             glassEffectStyle="regular"
             style={[StyleSheet.absoluteFill, { borderRadius: ACTION_TAB_HEIGHT / 2 }]}
           />
@@ -394,7 +395,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

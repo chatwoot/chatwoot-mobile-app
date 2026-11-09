@@ -111,6 +111,7 @@ const CapsuleFill = ({
   const tailwind = useTailwind();
   return useLiquidGlass ? (
     <GlassView
+      colorScheme={tailwind.isDark ? 'dark' : 'light'}
       glassEffectStyle="regular"
       isInteractive
       style={[tailwind.style('absolute inset-0'), { borderRadius: radius }]}

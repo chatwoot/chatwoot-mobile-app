@@ -5,7 +5,8 @@ import type { ImageProps } from 'expo-image';
 
 import { avatarTheme } from '@/theme';
 import { Channel } from '@/types';
-import { cx, styleAdapter } from '@/utils';
+import { UserIcon } from '@/svg-icons';
+import { cx, isPhoneNumberName, styleAdapter } from '@/utils';
 
 import { AvatarImage } from './AvatarImage';
 import { AvatarStatus } from './AvatarStatus';
@@ -150,7 +151,11 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
           squared={isSquared}
           handleFallback={loadFallback}
         />
-      ) : name ? (
+      ) : !name || isPhoneNumberName(name) ? (
+        <View style={tailwind.style(avatarTheme.defaultUserIcon[size], 'aspect-square')}>
+          <UserIcon stroke={tailwind.color('text-gray-800')} />
+        </View>
+      ) : (
         <Text
           style={[
             tailwind.style(
@@ -169,7 +174,7 @@ export const Avatar: React.FC<Partial<AvatarProps>> = props => {
             ? getInitials(name)?.charAt(0)
             : getInitials(name)}
         </Text>
-      ) : null}
+      )}
       {status && <AvatarStatus parentsBackground={parentsBackground} size={size} status={status} />}
     </View>
   );

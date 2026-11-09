@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetHeader } from '@/components-next';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
 import { HandsetIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { useHaptic } from '@/utils';
 import i18n from '@/i18n';
 
@@ -19,6 +19,7 @@ type CallOptionCellProps = {
 };
 
 const CallOptionCell = ({ option, isLastItem, onSelect }: CallOptionCellProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
 
   const handlePress = () => {
@@ -70,6 +71,7 @@ const MAX_ROWS_WITHOUT_SCROLL = 6;
 
 export const ContactCallSheet = forwardRef<SheetRef, ContactCallSheetProps>(
   ({ options, onSelect, onDismiss }, ref) => {
+    const tailwind = useTailwind();
     const { bottom } = useSafeAreaInsets();
     const scrolls = options.length > MAX_ROWS_WITHOUT_SCROLL;
 

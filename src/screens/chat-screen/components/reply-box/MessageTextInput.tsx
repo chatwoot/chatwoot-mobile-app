@@ -1,4 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
+import { withAlpha } from '@/theme/withAlpha';
 import React, { ReactNode, useCallback, useEffect, useMemo } from 'react';
 import {
   BlurEvent,
@@ -92,8 +93,6 @@ export const Locked = ({ plain = false }: { plain?: boolean }) => {
 };
 const TYPING_INDICATOR_IDLE_TIME = 4000;
 const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
-// Private notes tint the glass amber (amber-300 at 45%).
-const PRIVATE_GLASS_TINT = 'hsla(40, 100%, 81.5%, 0.45)';
 
 // eslint-disable-next-line no-empty-pattern
 export const MessageTextInput = ({
@@ -280,9 +279,14 @@ export const MessageTextInput = ({
         ]}>
         {iosStyle && !composer && useLiquidGlass ? (
           <GlassView
+            colorScheme={tailwind.isDark ? 'dark' : 'light'}
             glassEffectStyle="regular"
             isInteractive
-            tintColor={isPrivateMessage ? PRIVATE_GLASS_TINT : undefined}
+            tintColor={
+              isPrivateMessage
+                ? withAlpha(tailwind.color('bg-amber-300') as string, 0.45)
+                : undefined
+            }
             style={[StyleSheet.absoluteFill, { borderRadius: 18 }]}
           />
         ) : null}
@@ -337,10 +341,7 @@ export const MessageTextInput = ({
           maxLength={maxLength}
           placeholder={
             isPrivateMessage
-              ? // iOS keeps placeholders short so they fit on one line.
-                i18n.t(
-                  iosStyle ? 'CONVERSATION.PRIVATE_NOTE_SHORT' : 'CONVERSATION.PRIVATE_MSG_INPUT',
-                )
+              ? i18n.t('CONVERSATION.PRIVATE_NOTE_SHORT')
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
           }
           onSubmitEditing={() => setMessageContent('')}
@@ -410,7 +411,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

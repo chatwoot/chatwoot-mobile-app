@@ -1,14 +1,10 @@
 import { Platform } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { tailwind, withAlpha } from '@/theme';
 
 export type CallTone = 'ringing' | 'live' | 'held';
 
 const token = (name: string) => tailwind.color(name) as string;
-
-// twrnc drops the /opacity modifier on the palette's hsl colours
-const withAlpha = (colour: string, alpha: number) =>
-  colour.replace(/^hsl\((.*)\)$/, `hsla($1, ${alpha})`);
 
 const RINGING = token('text-blue-800');
 const LIVE = token('text-teal-700');

@@ -121,15 +121,18 @@ type ScrollEdgeHeaderProps = PropsWithChildren<{
   // Keep the content clear of the side safe areas (e.g. the side status column on the closed
   // Duo); the blur still spans the full width.
   insetSides?: boolean;
+  background?: string;
 }>;
 
 export const ScrollEdgeHeader = ({
   scrollY,
   onHeightChange,
   insetSides = false,
+  background = 'bg-white',
   children,
 }: ScrollEdgeHeaderProps) => {
   const tailwind = useTailwind();
+  const backgroundColor = tailwind.color(background);
   const [height, setHeight] = useState(0);
   // The header starts at the top of the screen so the blur also covers the status bar; its
   // content sits below the status bar.
@@ -162,13 +165,9 @@ export const ScrollEdgeHeader = ({
           <Svg width="100%" height={total} style={StyleSheet.absoluteFill}>
             <Defs>
               <LinearGradient id="scrollEdge" x1="0" y1="0" x2="0" y2="1">
-                <Stop offset="0" stopColor={tailwind.color('bg-white')} stopOpacity={0.9} />
-                <Stop
-                  offset={headerEnd}
-                  stopColor={tailwind.color('bg-white')}
-                  stopOpacity={0.72}
-                />
-                <Stop offset="1" stopColor={tailwind.color('bg-white')} stopOpacity={0} />
+                <Stop offset="0" stopColor={backgroundColor} stopOpacity={0.9} />
+                <Stop offset={headerEnd} stopColor={backgroundColor} stopOpacity={0.72} />
+                <Stop offset="1" stopColor={backgroundColor} stopOpacity={0} />
               </LinearGradient>
             </Defs>
             <Rect x="0" y="0" width="100%" height={total} fill="url(#scrollEdge)" />

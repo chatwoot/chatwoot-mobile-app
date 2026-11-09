@@ -95,6 +95,7 @@ const FloatingSlaPill = ({
         }>
         {useLiquidGlass ? (
           <GlassView
+            colorScheme={tailwind.isDark ? 'dark' : 'light'}
             glassEffectStyle="regular"
             isInteractive
             style={[StyleSheet.absoluteFill, { borderRadius: 16 }]}
@@ -217,7 +218,12 @@ export const ChatHeader = ({
           )}
           {showCallButton ? (
             <SideToolbarButton
-              icon={<PhoneOutlineIcon />}
+              icon={
+                <PhoneOutlineIcon
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
+              }
               iconSize={24}
               onPress={onCallPress}
               disabled={isCallDisabled}
@@ -409,7 +415,12 @@ export const ChatHeader = ({
             <>
               {showCallButton ? (
                 <GlassCircleButton
-                  icon={<PhoneOutlineIcon />}
+                  icon={
+                    <PhoneOutlineIcon
+                      stroke={tailwind.color('text-gray-950')}
+                      strokeWidth={TOOLBAR_STROKE}
+                    />
+                  }
                   iconSize={22}
                   onPress={onCallPress}
                   disabled={isCallDisabled}
@@ -518,7 +529,15 @@ export const ChatHeader = ({
               'h-8 w-8 items-center justify-center',
               isCallDisabled ? 'opacity-40' : '',
             )}>
-            <Icon icon={<PhoneOutlineIcon />} size={24} />
+            <Icon
+              icon={
+                <PhoneOutlineIcon
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
+              }
+              size={24}
+            />
           </Pressable>
         )}
         {!actionsInToolbar && dashboardsList.length > 0 && (

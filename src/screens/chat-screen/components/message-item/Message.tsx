@@ -7,7 +7,7 @@ import { selectConversationById } from '@/store/conversation/conversationSelecto
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { useChatWindowContext } from '@/context';
 import { conversationActions } from '@/store/conversation/conversationActions';
-import { IOS_DESIGN, unixTimestampToReadableTime, useHaptic } from '@/utils';
+import { IOS_DESIGN, isPhoneNumberName, unixTimestampToReadableTime, useHaptic } from '@/utils';
 import {
   ComposedBubble,
   CallBubble,
@@ -66,7 +66,10 @@ const senderAvatarSource = (sender: Message['sender']) => {
   return avatarUrl || thumbnail || null;
 };
 
-const firstName = (name?: string | null) => (name || '').trim().split(/\s+/)[0];
+const firstName = (name?: string | null) => {
+  const trimmed = (name || '').trim();
+  return isPhoneNumberName(trimmed) ? trimmed : trimmed.split(/\s+/)[0];
+};
 
 // Upper-cases the first character of each word; caseless scripts and emoji are unchanged.
 const capitalizeWords = (text: string) =>
@@ -109,6 +112,7 @@ const variantTextMap = {
   [MESSAGE_VARIANTS.BOT]: 'text-gray-700',
   [MESSAGE_VARIANTS.TEMPLATE]: 'text-gray-700',
   [MESSAGE_VARIANTS.ERROR]: 'text-white',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-gray-700',
 };
 
 const variantBaseMap = {

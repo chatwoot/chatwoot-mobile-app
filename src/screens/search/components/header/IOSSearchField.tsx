@@ -36,6 +36,7 @@ export const IOSSearchField = ({
       )}>
       {useLiquidGlass ? (
         <GlassView
+          colorScheme={tailwind.isDark ? 'dark' : 'light'}
           glassEffectStyle="regular"
           isInteractive
           style={[StyleSheet.absoluteFill, { borderRadius: HEIGHT / 2 }]}
@@ -46,7 +47,7 @@ export const IOSSearchField = ({
         autoFocus
         value={value}
         onChangeText={onChangeText}
-        placeholder={placeholder ?? i18n.t('SEARCH.PLACEHOLDER')}
+        placeholder={placeholder ?? i18n.t('CONVERSATION.HEADER.SEARCH')}
         placeholderTextColor={tailwind.color('text-gray-700')}
         autoCapitalize="none"
         autoCorrect={false}

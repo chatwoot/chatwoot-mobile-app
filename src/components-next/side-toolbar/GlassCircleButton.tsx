@@ -58,6 +58,7 @@ export const GlassCircleButton = ({
       )}>
       {useLiquidGlass ? (
         <GlassView
+          colorScheme={tailwind.isDark ? 'dark' : 'light'}
           glassEffectStyle="regular"
           isInteractive={!disabled}
           style={[tailwind.style('absolute inset-0'), { borderRadius: SIZE / 2 }]}
@@ -90,6 +91,7 @@ export const GlassPillButton = ({ label, onPress, disabled, count }: GlassPillBu
       style={tailwind.style(`h-[${SIZE}px] px-3.5 flex-row items-center justify-center gap-1.5`)}>
       {useLiquidGlass ? (
         <GlassView
+          colorScheme={tailwind.isDark ? 'dark' : 'light'}
           glassEffectStyle="regular"
           isInteractive={!disabled}
           style={[tailwind.style('absolute inset-0'), { borderRadius: SIZE / 2 }]}

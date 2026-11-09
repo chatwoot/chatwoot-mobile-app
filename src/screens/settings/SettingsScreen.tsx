@@ -46,6 +46,7 @@ import { UserAvatar } from './components/UserAvatar';
 import { LANGUAGES } from '@/constants';
 import { useRefsContext } from '@/context';
 import {
+  AppearanceIcon,
   ChatIcon,
   ChatwootIcon,
   NotificationIcon,
@@ -55,7 +56,14 @@ import {
 } from '@/svg-icons';
 import { GenericListType } from '@/types';
 
-import { IOS_DESIGN, useHaptic, useIsSplitLayout, useTabBarHeight } from '@/utils';
+import {
+  IOS_DESIGN,
+  useHaptic,
+  useIsSplitLayout,
+  useSideTabBarLayout,
+  useTabBarHeight,
+} from '@/utils';
+import { HeaderSpacer, ScrollEdgeHeader, useScrollEdge } from '@/components-next/side-toolbar';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
 import { WorkPausedNote } from './components/WorkPausedNote';
@@ -125,6 +133,11 @@ const SettingsScreen = () => {
   };
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
+  const sideTabBar = useSideTabBarLayout();
+  const hasOverlayHeader = IOS_DESIGN || sideTabBar !== null;
+  const scrollEdge = useScrollEdge();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const pageBackground = IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white';
   const savedAvailabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
   // Shown right away when you pick a status, while the change is saved; cleared once it's done
@@ -302,11 +315,7 @@ const SettingsScreen = () => {
     {
       hasChevron: true,
       title: i18n.t('SETTINGS.APPEARANCE'),
-      icon: (
-        <View style={tailwind.style('h-6 w-6 items-center justify-center')}>
-          <Text style={tailwind.style('text-xl text-gray-900')}>◐</Text>
-        </View>
-      ),
+      icon: <AppearanceIcon />,
       subtitle: i18n.t(`SETTINGS.APPEARANCE_${(appearance as Theme).toUpperCase()}`),
       subtitleType: 'light',
       isSelected: isSplit && pane === 'appearance',
@@ -371,29 +380,37 @@ const SettingsScreen = () => {
   const listContent = (
     <SafeAreaView
       // In the split view the list ends at the divider, so it skips the right inset.
-      edges={isSplit ? ['top', 'left', 'bottom'] : undefined}
+      edges={
+        hasOverlayHeader
+          ? isSplit
+            ? ['left', 'bottom']
+            : ['left', 'right', 'bottom']
+          : isSplit
+            ? ['top', 'left', 'bottom']
+            : undefined
+      }
       // iPhone Settings: light gray page with white cards (the open Duo's list stays white).
-      style={tailwind.style(
-        'flex-1 font-inter-normal-20',
-        IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white',
-      )}>
+      style={tailwind.style('flex-1 font-inter-normal-20', pageBackground)}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
         barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
       />
-      <SettingsHeader />
+      {hasOverlayHeader ? null : <SettingsHeader />}
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
+        onScroll={hasOverlayHeader ? scrollEdge.onScroll : undefined}
+        scrollEventThrottle={16}
+        scrollIndicatorInsets={hasOverlayHeader ? { top: headerHeight } : undefined}
         contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}>
+        {hasOverlayHeader ? <HeaderSpacer height={headerHeight} /> : null}
         <Animated.View style={tailwind.style('flex justify-center items-center pt-4 gap-4')}>
-          <Animated.View>
-            <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />
-            <Animated.View
-              style={tailwind.style(
-                'absolute border-[2px] border-white rounded-full -bottom-[2px] right-[10px]',
-              )}></Animated.View>
-          </Animated.View>
+          <UserAvatar
+            src={avatarUrl}
+            name={name}
+            status={availabilityStatus}
+            parentsBackground={pageBackground}
+          />
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
               {name}
@@ -432,6 +449,15 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
+      {hasOverlayHeader ? (
+        <ScrollEdgeHeader
+          scrollY={scrollEdge.scrollY}
+          onHeightChange={setHeaderHeight}
+          insetSides={!isSplit}
+          background={pageBackground}>
+          <SettingsHeader />
+        </ScrollEdgeHeader>
+      ) : null}
       <Sheet ref={appearanceSheetRef} autoSize>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.APPEARANCE')} />
         <AppearancePicker />

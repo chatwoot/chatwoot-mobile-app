@@ -67,6 +67,8 @@ export const useSideTabBarLayout = (): SideTabBarLayout | null => {
 export const IOS_DESIGN = Platform.OS === 'ios';
 export const useIOSDesign = () => IOS_DESIGN;
 
+export const isPhoneNumberName = (name?: string | null) => /^[\d\s+().-]*$/.test(name ?? '');
+
 // Show the list and the open conversation side by side, like Mail or WhatsApp on the
 // open iPhone Duo (Apple HIG: split views expand on the inner display and collapse to a
 // single pane on the outer one). Applies to the side tab layout when there's room.

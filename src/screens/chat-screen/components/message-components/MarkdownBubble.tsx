@@ -51,6 +51,10 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
     em: {
       fontStyle: 'italic',
     },
+    blockquote: {
+      backgroundColor: tailwind.color('bg-blackA-A3'),
+      borderColor: tailwind.color('text-blackA-A6'),
+    },
     paragraph: {
       marginTop: 0,
       marginBottom: 0,

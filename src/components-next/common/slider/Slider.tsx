@@ -124,9 +124,10 @@ export const Slider = (props: SliderProps) => {
         <Animated.View
           style={[
             tailwind.style(
-              'absolute justify-center items-center h-4 w-4 bg-white rounded-full -bottom-1.5',
+              'absolute justify-center items-center h-4 w-4 rounded-full -bottom-1.5',
               knobStyle,
             ),
+            { backgroundColor: tailwind.color('text-white') },
             styles.knobShadow,
             animatedKnobOneStyle,
           ]}

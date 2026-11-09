@@ -1,4 +1,3 @@
-import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -9,7 +8,7 @@ import { useTailwind } from '@/theme/useTailwind';
 import { expandTabs } from '@/utils/expandTabs';
 import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
 import { IOS_DESIGN, useSideTabBarLayout } from '@/utils';
-import { PageHeader } from '@/navigation/split/FullScreenPage';
+import { PageHeader } from '@/navigation/split/PageHeader';
 
 type ContactDetailsScreenHeaderProps = {
   name: string;

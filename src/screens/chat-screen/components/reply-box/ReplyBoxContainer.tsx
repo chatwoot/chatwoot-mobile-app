@@ -1,5 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Keyboard, Pressable, TextInput, View } from 'react-native';
 import {
   KeyboardAvoidingView,
@@ -48,10 +48,8 @@ import {
 } from '@/store/conversation/sendMessageSlice';
 import { useIsInComposePane, useSplitView } from '@/navigation/split/SplitViewContext';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
-import {
-  GlassCircleButton,
-  GlassPillButton,
-} from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassPillButton } from '@/components-next/side-toolbar/GlassPillButton';
 import { CloseIcon } from '@/svg-icons';
 import { Locked, Unlock } from './MessageTextInput';
 import { selectUserId, selectUserName, selectUserThumbnail } from '@/store/auth/authSelectors';
@@ -90,7 +88,8 @@ import { VoiceRecordButton } from './buttons/VoiceRecordButton';
 import { CopilotButton } from './buttons/CopilotButton';
 import { ReplyGlassCircle } from './buttons/ReplyGlassCircle';
 import { ReplySendOrMicButton } from './buttons/ReplySendOrMicButton';
-import { AddAttachmentMenu, CopilotReplyMenu } from './ReplyMenus';
+import { CopilotReplyMenu } from './CopilotReplyMenu';
+import { AddAttachmentMenu } from './AddAttachmentMenu';
 import { Icon } from '@/components-next/common';
 import { AddIcon, SparkleIcon } from '@/svg-icons';
 import { CopilotMenu } from '../copilot/CopilotMenu';

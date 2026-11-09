@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
@@ -14,7 +14,8 @@ import { Conversation } from '@/types';
 import { User } from '@/types/User';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
 import type { DashboardColumnParams } from '@/navigation/split/SplitViewContext';
-import { FullScreenPage, PageHeader } from '@/navigation/split/FullScreenPage';
+import { FullScreenPage } from '@/navigation/split/FullScreenPage';
+import { PageHeader } from '@/navigation/split/PageHeader';
 import { IOS_DESIGN } from '@/utils';
 
 type DashboardScreenProps = {

@@ -1,9 +1,9 @@
-import React from 'react';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import i18n from '@/i18n';
-import { FullScreenPage, PageHeader } from '@/navigation/split/FullScreenPage';
+import { FullScreenPage } from '@/navigation/split/FullScreenPage';
+import { PageHeader } from '@/navigation/split/PageHeader';
 import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 

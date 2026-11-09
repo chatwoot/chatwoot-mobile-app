@@ -1,139 +1,24 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { useState } from 'react';
-import { ActivityIndicator, Pressable, ScrollView, Text, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import { useState } from 'react';
+import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Icon } from '@/components-next/common';
-import {
-  GlassCircleButton,
-  GlassPillButton,
-} from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
+import { GlassPillButton } from '@/components-next/side-toolbar/GlassPillButton';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import i18n from '@/i18n';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
-import { PageHeader } from '@/navigation/split/FullScreenPage';
-import { SplitEmptyState } from '@/navigation/split/SplitEmptyState';
+import { PageHeader } from '@/navigation/split/PageHeader';
 import { useSplitView } from '@/navigation/split/SplitViewContext';
 import { macroActions } from '@/store/macro/macroActions';
 import { selectAllMacros } from '@/store/macro/macroSelectors';
-import { ChevronLeft, InfoCircleIcon } from '@/svg-icons';
+import { ChevronLeft } from '@/svg-icons';
 import { Macro } from '@/types';
 import { useHaptic } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
 
-import { useMacroSteps } from './useMacroSteps';
-
-const CARD = 'rounded-[13px] mx-4 bg-white overflow-hidden';
-const ROW_DIVIDER = 'border-b-[0.5px] border-b-blackA-A6';
-
-type MacroListProps = {
-  macros: Macro[];
-  onSelect: (macro: Macro) => void;
-  onRun: (macro: Macro) => void;
-  runningId: number | null;
-};
-
-const MacroList = ({ macros, onSelect, onRun, runningId }: MacroListProps) => {
-  const tailwind = useTailwind();
-  if (macros.length === 0) {
-    return (
-      <View style={tailwind.style('pt-16')}>
-        <SplitEmptyState message={i18n.t('MACRO.NO_MACROS')} />
-      </View>
-    );
-  }
-  return (
-    <View style={tailwind.style(CARD)}>
-      {macros.map((macro, index) => (
-        <View key={macro.id} style={tailwind.style('pl-4')}>
-          <View
-            style={tailwind.style(
-              'flex-row items-center min-h-11 py-[11px] pr-3',
-              index < macros.length - 1 && ROW_DIVIDER,
-            )}>
-            <Text
-              numberOfLines={1}
-              style={tailwind.style(
-                'flex-1 text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
-              )}>
-              {macro.name}
-            </Text>
-            {runningId === macro.id ? (
-              <View
-                style={tailwind.style('h-8 min-w-[56px] ml-3 mr-2 items-center justify-center')}>
-                <ActivityIndicator size="small" />
-              </View>
-            ) : (
-              <Pressable
-                onPress={() => onRun(macro)}
-                disabled={runningId !== null}
-                hitSlop={{ top: 8, bottom: 8 }}
-                accessibilityRole="button"
-                accessibilityLabel={`${i18n.t('MACRO.ACTIONS.RUN')} ${macro.name}`}
-                style={({ pressed }) =>
-                  tailwind.style(
-                    'h-8 min-w-[56px] px-3 ml-3 mr-2 rounded-full items-center justify-center bg-gray-100',
-                    pressed && 'opacity-70',
-                  )
-                }>
-                <Text
-                  style={tailwind.style(
-                    'text-[15px] leading-[20px] font-inter-medium-24',
-                    runningId !== null ? 'text-gray-700' : 'text-blue-800',
-                  )}>
-                  {i18n.t('MACRO.ACTIONS.RUN')}
-                </Text>
-              </Pressable>
-            )}
-            <Pressable
-              onPress={() => onSelect(macro)}
-              hitSlop={8}
-              accessibilityRole="button"
-              accessibilityLabel={macro.name}
-              style={({ pressed }) =>
-                tailwind.style('h-8 w-8 items-center justify-center', pressed && 'opacity-50')
-              }>
-              <Icon
-                icon={<InfoCircleIcon stroke={tailwind.color('blue-800')} strokeWidth={1.5} />}
-                size={22}
-              />
-            </Pressable>
-          </View>
-        </View>
-      ))}
-    </View>
-  );
-};
-
-const MacroSteps = ({ macro, conversationId }: { macro: Macro; conversationId: number }) => {
-  const tailwind = useTailwind();
-  const steps = useMacroSteps(macro, conversationId);
-  return (
-    <Animated.View entering={FadeIn.duration(200)} style={tailwind.style(CARD)}>
-      {steps.map((step, index) => (
-        <View key={index} style={tailwind.style('pl-4')}>
-          <View style={tailwind.style('py-[11px] pr-4', index < steps.length - 1 && ROW_DIVIDER)}>
-            <Text
-              style={tailwind.style(
-                'text-[17px] leading-[22px] font-inter-normal-20 text-gray-950',
-              )}>
-              {step.name}
-            </Text>
-            {step.value ? (
-              <Text
-                style={tailwind.style(
-                  'pt-0.5 text-[15px] leading-[20px] font-inter-normal-20 text-gray-700',
-                )}>
-                {step.value}
-              </Text>
-            ) : null}
-          </View>
-        </View>
-      ))}
-    </Animated.View>
-  );
-};
+import { MacroList } from './MacroList';
+import { MacroSteps } from './MacroSteps';
 
 export const MacrosPane = ({
   conversationId,

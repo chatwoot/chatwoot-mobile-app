@@ -45,12 +45,7 @@ const middlewares: Middleware[] = [contactListenerMiddleware.middleware];
 const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) => {
   if (action.type === 'auth/logout') {
     const initialState = appReducer(undefined, { type: 'INIT' });
-    // Placements outlive logout and release their count when their cleanup finishes.
-    return {
-      ...initialState,
-      settings: state.settings,
-      calls: { ...initialState.calls, pendingPlacements: state.calls.pendingPlacements },
-    };
+    return { ...initialState, settings: state.settings };
   }
   return appReducer(state, action);
 };

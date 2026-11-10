@@ -20,6 +20,7 @@ import {
   isVersionLower,
   markRestartForUpdate,
   onServerPolicyLoaded,
+  APP_UPDATE_FAILURES,
   reportAppUpdateError,
   openStorePage,
   snoozeUpdatePrompt,
@@ -126,7 +127,7 @@ export const AppUpdatePrompt = () => {
 
       if (info.flexibleAllowed) {
         const result = await startPlayUpdate('flexible').catch((error: unknown) => {
-          reportAppUpdateError('start_flexible_update', error);
+          reportAppUpdateError(APP_UPDATE_FAILURES.START_FLEXIBLE_UPDATE, error);
           return 'failed' as const;
         });
         if (result === 'accepted') {
@@ -180,8 +181,12 @@ export const AppUpdatePrompt = () => {
           message: i18n.t('APP_UPDATE.UPDATED', { version: isolateBidi(updatedVersion) }),
         });
       })
-      .catch((error: unknown) => reportAppUpdateError('consume_updated_version', error));
-    checkForUpdate(true).catch((error: unknown) => reportAppUpdateError('check_for_update', error));
+      .catch((error: unknown) =>
+        reportAppUpdateError(APP_UPDATE_FAILURES.CONSUME_UPDATED_VERSION, error),
+      );
+    checkForUpdate(true).catch((error: unknown) =>
+      reportAppUpdateError(APP_UPDATE_FAILURES.CHECK_FOR_UPDATE, error),
+    );
   }, [checkForUpdate]);
 
   useEffect(
@@ -189,7 +194,7 @@ export const AppUpdatePrompt = () => {
       onServerPolicyLoaded(() => {
         if (Date.now() - lastCheckedAtRef.current < UPDATE_RECHECK_INTERVAL_MS) return;
         checkForUpdate(false).catch((error: unknown) =>
-          reportAppUpdateError('check_for_update', error),
+          reportAppUpdateError(APP_UPDATE_FAILURES.CHECK_FOR_UPDATE, error),
         );
       }),
     [checkForUpdate],
@@ -216,7 +221,7 @@ export const AppUpdatePrompt = () => {
       }
       await completePlayUpdate();
     } catch (error) {
-      reportAppUpdateError('complete_update', error);
+      reportAppUpdateError(APP_UPDATE_FAILURES.COMPLETE_UPDATE, error);
       isInstallingRef.current = false;
     }
   }, [canInstallSafely]);
@@ -240,7 +245,9 @@ export const AppUpdatePrompt = () => {
           if (nextState) setDownloadState(nextState);
           if (nextState === 'downloaded') installUpdate();
         })
-        .catch((error: unknown) => reportAppUpdateError('read_update_info', error));
+        .catch((error: unknown) =>
+          reportAppUpdateError(APP_UPDATE_FAILURES.READ_UPDATE_INFO, error),
+        );
     });
     return () => {
       removeInstallListener();
@@ -269,7 +276,7 @@ export const AppUpdatePrompt = () => {
 
   const handleUpdate = useCallback(() => {
     openStorePage().catch((error: unknown) => {
-      reportAppUpdateError('open_store_page', error);
+      reportAppUpdateError(APP_UPDATE_FAILURES.OPEN_STORE_PAGE, error);
       Snackbar.show({
         text: i18n.t('APP_UPDATE.OPTIONAL.STORE_ERROR', { store: getStoreName() }),
         duration: Snackbar.LENGTH_LONG,
@@ -278,7 +285,9 @@ export const AppUpdatePrompt = () => {
   }, []);
 
   const handleSnooze = useCallback(() => {
-    snoozeUpdatePrompt().catch((error: unknown) => reportAppUpdateError('snooze', error));
+    snoozeUpdatePrompt().catch((error: unknown) =>
+      reportAppUpdateError(APP_UPDATE_FAILURES.SNOOZE, error),
+    );
   }, []);
 
   return (

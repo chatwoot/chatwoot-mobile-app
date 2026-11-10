@@ -7,7 +7,23 @@ import semver from 'semver';
 
 import { presentAppStorePage } from '../../modules/app-update';
 
-export const reportAppUpdateError = (failure: string, error: unknown): void => {
+export const APP_UPDATE_FAILURES = {
+  APP_STORE_LOOKUP: 'app_store_lookup',
+  CHECK_FOR_UPDATE: 'check_for_update',
+  COMPLETE_UPDATE: 'complete_update',
+  CONSUME_UPDATED_VERSION: 'consume_updated_version',
+  OPEN_REQUIRED_UPDATE: 'open_required_update',
+  OPEN_STORE_PAGE: 'open_store_page',
+  PRESENT_STORE_PAGE: 'present_store_page',
+  READ_UPDATE_INFO: 'read_update_info',
+  SNOOZE: 'snooze',
+  START_FLEXIBLE_UPDATE: 'start_flexible_update',
+  START_IMMEDIATE_UPDATE: 'start_immediate_update',
+} as const;
+
+type AppUpdateFailure = (typeof APP_UPDATE_FAILURES)[keyof typeof APP_UPDATE_FAILURES];
+
+export const reportAppUpdateError = (failure: AppUpdateFailure, error: unknown): void => {
   Sentry.captureException(error, { tags: { 'app_update.failure': failure } });
 };
 
@@ -154,7 +170,7 @@ export const openStorePage = async (): Promise<void> => {
   try {
     await presentAppStorePage(APP_STORE_ID);
   } catch (error) {
-    reportAppUpdateError('present_store_page', error);
+    reportAppUpdateError(APP_UPDATE_FAILURES.PRESENT_STORE_PAGE, error);
     await Linking.openURL(`itms-apps://apps.apple.com/app/id${APP_STORE_ID}`);
   }
 };

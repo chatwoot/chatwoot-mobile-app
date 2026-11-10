@@ -9,6 +9,7 @@ import {
   canInstallRelease,
   fetchAppStoreRelease,
   isVersionLower,
+  APP_UPDATE_FAILURES,
   reportAppUpdateError,
 } from '@/utils/appUpdateUtils';
 
@@ -23,7 +24,7 @@ const checkAppStoreAvailability = async (minVersion: string): Promise<StoreAvail
     if (isVersionLower(release.version, minVersion)) return 'unavailable';
     return canInstallRelease(release, Device.osVersion ?? '0') ? 'available' : 'unavailable';
   } catch (error) {
-    reportAppUpdateError('app_store_lookup', error);
+    reportAppUpdateError(APP_UPDATE_FAILURES.APP_STORE_LOOKUP, error);
     return 'unknown';
   }
 };

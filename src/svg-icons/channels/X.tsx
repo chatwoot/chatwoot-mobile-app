@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Svg, { Circle, ClipPath, Defs, G, Rect, Path } from 'react-native-svg';
 
@@ -14,10 +15,16 @@ export const XIcon = () => {
 };
 
 export const XFilledIcon = () => {
+  const tailwind = useTailwind();
   return (
     <Svg width="100%" height="100%" viewBox="0 0 20 20" fill="none">
       <G clipPath="url(#clip0_2219_26963)">
-        <Circle cx="10" cy="10" r="10" fill="#BBBBBB" />
+        <Circle
+          cx="10"
+          cy="10"
+          r="10"
+          fill={tailwind.isDark ? tailwind.color('bg-gray-400') : '#BBBBBB'}
+        />
         <Path
           d="M13.3542 5H15.1432L11.2348 9.2359L15.8327 15H12.2326L9.41285 11.5041L6.18644 15H4.3964L8.57678 10.4692L4.16602 5H7.85751L10.4063 8.19538L13.3542 5ZM12.7263 13.9846H13.7176L7.31888 5.96205H6.25512L12.7263 13.9846Z"
           fill="white"

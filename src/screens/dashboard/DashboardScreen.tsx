@@ -1,23 +1,35 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { WebView } from 'react-native-webview';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import snakecaseKeys from 'snakecase-keys';
 
 import { StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { Icon } from '@/components-next';
 import { CloseIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { Conversation } from '@/types';
 import { User } from '@/types/User';
+import { PaneHeader } from '@/navigation/split/PaneHeader';
+import type { DashboardColumnParams } from '@/navigation/split/SplitViewContext';
+import { FullScreenPage } from '@/navigation/split/FullScreenPage';
+import { PageHeader } from '@/navigation/split/PageHeader';
+import { IOS_DESIGN } from '@/utils';
 
-const DashboardScreen = () => {
+type DashboardScreenProps = {
+  paneParams?: DashboardColumnParams;
+};
+
+const DashboardScreen = ({ paneParams }: DashboardScreenProps = {}) => {
+  const tailwind = useTailwind();
+  const { top } = useSafeAreaInsets();
   const route = useRoute();
   const navigation = useNavigation();
   const webviewRef = useRef<WebView>(null);
 
-  const { conversation, currentUser, title, url } = route.params as {
+  const { conversation, currentUser, title, url } = (paneParams ?? route.params) as {
     conversation: Conversation;
     currentUser: User;
     title: string;
@@ -50,11 +62,41 @@ const DashboardScreen = () => {
     data,
   )}}));`;
 
+  const webview = (
+    <WebView
+      ref={webviewRef}
+      originWhitelist={['*']}
+      source={{ uri: url }}
+      startInLoadingState={true}
+      javaScriptEnabled={true}
+      autoManageStatusBarEnabled={false}
+      onLoadEnd={() => {
+        webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
+      }}
+      onMessage={event => {
+        if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
+          webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
+        }
+      }}
+    />
+  );
+
+  if (IOS_DESIGN && !paneParams) {
+    return (
+      <FullScreenPage>
+        <PageHeader title={title ?? ''} onBack={handleBackPress} />
+        {webview}
+      </FullScreenPage>
+    );
+  }
+
   return (
-    <Animated.View style={tailwind.style('flex-1')}>
+    <Animated.View style={tailwind.style('flex-1', paneParams ? '' : `bg-white pt-[${top}px]`)}>
+      {paneParams ? <PaneHeader title={title ?? ''} /> : null}
       <Animated.View
         style={tailwind.style(
           'flex flex-row items-center justify-between px-4 border-b-[1px] border-b-blackA-A3 py-[12px] bg-white',
+          paneParams ? 'hidden' : '',
         )}>
         <Pressable hitSlop={16} onPress={handleBackPress}>
           <Animated.View>
@@ -75,21 +117,7 @@ const DashboardScreen = () => {
           </Animated.View>
         </Pressable>
       </Animated.View>
-      <WebView
-        ref={webviewRef}
-        originWhitelist={['*']}
-        source={{ uri: url }}
-        startInLoadingState={true}
-        javaScriptEnabled={true}
-        onLoadEnd={() => {
-          webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
-        }}
-        onMessage={event => {
-          if (event?.nativeEvent?.data === 'chatwoot-dashboard-app:fetch-info') {
-            webviewRef.current?.injectJavaScript(INJECTED_JAVASCRIPT);
-          }
-        }}
-      />
+      {webview}
     </Animated.View>
   );
 };

@@ -3,10 +3,10 @@ import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { LiveCall } from '@/store/call/callTypes';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import i18n from '@/i18n';
 
-import { CALL_LINK } from '../constants/callTheme';
+import { useCallTheme } from '../constants/callTheme';
 import { useCallStatusText } from '../hooks/useCallStatusText';
 import type { CallStatusFlags } from '../utils/callStatusText';
 
@@ -20,6 +20,8 @@ type CallBannerProps = {
 };
 
 export const CallBanner = ({ call, activeSince, flags, onPress }: CallBannerProps) => {
+  const tailwind = useTailwind();
+  const { CALL_LINK } = useCallTheme();
   const insets = useSafeAreaInsets();
   const statusText = useCallStatusText(call, activeSince, flags);
 

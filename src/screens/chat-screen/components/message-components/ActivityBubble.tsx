@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { unixTimestampToReadableTime } from '@/utils/dateTimeUtils';
 import { expandTabs } from '@/utils/expandTabs';
 
@@ -11,6 +11,7 @@ type ActivityBubbleProps = {
 };
 
 export const ActivityBubble = (props: ActivityBubbleProps) => {
+  const tailwind = useTailwind();
   const { text, timeStamp } = props;
   return (
     <Animated.View style={tailwind.style('flex flex-row flex-wrap justify-center py-1 px-10')}>

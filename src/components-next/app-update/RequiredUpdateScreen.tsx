@@ -11,6 +11,7 @@ import {
   isolateBidi,
   markRestartForUpdate,
   openStorePage,
+  reportAppUpdateError,
 } from '@/utils/appUpdateUtils';
 import { startPlayUpdate } from '../../../modules/app-update';
 import { Spinner } from '../spinner';
@@ -24,7 +25,10 @@ type RequiredUpdateScreenProps = {
 
 const openUpdate = async (): Promise<void> => {
   if (Platform.OS === 'android') {
-    const result = await startPlayUpdate('immediate').catch(() => 'not_allowed' as const);
+    const result = await startPlayUpdate('immediate').catch((error: unknown) => {
+      reportAppUpdateError('start_immediate_update', error);
+      return 'not_allowed' as const;
+    });
     if (result === 'accepted' || result === 'declined') return;
     if (result === 'failed') throw new Error('Play update flow failed');
   }
@@ -47,7 +51,8 @@ export const RequiredUpdateScreen = ({ currentVersion, minVersion }: RequiredUpd
     try {
       await markRestartForUpdate(currentVersion);
       await openUpdate();
-    } catch {
+    } catch (error) {
+      reportAppUpdateError('open_required_update', error);
       setHasError(true);
     } finally {
       setIsOpening(false);

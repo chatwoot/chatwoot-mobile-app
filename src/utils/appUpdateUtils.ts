@@ -1,11 +1,15 @@
 import { Linking, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sentry from '@sentry/react-native';
 
 import i18n from '@/i18n';
-// @ts-expect-error semver package lacks TypeScript definitions
 import semver from 'semver';
 
 import { presentAppStorePage } from '../../modules/app-update';
+
+export const reportAppUpdateError = (failure: string, error: unknown): void => {
+  Sentry.captureException(error, { tags: { 'app_update.failure': failure } });
+};
 
 export const APP_PACKAGE_NAME = 'com.chatwoot.app';
 export const APP_STORE_ID = '1495796682';
@@ -14,7 +18,7 @@ const SNOOZE_DAYS = 3;
 
 let hasSignedInThisSession = false;
 
-// Update prompts skip the sign-in launch so they don't stack on onboarding prompts.
+// Prompts skip the sign-in launch.
 export const markSignedInThisSession = (): void => {
   hasSignedInThisSession = true;
 };
@@ -79,7 +83,7 @@ export const getMinVersionForPlatform = (
 export const getStoreName = (): string =>
   i18n.t(Platform.OS === 'ios' ? 'APP_UPDATE.STORE_NAME.IOS' : 'APP_UPDATE.STORE_NAME.ANDROID');
 
-// Keeps version numbers LTR inside RTL strings.
+// Keeps versions LTR in RTL text.
 export const isolateBidi = (text: string): string => `⁨${text}⁩`;
 
 export type AppStoreRelease = {
@@ -115,7 +119,7 @@ export const snoozeUpdatePrompt = async (now: number = Date.now()): Promise<void
   await AsyncStorage.setItem(SNOOZED_UNTIL_KEY, String(until));
 };
 
-// Marker writes wait for this read so its removal can't delete a newer marker.
+// Writes wait for this read.
 let pendingMarkerRead: Promise<unknown> = Promise.resolve();
 
 export const markRestartForUpdate = async (currentVersion: string): Promise<void> => {
@@ -149,7 +153,8 @@ export const openStorePage = async (): Promise<void> => {
   }
   try {
     await presentAppStorePage(APP_STORE_ID);
-  } catch {
+  } catch (error) {
+    reportAppUpdateError('present_store_page', error);
     await Linking.openURL(`itms-apps://apps.apple.com/app/id${APP_STORE_ID}`);
   }
 };

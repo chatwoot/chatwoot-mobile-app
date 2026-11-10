@@ -58,7 +58,7 @@ class AppUpdateModule : Module() {
         promise.reject(CodedException("An update flow is already in progress"))
         return@AsyncFunction
       }
-      // Reserved before the async lookup; every exit without an activity result releases it.
+      // Reserved early; released without activity result.
       pendingStartPromise = promise
       fun release(settle: () -> Unit) {
         pendingStartPromise = null
@@ -90,7 +90,7 @@ class AppUpdateModule : Module() {
           }
           try {
             val options = AppUpdateOptions.newBuilder(updateType).build()
-            // false: Play didn't start the flow, so no activity result will arrive.
+            // false: no activity result follows.
             if (!updateManager.startUpdateFlowForResult(info, activity, options, UPDATE_REQUEST_CODE)) {
               release { promise.resolve("not_allowed") }
             }

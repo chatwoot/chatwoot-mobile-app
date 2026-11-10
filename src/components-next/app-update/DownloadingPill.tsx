@@ -7,8 +7,6 @@ import { tailwind } from '@/theme';
 import { useTabBarHeight } from '@/utils/common';
 import { Spinner } from '../spinner';
 
-import { SNACKBAR_SURFACE } from './constants';
-
 export const DownloadingPill = () => {
   const tabBarHeight = useTabBarHeight();
 
@@ -25,12 +23,13 @@ export const DownloadingPill = () => {
         accessibilityRole="text"
         accessibilityLiveRegion="polite"
         style={[
-          tailwind.style('min-h-[40px] flex-row items-center gap-2.5 rounded-[20px] py-2.5'),
+          tailwind.style(
+            'min-h-[40px] flex-row items-center gap-2.5 rounded-[20px] bg-gray-950 py-2.5',
+          ),
           {
             paddingStart: 14,
             paddingEnd: 16,
-            backgroundColor: SNACKBAR_SURFACE,
-            shadowColor: '#000',
+            shadowColor: tailwind.color('text-gray-950'),
             shadowOpacity: 0.24,
             shadowRadius: 8,
             shadowOffset: { width: 0, height: 3 },

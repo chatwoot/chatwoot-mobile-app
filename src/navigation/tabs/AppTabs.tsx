@@ -222,7 +222,7 @@ export const AppTabs = () => {
   const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
   const isCallInProgress = useAppSelector(selectIsCallInProgress);
 
-  // Refetched on every foreground; only the latest request marks the policy loaded.
+  // Latest request marks the policy loaded.
   const latestServerInfoRequestRef = useRef<Promise<unknown> | null>(null);
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -248,7 +248,7 @@ export const AppTabs = () => {
     wasLoggedInRef.current = isLoggedIn;
   }, [isLoggedIn]);
 
-  // The call screen and its session live inside the navigator, so the gate waits for calls to end.
+  // Call screen lives inside this navigator.
   if (isLoggedIn && isUpdateRequired && minVersion && !isCallInProgress) {
     return <RequiredUpdateScreen currentVersion={currentVersion} minVersion={minVersion} />;
   }

@@ -2,13 +2,11 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, Keyboard, Platform } from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import { useIsFocused } from '@react-navigation/native';
-import { useStore } from 'react-redux';
 import * as Application from 'expo-application';
 import * as Device from 'expo-device';
 
 import i18n from '@/i18n';
-import { useAppSelector } from '@/hooks';
-import type { RootState } from '@/store';
+import { useAppSelector, useAppStore } from '@/hooks';
 import { selectIsCallInProgress } from '@/store/call/callSelectors';
 import { selectMobileAppMinVersion } from '@/store/settings/settingsSelectors';
 import { showToast } from '@/utils/toastUtils';
@@ -22,6 +20,7 @@ import {
   isVersionLower,
   markRestartForUpdate,
   onServerPolicyLoaded,
+  reportAppUpdateError,
   openStorePage,
   snoozeUpdatePrompt,
   waitForNotificationRequest,
@@ -72,7 +71,7 @@ export const AppUpdatePrompt = () => {
   const isInstallingRef = useRef(false);
   const isCheckingRef = useRef(false);
   const isMountedRef = useRef(true);
-  const store = useStore<RootState>();
+  const store = useAppStore();
 
   const isFocusedRef = useRef(isFocused);
   isFocusedRef.current = isFocused;
@@ -91,7 +90,7 @@ export const AppUpdatePrompt = () => {
     return !!minVersion && isVersionLower(currentVersion, minVersion);
   }, [store]);
 
-  // Re-checked right before showing any UI, since state can change while checks await.
+  // Rechecked after each await.
   const canPrompt = useCallback(
     (isLaunchCheck: boolean) =>
       isMountedRef.current &&
@@ -107,7 +106,7 @@ export const AppUpdatePrompt = () => {
     setSheetRequest({ version });
   }, []);
 
-  // Present after the sheet has rendered with the requested version.
+  // Presents after the version renders.
   useEffect(() => {
     if (sheetRequest) sheetRef.current?.present();
   }, [sheetRequest]);
@@ -126,7 +125,10 @@ export const AppUpdatePrompt = () => {
       if (!canPrompt(isLaunchCheck)) return;
 
       if (info.flexibleAllowed) {
-        const result = await startPlayUpdate('flexible').catch(() => 'failed' as const);
+        const result = await startPlayUpdate('flexible').catch((error: unknown) => {
+          reportAppUpdateError('start_flexible_update', error);
+          return 'failed' as const;
+        });
         if (result === 'accepted') {
           setDownloadState('downloading');
           return;
@@ -153,7 +155,7 @@ export const AppUpdatePrompt = () => {
     [canPrompt, presentSheet],
   );
 
-  // Waits for the minimum version and the notification prompt so it never shows under either.
+  // Waits for policy and permission prompt.
   const checkForUpdate = useCallback(
     async (isLaunchCheck: boolean) => {
       if (isCheckingRef.current) return;
@@ -178,22 +180,22 @@ export const AppUpdatePrompt = () => {
           message: i18n.t('APP_UPDATE.UPDATED', { version: isolateBidi(updatedVersion) }),
         });
       })
-      .catch(() => {});
-    checkForUpdate(true).catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      .catch((error: unknown) => reportAppUpdateError('consume_updated_version', error));
+    checkForUpdate(true).catch((error: unknown) => reportAppUpdateError('check_for_update', error));
+  }, [checkForUpdate]);
 
   useEffect(
     () =>
       onServerPolicyLoaded(() => {
         if (Date.now() - lastCheckedAtRef.current < UPDATE_RECHECK_INTERVAL_MS) return;
-        checkForUpdate(false).catch(() => {});
+        checkForUpdate(false).catch((error: unknown) =>
+          reportAppUpdateError('check_for_update', error),
+        );
       }),
     [checkForUpdate],
   );
 
-  // Restarting off the main tabs loses unsaved reply state. The call screen overlays the tabs
-  // without blurring them, so calls are checked separately.
+  // Calls overlay tabs without blurring them.
   const canInstallSafely = useCallback(
     () =>
       isMountedRef.current &&
@@ -213,7 +215,8 @@ export const AppUpdatePrompt = () => {
         return;
       }
       await completePlayUpdate();
-    } catch {
+    } catch (error) {
+      reportAppUpdateError('complete_update', error);
       isInstallingRef.current = false;
     }
   }, [canInstallSafely]);
@@ -237,7 +240,7 @@ export const AppUpdatePrompt = () => {
           if (nextState) setDownloadState(nextState);
           if (nextState === 'downloaded') installUpdate();
         })
-        .catch(() => {});
+        .catch((error: unknown) => reportAppUpdateError('read_update_info', error));
     });
     return () => {
       removeInstallListener();
@@ -265,7 +268,8 @@ export const AppUpdatePrompt = () => {
   }, [canInstallNow, installUpdate]);
 
   const handleUpdate = useCallback(() => {
-    openStorePage().catch(() => {
+    openStorePage().catch((error: unknown) => {
+      reportAppUpdateError('open_store_page', error);
       Snackbar.show({
         text: i18n.t('APP_UPDATE.OPTIONAL.STORE_ERROR', { store: getStoreName() }),
         duration: Snackbar.LENGTH_LONG,
@@ -274,7 +278,7 @@ export const AppUpdatePrompt = () => {
   }, []);
 
   const handleSnooze = useCallback(() => {
-    snoozeUpdatePrompt().catch(() => {});
+    snoozeUpdatePrompt().catch((error: unknown) => reportAppUpdateError('snooze', error));
   }, []);
 
   return (

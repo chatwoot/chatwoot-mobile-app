@@ -13,11 +13,11 @@ import { AppUpdateIcon } from './AppUpdateIcon';
 type UpdateAvailableSheetProps = {
   version: string | null;
   onUpdate: () => void;
-  /** Not now, swipe down, scrim tap and Android back. */
+  // Not now, swipe, scrim, back.
   onSnooze: () => void;
 };
 
-// Update calls onUpdate after the sheet closes so the store page isn't presented over it.
+// onUpdate waits for sheet dismissal.
 export const UpdateAvailableSheet = forwardRef<SheetRef, UpdateAvailableSheetProps>(
   ({ version, onUpdate, onSnooze }, ref) => {
     const { bottom } = useSafeAreaInsets();

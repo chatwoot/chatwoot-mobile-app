@@ -95,7 +95,7 @@ export const settingsSlice = createSlice({
         state.serverInfoRequestId = action.meta.requestId;
       })
       .addCase(settingsActions.getChatwootVersion.fulfilled, (state, action) => {
-        // Ignore stale responses and responses from a previous server.
+        // Ignores stale or previous-server responses.
         if (action.meta.requestId !== state.serverInfoRequestId) return;
         if (action.meta.arg.installationUrl !== state.installationUrl) return;
         const { version, mobile_app: mobileApp } = action.payload;

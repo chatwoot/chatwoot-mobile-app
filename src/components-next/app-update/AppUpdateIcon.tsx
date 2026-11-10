@@ -5,8 +5,6 @@ import { tailwind } from '@/theme';
 import { ArrowUpIcon } from '@/svg-icons';
 import AppIcon from '@/assets/images/app-icon.png';
 
-import { SNACKBAR_SURFACE } from './constants';
-
 type AppUpdateIconProps = {
   size: 56 | 72;
 };
@@ -36,8 +34,8 @@ export const AppUpdateIcon = ({ size }: AppUpdateIconProps) => {
         ]}>
         <View
           style={[
-            tailwind.style('items-center justify-center rounded-full'),
-            { width: badge, height: badge, backgroundColor: SNACKBAR_SURFACE },
+            tailwind.style('items-center justify-center rounded-full bg-gray-950'),
+            { width: badge, height: badge },
           ]}>
           <View style={{ width: arrow, height: arrow }}>
             <ArrowUpIcon />

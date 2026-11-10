@@ -37,7 +37,7 @@ type AppUpdateNativeModule = {
   presentStorePage?: (appStoreId: string) => Promise<void>;
 };
 
-// Optional so the app (and Jest) keep working in builds without the native module.
+// Missing in Jest and some builds.
 const AppUpdate = requireOptionalNativeModule<AppUpdateNativeModule>('AppUpdate');
 
 export const getPlayUpdateInfo = async (): Promise<PlayUpdateInfo | null> =>

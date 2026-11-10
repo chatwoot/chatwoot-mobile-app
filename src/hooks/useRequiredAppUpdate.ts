@@ -5,7 +5,12 @@ import * as Device from 'expo-device';
 
 import { useAppSelector } from '@/hooks';
 import { selectMobileAppMinVersion } from '@/store/settings/settingsSelectors';
-import { canInstallRelease, fetchAppStoreRelease, isVersionLower } from '@/utils/appUpdateUtils';
+import {
+  canInstallRelease,
+  fetchAppStoreRelease,
+  isVersionLower,
+  reportAppUpdateError,
+} from '@/utils/appUpdateUtils';
 
 const currentVersion = Application.nativeApplicationVersion ?? '';
 
@@ -17,13 +22,13 @@ const checkAppStoreAvailability = async (minVersion: string): Promise<StoreAvail
     if (!release) return 'unknown';
     if (isVersionLower(release.version, minVersion)) return 'unavailable';
     return canInstallRelease(release, Device.osVersion ?? '0') ? 'available' : 'unavailable';
-  } catch {
+  } catch (error) {
+    reportAppUpdateError('app_store_lookup', error);
     return 'unknown';
   }
 };
 
-// Android blocks on the version alone, since Play reports only version codes. iOS blocks only
-// once the App Store confirms an installable release that meets the minimum.
+// iOS also needs an installable release.
 export const useRequiredAppUpdate = () => {
   const minVersion = useAppSelector(selectMobileAppMinVersion);
   const [storeAvailability, setStoreAvailability] = useState<StoreAvailability>('unknown');

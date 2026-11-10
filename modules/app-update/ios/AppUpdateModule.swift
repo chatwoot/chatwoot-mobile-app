@@ -13,7 +13,7 @@ public class AppUpdateModule: Module {
         return
       }
 
-      // StoreKit expects the iTunes item identifier as a number.
+      // StoreKit requires a numeric identifier.
       guard let itemIdentifier = Int(appStoreId) else {
         promise.reject("ERR_INVALID_APP_STORE_ID", "App Store ID must be numeric")
         return

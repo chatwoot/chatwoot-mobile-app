@@ -1,4 +1,4 @@
-import { fromUnixTime, formatDistanceToNow, isSameDay, format } from 'date-fns';
+import { fromUnixTime, formatDistanceToNow, isSameDay, format, differenceInDays } from 'date-fns';
 import i18n from '@/i18n';
 import { UnixTimestamp } from '@/types';
 
@@ -59,6 +59,15 @@ export const unixTimestampToReadableTime = (unixTimestamp: number) => {
   const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
 
   return `${formattedHours}:${minutes} ${ampm}`;
+};
+
+export const getDayDifferenceFromNow = (now: Date, timestampInSeconds: UnixTimestamp) => {
+  return differenceInDays(now, fromUnixTime(timestampInSeconds));
+};
+
+export const hasOneDayPassed = (timestamp: UnixTimestamp) => {
+  if (!timestamp) return true;
+  return getDayDifferenceFromNow(new Date(), timestamp) >= 1;
 };
 
 export const messageStamp = ({

@@ -5,6 +5,7 @@ import type {
   LoginResponse,
   LoginApiResponse,
   MfaRequiredResponse,
+  MfaSetupRequiredResponse,
   MfaVerificationPayload,
   ResetPasswordPayload,
   ResetPasswordResponse,
@@ -13,17 +14,25 @@ import type {
   SetActiveAccountPayload,
   SsoAuthPayload,
   SsoAuthResponse,
+  WorkPreferencesPayload,
 } from './authTypes';
 
 export class AuthService {
-  static async login(credentials: LoginPayload): Promise<LoginResponse | MfaRequiredResponse> {
+  static async login(
+    credentials: LoginPayload,
+  ): Promise<LoginResponse | MfaRequiredResponse | MfaSetupRequiredResponse> {
     const response = await apiService.post<LoginApiResponse>('auth/sign_in', credentials);
+
+    if (response.data.mfa_setup_required) {
+      return { mfa_setup_required: true };
+    }
 
     // Check if MFA is required
     if (response.data.mfa_required) {
       return {
         mfa_required: true,
         mfa_token: response.data.mfa_token,
+        verification_channel: response.data.verification_channel ?? null,
       } as MfaRequiredResponse;
     }
 
@@ -38,10 +47,19 @@ export class AuthService {
     } as LoginResponse;
   }
 
-  static async verifyMfa(payload: MfaVerificationPayload): Promise<LoginResponse> {
-    const response = await apiService.post<{ data: User }>('auth/sign_in', payload);
+  static async verifyMfa(
+    payload: MfaVerificationPayload,
+  ): Promise<LoginResponse | MfaSetupRequiredResponse> {
+    const response = await apiService.post<LoginApiResponse>('auth/sign_in', payload);
+
+    // A redeemed device-verification code on an enforcing account still ends in the
+    // setup challenge rather than a session.
+    if (response.data.mfa_setup_required) {
+      return { mfa_setup_required: true };
+    }
+
     return {
-      user: response.data.data,
+      user: response.data.data as User,
       headers: {
         'access-token': response.headers['access-token'],
         uid: response.headers.uid,
@@ -59,6 +77,11 @@ export class AuthService {
   }
   static async updateAvailability(payload: AvailabilityPayload): Promise<ProfileResponse> {
     const response = await apiService.post<ProfileResponse>('profile/availability', payload);
+    return response.data;
+  }
+
+  static async updateWorkPreferences(payload: WorkPreferencesPayload): Promise<ProfileResponse> {
+    const response = await apiService.post<ProfileResponse>('profile/work_preferences', payload);
     return response.data;
   }
 

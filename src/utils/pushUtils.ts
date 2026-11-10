@@ -25,9 +25,11 @@ export const updateBadgeCount = async ({ count = 0 }) => {
 export const findConversationLinkFromPush = ({
   notification,
   installationUrl,
+  currentAccountId,
 }: {
   notification: Notification;
   installationUrl: string;
+  currentAccountId?: number;
 }) => {
   const { notificationType } = notification;
 
@@ -40,7 +42,9 @@ export const findConversationLinkFromPush = ({
       conversationId = primaryActor.conversationId;
     }
     if (conversationId) {
-      const conversationLink = `${installationUrl}/app/accounts/1/conversations/${conversationId}/${primaryActorId}/${primaryActorType}`;
+      // Older servers omit accountId; fall back to the active account so the link stays valid.
+      const accountId = notification.accountId ?? currentAccountId;
+      const conversationLink = `${installationUrl}/app/accounts/${accountId}/conversations/${conversationId}/${primaryActorId}/${primaryActorType}`;
       return conversationLink;
     }
   }
@@ -54,16 +58,24 @@ interface FCMMessage {
   };
 }
 
+// A push can arrive without the field the branch below reads, and its contents
+// come from the server, so a parse is never assumed to succeed.
+const parseJSON = (value?: string) => {
+  if (!value) {
+    return null;
+  }
+  try {
+    return JSON.parse(value);
+  } catch {
+    return null;
+  }
+};
+
 export const findNotificationFromFCM = ({ message }: { message: FCMMessage }) => {
-  let notification = null;
   // FCM HTTP v1
   if (message?.data?.payload) {
-    const parsedPayload = JSON.parse(message.data.payload);
-    notification = parsedPayload.data.notification;
+    return parseJSON(message.data.payload)?.data?.notification ?? null;
   }
   // FCM legacy. It will be deprecated soon
-  else {
-    notification = JSON.parse(message.data.notification);
-  }
-  return notification;
+  return parseJSON(message?.data?.notification);
 };

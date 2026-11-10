@@ -4,6 +4,10 @@ export const isContactTyping = (typingUsers: TypingUser[], userId: number) => {
   return typingUsers.some(user => user.id === userId && user.type === 'contact');
 };
 
+// A typing user can reach the client without a name.
+const displayName = (user: TypingUser) =>
+  String(user?.name ?? '').replace(/^./, str => str.toUpperCase());
+
 export const getTypingUsersText = ({ users }: { users: TypingUser[] }) => {
   if (!users) {
     return '';
@@ -13,21 +17,17 @@ export const getTypingUsersText = ({ users }: { users: TypingUser[] }) => {
     const count = users.length;
     if (count === 1) {
       const [user] = users;
-      return `${user.name.toString().replace(/^./, str => str.toUpperCase())} is typing`;
+      return `${displayName(user)} is typing`;
     }
 
     if (count === 2) {
       const [first, second] = users;
-      return `${first.name.toString().replace(/^./, str => str.toUpperCase())} and ${second.name
-        .toString()
-        .replace(/^./, str => str.toUpperCase())} are typing`;
+      return `${displayName(first)} and ${displayName(second)} are typing`;
     }
 
     const [user] = users;
     const rest = users.length - 1;
-    return `${user.name
-      .toString()
-      .replace(/^./, str => str.toUpperCase())} and ${rest} others are typing`;
+    return `${displayName(user)} and ${rest} others are typing`;
   }
   return false;
 };

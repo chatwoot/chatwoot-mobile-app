@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { LayoutChangeEvent, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -5,7 +6,6 @@ import Animated, {
   clamp,
   Extrapolation,
   interpolate,
-  runOnJS,
   SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -13,8 +13,7 @@ import Animated, {
   withSpring,
   WithSpringConfig,
 } from 'react-native-reanimated';
-
-import { tailwind } from '@/theme';
+import { scheduleOnRN } from 'react-native-worklets';
 
 const DefaultSpringConfig: WithSpringConfig = {
   mass: 1,
@@ -33,6 +32,7 @@ type SliderProps = {
 };
 
 export const Slider = (props: SliderProps) => {
+  const tailwind = useTailwind();
   const {
     currentPosition,
     totalDuration,
@@ -67,7 +67,7 @@ export const Slider = (props: SliderProps) => {
 
   const panGesture = Gesture.Pan()
     .onBegin(() => {
-      runOnJS(pauseAudio)();
+      scheduleOnRN(pauseAudio);
       sliderActive.value = withSpring(1, DefaultSpringConfig);
       context.value = { x: translationX.value };
     })
@@ -85,7 +85,7 @@ export const Slider = (props: SliderProps) => {
         [0, totalDuration.value],
         Extrapolation.CLAMP,
       );
-      runOnJS(manualSeekTo)(seekToValue);
+      scheduleOnRN(manualSeekTo, seekToValue);
     })
     .onFinalize(() => (sliderActive.value = withSpring(0, DefaultSpringConfig)));
 
@@ -124,9 +124,10 @@ export const Slider = (props: SliderProps) => {
         <Animated.View
           style={[
             tailwind.style(
-              'absolute justify-center items-center h-4 w-4 bg-white rounded-full -bottom-1.5',
+              'absolute justify-center items-center h-4 w-4 rounded-full -bottom-1.5',
               knobStyle,
             ),
+            { backgroundColor: tailwind.color('text-white') },
             styles.knobShadow,
             animatedKnobOneStyle,
           ]}

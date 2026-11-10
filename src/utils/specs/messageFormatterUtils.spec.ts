@@ -26,4 +26,8 @@ describe('#getPlainText', () => {
   it('returns correct value for markdown new line', () => {
     expect(getPlainText('Hello\nWorld')).toBe('Hello\nWorld');
   });
+
+  it('expands tabs in the plain text', () => {
+    expect(getPlainText('شكرا لك\tعلى تواصلك معنا')).not.toContain('\t');
+  });
 });

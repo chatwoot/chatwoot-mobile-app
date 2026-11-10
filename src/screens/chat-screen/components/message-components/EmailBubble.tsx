@@ -1,20 +1,22 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Animated } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
-import { tailwind } from '@/theme';
-
 import { EmailMeta } from './EmailMeta';
 import { Message } from '@/types';
 import { MarkdownBubble } from './MarkdownBubble';
+import { MessageAttachments } from './MessageAttachments';
 import { MESSAGE_TYPES } from '@/constants';
 
 type EmailBubbleProps = {
   item: Message;
   variant: string;
+  orientation?: string;
 };
 
 export const EmailBubble = (props: EmailBubbleProps) => {
+  const tailwind = useTailwind();
   const messageItem = props.item as Message;
   const { sender, contentAttributes, messageType, content } = messageItem;
 
@@ -57,7 +59,19 @@ export const EmailBubble = (props: EmailBubbleProps) => {
           color: #111827;
         }
       `;
-  const emailCustomStyle = isOutgoing ? `${outgoingReadableStyle}${baseStyle}` : baseStyle;
+  const darkIncomingStyle = `
+        :root {
+          color-scheme: dark;
+        }
+        html, body {
+          color: ${tailwind.color('text-gray-950')};
+        }
+      `;
+  const emailCustomStyle = isOutgoing
+    ? `${outgoingReadableStyle}${baseStyle}`
+    : tailwind.isDark
+      ? `${darkIncomingStyle}${baseStyle}`
+      : baseStyle;
 
   return (
     <React.Fragment>
@@ -71,6 +85,7 @@ export const EmailBubble = (props: EmailBubbleProps) => {
               style={{ width: '100%', minHeight: 1, minWidth: '100%' }}
               scrollEnabled={false}
               forceDarkOn={false}
+              autoManageStatusBarEnabled={false}
               customStyle={emailCustomStyle}
               source={{
                 html: FormattedEmail,
@@ -79,6 +94,12 @@ export const EmailBubble = (props: EmailBubbleProps) => {
             />
           )}
         </Animated.View>
+        <MessageAttachments
+          item={messageItem}
+          variant={props.variant}
+          orientation={props.orientation}
+          mediaSize="thumbnail"
+        />
       </Animated.View>
     </React.Fragment>
   );

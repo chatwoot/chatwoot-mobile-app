@@ -1,18 +1,12 @@
 import React, { useEffect } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import type { Meta } from '@storybook/react';
 import { Provider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetScrollView,
-} from '@gorhom/bottom-sheet';
-import { useBottomSheetSpringConfigs } from '@gorhom/bottom-sheet';
 
 import { UpdateLabels } from '../UpdateLabels';
 
-import { BottomSheetBackdrop } from '@/components-next/common/bottomsheet/BottomSheetBackdrop';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { useRefsContext, RefsProvider } from '@/context/RefsContext';
 import { tailwind } from '@/theme';
 import { initialState as defaultHeaderState } from '@/store/conversation/conversationHeaderSlice';
@@ -66,12 +60,6 @@ const mockStore = configureStore({
 });
 
 const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
-  });
-
   const { filtersModalSheetRef } = useRefsContext();
 
   useEffect(() => {
@@ -81,28 +69,13 @@ const BaseBottomSheet = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Provider store={mockStore}>
-      <BottomSheetModalProvider>
-        <RefsProvider>
-          <View style={tailwind.style('flex-1 bg-white p-4')}>
-            <BottomSheetModal
-              ref={filtersModalSheetRef}
-              backdropComponent={BottomSheetBackdrop}
-              handleIndicatorStyle={tailwind.style(
-                'overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]',
-              )}
-              detached
-              enablePanDownToClose
-              animationConfigs={animationConfigs}
-              handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-              style={tailwind.style('overflow-hidden')}
-              snapPoints={['50%']}>
-              <BottomSheetScrollView showsVerticalScrollIndicator={false}>
-                {children}
-              </BottomSheetScrollView>
-            </BottomSheetModal>
-          </View>
-        </RefsProvider>
-      </BottomSheetModalProvider>
+      <RefsProvider>
+        <View style={tailwind.style('flex-1 bg-white p-4')}>
+          <Sheet ref={filtersModalSheetRef} detents={[0.5]} scrollable>
+            <ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>
+          </Sheet>
+        </View>
+      </RefsProvider>
     </Provider>
   );
 };

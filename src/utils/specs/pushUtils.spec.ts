@@ -12,6 +12,16 @@ describe('findNotificationFromFCM', () => {
     expect(result).toEqual({ id: 123, title: 'Test Notification' });
   });
 
+  it.each([
+    ['no data', {}],
+    ['no notification field', { data: {} }],
+    ['a malformed payload', { data: { payload: 'not json' } }],
+    ['a payload without a notification', { data: { payload: '{"data": {}}' } }],
+    ['a malformed legacy notification', { data: { notification: 'not json' } }],
+  ])('returns null for a message with %s', (_case, message) => {
+    expect(findNotificationFromFCM({ message })).toBeNull();
+  });
+
   it('should return notification from FCM legacy message', () => {
     const message = {
       data: {
@@ -37,9 +47,51 @@ describe('findConversationLinkFromPush', () => {
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
+      currentAccountId: 1,
     });
     expect(result).toBe(
       'https://app.chatwoot.com/app/accounts/1/conversations/14428/14902/Conversation',
+    );
+  });
+
+  it('should use the account id from the notification when present', () => {
+    const notification = {
+      id: 8687,
+      accountId: 7,
+      notificationType: 'conversation_creation',
+      primaryActorId: 14902,
+      primaryActorType: 'Conversation',
+      primaryActor: { id: 14428 },
+    };
+    const installationUrl = 'https://app.chatwoot.com';
+    const transformedNotification = transformNotification(notification);
+    const result = findConversationLinkFromPush({
+      notification: transformedNotification,
+      installationUrl,
+      currentAccountId: 1,
+    });
+    expect(result).toBe(
+      'https://app.chatwoot.com/app/accounts/7/conversations/14428/14902/Conversation',
+    );
+  });
+
+  it('should fall back to the current account when the notification omits the account id', () => {
+    const notification = {
+      id: 8687,
+      notificationType: 'conversation_creation',
+      primaryActorId: 14902,
+      primaryActorType: 'Conversation',
+      primaryActor: { id: 14428 },
+    };
+    const installationUrl = 'https://app.chatwoot.com';
+    const transformedNotification = transformNotification(notification);
+    const result = findConversationLinkFromPush({
+      notification: transformedNotification,
+      installationUrl,
+      currentAccountId: 5,
+    });
+    expect(result).toBe(
+      'https://app.chatwoot.com/app/accounts/5/conversations/14428/14902/Conversation',
     );
   });
 
@@ -56,6 +108,7 @@ describe('findConversationLinkFromPush', () => {
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
+      currentAccountId: 1,
     });
     expect(result).toBe(
       'https://app.chatwoot.com/app/accounts/1/conversations/14429/58731/Message',
@@ -75,6 +128,7 @@ describe('findConversationLinkFromPush', () => {
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
+      currentAccountId: 1,
     });
     expect(result).toBe(
       'https://app.chatwoot.com/app/accounts/1/conversations/14428/58725/Message',
@@ -94,6 +148,7 @@ describe('findConversationLinkFromPush', () => {
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
+      currentAccountId: 1,
     });
     expect(result).toBe(
       'https://app.chatwoot.com/app/accounts/1/conversations/14427/58712/Message',
@@ -113,6 +168,7 @@ describe('findConversationLinkFromPush', () => {
     const result = findConversationLinkFromPush({
       notification: transformedNotification,
       installationUrl,
+      currentAccountId: 1,
     });
     expect(result).toBe(undefined);
   });

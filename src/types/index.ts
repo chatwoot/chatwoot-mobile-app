@@ -4,6 +4,7 @@ import { AllStatusTypes, AssigneeTypes, SortTypes } from './common';
 
 export * from './Agent';
 export * from './AgentBot';
+export * from './CaptainAssistant';
 export * from './common';
 export * from './Contact';
 export * from './Conversation';
@@ -22,7 +23,11 @@ export interface GenericListType {
   subtitle?: string;
   subtitleType?: 'dark' | 'light';
   hasChevron?: boolean;
+  checked?: boolean;
   disabled?: boolean;
+  isSelected?: boolean;
+  inactive?: boolean;
+  locked?: boolean;
   link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {

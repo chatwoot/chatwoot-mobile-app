@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { memo, useCallback, useMemo } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -25,17 +26,20 @@ import { Icon, Swipeable } from '@/components-next/common';
 
 import { ConversationItem } from './ConversationItem';
 import { MarkAsUnRead, StatusIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { MarkAsRead } from '@/svg-icons';
 import i18n from '@/i18n';
+import { useSplitView } from '@/navigation/split/SplitViewContext';
+import { SelectedRowBackground } from '@/navigation/split/SelectedRowBackground';
 
 type ConversationItemContainerProps = {
   conversationItem: Conversation;
   index: number;
   openedRowIndex: SharedValue<number | null>;
+  nextConversationId?: number;
 };
 
 const ReadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsRead />} size={24} />
@@ -44,6 +48,7 @@ const ReadComponent = React.memo(() => {
 });
 
 const UnreadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsUnRead />} size={24} />
@@ -52,6 +57,7 @@ const UnreadComponent = React.memo(() => {
 });
 
 const StatusComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center ')}>
       <Icon icon={<StatusIcon />} size={24} />
@@ -63,7 +69,7 @@ const StatusComponent = React.memo(() => {
 });
 
 export const ConversationItemContainer = memo((props: ConversationItemContainerProps) => {
-  const { conversationItem, index, openedRowIndex } = props;
+  const { conversationItem, index, openedRowIndex, nextConversationId } = props;
   const {
     meta: {
       sender: { name: senderName, thumbnail: senderThumbnail, id: contactId },
@@ -86,6 +92,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
 
   // Hooks
   const navigation = useNavigation();
+  const splitView = useSplitView();
   const dispatch = useAppDispatch();
   const { actionsModalSheetRef } = useRefsContext();
 
@@ -126,6 +133,8 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
   const onPressAction = useCallback(() => {
     if (currentState === 'Select') {
       dispatch(toggleSelection({ conversation: conversationItem }));
+    } else if (splitView) {
+      splitView.openConversation(id);
     } else {
       const pushToChatScreen = StackActions.push('ChatScreen', {
         conversationId: id,
@@ -133,7 +142,7 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       });
       navigation.dispatch(pushToChatScreen);
     }
-  }, [currentState, dispatch, conversationItem, navigation, id]);
+  }, [currentState, dispatch, conversationItem, navigation, id, splitView]);
 
   const viewProps = {
     id,
@@ -177,7 +186,15 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       handlePress={onPressAction}
       triggerOverswipeOnFlick
       {...{ index, openedRowIndex }}>
-      <ConversationItem {...viewProps} />
+      <SelectedRowBackground
+        selected={currentState !== 'Select' && splitView?.selectedConversationId === id}
+        beforeSelected={
+          currentState !== 'Select' &&
+          !!nextConversationId &&
+          splitView?.selectedConversationId === nextConversationId
+        }>
+        <ConversationItem {...viewProps} />
+      </SelectedRowBackground>
     </Swipeable>
   );
 });

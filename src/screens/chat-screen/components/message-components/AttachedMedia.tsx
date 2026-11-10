@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Asset } from 'react-native-image-picker';
@@ -8,11 +9,10 @@ import Animated, {
   SlideOutDown,
 } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
-import { ResizeMode, Video } from 'expo-av';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { Image } from 'expo-image';
 
 import { AttachFileIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -59,6 +59,7 @@ type AttachedMediaProps = {
 type AttachedImageProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedImage = (props: AttachedImageProps) => {
+  const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
   const dispatch = useAppDispatch();
 
@@ -70,8 +71,8 @@ const AttachedImage = (props: AttachedImageProps) => {
 
   return (
     <Animated.View
-      entering={SlideInDown.springify().damping(20).stiffness(120)}
-      exiting={SlideOutDown.springify().damping(20).stiffness(120)}
+      entering={SlideInDown.springify().mass(1).damping(15).stiffness(70)}
+      exiting={SlideOutDown.springify().mass(1).damping(15).stiffness(70)}
       style={tailwind.style('pr-3 relative')}>
       <Animated.View
         layout={LinearTransition.springify()}
@@ -82,7 +83,7 @@ const AttachedImage = (props: AttachedImageProps) => {
         <Image source={{ uri: item.uri }} style={tailwind.style('h-full w-full rounded-lg')} />
         <Animated.View
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
           ]}
         />
@@ -105,11 +106,16 @@ const AttachedImage = (props: AttachedImageProps) => {
 type AttachedVideoProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedVideo = (props: AttachedVideoProps) => {
+  const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
 
   const dispatch = useAppDispatch();
 
   const { animatedStyle, handlers } = useScaleAnimation();
+
+  const player = useVideoPlayer(item.uri ? { uri: item.uri } : null, instance => {
+    instance.loop = false;
+  });
 
   const handleOnDelete = () => {
     dispatch(deleteAttachment(index));
@@ -117,8 +123,8 @@ const AttachedVideo = (props: AttachedVideoProps) => {
 
   return (
     <Animated.View
-      entering={SlideInDown.springify().damping(20).stiffness(120)}
-      exiting={SlideOutDown.springify().damping(20).stiffness(120)}
+      entering={SlideInDown.springify().mass(1).damping(15).stiffness(70)}
+      exiting={SlideOutDown.springify().mass(1).damping(15).stiffness(70)}
       style={tailwind.style('pr-3 relative')}>
       <Animated.View
         layout={LinearTransition.springify()}
@@ -127,16 +133,16 @@ const AttachedVideo = (props: AttachedVideoProps) => {
           index === attachmentsLength - 1 ? 'mr-4' : '',
         )}>
         {item.uri ? (
-          <Video
-            shouldPlay={false}
-            resizeMode={ResizeMode.COVER}
-            source={{ uri: item.uri }}
+          <VideoView
+            player={player}
+            contentFit="cover"
+            nativeControls={false}
             style={[tailwind.style('h-full w-full rounded-lg')]}
           />
         ) : null}
         <Animated.View
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
           ]}
         />
@@ -153,7 +159,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
         </Animated.View>
         <Image
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('rounded-lg'),
             { transform: [{ rotateY: '180deg' }] },
           ]}
@@ -180,6 +186,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
 type AttachedFileProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedFile = (props: AttachedFileProps) => {
+  const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
   const dispatch = useAppDispatch();
 
@@ -191,8 +198,8 @@ const AttachedFile = (props: AttachedFileProps) => {
 
   return (
     <Animated.View
-      entering={SlideInDown.springify().damping(20).stiffness(120)}
-      exiting={SlideOutDown.springify().damping(20).stiffness(120)}
+      entering={SlideInDown.springify().mass(1).damping(15).stiffness(70)}
+      exiting={SlideOutDown.springify().mass(1).damping(15).stiffness(70)}
       style={tailwind.style('pr-3 relative')}>
       <Animated.View
         layout={LinearTransition.springify()}
@@ -215,7 +222,7 @@ const AttachedFile = (props: AttachedFileProps) => {
         </Animated.View>
         <Animated.View
           style={[
-            StyleSheet.absoluteFillObject,
+            StyleSheet.absoluteFill,
             tailwind.style('border-[1px] rounded-lg border-[#0000000F] z-50'),
           ]}
         />
@@ -236,6 +243,7 @@ const AttachedFile = (props: AttachedFileProps) => {
 };
 
 export const AttachedMedia = () => {
+  const tailwind = useTailwind();
   const attachments = useAppSelector(selectAttachments);
 
   const handleRenderItem = ({ item, index }: AttachedMediaProps) => {
@@ -251,7 +259,7 @@ export const AttachedMedia = () => {
   return attachments.length > 0 ? (
     <Animated.View style={tailwind.style('py-4')}>
       <Animated.FlatList
-        itemLayoutAnimation={LinearTransition.springify().damping(25).stiffness(200)}
+        itemLayoutAnimation={LinearTransition.springify().mass(1).damping(19).stiffness(115)}
         entering={SlideInUp}
         exiting={SlideOutDown}
         style={tailwind.style('px-4 pr-12')}

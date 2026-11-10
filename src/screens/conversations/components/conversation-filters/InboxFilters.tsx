@@ -1,11 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next/common';
 import { selectFilters, setFilters } from '@/store/conversation/conversationFilterSlice';
@@ -21,6 +20,7 @@ type InboxCellProps = {
 };
 
 const InboxCell = (props: InboxCellProps) => {
+  const tailwind = useTailwind();
   const { filtersModalSheetRef } = useRefsContext();
   const dispatch = useAppDispatch();
   const { value, isLastItem } = props;
@@ -31,7 +31,7 @@ const InboxCell = (props: InboxCellProps) => {
   const handlePreferredAssigneeTypePress = () => {
     hapticSelection?.();
     dispatch(setFilters({ key: 'inbox_id', value: value.id.toString() }));
-    setTimeout(() => filtersModalSheetRef.current?.dismiss({ overshootClamping: true }), 1);
+    setTimeout(() => filtersModalSheetRef.current?.dismiss(), 1);
   };
 
   return (
@@ -64,6 +64,7 @@ const InboxCell = (props: InboxCellProps) => {
 };
 
 export const InboxFilters = () => {
+  const tailwind = useTailwind();
   const inboxes = useAppSelector(selectAllInboxes);
   const inboxList = [
     {
@@ -85,7 +86,7 @@ export const InboxFilters = () => {
   }));
 
   return (
-    <BottomSheetScrollView
+    <ScrollView
       contentContainerStyle={tailwind.style('pb-4')}
       stickyHeaderIndices={[0]}
       showsVerticalScrollIndicator={true}>
@@ -100,6 +101,6 @@ export const InboxFilters = () => {
           />
         ))}
       </Animated.View>
-    </BottomSheetScrollView>
+    </ScrollView>
   );
 };

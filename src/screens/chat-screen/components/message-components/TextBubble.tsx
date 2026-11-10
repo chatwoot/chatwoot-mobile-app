@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState, useCallback } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { MarkdownBubble } from './MarkdownBubble';
 import { EmailMeta } from './EmailMeta';
@@ -14,6 +14,7 @@ export type TextBubbleProps = {
 };
 
 export const TextBubble = (props: TextBubbleProps) => {
+  const tailwind = useTailwind();
   const messageItem = props.item as Message;
   const { variant } = props;
 
@@ -21,10 +22,9 @@ export const TextBubble = (props: TextBubbleProps) => {
 
   const translations = contentAttributes?.translations;
   const activeLocale = i18n.locale?.split('_')[0] || 'en';
-  const translatedText =
-    translations
-      ? (translations[activeLocale] || Object.values(translations)[0] || null)
-      : null;
+  const translatedText = translations
+    ? translations[activeLocale] || Object.values(translations)[0] || null
+    : null;
   const hasTranslations = !!translatedText;
 
   const [showOriginal, setShowOriginal] = useState(false);
@@ -33,11 +33,9 @@ export const TextBubble = (props: TextBubbleProps) => {
     setShowOriginal(prev => !prev);
   }, []);
 
-  const displayContent =
-    hasTranslations && !showOriginal ? translatedText : (content || '');
+  const displayContent = hasTranslations && !showOriginal ? translatedText : content || '';
 
-  const toggleTextColor =
-    variant === MESSAGE_VARIANTS.USER ? 'text-blue-200' : 'text-blue-700';
+  const toggleTextColor = variant === MESSAGE_VARIANTS.USER ? 'text-blue-200' : 'text-blue-700';
 
   const renderContent = () => (
     <React.Fragment>

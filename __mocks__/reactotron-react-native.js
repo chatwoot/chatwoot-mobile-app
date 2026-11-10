@@ -1,1 +1,1 @@
-jest.mock('reactotron-react-native');   
+jest.mock('reactotron-react-native');

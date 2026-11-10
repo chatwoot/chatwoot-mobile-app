@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ScrollView } from 'react-native';
 import { Platform } from 'react-native';
 import { KeyboardGestureArea, KeyboardProvider } from 'react-native-keyboard-controller';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { Animated } from 'react-native';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { tailwind } from '@/theme';
@@ -63,28 +62,27 @@ export const Instagram: Story = {
   render: function AllVariantsComponent() {
     return (
       <Provider store={mockStore}>
-        <BottomSheetModalProvider>
-          <RefsProvider>
-            <KeyboardProvider>
-              <ChatWindowProvider conversationId={29}>
-                <ScrollView contentContainerStyle={tailwind.style('flex')}>
-                  <PlatformSpecificKeyboardWrapperComponent
-                    style={tailwind.style('flex-1 bg-white')}
-                    interpolator="linear">
-                    <MessagesList
-                      messages={ALL_MESSAGES_MOCKDATA}
-                      isFlashListReady={false}
-                      setFlashListReady={() => {}}
-                      onEndReached={() => {}}
-                      isEmailInbox={false}
-                      currentUserId={1}
-                    />
-                  </PlatformSpecificKeyboardWrapperComponent>
-                </ScrollView>
-              </ChatWindowProvider>
-            </KeyboardProvider>
-          </RefsProvider>
-        </BottomSheetModalProvider>
+        <RefsProvider>
+          <KeyboardProvider>
+            <ChatWindowProvider conversationId={29}>
+              <ScrollView contentContainerStyle={tailwind.style('flex')}>
+                <PlatformSpecificKeyboardWrapperComponent
+                  style={tailwind.style('flex-1 bg-white')}
+                  interpolator="linear">
+                  <MessagesList
+                    messages={ALL_MESSAGES_MOCKDATA}
+                    isFlashListReady={false}
+                    setFlashListReady={() => {}}
+                    onEndReached={() => {}}
+                    onStartReached={() => {}}
+                    isEmailInbox={false}
+                    currentUserId={1}
+                  />
+                </PlatformSpecificKeyboardWrapperComponent>
+              </ScrollView>
+            </ChatWindowProvider>
+          </KeyboardProvider>
+        </RefsProvider>
       </Provider>
     );
   },

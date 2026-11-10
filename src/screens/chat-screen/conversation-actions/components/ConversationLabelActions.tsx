@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
+import type { SheetRef } from '@/components-next/common/sheet/Sheet';
 import i18n from '@/i18n';
 import { useChatWindowContext } from '@/context';
 import { useAppDispatch } from '@/hooks';
@@ -16,7 +16,7 @@ export const ConversationLabelActions = (props: ConversationLabelActionsProps) =
   const { labels } = props;
   const { conversationId } = useChatWindowContext();
   const dispatch = useAppDispatch();
-  const conversationLabelSheetRef = useRef<BottomSheetModal>(null);
+  const conversationLabelSheetRef = useRef<SheetRef>(null);
 
   const handleLabelsUpdate = (updatedLabels: string[]) => {
     dispatch(

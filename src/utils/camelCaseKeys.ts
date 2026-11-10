@@ -21,7 +21,11 @@ import { NotificationCreatedResponse } from '@/store/notification/notificationTy
 import { NotificationRemovedResponse } from '@/store/notification/notificationTypes';
 
 export const transformConversation = (conversation: any): Conversation => {
-  return camelcaseKeys(conversation, { deep: true }) as unknown as Conversation;
+  const transformed = camelcaseKeys(conversation, { deep: true }) as unknown as Conversation;
+
+  // The list endpoint omits messages for some conversations, while selectors
+  // and reducers index into the array unconditionally.
+  return { ...transformed, messages: transformed.messages ?? [] };
 };
 
 export const transformContact = (contact: any): Contact => {

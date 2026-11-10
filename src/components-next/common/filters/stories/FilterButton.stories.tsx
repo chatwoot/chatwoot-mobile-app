@@ -22,12 +22,7 @@ type Story = StoryObj<typeof meta>;
 
 export const FilterButton: Story = {
   args: {
-    allFilters: ConversationFilterOptions[0],
-    selectedFilters: {
-      assignee_type: 'me',
-      status: 'open',
-      sort_by: 'latest',
-    },
+    value: ConversationFilterOptions[0].defaultFilter,
     handleOnPress: () => {},
   },
 };

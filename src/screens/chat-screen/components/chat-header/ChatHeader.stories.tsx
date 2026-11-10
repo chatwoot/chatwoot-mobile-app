@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { ChatHeader } from './ChatHeader';
 import { tailwind } from '@/theme';
 import { ScrollView, View, Text } from 'react-native';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { RefsProvider } from '@/context';
 
 const meta: Meta<typeof ChatHeader> = {
@@ -46,11 +45,9 @@ const Title = ({ title }: { title: string }) => (
 );
 
 const HeaderContainer = ({ children }: { children: React.ReactNode }) => (
-  <BottomSheetModalProvider>
-    <RefsProvider>
-      <View style={tailwind.style('flex-1')}>{children}</View>
-    </RefsProvider>
-  </BottomSheetModalProvider>
+  <RefsProvider>
+    <View style={tailwind.style('flex-1')}>{children}</View>
+  </RefsProvider>
 );
 
 export const AllVariants: Story = {

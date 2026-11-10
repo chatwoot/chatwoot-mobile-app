@@ -15,6 +15,7 @@ export type PrimaryActorType = 'Conversation' | 'Message';
 
 export type Notification = {
   id: number;
+  accountId?: number;
   notificationType: NotificationType;
   pushMessageTitle: string;
   primaryActorType: PrimaryActorType;

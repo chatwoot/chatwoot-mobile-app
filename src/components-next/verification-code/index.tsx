@@ -10,6 +10,7 @@ type VerificationCodeProps = {
   code: string[];
   maxLength?: number;
   isCodeWrong: boolean;
+  focused?: boolean;
 } & Pick<AnimatedCodeNumberProps, 'status'>;
 
 export const VerificationCode: React.FC<VerificationCodeProps> = ({
@@ -17,6 +18,7 @@ export const VerificationCode: React.FC<VerificationCodeProps> = ({
   maxLength = 5,
   status,
   isCodeWrong,
+  focused = true,
 }) => {
   const wrongStatus = useSharedValue<StatusType>('wrong');
 
@@ -26,7 +28,7 @@ export const VerificationCode: React.FC<VerificationCodeProps> = ({
         <View key={index} style={styles.codeContainer}>
           <AnimatedCodeNumber
             code={code[index]}
-            highlighted={index === code.length}
+            highlighted={focused && index === code.length}
             status={isCodeWrong ? wrongStatus : status}
           />
         </View>

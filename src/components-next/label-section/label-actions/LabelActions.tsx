@@ -1,34 +1,33 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState, useEffect } from 'react';
-import { Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  BottomSheetBackgroundProps,
-} from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
 import { LabelTag } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common/icon';
 import { SearchBar } from '@/components-next/common/search';
+import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
 import { useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
 
 import { LabelItem } from '../LabelItem';
 import { LabelStack } from './LabelStack';
-import { LabelBackdrop } from './LabelBackdrop';
+import { IOS_DESIGN } from '@/utils';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 interface LabelActionsProps {
   labels: string[];
   onLabelsUpdate: (updatedLabels: string[]) => Promise<void> | void;
-  sheetRef?: React.RefObject<BottomSheetModal>;
+  sheetRef?: React.RefObject<SheetRef | null>;
   titleText?: string;
   addLabelText?: string;
   searchPlaceholderText?: string;
 }
 
 export const LabelActions = (props: LabelActionsProps) => {
+  const tailwind = useTailwind();
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { labels, onLabelsUpdate, sheetRef, titleText, addLabelText, searchPlaceholderText } =
     props;
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,11 +40,6 @@ export const LabelActions = (props: LabelActionsProps) => {
 
   const { addLabelSheetRef: contextAddLabelSheetRef } = useRefsContext();
   const addLabelSheetRef = sheetRef || contextAddLabelSheetRef;
-
-  // Custom backdrop that uses the instance's own ref instead of the shared context ref
-  const backdropComponent = (props: BottomSheetBackgroundProps) => (
-    <LabelBackdrop {...props} sheetRef={addLabelSheetRef} />
-  );
 
   const allLabels = useAppSelector(state => filterLabels(state, ''));
 
@@ -63,17 +57,11 @@ export const LabelActions = (props: LabelActionsProps) => {
   };
 
   const handleOnSubmitEditing = () => {
-    addLabelSheetRef.current?.close();
+    addLabelSheetRef.current?.dismiss();
   };
 
   const handleChangeText = (text: string) => {
     setSearchTerm(text);
-  };
-
-  const handleChange = (index: number) => {
-    if (index === -1) {
-      setSearchTerm('');
-    }
   };
 
   const handleAddOrUpdateLabels = async (label: string) => {
@@ -104,7 +92,7 @@ export const LabelActions = (props: LabelActionsProps) => {
         <Pressable
           onPress={handleAddLabelPress}
           style={({ pressed }) => [
-            styles.labelShadow,
+            isInPane ? null : styles.labelShadow,
             tailwind.style(
               'flex flex-row items-center bg-white px-3 py-[7px] rounded-lg mr-2 mt-3',
               pressed ? 'bg-blue-100' : '',
@@ -119,36 +107,23 @@ export const LabelActions = (props: LabelActionsProps) => {
           </Animated.Text>
         </Pressable>
       </Animated.View>
-      <BottomSheetModal
-        ref={addLabelSheetRef}
-        backdropComponent={backdropComponent}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-[26px] overflow-hidden')}
-        enablePanDownToClose
-        snapPoints={[316]}
-        keyboardBehavior="interactive"
-        keyboardBlurBehavior="restore"
-        onChange={handleChange}
-        enableDynamicSizing={false}
-        detached>
+      <Sheet ref={addLabelSheetRef} height={316} scrollable onDismiss={() => setSearchTerm('')}>
         <SearchBar
-          isInsideBottomSheet
           onSubmitEditing={handleOnSubmitEditing}
           onChangeText={handleChangeText}
           placeholder={searchPlaceholderText}
           returnKeyLabel="done"
           returnKeyType="done"
         />
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <LabelStack
             filteredLabels={filteredLabels}
             selectedLabels={selectedLabels}
             isStandAloneComponent={allLabels.length > 3}
             handleLabelPress={handleAddOrUpdateLabels}
           />
-        </BottomSheetScrollView>
-      </BottomSheetModal>
+        </ScrollView>
+      </Sheet>
     </Animated.View>
   );
 };

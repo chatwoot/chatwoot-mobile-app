@@ -85,6 +85,10 @@ const notificationsSlice = createSlice({
       )
       .addCase(notificationActions.fetchNotifications.rejected, (state, action) => {
         state.uiFlags.isLoading = false;
+        // Ignore responses fenced during an account switch; a fresh fetch is already running.
+        if (action.error?.name === 'CanceledError') {
+          return;
+        }
         state.uiFlags.isAllNotificationsRead = true;
         state.error = (action.payload as string) ?? 'Failed to fetch notifications';
       })

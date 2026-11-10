@@ -1,8 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useState } from 'react';
-import { BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { ScrollView } from 'react-native';
 
-import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { SearchBar } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
@@ -20,10 +19,11 @@ type LabelStackProps = {
 };
 
 export const LabelStack = (props: LabelStackProps) => {
+  const tailwind = useTailwind();
   const { labelList, handleLabelPress, selectedLabels, isStandAloneComponent = true } = props;
 
   return (
-    <BottomSheetScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
+    <ScrollView showsVerticalScrollIndicator={false} style={tailwind.style('my-1 pl-3')}>
       {labelList.map((value, index) => {
         return (
           <LabelCell
@@ -35,12 +35,11 @@ export const LabelStack = (props: LabelStackProps) => {
           />
         );
       })}
-    </BottomSheetScrollView>
+    </ScrollView>
   );
 };
 
 export const UpdateLabels = () => {
-  const { actionsModalSheetRef } = useRefsContext();
   const dispatch = useAppDispatch();
   const selectedIds = useAppSelector(selectSelectedIds);
   const [searchTerm, setSearchTerm] = useState('');
@@ -48,13 +47,6 @@ export const UpdateLabels = () => {
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
 
   const allLabels = useAppSelector(state => filterLabels(state, searchTerm));
-
-  const handleFocus = () => {
-    actionsModalSheetRef.current?.expand();
-  };
-  const handleBlur = () => {
-    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
-  };
 
   // The selected label text is received
   /**
@@ -80,8 +72,6 @@ export const UpdateLabels = () => {
         labels: { add: [_selectedLabel] },
       };
       dispatch(conversationActions.bulkAction(payload));
-      // actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
-      // dispatch(setCurrentState('none'));
       return updatedLabels;
     });
   };
@@ -93,9 +83,6 @@ export const UpdateLabels = () => {
   return (
     <React.Fragment>
       <SearchBar
-        isInsideBottomSheet
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         onChangeText={handleSearch}
         placeholder={i18n.t('CONVERSATION.ASSIGNEE.LABELS.SEARCH_LABELS')}
       />

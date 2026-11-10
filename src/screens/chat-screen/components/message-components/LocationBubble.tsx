@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -16,6 +16,7 @@ type LocationBubbleProps = {
 };
 
 export const LocationBubble: React.FC<LocationBubbleProps> = props => {
+  const tailwind = useTailwind();
   const { latitude, longitude, variant } = props;
 
   const mapUrl = `https://maps.google.com/?q=${latitude},${longitude}`;

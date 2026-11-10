@@ -1,0 +1,81 @@
+diff --git a/android/src/main/java/com/reactnativemenu/MenuView.kt b/android/src/main/java/com/reactnativemenu/MenuView.kt
+index 17ed7c6491b60e87fe829fb3f8841424617b4cfb..dcd4feec96fe42b70318f804b20acc5d7e2d65f6 100644
+--- a/android/src/main/java/com/reactnativemenu/MenuView.kt
++++ b/android/src/main/java/com/reactnativemenu/MenuView.kt
+@@ -47,11 +47,13 @@ class MenuView(private val mContext: ReactContext) : ReactViewGroup(mContext) {
+     prepareMenu()
+   }
+ 
+-  override fun setHitSlopRect(rect: Rect?) {
+-    super.setHitSlopRect(rect)
+-    mHitSlopRect = rect
+-    updateTouchDelegate()
+-  }
++  override var hitSlopRect: Rect?
++    get() = super.hitSlopRect
++    set(rect) {
++      super.hitSlopRect = rect
++      mHitSlopRect = rect
++      updateTouchDelegate()
++    }
+ 
+   override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+     return true
+diff --git a/android/src/main/java/com/reactnativemenu/MenuViewManagerBase.kt b/android/src/main/java/com/reactnativemenu/MenuViewManagerBase.kt
+index 4731e1a1528a2de495cc2ae3156c813b64ec6832..3dff0f44b6b91d3aa471121c29274fd1d039200d 100644
+--- a/android/src/main/java/com/reactnativemenu/MenuViewManagerBase.kt
++++ b/android/src/main/java/com/reactnativemenu/MenuViewManagerBase.kt
+@@ -121,27 +121,23 @@ abstract class MenuViewManagerBase : ReactClippingViewManager<MenuView>() {
+ 
+   @ReactProp(name = "hitSlop")
+   fun setHitSlop(view: ReactViewGroup, @Nullable hitSlop: ReadableMap?) {
+-    if (hitSlop == null) {
+-      // We should keep using setters as `Val cannot be reassigned`
+-      view.setHitSlopRect(null)
+-    } else {
+-      view.setHitSlopRect(
+-              Rect(
+-                      if (hitSlop.hasKey("left"))
+-                              PixelUtil.toPixelFromDIP(hitSlop.getDouble("left")).toInt()
+-                      else 0,
+-                      if (hitSlop.hasKey("top"))
+-                              PixelUtil.toPixelFromDIP(hitSlop.getDouble("top")).toInt()
+-                      else 0,
+-                      if (hitSlop.hasKey("right"))
+-                              PixelUtil.toPixelFromDIP(hitSlop.getDouble("right")).toInt()
+-                      else 0,
+-                      if (hitSlop.hasKey("bottom"))
+-                              PixelUtil.toPixelFromDIP(hitSlop.getDouble("bottom")).toInt()
+-                      else 0
+-              )
+-      )
+-    }
++    view.hitSlopRect =
++            if (hitSlop == null) null
++            else
++                    Rect(
++                            if (hitSlop.hasKey("left"))
++                                    PixelUtil.toPixelFromDIP(hitSlop.getDouble("left")).toInt()
++                            else 0,
++                            if (hitSlop.hasKey("top"))
++                                    PixelUtil.toPixelFromDIP(hitSlop.getDouble("top")).toInt()
++                            else 0,
++                            if (hitSlop.hasKey("right"))
++                                    PixelUtil.toPixelFromDIP(hitSlop.getDouble("right")).toInt()
++                            else 0,
++                            if (hitSlop.hasKey("bottom"))
++                                    PixelUtil.toPixelFromDIP(hitSlop.getDouble("bottom")).toInt()
++                            else 0
++                    )
+   }
+ 
+   @ReactProp(name = "nativeBackgroundAndroid")
+@@ -206,7 +202,7 @@ abstract class MenuViewManagerBase : ReactClippingViewManager<MenuView>() {
+ 
+   @ReactProp(name = ViewProps.OVERFLOW)
+   fun setOverflow(view: ReactViewGroup, overflow: String?) {
+-    view.setOverflow(overflow)
++    view.overflow = overflow
+   }
+ 
+   @ReactProp(name = "backfaceVisibility")

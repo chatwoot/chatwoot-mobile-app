@@ -23,7 +23,11 @@ const initialState: ConversationParticipantState = conversationParticipantAdapte
 const conversationParticipantSlice = createSlice({
   name: 'conversationParticipants',
   initialState,
-  reducers: {},
+  reducers: {
+    clearAllParticipants: state => {
+      state.records = {};
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(conversationParticipantActions.index.pending, state => {
@@ -50,5 +54,7 @@ const conversationParticipantSlice = createSlice({
       });
   },
 });
+
+export const { clearAllParticipants } = conversationParticipantSlice.actions;
 
 export default conversationParticipantSlice.reducer;

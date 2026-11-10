@@ -1,10 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
-import { Image, KeyboardTypeOptions, View } from 'react-native';
+import { Image, KeyboardTypeOptions, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
 
 import i18n from '@/i18n';
-import { tailwind } from '@/theme';
 
 type TemplateMediaInputFieldProps = {
   label: string;
@@ -30,6 +29,7 @@ const TemplateMediaInputField = ({
   keyboardType = 'url',
   withImagePreview = false,
 }: TemplateMediaInputFieldProps) => {
+  const tailwind = useTailwind();
   const [errored, setErrored] = useState(false);
   const trimmed = value.trim();
   const showPreview = withImagePreview && trimmed.length > 0;
@@ -46,7 +46,7 @@ const TemplateMediaInputField = ({
         )}>
         {label}
       </Animated.Text>
-      <BottomSheetTextInput
+      <TextInput
         value={value}
         onChangeText={onChangeText}
         onFocus={onFocus}

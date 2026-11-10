@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Animated, Image, Pressable, StatusBar, TextInput, View } from 'react-native';
+import { Animated, Image, Pressable, ScrollView, StatusBar, TextInput, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  useBottomSheetSpringConfigs,
-} from '@gorhom/bottom-sheet';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
@@ -18,14 +13,8 @@ import { resetAuth } from '@/store/auth/authSlice';
 import { authActions } from '@/store/auth/authActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
-import {
-  BottomSheetBackdrop,
-  BottomSheetHeader,
-  LanguageList,
-  Button,
-  Icon,
-  AuthButton,
-} from '@/components-next';
+import { BottomSheetHeader, LanguageList, Button, Icon, AuthButton } from '@/components-next';
+import { Sheet } from '@/components-next/common/sheet/Sheet';
 import {
   selectInstallationUrl,
   selectBaseUrl,
@@ -35,6 +24,7 @@ import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
 import { useRefsContext } from '@/context/RefsContext';
 import { SsoUtils } from '@/utils/ssoUtils';
+import { showMfaSetupRequiredAlert } from './utils/mfaSetupRequiredAlert';
 
 type FormData = {
   email: string;
@@ -57,12 +47,6 @@ const LoginScreen = () => {
 
   const { languagesModalSheetRef } = useRefsContext();
 
-  const animationConfigs = useBottomSheetSpringConfigs({
-    mass: 1,
-    stiffness: 420,
-    damping: 30,
-  });
-
   const dispatch = useAppDispatch();
   const isLoggingIn = useAppSelector(selectIsLoggingIn);
 
@@ -71,9 +55,7 @@ const LoginScreen = () => {
   const activeLocale = useAppSelector(selectLocale);
 
   useEffect(() => {
-    languagesModalSheetRef.current?.dismiss({
-      overshootClamping: true,
-    });
+    languagesModalSheetRef.current?.dismiss();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLocale]);
 
@@ -91,6 +73,11 @@ const LoginScreen = () => {
 
     try {
       const result = await dispatch(authActions.login({ email, password })).unwrap();
+
+      if ('mfa_setup_required' in result) {
+        showMfaSetupRequiredAlert(installationUrl);
+        return;
+      }
 
       // Check if MFA is required in the response
       if ('mfa_required' in result && result.mfa_required) {
@@ -139,7 +126,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-white')}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
@@ -301,21 +288,12 @@ const LoginScreen = () => {
           </Pressable>
         </KeyboardAwareScrollView>
       </View>
-      <BottomSheetModal
-        ref={languagesModalSheetRef}
-        backdropComponent={BottomSheetBackdrop}
-        handleIndicatorStyle={tailwind.style('overflow-hidden bg-blackA-A6 w-8 h-1 rounded-[11px]')}
-        detached
-        enablePanDownToClose
-        animationConfigs={animationConfigs}
-        handleStyle={tailwind.style('p-0 h-4 pt-[5px]')}
-        style={tailwind.style('rounded-[26px] overflow-hidden')}
-        snapPoints={['70%']}>
-        <BottomSheetScrollView showsVerticalScrollIndicator={false}>
+      <Sheet ref={languagesModalSheetRef} detents={[0.7]} scrollable>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_LANGUAGE')} />
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
-        </BottomSheetScrollView>
-      </BottomSheetModal>
+        </ScrollView>
+      </Sheet>
     </SafeAreaView>
   );
 };

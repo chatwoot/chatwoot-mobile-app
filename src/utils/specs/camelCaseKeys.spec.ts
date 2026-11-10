@@ -43,7 +43,20 @@ describe('camelCaseKeys', () => {
         hmacVerified: false,
         channel: 'Channel::Whatsapp',
       },
+      messages: [],
     });
+  });
+
+  it('should default messages to an empty list when the api omits them', () => {
+    expect(transformConversation({ id: 250 }).messages).toEqual([]);
+  });
+
+  it('should keep the messages the api sends', () => {
+    const transformed = transformConversation({
+      id: 250,
+      messages: [{ id: 1, message_type: 0 }],
+    });
+    expect(transformed.messages).toEqual([{ id: 1, messageType: 0 }]);
   });
 
   it('should transform contact', () => {

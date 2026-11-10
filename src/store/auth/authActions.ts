@@ -4,10 +4,12 @@ import type {
   LoginPayload,
   LoginResponse,
   MfaRequiredResponse,
+  MfaSetupRequiredResponse,
   MfaVerificationPayload,
   ResetPasswordPayload,
   ResetPasswordResponse,
   AvailabilityPayload,
+  WorkPreferencesPayload,
   ProfileResponse,
   ApiErrorResponse,
   SetActiveAccountPayload,
@@ -34,13 +36,12 @@ const createAuthThunk = <TResponse, TPayload>(
   );
 };
 export const authActions = {
-  login: createAuthThunk<LoginResponse | MfaRequiredResponse, LoginPayload>(
-    'auth/login',
-    AuthService.login,
-    I18n.t('ERRORS.AUTH'),
-  ),
+  login: createAuthThunk<
+    LoginResponse | MfaRequiredResponse | MfaSetupRequiredResponse,
+    LoginPayload
+  >('auth/login', AuthService.login, I18n.t('ERRORS.AUTH')),
 
-  verifyMfa: createAuthThunk<LoginResponse, MfaVerificationPayload>(
+  verifyMfa: createAuthThunk<LoginResponse | MfaSetupRequiredResponse, MfaVerificationPayload>(
     'auth/verifyMfa',
     AuthService.verifyMfa,
     I18n.t('ERRORS.AUTH'),
@@ -58,6 +59,11 @@ export const authActions = {
   updateAvailability: createAuthThunk<ProfileResponse, AvailabilityPayload>(
     'auth/updateAvailability',
     AuthService.updateAvailability,
+  ),
+
+  updateWorkPreferences: createAuthThunk<ProfileResponse, WorkPreferencesPayload>(
+    'auth/updateWorkPreferences',
+    AuthService.updateWorkPreferences,
   ),
 
   setActiveAccount: createAuthThunk<ProfileResponse, SetActiveAccountPayload>(

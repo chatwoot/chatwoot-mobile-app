@@ -1,10 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { BottomSheetView } from '@gorhom/bottom-sheet';
 
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { ConversationPriority, PriorityOptions } from '@/types';
 import { getPriorityIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
@@ -37,6 +36,7 @@ const PriorityList = [
 ];
 
 const PriorityCell = (props: PriorityCellProps) => {
+  const tailwind = useTailwind();
   const { value, isLastItem, onPress, selectedPriority } = props;
   return (
     <Pressable onPress={() => onPress()} style={tailwind.style('flex flex-row items-center')}>
@@ -59,6 +59,7 @@ const PriorityCell = (props: PriorityCellProps) => {
 };
 
 export const UpdatePriority = () => {
+  const tailwind = useTailwind();
   const { actionsModalSheetRef } = useRefsContext();
 
   const dispatch = useAppDispatch();
@@ -79,11 +80,11 @@ export const UpdatePriority = () => {
     showToast({
       message: i18n.t('CONVERSATION.PRIORITY_CHANGE'),
     });
-    actionsModalSheetRef.current?.dismiss({ overshootClamping: true });
+    actionsModalSheetRef.current?.dismiss();
   };
 
   return (
-    <BottomSheetView>
+    <View>
       <BottomSheetHeader headerText={i18n.t('CONVERSATION.CHANGE_PRIORITY')} />
       <Animated.View style={tailwind.style('py-1 pl-3')}>
         {PriorityList.map((value, index) => (
@@ -95,6 +96,6 @@ export const UpdatePriority = () => {
           />
         ))}
       </Animated.View>
-    </BottomSheetView>
+    </View>
   );
 };

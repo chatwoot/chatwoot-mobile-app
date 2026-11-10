@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { AssigneeTypes } from '@/types';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
@@ -24,6 +24,7 @@ type AssigneeTypeCellProps = {
 const assigneeTypeList = Object.keys(AssigneeOptions) as AssigneeTypes[];
 
 const AssigneeTypeCell = (props: AssigneeTypeCellProps) => {
+  const tailwind = useTailwind();
   const { filtersModalSheetRef } = useRefsContext();
   const { value, index } = props;
   const dispatch = useAppDispatch();
@@ -33,7 +34,7 @@ const AssigneeTypeCell = (props: AssigneeTypeCellProps) => {
   const handlePreferredAssigneeTypePress = () => {
     hapticSelection?.();
     dispatch(setFilters({ key: 'assignee_type', value }));
-    setTimeout(() => filtersModalSheetRef.current?.dismiss({ overshootClamping: true }), 1);
+    setTimeout(() => filtersModalSheetRef.current?.dismiss(), 1);
   };
 
   return (
@@ -58,6 +59,7 @@ const AssigneeTypeCell = (props: AssigneeTypeCellProps) => {
 };
 
 export const AssigneeTypeFilters = () => {
+  const tailwind = useTailwind();
   const user = useSelector(selectUser);
   const { account_id: activeAccountId } = user || { account_id: null };
 

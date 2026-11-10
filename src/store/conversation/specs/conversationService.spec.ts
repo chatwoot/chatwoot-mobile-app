@@ -96,4 +96,13 @@ describe('ConversationService', () => {
 
     expect(apiService.post).toHaveBeenCalledWith('conversations/1/mute');
   });
+
+  it('should retry a message', async () => {
+    (apiService.post as jest.Mock).mockResolvedValueOnce({ data: { id: 12 } });
+
+    const result = await ConversationService.retryMessage({ conversationId: 1, messageId: 12 });
+
+    expect(apiService.post).toHaveBeenCalledWith('conversations/1/messages/12/retry');
+    expect(result).toEqual({ id: 12 });
+  });
 });

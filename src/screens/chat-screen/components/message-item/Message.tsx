@@ -1,14 +1,16 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Channel, Message } from '@/types';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { useChatWindowContext } from '@/context';
 import { conversationActions } from '@/store/conversation/conversationActions';
-import { unixTimestampToReadableTime, useHaptic } from '@/utils';
+import { IOS_DESIGN, isPhoneNumberName, unixTimestampToReadableTime, useHaptic } from '@/utils';
 import {
   ComposedBubble,
+  CallBubble,
   DeliveryStatus,
   TextBubble,
   ActivityBubble,
@@ -19,6 +21,7 @@ import {
   // FileBubble,
   EmailBubble,
   UnsupportedBubble,
+  MessageError,
 } from '../message-components';
 import { showToast } from '@/utils/toastUtils';
 import {
@@ -33,16 +36,47 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash, ReplyIcon, TranslateIcon} from '@/svg-icons';
+import { CopyIcon, Trash, ReplyIcon, TranslateIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
-import { inboxSupportsReplyTo } from '@/utils';
+import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { tailwind } from '@/theme';
-import { Dimensions, View } from 'react-native';
+import { View, Text } from 'react-native';
+import { useContainerWidth } from '@/context';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
+import { useMessageEntrance } from './useMessageEntrance';
+import { BubbleTail } from './BubbleTail';
+import { CaptainAvatar } from './CaptainAvatar';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 // import { ImageMetadata } from '@/types';
+
+const BOT_SENDER_TYPES: string[] = [SENDER_TYPES.AGENT_BOT, SENDER_TYPES.CAPTAIN_ASSISTANT];
+
+const isBotSender = (senderType?: string) => !!senderType && BOT_SENDER_TYPES.includes(senderType);
+
+// Captain assistants are serialized with `avatarUrl`, the other sender types with `thumbnail`.
+const senderAvatarSource = (sender: Message['sender']) => {
+  if (!sender) {
+    return null;
+  }
+  const avatarUrl = 'avatarUrl' in sender ? sender.avatarUrl : null;
+  const thumbnail = 'thumbnail' in sender ? sender.thumbnail : null;
+  return avatarUrl || thumbnail || null;
+};
+
+const firstName = (name?: string | null) => {
+  const trimmed = (name || '').trim();
+  return isPhoneNumberName(trimmed) ? trimmed : trimmed.split(/\s+/)[0];
+};
+
+// Upper-cases the first character of each word; caseless scripts and emoji are unchanged.
+const capitalizeWords = (text: string) =>
+  text.replace(
+    /(^|\s)(\S)/gu,
+    (_, space: string, char: string) => space + char.toLocaleUpperCase(),
+  );
 
 type MessageComponentProps = {
   item: Message;
@@ -50,7 +84,6 @@ type MessageComponentProps = {
   isEmailInbox: boolean;
   currentUserId: number;
   isTargetMessage?: boolean;
-  isListPositioned?: boolean;
 };
 
 type MessageWrapperProps = {
@@ -61,20 +94,24 @@ type MessageWrapperProps = {
   shouldGroupWithNext: boolean;
   shouldShowAvatar: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  avatarInfo: { name: string | null | undefined; src: any }; // Updated type
+  avatarInfo: { name: string | null | undefined; src?: any; isBot?: boolean }; // Updated type
   getMenuOptions: (message: Message) => MenuOption[];
   variant: string;
   channel?: Channel;
   isTargetMessage?: boolean;
-  isListPositioned?: boolean;
+  onRetry: () => void;
+  canSendPublicReply: boolean;
+  isOwnMessage?: boolean;
 };
 
 const variantTextMap = {
+  [MESSAGE_VARIANTS.PRIVATE]: 'text-amber-900',
   [MESSAGE_VARIANTS.AGENT]: 'text-gray-700',
   [MESSAGE_VARIANTS.USER]: 'text-white',
   [MESSAGE_VARIANTS.BOT]: 'text-gray-700',
   [MESSAGE_VARIANTS.TEMPLATE]: 'text-gray-700',
   [MESSAGE_VARIANTS.ERROR]: 'text-white',
+  [MESSAGE_VARIANTS.EMAIL]: 'text-gray-700',
 };
 
 const variantBaseMap = {
@@ -86,6 +123,15 @@ const variantBaseMap = {
   [MESSAGE_VARIANTS.ERROR]: 'bg-ruby-700',
   [MESSAGE_VARIANTS.EMAIL]: 'bg-gray-100',
   [MESSAGE_VARIANTS.UNSUPPORTED]: 'bg-amber-100 border border-dashed border-amber-700',
+};
+
+const darkVariantBaseMap: Record<string, string> = {
+  ...variantBaseMap,
+  [MESSAGE_VARIANTS.USER]: 'bg-[#25292C]',
+  [MESSAGE_VARIANTS.AGENT]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.BOT]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.TEMPLATE]: 'bg-[#153E68]',
+  [MESSAGE_VARIANTS.PRIVATE]: 'bg-[#332B1C]',
 };
 
 const variantBorderMap = {
@@ -110,12 +156,18 @@ const MessageWrapper = ({
   variant,
   channel,
   isTargetMessage = false,
-  isListPositioned = true,
+  onRetry,
+  canSendPublicReply,
+  isOwnMessage = false,
 }: MessageWrapperProps) => {
+  const tailwind = useTailwind();
+  const paneRightInset = usePaneRightInset();
+  const isInPane = useIsInDetailPane();
+  const containerWidth = useContainerWidth();
   const { zoomStyle, highlightStyle } = useTargetMessageAnimation({
     isTargetMessage,
-    isListPositioned,
   });
+  const entering = useMessageEntrance(item.id);
 
   const flexOrientationClass = () => {
     const map = {
@@ -126,35 +178,82 @@ const MessageWrapper = ({
     return map[orientation];
   };
 
-  const windowWidth = Dimensions.get('window').width;
-  // 52 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (4)
-  const EMAIL_WIDTH = windowWidth - 52;
+  const windowWidth = containerWidth - paneRightInset;
+  // 56 is the sum of the left and right padding (12 + 12) and avatar width (24) and gap between avatar and message (8)
+  const EMAIL_WIDTH = windowWidth - 56;
+  const textMaxWidth = isInPane
+    ? Math.max(TEXT_MAX_WIDTH, Math.round(windowWidth * 0.8))
+    : TEXT_MAX_WIDTH;
+
+  // Only the search-target row animates, so only it needs an Animated.View.
+  const BubbleContainer = isTargetMessage ? Animated.View : View;
+
+  const hasAvatar = IOS_DESIGN
+    ? shouldShowAvatar && !item.sameSenderAsBelow
+    : !shouldGroupWithPrevious && shouldShowAvatar;
+  const isIndented = IOS_DESIGN
+    ? shouldShowAvatar && !!item.sameSenderAsBelow
+    : shouldGroupWithPrevious && orientation === ORIENTATION.LEFT;
+  const isRight = orientation === ORIENTATION.RIGHT;
+  const bubbleClass = tailwind.isDark
+    ? variant === MESSAGE_VARIANTS.EMAIL
+      ? isRight
+        ? darkVariantBaseMap[MESSAGE_VARIANTS.AGENT]
+        : darkVariantBaseMap[MESSAGE_VARIANTS.USER]
+      : darkVariantBaseMap[variant]
+    : variantBaseMap[variant];
+  const showNameAbove =
+    IOS_DESIGN &&
+    !item.sameSenderAsAbove &&
+    !!avatarInfo.name &&
+    ((orientation === ORIENTATION.LEFT && shouldShowAvatar) ||
+      (orientation === ORIENTATION.RIGHT && !isOwnMessage));
+  const shouldShowSenderName = !IOS_DESIGN && hasAvatar && !!avatarInfo.name;
+  const shouldShowTail = hasAvatar && !isRight && variant !== MESSAGE_VARIANTS.UNSUPPORTED;
 
   return (
     <Animated.View
-      entering={FadeIn.duration(350)}
-      style={[
-        tailwind.style(
-          'my-[1px]',
-          flexOrientationClass(),
-          shouldGroupWithPrevious && orientation === ORIENTATION.LEFT ? 'ml-7' : '',
-          !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
-          item.private ? 'my-1' : '',
-        ),
-      ]}>
-      <Animated.View style={tailwind.style('flex flex-row')}>
-        {!shouldGroupWithPrevious && shouldShowAvatar ? (
-          <Animated.View style={tailwind.style('flex items-end justify-end mr-1')}>
-            <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
-          </Animated.View>
+      entering={entering}
+      style={tailwind.style(
+        flexOrientationClass(),
+        isIndented ? (isRight ? 'mr-8' : 'ml-8') : '',
+        IOS_DESIGN
+          ? item.sameSenderAsAbove
+            ? 'mt-[2px]'
+            : 'mt-2.5'
+          : [
+              'my-[1px]',
+              !shouldGroupWithPrevious && !shouldGroupWithNext ? 'mb-2' : 'mb-1',
+              item.private ? 'my-1' : '',
+            ].join(' '),
+      )}>
+      {showNameAbove ? (
+        <Text
+          numberOfLines={1}
+          style={[
+            tailwind.style('mb-0.5 text-[12px] leading-[16px] font-inter-normal-20 text-gray-700'),
+            isRight ? { marginRight: hasAvatar ? 44 : 12 } : { marginLeft: hasAvatar ? 44 : 12 },
+          ]}>
+          {capitalizeWords(firstName(avatarInfo.name))}
+        </Text>
+      ) : null}
+      <View style={tailwind.style('flex flex-row')}>
+        {hasAvatar && !isRight ? (
+          <View style={tailwind.style('flex items-end justify-end mr-2')}>
+            {avatarInfo.isBot ? (
+              <CaptainAvatar />
+            ) : (
+              <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+            )}
+          </View>
         ) : null}
         <MessageMenu menuOptions={getMenuOptions(item)}>
-          <Animated.View
-            style={[
-              tailwind.style(
+          <BubbleContainer style={[tailwind.style('relative'), isTargetMessage && zoomStyle]}>
+            <View
+              style={tailwind.style(
                 'relative pl-3 pr-2.5 py-2 rounded-2xl overflow-hidden',
-                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${TEXT_MAX_WIDTH}px]`}`,
-                variantBaseMap[variant],
+                `${variant === MESSAGE_VARIANTS.EMAIL ? `max-w-[${EMAIL_WIDTH}px]` : `max-w-[${textMaxWidth}px]`}`,
+                bubbleClass,
                 variantBorderMap[variant],
                 shouldGroupWithNext && shouldGroupWithPrevious
                   ? orientation === ORIENTATION.LEFT
@@ -171,47 +270,76 @@ const MessageWrapper = ({
                     ? 'rounded-bl-none'
                     : 'rounded-br-none'
                   : '',
-              ),
-              zoomStyle,
-            ]}>
-            {children}
-            {/* Highlight overlay for target message */}
-            {isTargetMessage && (
-              <Animated.View
-                style={[
-                  tailwind.style('absolute inset-0 bg-white rounded-2xl'),
-                  highlightStyle,
-                ]}
-                pointerEvents="none"
-              />
-            )}
-            {!shouldGroupWithPrevious && (
-              <Animated.View
-                style={tailwind.style(
-                  'h-[21px] pt-[5px] pb-0.5 flex flex-row items-center justify-end',
-                )}>
-                <Animated.Text
-                  style={tailwind.style(
-                    'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
-                    variantTextMap[variant],
-                  )}>
-                  {unixTimestampToReadableTime(item.createdAt)}
-                </Animated.Text>
-                <DeliveryStatus
-                  isPrivate={item.private}
-                  status={item.status}
-                  messageType={item.messageType}
-                  channel={channel}
-                  sourceId={item.sourceId}
-                  errorMessage={item.contentAttributes?.externalError || ''}
-                  deliveredColor="text-gray-700"
-                  sentColor="text-gray-700"
+                shouldShowTail ? 'rounded-bl-none' : '',
+              )}>
+              {children}
+              {/* Highlight overlay for target message */}
+              {isTargetMessage && (
+                <Animated.View
+                  style={[tailwind.style('absolute inset-0 bg-white rounded-2xl'), highlightStyle]}
+                  pointerEvents="none"
                 />
-              </Animated.View>
-            )}
-          </Animated.View>
+              )}
+              {(IOS_DESIGN || !shouldGroupWithPrevious) && (
+                <View
+                  style={tailwind.style(
+                    'h-[27px] pt-[11px] pb-0.5 flex flex-row items-baseline',
+                    shouldShowSenderName ? 'justify-between' : 'justify-end',
+                  )}>
+                  {shouldShowSenderName ? (
+                    <Text
+                      numberOfLines={1}
+                      style={tailwind.style(
+                        'flex-shrink text-xs font-inter-420-20 tracking-[0.32px] pr-10 opacity-85',
+                        variantTextMap[variant],
+                      )}>
+                      {capitalizeWords(firstName(avatarInfo.name))}
+                    </Text>
+                  ) : null}
+                  <View style={tailwind.style('flex flex-row items-center')}>
+                    <Text
+                      style={tailwind.style(
+                        'text-xs font-inter-420-20 tracking-[0.32px] pr-1',
+                        variantTextMap[variant],
+                        orientation === ORIENTATION.LEFT ? 'opacity-85' : '',
+                      )}>
+                      {unixTimestampToReadableTime(item.createdAt)}
+                    </Text>
+                    <DeliveryStatus
+                      isPrivate={item.private}
+                      status={item.status}
+                      messageType={item.messageType}
+                      channel={channel}
+                      sourceId={item.sourceId}
+                      errorMessage={item.contentAttributes?.externalError || ''}
+                      deliveredColor="text-gray-700"
+                      sentColor="text-gray-700"
+                    />
+                  </View>
+                </View>
+              )}
+            </View>
+            {shouldShowTail ? <BubbleTail color={tailwind.color(bubbleClass) as string} /> : null}
+          </BubbleContainer>
         </MessageMenu>
-      </Animated.View>
+        {hasAvatar && isRight ? (
+          <View style={tailwind.style('flex items-end justify-end ml-2')}>
+            {avatarInfo.isBot ? (
+              <CaptainAvatar />
+            ) : (
+              <Avatar size={'md'} src={avatarInfo.src} name={avatarInfo.name || ''} />
+            )}
+          </View>
+        ) : null}
+      </View>
+      {item.status === MESSAGE_STATUS.FAILED ? (
+        <MessageError
+          message={item}
+          orientation={orientation}
+          onRetry={onRetry}
+          canSendPublicReply={canSendPublicReply}
+        />
+      ) : null}
     </Animated.View>
   );
 };
@@ -219,7 +347,7 @@ const MessageWrapper = ({
 export const MessageComponent = (props: MessageComponentProps) => {
   const dispatch = useAppDispatch();
   const { conversationId } = useChatWindowContext();
-  const { item, currentUserId, isEmailInbox, isTargetMessage = false, isListPositioned = true } = props;
+  const { item, currentUserId, isEmailInbox, isTargetMessage = false } = props;
   const {
     messageType,
     contentType,
@@ -251,7 +379,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
     if (status === MESSAGE_STATUS.FAILED) return MESSAGE_VARIANTS.ERROR;
     if (item.contentAttributes?.isUnsupported) return MESSAGE_VARIANTS.UNSUPPORTED;
 
-    const isBot = !sender || sender.type === SENDER_TYPES.AGENT_BOT;
+    const isBot = !sender || isBotSender(sender.type);
     if (isBot && messageType === MESSAGE_TYPES.OUTGOING) {
       return MESSAGE_VARIANTS.BOT;
     }
@@ -281,8 +409,21 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const handleQuoteReply = (message: Message) => {
     dispatch(setQuoteMessage(message));
-  }
-  
+  };
+
+  // Mirrors the condition the reply box uses to decide between reply and note mode, so the retry
+  // button is offered exactly where a public reply could still be composed.
+  const canSendPublicReply = !!conversation?.canReply || isAWhatsAppChannel(inbox);
+
+  const handleRetryMessage = async () => {
+    hapticSelection?.();
+    try {
+      await dispatch(conversationActions.retryMessage(item)).unwrap();
+    } catch {
+      showToast({ message: i18n.t('CONVERSATION.RETRY_MESSAGE_ERROR') });
+    }
+  };
+
   const handleTranslateMessage = async (messageId: number) => {
     hapticSelection?.();
     const targetLanguage = i18n.locale?.split('_')[0] || 'en';
@@ -297,7 +438,13 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const { messageType, content, attachments, private: isPrivate, status: messageStatus } = message;
+    const {
+      messageType,
+      content,
+      attachments,
+      private: isPrivate,
+      status: messageStatus,
+    } = message;
     const hasText = !!content;
     const hasAttachments = !!(attachments && attachments.length > 0);
     const isDeleted = message.contentAttributes?.deleted;
@@ -352,7 +499,7 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
   const shouldShowAvatar = () => {
     if (messageType === MESSAGE_TYPES.ACTIVITY) return false;
-    if (orientation() === ORIENTATION.RIGHT) return false;
+    if (orientation() === ORIENTATION.RIGHT && !IOS_DESIGN) return false;
     return true;
   };
 
@@ -375,6 +522,13 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const orientation = () => {
+    if (IOS_DESIGN) {
+      if (messageType === MESSAGE_TYPES.ACTIVITY) return ORIENTATION.CENTER;
+      if (messageType === MESSAGE_TYPES.OUTGOING || messageType === MESSAGE_TYPES.TEMPLATE)
+        return ORIENTATION.RIGHT;
+      if (isMyMessage()) return ORIENTATION.RIGHT;
+      return ORIENTATION.LEFT;
+    }
     if (isMyMessage()) {
       return ORIENTATION.RIGHT;
     }
@@ -393,18 +547,17 @@ export const MessageComponent = (props: MessageComponentProps) => {
   };
 
   const avatarInfo = () => {
-    if (!sender || sender.type === SENDER_TYPES.AGENT_BOT) {
+    if (!sender || isBotSender(sender.type)) {
       return {
         name: i18n.t('CONVERSATION.BOT'),
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        src: require('../../../../assets/local/bot-avatar.png'),
+        isBot: true,
       };
     }
 
     return {
       name: sender?.name || '',
       src: {
-        uri: sender?.thumbnail || null,
+        uri: senderAvatarSource(sender),
       },
     };
   };
@@ -444,17 +597,21 @@ export const MessageComponent = (props: MessageComponentProps) => {
 
     if (isUnsupported) {
       messageContent = <UnsupportedBubble />;
+    } else if (contentType === CONTENT_TYPES.VOICE_CALL) {
+      messageContent = <CallBubble item={item} variant={variant()} />;
     } else if (contentType === CONTENT_TYPES.INCOMING_EMAIL) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
+      messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     } else if (isEmailInbox && !item.private) {
-      messageContent = <EmailBubble item={item} variant={variant()} />;
+      messageContent = <EmailBubble item={item} variant={variant()} orientation={orientation()} />;
     }
     // TODO: Add this once we have a proper way to render single attachments
     // else if (attachments?.length === 1 && !item.content && !isReplyMessage) {
     //   messageContent = renderSingleAttachment(attachments[0]);
     // }
     else if (attachments?.length >= 1 || isReplyMessage) {
-      messageContent = <ComposedBubble item={item} variant={variant()} />;
+      messageContent = (
+        <ComposedBubble item={item} variant={variant()} orientation={orientation()} />
+      );
     } else if (item.content) {
       messageContent = <TextBubble item={item} variant={variant()} />;
     } else {
@@ -468,12 +625,14 @@ export const MessageComponent = (props: MessageComponentProps) => {
         shouldGroupWithPrevious={shouldGroupWithPrevious()}
         shouldGroupWithNext={shouldGroupWithNext()}
         shouldShowAvatar={shouldShowAvatar()}
+        isOwnMessage={isMyMessage()}
         avatarInfo={avatarInfo()}
         getMenuOptions={getMenuOptions}
         variant={variant()}
         channel={channel}
         isTargetMessage={isTargetMessage}
-        isListPositioned={isListPositioned}>
+        onRetry={handleRetryMessage}
+        canSendPublicReply={canSendPublicReply}>
         {messageContent}
       </MessageWrapper>
     );

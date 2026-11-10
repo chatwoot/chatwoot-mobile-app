@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
-import { tailwind } from '@/theme';
 import { Agent } from '@/types';
 import { Avatar } from '@/components-next';
 type MentionUserProps = {
@@ -10,6 +10,7 @@ type MentionUserProps = {
   onPress: () => void;
 };
 export const MentionUser = (props: MentionUserProps) => {
+  const tailwind = useTailwind();
   const { lastItem, agent, onPress } = props;
   return (
     <Pressable onPress={onPress} style={tailwind.style('flex flex-row items-center')}>

@@ -1,25 +1,33 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { Platform, Pressable, View } from 'react-native';
-import { PlayBackType } from 'react-native-audio-recorder-player';
 import Animated, { FadeIn, FadeOut, useSharedValue } from 'react-native-reanimated';
 import Svg, { Path, Rect } from 'react-native-svg';
-import * as Sentry from '@sentry/react-native';
 
 import {
   selectCurrentPlayingAudioSrc,
   setCurrentPlayingAudioSrc,
 } from '@/store/conversation/audioPlayerSlice';
 
-import { tailwind } from '@/theme';
 import { IconProps } from '@/types';
 import { Icon, Slider } from '@/components-next/common';
+import { FileErrorIcon } from '@/svg-icons';
+import i18n from '@/i18n';
 import { Spinner } from '@/components-next/spinner';
-import { pausePlayer, resumePlayer, seekTo, startPlayer, stopPlayer } from '../audio-recorder';
+import {
+  AudioStatus,
+  pausePlayer,
+  resumePlayer,
+  seekTo,
+  startPlayer,
+  stopPlayer,
+  type Callback,
+} from '../audio-recorder';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
-// eslint-disable-next-line import/no-unresolved
-import { convertOggToWav } from '@/utils/audioConverter';
+import { preparePlayableAudio } from '@/utils/audioConverter';
+import { iosNeedsConversion } from '@/utils/audioSource';
 
 // eslint-disable-next-line react/display-name
 export const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -41,20 +49,25 @@ export const PauseIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
 
 type AudioBubbleProps = {
   audioSrc: string;
+  contentType?: string | null;
+  extension?: string | null;
   variant: string;
 };
 
-type AudioPlayerProps = Pick<AudioBubbleProps, 'audioSrc'> & {
-  variant: string;
-};
+type AudioPlayerProps = AudioBubbleProps;
 
 // eslint-disable-next-line react/display-name
 export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
-  const { audioSrc, variant } = props;
+  const tailwind = useTailwind();
+  const { audioSrc, contentType, extension, variant } = props;
+  const onFilledBubble = variant === MESSAGE_VARIANTS.USER || variant === MESSAGE_VARIANTS.ERROR;
+  const iconColor = onFilledBubble ? 'white' : tailwind.color('text-gray-950');
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
   const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
+  const [hasConversionFailed, setHasConversionFailed] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const dispatch = useDispatch();
   const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
@@ -62,9 +75,9 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   const currentPosition = useSharedValue(0);
   const totalDuration = useSharedValue(0);
 
-  const audioPlayBackStatus = useCallback(
-    (data: { data: PlayBackType }) => {
-      const playBackData = data.data as PlayBackType;
+  const audioPlayBackStatus = useCallback<Callback>(
+    ({ status, data: playBackData }) => {
+      if (status === AudioStatus.PAUSED && playBackData) setAudioPlaying(false);
       if (playBackData) {
         currentPosition.value = playBackData.currentPosition;
         totalDuration.value = playBackData.duration;
@@ -80,21 +93,43 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
   );
 
   useEffect(() => {
+    let active = true;
+
+    const source = { dataUrl: audioSrc, contentType, extension };
+
     const prepareAudio = async () => {
-      if (Platform.OS === 'ios' && audioSrc.toLowerCase().endsWith('.ogg')) {
-        setIsSoundLoading(true);
-        try {
-          const convertedSrc = await convertOggToWav(audioSrc);
-          setConvertedAudioSrc(convertedSrc);
-        } catch (error) {
-          Sentry.captureException(error);
-        } finally {
+      // Every run starts from the incoming source with no loading or failure state.
+      setIsSoundLoading(false);
+      setHasConversionFailed(false);
+      setConvertedAudioSrc(audioSrc);
+      // Sources the metadata marks as natively playable skip the download.
+      // Ogg/WebM and unidentified sources go through preparePlayableAudio.
+      if (Platform.OS !== 'ios' || iosNeedsConversion(source) === false) {
+        return;
+      }
+      setIsSoundLoading(true);
+      try {
+        const playableSrc = await preparePlayableAudio(source);
+        if (active) {
+          setConvertedAudioSrc(playableSrc);
+        }
+      } catch {
+        // preparePlayableAudio reports to Sentry already.
+        if (active) {
+          setHasConversionFailed(true);
+        }
+      } finally {
+        if (active) {
           setIsSoundLoading(false);
         }
       }
     };
     prepareAudio();
-  }, [audioSrc]);
+
+    return () => {
+      active = false;
+    };
+  }, [audioSrc, contentType, extension, retryCount]);
 
   const togglePlayback = useCallback(() => {
     if (convertedAudioSrc === currentPlayingAudioSrc) {
@@ -149,23 +184,43 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   const sliderProps = useMemo(
     () => ({
-      trackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-whiteA-A9' : 'bg-gray-500',
-      filledTrackColor: variant === MESSAGE_VARIANTS.USER ? 'bg-white' : 'bg-blue-700',
-      knobStyle: variant === MESSAGE_VARIANTS.USER ? 'border-blue-300' : 'border-blue-700',
+      trackColor: onFilledBubble
+        ? 'bg-whiteA-A9'
+        : tailwind.isDark
+          ? 'bg-whiteA-A6'
+          : 'bg-gray-500',
+      filledTrackColor: onFilledBubble ? 'bg-white' : 'bg-blue-700',
+      knobStyle: onFilledBubble ? 'border-blue-300' : 'border-blue-700',
       manualSeekTo,
       currentPosition,
       totalDuration,
       pauseAudio,
     }),
-    [variant, manualSeekTo, currentPosition, totalDuration, pauseAudio],
+    [onFilledBubble, tailwind, manualSeekTo, currentPosition, totalDuration, pauseAudio],
   );
+
+  if (hasConversionFailed) {
+    const failureColor = onFilledBubble ? 'text-white' : 'text-gray-900';
+    // Tapping the failure row runs the preparation again.
+    return (
+      <Pressable
+        hitSlop={10}
+        onPress={() => setRetryCount(count => count + 1)}
+        style={tailwind.style('w-full flex flex-row items-center gap-1 flex-1')}>
+        <Icon icon={<FileErrorIcon fill={tailwind.color(failureColor)} />} size={16} />
+        <Animated.Text style={tailwind.style(`text-cxs font-inter-420-20 ${failureColor}`)}>
+          {i18n.t('CONVERSATION.AUDIO_NOT_AVAILABLE')}
+        </Animated.Text>
+      </Pressable>
+    );
+  }
 
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
       <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
         {isSoundLoading ? (
           <Animated.View>
-            <Spinner size={13} stroke={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'} />
+            <Spinner size={13} stroke={iconColor} />
           </Animated.View>
         ) : isCurrentAudioSrcPlaying ? (
           <Animated.View
@@ -173,12 +228,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
             entering={FadeIn}
             exiting={FadeOut}>
             <Icon
-              icon={
-                <PauseIcon
-                  fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-                  fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-                />
-              }
+              icon={<PauseIcon fillOpacity={onFilledBubble ? '1' : '0.565'} fill={iconColor} />}
               size={13}
             />
           </Animated.View>
@@ -187,10 +237,7 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
             style={tailwind.style('pl-0.5 pr-0.5')}
             entering={FadeIn}
             exiting={FadeOut}>
-            <PlayIcon
-              fillOpacity={variant === MESSAGE_VARIANTS.USER ? '1' : '0.565'}
-              fill={variant === MESSAGE_VARIANTS.USER ? 'white' : 'black'}
-            />
+            <PlayIcon fillOpacity={onFilledBubble ? '1' : '0.565'} fill={iconColor} />
           </Animated.View>
         )}
       </Pressable>
@@ -201,11 +248,10 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
 // eslint-disable-next-line react/display-name
 export const AudioBubble = React.memo<AudioBubbleProps>(props => {
-  const { audioSrc, variant } = props;
-
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('w-full flex flex-row items-center')}>
-      <AudioBubblePlayer audioSrc={audioSrc} variant={variant} />
+      <AudioBubblePlayer {...props} />
     </Animated.View>
   );
 });

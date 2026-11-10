@@ -14,21 +14,34 @@ export interface LoginResponse {
   headers: AuthHeaders;
 }
 
+// How the sign-in verification code is delivered. Null means an authenticator app.
+export type VerificationChannel = 'email';
+
 export interface MfaRequiredResponse {
   mfa_required: true;
   mfa_token: string;
+  verification_channel: VerificationChannel | null;
+}
+
+// The account enforces two-factor authentication and this user has not enrolled yet.
+// Enrolment happens on the web app, so the setup token the server sends is not carried.
+export interface MfaSetupRequiredResponse {
+  mfa_setup_required: true;
 }
 
 export interface MfaVerificationPayload {
   mfa_token: string;
   otp_code?: string;
   backup_code?: string;
+  remember_device?: boolean;
 }
 
 export interface LoginApiResponse {
   data?: User;
   mfa_required?: boolean;
+  mfa_setup_required?: boolean;
   mfa_token?: string;
+  verification_channel?: VerificationChannel | null;
 }
 export interface ResetPasswordPayload {
   email: string;
@@ -46,6 +59,14 @@ export interface AvailabilityPayload {
 
 export interface ProfileResponse {
   user: User;
+}
+
+export interface WorkPreferencesPayload {
+  profile: {
+    account_id: number;
+    accepts_conversations: boolean;
+    accepts_calls: boolean;
+  };
 }
 
 export interface ApiErrorResponse {

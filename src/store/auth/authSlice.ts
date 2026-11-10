@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { authActions } from './authActions';
 import { User } from '@/types/User';
-import { AuthHeaders } from './authTypes';
+import type { WorkPreferences } from '@/types/common/AvailabilityStatus';
+import { AuthHeaders, VerificationChannel } from './authTypes';
 export interface AuthState {
   user: User | null;
   accessToken: string | null;
@@ -13,6 +14,7 @@ export interface AuthState {
   headers: AuthHeaders | null;
   error: string | null;
   mfaToken: string | null;
+  verificationChannel: VerificationChannel | null;
 }
 const initialState: AuthState = {
   user: null,
@@ -25,6 +27,7 @@ const initialState: AuthState = {
   headers: null,
   error: null,
   mfaToken: null,
+  verificationChannel: null,
 };
 export const authSlice = createSlice({
   name: 'auth',
@@ -38,6 +41,7 @@ export const authSlice = createSlice({
       state.accessToken = null;
       state.headers = null;
       state.mfaToken = null;
+      state.verificationChannel = null;
       state.error = null;
       state.uiFlags = {
         isLoggingIn: false,
@@ -50,6 +54,7 @@ export const authSlice = createSlice({
     },
     clearMfaToken: state => {
       state.mfaToken = null;
+      state.verificationChannel = null;
     },
     setCurrentUserAvailability(state, action) {
       const { users } = action.payload;
@@ -89,6 +94,18 @@ export const authSlice = createSlice({
         };
       }
     },
+    setCurrentUserWorkPreferences(state, action: PayloadAction<WorkPreferences>) {
+      const { accepts_conversations: acceptsConversations, accepts_calls: acceptsCalls } =
+        action.payload;
+      const account = state.user?.accounts?.find(({ id }) => id === state.user?.account_id);
+      if (!account) return;
+      if (account.accepts_conversations !== acceptsConversations) {
+        account.accepts_conversations = acceptsConversations;
+      }
+      if (account.accepts_calls !== acceptsCalls) {
+        account.accepts_calls = acceptsCalls;
+      }
+    },
     setAccount: (state, action) => {
       if (state.user) {
         state.user.account_id = action.payload;
@@ -102,12 +119,19 @@ export const authSlice = createSlice({
         state.error = null;
       })
       .addCase(authActions.login.fulfilled, (state, action) => {
+        // Enrolment is required before a session can be issued; the login screen
+        // tells the user to set it up on the web app.
+        if ('mfa_setup_required' in action.payload) {
+          state.uiFlags.isLoggingIn = false;
+          state.error = null;
+          return;
+        }
         // Check if MFA is required
         if ('mfa_required' in action.payload) {
           state.mfaToken = action.payload.mfa_token;
+          state.verificationChannel = action.payload.verification_channel ?? null;
           state.uiFlags.isLoggingIn = false;
           state.error = null;
-          // MFA token will not be persisted due to blacklist in persist config
         } else {
           // Regular login success
           state.user = action.payload.user;
@@ -115,13 +139,24 @@ export const authSlice = createSlice({
           state.uiFlags.isLoggingIn = false;
           state.error = null;
           state.mfaToken = null;
+          state.verificationChannel = null;
         }
       })
       .addCase(authActions.getProfile.fulfilled, (state, action) => {
+        // Keep the locally selected account if a switch's profile refresh resolves with a
+        // stale account_id, but only while it's still a member account; otherwise adopt the
+        // refreshed active account (e.g. access to the previous account was removed).
+        const activeAccountId = state.user?.account_id;
+        const mergedUser = { ...state.user, ...action.payload } as User;
+        const keepLocalAccount =
+          activeAccountId != null &&
+          (mergedUser.accounts ?? []).some(
+            account => Number(account.id) === Number(activeAccountId),
+          );
         state.user = {
-          ...state.user,
-          ...action.payload,
-        } as User;
+          ...mergedUser,
+          ...(keepLocalAccount ? { account_id: activeAccountId } : {}),
+        };
       })
       .addCase(authActions.login.rejected, (state, action) => {
         state.uiFlags.isLoggingIn = false;
@@ -143,17 +178,41 @@ export const authSlice = createSlice({
           ...state.user,
           ...action.payload.user,
         };
+        // Server applies status asynchronously.
+        const availability = action.meta.arg?.profile?.availability;
+        const accountId = state.user?.account_id;
+        if (availability && state.user?.accounts) {
+          state.user.accounts = state.user.accounts.map(account =>
+            account.id === accountId
+              ? { ...account, availability, availability_status: availability }
+              : account,
+          );
+        }
+      })
+      .addCase(authActions.updateWorkPreferences.fulfilled, (state, action) => {
+        state.user = {
+          ...state.user,
+          ...action.payload.user,
+        };
       })
       .addCase(authActions.verifyMfa.pending, state => {
         state.uiFlags.isVerifyingMfa = true;
         state.error = null;
       })
       .addCase(authActions.verifyMfa.fulfilled, (state, action) => {
+        if ('mfa_setup_required' in action.payload) {
+          state.uiFlags.isVerifyingMfa = false;
+          state.error = null;
+          state.mfaToken = null;
+          state.verificationChannel = null;
+          return;
+        }
         state.user = action.payload.user;
         state.headers = action.payload.headers;
         state.uiFlags.isVerifyingMfa = false;
         state.error = null;
         state.mfaToken = null;
+        state.verificationChannel = null;
       })
       .addCase(authActions.verifyMfa.rejected, (state, action) => {
         state.uiFlags.isVerifyingMfa = false;
@@ -169,6 +228,7 @@ export const authSlice = createSlice({
         state.uiFlags.isLoggingIn = false;
         state.error = null;
         state.mfaToken = null;
+        state.verificationChannel = null;
       })
       .addCase(authActions.loginWithSso.rejected, (state, action) => {
         state.uiFlags.isLoggingIn = false;
@@ -181,6 +241,7 @@ export const {
   setAccount,
   resetAuth,
   setCurrentUserAvailability,
+  setCurrentUserWorkPreferences,
   clearAuthError,
   clearMfaToken,
 } = authSlice.actions;

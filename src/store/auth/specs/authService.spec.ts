@@ -52,6 +52,24 @@ describe('AuthService', () => {
       });
     });
 
+    it('returns a setup marker without a session when the account enforces MFA', async () => {
+      const credentials = { email: 'test@example.com', password: 'password' };
+      (apiService.post as jest.Mock).mockResolvedValueOnce({
+        status: 206,
+        data: {
+          mfa_setup_required: true,
+          mfa_setup_token: 'setup-token',
+          secret: 'secret',
+          error: 'Your account requires two-factor authentication.',
+        },
+        headers: {},
+      });
+
+      const result = await AuthService.login(credentials);
+
+      expect(result).toEqual({ mfa_setup_required: true });
+    });
+
     it('should throw error when login fails', async () => {
       const credentials = { email: 'test@example.com', password: 'wrong' };
       const error = new Error('Invalid credentials');
@@ -61,6 +79,35 @@ describe('AuthService', () => {
       await expect(AuthService.login(credentials)).rejects.toThrow(error);
     });
   });
+  describe('verifyMfa', () => {
+    it('returns the user and headers once the code is accepted', async () => {
+      (apiService.post as jest.Mock).mockResolvedValueOnce({
+        data: { data: mockUser },
+        headers: mockHeaders,
+      });
+
+      const result = await AuthService.verifyMfa({ mfa_token: 'mfa-token', otp_code: '123456' });
+
+      expect(result).toEqual({ user: mockUser, headers: mockHeaders });
+    });
+
+    it('returns a setup marker when the account enforces MFA after device verification', async () => {
+      (apiService.post as jest.Mock).mockResolvedValueOnce({
+        status: 206,
+        data: { mfa_setup_required: true, mfa_setup_token: 'setup-token', secret: 'secret' },
+        headers: {},
+      });
+
+      const result = await AuthService.verifyMfa({
+        mfa_token: 'mfa-token',
+        otp_code: '123456',
+        remember_device: true,
+      });
+
+      expect(result).toEqual({ mfa_setup_required: true });
+    });
+  });
+
   describe('getProfile', () => {
     it('should make a GET request to profile endpoint', async () => {
       const mockResponse = { data: mockUser };

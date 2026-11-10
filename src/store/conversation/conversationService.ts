@@ -31,6 +31,7 @@ import type {
   TogglePriorityPayload,
   TranslateMessagePayload,
   TranslateMessageAPIResponse,
+  RetryMessagePayload,
 } from './conversationTypes';
 
 import {
@@ -110,6 +111,16 @@ export class ConversationService {
       `conversations/${conversationId}/messages`,
       payload,
       config,
+    );
+    return response.data;
+  }
+
+  static async retryMessage({
+    conversationId,
+    messageId,
+  }: RetryMessagePayload): Promise<SendMessageAPIResponse> {
+    const response = await apiService.post<SendMessageAPIResponse>(
+      `conversations/${conversationId}/messages/${messageId}/retry`,
     );
     return response.data;
   }

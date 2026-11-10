@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: ''
 labels: 'Bug'
 assignees: ''
-
 ---
 
 Confirm you’re filing a new issue. [Search issues in Github](https://github.com/chatwoot/chatwoot-mobile-app/issues) and ensure that the issue is not already exist.
@@ -12,7 +11,6 @@ Confirm you’re filing a new issue. [Search issues in Github](https://github.co
 **Describe the bug**
 
 A clear and concise description of what the bug is.
-
 
 **To Reproduce**
 
@@ -32,11 +30,11 @@ What did you see happen? Please include relevant error messages, screenshots and
 
 **Environment**
 
-  - Describe whether you are using Chatwoot Cloud (app.chatwoot.com) or a self hosted installation of Chatwoot.
-  - Device Name:  [e.g. iPhone6]
-  - OS Version: [e.g. iOS8.1]
-  - Chatwoot App Version: [e.g. 1.2.0]
-  - Chatwoot Server Version: [e.g. 1.16.0]
+- Describe whether you are using Chatwoot Cloud (app.chatwoot.com) or a self hosted installation of Chatwoot.
+- Device Name: [e.g. iPhone6]
+- OS Version: [e.g. iOS8.1]
+- Chatwoot App Version: [e.g. 1.2.0]
+- Chatwoot Server Version: [e.g. 1.16.0]
 
 **Additional context**
 

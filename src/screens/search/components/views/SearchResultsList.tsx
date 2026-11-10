@@ -1,11 +1,11 @@
 import React from 'react';
 import { ActivityIndicator } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
+import { FlashListRef } from '@shopify/flash-list';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
+import { FadeInView } from '../shared/FadeInView';
 import { SearchEmptyState } from '../shared/SearchEmptyState';
 import { SearchListItems } from '../shared/SearchListItems';
 import i18n from 'i18n';
@@ -18,7 +18,7 @@ interface SearchResultsListProps {
   hasMore: boolean;
   searchQuery: string;
   renderItem: (item: SearchItem, sectionId: SearchSectionType, isLast?: boolean) => React.ReactNode;
-  listRef: React.RefObject<FlashList<SearchItem>>;
+  listRef: React.RefObject<FlashListRef<SearchItem> | null>;
   onEndReached: () => void;
 }
 
@@ -33,15 +33,14 @@ export function SearchResultsList({
   listRef,
   onEndReached,
 }: SearchResultsListProps) {
+  const tailwind = useTailwind();
   const section = SEARCH_SECTIONS.find(s => s.id === sectionId);
 
   if (!section || (isLoading && items.length === 0)) {
     return (
-      <Animated.View
-        entering={FadeIn.duration(200)}
-        style={tailwind.style('flex-1 items-center justify-center')}>
+      <FadeInView style={tailwind.style('flex-1 items-center justify-center')}>
         <ActivityIndicator />
-      </Animated.View>
+      </FadeInView>
     );
   }
 

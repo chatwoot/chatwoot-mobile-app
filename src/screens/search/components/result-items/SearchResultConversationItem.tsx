@@ -1,12 +1,13 @@
 import React from 'react';
 import { Pressable } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 import { Icon } from '@/components-next/common';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
+import type { Channel } from '@/types';
 import type { Conversation } from '@/types/Conversation';
 import { HighlightedText } from '../shared/HighlightedText';
-import { useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, IOS_LIST_TEXT, useScaleAnimation } from '@/utils';
 import { getChannelIcon } from '@/utils/getChannelIcon';
 import { LastActivityTime } from '@/screens/conversations/components/conversation-item/LastActivityTime';
 import { ConversationId } from '@/screens/conversations/components/conversation-item/ConversationId';
@@ -15,7 +16,7 @@ import { ConversationId } from '@/screens/conversations/components/conversation-
 type SearchConversation = Conversation & {
   contact?: { name?: string; email?: string };
   additionalAttributes?: { mailSubject?: string; emailSubject?: string; type?: string };
-  inbox?: { name?: string; channelType?: string; medium?: string; id?: number };
+  inbox?: { name?: string; channelType?: Channel; medium?: string; id?: number };
 };
 
 type SearchResultConversationItemProps = {
@@ -31,6 +32,7 @@ export const SearchResultConversationItem = ({
   onPress,
   isLast = false,
 }: SearchResultConversationItemProps) => {
+  const tailwind = useTailwind();
   const contactName = conversation.meta?.sender?.name || conversation.contact?.name || '';
   const contactEmail = conversation.meta?.sender?.email || conversation.contact?.email || '';
   const emailSubject =
@@ -52,79 +54,147 @@ export const SearchResultConversationItem = ({
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
-  return (
-    <Animated.View entering={FadeIn.duration(200)}>
+  if (IOS_DESIGN) {
+    return (
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => [
-          tailwind.style(
-            'px-4 py-3',
-            !isLast && 'border-b border-b-blackA-A3',
-            pressed ? 'bg-gray-50' : '',
-          ),
-        ]}
-        {...handlers}>
-        <Animated.View style={animatedStyle}>
-          <Animated.View style={tailwind.style('flex-row items-center justify-between mb-2')}>
-            <Animated.View style={tailwind.style('flex-row items-center gap-3 flex-1')}>
-              <ConversationId id={conversation.id} />
-              {inboxName && (
-                <>
-                  <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
-                  <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
-                    {inbox && channelType && (
-                      <Animated.View
-                        style={tailwind.style(
-                          'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
-                        )}>
-                        <Icon
-                          icon={getChannelIcon(channelType, medium, additionalType)}
-                          size={10}
-                        />
-                      </Animated.View>
-                    )}
-                    <Animated.Text
-                      numberOfLines={1}
-                      style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
-                      )}>
-                      {inboxName}
-                    </Animated.Text>
-                  </Animated.View>
-                </>
+        style={({ pressed }) => tailwind.style('pl-4', pressed && 'bg-gray-100')}>
+        <Animated.View
+          style={tailwind.style(
+            'py-3 pr-4 gap-0.5',
+            !isLast && 'border-b-[0.5px] border-b-blackA-A6',
+          )}>
+          <Animated.View style={tailwind.style('flex-row items-center gap-2')}>
+            <Animated.View style={tailwind.style('flex-1')}>
+              {contactName ? (
+                <HighlightedText
+                  text={contactName}
+                  searchQuery={searchQuery}
+                  style={tailwind.style(
+                    'text-gray-950',
+                    IOS_LIST_TEXT.title,
+                    IOS_LIST_TEXT.readTitle,
+                  )}
+                  numberOfLines={1}
+                />
+              ) : (
+                <ConversationId id={conversation.id} />
               )}
             </Animated.View>
             {createdAt && <LastActivityTime timestamp={createdAt} />}
           </Animated.View>
-          {infoItems.length > 0 && (
-            <Animated.View style={tailwind.style('flex-row flex-wrap gap-x-2 gap-y-1.5')}>
-              {infoItems.map((item, index) => (
-                <React.Fragment key={index}>
-                  <Animated.View style={tailwind.style('flex-row items-center flex-shrink')}>
-                    <Animated.Text
-                      style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-gray-600',
-                      )}>
-                      {item.label}:
-                    </Animated.Text>
-                    <HighlightedText
-                      text={item.value}
-                      searchQuery={searchQuery}
-                      style={tailwind.style(
-                        'text-sm font-inter-420-20 leading-[17px] text-gray-800 ml-1 flex-shrink',
-                      )}
-                      numberOfLines={1}
-                    />
+          {emailSubject ? (
+            <HighlightedText
+              text={emailSubject}
+              searchQuery={searchQuery}
+              style={tailwind.style('font-inter-normal-20 text-gray-950', IOS_LIST_TEXT.body)}
+              numberOfLines={1}
+            />
+          ) : null}
+          {contactEmail ? (
+            <HighlightedText
+              text={contactEmail}
+              searchQuery={searchQuery}
+              style={tailwind.style('font-inter-normal-20 text-gray-700', IOS_LIST_TEXT.body)}
+              numberOfLines={1}
+            />
+          ) : null}
+          <Animated.View style={tailwind.style('flex-row items-center gap-1.5 mt-0.5')}>
+            {contactName ? <ConversationId id={conversation.id} /> : null}
+            {inboxName ? (
+              <>
+                {inbox && channelType && (
+                  <Animated.View
+                    style={tailwind.style(
+                      'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
+                    )}>
+                    <Icon icon={getChannelIcon(channelType, medium, additionalType)} size={10} />
                   </Animated.View>
-                  {index < infoItems.length - 1 && (
-                    <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
-                  )}
-                </React.Fragment>
-              ))}
-            </Animated.View>
-          )}
+                )}
+                <Animated.Text
+                  numberOfLines={1}
+                  style={tailwind.style(
+                    'font-inter-normal-20 text-gray-700 flex-shrink',
+                    IOS_LIST_TEXT.footnote,
+                  )}>
+                  {inboxName}
+                </Animated.Text>
+              </>
+            ) : null}
+          </Animated.View>
         </Animated.View>
       </Pressable>
-    </Animated.View>
+    );
+  }
+
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => [
+        tailwind.style(
+          'px-4 py-3',
+          !isLast && 'border-b border-b-blackA-A3',
+          pressed ? 'bg-gray-50' : '',
+        ),
+      ]}
+      {...handlers}>
+      <Animated.View style={animatedStyle}>
+        <Animated.View style={tailwind.style('flex-row items-center justify-between mb-2')}>
+          <Animated.View style={tailwind.style('flex-row items-center gap-3 flex-1')}>
+            <ConversationId id={conversation.id} />
+            {inboxName && (
+              <>
+                <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
+                <Animated.View style={tailwind.style('flex-row items-center gap-1.5')}>
+                  {inbox && channelType && (
+                    <Animated.View
+                      style={tailwind.style(
+                        'h-4 w-4 rounded-full bg-gray-100 items-center justify-center',
+                      )}>
+                      <Icon icon={getChannelIcon(channelType, medium, additionalType)} size={10} />
+                    </Animated.View>
+                  )}
+                  <Animated.Text
+                    numberOfLines={1}
+                    style={tailwind.style(
+                      'text-sm font-inter-420-20 leading-[17px] text-gray-950 flex-shrink',
+                    )}>
+                    {inboxName}
+                  </Animated.Text>
+                </Animated.View>
+              </>
+            )}
+          </Animated.View>
+          {createdAt && <LastActivityTime timestamp={createdAt} />}
+        </Animated.View>
+        {infoItems.length > 0 && (
+          <Animated.View style={tailwind.style('flex-row flex-wrap gap-x-2 gap-y-1.5')}>
+            {infoItems.map((item, index) => (
+              <React.Fragment key={index}>
+                <Animated.View style={tailwind.style('flex-row items-center flex-shrink')}>
+                  <Animated.Text
+                    style={tailwind.style(
+                      'text-sm font-inter-420-20 leading-[17px] text-gray-600',
+                    )}>
+                    {item.label}:
+                  </Animated.Text>
+                  <HighlightedText
+                    text={item.value}
+                    searchQuery={searchQuery}
+                    style={tailwind.style(
+                      'text-sm font-inter-420-20 leading-[17px] text-gray-800 ml-1 flex-shrink',
+                    )}
+                    numberOfLines={1}
+                  />
+                </Animated.View>
+                {index < infoItems.length - 1 && (
+                  <Animated.View style={tailwind.style('w-px h-3 bg-gray-300')} />
+                )}
+              </React.Fragment>
+            ))}
+          </Animated.View>
+        )}
+      </Animated.View>
+    </Pressable>
   );
 };

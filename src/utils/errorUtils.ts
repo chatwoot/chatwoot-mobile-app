@@ -7,6 +7,30 @@ interface ErrorHandler {
   (e: Error, isFatal: boolean): void;
 }
 
+/**
+ * Coerces a caught value into a string for display.
+ *
+ * Rejections reach the app as Errors, as plain objects from native modules, or
+ * as bare strings. Alert passes its arguments across the bridge untouched, and
+ * Android's DialogModule reads them as strings, so a non-string title or
+ * message crashes the process.
+ */
+export const errorMessage = (error: unknown): string => {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  if (error && typeof error === 'object' && 'message' in error) {
+    const { message } = error as { message: unknown };
+    if (typeof message === 'string') {
+      return message;
+    }
+  }
+  return i18n.t('COMMON.ERROR');
+};
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const errorHandler: ErrorHandler = (e, isFatal) => {
   Sentry.captureException(e);

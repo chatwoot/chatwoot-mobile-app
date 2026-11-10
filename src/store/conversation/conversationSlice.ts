@@ -3,7 +3,7 @@ import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
 import { findPendingMessageIndex } from '@/utils/conversationUtils';
 
-import { MESSAGE_TYPES } from '@/constants';
+import { CONTENT_TYPES, MESSAGE_TYPES } from '@/constants';
 import { Message } from '@/types/Message';
 import { PendingMessage } from './conversationTypes';
 
@@ -18,6 +18,9 @@ export interface ConversationState {
   isLoadingMessages: boolean;
   isAllConversationsFetched: boolean;
   isAllMessagesFetched: boolean;
+  // Whether all messages newer than the loaded set are fetched. False only after
+  // a search jump, which loads a window that may sit before the latest messages.
+  isAllNewerMessagesFetched: boolean;
   isConversationFetching: boolean;
   isChangingConversationStatus: boolean;
 }
@@ -35,6 +38,7 @@ const initialState = conversationAdapter.getInitialState<ConversationState>({
   isAllConversationsFetched: false,
   isLoadingMessages: false,
   isAllMessagesFetched: false,
+  isAllNewerMessagesFetched: true,
   isConversationFetching: false,
   isChangingConversationStatus: false,
 });
@@ -56,7 +60,7 @@ const isOutdatedConversationUpdate = (
 const shouldKeepLocalStatusMarker = (
   existingConversation: Conversation | undefined,
   incomingConversation: Conversation,
-) => {
+): existingConversation is Conversation => {
   const localStatusUpdatedAt = existingConversation?.localStatusUpdatedAt;
   const existingUpdatedAt = existingConversation?.updatedAt;
   const incomingUpdatedAt = incomingConversation.updatedAt;
@@ -222,7 +226,11 @@ const conversationSlice = createSlice({
         state.isConversationFetching = false;
         state.isAllMessagesFetched = false;
       })
-      .addCase(conversationActions.fetchConversation.rejected, state => {
+      .addCase(conversationActions.fetchConversation.rejected, (state, action) => {
+        // Ignore responses fenced during an account switch; a fresh fetch is already running.
+        if (action.error?.name === 'CanceledError') {
+          return;
+        }
         state.isConversationFetching = false;
         state.error = state.error || 'Unable to load conversation';
       })
@@ -235,22 +243,40 @@ const conversationSlice = createSlice({
           return;
         }
         const conversation = state.entities[conversationId];
-        const { afterId } = action.meta.arg;
+        const { afterId, beforeId, resetMessages } = action.meta.arg;
 
-        if (afterId) {
-          // Search navigation: merge messages, deduplicate by ID, and sort
-          // descending (newest first) to match the array order that normal
-          // pagination produces via unshift — lastMessageId() relies on this.
+        if (resetMessages) {
+          // Search navigation: replace the list with the target + older window so
+          // there is no gap with previously loaded messages. Newer messages are
+          // fetched separately and paged in on scroll-down.
+          conversation.messages = [...messages].sort((a, b) => b.createdAt - a.createdAt);
+          state.isAllMessagesFetched = messages.length < 20;
+          state.isAllNewerMessagesFetched = false;
+        } else if (afterId != null) {
+          // Load newer: merge, dedupe, sort newest-first.
           const existingIds = new Set(conversation.messages.map(m => m.id));
           const newMessages = messages.filter(m => !existingIds.has(m.id));
           conversation.messages.push(...newMessages);
           conversation.messages.sort((a, b) => b.createdAt - a.createdAt);
-          // Reset so older-message pagination isn't blocked after search nav
-          state.isAllMessagesFetched = false;
+          state.isAllNewerMessagesFetched = messages.length < 20;
         } else {
-          // Normal pagination: prepend older messages
-          conversation.messages.unshift(...messages);
+          // Fetched calls can carry newer statuses.
+          const heldIndex = new Map(conversation.messages.map((m, index) => [m.id, index]));
+          const unseen: Message[] = [];
+          messages.forEach(message => {
+            const index = heldIndex.get(message.id);
+            if (index === undefined) {
+              unseen.push(message);
+            } else if (message.contentType === CONTENT_TYPES.VOICE_CALL) {
+              conversation.messages[index] = message;
+            }
+          });
+          conversation.messages.unshift(...unseen);
           state.isAllMessagesFetched = messages.length < 20 || false;
+          // A first load (no beforeId) lands on the latest messages.
+          if (beforeId == null) {
+            state.isAllNewerMessagesFetched = true;
+          }
         }
 
         conversation.meta = {

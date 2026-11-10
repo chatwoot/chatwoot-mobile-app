@@ -1,13 +1,14 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { selectAllCannedResponses } from '@/store/canned-response/cannedResponseSlice';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { cannedResponseActions } from '@/store/canned-response/cannedResponseActions';
 import { CannedResponse } from '@/types';
 import { FlashList } from '@shopify/flash-list';
+import { expandTabs } from '@/utils/expandTabs';
 
 type CannedResponsesProps = {
   searchKey: string;
@@ -21,6 +22,7 @@ const CannedResponseItem = ({
   item: CannedResponse;
   onSelect: (cannedResponse: CannedResponse) => void;
 }) => {
+  const tailwind = useTailwind();
   return (
     <Pressable
       onPress={() => onSelect(item)}
@@ -28,7 +30,7 @@ const CannedResponseItem = ({
         'w-full flex-row justify-between items-center border-b border-gray-200 py-3 px-4',
       )}>
       <Animated.Text numberOfLines={1} style={tailwind.style('text-md flex-1 text-gray-950')}>
-        {item.content.replace(/\n/g, ' ')}
+        {expandTabs(item.content.replace(/\n/g, ' '))}
       </Animated.Text>
       <Animated.Text style={tailwind.style('text-sm text-gray-900 ml-2')}>
         {`/${item.shortCode}`}
@@ -38,6 +40,7 @@ const CannedResponseItem = ({
 };
 
 export const CannedResponses = (props: CannedResponsesProps) => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const cannedResponses = useAppSelector(selectAllCannedResponses);
 

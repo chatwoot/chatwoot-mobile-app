@@ -78,8 +78,6 @@ export const AppUpdatePrompt = () => {
   isFocusedRef.current = isFocused;
   const isCallInProgress = useAppSelector(selectIsCallInProgress);
   const lastCheckedAtRef = useRef(0);
-  // A check that reached its prompt during a call, re-run when the call ends.
-  const deferredCheckRef = useRef<{ isLaunchCheck: boolean } | null>(null);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -95,21 +93,13 @@ export const AppUpdatePrompt = () => {
 
   // Re-checked right before showing any UI, since state can change while checks await.
   const canPrompt = useCallback(
-    (isLaunchCheck: boolean) => {
-      const canShow =
-        isMountedRef.current &&
-        isFocusedRef.current &&
-        !Keyboard.isVisible() &&
-        !(isLaunchCheck && wasSignedInThisSession()) &&
-        !isBelowServerMinimum();
-      if (!canShow) return false;
-      // Update UI would cover the call controls.
-      if (selectIsCallInProgress(store.getState())) {
-        deferredCheckRef.current = { isLaunchCheck };
-        return false;
-      }
-      return true;
-    },
+    (isLaunchCheck: boolean) =>
+      isMountedRef.current &&
+      isFocusedRef.current &&
+      !Keyboard.isVisible() &&
+      !selectIsCallInProgress(store.getState()) &&
+      !(isLaunchCheck && wasSignedInThisSession()) &&
+      !isBelowServerMinimum(),
     [isBelowServerMinimum, store],
   );
 
@@ -192,13 +182,6 @@ export const AppUpdatePrompt = () => {
     checkForUpdate(true).catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (isCallInProgress || !deferredCheckRef.current) return;
-    const { isLaunchCheck } = deferredCheckRef.current;
-    deferredCheckRef.current = null;
-    checkForUpdate(isLaunchCheck).catch(() => {});
-  }, [isCallInProgress, checkForUpdate]);
 
   useEffect(
     () =>

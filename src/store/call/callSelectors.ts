@@ -48,12 +48,7 @@ export const selectLocalCallSid = createSelector(selectCallsState, state => stat
 
 export const selectIsCallInProgress = createSelector(
   selectCallsState,
-  state =>
-    state.calls.length > 0 ||
-    state.isJoining ||
-    !!state.placingCall ||
-    !!state.localCallSid ||
-    state.pendingPlacements > 0,
+  state => state.calls.length > 0 || state.isJoining || !!state.placingCall || !!state.localCallSid,
 );
 
 export const selectDismissedCallSids = createSelector(

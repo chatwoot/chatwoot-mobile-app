@@ -31,8 +31,6 @@ import {
   setCallProviderStatus,
   setIsJoining,
   setPlacingCall,
-  beginPlacement,
-  endPlacement,
 } from './callSlice';
 import {
   selectActiveCall,
@@ -149,7 +147,6 @@ export const callActions = {
       const attempt = placingAttempt;
       const cancelled = () => cancelledAttempts.has(attempt);
       dispatch(setPlacingCall({ conversationId, inboxId, provider, accountId, caller }));
-      dispatch(beginPlacement());
 
       try {
         if (provider === VOICE_CALL_PROVIDERS.WHATSAPP) {
@@ -290,7 +287,6 @@ export const callActions = {
       } finally {
         cancelledAttempts.delete(attempt);
         if (attempt === placingAttempt) dispatch(setPlacingCall(null));
-        dispatch(endPlacement());
       }
     },
   ),

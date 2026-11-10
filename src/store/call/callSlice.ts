@@ -26,7 +26,6 @@ const initialState: CallState = {
   audioRoute: { current: 'earpiece', available: ['earpiece', 'speaker'], names: {} },
   isMinimised: false,
   placingCall: null,
-  pendingPlacements: 0,
 };
 
 const resetMediaWhenIdle = (state: CallState) => {
@@ -127,14 +126,6 @@ const callSlice = createSlice({
       } else {
         resetMediaWhenIdle(state);
       }
-    },
-
-    beginPlacement: state => {
-      state.pendingPlacements += 1;
-    },
-
-    endPlacement: state => {
-      state.pendingPlacements = Math.max(0, state.pendingPlacements - 1);
     },
 
     setMinimised: (state, action: PayloadAction<boolean>) => {
@@ -253,8 +244,6 @@ export const {
   setSystemUuid,
   setMinimised,
   setPlacingCall,
-  beginPlacement,
-  endPlacement,
   markSystemUiFailed,
   clearSystemCalls,
   clearActiveCall,

@@ -1,9 +1,10 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-import { IconProps } from '../../types';
+import { tailwind } from '@/theme';
+import type { IconProps } from '@/types';
 
-export const ArrowUpIcon = ({ stroke = '#FFFFFF' }: IconProps): JSX.Element => {
+export const ArrowUpIcon = ({ stroke = tailwind.color('text-white') }: IconProps): JSX.Element => {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 24 24" fill="none">
       <Path

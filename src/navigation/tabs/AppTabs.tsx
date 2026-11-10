@@ -41,7 +41,8 @@ import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
-import { AppUpdatePrompt, RequiredUpdateScreen } from '@/components-next/app-update';
+import { AppUpdatePrompt } from '@/components-next/app-update/AppUpdatePrompt';
+import { RequiredUpdateScreen } from '@/components-next/app-update/RequiredUpdateScreen';
 import { useRequiredAppUpdate } from '@/hooks/useRequiredAppUpdate';
 import {
   markNotificationRequestSettled,

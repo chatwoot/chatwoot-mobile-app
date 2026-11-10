@@ -1,9 +1,13 @@
 import reducer from '../settingsSlice';
 import { settingsActions } from '../settingsActions';
 
-jest.mock('@/utils/navigationUtils', () => ({ navigate: jest.fn() }));
-jest.mock('@react-native-firebase/messaging', () => jest.fn());
-jest.mock('react-native-permissions', () => jest.requireActual('react-native-permissions/mock'));
+jest.mock('@/utils/navigationUtils', () => ({
+  navigate: jest.fn<void, Parameters<typeof import('@/utils/navigationUtils').navigate>>(),
+}));
+jest.mock('@react-native-firebase/messaging', () => ({}));
+jest.mock('react-native-permissions', () =>
+  jest.requireActual<typeof import('react-native-permissions')>('react-native-permissions/mock'),
+);
 jest.mock('../../../../modules/app-update', () => ({}));
 
 const SERVER_A = 'https://a.example.com/';

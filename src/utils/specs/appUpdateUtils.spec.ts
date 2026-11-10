@@ -14,7 +14,7 @@ import {
 } from '../appUpdateUtils';
 
 jest.mock('../../../modules/app-update', () => ({
-  presentAppStorePage: jest.fn(),
+  presentAppStorePage: jest.fn<Promise<void>, [string]>(),
 }));
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -67,20 +67,21 @@ describe('canInstallRelease', () => {
 
 describe('fetchAppStoreRelease', () => {
   const mockFetch = (body: unknown, ok = true) => {
-    global.fetch = jest.fn().mockResolvedValue({
-      ok,
-      status: ok ? 200 : 500,
-      json: () => Promise.resolve(body),
-    }) as jest.Mock;
+    return jest
+      .spyOn(global, 'fetch')
+      .mockResolvedValue(new Response(JSON.stringify(body), { status: ok ? 200 : 500 }));
   };
 
   it('returns the latest release from the lookup', async () => {
-    mockFetch({ resultCount: 1, results: [{ version: '4.10.0', minimumOsVersion: '16.4' }] });
+    const fetchMock = mockFetch({
+      resultCount: 1,
+      results: [{ version: '4.10.0', minimumOsVersion: '16.4' }],
+    });
     await expect(fetchAppStoreRelease()).resolves.toEqual({
       version: '4.10.0',
       minimumOsVersion: '16.4',
     });
-    expect((global.fetch as jest.Mock).mock.calls[0][0]).toMatch(
+    expect(fetchMock.mock.calls[0][0]).toMatch(
       /^https:\/\/itunes\.apple\.com\/lookup\?id=1495796682&_=\d+$/,
     );
   });

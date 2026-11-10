@@ -62,7 +62,7 @@ export const RequiredUpdateScreen = ({ currentVersion, minVersion }: RequiredUpd
 
   return (
     <SafeAreaView style={tailwind.style('flex-1 bg-white')} edges={['top', 'bottom']}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar barStyle="dark-content" backgroundColor={tailwind.color('bg-white')} />
       <View style={tailwind.style('flex-1 px-4')}>
         <View style={tailwind.style('flex-1 items-center justify-center px-2 pb-12')}>
           <AppUpdateIcon size={72} />

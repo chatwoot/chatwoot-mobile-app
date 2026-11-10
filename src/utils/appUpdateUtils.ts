@@ -113,13 +113,17 @@ export const fetchAppStoreRelease = async (): Promise<AppStoreRelease | null> =>
   if (!response.ok) {
     throw new Error(`App Store lookup failed with status ${response.status}`);
   }
-  const data = await response.json();
-  const result = data?.results?.[0];
-  if (!result?.version) return null;
-  return {
-    version: result.version,
-    minimumOsVersion: result.minimumOsVersion ?? '0',
-  };
+  const data: unknown = await response.json();
+  const results =
+    typeof data === 'object' && data !== null && 'results' in data ? data.results : null;
+  const result: unknown = Array.isArray(results) ? results[0] : null;
+  if (typeof result !== 'object' || result === null || !('version' in result)) return null;
+  if (typeof result.version !== 'string' || !result.version) return null;
+  const minimumOsVersion =
+    'minimumOsVersion' in result && typeof result.minimumOsVersion === 'string'
+      ? result.minimumOsVersion
+      : '0';
+  return { version: result.version, minimumOsVersion };
 };
 
 export const canInstallRelease = (release: AppStoreRelease, osVersion: string): boolean =>

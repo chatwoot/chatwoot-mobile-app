@@ -38,7 +38,7 @@ yarn-error.*
 
 ios/
 android/
-# Local Expo modules keep their native sources in the repo
+# Local module native sources
 !modules/*/ios/
 !modules/*/android/
 modules/*/android/build/

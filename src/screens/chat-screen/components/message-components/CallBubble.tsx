@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import i18n from '@/i18n';
 import { MESSAGE_VARIANTS, VOICE_CALL_STATUS } from '@/constants';
@@ -34,6 +34,7 @@ const callState = (display: ReturnType<typeof getVoiceCallDisplay>): CallBubbleS
 };
 
 export const CallBubble = ({ item, variant }: CallBubbleProps) => {
+  const tailwind = useTailwind();
   const display = useMemo(() => getVoiceCallDisplay(item), [item]);
   const dispatch = useAppDispatch();
   const liveCall = useAppSelector(selectFullScreenCall);

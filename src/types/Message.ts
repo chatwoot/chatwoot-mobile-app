@@ -133,6 +133,8 @@ export interface Message {
   senderId?: number;
   groupWithNext?: boolean | false;
   groupWithPrevious?: boolean | false;
+  sameSenderAsAbove?: boolean;
+  sameSenderAsBelow?: boolean;
   senderType?: string;
   // Set when a send fails inside the app, before the message reaches the server
   meta?: { error?: string };

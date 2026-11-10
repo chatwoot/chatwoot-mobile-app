@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet } from 'react-native';
 import FileViewer from 'react-native-file-viewer';
@@ -5,7 +6,6 @@ import Animated from 'react-native-reanimated';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import { FileIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -34,6 +34,7 @@ type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
 };
 
 export const FileBubblePreview = (props: FilePreviewProps) => {
+  const tailwind = useTailwind();
   const { fileSrc, fileSize, isComposed = false, variant } = props;
   const dirs = ReactNativeBlobUtil.fs.dirs;
 
@@ -110,7 +111,7 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
               <FileIcon
                 fill={
                   variant === MESSAGE_VARIANTS.USER
-                    ? tailwind.color('bg-white')
+                    ? tailwind.color('text-white')
                     : tailwind.color('text-blue-800')
                 }
               />
@@ -129,11 +130,7 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
                 variant === MESSAGE_VARIANTS.USER || variant === MESSAGE_VARIANTS.AGENT
                   ? 'text-base tracking-[0.32px] leading-[22px] font-inter-normal-20'
                   : '',
-                variant === MESSAGE_VARIANTS.USER
-                  ? 'text-white'
-                  : variant === MESSAGE_VARIANTS.AGENT
-                    ? 'text-gray-700'
-                    : '',
+                variant === MESSAGE_VARIANTS.USER ? 'text-white' : 'text-gray-700',
               ),
               style.androidTextOnlyStyle,
             ]}>
@@ -143,8 +140,11 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
             style={[
               tailwind.style(
                 'border-b-[1px] absolute left-0 right-0 ios:bottom-[1px] android:bottom-0',
-                variant === MESSAGE_VARIANTS.USER ? 'border-white' : '',
-                variant === MESSAGE_VARIANTS.AGENT ? 'border-blue-800' : '',
+                variant === MESSAGE_VARIANTS.USER
+                  ? 'border-white'
+                  : variant === MESSAGE_VARIANTS.AGENT
+                    ? 'border-blue-800'
+                    : 'border-gray-700',
               ),
             ]}
           />

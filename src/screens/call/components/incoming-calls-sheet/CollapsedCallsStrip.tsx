@@ -3,21 +3,22 @@ import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import i18n from '@/i18n';
 
 import {
-  CALL_INK,
-  CALL_LINK,
   CALL_TRAY_HEIGHT,
-  CARD_SHADOW,
   callTrayBottom,
+  CARD_SHADOW,
+  useCallTheme,
 } from '../../constants/callTheme';
 import { PulseDot } from '../PulseDot';
 
 const STRIP_GAP = 14;
 
 export const CollapsedCallsStrip = ({ label, onPress }: { label: string; onPress: () => void }) => {
+  const tailwind = useTailwind();
+  const { CALL_INK, CALL_LINK } = useCallTheme();
   const insets = useSafeAreaInsets();
   return (
     <Animated.View

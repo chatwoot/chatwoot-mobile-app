@@ -1,10 +1,11 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { SafeAreaView, StatusBar, Animated, Easing } from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import i18n from 'i18n';
-import { tailwind } from '@/theme';
 
 export const NoNetworkBar = () => {
+  const tailwind = useTailwind();
   const animationConstants = useMemo(
     () => ({
       DURATION: 800,

@@ -7,7 +7,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     version: '4.10.6',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     scheme: 'chatwootapp',
     ios: {
       supportsTablet: true,
@@ -124,6 +124,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       './with-android-notification-channel.js',
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',
+      './with-ios-scene-lifecycle.js',
     ],
   };
 };

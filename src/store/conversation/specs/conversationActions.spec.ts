@@ -123,3 +123,44 @@ describe('conversationActions.retryMessage', () => {
     );
   });
 });
+
+describe('confirmed send activity', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('advances conversation activity after a REST send without a websocket event', async () => {
+    jest.mocked(ConversationService.sendMessage).mockResolvedValueOnce({
+      id: 100,
+      conversation_id: 1,
+      created_at: 2000,
+    } as never);
+    const dispatch = jest.fn();
+    await conversationActions.sendMessage({
+      conversationId: 1,
+      message: 'Hello',
+      private: false,
+      sender: { id: 1 },
+    })(dispatch, () => ({}), undefined);
+
+    expect(dispatch).toHaveBeenCalledWith({
+      type: 'conversation/updateConversationLastActivity',
+      payload: { conversationId: 1, lastActivityAt: 2000 },
+    });
+  });
+
+  it('keeps activity unchanged when a send fails', async () => {
+    jest.mocked(ConversationService.sendMessage).mockRejectedValueOnce(new Error('offline'));
+    const dispatch = jest.fn();
+    await conversationActions.sendMessage({
+      conversationId: 1,
+      message: 'Hello',
+      private: false,
+      sender: { id: 1 },
+    })(dispatch, () => ({}), undefined);
+
+    expect(dispatch).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: 'conversation/updateConversationLastActivity',
+      }),
+    );
+  });
+});

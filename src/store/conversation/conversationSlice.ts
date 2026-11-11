@@ -171,16 +171,16 @@ const conversationSlice = createSlice({
       else {
         conversation.messages.push(message as Message);
       }
-      conversation.timestamp = message.createdAt;
       conversation.unreadCount = (message as Message).conversation?.unreadCount || 0;
     },
     updateConversationLastActivity: (state, action) => {
       const { conversationId, lastActivityAt } = action.payload;
       const conversation = state.entities[conversationId];
-      if (!conversation) {
+      if (!conversation || !Number.isFinite(lastActivityAt)) {
         return;
       }
-      conversation.lastActivityAt = lastActivityAt;
+      conversation.lastActivityAt = Math.max(conversation.lastActivityAt, lastActivityAt);
+      conversation.timestamp = conversation.lastActivityAt;
     },
   },
   extraReducers: builder => {

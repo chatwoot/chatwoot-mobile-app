@@ -1,8 +1,15 @@
-import { View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { AppState, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { useAppSelector } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectLoggedIn } from '@/store/auth/authSelectors';
+import { selectIsCallInProgress } from '@/store/call/callSelectors';
+import { settingsActions } from '@/store/settings/settingsActions';
+import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
+import { RequiredUpdateScreen } from '@/components-next/app-update/RequiredUpdateScreen';
+import { useRequiredAppUpdate } from '@/hooks/useRequiredAppUpdate';
+import { markServerPolicyLoaded, markSignedInThisSession } from '@/utils/appUpdateUtils';
 
 import { IOS_DESIGN } from '@/utils';
 
@@ -62,7 +69,42 @@ const sidePageOptions = IOS_DESIGN
   : ({ presentation: 'modal', animation: 'slide_from_bottom' } as const);
 
 export const AppTabs = () => {
+  const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectLoggedIn);
+  const installationUrl = useAppSelector(selectInstallationUrl);
+  const { isUpdateRequired, currentVersion, minVersion } = useRequiredAppUpdate();
+  const isCallInProgress = useAppSelector(selectIsCallInProgress);
+
+  // Latest request marks the policy loaded.
+  const latestServerInfoRequestRef = useRef<Promise<unknown> | null>(null);
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    const fetchServerInfo = () => {
+      const request = dispatch(settingsActions.getChatwootVersion({ installationUrl }));
+      latestServerInfoRequestRef.current = request;
+      request.finally(() => {
+        if (latestServerInfoRequestRef.current === request) markServerPolicyLoaded();
+      });
+    };
+    fetchServerInfo();
+    const subscription = AppState.addEventListener('change', state => {
+      if (state === 'active') fetchServerInfo();
+    });
+    return () => subscription.remove();
+  }, [dispatch, installationUrl, isLoggedIn]);
+
+  const wasLoggedInRef = useRef(isLoggedIn);
+  useEffect(() => {
+    if (isLoggedIn && !wasLoggedInRef.current) {
+      markSignedInThisSession();
+    }
+    wasLoggedInRef.current = isLoggedIn;
+  }, [isLoggedIn]);
+
+  // Replacing this view unmounts the call screen.
+  if (isLoggedIn && isUpdateRequired && minVersion && !isCallInProgress) {
+    return <RequiredUpdateScreen currentVersion={currentVersion} minVersion={minVersion} />;
+  }
 
   if (isLoggedIn) {
     return (

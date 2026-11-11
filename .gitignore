@@ -38,6 +38,10 @@ yarn-error.*
 
 ios/
 android/
+# Local module native sources
+!modules/*/ios/
+!modules/*/android/
+modules/*/android/build/
 
 google-services.json
 GoogleService-Info.plist

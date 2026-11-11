@@ -2,11 +2,11 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 
-import { CALL_INK, CALL_LABEL_TEXT, CALL_LINK, CALL_RING_TEXT } from '../../constants/callTheme';
+import { useCallTheme } from '../../constants/callTheme';
 import { useCallerInfo } from '../../hooks/useCallerInfo';
 import { useRingingFor } from '../../hooks/useRingingFor';
 import { IncomingCallActions } from '../IncomingCallActions';
@@ -32,6 +32,8 @@ export const RingingRow = ({
   onAnswer,
   onDecline,
 }: RingingRowProps) => {
+  const tailwind = useTailwind();
+  const { CALL_INK, CALL_LABEL_TEXT, CALL_LINK, CALL_RING_TEXT } = useCallTheme();
   const info = useCallerInfo(call);
   const ringingFor = useRingingFor(call.addedAt);
 

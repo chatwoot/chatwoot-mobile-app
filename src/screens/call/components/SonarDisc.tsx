@@ -8,11 +8,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 
 const SONAR_PERIOD_MS = 3200;
 
 export const SonarDisc = ({ colour, delay }: { colour: string; delay: number }) => {
+  const tailwind = useTailwind();
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.value = withDelay(

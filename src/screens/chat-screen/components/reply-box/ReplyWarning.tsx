@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { INBOX_TYPES } from '@/constants';
 import { Inbox } from '@/types/Inbox';
 import { Conversation } from '@/types';
@@ -17,6 +17,7 @@ type ReplyWarningProps = {
 };
 
 export const ReplyWarning = (props: ReplyWarningProps) => {
+  const tailwind = useTailwind();
   const { inbox, conversation } = props;
   const channel = conversation?.meta?.channel;
   const isAPIChannel = channel === INBOX_TYPES.API;

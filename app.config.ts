@@ -4,10 +4,10 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   return {
     name: 'Chatwoot',
     slug: process.env.EXPO_PUBLIC_APP_SLUG || 'chatwoot-mobile',
-    version: '4.10.1',
+    version: '4.11.2',
     orientation: 'portrait',
     icon: './assets/icon.png',
-    userInterfaceStyle: 'light',
+    userInterfaceStyle: 'automatic',
     scheme: 'chatwootapp',
     ios: {
       supportsTablet: true,
@@ -124,6 +124,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       './with-android-notification-channel.js',
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',
+      './with-ios-scene-lifecycle.js',
     ],
   };
 };

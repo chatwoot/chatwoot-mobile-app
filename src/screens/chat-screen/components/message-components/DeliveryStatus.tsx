@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
-import { tailwind } from '@/theme';
 import { DoubleCheckIcon, WarningIcon, MessagePendingIcon } from '@/svg-icons';
 import { Icon } from '@/components-next/common';
 import { MessageStatus, MessageType } from '@/types';
@@ -23,6 +23,7 @@ type DeliveryStatusProps = {
 };
 
 export const DeliveryStatus = (props: DeliveryStatusProps) => {
+  const tailwind = useTailwind();
   const {
     channel,
     isPrivate,

@@ -4,18 +4,12 @@ import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { FadeIn, FadeOut, SlideInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { useHaptic } from '@/utils';
 import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 
-import {
-  CALL_DIVIDER,
-  CALL_LABEL_TEXT,
-  CALL_RING_TEXT,
-  CARD_SHADOW,
-  SHEET_SHADOW,
-} from '../../constants/callTheme';
+import { CARD_SHADOW, SHEET_SHADOW, useCallTheme } from '../../constants/callTheme';
 import { SHEET_CLOSE_MS } from '../../constants/sheet';
 import { useCallerInfo } from '../../hooks/useCallerInfo';
 import { useSheetDismissal } from '../../hooks/useSheetDismissal';
@@ -51,6 +45,8 @@ export const IncomingCallsSheet = ({
   onDecline,
   onSilenceAll,
 }: IncomingCallsSheetProps) => {
+  const tailwind = useTailwind();
+  const { CALL_DIVIDER, CALL_HANDLE, CALL_LABEL_TEXT, CALL_RING_TEXT } = useCallTheme();
   const insets = useSafeAreaInsets();
   const single = calls.length === 1 ? calls[0] : null;
   const singleInfo = useCallerInfo(single);
@@ -127,7 +123,10 @@ export const IncomingCallsSheet = ({
               { paddingBottom: insets.bottom + 12 },
             ]}>
             <View
-              style={tailwind.style('self-center h-[5px] w-9 rounded-[3px] bg-[#CCCCCC] mb-3.5')}
+              style={[
+                tailwind.style('self-center h-[5px] w-9 rounded-[3px] mb-3.5'),
+                { backgroundColor: CALL_HANDLE },
+              ]}
             />
             <View style={tailwind.style('flex-row items-center gap-2', single ? '' : 'px-5')}>
               <PulseDot />

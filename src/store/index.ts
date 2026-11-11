@@ -13,6 +13,7 @@ import {
 import { appReducer } from '@/store/reducers';
 import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
+import { callListenerMiddleware } from './call/callListener';
 import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
 
 // Disable this in testing environment
@@ -40,7 +41,10 @@ const persistConfig = {
   },
 };
 
-const middlewares: Middleware[] = [contactListenerMiddleware.middleware];
+const middlewares: Middleware[] = [
+  contactListenerMiddleware.middleware,
+  callListenerMiddleware.middleware,
+];
 
 const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) => {
   if (action.type === 'auth/logout') {

@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { NormalizedTemplate } from '@/types';
 import { useHaptic } from '@/utils';
 import { getHeaderSubtitle, renderTemplateLabel } from '@/utils/messageTemplateUtils';
@@ -14,32 +14,42 @@ type WhatsAppTemplateItemProps = {
   isLastItem: boolean;
 };
 
-const MetaSeparator = () => <View style={tailwind.style('w-px h-[10px] bg-gray-300')} />;
+const MetaSeparator = () => {
+  const tailwind = useTailwind();
+  return <View style={tailwind.style('w-px h-[10px] bg-gray-300')} />;
+};
 
-const MetaChip = ({ label }: { label: string }) => (
-  <Animated.Text
-    style={tailwind.style(
-      'text-[14px] font-inter-420-20 leading-[20px] tracking-[0.07px] text-gray-700',
-    )}>
-    {label}
-  </Animated.Text>
-);
-
-const ActionChip = ({ label }: { label: string }) => (
-  <View
-    style={tailwind.style(
-      'h-7 px-3 rounded-lg bg-white border border-blackA-A3 items-center justify-center',
-    )}>
+const MetaChip = ({ label }: { label: string }) => {
+  const tailwind = useTailwind();
+  return (
     <Animated.Text
       style={tailwind.style(
-        'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-950',
+        'text-[14px] font-inter-420-20 leading-[20px] tracking-[0.07px] text-gray-700',
       )}>
-      {expandTabs(label)}
+      {label}
     </Animated.Text>
-  </View>
-);
+  );
+};
+
+const ActionChip = ({ label }: { label: string }) => {
+  const tailwind = useTailwind();
+  return (
+    <View
+      style={tailwind.style(
+        'h-7 px-3 rounded-lg bg-white border border-blackA-A3 items-center justify-center',
+      )}>
+      <Animated.Text
+        style={tailwind.style(
+          'text-[15px] font-inter-420-20 leading-[22px] tracking-[0.3px] text-gray-950',
+        )}>
+        {expandTabs(label)}
+      </Animated.Text>
+    </View>
+  );
+};
 
 const WhatsAppTemplateItem = ({ template, onPress, isLastItem }: WhatsAppTemplateItemProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
 
   const handlePress = useCallback(() => {

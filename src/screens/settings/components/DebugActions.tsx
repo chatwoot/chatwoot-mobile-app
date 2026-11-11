@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, Text, Animated, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 import { showToast } from '@/utils/toastUtils';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { useAppSelector } from '@/hooks';
 import {
@@ -49,6 +49,7 @@ const DEBUG_ACTIONS: DebugAction[] = [
 ];
 
 const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
+  const tailwind = useTailwind();
   const installationUrl = useAppSelector(selectInstallationUrl);
   const webSocketUrl = useAppSelector(selectWebSocketUrl);
   const version = useAppSelector(selectChatwootVersion);
@@ -109,15 +110,18 @@ const DebugActionCell = ({ item, index, isLastItem }: DebugActionCellProps) => {
   );
 };
 
-export const DebugActions = () => (
-  <Animated.View style={tailwind.style('py-1 pl-3')}>
-    {DEBUG_ACTIONS.map((item, index) => (
-      <DebugActionCell
-        key={item.key}
-        item={item}
-        index={index}
-        isLastItem={index === DEBUG_ACTIONS.length - 1}
-      />
-    ))}
-  </Animated.View>
-);
+export const DebugActions = () => {
+  const tailwind = useTailwind();
+  return (
+    <Animated.View style={tailwind.style('py-1 pl-3')}>
+      {DEBUG_ACTIONS.map((item, index) => (
+        <DebugActionCell
+          key={item.key}
+          item={item}
+          index={index}
+          isLastItem={index === DEBUG_ACTIONS.length - 1}
+        />
+      ))}
+    </Animated.View>
+  );
+};

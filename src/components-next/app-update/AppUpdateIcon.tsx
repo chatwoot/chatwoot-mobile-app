@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { ArrowUpIcon } from '@/svg-icons';
 import AppIcon from '@/assets/images/app-icon.png';
 
@@ -15,6 +15,7 @@ const BADGE = {
 };
 
 export const AppUpdateIcon = ({ size }: AppUpdateIconProps) => {
+  const tailwind = useTailwind();
   const { ring, badge, arrow, radius } = BADGE[size];
 
   return (
@@ -38,7 +39,7 @@ export const AppUpdateIcon = ({ size }: AppUpdateIconProps) => {
             { width: badge, height: badge },
           ]}>
           <View style={{ width: arrow, height: arrow }}>
-            <ArrowUpIcon />
+            <ArrowUpIcon stroke={tailwind.color('text-gray-50')} />
           </View>
         </View>
       </View>

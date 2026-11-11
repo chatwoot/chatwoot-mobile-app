@@ -3,7 +3,7 @@ import { BackHandler, Platform, Pressable, StatusBar, Text, View } from 'react-n
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import i18n from '@/i18n';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { useLogout } from '@/hooks/useLogout';
 import { WarningCircleIcon } from '@/svg-icons';
 import {
@@ -37,6 +37,7 @@ const openUpdate = async (): Promise<void> => {
 };
 
 export const RequiredUpdateScreen = ({ currentVersion, minVersion }: RequiredUpdateScreenProps) => {
+  const tailwind = useTailwind();
   const logout = useLogout();
   const [isOpening, setIsOpening] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -61,8 +62,11 @@ export const RequiredUpdateScreen = ({ currentVersion, minVersion }: RequiredUpd
   }, [currentVersion]);
 
   return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white')} edges={['top', 'bottom']}>
-      <StatusBar barStyle="dark-content" backgroundColor={tailwind.color('bg-white')} />
+    <SafeAreaView style={tailwind.style('flex-1 bg-white')}>
+      <StatusBar
+        barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={tailwind.color('bg-white')}
+      />
       <View style={tailwind.style('flex-1 px-4')}>
         <View style={tailwind.style('flex-1 items-center justify-center px-2 pb-12')}>
           <AppUpdateIcon size={72} />

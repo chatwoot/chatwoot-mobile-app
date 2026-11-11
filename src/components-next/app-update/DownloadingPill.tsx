@@ -3,11 +3,12 @@ import { Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import i18n from '@/i18n';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { useTabBarHeight } from '@/utils/common';
 import { Spinner } from '../spinner';
 
 export const DownloadingPill = () => {
+  const tailwind = useTailwind();
   const tabBarHeight = useTabBarHeight();
 
   return (
@@ -37,7 +38,7 @@ export const DownloadingPill = () => {
           },
         ]}>
         <Spinner size={16} stroke={tailwind.color('text-blue-600')} />
-        <Text style={tailwind.style('text-sm leading-5 font-inter-medium-24 text-white')}>
+        <Text style={tailwind.style('text-sm leading-5 font-inter-medium-24 text-gray-50')}>
           {i18n.t('APP_UPDATE.DOWNLOADING')}
         </Text>
       </View>

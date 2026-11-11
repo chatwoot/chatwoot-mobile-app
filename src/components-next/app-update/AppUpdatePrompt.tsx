@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppState, Keyboard, Platform } from 'react-native';
-import Snackbar from 'react-native-snackbar';
 import { useIsFocused } from '@react-navigation/native';
 import * as Application from 'expo-application';
 import * as Device from 'expo-device';
@@ -277,10 +276,7 @@ export const AppUpdatePrompt = () => {
   const handleUpdate = useCallback(() => {
     openStorePage().catch((error: unknown) => {
       reportAppUpdateError(APP_UPDATE_FAILURES.OPEN_STORE_PAGE, error);
-      Snackbar.show({
-        text: i18n.t('APP_UPDATE.OPTIONAL.STORE_ERROR', { store: getStoreName() }),
-        duration: Snackbar.LENGTH_LONG,
-      });
+      showToast({ message: i18n.t('APP_UPDATE.OPTIONAL.STORE_ERROR', { store: getStoreName() }) });
     });
   }, []);
 

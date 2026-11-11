@@ -3,7 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import i18n from '@/i18n';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { isolateBidi } from '@/utils/appUpdateUtils';
 import { Button } from '../button';
 import { Sheet, type SheetRef } from '../common/sheet/Sheet';
@@ -20,6 +20,7 @@ type UpdateAvailableSheetProps = {
 // onUpdate waits for sheet dismissal.
 export const UpdateAvailableSheet = forwardRef<SheetRef, UpdateAvailableSheetProps>(
   ({ version, onUpdate, onSnooze }, ref) => {
+    const tailwind = useTailwind();
     const { bottom } = useSafeAreaInsets();
     const sheetRef = useRef<SheetRef>(null);
     const updateTappedRef = useRef(false);

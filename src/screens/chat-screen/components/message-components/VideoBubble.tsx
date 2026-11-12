@@ -94,6 +94,8 @@ export const VideoThumbnail = (props: VideoBubbleProps) => {
   const { videoSrc } = props;
   const videoRef = useRef<VideoView>(null);
   const [status, setStatus] = useState<VideoPlayerStatus>('loading');
+  // iOS fullscreen needs controls to close
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const player = useVideoPlayer({ uri: videoSrc }, instance => {
     instance.loop = false;
@@ -122,8 +124,10 @@ export const VideoThumbnail = (props: VideoBubbleProps) => {
         ref={videoRef}
         player={player}
         contentFit="cover"
-        nativeControls={false}
+        nativeControls={Platform.OS === 'ios' && isFullscreen}
+        onFullscreenEnter={() => setIsFullscreen(true)}
         onFullscreenExit={() => {
+          setIsFullscreen(false);
           player.pause();
           player.currentTime = 0;
         }}

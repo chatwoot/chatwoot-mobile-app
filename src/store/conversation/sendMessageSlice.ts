@@ -21,7 +21,7 @@ const emptyEmailDraft: EmailDraft = {
 
 export interface SendMessageState {
   emailDraft: EmailDraft;
-  // Unsent reply text keyed by conversation id, so every conversation keeps its own draft
+  // Keyed by conversation id
   drafts: Record<number, string>;
   isPrivateMessage: boolean;
   attachments: Asset[];
@@ -64,11 +64,10 @@ const sendMessageSlice = createSlice({
       action: PayloadAction<{ conversationId: number; content: string }>,
     ) => {
       const { conversationId, content } = action.payload;
-      // Installs upgraded from the single global draft have no drafts map persisted yet
+      // Persisted state may lack drafts
       if (!state.drafts) {
         state.drafts = {};
       }
-      // Drop empty drafts so the persisted map only holds conversations with unsent text
       if (content) {
         state.drafts[conversationId] = content;
       } else {

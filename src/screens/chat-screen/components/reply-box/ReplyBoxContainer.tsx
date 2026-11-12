@@ -285,7 +285,7 @@ const BottomSheetContent = () => {
     }
   }, [canSendReply, opensOnCall, dispatch]);
 
-  // Clear quote and attachments on entering or leaving a conversation; drafts stay per conversation
+  // Quote and attachments stay per conversation
   useEffect(() => {
     const clearQuoteAndAttachments = () => {
       dispatch(setQuoteMessage(null));

@@ -15,6 +15,7 @@ import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
 import { callListenerMiddleware } from './call/callListener';
 import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
+import { repairPersistedConversations } from './conversation/conversationPersistUtils';
 
 // Disable this in testing environment
 const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
@@ -37,7 +38,7 @@ const persistConfig = {
         ...initialState,
       };
     }
-    return repairPersistedWebSocketUrl(state);
+    return repairPersistedConversations(repairPersistedWebSocketUrl(state));
   },
 };
 

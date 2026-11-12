@@ -24,6 +24,7 @@ import type {
   ToggleConversationStatusResponse,
   SendMessageAPIResponse,
   SendMessagePayload,
+  AttachmentFile,
   TogglePriorityPayload,
   TranslateMessagePayload,
   TranslateMessageAPIResponse,
@@ -38,12 +39,9 @@ import {
   hasMessageFailedWithExternalError,
 } from '@/utils/messageUtils';
 import { transformMessage } from '@/utils/camelCaseKeys';
-import { Platform } from 'react-native';
 
-const getSendMessageContentType = (file?: SendMessagePayload['file']) => {
-  if (!file) return 'application/json';
-  return Platform.OS === 'ios' ? file.type : 'multipart/form-data';
-};
+const getSendMessageContentType = (files?: SendMessagePayload['files']) =>
+  files?.length ? 'multipart/form-data' : 'application/json';
 
 export const conversationActions = {
   fetchConversations: createAsyncThunk<ConversationListResponse, ConversationPayload>(
@@ -103,8 +101,7 @@ export const conversationActions = {
           },
         });
         const payload = buildCreatePayload(pendingMessage);
-        const { file } = sendMessagePayload;
-        const contentType = getSendMessageContentType(file);
+        const contentType = getSendMessageContentType(sendMessagePayload.files);
 
         const response = await ConversationService.sendMessage(conversationId, payload, {
           headers: {
@@ -162,11 +159,17 @@ export const conversationActions = {
         if (hasMessageFailedWithExternalError(failedMessage)) {
           response = await ConversationService.retryMessage({ conversationId, messageId: id });
         } else {
-          const pendingMessage = failedMessage as unknown as PendingMessage;
+          const storedMessage = failedMessage as unknown as PendingMessage & {
+            file?: AttachmentFile;
+          };
+          // Older failed messages store `file`
+          const { file: legacyFile, ...rest } = storedMessage;
+          const pendingMessage: PendingMessage =
+            !rest.files && legacyFile ? { ...rest, files: [legacyFile] } : rest;
           const payload = buildCreatePayload(pendingMessage);
           response = await ConversationService.sendMessage(conversationId, payload, {
             headers: {
-              'Content-Type': getSendMessageContentType(pendingMessage.file),
+              'Content-Type': getSendMessageContentType(pendingMessage.files),
             },
           });
         }

@@ -102,7 +102,7 @@ export interface SendMessagePayload {
     id: number;
     thumbnail?: string;
   };
-  file?: AttachmentFile;
+  files?: AttachmentFile[];
   contentAttributes?: {
     inReplyTo: number;
   };

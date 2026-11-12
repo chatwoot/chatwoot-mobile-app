@@ -63,7 +63,7 @@ export const handleOpenPhotosLibrary = async (dispatch: AppDispatch) => {
     );
   } else {
     if (pickedAssets.assets && pickedAssets.assets?.length > 0) {
-      validateFileAndSetAttachments(dispatch, pickedAssets.assets[0]);
+      validateFileAndSetAttachments(dispatch, pickedAssets.assets);
     }
   }
 };
@@ -100,7 +100,7 @@ export const handleLaunchCamera = async (dispatch: AppDispatch) => {
         } else if (imageResult.errorCode) {
         } else {
           if (imageResult.assets && imageResult.assets?.length > 0) {
-            validateFileAndSetAttachments(dispatch, imageResult.assets[0]);
+            validateFileAndSetAttachments(dispatch, [imageResult.assets[0]]);
           }
         }
       }
@@ -148,8 +148,7 @@ export const handleAttachFile = async (dispatch: AppDispatch) => {
       presentationStyle: 'formSheet',
     });
     // TODO: Support multiple files
-    const file = mapObject(result[0])[0];
-    validateFileAndSetAttachments(dispatch, file);
+    validateFileAndSetAttachments(dispatch, mapObject(result[0]));
   } catch (err) {
     if (isErrorWithCode(err) && err.code === documentPickerErrorCodes.OPERATION_CANCELED) {
       // User cancelled the picker
@@ -193,11 +192,17 @@ const TEMPLATES_MENU_OPTION = {
   handlePress: () => {},
 };
 
-export const validateFileAndSetAttachments = async (dispatch: AppDispatch, attachment: Asset) => {
-  const { fileSize } = attachment;
-  if (fileSize !== undefined && findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE) {
-    dispatch(updateAttachments([attachment]));
-  } else {
+export const validateFileAndSetAttachments = async (
+  dispatch: AppDispatch,
+  attachments: Asset[],
+) => {
+  const validAttachments = attachments.filter(
+    ({ fileSize }) => fileSize !== undefined && findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE,
+  );
+  if (validAttachments.length) {
+    dispatch(updateAttachments(validAttachments));
+  }
+  if (validAttachments.length < attachments.length) {
     showToast({ message: i18n.t('CONVERSATION.FILE_SIZE_LIMIT') });
   }
 };

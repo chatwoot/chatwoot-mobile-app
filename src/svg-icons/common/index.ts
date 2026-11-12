@@ -52,3 +52,5 @@ export * from './ExpandCompose';
 export * from './PersonCircleGlyph';
 export * from './TagGlyph';
 export * from './PhoneOutline';
+export * from './Calendar';
+export * from './ChevronUpDown';

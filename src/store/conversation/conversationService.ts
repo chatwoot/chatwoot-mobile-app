@@ -32,6 +32,9 @@ import type {
   TranslateMessagePayload,
   TranslateMessageAPIResponse,
   RetryMessagePayload,
+  UpdateCustomAttributesPayload,
+  UpdateCustomAttributesResponse,
+  CustomAttributesAPIResponse,
 } from './conversationTypes';
 
 import {
@@ -39,6 +42,7 @@ import {
   transformConversationListMeta,
   transformMessage,
   transformConversationMeta,
+  transformConversationCustomAttributes,
 } from '@/utils/camelCaseKeys';
 import type { AxiosRequestConfig } from 'axios';
 
@@ -140,6 +144,24 @@ export class ConversationService {
       conversationId,
       currentStatus,
       snoozedUntil,
+    };
+  }
+  // The endpoint replaces the whole hash, and the store holds camelCased keys that
+  // cannot be mapped back, so the new values are merged into the server's copy.
+  static async updateCustomAttributes({
+    conversationId,
+    customAttributes,
+  }: UpdateCustomAttributesPayload): Promise<UpdateCustomAttributesResponse> {
+    const { data: conversation } = await apiService.get<CustomAttributesAPIResponse>(
+      `conversations/${conversationId}`,
+    );
+    const response = await apiService.post<CustomAttributesAPIResponse>(
+      `conversations/${conversationId}/custom_attributes`,
+      { custom_attributes: { ...conversation.custom_attributes, ...customAttributes } },
+    );
+    return {
+      conversationId,
+      customAttributes: transformConversationCustomAttributes(response.data.custom_attributes),
     };
   }
   static async bulkAction(payload: BulkActionPayload): Promise<void> {

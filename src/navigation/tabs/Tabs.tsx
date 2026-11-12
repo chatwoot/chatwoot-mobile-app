@@ -34,6 +34,7 @@ import AnalyticsHelper from '@/utils/analyticsUtils';
 import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
+import { accountActions } from '@/store/account/accountActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { runCallReadiness } from '@/screens/call/utils/callReadiness';
 import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
@@ -66,6 +67,7 @@ export const Tabs = () => {
     dispatch(clearSelection());
     dispatch(dashboardAppActions.index());
     dispatch(customAttributeActions.index());
+    dispatch(accountActions.show());
     initAnalytics();
     initSentry();
     initPushNotifications();
@@ -119,6 +121,7 @@ export const Tabs = () => {
     dispatch(labelActions.fetchLabels());
     dispatch(dashboardAppActions.index());
     dispatch(customAttributeActions.index());
+    dispatch(accountActions.show());
     initActionCable();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);

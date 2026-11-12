@@ -14,6 +14,7 @@ import i18n from '@/i18n';
 
 import { useHaptic } from '@/utils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
 import { ACTION_TAB_HEIGHT, IOS_BAR_WIDTH } from './actionTabsLayout';
 import { ToolbarButton } from './ToolbarButton';
 import { ActionTabBarBackground } from './ActionTabBarBackground';
@@ -35,11 +36,11 @@ export const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: num
   const selectedIds = useAppSelector(selectSelectedIds);
   const hasSelection = selectedIds.length > 0;
 
-  const bulk = (payload: Record<string, unknown>) => {
+  const { getBulkStatusIds } = useRequiredAttributes();
+
+  const bulk = (payload: Record<string, unknown>, ids: number[]) => {
     haptic?.();
-    dispatch(
-      conversationActions.bulkAction({ type: 'Conversation', ids: selectedIds, ...payload }),
-    );
+    dispatch(conversationActions.bulkAction({ type: 'Conversation', ids, ...payload }));
   };
   const navigation = useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList>>();
   const openPicker = (kind: 'assign' | 'label') => {
@@ -47,7 +48,9 @@ export const IOSActionBar = ({ barLeft, bottom }: { barLeft: number; bottom: num
     navigation.navigate('BulkPicker', { kind });
   };
   const setStatus = (status: ConversationStatus) => {
-    bulk({ fields: { status } });
+    const ids = getBulkStatusIds(status, selectedIds);
+    if (ids.length === 0) return;
+    bulk({ fields: { status } }, ids);
     dispatch(setCurrentState('none'));
   };
 

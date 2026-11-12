@@ -24,6 +24,7 @@ import { getVoiceCallProvider } from '@/utils/inboxUtils';
 import { placeOutboundCall } from '@/utils/placeOutboundCall';
 import { IOS_DESIGN, getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -54,6 +55,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const hasActiveCall = useAppSelector(selectHasActiveCall);
   const hasIncomingCall = useAppSelector(selectHasIncomingCall);
   const [isStartingCall, setIsStartingCall] = useState(false);
+  const { hasMissingAttributes, openResolveForm } = useRequiredAttributes();
   const voiceCallProvider = getVoiceCallProvider(inbox);
 
   const appliedSla = conversation?.appliedSla;
@@ -177,6 +179,10 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       conversationStatus === CONVERSATION_STATUS.OPEN
         ? CONVERSATION_STATUS.RESOLVED
         : CONVERSATION_STATUS.OPEN;
+    if (updatedStatus === CONVERSATION_STATUS.RESOLVED && hasMissingAttributes(conversation)) {
+      openResolveForm({ conversationId });
+      return;
+    }
     await dispatch(
       conversationActions.toggleConversationStatus({
         conversationId,

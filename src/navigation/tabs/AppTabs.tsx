@@ -15,6 +15,8 @@ import ConversationActionsScreen from '@/screens/chat-screen/ConversationActions
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import SearchScreen from '@/screens/search/SearchScreen';
+import ResolveAttributesScreen from '@/screens/resolve-attributes/ResolveAttributesScreen';
+import type { ResolveAttributesParams } from '@/screens/resolve-attributes/useRequiredAttributes';
 
 import { SideColumnDivider } from './SideColumnDivider';
 import { LayoutChangeCover } from './LayoutChangeCover';
@@ -54,6 +56,7 @@ export type TabBarExcludedScreenParamList = {
   ImageScreen: undefined;
   ConversationDetails: undefined;
   ConversationAction: undefined;
+  ResolveAttributes: ResolveAttributesParams;
 };
 const Stack = createNativeStackNavigator<TabBarExcludedScreenParamList>();
 
@@ -101,6 +104,11 @@ export const AppTabs = () => {
             options={{ presentation: 'modal' }}
             name="BulkPicker"
             component={BulkPickerScreen}
+          />
+          <Stack.Screen
+            options={{ presentation: 'modal' }}
+            name="ResolveAttributes"
+            component={ResolveAttributesScreen}
           />
           <Stack.Screen
             options={{ headerShown: false, animation: 'slide_from_right' }}

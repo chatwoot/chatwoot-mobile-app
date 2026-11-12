@@ -1,6 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 
-import { tailwind } from '@/theme';
 import { ConversationPriority } from '@/types';
 import { NativeView } from '@/components-next/native-components';
 import { HighIcon, MediumIcon, LowIcon, UrgentIcon } from '@/svg-icons/priority-icons';
@@ -26,6 +26,7 @@ export const getPriorityIcon = (priority: ConversationPriority) => {
 };
 
 export const PriorityIndicator = (props: PriorityIndicatorProps) => {
+  const tailwind = useTailwind();
   return (
     <NativeView style={tailwind.style('h-4 w-4 rounded justify-center items-center')}>
       <Icon icon={getPriorityIcon(props.priority)} />

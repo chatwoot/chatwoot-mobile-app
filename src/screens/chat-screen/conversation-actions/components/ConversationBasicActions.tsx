@@ -1,5 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
-import { Dimensions, Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -8,31 +9,36 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Icon } from '@/components-next';
-import { OpenIcon, ResolvedFilledIcon, PendingFilledIcon, SnoozedFilledIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import {
+  StatusOpenIcon,
+  StatusResolvedIcon,
+  PendingFilledIcon,
+  SnoozedFilledIcon,
+} from '@/svg-icons';
 import i18n from '@/i18n';
-import { useHaptic, useScaleAnimation } from '@/utils';
+import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import { ConversationStatus } from '@/types';
 
 import { ConversationActionType } from '../ConversationActions';
+import { useContainerWidth } from '@/context';
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 type ConversationActionOptionsType = {
   backgroundActionColor: string;
   backgroundActionPressedColor: string;
   borderActionColor: string;
   actionIcon: React.JSX.Element;
+  iconNativeSize?: number;
   actionStatus: ConversationStatus | 'open';
 };
-
-const SCREEN_WIDTH = Dimensions.get('screen').width;
-const ACTION_WIDTH = (SCREEN_WIDTH - 32 - 12 * 3) / 4;
 
 const conversationActionOptions: ConversationActionOptionsType[] = [
   {
     backgroundActionColor: 'bg-gray-100',
     backgroundActionPressedColor: 'bg-gray-200',
     borderActionColor: 'bg-gray-700',
-    actionIcon: <OpenIcon stroke={tailwind.color('text-gray-700') as string} />,
+    actionIcon: <StatusOpenIcon />,
     actionStatus: 'open',
   },
   {
@@ -40,6 +46,7 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-amber-200',
     borderActionColor: 'bg-amber-700',
     actionIcon: <PendingFilledIcon />,
+    iconNativeSize: 32,
     actionStatus: 'pending',
   },
   {
@@ -47,13 +54,14 @@ const conversationActionOptions: ConversationActionOptionsType[] = [
     backgroundActionPressedColor: 'bg-indigo-200',
     borderActionColor: 'bg-indigo-700',
     actionIcon: <SnoozedFilledIcon />,
+    iconNativeSize: 32,
     actionStatus: 'snoozed',
   },
   {
     backgroundActionColor: 'bg-green-100',
     backgroundActionPressedColor: 'bg-green-200',
     borderActionColor: 'bg-green-700',
-    actionIcon: <ResolvedFilledIcon />,
+    actionIcon: <StatusResolvedIcon />,
     actionStatus: 'resolved',
   },
 ];
@@ -67,6 +75,8 @@ type ConversationActionOptionProps = {
 };
 
 const ConversationActionOption = (props: ConversationActionOptionProps) => {
+  const tailwind = useTailwind();
+  const ACTION_WIDTH = (useContainerWidth() - usePaneRightInset() - 32 - 12 * 3) / 4;
   const { index, conversationAction, status, updateConversationStatus, isMuted } = props;
 
   const hapticSelection = useHaptic();
@@ -78,6 +88,9 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
   const actionActive = useSharedValue(0);
 
   const { handlers, animatedStyle } = useScaleAnimation();
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
+  const rowWidth = useContainerWidth() - usePaneRightInset();
+  const isStacked = (rowWidth - 32 - 3 * 6) / 4 < 100;
 
   useEffect(() => {
     if (conversationAction.actionStatus === status) {
@@ -85,12 +98,7 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
     } else {
       actionActive.value = withSpring(0);
     }
-  }, [
-    actionActive,
-    conversationAction.actionStatus,
-    status,
-    isMuted,
-  ]);
+  }, [actionActive, conversationAction.actionStatus, status, isMuted]);
 
   const actionBorderColor = tailwind.color(conversationAction.borderActionColor) as string;
 
@@ -99,6 +107,61 @@ const ConversationActionOption = (props: ConversationActionOptionProps) => {
       borderColor: interpolateColor(actionActive.value, [0, 1], ['transparent', actionBorderColor]),
     };
   });
+
+  if (isInPane) {
+    const isActive = conversationAction.actionStatus === status;
+    return (
+      <Animated.View
+        style={[
+          tailwind.style('flex-1', index !== conversationActionOptions.length - 1 ? 'mr-1.5' : ''),
+          animatedStyle,
+        ]}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityState={{ selected: isActive }}
+          style={({ pressed }) =>
+            tailwind.style(
+              isStacked
+                ? 'h-[58px] items-center justify-center gap-1 rounded-[12px] px-1'
+                : 'h-11 flex-row items-center justify-center gap-1 rounded-[10px] px-1',
+              isActive
+                ? conversationAction.backgroundActionColor
+                : pressed
+                  ? 'bg-gray-100'
+                  : 'bg-white',
+            )
+          }
+          onPress={handleActionOptionPress}
+          {...handlers}>
+          {conversationAction.iconNativeSize ? (
+            <View
+              style={tailwind.style(
+                isStacked ? 'h-5 w-5' : 'h-[18px] w-[18px]',
+                'items-center justify-center',
+              )}>
+              <View
+                style={{
+                  transform: [{ scale: (isStacked ? 20 : 18) / conversationAction.iconNativeSize }],
+                }}>
+                {conversationAction.actionIcon}
+              </View>
+            </View>
+          ) : (
+            <Icon icon={conversationAction.actionIcon} size={isStacked ? 20 : 18} />
+          )}
+          <Animated.Text
+            numberOfLines={1}
+            style={tailwind.style(
+              isStacked
+                ? 'text-[13px] leading-[16px] font-inter-medium-24 text-gray-950 capitalize'
+                : 'flex-shrink text-[15px] leading-[20px] font-inter-medium-24 text-gray-950 capitalize',
+            )}>
+            {i18n.t(`CONVERSATION_ACTION.OPTIONS.${conversationAction.actionStatus.toUpperCase()}`)}
+          </Animated.Text>
+        </Pressable>
+      </Animated.View>
+    );
+  }
 
   return (
     <Animated.View
@@ -143,6 +206,7 @@ type ConversationBasicActionsProps = {
 };
 
 export const ConversationBasicActions = (props: ConversationBasicActionsProps) => {
+  const tailwind = useTailwind();
   const { status, updateConversationStatus, isMuted } = props;
 
   return (

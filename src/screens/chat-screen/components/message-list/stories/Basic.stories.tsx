@@ -63,25 +63,25 @@ export const Basic: Story = {
     return (
       <Provider store={mockStore}>
         <RefsProvider>
-            <KeyboardProvider>
-              <ChatWindowProvider conversationId={29}>
-                <ScrollView contentContainerStyle={tailwind.style('flex')}>
-                  <PlatformSpecificKeyboardWrapperComponent
-                    style={tailwind.style('flex-1 bg-white')}
-                    interpolator="linear">
-                    <MessagesList
-                      currentUserId={1}
-                      isEmailInbox={false}
-                      messages={ALL_MESSAGES_MOCKDATA}
-                      isFlashListReady={false}
-                      setFlashListReady={() => {}}
-                      onEndReached={() => {}}
-                      onStartReached={() => {}}
-                    />
-                  </PlatformSpecificKeyboardWrapperComponent>
-                </ScrollView>
-              </ChatWindowProvider>
-            </KeyboardProvider>
+          <KeyboardProvider>
+            <ChatWindowProvider conversationId={29}>
+              <ScrollView contentContainerStyle={tailwind.style('flex')}>
+                <PlatformSpecificKeyboardWrapperComponent
+                  style={tailwind.style('flex-1 bg-white')}
+                  interpolator="linear">
+                  <MessagesList
+                    currentUserId={1}
+                    isEmailInbox={false}
+                    messages={ALL_MESSAGES_MOCKDATA}
+                    isFlashListReady={false}
+                    setFlashListReady={() => {}}
+                    onEndReached={() => {}}
+                    onStartReached={() => {}}
+                  />
+                </PlatformSpecificKeyboardWrapperComponent>
+              </ScrollView>
+            </ChatWindowProvider>
+          </KeyboardProvider>
         </RefsProvider>
       </Provider>
     );

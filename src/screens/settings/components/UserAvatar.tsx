@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo, useState } from 'react';
 import { ImageSourcePropType, Text, View, ViewProps } from 'react-native';
 import { Image } from 'expo-image';
 import { AvailabilityStatus } from '@/types/common/AvailabilityStatus';
 
-import { tailwind } from '@/theme';
 import { cx, styleAdapter } from '@/utils';
 import { userStatusList } from '@/constants';
 
@@ -32,6 +32,7 @@ const AvatarStatus = ({
   status: AvailabilityStatus;
   parentsBackground: string;
 }) => {
+  const tailwind = useTailwind();
   const bgColor = getBgColorBasedOnStatus(status);
   return (
     <View
@@ -50,11 +51,17 @@ const AvatarImage = ({
   src,
   handleFallback,
 }: {
-  src: ImageSourcePropType;
+  src: string | ImageSourcePropType;
   handleFallback: () => void;
 }) => {
+  const tailwind = useTailwind();
+  const source = typeof src === 'string' ? { uri: src } : src;
   return (
-    <Image source={src} style={tailwind.style('rounded-full h-24 w-24')} onError={handleFallback} />
+    <Image
+      source={source}
+      style={tailwind.style('rounded-full h-24 w-24')}
+      onError={handleFallback}
+    />
   );
 };
 
@@ -83,6 +90,7 @@ export interface UserAvatarProps extends ViewProps {
 }
 
 export const UserAvatar: React.FC<Partial<UserAvatarProps>> = props => {
+  const tailwind = useTailwind();
   const { name, src, status, parentsBackground = 'text-white', style, ...boxProps } = props;
 
   const isSourceAvailable = useMemo(() => (src ? true : false), [src]);

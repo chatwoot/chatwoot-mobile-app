@@ -14,6 +14,7 @@ import type {
   SetActiveAccountPayload,
   SsoAuthPayload,
   SsoAuthResponse,
+  WorkPreferencesPayload,
 } from './authTypes';
 
 export class AuthService {
@@ -76,6 +77,11 @@ export class AuthService {
   }
   static async updateAvailability(payload: AvailabilityPayload): Promise<ProfileResponse> {
     const response = await apiService.post<ProfileResponse>('profile/availability', payload);
+    return response.data;
+  }
+
+  static async updateWorkPreferences(payload: WorkPreferencesPayload): Promise<ProfileResponse> {
+    const response = await apiService.post<ProfileResponse>('profile/work_preferences', payload);
     return response.data;
   }
 

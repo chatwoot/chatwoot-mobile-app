@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState, useEffect } from 'react';
 import { Platform, Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 import { LabelTag } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common/icon';
 import { SearchBar } from '@/components-next/common/search';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
@@ -13,6 +13,8 @@ import { filterLabels } from '@/store/label/labelSelectors';
 
 import { LabelItem } from '../LabelItem';
 import { LabelStack } from './LabelStack';
+import { IOS_DESIGN } from '@/utils';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 interface LabelActionsProps {
   labels: string[];
@@ -24,6 +26,8 @@ interface LabelActionsProps {
 }
 
 export const LabelActions = (props: LabelActionsProps) => {
+  const tailwind = useTailwind();
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { labels, onLabelsUpdate, sheetRef, titleText, addLabelText, searchPlaceholderText } =
     props;
   const [searchTerm, setSearchTerm] = useState('');
@@ -88,7 +92,7 @@ export const LabelActions = (props: LabelActionsProps) => {
         <Pressable
           onPress={handleAddLabelPress}
           style={({ pressed }) => [
-            styles.labelShadow,
+            isInPane ? null : styles.labelShadow,
             tailwind.style(
               'flex flex-row items-center bg-white px-3 py-[7px] rounded-lg mr-2 mt-3',
               pressed ? 'bg-blue-100' : '',

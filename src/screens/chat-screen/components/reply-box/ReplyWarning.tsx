@@ -1,14 +1,15 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { INBOX_TYPES } from '@/constants';
 import { Inbox } from '@/types/Inbox';
 import { Conversation } from '@/types';
 import i18n from '@/i18n';
 import { REPLY_POLICY } from '@/constants/url';
 import { openURL } from '@/utils/urlUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
 type ReplyWarningProps = {
   inbox: Inbox;
@@ -16,12 +17,17 @@ type ReplyWarningProps = {
 };
 
 export const ReplyWarning = (props: ReplyWarningProps) => {
+  const tailwind = useTailwind();
   const { inbox, conversation } = props;
   const channel = conversation?.meta?.channel;
   const isAPIChannel = channel === INBOX_TYPES.API;
   const isAWhatsappChannel = channel === INBOX_TYPES.WHATSAPP;
+  const isAnonymousCaller = !!conversation?.anonymousCaller;
 
   const replyBannerMessage = () => {
+    if (isAnonymousCaller) {
+      return i18n.t('BANNER.ANONYMOUS_CALLER_CANNOT_REPLY');
+    }
     if (isAWhatsappChannel) {
       return i18n.t('BANNER.TWILIO_WHATSAPP_CAN_REPLY');
     }
@@ -47,6 +53,9 @@ export const ReplyWarning = (props: ReplyWarningProps) => {
   };
 
   const replyWindowLinkText = () => {
+    if (isAnonymousCaller) {
+      return '';
+    }
     if (isAWhatsappChannel) {
       return i18n.t('BANNER.24_HOURS_WINDOW');
     }
@@ -56,6 +65,8 @@ export const ReplyWarning = (props: ReplyWarningProps) => {
     return '';
   };
 
+  const linkText = replyWindowLinkText();
+
   return (
     <Pressable
       style={tailwind.style('flex flex-row items-center px-4 py-3 max-h-[64px] bg-ruby-700 -z-10')}>
@@ -64,14 +75,16 @@ export const ReplyWarning = (props: ReplyWarningProps) => {
           style={tailwind.style(
             'text-sm tracking-[0.32px] leading-[15px] font-inter-420-20 text-white',
           )}>
-          {`${replyBannerMessage()} `}
-          <Animated.Text
-            onPress={() => openURL({ URL: replyWindowLink() })}
-            style={tailwind.style(
-              'text-sm tracking-[0.32px] leading-[15px] font-inter-420-20 text-white underline',
-            )}>
-            {replyWindowLinkText()}
-          </Animated.Text>
+          {`${expandTabs(replyBannerMessage())} `}
+          {linkText ? (
+            <Animated.Text
+              onPress={() => openURL({ URL: replyWindowLink() })}
+              style={tailwind.style(
+                'text-sm tracking-[0.32px] leading-[15px] font-inter-420-20 text-white underline',
+              )}>
+              {linkText}
+            </Animated.Text>
+          ) : null}
         </Animated.Text>
       </Animated.View>
     </Pressable>

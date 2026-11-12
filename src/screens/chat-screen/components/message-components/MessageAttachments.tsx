@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import { differenceInHours } from 'date-fns';
 
 import { FileErrorIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { ImageMetadata, Message } from '@/types';
 import { Icon } from '@/components-next';
 import { ATTACHMENT_TYPES, ORIENTATION, TEXT_MAX_WIDTH } from '@/constants';
@@ -32,6 +32,7 @@ const isInstagramStoryExpired = (messageTimestamp: number) => {
 };
 
 export const MessageAttachments = (props: MessageAttachmentsProps) => {
+  const tailwind = useTailwind();
   const { item, variant, orientation = ORIENTATION.LEFT, mediaSize = 'default' } = props;
   const { attachments, private: isPrivate, contentAttributes, createdAt } = item;
 
@@ -131,7 +132,12 @@ export const MessageAttachments = (props: MessageAttachmentsProps) => {
             'flex flex-row items-center relative max-w-[300px] my-2',
             rowAlignment,
           )}>
-          <FileBubblePreview fileSrc={attachment.dataUrl} isComposed variant={variant} />
+          <FileBubblePreview
+            fileSrc={attachment.dataUrl}
+            fileSize={attachment.fileSize}
+            isComposed
+            variant={variant}
+          />
         </Animated.View>
       ))}
 

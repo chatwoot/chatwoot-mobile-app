@@ -1,10 +1,12 @@
+import { useTailwind, ThemeTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
+import { expandTabs } from '@/utils/expandTabs';
 
-import { tailwind } from '@/theme';
 import { MESSAGE_VARIANTS } from '@/constants';
+import { appFont } from '@/theme/appFont';
 
 // Shared parser instance; the options are static.
 const markdownItInstance = MarkdownIt({ linkify: true, typographer: true, breaks: true });
@@ -29,7 +31,7 @@ const handleURL = (url: string) => {
   return true;
 };
 
-const buildStyles = (variant: string) => {
+const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
   const textStyle = tailwind.style(variantTextMap[variant]);
 
   return StyleSheet.create({
@@ -43,16 +45,20 @@ const buildStyles = (variant: string) => {
       ...textStyle,
     },
     strong: {
-      fontFamily: 'Inter-600-20',
+      ...appFont('Inter-600-20'),
       fontWeight: '600',
     },
     em: {
       fontStyle: 'italic',
     },
+    blockquote: {
+      backgroundColor: tailwind.color('bg-blackA-A3'),
+      borderColor: tailwind.color('text-blackA-A6'),
+    },
     paragraph: {
       marginTop: 0,
       marginBottom: 0,
-      fontFamily: 'Inter-400-20',
+      ...appFont('Inter-400-20'),
     },
     bullet_list: {
       minWidth: 200,
@@ -88,27 +94,30 @@ const buildStyles = (variant: string) => {
 // row does not invalidate the whole tree.
 const stylesByVariant = new Map<string, ReturnType<typeof buildStyles>>();
 
-const getStyles = (variant: string) => {
-  const cachedStyles = stylesByVariant.get(variant);
+const getStyles = (variant: string, tailwind: ThemeTailwind) => {
+  const cacheKey = `${tailwind.isDark}:${variant}`;
+  const cachedStyles = stylesByVariant.get(cacheKey);
   if (cachedStyles) {
     return cachedStyles;
   }
 
-  const styles = buildStyles(variant);
-  stylesByVariant.set(variant, styles);
+  const styles = buildStyles(variant, tailwind);
+  stylesByVariant.set(cacheKey, styles);
   return styles;
 };
 
 export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
-  const { messageContent, variant } = props;
+  const tailwind = useTailwind();
+  const { variant } = props;
+  const text = expandTabs(props.messageContent);
 
   return (
     <Markdown
       mergeStyle
       markdownit={markdownItInstance}
       onLinkPress={handleURL}
-      style={getStyles(variant)}>
-      {messageContent}
+      style={getStyles(variant, tailwind)}>
+      {text}
     </Markdown>
   );
 });

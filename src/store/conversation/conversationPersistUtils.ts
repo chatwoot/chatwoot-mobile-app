@@ -7,11 +7,6 @@ interface PersistedConversations {
 
 const describeId = (id: unknown) => (id === null ? 'null' : typeof id);
 
-/**
- * Drops persisted conversation ids that have no stored conversation. The entity
- * adapter's `selectAll` returns `undefined` for such an id, and every selector
- * reading conversations at launch would throw on it.
- */
 export const repairPersistedConversations = <T extends { conversations?: PersistedConversations }>(
   state: T,
 ): T => {

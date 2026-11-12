@@ -1,12 +1,14 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Agent, ConversationPriority, Team } from '@/types';
 import AssigneePanel from './AssigneePanel';
 import TeamPanel from './TeamPanel';
 import PriorityPanel from './PriorityPanel';
+import { IOS_DESIGN } from '@/utils';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 type ConversationSettingsPanelProps = {
   priority: ConversationPriority;
@@ -25,8 +27,11 @@ export const ConversationSettingsPanel = ({
   onChangeTeamAssignee,
   onChangePriority,
 }: ConversationSettingsPanelProps) => {
+  const tailwind = useTailwind();
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   return (
-    <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+    <Animated.View
+      style={[tailwind.style('rounded-[13px] mx-4 bg-white'), isInPane ? null : styles.listShadow]}>
       <AssigneePanel assignee={assignee} onPress={onChangeAssignee} />
       <TeamPanel team={team} onPress={onChangeTeamAssignee} />
       <PriorityPanel priority={priority} onPress={onChangePriority} />
@@ -46,7 +51,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

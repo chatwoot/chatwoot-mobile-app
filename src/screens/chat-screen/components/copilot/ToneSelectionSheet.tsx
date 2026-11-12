@@ -1,14 +1,14 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { forwardRef, useCallback } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Sheet, type SheetRef } from '@/components-next/common/sheet/Sheet';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { COPILOT_ACTIONS } from '@/constants/copilot';
 import type { CopilotActionKey } from '@/types/Copilot';
 import i18n from '@/i18n';
 
-const TONE_OPTIONS = [
+export const TONE_OPTIONS = [
   { key: COPILOT_ACTIONS.PROFESSIONAL, labelKey: 'COPILOT.TONE_PROFESSIONAL' },
   { key: COPILOT_ACTIONS.FRIENDLY, labelKey: 'COPILOT.TONE_FRIENDLY' },
   { key: COPILOT_ACTIONS.STRAIGHTFORWARD, labelKey: 'COPILOT.TONE_STRAIGHTFORWARD' },
@@ -22,6 +22,7 @@ type ToneSelectionSheetProps = {
 
 export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
   ({ onSelectTone }, ref) => {
+    const tailwind = useTailwind();
     const hapticSelection = useHaptic();
 
     const handleSelectTone = useCallback(
@@ -50,9 +51,7 @@ export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
             <Pressable
               key={option.key}
               onPress={() => handleSelectTone(option.key as CopilotActionKey)}
-              style={tailwind.style(
-                'h-[60px] justify-center pl-4 pr-3 border-b border-slate-200',
-              )}>
+              style={tailwind.style('h-[60px] justify-center pl-4 pr-3 border-b border-slate-200')}>
               <Text
                 style={tailwind.style(
                   'text-base font-inter-normal-20 leading-[22px] tracking-[0.16px] text-gray-950',
@@ -66,3 +65,5 @@ export const ToneSelectionSheet = forwardRef<SheetRef, ToneSelectionSheetProps>(
     );
   },
 );
+
+ToneSelectionSheet.displayName = 'ToneSelectionSheet';

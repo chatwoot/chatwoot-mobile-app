@@ -4,21 +4,23 @@ Chatwoot is looking forward to working with security researchers worldwide to ke
 
 We use Github to track the security issues that affect our project. If you believe you have found a vulnerability, please disclose it via this [form](https://github.com/chatwoot/chatwoot/security/advisories/new). This will enable us to review the vulnerability, fix it promptly, and reward you for your efforts.
 
-If you have any questions about the process, contact security@chatwoot.com. 
+If you have any questions about the process, contact security@chatwoot.com.
 
 Please try your best to describe a clear and realistic impact for your report, and please don't open any public issues on GitHub or social media; we're doing our best to respond through Github as quickly as possible.
 
 > Note: Please use the email for questions related to the process. Disclosures should be done via [Github](https://github.com/chatwoot/chatwoot/security/advisories/new)
+
 ## Supported versions
 
-| Version | Supported        |
-| ------- | --------------   |
-| latest   | ️✅               |
-| <latest   | ❌               |
-
+| Version | Supported |
+| ------- | --------- |
+| latest  | ️✅       |
+| <latest | ❌        |
 
 ## Vulnerabilities we care about 🫣
+
 > Note: Please do not perform testing against Chatwoot production services. Use a `self-hosted instance` to perform tests.
+
 - Remote command execution
 - SQL Injection
 - Authentication bypass
@@ -49,7 +51,6 @@ We consider the following out of scope, though there may be exceptions.
 - DNSSEC
 
 If you are unsure about the scope, please create a [report](https://github.com/chatwoot/chatwoot/security/advisories/new).
-
 
 ## Thanks
 

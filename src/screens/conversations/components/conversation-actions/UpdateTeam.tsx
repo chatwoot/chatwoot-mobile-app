@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { Team } from '@/types';
 import { Avatar, Icon, SearchBar } from '@/components-next';
 import { TickIcon } from '@/svg-icons';
@@ -21,10 +21,11 @@ import { filterTeams } from '@/store/team/teamSelectors';
 type TeamCellProps = {
   value: Team;
   lastItem: boolean;
-  teamId: string | undefined;
+  teamId: number | undefined;
 };
 
 const TeamCell = (props: TeamCellProps) => {
+  const tailwind = useTailwind();
   const { value, lastItem, teamId } = props;
   const dispatch = useAppDispatch();
 
@@ -68,7 +69,8 @@ const TeamCell = (props: TeamCellProps) => {
   );
 };
 
-const TeamStack = ({ teams, teamId }: { teams: Team[]; teamId: string | undefined }) => {
+const TeamStack = ({ teams, teamId }: { teams: Team[]; teamId: number | undefined }) => {
+  const tailwind = useTailwind();
   const isFetching = useAppSelector(selectLoading);
 
   return (
@@ -101,10 +103,7 @@ export const UpdateTeam = () => {
 
   return (
     <React.Fragment>
-      <SearchBar
-        onChangeText={handleChangeText}
-        placeholder={i18n.t('CONVERSATION.SEARCH_TEAM')}
-      />
+      <SearchBar onChangeText={handleChangeText} placeholder={i18n.t('CONVERSATION.SEARCH_TEAM')} />
       <TeamStack teams={teams} teamId={teamId} />
     </React.Fragment>
   );

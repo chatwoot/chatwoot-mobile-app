@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import { useTailwind } from '@/theme/useTailwind';
+import { useEffect, useRef } from 'react';
 import PagerView, { PagerViewOnPageSelectedEvent } from 'react-native-pager-view';
-import Animated from 'react-native-reanimated';
+import Animated, { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { SlaPillVisibilityContext } from './SlaPillVisibility';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -11,7 +14,6 @@ import { ReplyBoxContainer } from './components';
 import { MessagesListContainer } from './components';
 import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/context';
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
-import { tailwind } from '@/theme';
 import {
   selectConversationById,
   selectConversationFetching,
@@ -35,8 +37,15 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import { MacrosList } from './components/macros/MacrosList';
 import { WhatsAppTemplatesList } from './components/whatsapp-templates';
 import { macroActions } from '@/store/macro/macroActions';
+import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
+import { IOS_DESIGN, useIsSplitLayout, useSideTabBarLayout } from '@/utils';
+import { handOffToSplitView } from '@/navigation/split/splitHandoff';
+import { SideToolbarProvider } from '@/context';
+import { SideToolbarSlot } from '@/navigation/tabs/SideToolbarSlot';
+import { PaneErrorState } from './PaneErrorState';
 
 export const ChatWindow = (props: ChatScreenProps) => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex-1')}>
       <MessagesListContainer />
@@ -50,28 +59,47 @@ export const ChatWindow = (props: ChatScreenProps) => {
 type ChatScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'ChatScreen'>;
 
 const ConversationPagerView = (props: ChatScreenProps) => {
+  const tailwind = useTailwind();
+  const isInDetailPane = useIsInDetailPane();
   const { chatPagerView } = useRefsContext();
   const { setPagerViewIndex } = useChatWindowContext();
   const onPageSelected = (e: PagerViewOnPageSelectedEvent) => {
     setPagerViewIndex(e.nativeEvent.position);
   };
-  return (
+  const navigation = useNavigation();
+  const { conversationId } = useChatWindowContext();
+  const openActions = () =>
+    navigation.dispatch(StackActions.push('ConversationActionsScreen', { conversationId }));
+  const swipeToActions = Gesture.Pan()
+    .activeOffsetX([-20, 10000])
+    .failOffsetY([-12, 12])
+    .onEnd(event => {
+      if (event.translationX < -60 || event.velocityX < -500) runOnJS(openActions)();
+    });
+  const pager = (
     <PagerView
       ref={chatPagerView}
       orientation="horizontal"
       overdrag
       style={tailwind.style('flex-1')}
-      scrollEnabled
+      scrollEnabled={!isInDetailPane && !IOS_DESIGN}
       initialPage={0}
       onPageSelected={onPageSelected}>
       <ChatWindow {...props} />
       <ConversationActions />
     </PagerView>
   );
+  if (!IOS_DESIGN || isInDetailPane) return pager;
+  return (
+    <GestureDetector gesture={swipeToActions}>
+      <Animated.View style={tailwind.style('flex-1')}>{pager}</Animated.View>
+    </GestureDetector>
+  );
 };
 
 const ChatScreenWrapper = (props: ChatScreenProps) => {
   const dispatch = useAppDispatch();
+  const slaPillVisibility = useSharedValue(1);
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
@@ -87,14 +115,20 @@ const ChatScreenWrapper = (props: ChatScreenProps) => {
   }, [inboxId]);
 
   return (
-    <React.Fragment>
+    <SlaPillVisibilityContext.Provider value={slaPillVisibility}>
       <ChatHeaderContainer name={name || ''} imageSrc={{ uri: thumbnail || '' }} />
       <ConversationPagerView {...props} />
-    </React.Fragment>
+    </SlaPillVisibilityContext.Provider>
   );
 };
+
 const ChatScreen = (props: ChatScreenProps) => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
+  const isInDetailPane = useIsInDetailPane();
+  const splitView = useSplitView();
+  const sideTabBar = useSideTabBarLayout();
+  const paneTopMargin = sideTabBar?.contentTopPadding ?? 0;
   const { conversationId, primaryActorId, primaryActorType } = props.route.params;
   const dispatch = useAppDispatch();
 
@@ -133,6 +167,21 @@ const ChatScreen = (props: ChatScreenProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [primaryActorId, primaryActorType]);
 
+  // Unfolding hands chat to split view.
+  const isSplitLayout = useIsSplitLayout();
+  const wasSplitLayout = useRef(isSplitLayout);
+  useEffect(() => {
+    const unfolded = !wasSplitLayout.current && isSplitLayout;
+    wasSplitLayout.current = isSplitLayout;
+    if (!unfolded || isInDetailPane || !navigation.isFocused()) return;
+    handOffToSplitView(conversationId);
+    // Pop next frame; option applies later.
+    navigation.setOptions({ animation: 'none' });
+    requestAnimationFrame(() => {
+      if (navigation.canGoBack()) navigation.dispatch(StackActions.pop());
+    });
+  }, [isSplitLayout, conversationId, isInDetailPane, navigation]);
+
   const handleBackPress = () => {
     if (navigation.canGoBack()) {
       navigation.dispatch(StackActions.pop());
@@ -143,8 +192,11 @@ const ChatScreen = (props: ChatScreenProps) => {
 
   if (conversation) {
     const { messageId } = props.route.params;
-    return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+    const screen = (
+      <SafeAreaView
+        edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
+        style={tailwind.style('flex-1 bg-white')}>
+        {isInDetailPane || sideTabBar ? <Animated.View style={{ height: paneTopMargin }} /> : null}
         {/* Remount the chat subtree when the conversation or account changes so its
             account-scoped data (agents, teams, participants, canned responses) refetches. */}
         <ChatWindowProvider
@@ -156,6 +208,17 @@ const ChatScreen = (props: ChatScreenProps) => {
         <ActionBottomSheet />
       </SafeAreaView>
     );
+    if (!isInDetailPane && sideTabBar) {
+      return (
+        <SideToolbarProvider>
+          <Animated.View style={tailwind.style('flex-1')}>
+            {screen}
+            <SideToolbarSlot />
+          </Animated.View>
+        </SideToolbarProvider>
+      );
+    }
+    return screen;
   }
 
   if (conversationFetching) {
@@ -167,9 +230,33 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
+  if ((conversationError || !conversation) && isInDetailPane) {
+    return (
+      <PaneErrorState
+        title={conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
+        onRetry={fetchConversation}
+        onClose={() => splitView?.closeConversation()}
+      />
+    );
+  }
+
+  if ((conversationError || !conversation) && IOS_DESIGN) {
+    return (
+      <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-gray-50')}>
+        <PaneErrorState
+          title={conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
+          onRetry={fetchConversation}
+          onClose={handleBackPress}
+        />
+      </SafeAreaView>
+    );
+  }
+
   if (conversationError || !conversation) {
     return (
-      <SafeAreaView edges={['top']} style={tailwind.style('flex-1 bg-white')}>
+      <SafeAreaView
+        edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
+        style={tailwind.style('flex-1 bg-white')}>
         <Animated.View
           style={tailwind.style(
             'flex-1 items-center justify-center gap-8 px-4',

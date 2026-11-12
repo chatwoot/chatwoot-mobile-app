@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { View } from 'react-native';
 import Animated, { EntryAnimationsValues, withSpring } from 'react-native-reanimated';
@@ -8,7 +9,6 @@ import {
   SuggestReplyIcon,
   SummarizeIcon,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { COPILOT_ACTIONS } from '@/constants/copilot';
 import { REPLY_EDITOR_MODES } from '@/constants';
 import { CopilotMenuItem } from './CopilotMenuItem';
@@ -28,6 +28,7 @@ export const CopilotMenu = ({
   onSelectAction,
   onSelectChangeTone,
 }: CopilotMenuProps) => {
+  const tailwind = useTailwind();
   const hasContent = editorContent.trim().length > 0;
   const isReplyMode = editorMode === REPLY_EDITOR_MODES.REPLY;
 
@@ -60,10 +61,7 @@ export const CopilotMenu = ({
   ].filter(Boolean) as { icon: React.ReactNode; label: string; onPress: () => void }[];
 
   return (
-    <View
-      style={tailwind.style(
-        'absolute bottom-full left-0 right-0 overflow-hidden',
-      )}>
+    <View style={tailwind.style('absolute bottom-full left-0 right-0 overflow-hidden')}>
       <Animated.View
         entering={(values: EntryAnimationsValues) => {
           'worklet';
@@ -73,15 +71,11 @@ export const CopilotMenu = ({
               transform: [{ translateY: values.targetHeight }],
             },
             animations: {
-              transform: [
-                { translateY: withSpring(0, { damping: 38, stiffness: 240 }) },
-              ],
+              transform: [{ translateY: withSpring(0, { damping: 38, stiffness: 240 }) }],
             },
           };
         }}
-        style={tailwind.style(
-          'bg-white border-t border-t-blackA-A3 mx-1 pt-2 items-start',
-        )}>
+        style={tailwind.style('bg-white border-t border-t-blackA-A3 mx-1 pt-2 items-start')}>
         {menuItems.map(item => (
           <CopilotMenuItem
             key={item.label}

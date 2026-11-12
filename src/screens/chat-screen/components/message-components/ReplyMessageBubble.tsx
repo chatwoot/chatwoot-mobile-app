@@ -1,12 +1,13 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useMemo } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useChatWindowContext } from '@/context';
 import { AttachFileIcon, CameraIcon, VideoCall, VoiceNote } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { isMarkdown } from '@/utils';
+import { expandTabs } from '@/utils/expandTabs';
 import { Icon } from '@/components-next';
 import { MarkdownBubble } from './MarkdownBubble';
 import { MESSAGE_VARIANTS, TEXT_MAX_WIDTH } from '@/constants';
@@ -22,6 +23,7 @@ const variantBaseMap = {
 };
 
 export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
+  const tailwind = useTailwind();
   const replyMessageItem = props.replyMessage as Message;
 
   const { setScrollToMessageId } = useChatWindowContext();
@@ -96,7 +98,7 @@ export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
                 style={tailwind.style(
                   'text-[14px] font-inter-normal-20 leading-[19.6px] tracking-[0.16px] text-gray-950',
                 )}>
-                {replyMessageItem?.content}
+                {expandTabs(replyMessageItem.content)}
               </Animated.Text>
             )
           ) : null}

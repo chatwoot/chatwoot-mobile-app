@@ -1,0 +1,26 @@
+import { useTailwind } from '@/theme/useTailwind';
+import React from 'react';
+import { Text, View } from 'react-native';
+
+import { EmptyStateIcon } from '@/svg-icons';
+
+export const SplitEmptyState = ({
+  message,
+  icon = <EmptyStateIcon />,
+}: {
+  message: string;
+  icon?: React.ReactElement;
+}) => {
+  const tailwind = useTailwind();
+  return (
+    <View style={tailwind.style('items-center gap-4 px-8')}>
+      {icon}
+      <Text
+        style={tailwind.style(
+          'max-w-[400px] text-[15px] leading-[20px] font-inter-normal-20 text-gray-700 text-center',
+        )}>
+        {message}
+      </Text>
+    </View>
+  );
+};

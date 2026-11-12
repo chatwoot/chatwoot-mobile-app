@@ -12,11 +12,7 @@ export type ImageContainerProps = Pick<ImageCellProps, 'imageSrc'> & {
 
 const imageDimensionsCache = new Map<string, { width: number; height: number }>();
 
-export const useImageDimensions = (
-  imageSrc: string,
-  maxWidth = 300,
-  maxHeight = 360,
-) => {
+export const useImageDimensions = (imageSrc: string, maxWidth = 300, maxHeight = 360) => {
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(
     null,
   );

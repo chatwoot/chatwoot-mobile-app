@@ -1,36 +1,45 @@
-import React from 'react';
+import { useTailwind } from '@/theme/useTailwind';
 import { Text, Animated } from 'react-native';
-import { tailwind } from '@/theme';
+import { IOS_DESIGN } from '@/utils';
 import { SLAEvent } from '@/types/common/SLA';
 import { SLA_MISS_TYPES } from '@/constants';
 import { SlaEvents as SlaEventItem } from './SLAEventItem';
 import i18n from '@/i18n';
+import { IOSSlaEvents } from './IOSSlaEvents';
 
-interface SlaEventsProps {
+export interface SlaEventsProps {
   slaEvents?: SLAEvent[];
   statusText: string;
+  isMissed?: boolean;
 }
 
-export const SlaEvents = ({ slaEvents, statusText }: SlaEventsProps) => {
+export const SlaEvents = (props: SlaEventsProps) => {
+  const tailwind = useTailwind();
+  if (IOS_DESIGN) return <IOSSlaEvents {...props} />;
+  const { slaEvents, statusText } = props;
   const frtMisses = slaEvents?.filter(slaEvent => slaEvent.eventType === SLA_MISS_TYPES.FRT);
   const nrtMisses = slaEvents?.filter(slaEvent => slaEvent.eventType === SLA_MISS_TYPES.NRT);
   const rtMisses = slaEvents?.filter(slaEvent => slaEvent.eventType === SLA_MISS_TYPES.RT);
 
   return (
     <Animated.View style={tailwind.style('py-6 px-6 gap-3')}>
-      <Text
-        style={tailwind.style(
-          'text-[17px]  text-gray-950 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
-        )}>
-        {statusText}
-      </Text>
+      {statusText ? (
+        <Text
+          style={tailwind.style(
+            'text-[17px]  text-gray-950 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
+          )}>
+          {statusText}
+        </Text>
+      ) : null}
 
-      <Text
-        style={tailwind.style(
-          'text-md  text-gray-900 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
-        )}>
-        {i18n.t('SLA.MISSES.TITLE')}
-      </Text>
+      {slaEvents?.length ? (
+        <Text
+          style={tailwind.style(
+            'text-md  text-gray-900 font-inter-medium-24 leading-[21px] tracking-[0.16px]',
+          )}>
+          {i18n.t('SLA.MISSES.TITLE')}
+        </Text>
+      ) : null}
 
       {frtMisses && frtMisses.length > 0 && (
         <SlaEventItem label={i18n.t('SLA.MISSES.FRT')} items={frtMisses} />

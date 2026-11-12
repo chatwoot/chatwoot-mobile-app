@@ -1,9 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { formatTimeToShortForm, formatRelativeTime } from '@/utils/dateTimeUtils';
+import { IOS_LIST_TEXT, useIOSListText } from '@/utils/listTypography';
 
 // Constants from Vue component
 const MINUTE_IN_MS = 60000;
@@ -15,9 +16,9 @@ type LastActivityTimeProps = {
 };
 
 export const LastActivityTime = ({ timestamp }: LastActivityTimeProps) => {
-  const [lastActivityTime, setLastActivityTime] = useState(
-    formatTimeToShortForm(formatRelativeTime(timestamp)),
-  );
+  const tailwind = useTailwind();
+  const iosText = useIOSListText();
+  const [, setTick] = useState(0);
 
   useEffect(() => {
     const getRefreshTime = () => {
@@ -27,25 +28,26 @@ export const LastActivityTime = ({ timestamp }: LastActivityTimeProps) => {
       return MINUTE_IN_MS;
     };
 
-    const updateTime = () => {
-      setLastActivityTime(formatTimeToShortForm(formatRelativeTime(timestamp)));
+    let timer: ReturnType<typeof setTimeout>;
+    const schedule = () => {
+      timer = setTimeout(() => {
+        setTick(tick => tick + 1);
+        schedule();
+      }, getRefreshTime());
     };
-
-    const timer = setTimeout(function refresh() {
-      updateTime();
-      // Set up next refresh
-      setTimeout(refresh, getRefreshTime());
-    }, getRefreshTime());
+    schedule();
 
     return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [timestamp]);
+
+  const lastActivityTime = formatTimeToShortForm(formatRelativeTime(timestamp));
 
   return (
     <NativeView>
       <Text
         style={tailwind.style(
           'text-sm font-inter-420-20 leading-[16px] tracking-[0.32px] text-gray-700',
+          iosText && IOS_LIST_TEXT.meta,
         )}>
         {lastActivityTime}
       </Text>

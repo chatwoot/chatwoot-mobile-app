@@ -94,9 +94,7 @@ export const VideoThumbnail = (props: VideoBubbleProps) => {
   const { videoSrc } = props;
   const videoRef = useRef<VideoView>(null);
   const [status, setStatus] = useState<VideoPlayerStatus>('loading');
-  // iOS reuses the inline view's controls setting in fullscreen, so without controls
-  // there is no Done button to dismiss the player. Enable them only while fullscreen.
-  // Android's fullscreen player always shows its own controls.
+  // iOS fullscreen needs controls to close
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const player = useVideoPlayer({ uri: videoSrc }, instance => {

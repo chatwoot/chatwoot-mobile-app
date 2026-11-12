@@ -15,6 +15,7 @@ import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
 import { callListenerMiddleware } from './call/callListener';
 import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
+import { repairPersistedConversations } from './conversation/conversationPersistUtils';
 import { setSentryUser } from '@/utils/sentryUtils';
 
 // Disable this in testing environment
@@ -38,7 +39,7 @@ const persistConfig = {
         ...initialState,
       };
     }
-    return repairPersistedWebSocketUrl(state);
+    return repairPersistedConversations(repairPersistedWebSocketUrl(state));
   },
 };
 

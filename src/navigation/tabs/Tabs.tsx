@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { authActions } from '@/store/auth/authActions';
-import * as Sentry from '@sentry/react-native';
+import { setSentryUser } from '@/utils/sentryUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
@@ -97,14 +97,7 @@ export const Tabs = () => {
   }, []);
 
   const initSentry = useCallback(async () => {
-    Sentry.setUser({
-      id: user?.id,
-      email: user?.email,
-      account_id: user?.account_id,
-      name: user?.name,
-      role: user?.role,
-      installation_url: installationUrl,
-    });
+    setSentryUser(user, installationUrl);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

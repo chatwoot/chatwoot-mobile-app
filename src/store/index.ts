@@ -16,6 +16,7 @@ import { contactListenerMiddleware } from './contact/contactListener';
 import { callListenerMiddleware } from './call/callListener';
 import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
 import { repairPersistedConversations } from './conversation/conversationPersistUtils';
+import { setSentryUser } from '@/utils/sentryUtils';
 
 // Disable this in testing environment
 const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
@@ -89,7 +90,10 @@ export const store = configureStore({
 // TODO: Please get rid of this
 setStore(store);
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store, null, () => {
+  const { auth, settings } = store.getState();
+  setSentryUser(auth.user, settings.installationUrl);
+});
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

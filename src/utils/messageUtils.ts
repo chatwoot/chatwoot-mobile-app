@@ -37,10 +37,6 @@ export const createPendingMessage = (data: SendMessagePayload): PendingMessage =
   return pendingMessage;
 };
 
-/**
- * Splits a message into one message per attached file, for channels that deliver only the first
- * attachment of a message. The text is sent with the first file as its caption.
- */
 export const splitMessagePerAttachment = (data: SendMessagePayload): SendMessagePayload[] => {
   const { files, message } = data;
   if (!files || files.length < 2) {

@@ -192,7 +192,10 @@ const TEMPLATES_MENU_OPTION = {
   handlePress: () => {},
 };
 
-export const validateFileAndSetAttachments = async (dispatch: AppDispatch, attachments: Asset[]) => {
+export const validateFileAndSetAttachments = async (
+  dispatch: AppDispatch,
+  attachments: Asset[],
+) => {
   const validAttachments = attachments.filter(
     ({ fileSize }) => fileSize !== undefined && findFileSize(fileSize) <= MAXIMUM_FILE_UPLOAD_SIZE,
   );

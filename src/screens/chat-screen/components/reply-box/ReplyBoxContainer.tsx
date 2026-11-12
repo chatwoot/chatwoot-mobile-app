@@ -425,7 +425,14 @@ const BottomSheetContent = () => {
     }
 
     if (attachedFiles && attachedFiles.length) {
-      messagePayload.files = attachedFiles as unknown as AttachmentFile[];
+      messagePayload.files = attachedFiles.map(
+        ({ uri = '', type = '', fileName = '', fileSize }) => ({
+          uri,
+          type,
+          fileName,
+          fileSize,
+        }),
+      );
     }
 
     // TODO: Implement this
@@ -468,7 +475,7 @@ const BottomSheetContent = () => {
       Alert.alert(undefinedVariablesMessage);
     } else {
       const messagePayload = getMessagePayload(messageContent, audioFile);
-      // WhatsApp delivers only the first attachment of a message, so each file is sent on its own
+      // WhatsApp delivers one attachment per message
       const isOnWhatsApp = isAWhatsAppChannel(inbox) && !isPrivate;
       sendMessage(isOnWhatsApp ? splitMessagePerAttachment(messagePayload) : [messagePayload]);
     }

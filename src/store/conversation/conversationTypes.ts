@@ -102,7 +102,6 @@ export interface SendMessagePayload {
     id: number;
     thumbnail?: string;
   };
-  // Sent together as `attachments[]` in a single multipart request
   files?: AttachmentFile[];
   contentAttributes?: {
     inReplyTo: number;

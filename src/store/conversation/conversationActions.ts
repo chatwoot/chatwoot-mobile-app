@@ -40,8 +40,6 @@ import {
 } from '@/utils/messageUtils';
 import { transformMessage } from '@/utils/camelCaseKeys';
 
-// A request with files is always multipart, whatever the type of each file. The native networking
-// layer adds the boundary to this content type.
 const getSendMessageContentType = (files?: SendMessagePayload['files']) =>
   files?.length ? 'multipart/form-data' : 'application/json';
 
@@ -161,8 +159,10 @@ export const conversationActions = {
         if (hasMessageFailedWithExternalError(failedMessage)) {
           response = await ConversationService.retryMessage({ conversationId, messageId: id });
         } else {
-          const storedMessage = failedMessage as unknown as PendingMessage & { file?: AttachmentFile };
-          // Messages stored before multiple attachments were supported carry a single `file`
+          const storedMessage = failedMessage as unknown as PendingMessage & {
+            file?: AttachmentFile;
+          };
+          // Older failed messages store `file`
           const { file: legacyFile, ...rest } = storedMessage;
           const pendingMessage: PendingMessage =
             !rest.files && legacyFile ? { ...rest, files: [legacyFile] } : rest;

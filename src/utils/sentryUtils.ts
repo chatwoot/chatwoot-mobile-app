@@ -1,5 +1,8 @@
 import type { SerializedError } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react-native';
 import axios from 'axios';
+
+import type { User } from '@/types/User';
 
 /**
  * True when a request failed before any server response was received — offline
@@ -78,4 +81,16 @@ const UNACTIONABLE_PUSH_MESSAGES = [
 export const isUnactionablePushError = (error: unknown): boolean => {
   const message = error instanceof Error ? error.message : '';
   return UNACTIONABLE_PUSH_MESSAGES.some(pattern => message.includes(pattern));
+};
+
+export const setSentryUser = (user: User | null, installationUrl: string) => {
+  if (!user) return;
+  Sentry.setUser({
+    id: user.id,
+    email: user.email,
+    account_id: user.account_id,
+    name: user.name,
+    role: user.role,
+    installation_url: installationUrl,
+  });
 };

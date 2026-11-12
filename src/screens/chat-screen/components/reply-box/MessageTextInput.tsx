@@ -30,7 +30,6 @@ import {
   togglePrivateMessage,
   selectIsPrivateMessage,
   selectQuoteMessage,
-  selectMessageContent,
 } from '@/store/conversation/sendMessageSlice';
 import { REPLY_EDITOR_MODES } from '@/constants';
 import i18n from '@/i18n';
@@ -94,13 +93,13 @@ export const MessageTextInput = ({
   replyEditorMode,
   selectedCannedResponse,
   agents,
+  messageContent,
   iosStyle = false,
   onExpand,
   composer = false,
 }: MessageTextInputProps) => {
   const tailwind = useTailwind();
   const dispatch = useAppDispatch();
-  const messageContent = useAppSelector(selectMessageContent);
   const { height: windowHeight } = useWindowDimensions();
   const iosMaxHeight = Math.max(124, Math.round(windowHeight * 0.4));
 
@@ -153,7 +152,7 @@ export const MessageTextInput = ({
 
   const onChangeText = (text: string) => {
     startTyping();
-    dispatch(setMessageContent(text));
+    dispatch(setMessageContent({ conversationId, content: text }));
   };
 
   const handleOnFocus = useCallback(
@@ -332,7 +331,6 @@ export const MessageTextInput = ({
               ? i18n.t('CONVERSATION.PRIVATE_NOTE_SHORT')
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
           }
-          onSubmitEditing={() => setMessageContent('')}
           value={messageContent}
           returnKeyType={'default'}
           textAlignVertical="top"

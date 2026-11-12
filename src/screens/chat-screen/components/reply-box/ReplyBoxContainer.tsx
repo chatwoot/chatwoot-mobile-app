@@ -37,6 +37,7 @@ import {
   selectAttachments,
   selectQuoteMessage,
   resetSentMessage,
+  resetAttachments,
   selectIsPrivateMessage,
   togglePrivateMessage,
   setMessageContent,
@@ -144,7 +145,6 @@ const BottomSheetContent = () => {
   const userId = useAppSelector(selectUserId);
   const userThumbnail = useAppSelector(selectUserThumbnail);
   const userName = useAppSelector(selectUserName);
-  const messageContent = useAppSelector(selectMessageContent);
   const attachedFiles = useAppSelector(selectAttachments);
   const quoteMessage = useAppSelector(selectQuoteMessage);
   const isPrivate = useAppSelector(selectIsPrivateMessage);
@@ -160,6 +160,8 @@ const BottomSheetContent = () => {
     isCopilotMenuOpen,
     setIsCopilotMenuOpen,
   } = useChatWindowContext();
+
+  const messageContent = useAppSelector(state => selectMessageContent(state, conversationId));
 
   // Copilot
   const copilotAbortRef = useRef<{ abort: () => void; unwrap: () => Promise<unknown> } | null>(
@@ -283,9 +285,14 @@ const BottomSheetContent = () => {
     }
   }, [canSendReply, opensOnCall, dispatch]);
 
-  // Clear quote state when switching conversations to prevent cross-conversation replies
+  // Quote and attachments stay per conversation
   useEffect(() => {
-    dispatch(setQuoteMessage(null));
+    const clearQuoteAndAttachments = () => {
+      dispatch(setQuoteMessage(null));
+      dispatch(resetAttachments());
+    };
+    clearQuoteAndAttachments();
+    return clearQuoteAndAttachments;
   }, [conversationId, dispatch]);
 
   const derivedAddMenuOptionStateValue = useDerivedValue<number>(() => {
@@ -359,13 +366,13 @@ const BottomSheetContent = () => {
   };
 
   const handleCopilotAccept = () => {
-    dispatch(setMessageContent(generatedContent));
+    dispatch(setMessageContent({ conversationId, content: generatedContent }));
     dispatch(resetCopilot());
   };
 
   const handleCopilotDiscard = () => {
     copilotAbortRef.current?.abort();
-    dispatch(setMessageContent(originalContent));
+    dispatch(setMessageContent({ conversationId, content: originalContent }));
     dispatch(resetCopilot());
   };
 
@@ -496,9 +503,8 @@ const BottomSheetContent = () => {
 
   const sendMessage = (messagePayload: SendMessagePayload) => {
     dispatch(conversationActions.sendMessage(messagePayload));
-    dispatch(resetSentMessage());
+    dispatch(resetSentMessage(conversationId));
     setSelectedCannedResponse(null);
-    dispatch(setMessageContent(''));
     dispatch(clearEmailRecipients());
     if (isComposer) closeComposer();
     messageListRef?.current?.scrollToOffset({ offset: 0, animated: true });

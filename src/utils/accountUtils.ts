@@ -13,7 +13,7 @@ import { resetFilters } from '@/store/conversation/conversationFilterSlice';
 import { clearAssignableAgents } from '@/store/assignable-agent/assignableAgentSlice';
 import { clearAllParticipants } from '@/store/conversation-participant/conversationParticipantSlice';
 import { resetCopilot } from '@/store/copilot/copilotSlice';
-import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
+import { resetSendMessageState } from '@/store/conversation/sendMessageSlice';
 import { keepOnlyLocalCall } from '@/store/call/callSlice';
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import {
@@ -52,7 +52,7 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   dispatch(clearAssignableAgents());
   dispatch(clearAllParticipants());
   dispatch(resetCopilot());
-  dispatch(resetSentMessage());
+  dispatch(resetSendMessageState());
   dispatch((keep, getState) =>
     keep(
       keepOnlyLocalCall({ leaving: selectCurrentUserAccountId(getState()), entering: accountId }),

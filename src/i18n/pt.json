@@ -19,7 +19,15 @@
     "URL_REQUIRED": "URL é obrigatório",
     "CONNECT": "Ligar",
     "CHANGE_LANGUAGE": "Alterar idioma",
-    "ERROR": "URL de instalação inválido"
+    "ERROR": "URL de instalação inválido",
+    "ACCESS_TITLE": "Cloudflare Access (opcional)",
+    "ACCESS_DESCRIPTION": "Ative se o servidor exigir um Service Token do Cloudflare Access.",
+    "ACCESS_CLIENT_ID": "Client ID",
+    "ACCESS_CLIENT_SECRET": "Client Secret",
+    "ACCESS_REQUIRED": "Introduza um valor válido do Service Token.",
+    "ACCESS_ERROR": "Não foi possível ligar. Verifique o URL, o Service Token e a política do Cloudflare Access.",
+    "ACCESS_STORAGE_ERROR": "Não foi possível ler o token guardado. Introduza novamente as credenciais ou desative o Cloudflare Access.",
+    "CONNECTING": "A ligar…"
   },
   "LOGIN": {
     "TITLE": "Inicie sessão na sua conta",

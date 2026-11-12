@@ -28,6 +28,7 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from '@/hooks';
 import { preparePlayableAudio } from '@/utils/audioConverter';
 import { iosNeedsConversion } from '@/utils/audioSource';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
 
 // eslint-disable-next-line react/display-name
 export const PlayIcon = React.memo(({ fill, fillOpacity }: IconProps) => {
@@ -65,9 +66,10 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   const [isSoundLoading, setIsSoundLoading] = useState(false);
   const [isAudioPlaying, setAudioPlaying] = useState(false);
-  const [convertedAudioSrc, setConvertedAudioSrc] = useState(audioSrc);
+  const [convertedAudioSrc, setConvertedAudioSrc] = useState('');
   const [hasConversionFailed, setHasConversionFailed] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const media = useCloudflareMedia(audioSrc, retryCount);
 
   const dispatch = useDispatch();
   const currentPlayingAudioSrc = useAppSelector(selectCurrentPlayingAudioSrc);
@@ -94,14 +96,19 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   useEffect(() => {
     let active = true;
-
-    const source = { dataUrl: audioSrc, contentType, extension };
+    if (!media.uri) {
+      setConvertedAudioSrc('');
+      setIsSoundLoading(media.loading);
+      setHasConversionFailed(media.failed);
+      return;
+    }
+    const source = { dataUrl: media.uri, contentType, extension };
 
     const prepareAudio = async () => {
       // Every run starts from the incoming source with no loading or failure state.
       setIsSoundLoading(false);
       setHasConversionFailed(false);
-      setConvertedAudioSrc(audioSrc);
+      setConvertedAudioSrc(media.uri ?? '');
       // Sources the metadata marks as natively playable skip the download.
       // Ogg/WebM and unidentified sources go through preparePlayableAudio.
       if (Platform.OS !== 'ios' || iosNeedsConversion(source) === false) {
@@ -129,9 +136,10 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
     return () => {
       active = false;
     };
-  }, [audioSrc, contentType, extension, retryCount]);
+  }, [media.uri, media.loading, media.failed, contentType, extension, retryCount]);
 
   const togglePlayback = useCallback(() => {
+    if (!convertedAudioSrc || media.loading || media.failed) return;
     if (convertedAudioSrc === currentPlayingAudioSrc) {
       if (isAudioPlaying) {
         pausePlayer();
@@ -141,13 +149,26 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
       setAudioPlaying(!isAudioPlaying);
     } else {
       setIsSoundLoading(true);
-      startPlayer(convertedAudioSrc, audioPlayBackStatus).then(() => {
-        setIsSoundLoading(false);
-        setAudioPlaying(true);
-        dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
-      });
+      startPlayer(convertedAudioSrc, audioPlayBackStatus)
+        .then(() => {
+          setIsSoundLoading(false);
+          setAudioPlaying(true);
+          dispatch(setCurrentPlayingAudioSrc(convertedAudioSrc));
+        })
+        .catch(() => {
+          setIsSoundLoading(false);
+          setHasConversionFailed(true);
+        });
     }
-  }, [convertedAudioSrc, currentPlayingAudioSrc, isAudioPlaying, dispatch, audioPlayBackStatus]);
+  }, [
+    convertedAudioSrc,
+    currentPlayingAudioSrc,
+    isAudioPlaying,
+    dispatch,
+    audioPlayBackStatus,
+    media.loading,
+    media.failed,
+  ]);
 
   const manualSeekTo = useCallback(async (manualSeekPosition: number) => {
     seekTo(manualSeekPosition).then(() => {
@@ -217,7 +238,10 @@ export const AudioBubblePlayer = React.memo((props: AudioPlayerProps) => {
 
   return (
     <View style={tailwind.style('w-full flex flex-row items-center flex-1')}>
-      <Pressable disabled={isSoundLoading} hitSlop={10} onPress={togglePlayback}>
+      <Pressable
+        disabled={isSoundLoading || media.loading || media.failed || !convertedAudioSrc}
+        hitSlop={10}
+        onPress={togglePlayback}>
         {isSoundLoading ? (
           <Animated.View>
             <Spinner size={13} stroke={iconColor} />

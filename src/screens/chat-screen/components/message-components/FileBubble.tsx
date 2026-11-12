@@ -11,6 +11,7 @@ import { Spinner } from '@/components-next/spinner';
 import { MESSAGE_VARIANTS } from '@/constants';
 import { errorMessage } from '@/utils/errorUtils';
 import i18n from '@/i18n';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
 
 const generateUniqueFileName = (url: string, originalFileName: string) => {
   const hash = url.split('').reduce((acc, char) => {
@@ -36,14 +37,17 @@ type FilePreviewProps = Pick<FileBubbleProps, 'fileSrc'> & {
 export const FileBubblePreview = (props: FilePreviewProps) => {
   const tailwind = useTailwind();
   const { fileSrc, fileSize, isComposed = false, variant } = props;
+  const media = useCloudflareMedia(fileSrc);
   const dirs = ReactNativeBlobUtil.fs.dirs;
 
   const [fileDownload, setFileDownload] = useState(false);
+  const [fileFailed, setFileFailed] = useState(false);
   const fileName = fileSrc.split('/')[fileSrc.split('/').length - 1];
-  const uniqueFileName = generateUniqueFileName(fileSrc, fileName);
+  const uniqueFileName = generateUniqueFileName(media.uri ?? fileSrc, fileName);
   const localFilePath = dirs.DocumentDir + `/${uniqueFileName}`;
 
   const previewFile = () => {
+    if (media.loading || media.failed || fileFailed || fileDownload || !media.uri) return;
     try {
       FileViewer.open(localFilePath).catch(e =>
         Alert.alert(i18n.t('CONVERSATION.FILE_PREVIEW_ERROR'), errorMessage(e)),
@@ -54,6 +58,9 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
   };
 
   useEffect(() => {
+    if (!media.uri) return;
+    const resolvedUri = media.uri;
+    let active = true;
     const { fs } = ReactNativeBlobUtil;
 
     const isCachedFileComplete = async () => {
@@ -70,29 +77,43 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
 
     const asyncFileDownload = async () => {
       try {
-        if (await isCachedFileComplete()) {
-          setFileDownload(false);
+        setFileFailed(false);
+        setFileDownload(true);
+        // Protected sources are already safely downloaded. Copy the freshly
+        // resolved file instead of reusing a preview from another token.
+        if (resolvedUri.startsWith('file://')) {
+          if (await fs.exists(localFilePath)) await fs.unlink(localFilePath);
+          await fs.cp(resolvedUri.slice('file://'.length), localFilePath);
           return;
         }
-        setFileDownload(true);
-        await ReactNativeBlobUtil.config({
+        if (await isCachedFileComplete()) return;
+        const response = await ReactNativeBlobUtil.config({
           overwrite: true,
           path: localFilePath,
           fileCache: true,
-        }).fetch('GET', fileSrc);
-      } catch (e) {
+        }).fetch('GET', resolvedUri);
+        if (response.info().status < 200 || response.info().status >= 300) {
+          throw new Error(i18n.t('CONVERSATION.FILE_LOAD_ERROR'));
+        }
+      } catch {
         await fs.unlink(localFilePath).catch(() => {});
-        Alert.alert(i18n.t('CONVERSATION.FILE_LOAD_ERROR'), errorMessage(e));
+        if (active) {
+          setFileFailed(true);
+          Alert.alert(i18n.t('CONVERSATION.FILE_LOAD_ERROR'));
+        }
       } finally {
-        setFileDownload(false);
+        if (active) setFileDownload(false);
       }
     };
     asyncFileDownload();
+    return () => {
+      active = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [media.uri]);
   return (
     <React.Fragment>
-      {fileDownload ? (
+      {fileDownload || media.loading ? (
         <Animated.View style={tailwind.style('pr-1.5')}>
           <Spinner
             size={20}
@@ -119,7 +140,10 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
           />
         </Animated.View>
       )}
-      <Pressable hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }} onPress={previewFile}>
+      <Pressable
+        disabled={fileDownload || media.loading || media.failed || fileFailed || !media.uri}
+        hitSlop={{ top: 8, bottom: 8, left: 4, right: 4 }}
+        onPress={previewFile}>
         <Animated.View style={tailwind.style('relative')}>
           <Animated.Text
             numberOfLines={1}
@@ -134,7 +158,7 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
               ),
               style.androidTextOnlyStyle,
             ]}>
-            {fileName}
+            {media.failed || fileFailed ? i18n.t('CONVERSATION.FILE_LOAD_ERROR') : fileName}
           </Animated.Text>
           <Animated.View
             style={[

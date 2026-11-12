@@ -6,6 +6,7 @@ import { avatarTheme } from '@/theme';
 import { cx } from '@/utils';
 
 import { AvatarProps } from './Avatar';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
 
 interface AvatarImageProps extends Pick<AvatarProps, 'imageProps' | 'src' | 'squared' | 'size'> {
   handleFallback: () => void;
@@ -19,9 +20,17 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
   handleFallback,
 }) => {
   const tailwind = useTailwind();
+  const remoteUri = typeof src === 'object' && 'uri' in src ? src.uri : undefined;
+  const media = useCloudflareMedia(remoteUri);
   const onError = () => {
     handleFallback();
   };
+
+  useEffect(() => {
+    if (media.failed) {
+      handleFallback();
+    }
+  }, [media.failed, handleFallback]);
 
   useEffect(() => {
     if (
@@ -36,7 +45,7 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
 
   return (
     <Image
-      source={src}
+      source={remoteUri ? (media.uri ? { uri: media.uri } : null) : src}
       style={[
         avatarTheme.borderRadius.size[size],
         tailwind.style(cx(avatarTheme.image, !squared ? avatarTheme.circular : '')),

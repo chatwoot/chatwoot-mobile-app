@@ -18,6 +18,7 @@ import { selectQuoteMessage, setQuoteMessage } from '@/store/conversation/sendMe
 import { VideoBubblePlayer } from '../message-components';
 import { Message } from '@/types';
 import { appFont } from '@/theme/appFont';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
 
 const AudioIcon = () => {
   const tailwind = useTailwind();
@@ -42,6 +43,7 @@ const File = () => {
 export const QuoteReply = () => {
   const tailwind = useTailwind();
   const quoteMessage = useAppSelector(selectQuoteMessage);
+  const { uri: thumbnailUri } = useCloudflareMedia(quoteMessage?.attachments?.[0]?.thumbUrl);
   const dispatch = useAppDispatch();
 
   const { messageListRef } = useRefsContext();
@@ -117,7 +119,7 @@ export const QuoteReply = () => {
             <Image
               style={tailwind.style('h-full w-full')}
               contentFit="cover"
-              source={quoteMessage?.attachments[0].thumbUrl}
+              source={thumbnailUri ? { uri: thumbnailUri } : null}
             />
           ) : null}
           {quoteMessage?.attachments?.length > 0 &&

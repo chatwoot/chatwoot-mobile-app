@@ -11,6 +11,8 @@ import { Platform } from 'react-native';
 import { getStore } from '@/store/storeAccessor';
 import I18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
+import { getCloudflareAccessCredentials, loadCloudflareAccess } from './cloudflareAccess';
+import { createCloudflareAccessAdapter } from './cloudflareAccessAdapter';
 
 const nonAccountRoutes = [
   'profile',
@@ -97,6 +99,15 @@ class APIService {
           config.url = `api/v1/accounts/${accountId}/${config.url}`;
         } else if (nonAccountRoutes.includes(config.url || '')) {
           config.url = `api/v1/${config.url}`;
+        }
+        await loadCloudflareAccess();
+        const requestUrl = axios.getUri(config);
+        const accessCredentials = getCloudflareAccessCredentials(requestUrl);
+        if (accessCredentials) {
+          config.adapter = createCloudflareAccessAdapter(
+            new URL(requestUrl).origin,
+            accessCredentials,
+          );
         }
         return {
           ...config,

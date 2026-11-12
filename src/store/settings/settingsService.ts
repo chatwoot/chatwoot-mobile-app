@@ -1,5 +1,11 @@
 import axios from 'axios';
 import { apiService } from '@/services/APIService';
+import {
+  getCloudflareAccessCredentials,
+  loadCloudflareAccess,
+  type CloudflareAccessCredentials,
+} from '@/services/cloudflareAccess';
+import { createCloudflareAccessAdapter } from '@/services/cloudflareAccessAdapter';
 import type {
   NotificationSettings,
   NotificationSettingsPayload,
@@ -9,10 +15,27 @@ import type {
 } from './settingsTypes';
 
 export class SettingsService {
-  static async verifyInstallationUrl(url: string): Promise<boolean> {
+  private static async installationInfo(
+    url: string,
+    credentials?: CloudflareAccessCredentials | null,
+  ) {
+    if (credentials === undefined) await loadCloudflareAccess();
+    const access = credentials === undefined ? getCloudflareAccessCredentials(url) : credentials;
+    return axios.get<{ version: string }>(`${url}api`, {
+      headers: { Accept: 'application/json' },
+      timeout: 15000,
+      ...(access ? { adapter: createCloudflareAccessAdapter(new URL(url).origin, access) } : {}),
+    });
+  }
+
+  static async verifyInstallationUrl(
+    url: string,
+    credentials?: CloudflareAccessCredentials | null,
+  ): Promise<boolean> {
     try {
-      await axios.get(`${url}api`);
-      return true;
+      const response = await this.installationInfo(url, credentials);
+      // Access can redirect to an HTML login page that itself returns HTTP 200.
+      return !!response.data && typeof response.data.version === 'string';
     } catch {
       return false;
     }
@@ -31,7 +54,7 @@ export class SettingsService {
   }
 
   static async getChatwootVersion(installationUrl: string): Promise<{ version: string }> {
-    const response = await axios.get(`${installationUrl}api`);
+    const response = await this.installationInfo(installationUrl);
     return response.data;
   }
 

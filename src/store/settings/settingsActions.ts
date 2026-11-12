@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
 
 import { getMessaging, getToken } from '@react-native-firebase/messaging';
@@ -26,6 +26,14 @@ import { URL_TYPE } from '@/constants/url';
 import { checkValidUrl, extractDomain, handleApiError, buildWebSocketUrl } from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { isUnactionablePushError } from '@/utils/sentryUtils';
+import type { AppThunk } from '@/store';
+import {
+  getCloudflareAccessCredentials,
+  loadCloudflareAccess,
+  saveCloudflareAccess,
+  validateCloudflareAccessCredentials,
+  type CloudflareAccessCredentials,
+} from '@/services/cloudflareAccess';
 
 const createSettingsThunk = <TResponse, TPayload>(
   type: string,
@@ -41,36 +49,67 @@ const createSettingsThunk = <TResponse, TPayload>(
   });
 };
 
+const installationActions = {
+  pending: createAction<string>('settings/setInstallationUrl/pending'),
+  fulfilled: createAction<InstallationUrls>('settings/setInstallationUrl/fulfilled'),
+  rejected: createAction<string>('settings/setInstallationUrl/rejected'),
+};
+
+type InstallationResult =
+  | ReturnType<typeof installationActions.fulfilled>
+  | ReturnType<typeof installationActions.rejected>;
+
 export const settingsActions = {
-  setInstallationUrl: createAsyncThunk<InstallationUrls, string>(
-    'settings/setInstallationUrl',
-    async (url, { rejectWithValue }) => {
-      try {
-        const installationUrl = extractDomain({ url });
-        const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
-        const WEB_SOCKET_URL = buildWebSocketUrl(installationUrl);
+  // A plain thunk keeps credentials in its closure. createAsyncThunk would put
+  // its argument (including the secret) into every lifecycle action's meta.arg.
+  setInstallationUrl: Object.assign(
+    (
+      url: string,
+      credentials?: CloudflareAccessCredentials | null,
+    ): AppThunk<Promise<InstallationResult>> =>
+      async dispatch => {
+        dispatch(installationActions.pending(url));
+        try {
+          const installationUrl = extractDomain({ url });
+          const INSTALLATION_URL = `${URL_TYPE}${installationUrl}/`;
+          const WEB_SOCKET_URL = buildWebSocketUrl(installationUrl);
 
-        if (!checkValidUrl({ url: INSTALLATION_URL })) {
-          throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+          if (!checkValidUrl({ url: INSTALLATION_URL })) {
+            throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
+          }
+
+          // An explicit replacement/removal also lets users recover from a
+          // previously unreadable secure-store entry.
+          await loadCloudflareAccess().catch(error => {
+            if (credentials === undefined) throw error;
+          });
+          const access =
+            credentials === undefined
+              ? getCloudflareAccessCredentials(INSTALLATION_URL)
+              : credentials && validateCloudflareAccessCredentials(credentials);
+          const isValid = await SettingsService.verifyInstallationUrl(INSTALLATION_URL, access);
+
+          if (!isValid) {
+            throw new Error(I18n.t(access ? 'CONFIGURE_URL.ACCESS_ERROR' : 'CONFIGURE_URL.ERROR'));
+          }
+
+          await saveCloudflareAccess(INSTALLATION_URL, access);
+          const action = installationActions.fulfilled({
+            installationUrl: INSTALLATION_URL,
+            webSocketUrl: WEB_SOCKET_URL,
+            baseUrl: installationUrl,
+          });
+          dispatch(action);
+          return action;
+        } catch (error) {
+          const message = error instanceof Error ? error.message : I18n.t('CONFIGURE_URL.ERROR');
+          showToast({ message });
+          const action = installationActions.rejected(message);
+          dispatch(action);
+          return action;
         }
-
-        const isValid = await SettingsService.verifyInstallationUrl(INSTALLATION_URL);
-
-        if (!isValid) {
-          throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
-        }
-
-        return {
-          installationUrl: INSTALLATION_URL,
-          webSocketUrl: WEB_SOCKET_URL,
-          baseUrl: installationUrl,
-        };
-      } catch (error) {
-        const message = error instanceof Error ? error.message : I18n.t('CONFIGURE_URL.ERROR');
-        showToast({ message });
-        return rejectWithValue(message);
-      }
-    },
+      },
+    installationActions,
   ),
 
   getNotificationSettings: createSettingsThunk<NotificationSettings, void>(

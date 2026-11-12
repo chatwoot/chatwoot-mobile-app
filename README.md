@@ -7,6 +7,8 @@
 
 Mobile app for chatwoot platform. Built with React Native and Expo.
 
+For servers protected by Cloudflare Access, see the [service token setup guide](docs/cloudflare-access.md).
+
 <p>
    <a href="https://github.com/react-native-community/releases/blob/master/CHANGELOG.md"><img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/react-native?color=%2361dafb" alt="Project Dependencies"></a>
    <img src="https://img.shields.io/github/package-json/dependency-version/chatwoot/chatwoot-mobile-app/expo?color=%2361dafb" alt="Expo">

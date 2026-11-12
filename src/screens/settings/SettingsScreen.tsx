@@ -1,6 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, Text, Platform, Pressable, ScrollView } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { useTailwind } from '@/theme/useTailwind';
+import { useCallback, useEffect, useState, useRef } from 'react';
+import {
+  StatusBar,
+  Text,
+  Platform,
+  Pressable,
+  ScrollView,
+  View,
+  useWindowDimensions,
+} from 'react-native';
+import Animated, { SlideInRight, SlideOutRight } from 'react-native-reanimated';
 // import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StackActions, useNavigation } from '@react-navigation/native';
@@ -17,7 +26,6 @@ import { RecentSearches } from '@/screens/search/utils/recentSearches';
 import i18n from 'i18n';
 import { HELP_URL } from '@/constants/url';
 import { openURL } from '@/utils/urlUtils';
-import { tailwind } from '@/theme';
 
 import {
   BottomSheetHeader,
@@ -28,19 +36,41 @@ import {
   SwitchAccount,
   SettingsList,
 } from '@/components-next';
+import { AppearancePicker } from './components/AppearancePicker';
+import { Theme } from '@/types/common/Theme';
+import { selectTheme } from '@/store/settings/settingsSelectors';
+import { SheetRef } from '@/components-next/common/sheet/Sheet';
 import { Sheet } from '@/components-next/common/sheet/Sheet';
 import { UserAvatar } from './components/UserAvatar';
 
 import { LANGUAGES } from '@/constants';
 import { useRefsContext } from '@/context';
-import { ChatwootIcon, NotificationIcon, SwitchIcon, TranslateIcon } from '@/svg-icons';
+import {
+  AppearanceIcon,
+  ChatIcon,
+  ChatwootIcon,
+  NotificationIcon,
+  PhoneOutlineIcon,
+  SwitchIcon,
+  TranslateIcon,
+} from '@/svg-icons';
 import { GenericListType } from '@/types';
 
-import { useHaptic, useTabBarHeight } from '@/utils';
+import {
+  IOS_DESIGN,
+  useHaptic,
+  useIsSplitLayout,
+  useSideTabBarLayout,
+  useTabBarHeight,
+} from '@/utils';
+import { HeaderSpacer, ScrollEdgeHeader, useScrollEdge } from '@/components-next/side-toolbar';
 import { SettingsHeader } from './SettingsHeader';
 import { DebugActions } from './components/DebugActions';
+import { WorkPausedNote } from './components/WorkPausedNote';
+import { useWorkPreferences } from './hooks/useWorkPreferences';
 import {
   selectCurrentUserAvailability,
+  selectSupportsWorkPreferences,
   selectUser,
   selectAccounts,
 } from '@/store/auth/authSelectors';
@@ -58,7 +88,15 @@ import AnalyticsHelper from '@/utils/analyticsUtils';
 import { PROFILE_EVENTS } from '@/constants/analyticsEvents';
 import { getUserPermissions } from '@/utils/permissionUtils';
 import { CONVERSATION_PERMISSIONS } from '@/constants/permissions';
+import { selectAllInboxes } from '@/store/inbox/inboxSelectors';
+import { isVoiceCallEnabled } from '@/utils/inboxUtils';
 import { useAppDispatch, useAppSelector } from '@/hooks';
+import { showToast } from '@/utils/toastUtils';
+import { PaneHeader } from '@/navigation/split/PaneHeader';
+import { PageHeader } from '@/navigation/split/PageHeader';
+import { SwipeBackPage } from '@/navigation/split/SwipeBackPage';
+import { getVoipToken } from '@/services/voice/chatwootCalls';
+import { callActions } from '@/store/call/callActions';
 
 const appName = Application.applicationName;
 const appVersion = Application.nativeApplicationVersion;
@@ -66,12 +104,39 @@ const appVersion = Application.nativeApplicationVersion;
 const buildNumber = Application.nativeBuildVersion;
 const appVersionDetails = buildNumber ? `${appVersion} (${buildNumber})` : appVersion;
 
+type SettingsPane = 'availability' | 'notifications' | 'language' | 'account' | 'appearance';
+
 const SettingsScreen = () => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
+  const appearance = useAppSelector(selectTheme) ?? 'system';
+  const appearanceSheetRef = useRef<SheetRef>(null);
+  const isSplit = useIsSplitLayout();
+  const { width } = useWindowDimensions();
+  const [pane, setPane] = useState<SettingsPane>('availability');
+  const [iosPage, setIosPage] = useState<SettingsPane | null>(null);
+  const openPane = (next: SettingsPane, openSheetInstead: () => void) => () => {
+    if (isSplit) {
+      hapticSelection?.();
+      setPane(next);
+    } else if (IOS_DESIGN) {
+      hapticSelection?.();
+      setIosPage(next);
+    } else {
+      openSheetInstead();
+    }
+  };
   const dispatch = useAppDispatch();
   const tabBarHeight = useTabBarHeight();
-  const availabilityStatus =
+  const sideTabBar = useSideTabBarLayout();
+  const hasOverlayHeader = IOS_DESIGN || sideTabBar !== null;
+  const scrollEdge = useScrollEdge();
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const pageBackground = IOS_DESIGN && !isSplit ? 'bg-gray-50' : 'bg-white';
+  const savedAvailabilityStatus =
     (useSelector(selectCurrentUserAvailability) as AvailabilityStatus) || 'offline';
+  const [pendingAvailability, setPendingAvailability] = useState<AvailabilityStatus | null>(null);
+  const availabilityStatus = pendingAvailability ?? savedAvailabilityStatus;
 
   // const { bottom } = useSafeAreaInsets();
 
@@ -116,6 +181,15 @@ const SettingsScreen = () => {
   };
 
   const isChatwootCloud = useAppSelector(selectIsChatwootCloud);
+  const hasVoiceInbox = useAppSelector(state => selectAllInboxes(state).some(isVoiceCallEnabled));
+  const supportsWorkPreferences = useAppSelector(selectSupportsWorkPreferences);
+  const showWorkPreferences = hasVoiceInbox && supportsWorkPreferences;
+  const isOnline = availabilityStatus === 'online';
+  const {
+    preferences: workPreferences,
+    isLocked: isWorkPreferenceLocked,
+    toggle: toggleWorkPreference,
+  } = useWorkPreferences();
 
   const chatwootInstance = isChatwootCloud ? `${appName} cloud` : `${appName} self-hosted`;
 
@@ -149,9 +223,13 @@ const SettingsScreen = () => {
       to: updatedStatus,
     });
     const payload = { profile: { availability: updatedStatus, account_id: activeAccountId } };
+    setPendingAvailability(updatedStatus as AvailabilityStatus);
     // TODO: Fix this later
     // @ts-expect-error TODO: Fix typing for dispatch
-    dispatch(authActions.updateAvailability(payload));
+    dispatch(authActions.updateAvailability(payload))
+      .unwrap()
+      .catch(() => showToast({ message: i18n.t('SETTINGS.AVAILABILITY_ERROR') }))
+      .finally(() => setPendingAvailability(null));
   };
 
   const onChangeLanguage = (locale: string) => {
@@ -159,7 +237,7 @@ const SettingsScreen = () => {
   };
 
   const changeAccount = (accountId: number) => {
-    switchAccount(dispatch, accountId);
+    if (!switchAccount(dispatch, accountId)) return;
     navigation.dispatch(StackActions.replace('Tab'));
   };
 
@@ -186,20 +264,55 @@ const SettingsScreen = () => {
   // };
 
   const onClickLogout = useCallback(async () => {
+    // Server hangup requires the current session.
+    await dispatch(callActions.endLocalCalls()).catch(() => {});
     await AsyncStorage.removeItem('cwCookie');
     await RecentSearches.clearAll();
     await dispatch(settingsActions.removeDevice({ pushToken }));
+    const voipToken = getVoipToken();
+    if (voipToken) await dispatch(settingsActions.removeDevice({ pushToken: voipToken }));
     dispatch(logout());
   }, [dispatch, pushToken]);
+
+  const availabilityList: GenericListType[] = [
+    {
+      hasChevron: true,
+      title: i18n.t('SETTINGS.STATUS'),
+      icon: <SwitchIcon />,
+      subtitle: i18n.t(`AVAILABILITY.${availabilityStatus.toUpperCase()}`),
+      subtitleType: 'light',
+      isSelected: isSplit && pane === 'availability',
+      onPressListItem: openPane('availability', openSheet),
+    },
+    {
+      title: i18n.t('SETTINGS.RECEIVE_CONVERSATIONS'),
+      icon: <ChatIcon />,
+      checked: workPreferences.accepts_conversations,
+      disabled: !showWorkPreferences,
+      inactive: !isOnline,
+      locked: isWorkPreferenceLocked('accepts_conversations'),
+      onPressListItem: () => toggleWorkPreference('accepts_conversations'),
+    },
+    {
+      title: i18n.t('SETTINGS.RECEIVE_VOICE_CALLS'),
+      icon: <PhoneOutlineIcon stroke="#858585" />,
+      checked: workPreferences.accepts_calls,
+      disabled: !showWorkPreferences,
+      inactive: !isOnline,
+      locked: isWorkPreferenceLocked('accepts_calls'),
+      onPressListItem: () => toggleWorkPreference('accepts_calls'),
+    },
+  ];
 
   const preferencesList: GenericListType[] = [
     {
       hasChevron: true,
-      title: i18n.t('SETTINGS.CHANGE_AVAILABILITY'),
-      icon: <SwitchIcon />,
-      subtitle: '',
+      title: i18n.t('SETTINGS.APPEARANCE'),
+      icon: <AppearanceIcon />,
+      subtitle: i18n.t(`SETTINGS.APPEARANCE_${(appearance as Theme).toUpperCase()}`),
       subtitleType: 'light',
-      onPressListItem: () => openSheet(),
+      isSelected: isSplit && pane === 'appearance',
+      onPressListItem: openPane('appearance', () => appearanceSheetRef.current?.present()),
     },
     {
       hasChevron: true,
@@ -208,7 +321,10 @@ const SettingsScreen = () => {
       subtitle: '',
       subtitleType: 'light',
       disabled: !hasConversationPermission,
-      onPressListItem: () => notificationPreferencesSheetRef.current?.present(),
+      isSelected: isSplit && pane === 'notifications',
+      onPressListItem: openPane('notifications', () =>
+        notificationPreferencesSheetRef.current?.present(),
+      ),
       // onPressListItem: openSystemSettings,
     },
     {
@@ -217,7 +333,8 @@ const SettingsScreen = () => {
       icon: <TranslateIcon />,
       subtitle: LANGUAGES[activeLocale as keyof typeof LANGUAGES],
       subtitleType: 'light',
-      onPressListItem: () => languagesModalSheetRef.current?.present(),
+      isSelected: isSplit && pane === 'language',
+      onPressListItem: openPane('language', () => languagesModalSheetRef.current?.present()),
     },
     {
       hasChevron: enableAccountSwitch,
@@ -225,9 +342,10 @@ const SettingsScreen = () => {
       icon: <SwitchIcon />,
       subtitle: activeAccountName,
       subtitleType: 'light',
+      isSelected: isSplit && pane === 'account',
       onPressListItem: () => {
         if (enableAccountSwitch) {
-          switchAccountSheetRef.current?.present();
+          openPane('account', () => switchAccountSheetRef.current?.present())();
         }
       },
     },
@@ -252,25 +370,38 @@ const SettingsScreen = () => {
     },
   ];
 
-  return (
-    <SafeAreaView style={tailwind.style('flex-1 bg-white font-inter-normal-20')}>
+  const listContent = (
+    <SafeAreaView
+      edges={
+        hasOverlayHeader
+          ? isSplit
+            ? ['left', 'bottom']
+            : ['left', 'right', 'bottom']
+          : isSplit
+            ? ['top', 'left', 'bottom']
+            : undefined
+      }
+      style={tailwind.style('flex-1 font-inter-normal-20', pageBackground)}>
       <StatusBar
         translucent
         backgroundColor={tailwind.color('bg-white')}
-        barStyle={'dark-content'}
+        barStyle={tailwind.isDark ? 'light-content' : 'dark-content'}
       />
-      <SettingsHeader />
+      {hasOverlayHeader ? null : <SettingsHeader />}
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
+        onScroll={hasOverlayHeader ? scrollEdge.onScroll : undefined}
+        scrollEventThrottle={16}
+        scrollIndicatorInsets={hasOverlayHeader ? { top: headerHeight } : undefined}
         contentContainerStyle={tailwind.style(`pb-[${tabBarHeight - 1}px]`)}>
+        {hasOverlayHeader ? <HeaderSpacer height={headerHeight} /> : null}
         <Animated.View style={tailwind.style('flex justify-center items-center pt-4 gap-4')}>
-          <Animated.View>
-            <UserAvatar src={avatarUrl} name={name} status={availabilityStatus} />
-            <Animated.View
-              style={tailwind.style(
-                'absolute border-[2px] border-white rounded-full -bottom-[2px] right-[10px]',
-              )}></Animated.View>
-          </Animated.View>
+          <UserAvatar
+            src={avatarUrl}
+            name={name}
+            status={availabilityStatus}
+            parentsBackground={pageBackground}
+          />
           <Animated.View style={tailwind.style('flex flex-col items-center gap-1')}>
             <Animated.Text style={tailwind.style('text-[22px] font-inter-580-24 text-gray-950')}>
               {name}
@@ -282,6 +413,10 @@ const SettingsScreen = () => {
               {email}
             </Animated.Text>
           </Animated.View>
+        </Animated.View>
+        <Animated.View style={tailwind.style('pt-6')}>
+          <SettingsList sectionTitle={i18n.t('SETTINGS.AVAILABILITY')} list={availabilityList} />
+          {showWorkPreferences && !isOnline && <WorkPausedNote />}
         </Animated.View>
         <Animated.View style={tailwind.style('pt-6')}>
           <SettingsList sectionTitle={i18n.t('SETTINGS.PREFERENCES')} list={preferencesList} />
@@ -305,6 +440,19 @@ const SettingsScreen = () => {
           </Text>
         </Pressable>
       </Animated.ScrollView>
+      {hasOverlayHeader ? (
+        <ScrollEdgeHeader
+          scrollY={scrollEdge.scrollY}
+          onHeightChange={setHeaderHeight}
+          insetSides={!isSplit}
+          background={pageBackground}>
+          <SettingsHeader />
+        </ScrollEdgeHeader>
+      ) : null}
+      <Sheet ref={appearanceSheetRef} autoSize>
+        <BottomSheetHeader headerText={i18n.t('SETTINGS.APPEARANCE')} />
+        <AppearancePicker />
+      </Sheet>
       <Sheet ref={userAvailabilityStatusSheetRef} height={190}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SET_AVAILABILITY')} />
         <AvailabilityStatusList
@@ -318,9 +466,11 @@ const SettingsScreen = () => {
           <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
         </ScrollView>
       </Sheet>
-      <Sheet ref={notificationPreferencesSheetRef} detents={[0.52]}>
-        <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
-        <NotificationPreferences />
+      <Sheet ref={notificationPreferencesSheetRef} detents={[0.7]} scrollable>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <BottomSheetHeader headerText={i18n.t('SETTINGS.NOTIFICATION_PREFERENCES')} />
+          <NotificationPreferences />
+        </ScrollView>
       </Sheet>
       <Sheet ref={switchAccountSheetRef} detents={[0.5]}>
         <BottomSheetHeader headerText={i18n.t('SETTINGS.SWITCH_ACCOUNT')} />
@@ -348,6 +498,84 @@ const SettingsScreen = () => {
           />
         )}
     </SafeAreaView>
+  );
+
+  const titleFor = (p: SettingsPane) =>
+    ({
+      appearance: i18n.t('SETTINGS.APPEARANCE'),
+      availability: i18n.t('SETTINGS.SET_AVAILABILITY'),
+      notifications: i18n.t('SETTINGS.NOTIFICATION_PREFERENCES'),
+      language: i18n.t('SETTINGS.SET_LANGUAGE'),
+      account: i18n.t('SETTINGS.SWITCH_ACCOUNT'),
+    })[p];
+
+  const renderPaneCard = (p: SettingsPane) => (
+    <View style={tailwind.style('rounded-[13px] bg-white overflow-hidden')}>
+      {p === 'appearance' ? <AppearancePicker /> : null}
+      {p === 'availability' ? (
+        <AvailabilityStatusList
+          changeAvailabilityStatus={changeAvailabilityStatus}
+          availabilityStatus={availabilityStatus}
+        />
+      ) : null}
+      {p === 'notifications' ? <NotificationPreferences /> : null}
+      {p === 'language' ? (
+        <LanguageList onChangeLanguage={onChangeLanguage} currentLanguage={activeLocale} />
+      ) : null}
+      {p === 'account' ? (
+        <SwitchAccount
+          currentAccountId={activeAccountId}
+          changeAccount={changeAccount}
+          accounts={accounts}
+        />
+      ) : null}
+    </View>
+  );
+
+  // One tree so folding doesn't remount.
+  return (
+    <View style={tailwind.style('flex-1 flex-row bg-white')}>
+      <View
+        style={
+          isSplit ? { width: Math.max(320, Math.round(width * 0.4)) } : tailwind.style('flex-1')
+        }>
+        {listContent}
+      </View>
+      {isSplit ? (
+        <>
+          <View style={tailwind.style('w-[1px] bg-blackA-A3')} />
+          <SafeAreaView
+            edges={['top', 'right', 'bottom']}
+            style={tailwind.style('flex-1 bg-gray-50')}>
+            <PaneHeader title={titleFor(pane)} />
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+              {renderPaneCard(pane)}
+            </ScrollView>
+          </SafeAreaView>
+        </>
+      ) : null}
+      {!isSplit && IOS_DESIGN && iosPage ? (
+        <Animated.View
+          entering={SlideInRight.duration(280)}
+          exiting={SlideOutRight.duration(240)}
+          style={tailwind.style('absolute inset-0')}>
+          <SwipeBackPage
+            onBack={() => setIosPage(null)}
+            style={tailwind.style('flex-1 bg-gray-50')}>
+            <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1')}>
+              <PageHeader title={titleFor(iosPage)} onBack={() => setIosPage(null)} />
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={tailwind.style('px-4 pt-2', `pb-[${tabBarHeight}px]`)}>
+                {renderPaneCard(iosPage)}
+              </ScrollView>
+            </SafeAreaView>
+          </SwipeBackPage>
+        </Animated.View>
+      ) : null}
+    </View>
   );
 };
 

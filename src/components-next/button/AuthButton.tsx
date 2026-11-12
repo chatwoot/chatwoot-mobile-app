@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Icon } from '../common/icon/Icon';
 
 type AuthButtonProps = {
@@ -11,7 +11,7 @@ type AuthButtonProps = {
   handlePress?: () => void;
   disabled?: boolean;
   variant?: 'outline' | 'filled';
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const AuthButton = ({
@@ -22,6 +22,7 @@ export const AuthButton = ({
   variant = 'outline',
   style,
 }: AuthButtonProps) => {
+  const tailwind = useTailwind();
   const getButtonStyles = () => {
     const baseStyles = 'py-[11px] flex-row items-center justify-center rounded-[13px]';
     const variantStyles = variant === 'filled' ? 'bg-blue-800' : 'bg-gray-50';

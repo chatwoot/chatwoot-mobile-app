@@ -1,0 +1,55 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+  <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+  <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
+
+  <application>
+    <!-- Handle call pushes before JavaScript starts. -->
+    <service
+      android:name="com.chatwoot.calls.CallMessagingService"
+      android:exported="false"
+      tools:node="merge">
+      <intent-filter android:priority="1">
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
+
+    <receiver
+      android:name="com.chatwoot.calls.CallActionReceiver"
+      android:exported="false" />
+
+    <service
+      android:name="com.chatwoot.calls.OngoingCallService"
+      android:exported="false"
+      android:foregroundServiceType="microphone" />
+
+    <service
+      android:name="com.chatwoot.calls.CallSessionService"
+      android:exported="false" />
+
+    <activity
+      android:name="com.chatwoot.calls.CallAnswerActivity"
+      android:exported="false"
+      android:excludeFromRecents="true"
+      android:noHistory="true"
+      android:showWhenLocked="true"
+      android:taskAffinity=".CallAnswer"
+      android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+    <activity
+      android:name="com.chatwoot.calls.IncomingCallActivity"
+      android:exported="false"
+      android:launchMode="singleInstance"
+      android:excludeFromRecents="true"
+      android:showOnLockScreen="true"
+      android:showWhenLocked="true"
+      android:turnScreenOn="true"
+      android:taskAffinity=".IncomingCall"
+      android:screenOrientation="portrait"
+      android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|uiMode|density|fontScale|locale|layoutDirection"
+      android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+  </application>
+</manifest>

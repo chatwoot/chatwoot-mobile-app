@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { ActivityIndicator, Pressable, TextInput, TextInputProps } from 'react-native';
 import Animated, { withTiming } from 'react-native-reanimated';
 
 import { CloseIcon, SearchIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { RenderPropType } from '@/types';
 import { Icon } from '../icon';
 
@@ -14,6 +14,7 @@ interface SearchBarProps extends TextInputProps {
 }
 
 export const SearchBar = (props: SearchBarProps) => {
+  const tailwind = useTailwind();
   const { isLoading = false, prefix, onClear, value, ...otherProps } = props;
 
   // Row Exit Animation

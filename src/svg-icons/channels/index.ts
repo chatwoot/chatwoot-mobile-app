@@ -4,3 +4,4 @@ export * from './Website';
 export * from './WhatsApp';
 export * from './X';
 export * from './Mail';
+export * from './Tiktok';

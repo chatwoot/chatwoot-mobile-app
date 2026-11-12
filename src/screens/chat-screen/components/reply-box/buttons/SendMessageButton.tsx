@@ -1,16 +1,17 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 import { Pressable } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { SendIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
 import { useAppSelector } from '@/hooks';
 import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
 import { SendMessageButtonProps } from '../types';
 import { sendIconEnterAnimation, sendIconExitAnimation } from '@/utils/customAnimations';
 
 export const SendMessageButton = (props: SendMessageButtonProps) => {
+  const tailwind = useTailwind();
   const { disabled, variant, ...restProps } = props;
   const { animatedStyle, handlers } = useScaleAnimation();
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
@@ -30,7 +31,10 @@ export const SendMessageButton = (props: SendMessageButtonProps) => {
         layout={LinearTransition.springify().mass(1).damping(15).stiffness(105)}
         entering={sendIconEnterAnimation}
         exiting={sendIconExitAnimation}
-        style={[tailwind.style('flex items-center justify-center h-10 w-10'), disabled ? {} : animatedStyle]}>
+        style={[
+          tailwind.style('flex items-center justify-center h-10 w-10'),
+          disabled ? {} : animatedStyle,
+        ]}>
         <Animated.View
           style={tailwind.style(
             'flex items-center justify-center h-7 w-7 rounded-full',

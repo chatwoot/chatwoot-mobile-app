@@ -24,6 +24,7 @@ import type {
   ToggleConversationStatusResponse,
   SendMessageAPIResponse,
   SendMessagePayload,
+  AttachmentFile,
   TogglePriorityPayload,
   TranslateMessagePayload,
   TranslateMessageAPIResponse,
@@ -160,7 +161,7 @@ export const conversationActions = {
         if (hasMessageFailedWithExternalError(failedMessage)) {
           response = await ConversationService.retryMessage({ conversationId, messageId: id });
         } else {
-          const storedMessage = failedMessage as unknown as PendingMessage & { file?: File };
+          const storedMessage = failedMessage as unknown as PendingMessage & { file?: AttachmentFile };
           // Messages stored before multiple attachments were supported carry a single `file`
           const { file: legacyFile, ...rest } = storedMessage;
           const pendingMessage: PendingMessage =
@@ -324,7 +325,11 @@ export const conversationActions = {
     },
   ),
   translateMessage: createAsyncThunk<
-    TranslateMessageAPIResponse & { conversationId: number; messageId: number; targetLanguage: string },
+    TranslateMessageAPIResponse & {
+      conversationId: number;
+      messageId: number;
+      targetLanguage: string;
+    },
     TranslateMessagePayload
   >('conversations/translateMessage', async (payload, { rejectWithValue }) => {
     try {

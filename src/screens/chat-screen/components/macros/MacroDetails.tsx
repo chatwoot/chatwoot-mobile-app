@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -5,9 +6,9 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { Icon, Spinner } from '@/components-next';
 import i18n from '@/i18n';
 import { ChevronLeft } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Agent, Macro } from '@/types';
 import { useHaptic, useScaleAnimation } from '@/utils';
+import { expandTabs } from '@/utils/expandTabs';
 import { useAppSelector } from '@/hooks';
 import { selectAllLabels } from '@/store/label/labelSelectors';
 import { selectAllTeams } from '@/store/team/teamSelectors';
@@ -28,6 +29,7 @@ type MacroDetailsProps = {
 };
 
 const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
   const labels = useAppSelector(selectAllLabels);
   const teams = useAppSelector(selectAllTeams);
@@ -81,9 +83,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
       <View style={tailwind.style('flex-row items-center p-4')}>
         <Pressable onPress={onBack} style={tailwind.style('flex-1 flex-row items-center')}>
           <Icon icon={<ChevronLeft />} size={18} style={tailwind.style('mr-1')} />
-          <Animated.Text
-            style={tailwind.style('flex-1 text-base text-gray-950')}
-            numberOfLines={1}>
+          <Animated.Text style={tailwind.style('flex-1 text-base text-gray-950')} numberOfLines={1}>
             {macro.name}
           </Animated.Text>
         </Pressable>
@@ -129,7 +129,7 @@ const MacroDetails = ({ macro, onBack, onClose }: MacroDetailsProps) => {
                 {action.actionName}
               </Animated.Text>
               <Animated.Text style={tailwind.style('text-sm text-gray-900')}>
-                {action.actionValue}
+                {expandTabs(String(action.actionValue))}
               </Animated.Text>
             </View>
           ))}

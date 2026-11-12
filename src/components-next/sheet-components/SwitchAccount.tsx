@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, Text, Animated, View } from 'react-native';
 
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common/icon';
 import { Account } from '@/types';
@@ -22,6 +22,7 @@ const AccountCell = ({
   changeAccount,
   isLastItem,
 }: AccountCellProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
 
   const handlePress = () => {
@@ -68,17 +69,20 @@ export const SwitchAccount = ({
   currentAccountId: number | undefined;
   changeAccount: (accountId: number) => void;
   accounts: Account[];
-}) => (
-  <Animated.View style={tailwind.style('py-1 pl-3')}>
-    {accounts.map((item, index) => (
-      <AccountCell
-        key={item.name}
-        item={item}
-        index={index}
-        currentAccountId={currentAccountId}
-        changeAccount={changeAccount}
-        isLastItem={index === accounts.length - 1}
-      />
-    ))}
-  </Animated.View>
-);
+}) => {
+  const tailwind = useTailwind();
+  return (
+    <Animated.View style={tailwind.style('py-1 pl-3')}>
+      {accounts.map((item, index) => (
+        <AccountCell
+          key={item.name}
+          item={item}
+          index={index}
+          currentAccountId={currentAccountId}
+          changeAccount={changeAccount}
+          isLastItem={index === accounts.length - 1}
+        />
+      ))}
+    </Animated.View>
+  );
+};

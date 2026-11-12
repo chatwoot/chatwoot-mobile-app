@@ -1,6 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { forwardRef, useCallback } from 'react';
-import { Dimensions, Platform, Pressable, StyleSheet } from 'react-native';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   Extrapolation,
@@ -19,11 +20,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { AnimatedNativeView } from '@/components-next/native-components';
-
-const WIDTH = Dimensions.get('screen').width;
+import { useContainerWidth } from '@/context';
 
 const SNAP_POINT = 96;
 const FRICTION = 10;
@@ -108,6 +107,8 @@ export type SwipeableProps = {
 
 // eslint-disable-next-line react/display-name
 export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
+  const tailwind = useTailwind();
+  const WIDTH = useContainerWidth();
   const {
     children,
     openedRowIndex,
@@ -134,6 +135,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
   const isGestureActive = useSharedValue(false);
 
   const maxTranslation = WIDTH * 0.6;
+  const cellBackground = tailwind.color('bg-white') as string;
   const tappedBgStyle = tailwind.color('bg-gray-200') as string;
   const maxSnapPointLeft = -maxTranslation;
   const maxSnapPointRight = maxTranslation;
@@ -429,7 +431,7 @@ export const Swipeable = forwardRef((props: SwipeableProps, _ref) => {
 
   const tappedCellStyle = useAnimatedStyle(() => {
     return {
-      backgroundColor: interpolateColor(isTapped.value, [0, 1], ['white', tappedBgStyle]),
+      backgroundColor: interpolateColor(isTapped.value, [0, 1], [cellBackground, tappedBgStyle]),
     };
   });
 

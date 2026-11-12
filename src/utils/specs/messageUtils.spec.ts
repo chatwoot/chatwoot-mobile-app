@@ -6,7 +6,7 @@ import {
   splitMessagePerAttachment,
 } from '@/utils/messageUtils';
 import { MESSAGE_STATUS, MESSAGE_TYPES, SENDER_TYPES } from '@/constants';
-import type { SendMessagePayload } from '@/store/conversation/conversationTypes';
+import type { AttachmentFile, SendMessagePayload } from '@/store/conversation/conversationTypes';
 import type { Message } from '@/types';
 
 const NOW = new Date(Date.UTC(2026, 0, 10, 12, 0, 0));
@@ -23,8 +23,11 @@ const buildMessage = (overrides: Partial<Message> = {}): Message =>
     ...overrides,
   }) as unknown as Message;
 
-const photo = (name: string) =>
-  ({ uri: `file:///tmp/${name}`, fileName: name, type: 'image/jpeg' }) as unknown as File;
+const photo = (name: string): AttachmentFile => ({
+  uri: `file:///tmp/${name}`,
+  fileName: name,
+  type: 'image/jpeg',
+});
 
 const basePayload = (overrides: Partial<SendMessagePayload> = {}): SendMessagePayload => ({
   conversationId: 1,

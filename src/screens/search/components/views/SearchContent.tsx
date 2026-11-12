@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { FlashListRef } from '@shopify/flash-list';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import type { TabType } from '../../hooks/useSearchScreen';
@@ -11,6 +11,7 @@ import { RecentSearchesView } from './RecentSearchesView';
 import { AllResultsView } from './AllResultsView';
 import { SearchResultsList } from './SearchResultsList';
 import { SearchEmptyState } from '../shared/SearchEmptyState';
+import { IOS_DESIGN } from '@/utils';
 import i18n from 'i18n';
 
 interface SearchContentProps {
@@ -34,7 +35,7 @@ interface SearchContentProps {
   expandedSections: Record<SearchSectionType, boolean>;
   searchQuery: string;
   allSectionsData: Record<SearchSectionType, SearchItem[]>;
-  listRefs: Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem>>>;
+  listRefs: Record<SearchSectionType, React.RefObject<FlashListRef<SearchItem> | null>>;
   getItemsToShow: (items: SearchItem[], sectionId: SearchSectionType) => SearchItem[];
   onRecentSearchSelect: (query: string) => void;
   onClearRecentSearches: () => void;
@@ -68,6 +69,7 @@ export function SearchContent({
   onEndReached,
   renderItem,
 }: SearchContentProps) {
+  const tailwind = useTailwind();
   if (searchText.trim().length < 2) {
     return (
       <View style={tailwind.style('flex-1')}>
@@ -78,10 +80,16 @@ export function SearchContent({
             onClear={onClearRecentSearches}
           />
         )}
-        <View style={tailwind.style('flex-1 items-center justify-center px-4')}>
+        <View
+          style={tailwind.style(
+            'flex-1 items-center justify-center',
+            IOS_DESIGN ? 'px-8' : 'px-4',
+          )}>
           <Text
             style={tailwind.style(
-              'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-700 text-center',
+              IOS_DESIGN
+                ? 'max-w-[400px] text-[15px] leading-[20px] font-inter-normal-20 text-gray-700 text-center'
+                : 'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-700 text-center',
             )}>
             {i18n.t('SEARCH.HINT')}
           </Text>

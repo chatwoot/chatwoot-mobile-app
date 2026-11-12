@@ -192,7 +192,7 @@ describe('conversationActions.sendMessage', () => {
       files: [
         { uri: 'file:///tmp/a.jpg', fileName: 'a.jpg', type: 'image/jpeg' },
         { uri: 'file:///tmp/b.jpg', fileName: 'b.jpg', type: 'image/jpeg' },
-      ] as unknown as File[],
+      ],
     });
     await thunk(dispatch, () => ({}), undefined);
 

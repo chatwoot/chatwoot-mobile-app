@@ -1,6 +1,7 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   NativeSyntheticEvent,
+  Platform,
   Text,
   TextInput,
   TextInputSelectionChangeEventData,
@@ -29,6 +30,18 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
 
     const { plainText, parts } = useMemo(() => parseValue(value, partTypes), [value, partTypes]);
 
+    const lastNativeText = useRef(plainText);
+    const [contentKey, setContentKey] = useState(0);
+
+    // Re-measures iOS height after JS edits
+    useLayoutEffect(() => {
+      if (Platform.OS !== 'ios' || plainText === lastNativeText.current) {
+        return;
+      }
+      lastNativeText.current = plainText;
+      setContentKey(key => key + 1);
+    }, [plainText]);
+
     const handleSelectionChange = (
       event: NativeSyntheticEvent<TextInputSelectionChangeEventData>,
     ) => {
@@ -43,6 +56,7 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
      * @param changedText
      */
     const onChangeInput = (changedText: string) => {
+      lastNativeText.current = changedText;
       onChange(generateValueFromPartsAndChangedText(parts, plainText, changedText));
     };
 
@@ -124,7 +138,7 @@ const MentionInput = React.forwardRef<TextInput, MentionInputProps>(
           ref={handleTextInputRef}
           onChangeText={onChangeInput}
           onSelectionChange={handleSelectionChange}>
-          <Text>
+          <Text key={contentKey}>
             {parts.map(({ text, partType, data }, index) =>
               partType ? (
                 <Text

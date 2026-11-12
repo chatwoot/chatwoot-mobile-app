@@ -1,4 +1,4 @@
-module.exports = {
+const darkColors: Record<string, Record<string, string>> = {
   grayDark: {
     50: 'hsl(0, 0%, 10.5%)',
     100: 'hsl(0, 0%, 15.8%)',
@@ -867,3 +867,5 @@ module.exports = {
     950: 'hsla(30, 100%, 88.0%, 1)',
   },
 };
+
+export default darkColors;

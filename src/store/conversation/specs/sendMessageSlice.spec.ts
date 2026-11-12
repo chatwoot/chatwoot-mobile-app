@@ -11,12 +11,15 @@ import { Asset } from 'react-native-image-picker';
 import { Message } from '@/types';
 import { RootState } from '@/store';
 
+const emptyState = sendMessageReducer(undefined, { type: '' });
+
 const buildRootState = (sendMessage: Partial<SendMessageState>) =>
   ({ sendMessage }) as unknown as RootState;
 
 describe('sendMessage reducer', () => {
   it('should return initial state', () => {
     expect(sendMessageReducer(undefined, { type: '' })).toEqual({
+      emailDraft: { conversationId: null, sourceMessageId: null, to: '', cc: '', bcc: '' },
       drafts: {},
       isPrivateMessage: false,
       attachments: [],
@@ -44,6 +47,7 @@ describe('sendMessage reducer', () => {
 
     it('drops the draft when the content is cleared', () => {
       const initialState: SendMessageState = {
+        ...emptyState,
         drafts: { 1: 'Draft A', 2: 'Draft B' },
         isPrivateMessage: false,
         attachments: [],
@@ -78,6 +82,7 @@ describe('sendMessage reducer', () => {
   describe('resetSentMessage', () => {
     it('clears only the sent conversation draft along with quote and attachments', () => {
       const initialState: SendMessageState = {
+        ...emptyState,
         drafts: { 1: 'Draft A', 2: 'Draft B' },
         isPrivateMessage: false,
         attachments: [{ uri: 'file://photo.jpg' } as Asset],

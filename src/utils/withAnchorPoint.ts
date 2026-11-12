@@ -1,5 +1,7 @@
 import type { TransformsStyle } from 'react-native';
 
+type Transform = Exclude<TransformsStyle['transform'], string | undefined>[number];
+
 export interface Point {
   x: number;
   y: number;
@@ -23,13 +25,15 @@ export const withAnchorPoint = (transform: TransformsStyle, anchorPoint: Point, 
     return transform;
   }
 
-  let injectedTransform = transform.transform;
-  if (!injectedTransform) {
+  const { transform: initialTransform } = transform;
+  if (!initialTransform || typeof initialTransform === 'string') {
     return transform;
   }
 
+  let injectedTransform: Transform[] = [...initialTransform];
+
   if (anchorPoint.x !== defaultAnchorPoint.x && size.width) {
-    const shiftTranslateX = [];
+    const shiftTranslateX: Transform[] = [];
 
     // shift before rotation
     shiftTranslateX.push({
@@ -42,12 +46,8 @@ export const withAnchorPoint = (transform: TransformsStyle, anchorPoint: Point, 
     });
   }
 
-  if (!Array.isArray(injectedTransform)) {
-    return { transform: injectedTransform };
-  }
-
   if (anchorPoint.y !== defaultAnchorPoint.y && size.height) {
-    const shiftTranslateY = [];
+    const shiftTranslateY: Transform[] = [];
     // shift before rotation
     shiftTranslateY.push({
       translateY: size.height * (anchorPoint.y - defaultAnchorPoint.y),

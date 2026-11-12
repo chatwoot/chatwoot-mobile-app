@@ -1,3 +1,5 @@
+import { FullScreenPage } from '@/navigation/split/FullScreenPage';
+import { IOS_DESIGN } from '@/utils';
 import React, { useEffect } from 'react';
 import { View, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
@@ -16,7 +18,7 @@ import {
   GithubIcon,
   LinkedinIcon,
 } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { AttributeListType, CustomAttribute, GenericListType } from '@/types';
 
 import {
@@ -35,6 +37,7 @@ import { getContactCustomAttributes } from '@/store/custom-attribute/customAttri
 import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectContactLabelsByContactId } from '@/store/contact/contactLabelSlice';
 import i18n from '@/i18n';
+import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
 
 type ContactDetailsScreenProps = NativeStackScreenProps<
   TabBarExcludedScreenParamList,
@@ -117,6 +120,8 @@ const processContactAttributes = (
 };
 
 const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
+  const tailwind = useTailwind();
+  const isInContactPane = useIsInContactPane();
   const { conversationId, contactId: routeContactId } = props.route.params;
   const dispatch = useAppDispatch();
 
@@ -190,8 +195,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
       type: 'link',
     }));
 
-  const fullLocation =
-    location || [city, country].filter(Boolean).join(', ') || null;
+  const fullLocation = location || [city, country].filter(Boolean).join(', ') || null;
 
   const userDetails: GenericListType[] = [
     {
@@ -222,38 +226,49 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
 
   const allDetails = [...userDetails, ...socialMediaDetails];
 
-  return (
+  const content = (
     <View
-      style={tailwind.style(`flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`)}>
-        <ContactDetailsScreenHeader
-          name={name || contactName || ''}
-          thumbnail={thumbnail || contactThumbnail || ''}
-          bio={description || ''}
+      style={tailwind.style(
+        isInContactPane || IOS_DESIGN
+          ? 'flex-1'
+          : `flex-1 bg-white pt-6 ${Platform.OS === 'android' ? 'pt-12' : 'pt-6'}`,
+      )}>
+      <ContactDetailsScreenHeader
+        name={name || contactName || ''}
+        thumbnail={thumbnail || contactThumbnail || ''}
+        bio={description || ''}
+      />
+      <Animated.ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
+        <ContactBasicActions
+          style={tailwind.style('mt-[23px] px-4')}
+          phoneNumber={phoneNumber || ''}
+          email={email || ''}
+          contactId={contactId}
+          conversation={conversation}
+          caller={{ name, phone: phoneNumber, avatar: thumbnail }}
         />
-        <Animated.ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
-          {email || phoneNumber ? (
-            <Animated.View style={tailwind.style('mt-[23px] px-4')}>
-              <ContactBasicActions phoneNumber={phoneNumber || ''} email={email || ''} />
-            </Animated.View>
-          ) : null}
-          <Animated.View style={tailwind.style('pt-10')}>
-            <AttributeList list={allDetails as AttributeListType[]} />
+        <Animated.View style={tailwind.style(isInContactPane || IOS_DESIGN ? 'pt-8' : 'pt-10')}>
+          <AttributeList list={allDetails as AttributeListType[]} />
+        </Animated.View>
+        {hasContactCustomAttributes && (
+          <Animated.View style={tailwind.style(isInContactPane || IOS_DESIGN ? 'pt-8' : 'pt-10')}>
+            <ContactMetaInformation attributes={usedContactCustomAttributes} />
           </Animated.View>
-          {hasContactCustomAttributes && (
-            <Animated.View style={tailwind.style('pt-10')}>
-              <ContactMetaInformation attributes={usedContactCustomAttributes} />
-            </Animated.View>
-          )}
-          {contactId ? (
-            <Animated.View style={tailwind.style('pt-10')}>
-              <ContactLabelActions labels={contactLabels} contactId={contactId} />
-            </Animated.View>
-          ) : null}
-        </Animated.ScrollView>
+        )}
+        {contactId ? (
+          <Animated.View style={tailwind.style(isInContactPane || IOS_DESIGN ? 'pt-8' : 'pt-10')}>
+            <ContactLabelActions labels={contactLabels} contactId={contactId} />
+          </Animated.View>
+        ) : null}
+      </Animated.ScrollView>
     </View>
   );
+  if (IOS_DESIGN && !isInContactPane) {
+    return <FullScreenPage background="bg-gray-50">{content}</FullScreenPage>;
+  }
+  return content;
 };
 
 export default ContactDetailsScreen;

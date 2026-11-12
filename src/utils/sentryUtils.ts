@@ -1,3 +1,4 @@
+import type { SerializedError } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 /**
@@ -29,6 +30,17 @@ const isExpectedHttpError = (error: unknown): boolean => {
  */
 export const isUnreportableError = (error: unknown): boolean =>
   isTransportError(error) || isExpectedHttpError(error);
+
+const UNREPORTABLE_AXIOS_CODES = [
+  'ERR_NETWORK',
+  'ECONNABORTED',
+  'ETIMEDOUT',
+  'ERR_CANCELED',
+  'ERR_BAD_RESPONSE',
+];
+
+export const isUnreportableSerializedError = (error: SerializedError): boolean =>
+  !!error.code && UNREPORTABLE_AXIOS_CODES.includes(error.code);
 
 /**
  * Push registration failures that no app-side change can resolve: the device

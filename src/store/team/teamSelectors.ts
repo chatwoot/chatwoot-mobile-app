@@ -13,7 +13,7 @@ export const filterTeams = createSelector(
   (teams, searchTerm) => {
     const teamsList = [
       {
-        id: '0',
+        id: 0,
         name: 'None',
         description: null,
         allowAutoAssign: false,

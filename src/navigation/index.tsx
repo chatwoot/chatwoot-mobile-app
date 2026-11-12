@@ -11,8 +11,11 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { useTailwind } from '@/theme/useTailwind';
+import { DefaultTheme, DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
+import { OngoingCallBar } from '@/screens/call';
+import { isCallPush } from '@/utils/callNotifications';
 import i18n from 'i18n';
 import { navigationRef } from '@/utils/navigationUtils';
 import { findConversationLinkFromPush, findNotificationFromFCM } from '@/utils/pushUtils';
@@ -28,24 +31,18 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { transformNotification } from '@/utils/camelCaseKeys';
 import { SsoUtils } from '@/utils/ssoUtils';
 import { useAppDispatch } from '@/hooks';
-import Inter40020 from '@/assets/fonts/Inter-400-20.ttf';
-import Inter42020 from '@/assets/fonts/Inter-420-20.ttf';
-import Inter50024 from '@/assets/fonts/Inter-500-24.ttf';
-import Inter58024 from '@/assets/fonts/Inter-580-24.ttf';
-import Inter60020 from '@/assets/fonts/Inter-600-20.ttf';
+import { APP_FONTS } from '@/theme/fonts';
 
 setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
+  // Native code already handles call pushes.
+  if (isCallPush(remoteMessage.data)) return;
   console.log('Message handled in the background!', remoteMessage);
 });
 
 export const AppNavigationContainer = () => {
-  const [fontsLoaded] = useFonts({
-    'Inter-400-20': Inter40020,
-    'Inter-420-20': Inter42020,
-    'Inter-500-24': Inter50024,
-    'Inter-580-24': Inter58024,
-    'Inter-600-20': Inter60020,
-  });
+  const tailwind = useTailwind();
+  const navigationTheme = tailwind.isDark ? DarkTheme : DefaultTheme;
+  const [fontsLoaded] = useFonts(APP_FONTS);
 
   const routeNameRef = useRef<string | undefined>(undefined);
   const dispatch = useAppDispatch();
@@ -70,8 +67,7 @@ export const AppNavigationContainer = () => {
       },
     },
     // getStateFromPath: App running, receives deep link - handles SSO callbacks and conversation navigation
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getStateFromPath: (path: string, config: any) => {
+    getStateFromPath: (path: string, config: Parameters<typeof getStateFromPath>[1]) => {
       // Handle SSO callback - App running, receives deep link
       if (path.includes(SSO_CALLBACK_URL) || path.includes('auth/saml')) {
         const ssoParams = SsoUtils.parseCallbackUrl(`chatwootapp://${path}`);
@@ -103,9 +99,7 @@ export const AppNavigationContainer = () => {
       }
 
       const targetAccountId = resolveAccountSwitch(accountId);
-      if (targetAccountId) {
-        switchAccount(dispatch, targetAccountId);
-      }
+      if (targetAccountId && !switchAccount(dispatch, targetAccountId)) return undefined;
 
       return {
         routes: [
@@ -210,6 +204,16 @@ export const AppNavigationContainer = () => {
 
   return (
     <NavigationContainer
+      theme={{
+        ...navigationTheme,
+        colors: {
+          ...navigationTheme.colors,
+          background: tailwind.color('bg-white')!,
+          card: tailwind.color('bg-white')!,
+          text: tailwind.color('text-gray-950')!,
+          border: tailwind.color('gray-200')!,
+        },
+      }}
       linking={linking}
       ref={navigationRef}
       onReady={() => {
@@ -231,7 +235,9 @@ export const AppNavigator = () => {
       <KeyboardProvider>
         <RefsProvider>
           <SafeAreaProvider>
-            <AppNavigationContainer />
+            <OngoingCallBar>
+              <AppNavigationContainer />
+            </OngoingCallBar>
           </SafeAreaProvider>
         </RefsProvider>
       </KeyboardProvider>

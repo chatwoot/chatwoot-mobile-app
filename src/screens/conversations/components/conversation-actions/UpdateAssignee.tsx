@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { Agent } from '@/types';
 import { Avatar, Icon, SearchBar } from '@/components-next';
 import { SelfAssign, TickIcon } from '@/svg-icons';
@@ -35,6 +35,7 @@ type AssigneeCellProps = {
 };
 
 const AssigneeCell = (props: AssigneeCellProps) => {
+  const tailwind = useTailwind();
   const { agent, lastItem, assigneeId } = props;
 
   return (
@@ -60,6 +61,7 @@ const AssigneeCell = (props: AssigneeCellProps) => {
 };
 
 export const UpdateAssignee = () => {
+  const tailwind = useTailwind();
   const dispatch = useAppDispatch();
   const { actionsModalSheetRef } = useRefsContext();
   const [searchTerm, setSearchTerm] = useState('');

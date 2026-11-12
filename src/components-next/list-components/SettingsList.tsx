@@ -1,11 +1,12 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, StyleSheet, Platform } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { CaretRight } from '@/svg-icons';
-import { tailwind } from '@/theme';
+import { CaretRight, TickIcon } from '@/svg-icons';
 import { GenericListType } from '@/types';
 import { Icon } from '@/components-next/common/icon';
+import { useIOSListText, useIsSplitLayout } from '@/utils';
 
 type GenericListProps = {
   sectionTitle?: string;
@@ -16,18 +17,30 @@ type ListItemProps = {
   listItem: GenericListType;
   index: number;
   isLastItem: boolean;
+  hideDivider?: boolean;
 };
 
 const ListItem = (props: ListItemProps) => {
-  const { listItem, index, isLastItem } = props;
+  const tailwind = useTailwind();
+  const { listItem, index, isLastItem, hideDivider } = props;
+  const isDisabled = listItem.inactive || listItem.locked;
 
   return (
     <Pressable
       onPress={() => listItem.onPressListItem && listItem.onPressListItem()}
       key={index}
+      disabled={isDisabled}
+      accessibilityRole={listItem.checked === undefined ? undefined : 'checkbox'}
+      accessibilityState={
+        listItem.checked === undefined
+          ? { disabled: isDisabled }
+          : { checked: listItem.checked, disabled: isDisabled }
+      }
       style={({ pressed }) => [
         tailwind.style(
-          pressed ? 'bg-gray-100' : '',
+          listItem.isSelected ? 'bg-[#EBEBEB]' : pressed ? 'bg-gray-100' : '',
+          listItem.inactive ? 'opacity-40' : '',
+
           index === 0 ? 'rounded-t-[13px]' : '',
           isLastItem ? 'rounded-b-[13px]' : '',
         ),
@@ -42,12 +55,14 @@ const ListItem = (props: ListItemProps) => {
           style={tailwind.style(
             'flex-1 flex-row items-center justify-between py-[11px]',
             listItem.icon ? 'ml-3' : '',
-            !isLastItem ? 'border-b-[1px] border-b-blackA-A3' : '',
+            !isLastItem ? 'border-b-[1px]' : '',
+            !isLastItem && (hideDivider ? 'border-b-transparent' : 'border-b-blackA-A3'),
           )}>
           <Animated.View>
             <Animated.Text
               style={tailwind.style(
-                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
+                'text-base font-inter-420-20 leading-[22px] tracking-[0.16px]',
+                listItem.locked ? 'text-slate-900' : 'text-gray-950',
               )}>
               {listItem.title}
             </Animated.Text>
@@ -61,6 +76,17 @@ const ListItem = (props: ListItemProps) => {
               {listItem.subtitle}
             </Animated.Text>
             {listItem.hasChevron ? <Icon icon={<CaretRight />} size={20} /> : null}
+            {listItem.checked !== undefined ? (
+              <Animated.View
+                style={tailwind.style(
+                  'h-[22px] w-[22px] items-center justify-center rounded-[6px] border-[1.5px]',
+                  listItem.checked && listItem.locked ? 'bg-slate-600 border-slate-600' : '',
+                  listItem.checked && !listItem.locked ? 'bg-blue-800 border-blue-800' : '',
+                  !listItem.checked ? 'border-gray-600' : '',
+                )}>
+                {listItem.checked ? <Icon icon={<TickIcon stroke="#FFFFFF" />} size={14} /> : null}
+              </Animated.View>
+            ) : null}
           </Animated.View>
         </Animated.View>
       </Animated.View>
@@ -69,7 +95,10 @@ const ListItem = (props: ListItemProps) => {
 };
 
 export const SettingsList = (props: GenericListProps) => {
+  const tailwind = useTailwind();
   const { list, sectionTitle } = props;
+  const iosList = useIOSListText();
+  const isSplit = useIsSplitLayout();
 
   return (
     <Animated.View>
@@ -83,7 +112,11 @@ export const SettingsList = (props: GenericListProps) => {
           </Animated.Text>
         </Animated.View>
       ) : null}
-      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+      <Animated.View
+        style={[
+          tailwind.style('rounded-[13px] mx-4', iosList && isSplit ? 'bg-gray-50' : 'bg-white'),
+          iosList ? null : styles.listShadow,
+        ]}>
         {list.map(
           (listItem, index) =>
             !listItem.disabled && (
@@ -91,6 +124,7 @@ export const SettingsList = (props: GenericListProps) => {
                 key={index}
                 {...{ listItem, index }}
                 isLastItem={index === list.length - 1}
+                hideDivider={!!listItem.isSelected || !!list[index + 1]?.isSelected}
               />
             ),
         )}
@@ -110,7 +144,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

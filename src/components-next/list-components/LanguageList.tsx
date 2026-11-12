@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { LANGUAGES } from '@/constants';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common';
 
@@ -28,6 +28,7 @@ const languagesList = Object.keys(LANGUAGES).map(languageCode => {
 });
 
 const LanguageCell = (props: LanguageCellProps) => {
+  const tailwind = useTailwind();
   const { item, index, currentLanguage, onChangeLanguage } = props;
   const hapticSelection = useHaptic();
   const handlePress = () => {
@@ -66,6 +67,7 @@ export const LanguageList = ({
   currentLanguage: string;
   onChangeLanguage: (locale: string) => void;
 }) => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('pt-1 pb-4 pl-2')}>
       {languagesList.map((item, index) => {

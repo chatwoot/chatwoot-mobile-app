@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import Animated, {
   LinearTransition,
@@ -12,24 +13,28 @@ import { Pressable, PressableProps } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { SparkleIcon, AnimatedSparkleIcon } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
+import { ReplyGlassCircle } from './ReplyGlassCircle';
 
 type CopilotButtonProps = PressableProps & {
   isActive?: boolean;
   isThinking?: boolean;
+  glass?: boolean;
 };
 
-export const CopilotButton = ({ isActive = false, isThinking = false, ...props }: CopilotButtonProps) => {
+export const CopilotButton = ({
+  isActive = false,
+  isThinking = false,
+  glass = false,
+  ...props
+}: CopilotButtonProps) => {
+  const tailwind = useTailwind();
   const { animatedStyle, handlers } = useScaleAnimation();
   const starPhase = useSharedValue(0);
 
   useEffect(() => {
     if (isThinking) {
       starPhase.value = withRepeat(
-        withSequence(
-          withTiming(1, { duration: 600 }),
-          withTiming(0, { duration: 600 }),
-        ),
+        withSequence(withTiming(1, { duration: 600 }), withTiming(0, { duration: 600 })),
         -1,
         false,
       );
@@ -57,17 +62,36 @@ export const CopilotButton = ({ isActive = false, isThinking = false, ...props }
         {...props}
         style={({ pressed }) => [tailwind.style(pressed ? 'opacity-70' : '')]}
         {...(props.disabled ? {} : handlers)}>
-        <Animated.View
-          style={tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl')}>
-          {isThinking ? (
-            <AnimatedSparkleIcon
-              smallStarStyle={smallStarStyle}
-              largeStarStyle={largeStarStyle}
-            />
-          ) : (
-            <Icon icon={<SparkleIcon filled={isActive} />} size={24} />
-          )}
-        </Animated.View>
+        {glass ? (
+          <ReplyGlassCircle>
+            {isThinking ? (
+              <AnimatedSparkleIcon
+                smallStarStyle={smallStarStyle}
+                largeStarStyle={largeStarStyle}
+              />
+            ) : (
+              <Icon
+                icon={<SparkleIcon stroke={tailwind.color('text-gray-950')} filled={isActive} />}
+                size={22}
+              />
+            )}
+          </ReplyGlassCircle>
+        ) : (
+          <Animated.View
+            style={tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl')}>
+            {isThinking ? (
+              <AnimatedSparkleIcon
+                smallStarStyle={smallStarStyle}
+                largeStarStyle={largeStarStyle}
+              />
+            ) : (
+              <Icon
+                icon={<SparkleIcon stroke={tailwind.color('text-gray-950')} filled={isActive} />}
+                size={24}
+              />
+            )}
+          </Animated.View>
+        )}
       </Pressable>
     </Animated.View>
   );

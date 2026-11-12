@@ -3,7 +3,24 @@ import { Asset } from 'react-native-image-picker';
 import { Message } from '@/types';
 import { RootState } from '@/store';
 
+export type EmailDraft = {
+  conversationId: number | null;
+  sourceMessageId: number | null;
+  to: string;
+  cc: string;
+  bcc: string;
+};
+
+const emptyEmailDraft: EmailDraft = {
+  conversationId: null,
+  sourceMessageId: null,
+  to: '',
+  cc: '',
+  bcc: '',
+};
+
 export interface SendMessageState {
+  emailDraft: EmailDraft;
   // Unsent reply text keyed by conversation id, so every conversation keeps its own draft
   drafts: Record<number, string>;
   isPrivateMessage: boolean;
@@ -12,6 +29,7 @@ export interface SendMessageState {
 }
 
 const initialState: SendMessageState = {
+  emailDraft: emptyEmailDraft,
   drafts: {},
   isPrivateMessage: false,
   attachments: [],
@@ -22,6 +40,25 @@ const sendMessageSlice = createSlice({
   name: 'sendMessage',
   initialState,
   reducers: {
+    setEmailDraft: (state, action: PayloadAction<EmailDraft>) => {
+      state.emailDraft = action.payload;
+    },
+    updateEmailDraft: (
+      state,
+      action: PayloadAction<
+        { conversationId: number } & Partial<Pick<EmailDraft, 'to' | 'cc' | 'bcc'>>
+      >,
+    ) => {
+      const { conversationId, ...fields } = action.payload;
+      const base =
+        state.emailDraft.conversationId === conversationId
+          ? state.emailDraft
+          : { ...emptyEmailDraft, conversationId };
+      state.emailDraft = { ...base, ...fields };
+    },
+    clearEmailRecipients: state => {
+      state.emailDraft = { ...state.emailDraft, to: '', cc: '', bcc: '' };
+    },
     setMessageContent: (
       state,
       action: PayloadAction<{ conversationId: number; content: string }>,
@@ -64,6 +101,8 @@ const sendMessageSlice = createSlice({
   },
 });
 
+export const selectEmailDraft = (state: RootState) =>
+  state.sendMessage.emailDraft ?? emptyEmailDraft;
 export const selectMessageContent = (state: RootState, conversationId: number) =>
   state.sendMessage.drafts?.[conversationId] ?? '';
 export const selectIsPrivateMessage = (state: RootState) => state.sendMessage.isPrivateMessage;
@@ -71,6 +110,9 @@ export const selectAttachments = (state: RootState) => state.sendMessage.attachm
 export const selectQuoteMessage = (state: RootState) => state.sendMessage.quoteMessage;
 
 export const {
+  setEmailDraft,
+  updateEmailDraft,
+  clearEmailRecipients,
   setMessageContent,
   togglePrivateMessage,
   updateAttachments,

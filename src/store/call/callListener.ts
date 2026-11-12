@@ -34,7 +34,6 @@ const isExpectedFailure = (error: SerializedError) =>
 callListenerMiddleware.startListening({
   matcher: isCallFailure,
   effect: action => {
-    if (settingsActions.saveVoipToken.rejected.match(action) && action.payload) return;
     if (isExpectedFailure(action.error)) return;
     const failure = action.type.replace(/\/rejected$/, '');
     callLogger.reportFailure(failure, toError(action.error));

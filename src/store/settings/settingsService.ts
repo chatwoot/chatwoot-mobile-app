@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiService, type AccountScopedRequestConfig } from '@/services/APIService';
+import { apiService } from '@/services/APIService';
 import type {
   NotificationSettings,
   NotificationSettingsPayload,
@@ -7,9 +7,6 @@ import type {
   VoipPushPayload,
   RemoveDevicePayload,
 } from './settingsTypes';
-
-// Servers without calls answer the VoIP subscription with these
-const VOIP_SUBSCRIPTION_REFUSALS = [403, 404, 422, 500];
 
 export class SettingsService {
   static async verifyInstallationUrl(url: string): Promise<boolean> {
@@ -47,8 +44,7 @@ export class SettingsService {
   }
 
   static async saveVoipToken(payload: VoipPushPayload): Promise<void> {
-    const config: AccountScopedRequestConfig = { quietStatuses: VOIP_SUBSCRIPTION_REFUSALS };
-    await apiService.post('notification_subscriptions', payload, config);
+    await apiService.post('notification_subscriptions', payload);
   }
 
   static async removeDevice(payload: RemoveDevicePayload): Promise<void> {

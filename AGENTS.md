@@ -31,7 +31,7 @@ Preserve the folder structure on `develop`. Do not add top-level folders under `
 - `src/types/`: shared domain models; request and response types stay with their store domain.
 - `src/hooks.ts`: typed Redux hooks. `src/hooks/` and `src/utils/`: existing shared hooks and helpers. Do not add a `src/hooks/index.ts` that competes with `src/hooks.ts`.
 - `src/context/`: UI contexts. `src/navigation/`: stacks, tabs, route types and linking.
-- `src/theme/`: shared tailwind instance and tokens. `src/i18n/`: locale JSON.
+- `src/theme/`: appearance provider, themed styling hooks and tokens. `src/i18n/`: locale JSON.
 - `app.config.ts`, root `with-*.js` plugins and `patches/`: durable native configuration.
 
 ## Readability and Scope
@@ -86,7 +86,8 @@ Preserve the folder structure on `develop`. Do not add top-level folders under `
 
 ## Styling, Animation, and Lists
 
-- Import `{ tailwind }` from `@/theme` and use `tailwind.style(...)`. Do not import the twrnc runtime outside the existing theme factory or create another instance.
+- In components, import `useTailwind` from `@/theme/useTailwind` and use `const tailwind = useTailwind()` for styles and colors. Pass that instance to style helpers; do not use the static light-theme instance for appearance-dependent UI or create another twrnc instance.
+- Follow the app's System, Light and Dark preference through `AppearanceProvider` and `useAppAppearance` in `src/theme/appearance.tsx`. Reuse the theme's platform typography mapping and existing icons.
 - Reuse theme tokens and `tailwind.color(...)`; do not introduce hard-coded color values outside theme definitions. Preserve valid nearby StyleSheet usage, including layout styles.
 - Use Reanimated and Gesture Handler for animations and gestures. Prefer transform and opacity for movement and fades; never read or write shared values during React render.
 - Reuse `useScaleAnimation`, `useHaptic`, and shared `Icon`, `Avatar` and `Button` components. Bottom sheets use `Sheet` from `@/components-next/common/sheet/Sheet`.
@@ -97,6 +98,8 @@ Preserve the folder structure on `develop`. Do not add top-level folders under `
 ## Navigation, Translations, and Accessibility
 
 - Add routes to the owning navigator's param list and type their screens. Pass IDs instead of domain objects; do not bypass route types with casts.
+- Follow the `IOS_DESIGN` flag and existing iOS headers, controls and navigation while preserving Android behavior. Reuse `useIsSplitLayout` and `useSideTabBarLayout` for Duo layout decisions.
+- Screens can render in a Duo pane. Use `src/navigation/split/SplitViewContext.ts` for pane navigation and `useContainerWidth` from `@/context` for available content width; preserve selection and navigation during layout changes.
 - Preserve deep-link and push-notification routing, including account switching, when changing routes.
 - Use `import i18n from '@/i18n'` and `i18n.t('KEY')` for app-authored user-facing strings, including accessibility labels.
 - Reuse translation keys first; add new keys to `src/i18n/en.json` only. Crowdin manages other locales; do not hand-edit them.
@@ -118,7 +121,7 @@ Preserve the folder structure on `develop`. Do not add top-level folders under `
 - **Documentation only**: Check accuracy, formatting, paths, links and consistency.
 - **Application logic**: Run lint, typecheck and relevant specs.
 - **Shared state, API client or changes across features**: Run lint, typecheck and the full Jest suite.
-- **UI**: Run the applicable source checks and exercise affected flows on iOS and Android.
+- **UI**: Run the applicable source checks and exercise affected flows on iOS and Android in Light, Dark and System appearance, including OS appearance changes. For affected iOS screens, check portrait, both landscape directions and transitions into and out of Duo, including pane navigation, keyboard and safe-area behavior.
 - **Native configuration or dependencies**: Run Doctor, rebuild and exercise affected device flows on each affected platform.
 - Report actual commands and outcomes, including failures and unavailable platform checks. Never claim a skipped or interrupted run passed.
 

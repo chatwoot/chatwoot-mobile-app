@@ -173,9 +173,21 @@ existing storage as an unrelated cleanup.
 
 ## Follow the mobile UI and platform conventions
 
-Reuse `tailwind` from `@/theme`, existing tokens, and shared components. Keep nearby `tailwind.style`,
-native `StyleSheet`, and animation patterns when appropriate. Avoid duplicating colors, spacing,
-or typography that already have a token. Preserve supported themes and use existing icons.
+Call `useTailwind` from `@/theme/useTailwind` in components to obtain the styling instance for the
+current appearance. Pass it to non-component style helpers so they use the same palette. The static
+`tailwind` export represents the light theme and does not follow appearance changes by itself.
+Keep valid native `StyleSheet` and animation patterns, and reuse existing tokens and shared components.
+
+The appearance provider resolves the user's System, Light or Dark preference. Use `useAppAppearance`
+from `src/theme/appearance.tsx` when a native surface needs the resolved appearance. Reuse the theme's
+platform font mapping, colors and icons so typography and native surfaces follow the same conventions.
+
+The `IOS_DESIGN` flag selects the existing iOS presentation. Follow its headers, controls and
+navigation while retaining the Android path. Duo uses `useIsSplitLayout` and `useSideTabBarLayout`
+to select a split layout with list, conversation and secondary panes. Reuse those decisions and the
+contexts in `src/navigation/split/SplitViewContext.ts` when opening or closing pane content.
+Use `useContainerWidth` from `@/context` for content sizing because the available pane width can be
+smaller than the device window. Preserve the selected conversation and navigation during layout changes.
 
 Add user-facing source strings to the appropriate hierarchy in `src/i18n/en.json` and read them
 through `@/i18n`. Crowdin manages the other locales; do not invent bulk translations. Account for
@@ -227,6 +239,11 @@ Use the commands in [AGENTS.md](AGENTS.md). Match verification to the changed su
 | Shared state, client, or cross-feature logic | The checks above and the full Jest suite                             |
 | UI or navigation                             | Relevant automated checks and affected flows on both iOS and Android |
 | Native configuration, plugins, or patches    | Doctor, rebuild and device checks for each affected platform         |
+
+For UI changes, exercise Light and Dark appearance on both platforms and verify that System follows
+an OS appearance change while the affected screen is open. For affected iOS screens, check portrait,
+both landscape directions and transitions into and out of Duo. Include pane navigation, keyboard,
+safe areas and the feature's relevant loading, empty and error states in both appearances.
 
 Add or adjust focused tests when they protect meaningful changed behavior or reproduce a reachable
 regression. Reuse adjacent `specs/`, fixtures, and `__mocks__/` conventions. Assert outcomes and

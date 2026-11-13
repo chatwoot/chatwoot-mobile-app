@@ -54,7 +54,8 @@ export const createCloudflareAccessAdapter =
     try {
       task = ReactNativeBlobUtil.config({
         followRedirect: false,
-        timeout: config.timeout || 30000,
+        // Axios uses 0 for "no timeout"; keep it so large uploads match the default adapter.
+        timeout: config.timeout ?? 30000,
       }).fetch(
         (config.method ?? 'GET').toUpperCase() as Parameters<typeof ReactNativeBlobUtil.fetch>[0],
         url,

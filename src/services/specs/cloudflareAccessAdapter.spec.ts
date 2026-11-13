@@ -49,6 +49,20 @@ describe('protected API transport', () => {
     expect(JSON.stringify(response.config)).not.toContain(token.clientSecret);
   });
 
+  it("keeps Axios's no-timeout default and forwards explicit timeouts", async () => {
+    nativeResponse(200, '{}');
+    await axios.get(`${origin}/api`, { adapter });
+    expect(ReactNativeBlobUtil.config).toHaveBeenLastCalledWith(
+      expect.objectContaining({ timeout: 0 }),
+    );
+
+    nativeResponse(200, '{}');
+    await axios.get(`${origin}/api`, { adapter, timeout: 5000 });
+    expect(ReactNativeBlobUtil.config).toHaveBeenLastCalledWith(
+      expect.objectContaining({ timeout: 5000 }),
+    );
+  });
+
   it('rejects redirects instead of forwarding credentials or login bodies', async () => {
     nativeResponse(302, '<html>Access login</html>');
     await expect(axios.get(`${origin}/api`, { adapter })).rejects.toMatchObject({

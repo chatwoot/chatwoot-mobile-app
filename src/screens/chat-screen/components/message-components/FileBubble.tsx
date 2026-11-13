@@ -43,7 +43,9 @@ export const FileBubblePreview = (props: FilePreviewProps) => {
   const [fileDownload, setFileDownload] = useState(false);
   const [fileFailed, setFileFailed] = useState(false);
   const fileName = fileSrc.split('/')[fileSrc.split('/').length - 1];
-  const uniqueFileName = generateUniqueFileName(media.uri ?? fileSrc, fileName);
+  // Name the preview after the stable source URL. A protected media URI changes per
+  // session, and hashing it would leave a new private copy in DocumentDir each time.
+  const uniqueFileName = generateUniqueFileName(fileSrc, fileName);
   const localFilePath = dirs.DocumentDir + `/${uniqueFileName}`;
 
   const previewFile = () => {

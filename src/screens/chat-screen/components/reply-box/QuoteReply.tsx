@@ -124,10 +124,19 @@ export const QuoteReply = () => {
           ) : null}
           {quoteMessage?.attachments?.length > 0 &&
           quoteMessage?.attachments[0].fileType === 'video' ? (
-            <VideoBubblePlayer
-              playerEnabled={false}
-              videoSrc={quoteMessage?.attachments[0].dataUrl}
-            />
+            // Protected video is only downloaded on Play, so prefer the resolved thumbnail.
+            thumbnailUri ? (
+              <Image
+                style={tailwind.style('h-full w-full')}
+                contentFit="cover"
+                source={{ uri: thumbnailUri }}
+              />
+            ) : (
+              <VideoBubblePlayer
+                playerEnabled={false}
+                videoSrc={quoteMessage?.attachments[0].dataUrl}
+              />
+            )
           ) : null}
           {quoteMessage?.attachments?.length > 0 &&
           quoteMessage?.attachments[0].fileType === 'audio' ? (

@@ -4,6 +4,8 @@ import { Image, KeyboardTypeOptions, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import i18n from '@/i18n';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
+import { Spinner } from '@/components-next/spinner';
 
 type TemplateMediaInputFieldProps = {
   label: string;
@@ -33,6 +35,7 @@ const TemplateMediaInputField = ({
   const [errored, setErrored] = useState(false);
   const trimmed = value.trim();
   const showPreview = withImagePreview && trimmed.length > 0;
+  const media = useCloudflareMedia(showPreview ? trimmed : null);
 
   useEffect(() => {
     setErrored(false);
@@ -66,7 +69,9 @@ const TemplateMediaInputField = ({
           style={tailwind.style(
             'mt-3 aspect-video rounded-[10px] overflow-hidden bg-gray-50 items-center justify-center',
           )}>
-          {errored ? (
+          {media.loading ? (
+            <Spinner size={16} />
+          ) : errored || media.failed ? (
             <Animated.Text
               style={tailwind.style(
                 'px-4 text-[14px] font-inter-420-20 text-gray-700 text-center',
@@ -75,7 +80,7 @@ const TemplateMediaInputField = ({
             </Animated.Text>
           ) : (
             <Image
-              source={{ uri: trimmed }}
+              source={media.uri ? { uri: media.uri } : undefined}
               resizeMode="cover"
               style={tailwind.style('w-full h-full')}
               onError={() => setErrored(true)}

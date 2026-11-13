@@ -7,6 +7,6 @@ declare module '@kesha-antonov/react-native-action-cable' {
   }
 
   export class ActionCable {
-    static createConsumer(url: string): any;
+    static createConsumer(url: string, headers?: Record<string, string>): any;
   }
 }

@@ -1,11 +1,12 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ImageSourcePropType, Text, View, ViewProps } from 'react-native';
 import { Image } from 'expo-image';
 import { AvailabilityStatus } from '@/types/common/AvailabilityStatus';
 
 import { cx, styleAdapter } from '@/utils';
 import { userStatusList } from '@/constants';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
 
 function getInitials(name: string) {
   if (!name) {
@@ -56,9 +57,14 @@ const AvatarImage = ({
 }) => {
   const tailwind = useTailwind();
   const source = typeof src === 'string' ? { uri: src } : src;
+  const remoteUri = typeof source === 'object' && 'uri' in source ? source.uri : undefined;
+  const media = useCloudflareMedia(remoteUri);
+  useEffect(() => {
+    if (media.failed) handleFallback();
+  }, [media.failed, handleFallback]);
   return (
     <Image
-      source={source}
+      source={remoteUri ? (media.uri ? { uri: media.uri } : null) : source}
       style={tailwind.style('rounded-full h-24 w-24')}
       onError={handleFallback}
     />

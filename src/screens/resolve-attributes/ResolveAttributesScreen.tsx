@@ -93,11 +93,13 @@ const ResolveAttributesScreen = () => {
     attribute => values[attribute.attributeKey] !== initialValues[attribute.attributeKey],
   );
 
-  usePreventRemove(isDirty, ({ data }) => {
+  // Closing mid-save would run the macro from both the unmount cleanup and the submit.
+  usePreventRemove(isDirty || isSaving, ({ data }) => {
     if (isSubmitted.current) {
       navigation.dispatch(data.action);
       return;
     }
+    if (isSaving) return;
     Alert.alert(
       i18n.t('CONVERSATION.REQUIRED_ATTRIBUTES.DISCARD.TITLE'),
       i18n.t('CONVERSATION.REQUIRED_ATTRIBUTES.DISCARD.MESSAGE'),
@@ -213,6 +215,7 @@ const ResolveAttributesScreen = () => {
               <GlassCircleButton
                 icon={<CloseIcon stroke={tailwind.color('text-gray-950')} strokeWidth={1.5} />}
                 onPress={close}
+                disabled={isSaving}
                 accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.CLOSE')}
               />
             }
@@ -221,6 +224,7 @@ const ResolveAttributesScreen = () => {
                 label={i18n.t('CONVERSATION.RESOLVE')}
                 onPress={handleSubmit}
                 disabled={isSaving}
+                isLoading={isSaving}
               />
             }
           />
@@ -257,6 +261,7 @@ const ResolveAttributesScreen = () => {
       <View style={tailwind.style('h-14 flex-row items-center gap-1 px-1')}>
         <Pressable
           onPress={close}
+          disabled={isSaving}
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel={i18n.t('CONVERSATION.COMPOSE.CLOSE')}
@@ -289,6 +294,7 @@ const ResolveAttributesScreen = () => {
           text={i18n.t('CONVERSATION.REQUIRED_ATTRIBUTES.RESOLVE')}
           handlePress={handleSubmit}
           disabled={isSaving}
+          isLoading={isSaving}
         />
       </View>
     </SafeAreaView>

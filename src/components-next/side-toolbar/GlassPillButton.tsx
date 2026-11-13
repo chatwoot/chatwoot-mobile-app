@@ -1,5 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
-import { Platform, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
 import { GlassView, isLiquidGlassAvailable } from 'expo-glass-effect';
 
 import { SIZE } from './GlassCircleButton';
@@ -9,17 +9,24 @@ type GlassPillButtonProps = {
   label: string;
   onPress: () => void;
   disabled?: boolean;
+  isLoading?: boolean;
   count?: number;
 };
 
-export const GlassPillButton = ({ label, onPress, disabled, count }: GlassPillButtonProps) => {
+export const GlassPillButton = ({
+  label,
+  onPress,
+  disabled,
+  isLoading,
+  count,
+}: GlassPillButtonProps) => {
   const tailwind = useTailwind();
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled}
       accessibilityRole="button"
-      accessibilityState={{ disabled }}
+      accessibilityState={{ disabled, busy: isLoading }}
       style={tailwind.style(`h-[${SIZE}px] px-3.5 flex-row items-center justify-center gap-1.5`)}>
       {useLiquidGlass ? (
         <GlassView
@@ -35,9 +42,16 @@ export const GlassPillButton = ({ label, onPress, disabled, count }: GlassPillBu
         style={tailwind.style(
           'text-[15px] leading-[20px] font-inter-medium-24',
           disabled ? 'text-gray-700' : 'text-blue-800',
+          isLoading ? 'opacity-0' : '',
         )}>
         {label}
       </Text>
+      {isLoading ? (
+        <ActivityIndicator
+          color={tailwind.color('text-gray-700')}
+          style={tailwind.style('absolute inset-0')}
+        />
+      ) : null}
       {count ? (
         <View
           style={tailwind.style(

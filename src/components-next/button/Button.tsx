@@ -1,6 +1,6 @@
 import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
-import { Pressable } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { ThemeTailwind } from '@/theme/useTailwind';
@@ -12,6 +12,7 @@ type ButtonProps = {
   handlePress?: () => void;
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
+  isLoading?: boolean;
 };
 
 const getButtonStyles = (tailwind: ThemeTailwind, isPrimary: boolean, pressed: boolean) => {
@@ -41,6 +42,7 @@ export const Button = ({
   handlePress,
   variant = 'primary',
   disabled = false,
+  isLoading = false,
 }: ButtonProps) => {
   const tailwind = useTailwind();
   const { handlers, animatedStyle } = useScaleAnimation();
@@ -62,12 +64,22 @@ export const Button = ({
         disabled={disabled}
         accessible
         accessibilityRole="button"
-        accessibilityState={{ disabled }}
+        accessibilityState={{ disabled, busy: isLoading }}
         style={({ pressed }) => getButtonStyles(tailwind, isPrimary, pressed)}
         {...handlers}>
-        <Animated.Text style={getTextStyles(tailwind, isPrimary, isDestructive)}>
+        <Animated.Text
+          style={[
+            getTextStyles(tailwind, isPrimary, isDestructive),
+            isLoading ? tailwind.style('opacity-0') : null,
+          ]}>
           {text}
         </Animated.Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={tailwind.color(isPrimary ? 'text-white' : 'text-gray-950')}
+            style={tailwind.style('absolute inset-0')}
+          />
+        ) : null}
       </Pressable>
     </Animated.View>
   );

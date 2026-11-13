@@ -249,6 +249,47 @@
     "ASSIGN_CHANGE": "Conversation Assignee changed",
     "TEAM_CHANGE": "Conversation Team changed",
     "STATUS_CHANGE": "Conversation Status changed",
+    "REQUIRED_ATTRIBUTES": {
+      "TITLE": "Required info",
+      "INTRO_ONE": "Fill in this field to resolve the conversation. Nothing is saved if you close.",
+      "INTRO_OTHER": "Fill in these %{count} fields to resolve the conversation. Nothing is saved if you close.",
+      "NEEDS_ATTENTION_ONE": "1 field needs attention before this conversation can be resolved.",
+      "NEEDS_ATTENTION_OTHER": "%{count} fields need attention before this conversation can be resolved.",
+      "ALL_FILLED": "Everything is filled in. Resolve to close this conversation.",
+      "RESOLVE": "Resolve conversation",
+      "SAVE_ERROR": "Could not save the attributes. Try again.",
+      "SEARCH_OPTIONS": "Search %{count} options",
+      "DISCARD": {
+        "TITLE": "Discard changes?",
+        "MESSAGE": "The values you entered will not be saved.",
+        "KEEP_EDITING": "Keep editing",
+        "CONFIRM": "Discard"
+      },
+      "PLACEHOLDERS": {
+        "REQUIRED": "Required",
+        "SELECT": "Select",
+        "CHOOSE": "Choose",
+        "TYPE_HERE": "Type here",
+        "NUMBER": "0.00",
+        "LINK": "https://",
+        "DATE": "Select a date",
+        "CHOOSE_OPTION": "Choose an option"
+      },
+      "CHECKBOX": {
+        "YES": "Yes",
+        "NO": "No"
+      },
+      "VALIDATIONS": {
+        "REQUIRED": "Valid value is required",
+        "INVALID_URL": "Invalid URL",
+        "INVALID_NUMBER": "Enter a valid number",
+        "INVALID_INPUT": "Invalid Input"
+      },
+      "BULK": {
+        "ALL_MISSING": "Cannot resolve conversations due to missing required attributes",
+        "PARTIAL_SUCCESS": "Some conversations need required attributes before resolving and were skipped"
+      }
+    },
     "PRIORITY_CHANGE": "Conversation Priority changed",
     "PARTICIPANT_CHANGE": "Conversation Participant changed",
     "CHANGE_STATUS": "Change status",
@@ -657,6 +698,7 @@
     },
     "EXECUTION_SUCCESS": "Macro executed successfully",
     "EXECUTION_ERROR": "Macro execution failed",
+    "EXECUTED_WITHOUT_RESOLVING": "Macro executed. The conversation was not resolved because required attributes are missing.",
     "NO_MACROS": "No macros found"
   },
   "CONTENT_TEMPLATE": {

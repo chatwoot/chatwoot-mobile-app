@@ -28,6 +28,12 @@ export const transformConversation = (conversation: any): Conversation => {
   return { ...transformed, messages: transformed.messages ?? [] };
 };
 
+export const transformConversationCustomAttributes = (
+  customAttributes: any,
+): Conversation['customAttributes'] => {
+  return camelcaseKeys(customAttributes || {}, { deep: true });
+};
+
 export const transformContact = (contact: any): Contact => {
   return camelcaseKeys(contact, { deep: true }) as unknown as Contact;
 };

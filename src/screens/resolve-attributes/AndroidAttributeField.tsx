@@ -49,7 +49,7 @@ const TextField = ({ attribute, value, error, onChange, onBlur }: AttributeField
     <View
       style={[
         boxStyle(tailwind, isFocused, !!error),
-        isText ? tailwind.style('min-h-[88px] items-start py-3') : null,
+        isText ? tailwind.style('min-h-[88px] items-stretch') : null,
       ]}>
       <TextInput
         value={typeof value === 'string' ? value : ''}
@@ -65,7 +65,7 @@ const TextField = ({ attribute, value, error, onChange, onBlur }: AttributeField
         autoCorrect={isText}
         placeholder={i18n.t(`CONVERSATION.REQUIRED_ATTRIBUTES.PLACEHOLDERS.${placeholderKey}`)}
         placeholderTextColor={tailwind.color('text-gray-700')}
-        style={tailwind.style(VALUE, 'p-0 text-gray-950')}
+        style={tailwind.style(VALUE, 'p-0 text-gray-950', isText ? 'py-3' : '')}
         textAlignVertical={isText ? 'top' : 'center'}
       />
       {error && !isText ? <ErrorBadge /> : null}

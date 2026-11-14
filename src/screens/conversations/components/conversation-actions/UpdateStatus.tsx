@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { ConversationStatus, StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
@@ -30,6 +30,7 @@ const StatusList: StatusCollection[] = [
 ];
 
 const StatusCell = (props: StatusCellProps) => {
+  const tailwind = useTailwind();
   const { value, isLastItem, onPress } = props;
   return (
     <Pressable
@@ -59,6 +60,7 @@ const filterStatusList = (status: ConversationStatus) => {
 };
 
 export const UpdateStatus = () => {
+  const tailwind = useTailwind();
   const { actionsModalSheetRef } = useRefsContext();
 
   const dispatch = useAppDispatch();

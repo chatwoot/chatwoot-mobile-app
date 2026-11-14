@@ -1,0 +1,13 @@
+diff --git a/ios/RNIContextMenu/RNIMenuActionItem.swift b/ios/RNIContextMenu/RNIMenuActionItem.swift
+index 63fae48aeb169f0ec81798adc60f53304be9afcb..3e4ad9b2c5ba55108d7f447cb334a3f3c2221cde 100644
+--- a/ios/RNIContextMenu/RNIMenuActionItem.swift
++++ b/ios/RNIContextMenu/RNIMenuActionItem.swift
+@@ -182,7 +182,7 @@ extension RNIMenuActionItem {
+     );
+     
+     #if swift(>=5.5)
+-    if #available(iOS 15.0, *) {
++    if #available(iOS 16.0, *) {
+       action.subtitle =
+            self.actionSubtitle
+         ?? self.fallbackActionSubtitle;

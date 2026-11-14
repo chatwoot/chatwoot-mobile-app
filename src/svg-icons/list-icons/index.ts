@@ -1,3 +1,4 @@
+export * from './Appearance';
 export * from './Info';
 export * from './Macro';
 export * from './Notification';

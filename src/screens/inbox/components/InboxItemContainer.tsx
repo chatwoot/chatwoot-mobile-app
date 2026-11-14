@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { useCallback } from 'react';
 import { SharedValue } from 'react-native-reanimated';
@@ -11,21 +12,24 @@ import { MarkAsRead, MarkAsUnRead, DeleteIcon } from '@/svg-icons';
 import { InboxItem } from './InboxItem';
 import { formatRelativeTime } from '@/utils/dateTimeUtils';
 import { formatTimeToShortForm } from '@/utils/dateTimeUtils';
-import { tailwind } from '@/theme';
 import { Icon, Swipeable } from '@/components-next';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
 import { showToast } from '@/utils/toastUtils';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useSplitView } from '@/navigation/split/SplitViewContext';
+import { SelectedRowBackground } from '@/navigation/split/SelectedRowBackground';
 import { conversationActions } from '@/store/conversation/conversationActions';
 
 type InboxItemContainerProps = {
   item: Notification;
   index: number;
   openedRowIndex: SharedValue<number | null>;
+  nextConversationId?: number;
 };
 
 const UnreadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsRead />} size={24} />
@@ -34,6 +38,7 @@ const UnreadComponent = React.memo(() => {
 });
 
 const ReadComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<MarkAsUnRead />} size={24} />
@@ -42,6 +47,7 @@ const ReadComponent = React.memo(() => {
 });
 
 const DeleteComponent = React.memo(() => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('flex justify-center items-center')}>
       <Icon icon={<DeleteIcon />} size={24} />
@@ -53,10 +59,11 @@ const DeleteComponent = React.memo(() => {
 });
 
 export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
-  const { index, item, openedRowIndex } = props;
+  const { index, item, openedRowIndex, nextConversationId } = props;
   const dispatch = useAppDispatch();
 
   const navigation = useNavigation();
+  const splitView = useSplitView();
   const meta = item.primaryActor?.meta;
   const inboxId = item.primaryActor?.inboxId;
   const isRead = !!item.readAt;
@@ -66,7 +73,12 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       shouldShowToast: false,
     });
     if (item.primaryActor?.id) {
-      await dispatch(conversationActions.fetchConversation(item.primaryActor?.id));
+      if (splitView) {
+        // Open now; avoid stale selection races.
+        splitView.openConversation(item.primaryActor.id);
+        return;
+      }
+      await dispatch(conversationActions.fetchConversation(item.primaryActor.id));
       const pushToChatScreen = StackActions.push('ChatScreen', {
         conversationId: item.primaryActor?.id,
         isConversationOpenedExternally: false,
@@ -139,18 +151,26 @@ export const InboxItemContainerComponent = (props: InboxItemContainerProps) => {
       triggerOverswipeOnFlick
       rightElementBgColor="bg-ruby-800"
       {...{ index, openedRowIndex }}>
-      <InboxItem
-        isRead={isRead}
-        assignee={assignee}
-        lastActivityAt={lastActivityAt}
-        sender={sender}
-        conversationId={conversationId}
-        priority={priority}
-        inbox={inbox || null}
-        additionalAttributes={additionalAttributes}
-        pushMessageTitle={pushTitle}
-        notificationType={notificationType}
-      />
+      <SelectedRowBackground
+        selected={
+          !!item.primaryActor?.id && splitView?.selectedConversationId === item.primaryActor.id
+        }
+        beforeSelected={
+          !!nextConversationId && splitView?.selectedConversationId === nextConversationId
+        }>
+        <InboxItem
+          isRead={isRead}
+          assignee={assignee}
+          lastActivityAt={lastActivityAt}
+          sender={sender}
+          conversationId={conversationId}
+          priority={priority}
+          inbox={inbox || null}
+          additionalAttributes={additionalAttributes}
+          pushMessageTitle={pushTitle}
+          notificationType={notificationType}
+        />
+      </SelectedRowBackground>
     </Swipeable>
   );
 };

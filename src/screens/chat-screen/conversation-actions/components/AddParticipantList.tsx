@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useRef, useState } from 'react';
 import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { AddParticipant, CloseIcon, Overflow } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Avatar, Icon } from '@/components-next';
 import { Agent } from '@/types';
 import i18n from '@/i18n';
@@ -12,6 +12,8 @@ import { conversationParticipantActions } from '@/store/conversation-participant
 import { showToast } from '@/utils/toastUtils';
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { CONVERSATION_EVENTS } from '@/constants/analyticsEvents';
+import { IOS_DESIGN } from '@/utils';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 
 type ListItemProps = {
   listItem: Agent;
@@ -21,6 +23,7 @@ type ListItemProps = {
 };
 
 const ListItem = (props: ListItemProps) => {
+  const tailwind = useTailwind();
   const { listItem, index, onRemove, removeDisabled } = props;
   return (
     <Pressable
@@ -30,7 +33,11 @@ const ListItem = (props: ListItemProps) => {
       ]}>
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
         <Animated.View>
-          <Avatar src={{ uri: listItem.thumbnail || undefined }} size="lg" />
+          <Avatar
+            src={listItem.thumbnail ? { uri: listItem.thumbnail } : undefined}
+            name={listItem.name ?? ''}
+            size="lg"
+          />
         </Animated.View>
         <Animated.View
           style={tailwind.style(
@@ -56,14 +63,14 @@ const ListItem = (props: ListItemProps) => {
 };
 
 const ParticipantOverflowCell = ({ count }: { count: number }) => {
+  const tailwind = useTailwind();
   return (
     <Pressable style={({ pressed }) => [tailwind.style(pressed ? 'bg-gray-100' : '')]}>
       <Animated.View style={tailwind.style('flex flex-row items-center ml-3')}>
         <Animated.View>
           <Icon icon={<Overflow stroke={tailwind.color('text-gray-600')} />} size={28} />
         </Animated.View>
-        <Animated.View
-          style={tailwind.style('flex-1 py-[11px] ml-2 border-b-[1px] border-b-blackA-A3')}>
+        <Animated.View style={tailwind.style('flex-1 py-[11px] ml-2')}>
           <Animated.Text
             style={tailwind.style(
               'text-base font-inter-420-20 leading-[22px] tracking-[0.16px] text-gray-950',
@@ -83,6 +90,8 @@ type AddParticipantListProps = {
 };
 
 export const AddParticipantList = (props: AddParticipantListProps) => {
+  const tailwind = useTailwind();
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
   const { conversationParticipants, onAddParticipant, conversationId } = props;
   const dispatch = useAppDispatch();
   const isRemovingParticipantRef = useRef(false);
@@ -121,7 +130,11 @@ export const AddParticipantList = (props: AddParticipantListProps) => {
           {i18n.t('CONVERSATION_PARTICIPANTS.TITLE')}
         </Animated.Text>
       </Animated.View>
-      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+      <Animated.View
+        style={[
+          tailwind.style('rounded-[13px] mx-4 bg-white'),
+          isInPane ? null : styles.listShadow,
+        ]}>
         {conversationParticipants &&
           conversationParticipants.slice(0, 4).map((listItem, index) => {
             return (
@@ -178,7 +191,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {}, // Add fallback empty object
 });

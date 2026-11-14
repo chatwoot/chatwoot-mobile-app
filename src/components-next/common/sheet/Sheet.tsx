@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import { StyleSheet, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
 import { TrueSheet, type SheetDetent } from '@lodev09/react-native-true-sheet';
@@ -31,6 +32,7 @@ type SheetProps = {
   autoSize?: boolean;
   /** Cap on content height: a 0-1 fraction of the screen, or px. */
   maxHeight?: number;
+  maxWidth?: number;
   /** Render children with native scrolling (child should be a ScrollView/FlatList). */
   scrollable?: boolean;
   /** Show the dimmed backdrop (default true). */
@@ -56,6 +58,7 @@ const GRABBER_OPTIONS = {
  * call sites pass a plain px height, autoSize, or explicit detents.
  */
 export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
+  const tailwind = useTailwind();
   const {
     children,
     name,
@@ -63,6 +66,7 @@ export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
     detents,
     autoSize,
     maxHeight,
+    maxWidth,
     scrollable = false,
     dimmed = true,
     dismissible = true,
@@ -107,13 +111,14 @@ export const Sheet = forwardRef<SheetRef, SheetProps>((props, ref) => {
       name={name}
       detents={resolvedDetents}
       maxContentHeight={maxContentHeight}
+      maxContentWidth={maxWidth}
       scrollable={scrollable}
       dimmed={dimmed}
       dismissible={dismissible}
       cornerRadius={26}
       backgroundColor={tailwind.color('bg-white') as string}
       grabber
-      grabberOptions={GRABBER_OPTIONS}
+      grabberOptions={{ ...GRABBER_OPTIONS, color: tailwind.color('text-gray-700') as string }}
       style={[styles.content, contentStyle]}
       onDidDismiss={onDismiss}
       onDidPresent={onPresent}>

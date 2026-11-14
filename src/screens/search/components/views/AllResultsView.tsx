@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
@@ -45,6 +45,7 @@ export function AllResultsView({
   onTabChange,
   renderItem,
 }: AllResultsViewProps) {
+  const tailwind = useTailwind();
   return (
     <ScrollView
       style={tailwind.style('flex-1')}

@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next/common';
 import { RetryIcon } from '@/svg-icons';
 import { ORIENTATION } from '@/constants';
@@ -23,6 +23,7 @@ export const MessageError = ({
   onRetry,
   canSendPublicReply,
 }: MessageErrorProps) => {
+  const tailwind = useTailwind();
   const canRetry = canRetryMessage(message, canSendPublicReply);
 
   return (

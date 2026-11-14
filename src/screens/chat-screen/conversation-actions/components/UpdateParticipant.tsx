@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useState } from 'react';
 import { ActivityIndicator, Pressable, ScrollView } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { Agent } from '@/types';
 import { Avatar, Icon, SearchBar } from '@/components-next';
 import { TickIcon } from '@/svg-icons';
@@ -26,6 +26,7 @@ type ParticipantCellProps = {
 };
 
 const ParticipantCell = (props: ParticipantCellProps) => {
+  const tailwind = useTailwind();
   const { value, lastItem, onPress } = props;
 
   return (
@@ -57,6 +58,7 @@ const ParticipantStack = ({
   allAgents: Agent[];
   activeConversationParticipants?: Agent[];
 }) => {
+  const tailwind = useTailwind();
   const isFetching = useAppSelector(isAssignableAgentFetching);
   const isFetchingParticipants = useAppSelector(isConversationParticipantsFetching);
 

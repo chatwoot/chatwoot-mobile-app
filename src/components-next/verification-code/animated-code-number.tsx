@@ -9,6 +9,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
+import { appFont } from '@/theme/appFont';
 
 export type StatusType = 'inProgress' | 'correct' | 'wrong';
 
@@ -73,6 +74,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 40,
-    fontFamily: 'Inter-500-24',
+    ...appFont('Inter-500-24'),
   },
 });

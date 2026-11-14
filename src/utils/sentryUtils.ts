@@ -1,4 +1,8 @@
+import type { SerializedError } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react-native';
 import axios from 'axios';
+
+import type { User } from '@/types/User';
 
 /**
  * True when a request failed before any server response was received — offline
@@ -29,6 +33,17 @@ const isExpectedHttpError = (error: unknown): boolean => {
  */
 export const isUnreportableError = (error: unknown): boolean =>
   isTransportError(error) || isExpectedHttpError(error);
+
+const UNREPORTABLE_AXIOS_CODES = [
+  'ERR_NETWORK',
+  'ECONNABORTED',
+  'ETIMEDOUT',
+  'ERR_CANCELED',
+  'ERR_BAD_RESPONSE',
+];
+
+export const isUnreportableSerializedError = (error: SerializedError): boolean =>
+  !!error.code && UNREPORTABLE_AXIOS_CODES.includes(error.code);
 
 /**
  * Push registration failures that no app-side change can resolve: the device
@@ -66,4 +81,16 @@ const UNACTIONABLE_PUSH_MESSAGES = [
 export const isUnactionablePushError = (error: unknown): boolean => {
   const message = error instanceof Error ? error.message : '';
   return UNACTIONABLE_PUSH_MESSAGES.some(pattern => message.includes(pattern));
+};
+
+export const setSentryUser = (user: User | null, installationUrl: string) => {
+  if (!user) return;
+  Sentry.setUser({
+    id: user.id,
+    email: user.email,
+    account_id: user.account_id,
+    name: user.name,
+    role: user.role,
+    installation_url: installationUrl,
+  });
 };

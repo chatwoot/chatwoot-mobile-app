@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import { FlashListRef } from '@shopify/flash-list';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { SEARCH_SECTIONS } from '@/screens/search/config';
 import { FadeInView } from '../shared/FadeInView';
@@ -33,6 +33,7 @@ export function SearchResultsList({
   listRef,
   onEndReached,
 }: SearchResultsListProps) {
+  const tailwind = useTailwind();
   const section = SEARCH_SECTIONS.find(s => s.id === sectionId);
 
   if (!section || (isLoading && items.length === 0)) {

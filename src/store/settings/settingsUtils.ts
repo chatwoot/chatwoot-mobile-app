@@ -100,6 +100,18 @@ export const checkValidUrl = ({ url }: { url: string }): boolean => {
   }
 };
 
+const isPrivateIPv4 = (a: number, b: number, c: number, d: number): boolean => {
+  if ([a, b, c, d].some(n => n < 0 || n > 255)) {
+    return false;
+  }
+  if (a === 127) return true; // 127.0.0.0/8
+  if (a === 10) return true; // 10.0.0.0/8
+  if (a === 172 && b >= 16 && b <= 31) return true; // 172.16.0.0/12
+  if (a === 192 && b === 168) return true; // 192.168.0.0/16
+  if (a === 169 && b === 254) return true; // 169.254.0.0/16
+  return false;
+};
+
 /**
  * Checks whether a hostname refers to a local or private network address (RFC 1918 / RFC 3927 / localhost / loopback).
  */
@@ -133,15 +145,25 @@ export const isLocalOrPrivateHost = (hostname: string): boolean => {
   const ipv4Match = clean.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
   if (ipv4Match) {
     const [, a, b, c, d] = ipv4Match.map(Number);
-    if ([a, b, c, d].some(n => n < 0 || n > 255)) {
-      return false;
-    }
-    if (a === 127) return true; // 127.0.0.0/8
-    if (a === 10) return true; // 10.0.0.0/8
-    if (a === 172 && b >= 16 && b <= 31) return true; // 172.16.0.0/12
-    if (a === 192 && b === 168) return true; // 192.168.0.0/16
-    if (a === 169 && b === 254) return true; // 169.254.0.0/16
-    return false;
+    return isPrivateIPv4(a, b, c, d);
+  }
+
+  // IPv4-mapped IPv6 (e.g. ::ffff:192.168.0.71 or canonicalized ::ffff:c0a8:47)
+  const ipv4MappedDotted = clean.match(
+    /^(?:::ffff:|(?:0+:){5}ffff:)(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/i,
+  );
+  if (ipv4MappedDotted) {
+    const [, a, b, c, d] = ipv4MappedDotted.map(Number);
+    return isPrivateIPv4(a, b, c, d);
+  }
+
+  const ipv4MappedHex = clean.match(
+    /^(?:::ffff:|(?:0+:){5}ffff:)([0-9a-f]{1,4}):([0-9a-f]{1,4})$/i,
+  );
+  if (ipv4MappedHex) {
+    const high = parseInt(ipv4MappedHex[1], 16);
+    const low = parseInt(ipv4MappedHex[2], 16);
+    return isPrivateIPv4((high >> 8) & 0xff, high & 0xff, (low >> 8) & 0xff, low & 0xff);
   }
 
   if (clean === '::1' || clean === '0:0:0:0:0:0:0:1') {
@@ -222,6 +244,7 @@ export const checkValidInstallationUrl = (input: string): boolean => {
   }
   const host = details.hostname.replace(/\.$/, '');
   return (
+    Boolean(details.scheme) ||
     host === 'localhost' ||
     host.endsWith('.localhost') ||
     host.startsWith('[') ||

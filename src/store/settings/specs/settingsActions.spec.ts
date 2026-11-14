@@ -162,4 +162,42 @@ describe('setInstallationUrl', () => {
       baseUrl: 'chatwoot.local.',
     });
   });
+
+  it('falls back to http for bare IPv4-mapped private IPv6 host', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('[::ffff:192.168.0.71]:9668');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://[::ffff:c0a8:47]:9668/',
+      webSocketUrl: 'ws://[::ffff:c0a8:47]:9668/cable',
+      baseUrl: '[::ffff:c0a8:47]:9668',
+    });
+  });
+
+  it('does not downgrade bare public IPv4-mapped IPv6 host to http', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('[::ffff:8.8.8.8]:9668');
+
+    expect(action.type).toBe('settings/setInstallationUrl/rejected');
+  });
+
+  it('allows explicit http scheme for single-label intranet host', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('http://chatwoot');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://chatwoot/',
+      webSocketUrl: 'ws://chatwoot/cable',
+      baseUrl: 'chatwoot',
+    });
+  });
 });

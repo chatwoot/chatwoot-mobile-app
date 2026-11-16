@@ -21,8 +21,13 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           'This app requires access to the microphone for voice calls and voice notes.',
         NSAppleMusicUsageDescription:
           'This app does not use Apple Music, but a system API may require this permission.',
+        NSLocalNetworkUsageDescription:
+          'This app requires access to the local network to discover and connect to self-hosted Chatwoot installations.',
         UIBackgroundModes: ['fetch', 'remote-notification', 'audio', 'voip'],
         ITSAppUsesNonExemptEncryption: false,
+        NSAppTransportSecurity: {
+          NSAllowsArbitraryLoads: true,
+        },
       },
       // Please use the relative path to the google-services.json file
       googleServicesFile: process.env.EXPO_PUBLIC_IOS_GOOGLE_SERVICES_FILE,
@@ -113,6 +118,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           // compileSdk/targetSdk 36 = Expo SDK 54 / RN 0.81 default (Android 16).
           // notifee (issue #808) needs compileSdk >= 35, satisfied by 36.
           android: {
+            usesCleartextTraffic: true,
             minSdkVersion: 24,
             compileSdkVersion: 36,
             targetSdkVersion: 36,

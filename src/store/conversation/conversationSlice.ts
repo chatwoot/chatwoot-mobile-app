@@ -1,7 +1,7 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import { Conversation } from '@/types/Conversation';
 import { conversationActions } from './conversationActions';
-import { findPendingMessageIndex } from '@/utils/conversationUtils';
+import { findPendingMessageIndex, hasConversationId } from '@/utils/conversationUtils';
 
 import { CONTENT_TYPES, MESSAGE_TYPES } from '@/constants';
 import { Message } from '@/types/Message';
@@ -121,10 +121,12 @@ const conversationSlice = createSlice({
     clearAllConversations: conversationAdapter.removeAll,
     addConversation: (state, action) => {
       const conversation = action.payload;
+      if (!hasConversationId(conversation)) return;
       conversationAdapter.addOne(state, conversation);
     },
     updateConversation: (state, action) => {
       const conversation = action.payload as Conversation;
+      if (!hasConversationId(conversation)) return;
       const conversationIds = conversationAdapter.getSelectors().selectIds(state);
       if (conversationIds.includes(conversation.id)) {
         const existingConversation = state.entities[conversation.id];
@@ -193,6 +195,7 @@ const conversationSlice = createSlice({
         const { conversations, meta } = payload;
         const conversationsToUpsert = conversations.filter(
           conversation =>
+            hasConversationId(conversation) &&
             !isOutdatedConversationUpdate(state.entities[conversation.id], conversation),
         );
         conversationAdapter.upsertMany(
@@ -214,6 +217,11 @@ const conversationSlice = createSlice({
       })
       .addCase(conversationActions.fetchConversation.fulfilled, (state, { payload }) => {
         const { conversation } = payload;
+        if (!hasConversationId(conversation)) {
+          state.isConversationFetching = false;
+          state.error = state.error || 'Unable to load conversation';
+          return;
+        }
         if (isOutdatedConversationUpdate(state.entities[conversation.id], conversation)) {
           state.isConversationFetching = false;
           return;

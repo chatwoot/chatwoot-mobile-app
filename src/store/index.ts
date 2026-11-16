@@ -14,6 +14,7 @@ import { appReducer } from '@/store/reducers';
 import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
 import { callListenerMiddleware } from './call/callListener';
+import { conversationListenerMiddleware } from './conversation/conversationListener';
 import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
 import { repairPersistedConversations } from './conversation/conversationPersistUtils';
 import { setSentryUser } from '@/utils/sentryUtils';
@@ -46,6 +47,7 @@ const persistConfig = {
 const middlewares: Middleware[] = [
   contactListenerMiddleware.middleware,
   callListenerMiddleware.middleware,
+  conversationListenerMiddleware.middleware,
 ];
 
 const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) => {

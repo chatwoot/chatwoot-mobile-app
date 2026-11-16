@@ -2,6 +2,7 @@ import conversationReducer, { addConversation, updateConversation } from '../con
 import type { Message } from '@/types/Message';
 import { conversation } from './conversationMockData';
 import { conversationActions } from '../conversationActions';
+import { transformConversation } from '@/utils/camelCaseKeys';
 
 describe('conversation reducer', () => {
   it('ignores outdated conversation updates', () => {
@@ -292,5 +293,45 @@ describe('fetchPreviousMessages first load', () => {
     );
 
     expect(messages.map(m => m.content)).toEqual(['ended']);
+  });
+});
+
+describe('conversations without an id', () => {
+  const signInPage = transformConversation('<!DOCTYPE html><html><title>Sign in</title></html>');
+
+  it('does not store a fetched conversation built from an HTML page', () => {
+    let state = conversationReducer(undefined, addConversation(conversation));
+    state = conversationReducer(
+      state,
+      conversationActions.fetchConversation.fulfilled(
+        { conversation: signInPage },
+        'request-id',
+        conversation.id,
+      ),
+    );
+
+    expect(state.ids).toStrictEqual([conversation.id]);
+    expect(state.isConversationFetching).toBe(false);
+    expect(state.error).toBe('Unable to load conversation');
+  });
+
+  it('ignores realtime adds and updates without an id', () => {
+    let state = conversationReducer(undefined, addConversation(signInPage));
+    state = conversationReducer(state, updateConversation(signInPage));
+
+    expect(state.ids).toStrictEqual([]);
+  });
+
+  it('keeps the listed conversations that have an id', () => {
+    const state = conversationReducer(
+      undefined,
+      conversationActions.fetchConversations.fulfilled(
+        { conversations: [conversation, signInPage], meta: {} } as never,
+        'request-id',
+        {} as never,
+      ),
+    );
+
+    expect(state.ids).toStrictEqual([conversation.id]);
   });
 });

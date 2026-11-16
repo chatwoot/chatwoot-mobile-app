@@ -3,9 +3,10 @@ import { ActivityIndicator, Platform, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import i18n from '@/i18n';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { useAppSelector } from '@/hooks';
-import { getLastMessage } from '@/utils';
+import { getLastMessage, IOS_DESIGN } from '@/utils';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
 import {
   selectContactConversationsByContactId,
   selectHasLoadedContactConversations,
@@ -20,6 +21,8 @@ interface ContactPreviousConversationsProps {
 
 export const ContactPreviousConversations = (props: ContactPreviousConversationsProps) => {
   const { contactId, currentConversationId } = props;
+  const tailwind = useTailwind();
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
 
   const conversations = useAppSelector(selectContactConversationsByContactId(contactId));
   const hasLoaded = useAppSelector(selectHasLoadedContactConversations(contactId));
@@ -40,7 +43,11 @@ export const ContactPreviousConversations = (props: ContactPreviousConversations
     }
 
     return (
-      <Animated.View style={[tailwind.style('rounded-[13px] mx-4 bg-white'), styles.listShadow]}>
+      <Animated.View
+        style={[
+          tailwind.style('rounded-[13px] mx-4 bg-white'),
+          isInPane ? null : styles.listShadow,
+        ]}>
         <Animated.View style={tailwind.style('rounded-[13px] overflow-hidden')}>
           {previousConversations.length === 0 ? (
             <Animated.View style={tailwind.style('items-center justify-center py-4 px-4')}>
@@ -88,7 +95,6 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 4,
-        backgroundColor: 'white',
       },
     }) || {},
 });

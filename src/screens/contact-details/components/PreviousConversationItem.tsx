@@ -3,12 +3,13 @@ import Animated, { runOnJS } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { StackActions, useNavigation } from '@react-navigation/native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { useAppSelector } from '@/hooks';
 import { Conversation } from '@/types';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectAllLabels } from '@/store/label/labelSelectors';
 import { getLastMessage } from '@/utils';
+import { useSplitView } from '@/navigation/split/SplitViewContext';
 import { ConversationItemDetailContent } from '@/screens/conversations/components/conversation-item/ConversationItemDetail';
 
 type PreviousConversationItemProps = {
@@ -16,7 +17,9 @@ type PreviousConversationItemProps = {
 };
 
 export const PreviousConversationItem = ({ conversation }: PreviousConversationItemProps) => {
+  const tailwind = useTailwind();
   const navigation = useNavigation();
+  const splitView = useSplitView();
   const inbox = useAppSelector(state => selectInboxById(state, conversation.inboxId));
   const allLabels = useAppSelector(selectAllLabels);
 
@@ -26,6 +29,10 @@ export const PreviousConversationItem = ({ conversation }: PreviousConversationI
   });
 
   const navigateToConversation = () => {
+    if (splitView) {
+      splitView.openConversation(conversation.id);
+      return;
+    }
     navigation.dispatch(
       StackActions.replace('ChatScreen', {
         conversationId: conversation.id,

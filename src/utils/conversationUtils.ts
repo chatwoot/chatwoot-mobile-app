@@ -9,6 +9,9 @@ import { formatDate } from '@/utils/dateTimeUtils';
 const filterByStatus = (chatStatus: string, filterStatus: string) =>
   filterStatus === 'all' ? true : chatStatus === filterStatus;
 
+export const hasConversationId = (conversation: Conversation | null | undefined) =>
+  typeof conversation?.id === 'number';
+
 export const shouldApplyFilters = (conversation: Conversation, filters: FilterState) => {
   const { inbox_id: inboxId, status } = filters;
   const { status: chatStatus, inboxId: chatInboxId } = conversation;

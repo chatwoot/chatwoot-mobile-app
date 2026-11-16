@@ -55,6 +55,22 @@ export type AccountScopedRequestConfig = AxiosRequestConfig & {
 const namesItsAccount = (config?: AxiosRequestConfig) =>
   !!(config as AccountScopedRequestConfig | undefined)?.accountId;
 
+// The API answers in JSON; an HTML page with a 2xx status comes from a proxy or sign-in
+// gateway in front of the server.
+const rejectHtmlResponse = (response: AxiosResponse) => {
+  const contentType = String(response.headers?.['content-type'] ?? '');
+  if (!contentType.includes('text/html')) return response;
+  return Promise.reject(
+    new AxiosError(
+      'Expected JSON, received an HTML page',
+      AxiosError.ERR_BAD_RESPONSE,
+      response.config,
+      response.request,
+      response,
+    ),
+  );
+};
+
 class APIService {
   private static instance: APIService;
   private api = axios.create();
@@ -85,6 +101,9 @@ class APIService {
   }
 
   private setupInterceptors() {
+    // Registered first so the error handler below treats an HTML page like any failed request.
+    this.api.interceptors.response.use(rejectHtmlResponse);
+
     this.api.interceptors.request.use(
       async (config: AxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
         const headers = this.getHeaders();

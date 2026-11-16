@@ -258,6 +258,7 @@
       "ALL_FILLED": "Everything is filled in. Resolve to close this conversation.",
       "RESOLVE": "Resolve conversation",
       "SAVE_ERROR": "Could not save the attributes. Try again.",
+      "RESOLVE_ERROR": "The attributes are saved, but the conversation could not be resolved. Try again.",
       "SEARCH_OPTIONS": "Search %{count} options",
       "DISCARD": {
         "TITLE": "Discard changes?",

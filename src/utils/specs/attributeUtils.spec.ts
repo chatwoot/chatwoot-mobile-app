@@ -73,6 +73,11 @@ describe('getMissingRequiredAttributes', () => {
     ).toEqual([]);
   });
 
+  it('keeps accented letters in the keys it reads', () => {
+    const accented = attribute({ attributeKey: 'numéro_commande' });
+    expect(getMissingRequiredAttributes([accented], { numéroCommande: 'A-1' })).toEqual([]);
+  });
+
   it('treats blank text and a null checkbox as missing', () => {
     expect(
       getMissingRequiredAttributes(required, { ticketRef: '   ', orderValue: 5, plan2B: null }),

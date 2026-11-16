@@ -8,7 +8,6 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { camelCase } from 'lodash';
 
 import { Button, Icon } from '@/components-next';
 import { GlassCircleButton } from '@/components-next/side-toolbar/GlassCircleButton';
@@ -24,6 +23,7 @@ import { macroActions } from '@/store/macro/macroActions';
 import { selectRequiredConversationAttributes } from '@/store/account/accountSlice';
 import { IOS_DESIGN } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
+import { toCustomAttributeKey } from '@/utils/camelCaseKeys';
 import {
   AttributeValueError,
   RequiredAttributeValue,
@@ -66,7 +66,7 @@ const ResolveAttributesScreen = () => {
         attribute.attributeKey,
         getInitialAttributeValue(
           attribute,
-          conversation?.customAttributes?.[camelCase(attribute.attributeKey)],
+          conversation?.customAttributes?.[toCustomAttributeKey(attribute.attributeKey)],
         ),
       ]),
     ),
@@ -155,13 +155,17 @@ const ResolveAttributesScreen = () => {
       }
       return;
     }
-    await dispatch(
-      conversationActions.toggleConversationStatus({
-        conversationId,
-        payload: { status: 'resolved', snoozed_until: null },
-      }),
-    );
-    showToast({ message: i18n.t('CONVERSATION.STATUS_CHANGE') });
+    try {
+      await dispatch(
+        conversationActions.toggleConversationStatus({
+          conversationId,
+          payload: { status: 'resolved', snoozed_until: null },
+        }),
+      ).unwrap();
+      showToast({ message: i18n.t('CONVERSATION.STATUS_CHANGE') });
+    } catch {
+      showToast({ message: i18n.t('CONVERSATION.REQUIRED_ATTRIBUTES.RESOLVE_ERROR') });
+    }
   };
 
   const handleSubmit = async () => {

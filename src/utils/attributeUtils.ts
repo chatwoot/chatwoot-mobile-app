@@ -1,5 +1,6 @@
-import { camelCase } from 'lodash';
 import type { CustomAttribute } from '@/types';
+
+import { toCustomAttributeKey } from './camelCaseKeys';
 
 /**
  * Custom attribute values arrive from the API as arbitrary JSON, so a value
@@ -39,7 +40,7 @@ export const getMissingRequiredAttributes = (
   customAttributes: Record<string, unknown>,
 ) =>
   requiredAttributes.filter(attribute => {
-    const value = customAttributes[camelCase(attribute.attributeKey)];
+    const value = customAttributes[toCustomAttributeKey(attribute.attributeKey)];
     if (attribute.attributeDisplayType === 'checkbox') {
       return value == null;
     }

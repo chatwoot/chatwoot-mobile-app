@@ -1,10 +1,12 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Platform, Pressable } from 'react-native';
 import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import { useVideoPlayer, VideoView, type VideoPlayerStatus } from 'expo-video';
 import { Image } from 'expo-image';
 import { Spinner } from '@/components-next/spinner';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
+import i18n from '@/i18n';
 
 type VideoBubbleProps = {
   videoSrc: string;
@@ -14,16 +16,26 @@ type VideoPlayerProps = Pick<VideoBubbleProps, 'videoSrc'> & {
   playerEnabled?: boolean;
 };
 
-export const VideoBubblePlayer = (props: VideoPlayerProps) => {
-  const tailwind = useTailwind();
-  const { videoSrc, playerEnabled = true } = props;
+// External video keeps its native streaming path. Protected video is resolved
+// only after Play, so a message list never downloads full videos to draw cells.
+const useDeferredVideo = (videoSrc: string) => {
+  const [requestedSource, setRequestedSource] = useState<string | null>(null);
+  const media = useCloudflareMedia(videoSrc, 0, requestedSource === videoSrc);
   const videoRef = useRef<VideoView>(null);
   const [playVideo, setPlayVideo] = useState(false);
+  const [playbackFailed, setPlaybackFailed] = useState(false);
   const [status, setStatus] = useState<VideoPlayerStatus>('loading');
+  const pendingPlay = useRef<string | null>(null);
 
-  const player = useVideoPlayer({ uri: videoSrc }, instance => {
+  const player = useVideoPlayer(media.uri ? { uri: media.uri } : null, instance => {
     instance.loop = false;
   });
+
+  useEffect(() => {
+    pendingPlay.current = null;
+    setPlayVideo(false);
+    setPlaybackFailed(false);
+  }, [videoSrc]);
 
   useEffect(() => {
     const statusSub = player.addListener('statusChange', ({ status: nextStatus }) => {
@@ -41,14 +53,55 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
     };
   }, [player]);
 
-  // Loader shown over the thumbnail until the first frame is ready.
-  const videoLoading = status === 'loading' || status === 'idle';
+  const beginPlayback = useCallback(() => {
+    try {
+      player.play();
+      setPlayVideo(true);
+      // Fullscreen can be unavailable while the view is being unmounted;
+      // inline playback still works and no native error is reported.
+      videoRef.current?.enterFullscreen().catch(() => {});
+    } catch {
+      setPlaybackFailed(true);
+    }
+  }, [player]);
 
-  const handlePlayPress = async () => {
-    setPlayVideo(true);
-    player.play();
-    await videoRef.current?.enterFullscreen();
+  useEffect(() => {
+    if (pendingPlay.current === videoSrc && media.uri && status === 'readyToPlay') {
+      pendingPlay.current = null;
+      beginPlayback();
+    }
+  }, [videoSrc, media.uri, status, beginPlayback]);
+
+  const handlePlayPress = () => {
+    if (media.uri && status === 'readyToPlay') {
+      beginPlayback();
+      return;
+    }
+    pendingPlay.current = videoSrc;
+    setRequestedSource(videoSrc);
   };
+
+  const failed = media.failed || playbackFailed || (!!media.uri && status === 'error');
+  const loading =
+    !failed && (media.loading || (!!media.uri && (status === 'loading' || status === 'idle')));
+
+  return {
+    media,
+    player,
+    videoRef,
+    playVideo,
+    setPlayVideo,
+    loading,
+    failed,
+    handlePlayPress,
+  };
+};
+
+export const VideoBubblePlayer = (props: VideoPlayerProps) => {
+  const tailwind = useTailwind();
+  const { videoSrc, playerEnabled = true } = props;
+  const { media, player, videoRef, playVideo, setPlayVideo, loading, failed, handlePlayPress } =
+    useDeferredVideo(videoSrc);
 
   return (
     <React.Fragment>
@@ -57,23 +110,29 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
         ref={videoRef}
         player={player}
         contentFit={Platform.OS === 'android' ? 'contain' : 'cover'}
-        nativeControls={playerEnabled}
+        nativeControls={playerEnabled && !!media.uri}
         onFullscreenExit={() => {
           player.pause();
           setPlayVideo(false);
         }}
       />
-      {videoLoading ? (
+      {loading ? (
         <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
           <Spinner size={20} />
         </Animated.View>
       ) : null}
-      {!playVideo && playerEnabled ? (
+      {failed ? (
+        <Animated.Text style={tailwind.style('absolute inset-0 text-center text-gray-900')}>
+          {i18n.t('CONVERSATION.FILE_LOAD_ERROR')}
+        </Animated.Text>
+      ) : null}
+      {!loading && !failed && !playVideo && (playerEnabled || !media.uri) ? (
         <Animated.View
           entering={FadeIn.duration(300).easing(Easing.ease)}
           exiting={FadeOut.duration(300).easing(Easing.ease)}
           style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
           <Pressable
+            disabled={!playerEnabled}
             onPress={handlePlayPress}
             style={tailwind.style('h-full w-full flex items-center justify-center')}>
             <Image
@@ -92,29 +151,10 @@ export const VideoBubblePlayer = (props: VideoPlayerProps) => {
 export const VideoThumbnail = (props: VideoBubbleProps) => {
   const tailwind = useTailwind();
   const { videoSrc } = props;
-  const videoRef = useRef<VideoView>(null);
-  const [status, setStatus] = useState<VideoPlayerStatus>('loading');
+  const { player, videoRef, setPlayVideo, loading, failed, handlePlayPress } =
+    useDeferredVideo(videoSrc);
   // iOS fullscreen needs controls to close
   const [isFullscreen, setIsFullscreen] = useState(false);
-
-  const player = useVideoPlayer({ uri: videoSrc }, instance => {
-    instance.loop = false;
-  });
-
-  useEffect(() => {
-    const statusSub = player.addListener('statusChange', ({ status: nextStatus }) => {
-      setStatus(nextStatus);
-    });
-    setStatus(player.status);
-    return () => {
-      statusSub.remove();
-    };
-  }, [player]);
-
-  const handlePlayPress = async () => {
-    player.play();
-    await videoRef.current?.enterFullscreen();
-  };
 
   return (
     <Animated.View
@@ -128,11 +168,16 @@ export const VideoThumbnail = (props: VideoBubbleProps) => {
         onFullscreenEnter={() => setIsFullscreen(true)}
         onFullscreenExit={() => {
           setIsFullscreen(false);
+          setPlayVideo(false);
           player.pause();
           player.currentTime = 0;
         }}
       />
-      {status === 'loading' || status === 'idle' ? (
+      {failed ? (
+        <Animated.Text style={tailwind.style('absolute inset-0 text-center text-gray-900')}>
+          {i18n.t('CONVERSATION.FILE_LOAD_ERROR')}
+        </Animated.Text>
+      ) : loading ? (
         <Animated.View style={tailwind.style('absolute inset-0 flex items-center justify-center')}>
           <Spinner size={16} />
         </Animated.View>

@@ -72,8 +72,6 @@ export const settingsSlice = createSlice({
       })
       .addCase(settingsActions.setInstallationUrl.rejected, state => {
         state.uiFlags.isSettingUrl = false;
-        state.installationUrl = '';
-        state.baseUrl = '';
       })
       .addCase(settingsActions.getNotificationSettings.fulfilled, (state, action) => {
         state.notificationSettings = action.payload;

@@ -19,7 +19,15 @@
     "URL_REQUIRED": "URL is required",
     "CONNECT": "Connect",
     "CHANGE_LANGUAGE": "Change language",
-    "ERROR": "Invalid installation url"
+    "ERROR": "Invalid installation url",
+    "ACCESS_TITLE": "Cloudflare Access (optional)",
+    "ACCESS_DESCRIPTION": "Enable if your server requires a Cloudflare Access service token.",
+    "ACCESS_CLIENT_ID": "Client ID",
+    "ACCESS_CLIENT_SECRET": "Client Secret",
+    "ACCESS_REQUIRED": "Enter a valid service token value.",
+    "ACCESS_ERROR": "Could not connect. Check the server URL, service token and Cloudflare Access policy.",
+    "ACCESS_STORAGE_ERROR": "Could not read the saved service token. Enter the credentials again or disable Cloudflare Access.",
+    "CONNECTING": "Connecting…"
   },
   "LOGIN": {
     "TITLE": "Log in to your account",

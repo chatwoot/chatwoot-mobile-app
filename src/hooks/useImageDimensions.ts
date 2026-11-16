@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Image as RNImage } from 'react-native';
+import { useCloudflareMedia } from './useCloudflareMedia';
 
 export type ImageCellProps = {
   imageSrc: string;
@@ -13,13 +14,18 @@ export type ImageContainerProps = Pick<ImageCellProps, 'imageSrc'> & {
 const imageDimensionsCache = new Map<string, { width: number; height: number }>();
 
 export const useImageDimensions = (imageSrc: string, maxWidth = 300, maxHeight = 360) => {
+  const { uri } = useCloudflareMedia(imageSrc);
   const [imageDimensions, setImageDimensions] = useState<{ width: number; height: number } | null>(
     null,
   );
 
   useEffect(() => {
     let isMounted = true;
-    const cachedImageDimensions = imageDimensionsCache.get(imageSrc);
+    if (!uri) {
+      setImageDimensions(null);
+      return;
+    }
+    const cachedImageDimensions = imageDimensionsCache.get(uri);
 
     if (cachedImageDimensions) {
       setImageDimensions(cachedImageDimensions);
@@ -29,13 +35,13 @@ export const useImageDimensions = (imageSrc: string, maxWidth = 300, maxHeight =
     }
 
     RNImage.getSize(
-      imageSrc,
+      uri,
       (width, height) => {
         if (!isMounted || width <= 0 || height <= 0) {
           return;
         }
         const dimensions = { width, height };
-        imageDimensionsCache.set(imageSrc, dimensions);
+        imageDimensionsCache.set(uri, dimensions);
         setImageDimensions(dimensions);
       },
       () => {
@@ -49,7 +55,7 @@ export const useImageDimensions = (imageSrc: string, maxWidth = 300, maxHeight =
     return () => {
       isMounted = false;
     };
-  }, [imageSrc]);
+  }, [uri]);
 
   const imageStyle = useMemo(() => {
     const fallbackHeight = Math.round(maxWidth * 0.75);

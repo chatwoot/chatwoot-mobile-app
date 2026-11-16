@@ -16,6 +16,7 @@ import { reportNativeCallState } from '@/services/voice/chatwootCalls';
 
 import { discardPendingCallActions } from '@/utils/callNotifications';
 import { applyPendingCallAction, attachCallSessionCore } from './callSessionCore';
+import { loadCloudflareAccess } from '@/services/cloudflareAccess';
 
 // Keep JavaScript alive for lock-screen calls.
 
@@ -72,6 +73,13 @@ const waitForCallToEnd = () =>
 
 export const runCallSessionTask = async () => {
   await waitForRehydration();
+  try {
+    await loadCloudflareAccess();
+  } catch {
+    discardPendingCallActions();
+    reportNativeCallState('failed');
+    return;
+  }
   if (!selectLoggedIn(store.getState())) {
     discardPendingCallActions();
     reportNativeCallState('failed');

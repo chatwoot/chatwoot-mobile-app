@@ -17,6 +17,7 @@ import { useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectAttachments, deleteAttachment } from '@/store/conversation/sendMessageSlice';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
 
 export const PlayIcon = () => {
   return (
@@ -61,6 +62,7 @@ type AttachedImageProps = AttachedMediaProps & { attachmentsLength: number };
 const AttachedImage = (props: AttachedImageProps) => {
   const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
+  const { uri } = useCloudflareMedia(item.uri);
   const dispatch = useAppDispatch();
 
   const { animatedStyle, handlers } = useScaleAnimation();
@@ -80,7 +82,7 @@ const AttachedImage = (props: AttachedImageProps) => {
           'h-23 w-[137px] rounded-lg',
           index === attachmentsLength - 1 ? 'mr-4' : '',
         )}>
-        <Image source={{ uri: item.uri }} style={tailwind.style('h-full w-full rounded-lg')} />
+        <Image source={uri ? { uri } : null} style={tailwind.style('h-full w-full rounded-lg')} />
         <Animated.View
           style={[
             StyleSheet.absoluteFill,
@@ -108,12 +110,13 @@ type AttachedVideoProps = AttachedMediaProps & { attachmentsLength: number };
 const AttachedVideo = (props: AttachedVideoProps) => {
   const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
+  const { uri } = useCloudflareMedia(item.uri);
 
   const dispatch = useAppDispatch();
 
   const { animatedStyle, handlers } = useScaleAnimation();
 
-  const player = useVideoPlayer(item.uri ? { uri: item.uri } : null, instance => {
+  const player = useVideoPlayer(uri ? { uri } : null, instance => {
     instance.loop = false;
   });
 
@@ -132,7 +135,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
           'h-23 w-[137px] rounded-lg',
           index === attachmentsLength - 1 ? 'mr-4' : '',
         )}>
-        {item.uri ? (
+        {uri ? (
           <VideoView
             player={player}
             contentFit="cover"

@@ -1,4 +1,5 @@
 import { ActionCable, Cable } from '@kesha-antonov/react-native-action-cable';
+import { getCloudflareAccessHeaders } from '@/services/cloudflareAccess';
 
 const cable = new Cable({});
 const channelName = 'RoomChannel';
@@ -16,7 +17,10 @@ class BaseActionCableConnector {
   private presenceInterval: ReturnType<typeof setInterval>;
 
   constructor(pubSubToken: string, webSocketUrl: string, accountId: number, userId: number) {
-    const connectActionCable = ActionCable.createConsumer(webSocketUrl);
+    const connectActionCable = ActionCable.createConsumer(
+      webSocketUrl,
+      getCloudflareAccessHeaders(webSocketUrl),
+    );
     this.consumer = connectActionCable;
 
     const channel = cable.setChannel(

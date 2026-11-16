@@ -22,6 +22,7 @@ import { IncomingCallsSheet } from './components/incoming-calls-sheet/IncomingCa
 import { useCallActions } from './hooks/useCallActions';
 import { useCallerInfo } from './hooks/useCallerInfo';
 import { useRingingBehind } from './hooks/useRingingBehind';
+import { useCloudflareMedia } from '@/hooks/useCloudflareMedia';
 
 type FullScreenCallProps = {
   call: LiveCall;
@@ -51,13 +52,14 @@ export const FullScreenCall = ({
   const isOnHold = useAppSelector(selectIsOnHold);
   const audioRoute = useAppSelector(selectAudioRoute);
   const info = useCallerInfo(call);
+  const { uri: avatarUri } = useCloudflareMedia(info.avatar);
   const { answer, end, isEnding } = useCallActions(call, joiningThis);
   const ringingBehind = useRingingBehind({ call, isJoining });
   const [routePickerOpen, setRoutePickerOpen] = useState(false);
 
   useEffect(() => {
-    if (info.avatar) Image.prefetch(info.avatar, 'memory-disk').catch(() => {});
-  }, [info.avatar]);
+    if (avatarUri) Image.prefetch(avatarUri, 'memory-disk').catch(() => {});
+  }, [avatarUri]);
 
   const handleOpenConversation = useCallback(() => {
     hapticSelection?.();
@@ -68,7 +70,7 @@ export const FullScreenCall = ({
     <>
       <ActiveCallScreen
         call={call}
-        info={info}
+        info={{ ...info, avatar: avatarUri ?? '' }}
         onLockScreen={onLockScreen}
         activeSince={activeCall?.activeSince}
         isConnected={connectedThis}

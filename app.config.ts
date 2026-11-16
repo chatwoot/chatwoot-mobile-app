@@ -76,6 +76,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     owner: 'chatwoot',
     plugins: [
+      'expo-secure-store',
       'expo-font',
       'expo-image',
       'expo-status-bar',
@@ -122,6 +123,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       './with-ffmpeg-pod.js',
       './with-android-notification-channel.js',
+      './with-cloudflare-websocket.js',
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',
       './with-ios-scene-lifecycle.js',

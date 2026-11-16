@@ -87,6 +87,19 @@ describe('preparePlayableAudio', () => {
     expect(mockProbe).not.toHaveBeenCalled();
   });
 
+  it('converts a protected local ogg without downloading or deleting the source', async () => {
+    existsSequence(false, true);
+    const dataUrl = 'file:///cache/cf_media_protected.ogg';
+
+    await expect(preparePlayableAudio({ dataUrl, contentType: 'audio/ogg' })).resolves.toMatch(
+      /^file:\/\/\/caches\/audio_.*\.m4a$/,
+    );
+
+    expect(mockRNFS.downloadFile).not.toHaveBeenCalled();
+    expect(mockExecute.mock.calls[0][0]).toContain('-i "/cache/cf_media_protected.ogg"');
+    expect(mockRNFS.unlink).not.toHaveBeenCalledWith('/cache/cf_media_protected.ogg');
+  });
+
   it('rejects and discards the partial file when ffmpeg exits with an error', async () => {
     existsSequence(false, true);
     mockExecute.mockResolvedValue(ffmpegSession(1));

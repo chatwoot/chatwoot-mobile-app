@@ -8,6 +8,14 @@ import { AppErrorBoundary } from '@/components-next/error-boundary';
 
 import i18n from '@/i18n';
 import { AppearanceProvider } from '@/theme/appearance';
+import { loadCloudflareAccess } from '@/services/cloudflareAccess';
+
+// The URL screen belongs to the auth stack. Keep it reachable when credentials
+// cannot be read, including when a Chatwoot login was restored from persistence.
+const loadAccessCredentials = () =>
+  loadCloudflareAccess().catch(() => {
+    store.dispatch({ type: 'auth/logout' });
+  });
 
 const Chatwoot = () => {
   useEffect(() => {
@@ -33,7 +41,7 @@ const Chatwoot = () => {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor} onBeforeLift={loadAccessCredentials}>
         <AppearanceProvider>
           <AppErrorBoundary>
             <AppNavigator />

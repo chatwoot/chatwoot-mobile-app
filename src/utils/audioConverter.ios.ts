@@ -89,6 +89,7 @@ const convertToM4a = (inputPath: string, outputPath: string) =>
 
 const runPreparation = async (source: AudioAttachmentSource): Promise<string> => {
   const { dataUrl } = source;
+  const localInputPath = dataUrl.startsWith('file://') ? dataUrl.slice('file://'.length) : null;
   // Paths are derived from the url so that concurrent preparations of different
   // audio never share a file.
   if (nativeSources.has(dataUrl)) {
@@ -107,14 +108,17 @@ const runPreparation = async (source: AudioAttachmentSource): Promise<string> =>
   }
 
   try {
-    const downloadResult = await RNFS.downloadFile({ fromUrl: dataUrl, toFile: downloadPath })
-      .promise;
+    if (!localInputPath) {
+      const downloadResult = await RNFS.downloadFile({ fromUrl: dataUrl, toFile: downloadPath })
+        .promise;
 
-    if (downloadResult.statusCode !== 200) {
-      throw new Error(`Download failed with status ${downloadResult.statusCode}`);
+      if (downloadResult.statusCode !== 200) {
+        throw new Error(`Download failed with status ${downloadResult.statusCode}`);
+      }
     }
 
-    const fileExists = await RNFS.exists(downloadPath);
+    const inputPath = localInputPath ?? downloadPath;
+    const fileExists = await RNFS.exists(inputPath);
     if (!fileExists) {
       throw new Error('Downloaded file not found');
     }
@@ -123,17 +127,17 @@ const runPreparation = async (source: AudioAttachmentSource): Promise<string> =>
     // inspects the downloaded file; anything AVFoundation can open is streamed
     // from the original url so the player can rely on the server's content type.
     const needsConversion =
-      iosNeedsConversion(source) ?? (await hasUnsupportedContainer(downloadPath));
+      iosNeedsConversion(source) ?? (await hasUnsupportedContainer(inputPath));
 
     if (!needsConversion) {
       nativeSources.add(dataUrl);
       return dataUrl;
     }
 
-    await convertToM4a(downloadPath, outputPath);
+    await convertToM4a(inputPath, outputPath);
     return `file://${outputPath}`;
   } finally {
-    await unlinkQuietly(downloadPath);
+    if (!localInputPath) await unlinkQuietly(downloadPath);
   }
 };
 

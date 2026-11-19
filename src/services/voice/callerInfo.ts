@@ -4,7 +4,7 @@ import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import i18n from '@/i18n';
-import { isPhoneNumberName } from '@/utils';
+import { isPhoneNumberName } from '@/utils/common';
 
 export type CallerInfo = {
   name: string;

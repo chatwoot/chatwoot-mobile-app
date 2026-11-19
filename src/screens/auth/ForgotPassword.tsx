@@ -11,6 +11,7 @@ import { tailwind } from '@/theme';
 import { authActions } from '@/store/auth/authActions';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetAuth } from '@/store/auth/authSlice';
+import { selectResetPasswordLoading } from '@/store/auth/authSelectors';
 import AnalyticsHelper from '@/utils/analyticsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { ACCOUNT_EVENTS } from '@/constants/analyticsEvents';
@@ -24,7 +25,7 @@ type FormData = {
 const ForgotPassword = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const isResettingPassword = useAppSelector(state => state.auth.uiFlags.isResettingPassword);
+  const isResettingPassword = useAppSelector(selectResetPasswordLoading);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -112,13 +113,10 @@ const ForgotPassword = () => {
           />
 
           <Button
-            text={
-              isResettingPassword
-                ? i18n.t('FORGOT_PASSWORD.RESET_LOADING')
-                : i18n.t('FORGOT_PASSWORD.RESET_HERE')
-            }
+            text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
             handlePress={handleSubmit(onSubmit)}
             disabled={isResettingPassword}
+            isLoading={isResettingPassword}
           />
         </Animated.ScrollView>
       </View>

@@ -202,7 +202,6 @@ const BottomSheetContent = () => {
   const setCCEmails = (cc: string) => dispatch(updateEmailDraft({ conversationId, cc }));
   const setBCCEmails = (bcc: string) => dispatch(updateEmailDraft({ conversationId, bcc }));
   const setToEmails = (to: string) => dispatch(updateEmailDraft({ conversationId, to }));
-  const [selectedCannedResponse, setSelectedCannedResponse] = useState<string | null>(null);
   const [copilotFollowUpText, setCopilotFollowUpText] = useState('');
 
   const typingUsers = useAppSelector(selectTypingUsersByConversationId(conversationId));
@@ -504,7 +503,6 @@ const BottomSheetContent = () => {
   const sendMessage = (messagePayload: SendMessagePayload) => {
     dispatch(conversationActions.sendMessage(messagePayload));
     dispatch(resetSentMessage(conversationId));
-    setSelectedCannedResponse(null);
     dispatch(clearEmailRecipients());
     if (isComposer) closeComposer();
     messageListRef?.current?.scrollToOffset({ offset: 0, animated: true });
@@ -554,7 +552,7 @@ const BottomSheetContent = () => {
       variables: messageVariables,
     });
     AnalyticsHelper.track(CONVERSATION_EVENTS.INSERTED_A_CANNED_RESPONSE);
-    setSelectedCannedResponse(updatedContent);
+    dispatch(setMessageContent({ conversationId, content: updatedContent }));
   };
 
   const onPressVoiceRecordIcon = () => {
@@ -623,7 +621,6 @@ const BottomSheetContent = () => {
             iosStyle
             maxLength={maxLength()}
             replyEditorMode={replyEditorMode}
-            selectedCannedResponse={selectedCannedResponse}
             agents={agents as Agent[]}
             messageContent={messageContent}
           />
@@ -811,7 +808,6 @@ const BottomSheetContent = () => {
                   onExpand={inbox && isAnEmailChannel(inbox) ? openComposer : undefined}
                   maxLength={maxLength()}
                   replyEditorMode={replyEditorMode}
-                  selectedCannedResponse={selectedCannedResponse}
                   agents={agents as Agent[]}
                   messageContent={messageContent}
                 />
@@ -827,7 +823,6 @@ const BottomSheetContent = () => {
                 <MessageTextInput
                   maxLength={maxLength()}
                   replyEditorMode={replyEditorMode}
-                  selectedCannedResponse={selectedCannedResponse}
                   agents={agents as Agent[]}
                   messageContent={messageContent}
                 />

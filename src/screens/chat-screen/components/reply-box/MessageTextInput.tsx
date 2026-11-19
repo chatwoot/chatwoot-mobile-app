@@ -41,7 +41,6 @@ import { Agent } from '@/types';
 type MessageTextInputProps = {
   maxLength: number;
   replyEditorMode: string;
-  selectedCannedResponse?: string | null;
   agents: Agent[];
   messageContent: string;
   iosStyle?: boolean;
@@ -91,7 +90,6 @@ const useLiquidGlass = Platform.OS === 'ios' && isLiquidGlassAvailable();
 export const MessageTextInput = ({
   maxLength,
   replyEditorMode,
-  selectedCannedResponse,
   agents,
   messageContent,
   iosStyle = false,
@@ -173,11 +171,6 @@ export const MessageTextInput = ({
     }, 380);
     return () => clearTimeout(timer);
   }, [composer, textInputRef]);
-
-  useEffect(() => {
-    if (selectedCannedResponse) onChangeText(selectedCannedResponse);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCannedResponse]);
 
   useEffect(() => {
     if (quoteMessage !== null) {

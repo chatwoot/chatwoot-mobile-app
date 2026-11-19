@@ -88,6 +88,9 @@ importers:
       '@react-native-community/blur':
         specifier: ^4.4.1
         version: 4.4.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
+      '@react-native-community/datetimepicker':
+        specifier: ^8.4.4
+        version: 8.4.4(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       '@react-native-community/netinfo':
         specifier: ^12.0.1
         version: 12.0.1(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
@@ -251,8 +254,8 @@ importers:
         specifier: ^7.0.0-alpha.2
         version: 7.0.2(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       react-native-pager-view:
-        specifier: ^8.0.2
-        version: 8.0.2(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
+        specifier: ^8.0.4
+        version: 8.0.4(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       react-native-permissions:
         specifier: ^5.2.4
         version: 5.4.0(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
@@ -314,9 +317,6 @@ importers:
       '@babel/core':
         specifier: ^7.20.0
         version: 7.27.1
-      '@react-native-community/datetimepicker':
-        specifier: ^8.4.4
-        version: 8.4.4(expo@57.0.7)(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3)
       '@react-native-community/slider':
         specifier: ^5.0.1
         version: 5.0.1
@@ -6222,8 +6222,8 @@ packages:
       react: '*'
       react-native: '>=0.65.0'
 
-  react-native-pager-view@8.0.2:
-    resolution: {integrity: sha512-Y8All2BbjidI4ZIF9kBOIIoldkqrY/2FXapHZMdjwD+ByXhiOWTFenPs5rq9KRN5uAH/gOXtQCqHLxQDNBQRiQ==}
+  react-native-pager-view@8.0.4:
+    resolution: {integrity: sha512-9ASQA/gdQv63pESFbzyODgsY07kZoBjLqBRvZ/HNYn+h29XyOX2BICuvVmhemxw/pz3hKGqGEU31DDhDArwaRg==}
     peerDependencies:
       react: '*'
       react-native: '*'
@@ -14703,7 +14703,7 @@ snapshots:
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)
       react-native-animatable: 1.3.3
 
-  react-native-pager-view@8.0.2(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3):
+  react-native-pager-view@8.0.4(react-native@0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3))(react@19.2.3):
     dependencies:
       react: 19.2.3
       react-native: 0.86.0(@babel/core@7.27.1)(@react-native/jest-preset@0.86.0(@babel/core@7.27.1)(react@19.2.3))(@react-native/metro-config@0.86.0(@babel/core@7.27.1))(@types/react@19.2.17)(react@19.2.3)

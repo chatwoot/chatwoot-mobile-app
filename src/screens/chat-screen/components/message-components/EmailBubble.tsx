@@ -68,7 +68,8 @@ export const EmailBubble = (props: EmailBubbleProps) => {
         }
       `;
   // Email HTML often sets dark text colours inline; on the dark bubble only the text
-  // that sits on a transparent or dark background is lightened.
+  // that sits on a transparent or dark background is lightened. Colours are read before
+  // any are changed, and text on a light background keeps its original colour.
   const darkReadableScript = `
         (function () {
           var parse = function (value) {
@@ -85,11 +86,23 @@ export const EmailBubble = (props: EmailBubbleProps) => {
             }
             return 0;
           };
-          document.querySelectorAll('body, body *').forEach(function (element) {
-            var color = parse(getComputedStyle(element).color);
-            if (!color || color.luminance >= 0.5 || backgroundLuminance(element) >= 0.5) return;
-            var isLink = element.closest('a');
-            element.style.setProperty('color', isLink ? '${tailwind.color('text-blue-800')}' : '${tailwind.color('text-gray-950')}', 'important');
+          var entries = Array.prototype.map.call(document.querySelectorAll('body, body *'), function (element) {
+            var color = getComputedStyle(element).color;
+            var parsed = parse(color);
+            return {
+              element: element,
+              color: color,
+              isDarkText: !!parsed && parsed.luminance < 0.5,
+              onLightBackground: backgroundLuminance(element) >= 0.5,
+            };
+          });
+          entries.forEach(function (entry) {
+            if (entry.onLightBackground) {
+              entry.element.style.setProperty('color', entry.color);
+            } else if (entry.isDarkText) {
+              var isLink = entry.element.closest('a');
+              entry.element.style.setProperty('color', isLink ? '${tailwind.color('text-blue-800')}' : '${tailwind.color('text-gray-950')}', 'important');
+            }
           });
         })();
       `;

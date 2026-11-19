@@ -67,9 +67,7 @@ export const EmailBubble = (props: EmailBubbleProps) => {
           color: ${tailwind.color('text-gray-950')};
         }
       `;
-  // Email HTML often sets dark text colours inline; on the dark bubble only the text
-  // that sits on a transparent or dark background is lightened. Colours are read before
-  // any are changed, and text on a light background keeps its original colour.
+  // Lightens dark text off light backgrounds
   const darkReadableScript = `
         (function () {
           var parse = function (value) {

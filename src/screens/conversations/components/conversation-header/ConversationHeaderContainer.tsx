@@ -108,8 +108,6 @@ export const ConversationHeader = () => {
     dispatch(setCurrentState('none'));
   }, [dispatch]);
 
-  // Selection mode hides the tab bar, so back leaves selection mode instead of
-  // switching tabs.
   useFocusEffect(
     useCallback(() => {
       if (currentState !== 'Select') {

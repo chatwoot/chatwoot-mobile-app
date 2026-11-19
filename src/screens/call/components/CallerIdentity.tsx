@@ -45,7 +45,13 @@ export const CallerIdentity = ({
       ]}
       pointerEvents="box-none">
       <CallStatusLine call={call} activeSince={activeSince} flags={statusFlags} tone={tone} />
-      <CallAvatar name={info.name} uri={info.avatar || undefined} tone={tone} aura={aura} />
+      <CallAvatar
+        name={info.name}
+        hasName={info.hasName}
+        uri={info.avatar || undefined}
+        tone={tone}
+        aura={aura}
+      />
       <Text
         numberOfLines={1}
         style={tailwind.style(

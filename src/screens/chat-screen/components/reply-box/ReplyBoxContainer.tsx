@@ -66,6 +66,7 @@ import { CannedResponses } from './CannedResponses';
 import { AttachedMedia } from '../message-components/AttachedMedia';
 import { CommandOptionsMenu } from '../message-components/CommandOptionsMenu';
 import { AttachmentFile, SendMessagePayload } from '@/store/conversation/conversationTypes';
+import { splitMessagePerAttachment } from '@/utils/messageUtils';
 import { TypingIndicator } from './TypingIndicator';
 import { getLastMessage, getTypingUsersText } from '@/utils';
 import { isVoiceCallMessage } from '@/utils/voiceCallRouting';
@@ -419,23 +420,18 @@ const BottomSheetContent = () => {
     messagePayload = setReplyToInPayload(messagePayload);
 
     if (audioFile) {
-      messagePayload.file = audioFile;
+      messagePayload.files = [audioFile];
     }
 
     if (attachedFiles && attachedFiles.length) {
-      // messagePayload.files = [];
-      // TODO: Implement this
-      // attachedFiles.forEach(attachment => {
-      //   if (globalConfig.directUploadsEnabled) {
-      //     messagePayload.files.push(attachment.blobSignedId);
-      //   } else {
-      //     messagePayload.files.push(attachment.resource.file);
-      //   }
-      // });
-      // TODO: Add support for multiple files later
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      messagePayload.file = attachedFiles[0];
+      messagePayload.files = attachedFiles.map(
+        ({ uri = '', type = '', fileName = '', fileSize }) => ({
+          uri,
+          type,
+          fileName,
+          fileSize,
+        }),
+      );
     }
 
     // TODO: Implement this
@@ -464,11 +460,6 @@ const BottomSheetContent = () => {
       (textInputRef.current as TextInput).clear();
     }
 
-    // const isOnWhatsApp =
-    //   isATwilioWhatsAppChannel(inbox) ||
-    //   isAWhatsAppCloudChannel(inbox) ||
-    //   is360DialogWhatsAppChannel(inbox?.channelType);
-
     AnalyticsHelper.track(CONVERSATION_EVENTS.SENT_MESSAGE);
 
     const undefinedVariables = getAllUndefinedVariablesInMessage({
@@ -483,18 +474,16 @@ const BottomSheetContent = () => {
       Alert.alert(undefinedVariablesMessage);
     } else {
       const messagePayload = getMessagePayload(messageContent, audioFile);
-      sendMessage(messagePayload);
+      // WhatsApp delivers one attachment per message
+      const isOnWhatsApp = isAWhatsAppChannel(inbox) && !isPrivate;
+      sendMessage(isOnWhatsApp ? splitMessagePerAttachment(messagePayload) : [messagePayload]);
     }
-    // TODO: Implement this once we have add the support for multiple attachments
-    // https://github.com/chatwoot/chatwoot/pull/6125
-    // https://github.com/chatwoot/chatwoot/pull/6428
-    // if (isOnWhatsApp && !isPrivate) {
-    // sendMessageAsMultipleMessages(messageContent);
-    // }
   };
 
-  const sendMessage = (messagePayload: SendMessagePayload) => {
-    dispatch(conversationActions.sendMessage(messagePayload));
+  const sendMessage = (messagePayloads: SendMessagePayload[]) => {
+    messagePayloads.forEach(messagePayload => {
+      dispatch(conversationActions.sendMessage(messagePayload));
+    });
     dispatch(resetSentMessage());
     dispatch(setMessageContent(''));
     dispatch(clearEmailRecipients());

@@ -2,6 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
 import type { Reducer } from '@reduxjs/toolkit';
 import { getStoredState, persistReducer, type PersistedState } from 'redux-persist';
+import authSlice from '@/store/auth/authSlice';
+import settingsSlice from '@/store/settings/settingsSlice';
+import { repairPersistedWebSocketUrl } from '@/store/settings/settingsUtils';
 
 export const ROOT_PERSIST_KEY = 'Root';
 export const ROOT_PERSIST_VERSION = 2;
@@ -65,7 +68,7 @@ export const withoutSessionSlices = <T extends Record<string, unknown>>(state: T
  * Persists a session slice under its own key so it survives a root entry that
  * cannot be read. Installs that predate the split restore it from the root entry.
  */
-export const persistSessionReducer = <S>(
+const persistSessionReducer = <S>(
   key: SessionSlice,
   reducer: Reducer<S>,
   repair: (state: S) => S = state => state,
@@ -80,3 +83,11 @@ export const persistSessionReducer = <S>(
     },
     reducer,
   );
+
+export const persistedAuthSlice = persistSessionReducer('auth', authSlice);
+
+export const persistedSettingsSlice = persistSessionReducer(
+  'settings',
+  settingsSlice,
+  repairPersistedWebSocketUrl,
+);

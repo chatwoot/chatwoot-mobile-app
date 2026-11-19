@@ -16,6 +16,7 @@ import {
   CARD_SHADOW,
   useCallTheme,
 } from '../../constants/callTheme';
+import { CALL_GLASS, CallSurface } from '../CallSurface';
 import { PulseDot } from '../PulseDot';
 
 export const CollapsedCallsStrip = ({ label, onPress }: { label: string; onPress: () => void }) => {
@@ -40,29 +41,35 @@ export const CollapsedCallsStrip = ({ label, onPress }: { label: string; onPress
         accessibilityLabel={label}
         onPress={onPress}
         style={[
-          tailwind.style(
-            'w-full rounded-[18px] bg-white pl-[18px] pr-4 flex-row items-center justify-between',
-          ),
-          { height: CALL_STRIP_HEIGHT, maxWidth: CALL_CONTENT_MAX_WIDTH },
-          CARD_SHADOW,
+          tailwind.style('w-full', CALL_GLASS ? 'px-4' : ''),
+          { maxWidth: CALL_CONTENT_MAX_WIDTH },
         ]}>
-        <View style={tailwind.style('flex-row items-center gap-[9px]')}>
-          <PulseDot />
+        <CallSurface
+          radius={18}
+          shadow={CARD_SHADOW}
+          interactive
+          style={[
+            tailwind.style('pl-[18px] pr-4 flex-row items-center justify-between'),
+            { height: CALL_STRIP_HEIGHT },
+          ]}>
+          <View style={tailwind.style('flex-row items-center gap-[9px]')}>
+            <PulseDot />
+            <Text
+              style={[
+                tailwind.style('font-inter-580-24 text-[15px] leading-5'),
+                { color: CALL_INK },
+              ]}>
+              {label}
+            </Text>
+          </View>
           <Text
             style={[
-              tailwind.style('font-inter-580-24 text-[15px] leading-5'),
-              { color: CALL_INK },
+              tailwind.style('font-inter-medium-24 text-[15px] leading-5'),
+              { color: CALL_LINK },
             ]}>
-            {label}
+            {i18n.t('CONVERSATION.VOICE_WIDGET.VIEW')}
           </Text>
-        </View>
-        <Text
-          style={[
-            tailwind.style('font-inter-medium-24 text-[15px] leading-5'),
-            { color: CALL_LINK },
-          ]}>
-          {i18n.t('CONVERSATION.VOICE_WIDGET.VIEW')}
-        </Text>
+        </CallSurface>
       </Pressable>
     </Animated.View>
   );

@@ -32,7 +32,12 @@ export const CallBanner = ({ call, activeSince, flags, onPress }: CallBannerProp
       onPress={onPress}
       style={tailwind.style('absolute top-0 left-0 right-0')}>
       <View
-        style={[tailwind.style('px-5'), { paddingTop: insets.top, backgroundColor: CALL_LINK }]}>
+        style={{
+          paddingTop: insets.top,
+          paddingLeft: insets.left + 20,
+          paddingRight: insets.right + 20,
+          backgroundColor: CALL_LINK,
+        }}>
         <View
           style={[
             tailwind.style('flex-row items-center justify-between'),

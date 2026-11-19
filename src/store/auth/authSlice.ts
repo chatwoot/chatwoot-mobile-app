@@ -33,9 +33,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: state => {
-      // in rootReducer, there is an action to CLEAR the complete Redux Store's state
-    },
+    logout: () => initialState,
     resetAuth: state => {
       state.user = null;
       state.accessToken = null;

@@ -30,10 +30,16 @@ import searchSlice from '@/store/search/searchSlice';
 import copilotSlice from '@/store/copilot/copilotSlice';
 import callSlice from '@/store/call/callSlice';
 import accountSlice from '@/store/account/accountSlice';
+import { repairPersistedWebSocketUrl } from '@/store/settings/settingsUtils';
+import { persistSessionReducer } from '@/store/persistConfig';
 
 export const appReducer = combineReducers({
-  auth: authSlice,
-  settings: settingsSlice,
+  auth: persistSessionReducer('auth', authSlice),
+  settings: persistSessionReducer(
+    'settings',
+    settingsSlice,
+    settings => repairPersistedWebSocketUrl({ settings }).settings,
+  ),
   conversationFilter: conversationFilterSlice,
   selectedConversation: conversationSelectedSlice,
   conversationHeader: conversationHeaderSlice,

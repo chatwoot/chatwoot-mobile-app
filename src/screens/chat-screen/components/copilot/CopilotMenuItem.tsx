@@ -1,8 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, Text } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Icon } from '@/components-next/common';
-import { tailwind } from '@/theme';
 import { useScaleAnimation, useHaptic } from '@/utils';
 
 type CopilotMenuItemProps = {
@@ -12,6 +12,7 @@ type CopilotMenuItemProps = {
 };
 
 export const CopilotMenuItem = ({ icon, label, onPress }: CopilotMenuItemProps) => {
+  const tailwind = useTailwind();
   const { animatedStyle, handlers } = useScaleAnimation();
   const hapticSelection = useHaptic();
 

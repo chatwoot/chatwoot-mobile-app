@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useState } from 'react';
 import { Macro } from '@/types';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { macroActions } from '@/store/macro/macroActions';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
+import { resolvesConversation } from '@/utils/macroUtils';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
 
@@ -25,8 +28,15 @@ export const MacroProvider: React.FC<{
   const [isExecuting, setIsExecuting] = useState(false);
   const [executingMacroId, setExecutingMacroId] = useState<number | null>(null);
   const dispatch = useAppDispatch();
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const { hasMissingAttributes, openResolveForm } = useRequiredAttributes();
 
   const executeMacro = async (macro: Macro) => {
+    if (resolvesConversation(macro) && hasMissingAttributes(conversation)) {
+      onClose();
+      openResolveForm({ conversationId, macroId: macro.id });
+      return;
+    }
     try {
       setIsExecuting(true);
       setExecutingMacroId(macro.id);

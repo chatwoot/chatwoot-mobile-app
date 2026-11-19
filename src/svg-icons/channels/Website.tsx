@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Svg, { Circle, Path } from 'react-native-svg';
 
@@ -34,9 +35,15 @@ export const WebsiteIcon = () => {
 };
 
 export const WebsiteFilledIcon = () => {
+  const tailwind = useTailwind();
   return (
     <Svg width="100%" height="100%" viewBox="0 0 20 20" fill="none">
-      <Circle cx="10" cy="10" r="10" fill="#BBBBBB" />
+      <Circle
+        cx="10"
+        cy="10"
+        r="10"
+        fill={tailwind.isDark ? tailwind.color('bg-gray-400') : '#BBBBBB'}
+      />
       <Path
         d="M8.43898 16.3068C7.2139 14.6361 6.50014 12.6456 6.38435 10.5771H3.51953C3.64196 11.9451 4.19575 13.2388 5.10101 14.2716C5.97347 15.2824 7.14088 15.9941 8.43898 16.3068Z"
         fill="white"

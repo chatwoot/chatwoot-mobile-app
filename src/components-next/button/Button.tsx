@@ -1,8 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
-import { Pressable } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
+import { ThemeTailwind } from '@/theme/useTailwind';
 import { useHaptic, useScaleAnimation } from '@/utils';
 
 type ButtonProps = {
@@ -11,17 +12,18 @@ type ButtonProps = {
   handlePress?: () => void;
   variant?: 'primary' | 'secondary';
   disabled?: boolean;
+  isLoading?: boolean;
 };
 
-const getButtonStyles = (isPrimary: boolean, pressed: boolean) => {
+const getButtonStyles = (tailwind: ThemeTailwind, isPrimary: boolean, pressed: boolean) => {
   const baseStyles = 'py-[11px] flex items-center justify-center rounded-[13px]';
-  const variantStyles = isPrimary ? 'bg-blue-800' : 'bg-gray-50';
+  const variantStyles = isPrimary ? 'bg-blue-800' : tailwind.isDark ? 'bg-gray-200' : 'bg-gray-50';
   const pressedStyles = isPrimary ? 'opacity-95' : pressed ? 'bg-gray-100' : '';
 
   return tailwind.style(baseStyles, variantStyles, pressedStyles);
 };
 
-const getTextStyles = (isPrimary: boolean, isDestructive: boolean) => {
+const getTextStyles = (tailwind: ThemeTailwind, isPrimary: boolean, isDestructive: boolean) => {
   const baseStyles = 'text-base font-medium tracking-[0.16px] leading-[22px]';
   const colorStyles = isPrimary
     ? isDestructive
@@ -40,7 +42,9 @@ export const Button = ({
   handlePress,
   variant = 'primary',
   disabled = false,
+  isLoading = false,
 }: ButtonProps) => {
+  const tailwind = useTailwind();
   const { handlers, animatedStyle } = useScaleAnimation();
   const haptic = useHaptic(isDestructive ? 'medium' : 'selection');
 
@@ -60,10 +64,22 @@ export const Button = ({
         disabled={disabled}
         accessible
         accessibilityRole="button"
-        accessibilityState={{ disabled }}
-        style={({ pressed }) => getButtonStyles(isPrimary, pressed)}
+        accessibilityState={{ disabled, busy: isLoading }}
+        style={({ pressed }) => getButtonStyles(tailwind, isPrimary, pressed)}
         {...handlers}>
-        <Animated.Text style={getTextStyles(isPrimary, isDestructive)}>{text}</Animated.Text>
+        <Animated.Text
+          style={[
+            getTextStyles(tailwind, isPrimary, isDestructive),
+            isLoading ? tailwind.style('opacity-0') : null,
+          ]}>
+          {text}
+        </Animated.Text>
+        {isLoading ? (
+          <ActivityIndicator
+            color={tailwind.color(isPrimary ? 'text-white' : 'text-gray-950')}
+            style={tailwind.style('absolute inset-0')}
+          />
+        ) : null}
       </Pressable>
     </Animated.View>
   );

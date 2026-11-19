@@ -91,6 +91,29 @@ describe('ConversationService', () => {
     });
   });
 
+  it('merges new custom attributes into the server copy before saving', async () => {
+    (apiService.get as jest.Mock).mockResolvedValueOnce({
+      data: { custom_attributes: { plan_2b: 'gold', 'order.id': '99', ticket_ref: '' } },
+    });
+    (apiService.post as jest.Mock).mockResolvedValueOnce({
+      data: { custom_attributes: { plan_2b: 'gold', 'order.id': '99', ticket_ref: 'TKT-1' } },
+    });
+
+    const result = await ConversationService.updateCustomAttributes({
+      conversationId: 1,
+      customAttributes: { ticket_ref: 'TKT-1' },
+    });
+
+    expect(apiService.get).toHaveBeenCalledWith('conversations/1');
+    expect(apiService.post).toHaveBeenCalledWith('conversations/1/custom_attributes', {
+      custom_attributes: { plan_2b: 'gold', 'order.id': '99', ticket_ref: 'TKT-1' },
+    });
+    expect(result).toEqual({
+      conversationId: 1,
+      customAttributes: { plan2B: 'gold', orderId: '99', ticketRef: 'TKT-1' },
+    });
+  });
+
   it('should mute conversation', async () => {
     await ConversationService.muteConversation({ conversationId: 1 });
 

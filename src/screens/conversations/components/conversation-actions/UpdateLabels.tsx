@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useState } from 'react';
 import { ScrollView } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { SearchBar } from '@/components-next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { filterLabels } from '@/store/label/labelSelectors';
@@ -19,6 +19,7 @@ type LabelStackProps = {
 };
 
 export const LabelStack = (props: LabelStackProps) => {
+  const tailwind = useTailwind();
   const { labelList, handleLabelPress, selectedLabels, isStandAloneComponent = true } = props;
 
   return (

@@ -51,3 +51,10 @@ export function checkServerSupport({ installedVersion, userRole }: ServerSupport
     }
   }
 }
+
+const VOIP_PUSH_MIN_VERSION = '4.19.0';
+
+export const supportsVoipPush = (installedVersion: string): boolean => {
+  const installed = semver.coerce(installedVersion);
+  return !installed || semver.gte(installed, VOIP_PUSH_MIN_VERSION);
+};

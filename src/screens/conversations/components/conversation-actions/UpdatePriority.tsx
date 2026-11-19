@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { ConversationPriority, PriorityOptions } from '@/types';
 import { getPriorityIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
@@ -36,6 +36,7 @@ const PriorityList = [
 ];
 
 const PriorityCell = (props: PriorityCellProps) => {
+  const tailwind = useTailwind();
   const { value, isLastItem, onPress, selectedPriority } = props;
   return (
     <Pressable onPress={() => onPress()} style={tailwind.style('flex flex-row items-center')}>
@@ -58,6 +59,7 @@ const PriorityCell = (props: PriorityCellProps) => {
 };
 
 export const UpdatePriority = () => {
+  const tailwind = useTailwind();
   const { actionsModalSheetRef } = useRefsContext();
 
   const dispatch = useAppDispatch();

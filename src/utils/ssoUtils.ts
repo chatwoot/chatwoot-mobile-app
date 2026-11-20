@@ -4,6 +4,7 @@ import { authActions } from '@/store/auth/authActions';
 import { AppDispatch } from '@/store';
 import { showToast } from './toastUtils';
 import i18n from '@/i18n';
+import { SSO_CALLBACK_URL } from '@/constants';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -23,10 +24,11 @@ export class SsoUtils {
     installationUrl: string,
   ): Promise<WebBrowser.WebBrowserAuthSessionResult> {
     try {
-      // Create redirect URI with custom scheme
+      // Create redirect URI with custom scheme matching server callback
       const redirectUri = AuthSession.makeRedirectUri({
         scheme: 'chatwootapp',
-        path: 'sso/callback',
+        path: 'auth/saml',
+        native: SSO_CALLBACK_URL,
       });
 
       // Construct SSO auth URL with mobile redirect URI parameter

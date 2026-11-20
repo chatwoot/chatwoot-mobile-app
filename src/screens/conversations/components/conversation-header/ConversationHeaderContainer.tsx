@@ -1,5 +1,6 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { BackHandler } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -27,8 +28,7 @@ import { ConversationFilterBar } from '../conversation-filters';
 import { ConversationHeaderPresenter } from './ConversationHeaderPresenter';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useNavigation } from '@react-navigation/native';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterState): number => {
   let count = 0;
@@ -103,12 +103,29 @@ export const ConversationHeader = () => {
     }
   };
 
+  const exitSelectMode = useCallback(() => {
+    dispatch(clearSelection());
+    dispatch(setCurrentState('none'));
+  }, [dispatch]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (currentState !== 'Select') {
+        return undefined;
+      }
+      const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+        exitSelectMode();
+        return true;
+      });
+      return () => subscription.remove();
+    }, [currentState, exitSelectMode]),
+  );
+
   const handleRightIconPress = () => {
     if (currentState === 'Filter') {
       dispatch(setCurrentState('none'));
     } else if (currentState === 'Select') {
-      dispatch(clearSelection());
-      dispatch(setCurrentState('none'));
+      exitSelectMode();
     } else {
       dispatch(setCurrentState('Filter'));
     }

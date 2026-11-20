@@ -185,6 +185,12 @@ export const ConversationItemContainer = memo((props: ConversationItemContainerP
       handleLongPress={onLongPressAction}
       handlePress={onPressAction}
       triggerOverswipeOnFlick
+      leftActionAccessibilityLabel={
+        unreadCount > 0
+          ? i18n.t('NOTIFICATION.ALERTS.MARK_AS_READ')
+          : i18n.t('NOTIFICATION.ALERTS.MARK_AS_UNREAD')
+      }
+      rightActionAccessibilityLabel={i18n.t('CONVERSATION.ITEM.STATUS')}
       {...{ index, openedRowIndex }}>
       <SelectedRowBackground
         selected={currentState !== 'Select' && splitView?.selectedConversationId === id}

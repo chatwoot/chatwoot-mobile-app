@@ -50,7 +50,7 @@ export const EmailBubble = (props: EmailBubbleProps) => {
           max-width: 100% !important;
         }
       `;
-  const outgoingReadableStyle = `
+  const lightEmailStyle = `
         :root {
           color-scheme: light;
         }
@@ -59,19 +59,8 @@ export const EmailBubble = (props: EmailBubbleProps) => {
           color: #111827;
         }
       `;
-  const darkIncomingStyle = `
-        :root {
-          color-scheme: dark;
-        }
-        html, body {
-          color: ${tailwind.color('text-gray-950')};
-        }
-      `;
-  const emailCustomStyle = isOutgoing
-    ? `${outgoingReadableStyle}${baseStyle}`
-    : tailwind.isDark
-      ? `${darkIncomingStyle}${baseStyle}`
-      : baseStyle;
+  const emailCustomStyle =
+    isOutgoing || tailwind.isDark ? `${lightEmailStyle}${baseStyle}` : baseStyle;
 
   return (
     <React.Fragment>

@@ -17,3 +17,4 @@ export * from './customAnimations';
 export * from './priorityIcon';
 export * from './highlightText';
 export * from './listTypography';
+export * from './rtlUtils';

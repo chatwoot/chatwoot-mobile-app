@@ -1,13 +1,14 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React from 'react';
-import { Animated } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { Animated, Pressable } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
 
+import i18n from '@/i18n';
 import { EmailMeta } from './EmailMeta';
 import { Message } from '@/types';
 import { MarkdownBubble } from './MarkdownBubble';
 import { MessageAttachments } from './MessageAttachments';
-import { MESSAGE_TYPES } from '@/constants';
+import { MESSAGE_TYPES, MESSAGE_VARIANTS } from '@/constants';
 
 type EmailBubbleProps = {
   item: Message;
@@ -19,6 +20,21 @@ export const EmailBubble = (props: EmailBubbleProps) => {
   const tailwind = useTailwind();
   const messageItem = props.item as Message;
   const { sender, contentAttributes, messageType, content } = messageItem;
+
+  const translations = contentAttributes?.translations;
+  const activeLocale = i18n.locale?.split('_')[0] || 'en';
+  const translatedText = translations
+    ? translations[activeLocale] || Object.values(translations)[0] || null
+    : null;
+  const hasTranslations = !!translatedText;
+
+  const [showOriginal, setShowOriginal] = useState(false);
+
+  const toggleTranslation = useCallback(() => {
+    setShowOriginal(prev => !prev);
+  }, []);
+
+  const isShowingTranslation = hasTranslations && !showOriginal;
 
   const emailMessageContent = () => {
     const {
@@ -62,12 +78,17 @@ export const EmailBubble = (props: EmailBubbleProps) => {
   const emailCustomStyle =
     isOutgoing || tailwind.isDark ? `${lightEmailStyle}${baseStyle}` : baseStyle;
 
+  const toggleTextColor =
+    props.variant === MESSAGE_VARIANTS.USER ? 'text-blue-200' : 'text-blue-700';
+
   return (
     <React.Fragment>
       {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
       <Animated.View style={[tailwind.style('flex  w-full')]}>
         <Animated.View style={tailwind.style('w-full')}>
-          {content && isOutgoing ? (
+          {isShowingTranslation ? (
+            <MarkdownBubble messageContent={translatedText} variant={props.variant} />
+          ) : content && isOutgoing ? (
             <MarkdownBubble messageContent={content} variant={props.variant} />
           ) : (
             <AutoHeightWebView
@@ -81,6 +102,19 @@ export const EmailBubble = (props: EmailBubbleProps) => {
               }}
               viewportContent={'width=device-width, user-scalable=no'}
             />
+          )}
+          {hasTranslations && (
+            <Pressable onPress={toggleTranslation} hitSlop={4} accessibilityRole="button">
+              <Animated.Text
+                style={tailwind.style(
+                  'text-xs font-inter-420-20 tracking-[0.32px] pt-1',
+                  toggleTextColor,
+                )}>
+                {showOriginal
+                  ? i18n.t('CONVERSATION.VIEW_TRANSLATED')
+                  : i18n.t('CONVERSATION.VIEW_ORIGINAL')}
+              </Animated.Text>
+            </Pressable>
           )}
         </Animated.View>
         <MessageAttachments

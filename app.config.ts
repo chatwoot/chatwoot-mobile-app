@@ -122,6 +122,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       './with-ffmpeg-pod.js',
       './with-android-notification-channel.js',
+      './with-android-optional-hardware-features.js',
       './with-notifee-maven-repo.js',
       './with-ios-modular-headers.js',
       './with-ios-scene-lifecycle.js',

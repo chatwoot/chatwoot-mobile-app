@@ -35,7 +35,7 @@ if (__DEV__) {
 }
 // Ref: https://dev.to/dannyhw/how-to-swap-between-react-native-storybook-and-your-app-p3o
 export default (() => {
-  if (isStorybookEnabled === 'true') {
+  if (__DEV__ && isStorybookEnabled === 'true') {
     // eslint-disable-next-line
     return require('./.storybook').default;
   }

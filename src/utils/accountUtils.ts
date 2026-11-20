@@ -63,17 +63,27 @@ export const switchAccount = (dispatch: AppDispatch, accountId: number) => {
   return true;
 };
 
-// Returns null when no switch is needed or possible: id missing, already active, or not a member.
-export const resolveAccountSwitch = (accountId?: number | null): number | null => {
+type AccountSwitchResolution =
+  | { hasAccess: false; accountId: null }
+  | { hasAccess: true; accountId: number | null };
+
+export const resolveAccountAccess = (accountId?: number | null): AccountSwitchResolution => {
   if (!accountId) {
-    return null;
+    return { hasAccess: false, accountId: null };
   }
   const { user } = getStore().getState().auth;
-  if (!user || Number(user.account_id) === Number(accountId)) {
-    return null;
+  if (!user) {
+    return { hasAccess: false, accountId: null };
+  }
+  if (Number(user.account_id) === Number(accountId)) {
+    return { hasAccess: true, accountId: null };
   }
   const hasAccess = (user.accounts ?? []).some(
     (account: Account) => Number(account.id) === Number(accountId),
   );
-  return hasAccess ? accountId : null;
+  return hasAccess ? { hasAccess: true, accountId } : { hasAccess: false, accountId: null };
 };
+
+// Call screens only need the account to switch to. Preserve their existing nullable-ID contract.
+export const resolveAccountSwitch = (accountId?: number | null): number | null =>
+  resolveAccountAccess(accountId).accountId;

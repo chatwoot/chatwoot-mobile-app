@@ -16,8 +16,8 @@ import { ChatWindowProvider, useChatWindowContext, useRefsContext } from '@/cont
 import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import {
   selectConversationById,
-  selectConversationFetching,
   selectConversationError,
+  selectConversationFetching,
 } from '@/store/conversation/conversationSelectors';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectCurrentUserAccountId } from '@/store/auth/authSelectors';
@@ -132,8 +132,8 @@ const ChatScreen = (props: ChatScreenProps) => {
   const { conversationId, primaryActorId, primaryActorType } = props.route.params;
   const dispatch = useAppDispatch();
 
-  const conversationFetching = useAppSelector(state => selectConversationFetching(state));
   const conversationError = useAppSelector(state => selectConversationError(state));
+  const conversationFetching = useAppSelector(state => selectConversationFetching(state));
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
   const accountId = useAppSelector(selectCurrentUserAccountId);
 
@@ -230,7 +230,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
-  if ((conversationError || !conversation) && isInDetailPane) {
+  if (conversationError && isInDetailPane) {
     return (
       <PaneErrorState
         title={conversationError || i18n.t('CONVERSATION.NOT_FOUND.TITLE')}
@@ -240,7 +240,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
-  if ((conversationError || !conversation) && IOS_DESIGN) {
+  if (conversationError && IOS_DESIGN) {
     return (
       <SafeAreaView edges={['top', 'left', 'right']} style={tailwind.style('flex-1 bg-gray-50')}>
         <PaneErrorState
@@ -252,7 +252,7 @@ const ChatScreen = (props: ChatScreenProps) => {
     );
   }
 
-  if (conversationError || !conversation) {
+  if (conversationError) {
     return (
       <SafeAreaView
         edges={isInDetailPane ? ['top'] : ['top', 'left', 'right']}
@@ -295,7 +295,13 @@ const ChatScreen = (props: ChatScreenProps) => {
       </SafeAreaView>
     );
   }
-  return null;
+
+  return (
+    <Animated.View
+      style={tailwind.style('flex-1 items-center justify-center', `pb-[${TAB_BAR_HEIGHT}px]`)}>
+      <ActivityIndicator />
+    </Animated.View>
+  );
 };
 
 export default ChatScreen;

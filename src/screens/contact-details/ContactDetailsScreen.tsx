@@ -26,6 +26,7 @@ import {
   ContactBasicActions,
   ContactMetaInformation,
   ContactLabelActions,
+  ContactPreviousConversations,
 } from './components';
 import { AttributeList } from '@/components-next';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -33,6 +34,7 @@ import { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { contactLabelActions } from '@/store/contact/contactLabelActions';
+import { contactConversationActions } from '@/store/contact/contactConversationActions';
 import { getContactCustomAttributes } from '@/store/custom-attribute/customAttributeSlice';
 import { selectContactById } from '@/store/contact/contactSelectors';
 import { selectContactLabelsByContactId } from '@/store/contact/contactLabelSlice';
@@ -183,6 +185,7 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
   useEffect(() => {
     if (contactId) {
       dispatch(contactLabelActions.getContactLabels({ contactId }));
+      dispatch(contactConversationActions.getContactConversations({ contactId }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -261,6 +264,12 @@ const ContactDetailsScreen = (props: ContactDetailsScreenProps) => {
           <Animated.View style={tailwind.style(isInContactPane || IOS_DESIGN ? 'pt-8' : 'pt-10')}>
             <ContactLabelActions labels={contactLabels} contactId={contactId} />
           </Animated.View>
+        ) : null}
+        {contactId ? (
+          <ContactPreviousConversations
+            contactId={contactId}
+            currentConversationId={conversationId}
+          />
         ) : null}
       </Animated.ScrollView>
     </View>

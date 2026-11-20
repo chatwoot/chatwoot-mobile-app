@@ -52,7 +52,7 @@ const checkIfPropsAreSame = (
   return arePropsEqual;
 };
 
-export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
+export const ConversationItemDetailContent = memo((props: ConversationDetailSubCellProps) => {
   const tailwind = useTailwind();
   const iosText = useIOSListText();
   const isRowSelected = useIsRowSelected();
@@ -89,8 +89,7 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
   }
 
   return (
-    <AnimatedNativeView
-      layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}
+    <NativeView
       style={tailwind.style(
         'flex-1 border-b-[1px]',
         isRowSelected ? 'border-b-transparent' : 'border-b-blackA-A3',
@@ -204,6 +203,22 @@ export const ConversationItemDetail = memo((props: ConversationDetailSubCellProp
           </AnimatedNativeView>
         </AnimatedNativeView>
       )}
+    </NativeView>
+  );
+}, checkIfPropsAreSame);
+
+ConversationItemDetailContent.displayName = 'ConversationItemDetailContent';
+
+export const ConversationItemDetail = memo((props: ConversationDetailSubCellProps) => {
+  const tailwind = useTailwind();
+  if (!props.lastMessage) {
+    return null;
+  }
+  return (
+    <AnimatedNativeView
+      layout={LinearTransition.springify().mass(1).damping(21).stiffness(115)}
+      style={tailwind.style('flex-1')}>
+      <ConversationItemDetailContent {...props} />
     </AnimatedNativeView>
   );
 }, checkIfPropsAreSame);

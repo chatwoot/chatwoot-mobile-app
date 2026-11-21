@@ -358,7 +358,9 @@
       "BCC": "Bcc",
       "CC": "Cc",
       "SUBJECT": "Subject",
-      "EXPAND": "Expand email"
+      "EXPAND": "Expand email",
+      "VIEW_FULL_EMAIL": "View full email",
+      "FULL_EMAIL_TITLE": "Email"
     },
     "ACTIONS": {
       "ASSIGNEE": {

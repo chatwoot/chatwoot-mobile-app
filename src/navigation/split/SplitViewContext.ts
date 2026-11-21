@@ -14,6 +14,7 @@ export type SplitViewContextValue = {
   openMacros: () => void;
   openCompose: () => void;
   openDashboard: (params: DashboardColumnParams) => void;
+  openEmail: (params: EmailColumnParams) => void;
   closeSecondary: () => void;
 };
 
@@ -24,12 +25,18 @@ export type DashboardColumnParams = {
   currentUser: User | null;
 };
 
+export type EmailColumnParams = {
+  conversationId: number;
+  messageId: number;
+};
+
 export type SecondaryColumn =
   | { kind: 'contact' }
   | { kind: 'actions' }
   | { kind: 'macros' }
   | { kind: 'compose' }
-  | ({ kind: 'dashboard' } & DashboardColumnParams);
+  | ({ kind: 'dashboard' } & DashboardColumnParams)
+  | ({ kind: 'email' } & EmailColumnParams);
 
 export const SplitViewContext = createContext<SplitViewContextValue | null>(null);
 export const DetailPaneContext = createContext(false);

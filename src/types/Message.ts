@@ -109,6 +109,7 @@ export type MessageContentAttributes = {
   isUnsupported: boolean;
   translations?: Record<string, string>;
   data?: VoiceCallContentData;
+  forwardedMessageId?: number;
 };
 
 export interface Message {

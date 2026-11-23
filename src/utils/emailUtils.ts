@@ -158,11 +158,24 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
       return QUOTE_LINE_START.test(textOf(node).slice(0, 300));
     }
 
+    var FORWARDS = Array.prototype.filter.call(
+      document.body.querySelectorAll(THREAD_CONTAINER_SELECTORS + ', blockquote'),
+      function (node) {
+        return FORWARD_START.test(textOf(node));
+      },
+    );
+
+    function isForwarded(node) {
+      return FORWARDS.some(function (forward) {
+        return forward.contains(node);
+      });
+    }
+
     function firstQuoteContainer() {
       var candidates = document.body.querySelectorAll(THREAD_CONTAINER_SELECTORS + ', blockquote');
       for (var i = 0; i < candidates.length; i += 1) {
         var candidate = candidates[i];
-        if (FORWARD_START.test(textOf(candidate))) {
+        if (isForwarded(candidate)) {
           continue;
         }
         if (candidate.nodeName !== 'BLOCKQUOTE' || candidate.matches(THREAD_CONTAINER_SELECTORS)) {
@@ -179,7 +192,7 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
     function firstHeaderBlock() {
       var blocks = document.body.querySelectorAll('div, p');
       for (var i = 0; i < blocks.length; i += 1) {
-        if (HEADER_BLOCK_START.test(textOf(blocks[i]))) {
+        if (!isForwarded(blocks[i]) && HEADER_BLOCK_START.test(textOf(blocks[i]))) {
           return blocks[i];
         }
       }
@@ -202,7 +215,11 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
       var isPlainText = !document.body.querySelector(RICH_CONTENT_SELECTORS);
       var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       for (var node = walker.nextNode(); node; node = walker.nextNode()) {
-        if (node.parentNode.nodeName === 'SCRIPT' || !isLineBreak(node.previousSibling)) {
+        if (
+          node.parentNode.nodeName === 'SCRIPT' ||
+          !isLineBreak(node.previousSibling) ||
+          isForwarded(node)
+        ) {
           continue;
         }
         var text = lineText(node);

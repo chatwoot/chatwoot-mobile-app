@@ -1,4 +1,7 @@
-import { splitQuotedText } from '@/utils/emailUtils';
+/**
+ * @jest-environment jsdom
+ */
+import { buildEmailPreviewScript, splitQuotedText } from '@/utils/emailUtils';
 
 describe('#splitQuotedText', () => {
   it('returns text without quotes as the reply', () => {
@@ -79,5 +82,66 @@ describe('#splitQuotedText', () => {
     const text = 'On Monday I wrote the summary for you.';
 
     expect(splitQuotedText(text)).toEqual({ reply: text, quoted: '' });
+  });
+});
+
+const runPreviewScript = (html: string) => {
+  document.body.innerHTML = html;
+  new Function(buildEmailPreviewScript('View full email'))();
+  return {
+    hiddenText: Array.from(document.querySelectorAll('.cw-quote'))
+      .map(node => node.textContent)
+      .join(' '),
+    hasLink: !!document.querySelector('.cw-full-email-link'),
+  };
+};
+
+const gmailForward = (forwardedBody: string) => `
+  <div dir="ltr">Please see the thread below.</div>
+  <br>
+  <div class="gmail_quote gmail_quote_container">
+    <div dir="ltr" class="gmail_attr">---------- Forwarded message ---------<br>
+      From: Sam Patel &lt;sam@acme.test&gt;<br>Date: Mon, 2 Mar 2026<br>Subject: Delivery</div>
+    <br><br>
+    ${forwardedBody}
+  </div>`;
+
+describe('#buildEmailPreviewScript', () => {
+  it('hides the quoted thread of a reply', () => {
+    const { hiddenText, hasLink } = runPreviewScript(`
+      <div dir="ltr">Thanks, that works.</div>
+      <div class="gmail_quote gmail_quote_container">
+        <div class="gmail_attr">On Mon, 2 Mar 2026 Sam Patel wrote:</div>
+        <blockquote class="gmail_quote">We can deliver on 10 March.</blockquote>
+      </div>`);
+
+    expect(hasLink).toBe(true);
+    expect(hiddenText).toContain('We can deliver on 10 March.');
+  });
+
+  it('keeps a forwarded email with a nested reply thread visible', () => {
+    const { hiddenText, hasLink } = runPreviewScript(
+      gmailForward(`
+        <div dir="ltr">Could you confirm the date?</div>
+        <div class="gmail_quote gmail_quote_container">
+          <div class="gmail_attr">On Sun, 1 Mar 2026 Lena Fischer wrote:</div>
+          <blockquote class="gmail_quote">Please share the schedule.</blockquote>
+        </div>`),
+    );
+
+    expect(hasLink).toBe(false);
+    expect(hiddenText).toBe('');
+  });
+
+  it('keeps a forwarded email with an Outlook header block visible', () => {
+    const { hiddenText, hasLink } = runPreviewScript(
+      gmailForward(`
+        <div dir="ltr">Could you confirm the date?</div>
+        <div>From: Lena Fischer<br>Sent: Sunday, 1 March 2026<br>Subject: Schedule</div>
+        <div>Please share the schedule.</div>`),
+    );
+
+    expect(hasLink).toBe(false);
+    expect(hiddenText).toBe('');
   });
 });

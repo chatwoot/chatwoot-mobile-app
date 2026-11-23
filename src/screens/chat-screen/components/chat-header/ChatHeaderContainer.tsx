@@ -15,6 +15,7 @@ import { ImageSourcePropType } from 'react-native';
 import { SLAStatus } from '@/types/common/SLA';
 import { evaluateSLAStatus as evaluateLegacySLAStatus } from '@chatwoot/utils';
 import { evaluateSLAStatus, hasSLADueTimes } from '@/utils/slaUtils';
+import { resetAttachments } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
 import { selectInboxById } from '@/store/inbox/inboxSelectors';
@@ -132,6 +133,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   }, [createTimer, updateSlaStatus]);
 
   const handleBackPress = () => {
+    dispatch(resetAttachments());
     if (navigation.canGoBack()) {
       navigation.dispatch(StackActions.pop());
     } else {

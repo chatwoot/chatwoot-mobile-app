@@ -31,17 +31,27 @@ export const getLocalFilePath = (url: string, originalFileName?: string): string
 export const downloadAndShareMedia = async (dataUrl: string, fileName?: string): Promise<void> => {
   if (!dataUrl) return;
 
-  try {
-    const localFilePath = getLocalFilePath(dataUrl, fileName);
-    const { fs } = ReactNativeBlobUtil;
+  const localFilePath = getLocalFilePath(dataUrl, fileName);
+  const tempFilePath = `${localFilePath}.tmp`;
+  const { fs } = ReactNativeBlobUtil;
 
+  try {
     const fileExists = await fs.exists(localFilePath);
     if (!fileExists) {
+      try {
+        if (await fs.exists(tempFilePath)) {
+          await fs.unlink(tempFilePath);
+        }
+      } catch {
+        // Ignore pre-cleanup error
+      }
+
       await ReactNativeBlobUtil.config({
         overwrite: true,
-        path: localFilePath,
-        fileCache: true,
+        path: tempFilePath,
       }).fetch('GET', dataUrl);
+
+      await fs.mv(tempFilePath, localFilePath);
     }
 
     if (Platform.OS === 'android') {
@@ -53,6 +63,15 @@ export const downloadAndShareMedia = async (dataUrl: string, fileName?: string):
       await Share.share({ url: fileUrl });
     }
   } catch {
+    // If download or viewing fails, clean up temp file and potentially incomplete destination file
+    try {
+      if (await fs.exists(tempFilePath)) {
+        await fs.unlink(tempFilePath);
+      }
+    } catch {
+      // Ignore cleanup error
+    }
+
     // If local download or file viewing fails, fallback to sharing the direct URL
     try {
       await Share.share(

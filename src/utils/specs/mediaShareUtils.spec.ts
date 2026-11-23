@@ -8,7 +8,7 @@ import {
 } from '../mediaShareUtils';
 
 jest.mock('react-native-blob-util', () => {
-  const fetchMock = jest.fn().mockResolvedValue({ path: () => '/mock/dir/file.png' });
+  const fetchMock = jest.fn().mockResolvedValue({ path: () => '/mock/dir/file.png.tmp' });
   const configMock = jest.fn().mockReturnValue({ fetch: fetchMock });
   return {
     fs: {
@@ -18,6 +18,7 @@ jest.mock('react-native-blob-util', () => {
       },
       exists: jest.fn(),
       unlink: jest.fn(),
+      mv: jest.fn().mockResolvedValue(undefined),
     },
     config: configMock,
   };
@@ -81,7 +82,7 @@ describe('mediaShareUtils', () => {
         expect(ReactNativeBlobUtil.config).toHaveBeenCalledWith(
           expect.objectContaining({
             overwrite: true,
-            fileCache: true,
+            path: expect.stringMatching(/\.tmp$/),
           }),
         );
         expect(Share.share).toHaveBeenCalledWith({
@@ -127,6 +128,26 @@ describe('mediaShareUtils', () => {
       } finally {
         Platform.OS = originalOS;
       }
+    });
+
+    it('cleans up incomplete temporary file if download fails', async () => {
+      const fetchMock = jest.fn().mockRejectedValue(new Error('Network error'));
+      (ReactNativeBlobUtil.config as jest.Mock).mockReturnValue({ fetch: fetchMock });
+      (ReactNativeBlobUtil.fs.exists as jest.Mock).mockImplementation((path: string) => {
+        if (path.endsWith('.tmp')) {
+          return Promise.resolve(true);
+        }
+        return Promise.resolve(false);
+      });
+
+      await downloadAndShareMedia('https://chatwoot.com/broken.png', 'broken.png');
+
+      expect(ReactNativeBlobUtil.fs.unlink).toHaveBeenCalledWith(
+        expect.stringMatching(/\.tmp$/),
+      );
+      expect(Share.share).toHaveBeenCalledWith({
+        url: 'https://chatwoot.com/broken.png',
+      });
     });
 
     it('falls back to direct Share.share if local download or viewer throws', async () => {

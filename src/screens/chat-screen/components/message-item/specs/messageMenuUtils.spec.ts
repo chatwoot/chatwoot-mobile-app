@@ -155,7 +155,10 @@ describe('messageMenuUtils', () => {
     const shareOption = options.find(o => o.title === 'Share image');
     expect(shareOption?.destructive).toBe(false);
     shareOption?.handleOnPressMenuOption();
-    expect(onShareMedia).toHaveBeenCalledWith('https://chatwoot.com/attachments/photo.png');
+    expect(onShareMedia).toHaveBeenCalledWith(
+      'https://chatwoot.com/attachments/photo.png',
+      'photo.png',
+    );
   });
 
   it('handles video and file attachments appropriately', () => {
@@ -214,7 +217,7 @@ describe('messageMenuUtils', () => {
 
     const secondOption = options.find(o => o.title === 'Share image (2)');
     secondOption?.handleOnPressMenuOption();
-    expect(onShareMedia).toHaveBeenCalledWith('https://chatwoot.com/img2.png');
+    expect(onShareMedia).toHaveBeenCalledWith('https://chatwoot.com/img2.png', 'photo.png');
   });
 
   it('omits share option when attachment dataUrl is missing or empty', () => {

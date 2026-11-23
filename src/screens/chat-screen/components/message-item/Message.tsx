@@ -38,10 +38,10 @@ import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
 import { isAWhatsAppChannel } from '@/utils';
-import { errorMessage } from '@/utils/errorUtils';
 import { MenuOption, MessageMenu } from '../message-menu';
-import { View, Text, Share, Alert, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 import { buildMessageMenuOptions } from './messageMenuUtils';
+import { downloadAndShareMedia } from '@/utils/mediaShareUtils';
 import { useContainerWidth } from '@/context';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
@@ -438,16 +438,10 @@ export const MessageComponent = (props: MessageComponentProps) => {
     }
   };
 
-  const handleShareMedia = async (dataUrl: string) => {
+  const handleShareMedia = async (dataUrl: string, fileName?: string) => {
     hapticSelection?.();
     if (!dataUrl) return;
-    try {
-      await Share.share(
-        Platform.OS === 'ios' ? { url: dataUrl } : { message: dataUrl, url: dataUrl },
-      );
-    } catch (error) {
-      Alert.alert(i18n.t('COMMON.ERROR_TITLE'), errorMessage(error));
-    }
+    await downloadAndShareMedia(dataUrl, fileName);
   };
 
   const getMenuOptions = (message: Message): MenuOption[] => {

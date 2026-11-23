@@ -15,7 +15,7 @@ export interface BuildMessageMenuOptionsParams {
   targetLanguage?: string;
   onCopyText?: (content: string) => void;
   onTranslate?: (messageId: number) => void;
-  onShareMedia?: (dataUrl: string) => void;
+  onShareMedia?: (dataUrl: string, fileName?: string) => void;
   onReply?: (message: Message) => void;
   onDelete?: (messageId: number) => void;
 }
@@ -82,7 +82,7 @@ export const buildMessageMenuOptions = ({
       menuOptions.push({
         title,
         icon: <ShareIcon />,
-        handleOnPressMenuOption: () => onShareMedia?.(attachment.dataUrl),
+        handleOnPressMenuOption: () => onShareMedia?.(attachment.dataUrl, attachment.fallbackTitle),
         destructive: false,
       });
     });

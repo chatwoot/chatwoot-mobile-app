@@ -37,6 +37,10 @@ export const selectIsChatwootCloud = createSelector(selectSettings, settings =>
   settings.installationUrl.includes('app.chatwoot.com'),
 );
 
+export const selectShowSsoLogin = createSelector(selectSettings, settings =>
+  Boolean(settings.installationUrl),
+);
+
 export const selectChatwootVersion = createSelector(selectSettings, settings => settings.version);
 
 export const selectPushToken = createSelector(selectSettings, settings => settings.pushToken);

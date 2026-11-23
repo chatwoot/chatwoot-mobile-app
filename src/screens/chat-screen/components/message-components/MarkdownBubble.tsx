@@ -63,6 +63,9 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind, isRtl: boolean) =
   // On Android, non-zero letterSpacing breaks cursive Arabic/RTL glyph shaping and ligatures,
   // which causes multiline text to collapse or render blank in native text measurement.
   const letterSpacing = isRtl && Platform.OS === 'android' ? 0 : 0.32;
+  // In an RTL layout (I18nManager.isRTL), Yoga already lays out 'row' from right to left.
+  // Reversing the row is only needed when the text is RTL in an LTR system layout.
+  const shouldReverseRow = isRtl && !I18nManager.isRTL;
 
   return StyleSheet.create({
     body: {
@@ -103,9 +106,9 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind, isRtl: boolean) =
     paragraph: {
       marginTop: 0,
       marginBottom: 0,
-      flexDirection: isRtl ? 'row-reverse' : 'row',
+      flexDirection: shouldReverseRow ? 'row-reverse' : 'row',
       alignItems: 'flex-start',
-      justifyContent: isRtl ? 'flex-end' : 'flex-start',
+      justifyContent: shouldReverseRow ? 'flex-end' : 'flex-start',
       ...appFont('Inter-400-20'),
     },
     hardbreak: {
@@ -131,8 +134,8 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind, isRtl: boolean) =
       minWidth: 200,
     },
     list_item: {
-      flexDirection: isRtl ? 'row-reverse' : 'row',
-      justifyContent: isRtl ? 'flex-end' : 'flex-start',
+      flexDirection: shouldReverseRow ? 'row-reverse' : 'row',
+      justifyContent: shouldReverseRow ? 'flex-end' : 'flex-start',
       alignItems: 'center',
       ...textStyle,
     },
@@ -159,7 +162,7 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind, isRtl: boolean) =
 const stylesByVariant = new Map<string, ReturnType<typeof buildStyles>>();
 
 const getStyles = (variant: string, tailwind: ThemeTailwind, isRtl: boolean) => {
-  const cacheKey = `${tailwind.isDark}:${variant}:${isRtl}`;
+  const cacheKey = `${tailwind.isDark}:${variant}:${isRtl}:${Boolean(I18nManager?.isRTL)}`;
   const cachedStyles = stylesByVariant.get(cacheKey);
   if (cachedStyles) {
     return cachedStyles;

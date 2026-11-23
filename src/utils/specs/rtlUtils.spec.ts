@@ -39,6 +39,12 @@ describe('rtlUtils', () => {
       expect(RTL_CHAR_REGEX.test('ع')).toBe(true);
     });
 
+    it('matches Arabic Extended-A unicode characters', () => {
+      expect(RTL_CHAR_REGEX.test('\u08A0')).toBe(true);
+      expect(RTL_CHAR_REGEX.test('\u08FF')).toBe(true);
+      expect(isRTLText('Test with Arabic Extended-A \u08A0 char')).toBe(true);
+    });
+
     it('matches Hebrew unicode range', () => {
       expect(RTL_CHAR_REGEX.test('א')).toBe(true);
     });

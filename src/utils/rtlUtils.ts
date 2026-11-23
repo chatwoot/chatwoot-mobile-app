@@ -3,7 +3,7 @@
 // - Hebrew (\u0590-\u05FF, \uFB1D-\uFB4F)
 // - Syriac (\u0700-\u074F)
 // - Thaana (\u0780-\u07BF)
-export const RTL_CHAR_REGEX = /[\u0591-\u07FF\uFB1D-\uFDFD\uFE70-\uFEFC]/;
+export const RTL_CHAR_REGEX = /[\u0591-\u08FF\uFB1D-\uFDFD\uFE70-\uFEFC]/;
 
 /**
  * Returns true if text contains RTL characters (such as Arabic or Hebrew).

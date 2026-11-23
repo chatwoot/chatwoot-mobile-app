@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, I18nManager } from 'react-native';
 import TestRenderer, { act } from 'react-test-renderer';
 import { MarkdownBubble } from '../MarkdownBubble';
 import { MESSAGE_VARIANTS } from '@/constants';
@@ -120,5 +120,27 @@ describe('MarkdownBubble', () => {
     expect(str).toContain('العنصر الأول');
     expect(str).toContain('العنصر الثاني');
     expect(str).toContain('flexDirection":"row-reverse"');
+  });
+
+  it('keeps flexDirection as row in markdown lists when I18nManager.isRTL is true', () => {
+    const originalIsRTL = I18nManager.isRTL;
+    I18nManager.isRTL = true;
+
+    try {
+      const markdownArabic = '* العنصر الأول\n* العنصر الثاني';
+      let renderer!: TestRenderer.ReactTestRenderer;
+      act(() => {
+        renderer = TestRenderer.create(
+          <MarkdownBubble messageContent={markdownArabic} variant={MESSAGE_VARIANTS.AGENT} />,
+        );
+      });
+
+      const tree = renderer.toJSON();
+      expect(tree).toBeTruthy();
+      const str = JSON.stringify(tree);
+      expect(str).toContain('flexDirection":"row"');
+    } finally {
+      I18nManager.isRTL = originalIsRTL;
+    }
   });
 });

@@ -30,6 +30,7 @@ describe('SsoUtils', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    SsoUtils.clearHandledTokens();
   });
 
   describe('loginWithSSO', () => {
@@ -186,6 +187,29 @@ describe('SsoUtils', () => {
         message: 'LOGIN.SSO_UNEXPECTED_ERROR',
       });
       expect(result).toBe(false);
+    });
+
+    it('deduplicates simultaneous or duplicate callbacks with the same token', async () => {
+      const fulfilledAction = {
+        type: authActions.loginWithSso.fulfilled.type,
+        payload: { user: { id: 1 }, headers: {} },
+      };
+      dispatchMock.mockResolvedValue(fulfilledAction);
+
+      const firstCall = SsoUtils.handleSsoCallback(
+        { email: 'user@chatwoot.com', sso_auth_token: 'duplicate_token' },
+        dispatchMock,
+      );
+      const secondCall = SsoUtils.handleSsoCallback(
+        { email: 'user@chatwoot.com', sso_auth_token: 'duplicate_token' },
+        dispatchMock,
+      );
+
+      const [res1, res2] = await Promise.all([firstCall, secondCall]);
+
+      expect(res1).toBe(true);
+      expect(res2).toBe(true);
+      expect(dispatchMock).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -75,13 +75,18 @@ const sendMessageSlice = createSlice({
       } else {
         const { conversationId, messageContent } = action.payload;
         if (conversationId) {
+          if (!state.drafts) {
+            state.drafts = {};
+          }
           state.drafts[conversationId] = messageContent;
         }
         state.messageContent = messageContent;
       }
     },
     clearDraft: (state, action: PayloadAction<number>) => {
-      delete state.drafts[action.payload];
+      if (state.drafts) {
+        delete state.drafts[action.payload];
+      }
       state.messageContent = '';
     },
     togglePrivateMessage: (state, action: PayloadAction<boolean>) => {
@@ -105,7 +110,9 @@ const sendMessageSlice = createSlice({
         state.quoteMessage = null;
         state.messageContent = '';
         if (action.payload?.conversationId) {
-          delete state.drafts[action.payload.conversationId];
+          if (state.drafts) {
+            delete state.drafts[action.payload.conversationId];
+          }
         } else {
           state.drafts = {};
         }

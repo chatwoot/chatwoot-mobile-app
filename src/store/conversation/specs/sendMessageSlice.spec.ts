@@ -73,6 +73,32 @@ describe('sendMessageSlice', () => {
       expect(state.drafts[202]).toBe('Draft B');
     });
 
+    it('should safely initialize drafts if rehydrated state lacks drafts property', () => {
+      // Simulate state rehydrated from storage before drafts was introduced
+      const rehydratedStateWithoutDrafts = {
+        emailDraft: emptyEmailDraft,
+        messageContent: '',
+        isPrivateMessage: false,
+        attachments: [],
+        quoteMessage: null,
+      } as unknown as Parameters<typeof reducer>[0];
+
+      const updatedState = reducer(
+        rehydratedStateWithoutDrafts,
+        setMessageContent({ conversationId: 303, messageContent: 'Draft from upgrade' }),
+      );
+      expect(updatedState.drafts[303]).toBe('Draft from upgrade');
+
+      const clearedState = reducer(rehydratedStateWithoutDrafts, clearDraft(303));
+      expect(clearedState.messageContent).toBe('');
+
+      const resetState = reducer(
+        rehydratedStateWithoutDrafts,
+        resetSentMessage({ conversationId: 303 }),
+      );
+      expect(resetState.messageContent).toBe('');
+    });
+
     it('should clear draft for a specific conversation using clearDraft', () => {
       let state = reducer(
         initialState,

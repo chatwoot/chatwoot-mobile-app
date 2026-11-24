@@ -17,7 +17,7 @@ type WideActionButtonProps = {
 export const WideActionButton = ({
   label,
   fill,
-  labelColor = '#FFFFFF',
+  labelColor,
   disabled,
   onPress,
   children,
@@ -37,7 +37,11 @@ export const WideActionButton = ({
         interactive
         style={tailwind.style('h-11 flex-row items-center justify-center gap-2')}>
         <View style={tailwind.style('h-[18px] w-[18px]')}>{children}</View>
-        <Text style={[tailwind.style('font-inter-580-24 text-[15px] leading-5'), { color: fill }]}>
+        <Text
+          style={[
+            tailwind.style('font-inter-580-24 text-[15px] leading-5'),
+            { color: labelColor ?? fill },
+          ]}>
           {label}
         </Text>
       </CallSurface>
@@ -56,7 +60,10 @@ export const WideActionButton = ({
       ]}>
       <View style={tailwind.style('h-[18px] w-[18px]')}>{children}</View>
       <Text
-        style={[tailwind.style('font-inter-580-24 text-[15px] leading-5'), { color: labelColor }]}>
+        style={[
+          tailwind.style('font-inter-580-24 text-[15px] leading-5'),
+          { color: labelColor ?? '#FFFFFF' },
+        ]}>
         {label}
       </Text>
     </Pressable>

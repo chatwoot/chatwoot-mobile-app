@@ -7,8 +7,13 @@ const SIZES = {
   row: { box: 'h-11 w-11', text: 'text-[19px] leading-6' },
 };
 
-type RingingAvatarProps = { name: string; uri?: string; size: keyof typeof SIZES };
+type RingingAvatarProps = {
+  name: string;
+  hasName: boolean;
+  uri?: string;
+  size: keyof typeof SIZES;
+};
 
-export const RingingAvatar = ({ name, uri, size }: RingingAvatarProps) => (
-  <CallerDisc name={name} uri={uri} tone="ringing" {...SIZES[size]} />
+export const RingingAvatar = ({ name, hasName, uri, size }: RingingAvatarProps) => (
+  <CallerDisc name={name} hasName={hasName} uri={uri} tone="ringing" {...SIZES[size]} />
 );

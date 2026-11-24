@@ -6,6 +6,7 @@ import {
   getFileName,
   resolveAgents,
   MACRO_ACTION_TYPES,
+  resolvesConversation,
 } from '../macroUtils';
 import { teams, labels, files, agents } from './macroFixtures';
 
@@ -110,5 +111,38 @@ describe('#getFileName', () => {
 
   it('handles non-existent blob_id', () => {
     expect(getFileName(999, 'send_attachment', files)).toEqual('');
+  });
+});
+
+describe('#resolvesConversation', () => {
+  const macro = (actions: { actionName: string; actionParams: (string | number)[] }[]) => ({
+    id: 1,
+    name: 'Macro',
+    hasChevron: false,
+    actions,
+  });
+
+  it('detects resolve_conversation', () => {
+    expect(
+      resolvesConversation(macro([{ actionName: 'resolve_conversation', actionParams: [] }])),
+    ).toBe(true);
+  });
+
+  it('detects change_status to resolved by name or value', () => {
+    expect(
+      resolvesConversation(macro([{ actionName: 'change_status', actionParams: ['resolved'] }])),
+    ).toBe(true);
+    expect(resolvesConversation(macro([{ actionName: 'change_status', actionParams: [1] }]))).toBe(
+      true,
+    );
+  });
+
+  it('ignores macros that do not resolve', () => {
+    expect(
+      resolvesConversation(macro([{ actionName: 'change_status', actionParams: ['open'] }])),
+    ).toBe(false);
+    expect(resolvesConversation(macro([{ actionName: 'add_label', actionParams: ['vip'] }]))).toBe(
+      false,
+    );
   });
 });

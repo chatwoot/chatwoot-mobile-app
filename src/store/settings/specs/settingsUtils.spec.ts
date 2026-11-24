@@ -103,16 +103,14 @@ describe('buildWebSocketUrl', () => {
 });
 
 describe('repairPersistedWebSocketUrl', () => {
-  const stateWith = (settings: Record<string, string>) => ({ settings, auth: { user: 1 } });
-
   it('rebuilds a websocket URL that kept the scheme of the configured value', () => {
-    const state = stateWith({
+    const settings = {
       baseUrl: 'app.chatwoot.com',
       installationUrl: 'https://app.chatwoot.com/',
       webSocketUrl: 'wss://https://app.chatwoot.com/cable',
-    });
+    };
 
-    expect(repairPersistedWebSocketUrl(state).settings).toEqual({
+    expect(repairPersistedWebSocketUrl(settings)).toEqual({
       baseUrl: 'app.chatwoot.com',
       installationUrl: 'https://app.chatwoot.com/',
       webSocketUrl: 'wss://app.chatwoot.com/cable',
@@ -120,38 +118,29 @@ describe('repairPersistedWebSocketUrl', () => {
   });
 
   it('rebuilds a websocket URL with ws scheme when installationUrl is http', () => {
-    const state = stateWith({
+    const settings = {
       baseUrl: '192.168.0.71:9668',
       installationUrl: 'http://192.168.0.71:9668/',
       webSocketUrl: 'wss://192.168.0.71:9668/cable',
-    });
+    };
 
-    expect(repairPersistedWebSocketUrl(state).settings).toEqual({
+    expect(repairPersistedWebSocketUrl(settings)).toEqual({
       baseUrl: '192.168.0.71:9668',
       installationUrl: 'http://192.168.0.71:9668/',
       webSocketUrl: 'ws://192.168.0.71:9668/cable',
     });
   });
 
-  it('leaves the rest of the persisted state untouched', () => {
-    const state = stateWith({ baseUrl: 'app.chatwoot.com', webSocketUrl: 'wss://stale/cable' });
+  it('returns the same settings when the websocket URL already matches the host', () => {
+    const settings = { baseUrl: 'app.chatwoot.com', webSocketUrl: 'wss://app.chatwoot.com/cable' };
 
-    expect(repairPersistedWebSocketUrl(state).auth).toEqual(state.auth);
+    expect(repairPersistedWebSocketUrl(settings)).toBe(settings);
   });
 
-  it('returns the same state when the websocket URL already matches the host', () => {
-    const state = stateWith({
-      baseUrl: 'app.chatwoot.com',
-      webSocketUrl: 'wss://app.chatwoot.com/cable',
-    });
+  it('returns the same settings when no host has been configured', () => {
+    const settings = { baseUrl: '', webSocketUrl: '' };
 
-    expect(repairPersistedWebSocketUrl(state)).toBe(state);
-  });
-
-  it('returns the same state when no host has been configured', () => {
-    const state = stateWith({ baseUrl: '', webSocketUrl: '' });
-
-    expect(repairPersistedWebSocketUrl(state)).toBe(state);
+    expect(repairPersistedWebSocketUrl(settings)).toBe(settings);
   });
 });
 

@@ -1,4 +1,15 @@
-import { Agent, Label, Team } from '@/types';
+import { Agent, Label, Macro, Team } from '@/types';
+
+// change_status is accepted by the API with the status stored as raw JSON, so a
+// resolving param can be either the enum name or its integer value.
+const RESOLVED_STATUSES: (string | number)[] = ['resolved', 1];
+
+export const resolvesConversation = (macro: Macro) =>
+  macro.actions.some(
+    ({ actionName, actionParams }) =>
+      actionName === 'resolve_conversation' ||
+      (actionName === 'change_status' && RESOLVED_STATUSES.includes(actionParams?.[0])),
+  );
 
 export const MACRO_ACTION_TYPES = [
   {

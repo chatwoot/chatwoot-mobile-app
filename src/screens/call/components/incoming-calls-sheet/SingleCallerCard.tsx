@@ -13,7 +13,12 @@ export const SingleCallerCard = ({ info }: { info: CallerInfo }) => {
   const { CALL_INK } = useCallTheme();
   return (
     <View style={tailwind.style('flex-row items-center gap-3.5 mt-3')}>
-      <RingingAvatar name={info.name} uri={info.avatar || undefined} size="large" />
+      <RingingAvatar
+        name={info.name}
+        hasName={info.hasName}
+        uri={info.avatar || undefined}
+        size="large"
+      />
       <View style={tailwind.style('flex-1 min-w-0 gap-1')}>
         <Text
           numberOfLines={1}

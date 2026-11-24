@@ -33,6 +33,7 @@ import { selectConversationParticipantsByConversationId } from '@/store/conversa
 import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 import { IOS_DESIGN } from '@/utils';
 import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
 
 export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
@@ -48,6 +49,7 @@ export const ConversationActions = () => {
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
   const installationUrl = useAppSelector(selectInstallationUrl);
+  const { hasMissingAttributes, openResolveForm } = useRequiredAttributes();
 
   const { status, muted: isMuted, meta, priority = null } = conversation || {};
   const { assignee, team } = meta || {};
@@ -86,6 +88,8 @@ export const ConversationActions = () => {
       dispatch(conversationActions.muteConversation({ conversationId }));
     } else if (type === 'unmute') {
       dispatch(conversationActions.unmuteConversation({ conversationId }));
+    } else if (status === 'resolved' && hasMissingAttributes(conversation)) {
+      openResolveForm({ conversationId });
     } else {
       dispatch(
         conversationActions.toggleConversationStatus({

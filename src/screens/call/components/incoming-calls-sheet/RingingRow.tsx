@@ -48,7 +48,12 @@ export const RingingRow = ({
         accessibilityLabel={info.name}
         onPress={onPress}
         style={tailwind.style('h-[72px] px-5 flex-row items-center gap-3')}>
-        <RingingAvatar name={info.name} uri={info.avatar || undefined} size="row" />
+        <RingingAvatar
+          name={info.name}
+          hasName={info.hasName}
+          uri={info.avatar || undefined}
+          size="row"
+        />
         <View style={tailwind.style('shrink-0 max-w-[50%] gap-[3px]')}>
           <Text
             numberOfLines={1}

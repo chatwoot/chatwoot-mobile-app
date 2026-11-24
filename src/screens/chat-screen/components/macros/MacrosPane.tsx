@@ -10,11 +10,14 @@ import i18n from '@/i18n';
 import { PaneHeader } from '@/navigation/split/PaneHeader';
 import { PageHeader } from '@/navigation/split/PageHeader';
 import { useSplitView } from '@/navigation/split/SplitViewContext';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
+import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { macroActions } from '@/store/macro/macroActions';
 import { selectAllMacros } from '@/store/macro/macroSelectors';
 import { ChevronLeft } from '@/svg-icons';
 import { Macro } from '@/types';
 import { useHaptic } from '@/utils';
+import { resolvesConversation } from '@/utils/macroUtils';
 import { showToast } from '@/utils/toastUtils';
 
 import { MacroList } from './MacroList';
@@ -35,17 +38,28 @@ export const MacrosPane = ({
   const macros = useAppSelector(selectAllMacros);
   const [selected, setSelected] = useState<Macro | null>(null);
   const [runningId, setRunningId] = useState<number | null>(null);
+  const conversation = useAppSelector(state => selectConversationById(state, conversationId));
+  const { hasMissingAttributes, openResolveForm } = useRequiredAttributes();
+
+  const close = () => {
+    if (onClose) onClose();
+    else splitView?.closeSecondary();
+  };
 
   const runMacro = async (macro: Macro) => {
     haptic?.();
+    if (resolvesConversation(macro) && hasMissingAttributes(conversation)) {
+      close();
+      openResolveForm({ conversationId, macroId: macro.id });
+      return;
+    }
     setRunningId(macro.id);
     try {
       await dispatch(
         macroActions.executeMacro({ macroId: macro.id, conversationIds: [conversationId] }),
       ).unwrap();
       showToast({ message: i18n.t('MACRO.EXECUTION_SUCCESS') });
-      if (onClose) onClose();
-      else splitView?.closeSecondary();
+      close();
     } catch {
       showToast({ message: i18n.t('MACRO.EXECUTION_ERROR') });
     } finally {

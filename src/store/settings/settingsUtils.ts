@@ -259,7 +259,8 @@ export const checkValidInstallationUrl = (input: string): boolean => {
 /**
  * Resolves the initial URL to display in the URL configuration editor.
  * Retains explicit http:// schemes (to prevent public HTTP setups from being rejected on resubmission)
- * as well as https:// schemes for local endpoints (to prevent silent cleartext HTTP fallback on failure).
+ * as well as https:// schemes for local endpoints (to prevent silent cleartext HTTP fallback on failure)
+ * and single-label intranet hosts (which are only valid with an explicit scheme).
  */
 export const getInitialUrl = ({
   baseUrl,
@@ -276,7 +277,11 @@ export const getInitialUrl = ({
     }
     try {
       const parsedHost = new URL(installationUrl).hostname;
-      if (isLocalOrPrivateHost(parsedHost)) {
+      if (
+        isLocalOrPrivateHost(parsedHost) ||
+        !checkValidInstallationUrl(parsedHost) ||
+        (baseUrl && !checkValidInstallationUrl(baseUrl))
+      ) {
         return installationUrl.replace(/\/$/, '');
       }
     } catch {

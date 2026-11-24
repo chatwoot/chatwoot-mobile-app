@@ -377,6 +377,26 @@ describe('getInitialUrl', () => {
     ).toBe('https://[fd12::1]:3000');
   });
 
+  it('retains explicit https scheme for single-label intranet host installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot',
+        installationUrl: 'https://chatwoot/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://chatwoot');
+  });
+
+  it('retains explicit http scheme for single-label intranet host installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot',
+        installationUrl: 'http://chatwoot/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('http://chatwoot');
+  });
+
   it('returns bare baseUrl for standard cloud Chatwoot', () => {
     expect(
       getInitialUrl({

@@ -1,7 +1,8 @@
 /**
  * @jest-environment jsdom
  */
-import { buildEmailPreviewScript, splitQuotedText } from '@/utils/emailUtils';
+import { Message } from '@/types';
+import { buildEmailPreviewScript, getEmailHtml, splitQuotedText } from '@/utils/emailUtils';
 
 describe('#splitQuotedText', () => {
   it('returns text without quotes as the reply', () => {
@@ -21,20 +22,26 @@ describe('#splitQuotedText', () => {
     });
   });
 
-  it('splits at an unquoted attribution line', () => {
+  it('keeps an unquoted attribution line the agent wrote', () => {
     const text =
-      'Sounds good.\n\nOn Mon, 1 Dec 2026, Sam <sam@example.test> wrote:\nShould we proceed?';
+      'Sounds good.\n\nOn Monday Sam wrote:\n> We can ship on the 30th\n\nThat date holds.';
 
-    expect(splitQuotedText(text)).toEqual({
-      reply: 'Sounds good.',
-      quoted: 'On Mon, 1 Dec 2026, Sam <sam@example.test> wrote:\nShould we proceed?',
-    });
+    expect(splitQuotedText(text)).toEqual({ reply: text, quoted: '' });
   });
 
-  it('splits at an original message header', () => {
-    expect(splitQuotedText('Done.\n-----Original Message-----\nFrom: Sam')).toEqual({
-      reply: 'Done.',
-      quoted: '-----Original Message-----\nFrom: Sam',
+  it('keeps the reply whole when the reply box appended no thread', () => {
+    const text = 'Hi Pat,\n\n> On Mon, Sam wrote:\n> We can ship on the 30th';
+
+    expect(splitQuotedText(text, false)).toEqual({ reply: text, quoted: '' });
+  });
+
+  it('splits only the trailing thread after an earlier attribution', () => {
+    const text =
+      'Hi Pat,\n\nOn Monday Sam wrote:\nwe can ship on the 30th.\n\n> On Mon, Pat wrote:\n> When do you ship?';
+
+    expect(splitQuotedText(text, true)).toEqual({
+      reply: 'Hi Pat,\n\nOn Monday Sam wrote:\nwe can ship on the 30th.',
+      quoted: '> On Mon, Pat wrote:\n> When do you ship?',
     });
   });
 
@@ -60,26 +67,8 @@ describe('#splitQuotedText', () => {
     });
   });
 
-  it('splits at a trailing run of quoted lines without an attribution', () => {
-    expect(splitQuotedText('Sounds good.\n\n> earlier line one\n>\n> earlier line two')).toEqual({
-      reply: 'Sounds good.',
-      quoted: '> earlier line one\n>\n> earlier line two',
-    });
-  });
-
-  it('splits at an attribution wrapped across two lines', () => {
-    const text =
-      'Thanks!\n\nOn Wed, Nov 18, 2026 at 3:49 PM Björn Viergutz <bjoern@example.test>\nwrote:\n> Hello';
-
-    expect(splitQuotedText(text)).toEqual({
-      reply: 'Thanks!',
-      quoted:
-        'On Wed, Nov 18, 2026 at 3:49 PM Björn Viergutz <bjoern@example.test>\nwrote:\n> Hello',
-    });
-  });
-
-  it('keeps a line that mentions writing without being an attribution', () => {
-    const text = 'On Monday I wrote the summary for you.';
+  it('keeps a trailing quote without an attribution', () => {
+    const text = 'Sounds good.\n\n> earlier line one\n>\n> earlier line two';
 
     expect(splitQuotedText(text)).toEqual({ reply: text, quoted: '' });
   });
@@ -140,6 +129,88 @@ describe('#buildEmailPreviewScript', () => {
         <div>From: Lena Fischer<br>Sent: Sunday, 1 March 2026<br>Subject: Schedule</div>
         <div>Please share the schedule.</div>`),
     );
+
+    expect(hasLink).toBe(false);
+    expect(hiddenText).toBe('');
+  });
+
+  it('keeps a plain-text reply written below the quote', () => {
+    const { hasLink } = runPreviewScript(
+      'Hi Sam,<br><br>On Mon, 2 Mar 2026 Sam Patel wrote:<br>&gt; Can we ship Monday?<br><br>Please wait until Friday',
+    );
+
+    expect(hasLink).toBe(false);
+  });
+
+  it('keeps a reply below the quote in a plain-text email with addresses', () => {
+    const message = {
+      contentAttributes: {
+        email: {
+          textContent: {
+            full: 'Hi Sam,\n\nOn Mon, 2 Mar 2026, Sam <sam@acme.test> wrote:\n> Can we ship Monday?\n\nPlease wait until Friday',
+          },
+        },
+      },
+    } as Message;
+    const { hasLink } = runPreviewScript(getEmailHtml(message));
+
+    expect(hasLink).toBe(false);
+    expect(document.body.textContent).toContain('Sam <sam@acme.test> wrote:');
+  });
+
+  it('keeps a reply written below an attributed quote', () => {
+    const { hasLink } = runPreviewScript(`
+      <div>Hi Sam,</div>
+      <div>On Mon, 2 Mar 2026 Sam Patel wrote:</div>
+      <blockquote>Can we ship Monday?</blockquote>
+      <div>Please wait until Friday</div>`);
+
+    expect(hasLink).toBe(false);
+  });
+
+  it('keeps a reply written below a Gmail quote', () => {
+    const { hasLink } = runPreviewScript(`
+      <div dir="ltr">Hi Sam,</div>
+      <div class="gmail_quote gmail_quote_container">
+        <div class="gmail_attr">On Mon, 2 Mar 2026 Sam Patel wrote:</div>
+        <blockquote class="gmail_quote">Can we ship Monday?</blockquote>
+      </div>
+      <div>Please wait until Friday</div>`);
+
+    expect(hasLink).toBe(false);
+  });
+
+  it('hides a plain-text thread that ends the email', () => {
+    const { hiddenText, hasLink } = runPreviewScript(
+      'Please wait until Friday<br><br>On Mon, 2 Mar 2026 Sam Patel wrote:<br>&gt; Can we ship Monday?',
+    );
+
+    expect(hasLink).toBe(true);
+    expect(hiddenText).toContain('Can we ship Monday?');
+  });
+
+  it('hides an Outlook thread below its header', () => {
+    const { hiddenText, hasLink } = runPreviewScript(`
+      <div>Thanks, that works.</div>
+      <div id="appendonsend"></div>
+      <hr>
+      <div id="divRplyFwdMsg">From: Sam Patel<br>Sent: Monday, 2 March 2026</div>
+      <div>We can deliver on 10 March.</div>`);
+
+    expect(hasLink).toBe(true);
+    expect(hiddenText).toContain('We can deliver on 10 March.');
+  });
+
+  it('keeps an Apple Mail forward visible', () => {
+    const { hiddenText, hasLink } = runPreviewScript(`
+      <div>FYI, see below.</div>
+      <div><br><blockquote type="cite">
+        <div>Begin forwarded message:</div><br>
+        <div><b>From: </b>Pat &lt;pat@acme.test&gt;</div>
+        <div><b>Subject: </b>Invoice</div>
+        <div><b>Date: </b>2 March 2026</div>
+        <br><div>The invoice total is 450 USD.</div>
+      </blockquote></div>`);
 
     expect(hasLink).toBe(false);
     expect(hiddenText).toBe('');

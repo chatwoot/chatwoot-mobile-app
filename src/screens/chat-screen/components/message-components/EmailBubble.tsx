@@ -53,7 +53,7 @@ export const EmailBubble = (props: EmailBubbleProps) => {
 
   const { reply, quoted } = isForwarded
     ? { reply: content, quoted: '' }
-    : splitQuotedText(content || '');
+    : splitQuotedText(content || '', contentAttributes?.emailQuoteAppended);
 
   return (
     <React.Fragment>

@@ -47,11 +47,15 @@ const LIGHT_EMAIL_STYLE = `
 export const isOutgoingMarkdownEmail = (message: Message) =>
   !!message.content && message.messageType === MESSAGE_TYPES.OUTGOING;
 
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 export const getEmailHtml = (message: Message) => {
   const email = message.contentAttributes?.email;
   const html = email?.htmlContent?.full;
   const text = email?.textContent?.full;
-  const content = html || text?.replace(/\n/g, '<br>') || message.content || '';
+  const content =
+    html || (text && escapeHtml(text).replace(/\n/g, '<br>')) || message.content || '';
   return content.replace('height:100%;', '');
 };
 
@@ -60,48 +64,23 @@ export const getEmailStyle = (message: Message, isDark: boolean) =>
     ? `${LIGHT_EMAIL_STYLE}${BASE_EMAIL_STYLE}`
     : BASE_EMAIL_STYLE;
 
-const ATTRIBUTION_LINE =
-  /^\s*(>\s*)*(On\s.+\s(wrote|schrieb)\s*:|Am\s.+schrieb.*:|-{2,}\s*Original Message)\s*-*\s*$/i;
-const WRAPPED_ATTRIBUTION_START = /^\s*(>\s*)*On\s\S/i;
-const WRAPPED_ATTRIBUTION_END = /^\s*(>\s*)*(.*\s)?wrote\s*:\s*$/i;
-const QUOTED_LINE = /^\s*>/;
-
-const findQuoteStart = (lines: string[]) => {
-  const attribution = lines.findIndex(
-    (line, index) =>
-      ATTRIBUTION_LINE.test(line) ||
-      (WRAPPED_ATTRIBUTION_START.test(line) &&
-        WRAPPED_ATTRIBUTION_END.test(lines[index + 1] ?? '')),
-  );
-  if (attribution !== -1) {
-    return attribution;
-  }
-
-  let lastReplyLine = -1;
-  lines.forEach((line, index) => {
-    if (line.trim() && !QUOTED_LINE.test(line)) {
-      lastReplyLine = index;
-    }
-  });
-  return lines.findIndex((line, index) => index > lastReplyLine && QUOTED_LINE.test(line));
-};
+const APPENDED_THREAD = /^> On [^\n]* wrote:(?:\n>[^\n]*)*\s*(?![\s\S])/m;
 
 /**
- * Splits plain or markdown email text into the reply and the quoted thread.
- * The thread starts at the first attribution line, or at the trailing run of
- * ">" lines when there is none, so inline quotes answered below stay in the
- * reply. Text without a reply before the thread is returned whole.
+ * Splits an outgoing email reply into the agent's text and the thread the
+ * email reply box appended after it: a trailing "> On … wrote:" line followed
+ * only by "> " lines. Nothing is split when the reply box reports that it
+ * appended no thread, or when no text precedes the thread.
  */
-export const splitQuotedText = (text: string) => {
-  const lines = text.split('\n');
-  const quoteStart = findQuoteStart(lines);
-  const reply = quoteStart > 0 ? lines.slice(0, quoteStart).join('\n').trimEnd() : '';
+export const splitQuotedText = (text: string, quoteAppended?: boolean) => {
+  const thread = quoteAppended === false ? null : APPENDED_THREAD.exec(text);
+  const reply = thread ? text.slice(0, thread.index).trimEnd() : '';
 
-  if (!reply.trim()) {
+  if (!thread || !reply.trim()) {
     return { reply: text, quoted: '' };
   }
 
-  return { reply, quoted: lines.slice(quoteStart).join('\n') };
+  return { reply, quoted: text.slice(thread.index) };
 };
 
 /**
@@ -128,8 +107,10 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
     var PLAIN_QUOTE_LINE_START = /^\s*>/;
     var LINE_BREAK_TAGS = /^(DIV|P|BLOCKQUOTE|TABLE|UL|OL|LI|HR)$/;
     var RICH_CONTENT_SELECTORS = 'div, p, span, font, a, table, blockquote';
+    var REPLY_ATTRIBUTION_START = /^\s*(On\s.+\s(wrote|schrieb)\s*:|Am\s.+schrieb.*:)/i;
+    var HEADER_STYLE_SELECTORS = '#divRplyFwdMsg, #appendonsend';
     var HEADER_BLOCK_START = /^\s*(-{2,}\s*Original Message|From:[\s\S]*(Sent|Date):)/i;
-    var FORWARD_START = /^\s*-{2,}\s*Forwarded message/i;
+    var FORWARD_START = /^\s*(-{2,}\s*Forwarded message|Begin forwarded message\s*:)/i;
 
     function textOf(node) {
       return (node.textContent || '').trim();
@@ -139,23 +120,25 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
       return (node.nodeType === Node.TEXT_NODE && !textOf(node)) || node.nodeName === 'BR';
     }
 
-    function hasTextAfter(node) {
+    function isInQuote(node) {
+      return !!node.parentElement.closest(THREAD_CONTAINER_SELECTORS + ', blockquote');
+    }
+
+    function hasReplyAfter(node) {
       var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       for (var text = walker.nextNode(); text; text = walker.nextNode()) {
         if (
           node.compareDocumentPosition(text) & Node.DOCUMENT_POSITION_FOLLOWING &&
           !node.contains(text) &&
           !IGNORED_TEXT_PARENTS.test(text.parentNode.nodeName) &&
-          text.textContent.trim()
+          text.textContent.trim() &&
+          !PLAIN_QUOTE_LINE_START.test(text.textContent) &&
+          !isInQuote(text)
         ) {
           return true;
         }
       }
       return false;
-    }
-
-    function startsWithAttribution(node) {
-      return QUOTE_LINE_START.test(textOf(node).slice(0, 300));
     }
 
     var FORWARDS = Array.prototype.filter.call(
@@ -175,16 +158,13 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
       var candidates = document.body.querySelectorAll(THREAD_CONTAINER_SELECTORS + ', blockquote');
       for (var i = 0; i < candidates.length; i += 1) {
         var candidate = candidates[i];
-        if (isForwarded(candidate)) {
+        if (
+          isForwarded(candidate) ||
+          (!candidate.matches(HEADER_STYLE_SELECTORS) && hasReplyAfter(candidate))
+        ) {
           continue;
         }
-        if (candidate.nodeName !== 'BLOCKQUOTE' || candidate.matches(THREAD_CONTAINER_SELECTORS)) {
-          return includeAttribution(candidate);
-        }
-        var start = includeAttribution(candidate);
-        if (start !== candidate || startsWithAttribution(candidate) || !hasTextAfter(candidate)) {
-          return start;
-        }
+        return includeAttribution(candidate);
       }
       return null;
     }
@@ -201,6 +181,14 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
 
     function isLineBreak(node) {
       return !node || node.nodeName === 'BR' || LINE_BREAK_TAGS.test(node.nodeName);
+    }
+
+    function lineEnd(node) {
+      var end = node;
+      while (!isLineBreak(end.nextSibling)) {
+        end = end.nextSibling;
+      }
+      return end;
     }
 
     function lineText(node) {
@@ -224,6 +212,9 @@ export const buildEmailPreviewScript = (linkLabel: string) => String.raw`
         }
         var text = lineText(node);
         if (QUOTE_LINE_START.test(text)) {
+          if (REPLY_ATTRIBUTION_START.test(text) && hasReplyAfter(lineEnd(node))) {
+            continue;
+          }
           return node;
         }
         if (isPlainText && PLAIN_QUOTE_LINE_START.test(text) && onlyQuotedLinesFrom(node)) {

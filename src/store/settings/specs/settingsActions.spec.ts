@@ -28,6 +28,7 @@ jest.mock('@/utils/toastUtils', () => ({
 }));
 
 jest.mock('../settingsService', () => ({
+  HTTPS_PROBE_TIMEOUT_MS: 5000,
   SettingsService: {
     verifyInstallationUrl: jest.fn(),
   },
@@ -237,5 +238,41 @@ describe('setInstallationUrl', () => {
     const action = await setInstallationUrl('[2001:db8::1%25en0]:3000');
 
     expect(action.type).toBe('settings/setInstallationUrl/rejected');
+  });
+
+  it('omits short timeout for explicit LAN URLs and applies it only to bare local HTTPS probes', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockResolvedValue(true);
+
+    await setInstallationUrl('http://192.168.0.71:9668/');
+    expect(SettingsService.verifyInstallationUrl).toHaveBeenLastCalledWith(
+      'http://192.168.0.71:9668/',
+    );
+
+    await setInstallationUrl('https://192.168.0.71:9668/');
+    expect(SettingsService.verifyInstallationUrl).toHaveBeenLastCalledWith(
+      'https://192.168.0.71:9668/',
+    );
+
+    await setInstallationUrl('app.chatwoot.com');
+    expect(SettingsService.verifyInstallationUrl).toHaveBeenLastCalledWith(
+      'https://app.chatwoot.com/',
+      undefined,
+    );
+
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockClear();
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    await setInstallationUrl('192.168.0.71:9668');
+    expect(SettingsService.verifyInstallationUrl).toHaveBeenNthCalledWith(
+      1,
+      'https://192.168.0.71:9668/',
+      { timeout: 5000 },
+    );
+    expect(SettingsService.verifyInstallationUrl).toHaveBeenNthCalledWith(
+      2,
+      'http://192.168.0.71:9668/',
+    );
   });
 });

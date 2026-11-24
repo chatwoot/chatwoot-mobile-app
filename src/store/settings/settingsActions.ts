@@ -12,7 +12,7 @@ import {
   getUniqueId,
 } from 'react-native-device-info';
 
-import { SettingsService } from './settingsService';
+import { HTTPS_PROBE_TIMEOUT_MS, SettingsService } from './settingsService';
 import type {
   NotificationSettings,
   NotificationSettingsPayload,
@@ -100,7 +100,10 @@ export const settingsActions = {
             throw new Error(I18n.t('CONFIGURE_URL.ERROR'));
           }
 
-          const isHttpsValid = await SettingsService.verifyInstallationUrl(httpsUrl.href);
+          const isHttpsValid = await SettingsService.verifyInstallationUrl(
+            httpsUrl.href,
+            isLocal ? { timeout: HTTPS_PROBE_TIMEOUT_MS } : undefined,
+          );
           if (isHttpsValid) {
             verifiedInstallationUrl = httpsUrl.href;
             verifiedWebSocketUrl = buildWebSocketUrl(httpsUrl.host, 'wss');

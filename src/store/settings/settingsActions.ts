@@ -28,6 +28,7 @@ import {
   isLocalOrPrivateHost,
   handleApiError,
   buildWebSocketUrl,
+  parseUrl,
 } from './settingsUtils';
 import { showToast } from '@/utils/toastUtils';
 import { isUnactionablePushError } from '@/utils/sentryUtils';
@@ -61,7 +62,7 @@ export const settingsActions = {
 
         const formatCandidate = (protocol: 'http' | 'https') => {
           const portPart = port ? `:${port}` : '';
-          return new URL(`${protocol}://${hostname}${portPart}/`);
+          return parseUrl(`${protocol}://${hostname}${portPart}/`);
         };
 
         let verifiedInstallationUrl = '';

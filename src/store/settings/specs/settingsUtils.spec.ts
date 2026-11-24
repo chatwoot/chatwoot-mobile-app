@@ -160,6 +160,15 @@ describe('checkValidUrl', () => {
   it('rejects an empty URL', () => {
     expect(checkValidUrl({ url: '' })).toBe(false);
   });
+
+  it('accepts an RFC 6874 scoped link-local IPv6 URL', () => {
+    expect(checkValidUrl({ url: 'http://[fe80::1%25en0]:3000/' })).toBe(true);
+  });
+
+  it('rejects a scoped IPv6 URL with invalid or empty zone identifier', () => {
+    expect(checkValidUrl({ url: 'http://[fe80::1%25]:3000/' })).toBe(false);
+    expect(checkValidUrl({ url: 'http://[fe80::1%en0]:3000/' })).toBe(false);
+  });
 });
 
 describe('isLocalOrPrivateHost', () => {
@@ -183,6 +192,16 @@ describe('isLocalOrPrivateHost', () => {
     ['[::1]', true],
     ['[fd12::1]', true],
     ['fd12::1', true],
+    ['[fe80::1]', true],
+    ['fe80::1', true],
+    ['[fe80::1%25en0]', true],
+    ['fe80::1%25en0', true],
+    ['[FE80:0:0:0::1%25Wi-Fi]', true],
+    ['[::1%25lo0]', true],
+    ['[::ffff:192.168.0.71%25en0]', true],
+    ['[2001:db8::1%25en0]', false],
+    ['[fe80::1%25]', false],
+    ['[fe80::1%en0]', false],
     ['[::ffff:192.168.0.71]', true],
     ['::ffff:192.168.0.71', true],
     ['[::ffff:c0a8:47]', true],
@@ -270,6 +289,35 @@ describe('extractUrlDetails', () => {
     });
   });
 
+  it('extracts RFC 6874 scoped link-local IPv6 literal preserving zone case', () => {
+    const details = extractUrlDetails({ url: 'http://[FE80:0:0:0::1%25En0]:3000/app' });
+    expect(details).toEqual({
+      hostname: '[fe80::1%25En0]',
+      port: '3000',
+      scheme: 'http://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts bare RFC 6874 scoped link-local IPv6 literal with explicit port 443', () => {
+    const details = extractUrlDetails({ url: '[fe80::1%25en0]:443' });
+    expect(details).toEqual({
+      hostname: '[fe80::1%25en0]',
+      port: '443',
+      scheme: null,
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('rejects malformed scoped IPv6 literals', () => {
+    expect(extractUrlDetails({ url: 'http://[fe80::1%25]:3000' }).isValid).toBe(false);
+    expect(extractUrlDetails({ url: 'http://[fe80::1%en0]:3000' }).isValid).toBe(false);
+    expect(extractUrlDetails({ url: 'http://[fe80::1%25en%GG]:3000' }).isValid).toBe(false);
+    expect(extractUrlDetails({ url: 'http://[not-ipv6%25en0]:3000' }).isValid).toBe(false);
+  });
+
   it('extracts fully qualified domain with trailing dot', () => {
     const details = extractUrlDetails({ url: 'https://chatwoot.example.com./' });
     expect(details).toEqual({
@@ -298,6 +346,13 @@ describe('checkValidInstallationUrl', () => {
     ['192.168.0.71:9668', true],
     ['http://[fd12::1]:3000', true],
     ['[fd12::1]:3000', true],
+    ['http://[fe80::1%25en0]:3000', true],
+    ['[fe80::1%25en0]:3000', true],
+    ['[fe80::1%25en0]', true],
+    ['http://[fe80::1%25en%200]:3000', true],
+    ['http://[fe80::1%25]:3000', false],
+    ['http://[fe80::1%en0]:3000', false],
+    ['http://[not-ipv6%25en0]:3000', false],
     ['https://chatwoot.example.com./', true],
     ['chatwoot.example.com.', true],
     ['localhost:3000', true],
@@ -375,6 +430,16 @@ describe('getInitialUrl', () => {
         appName: 'Chatwoot',
       }),
     ).toBe('https://[fd12::1]:3000');
+  });
+
+  it('retains explicit https scheme for scoped link-local IPv6 installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '[fe80::1%25en0]:3000',
+        installationUrl: 'https://[fe80::1%25en0]:3000/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://[fe80::1%25en0]:3000');
   });
 
   it('retains explicit https scheme for single-label intranet host installations', () => {

@@ -200,4 +200,42 @@ describe('setInstallationUrl', () => {
       baseUrl: 'chatwoot',
     });
   });
+
+  it('handles explicit http scheme for scoped link-local IPv6 literal', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('http://[fe80::1%25en0]:3000');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://[fe80::1%25en0]:3000/',
+      webSocketUrl: 'ws://[fe80::1%25en0]:3000/cable',
+      baseUrl: '[fe80::1%25en0]:3000',
+    });
+  });
+
+  it('falls back to http for bare scoped link-local IPv6 literal', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('[fe80::1%25en0]:3000');
+
+    expect(action.payload).toEqual({
+      installationUrl: 'http://[fe80::1%25en0]:3000/',
+      webSocketUrl: 'ws://[fe80::1%25en0]:3000/cable',
+      baseUrl: '[fe80::1%25en0]:3000',
+    });
+  });
+
+  it('does not downgrade bare scoped global IPv6 literal to http', async () => {
+    (SettingsService.verifyInstallationUrl as jest.Mock).mockImplementation((url: string) =>
+      Promise.resolve(url.startsWith('http://')),
+    );
+
+    const action = await setInstallationUrl('[2001:db8::1%25en0]:3000');
+
+    expect(action.type).toBe('settings/setInstallationUrl/rejected');
+  });
 });

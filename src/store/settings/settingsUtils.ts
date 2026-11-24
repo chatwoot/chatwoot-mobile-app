@@ -9,6 +9,106 @@ export const handleApiError = (error: unknown, customErrorMsg?: string) => {
 };
 
 const SCHEME = /^[a-z][a-z0-9+.-]*:\/\//i;
+const RFC6874_ZONE_ID = /^(?:[a-zA-Z0-9._~-]|%[0-9a-fA-F]{2})+$/;
+
+export interface ParsedUrl {
+  href: string;
+  host: string;
+  hostname: string;
+  port: string;
+  protocol: string;
+  pathname: string;
+  search: string;
+  hash: string;
+}
+
+const splitScopedIpv6Literal = (
+  bracketedHost: string,
+): { address: string; zoneId: string } | null => {
+  if (!bracketedHost.startsWith('[') || !bracketedHost.endsWith(']')) {
+    return null;
+  }
+  const inner = bracketedHost.slice(1, -1);
+  const percentIndex = inner.indexOf('%');
+  if (percentIndex === -1) {
+    return null;
+  }
+  if (!inner.slice(percentIndex).startsWith('%25')) {
+    throw new TypeError('Invalid RFC 6874 IPv6 zone delimiter');
+  }
+  const address = inner.slice(0, percentIndex);
+  const zoneId = inner.slice(percentIndex + 3);
+  if (!address || !/^[0-9a-fA-F:.]+$/.test(address) || !RFC6874_ZONE_ID.test(zoneId)) {
+    throw new TypeError('Invalid RFC 6874 IPv6 zone identifier');
+  }
+  return { address, zoneId };
+};
+
+/**
+ * Parses an absolute URL, including RFC 6874 scoped IPv6 literals (e.g. `http://[fe80::1%25en0]:3000/`)
+ * that the WHATWG `URL` constructor rejects.
+ */
+export const parseUrl = (input: string): ParsedUrl => {
+  const schemeMatch = input.match(/^([a-z][a-z0-9+.-]*:\/\/)/i);
+  if (schemeMatch) {
+    const schemePrefix = schemeMatch[1];
+    const afterScheme = input.slice(schemePrefix.length);
+    const suffixIndex = afterScheme.search(/[/?#\\]/);
+    const authority = suffixIndex === -1 ? afterScheme : afterScheme.slice(0, suffixIndex);
+    const suffix = suffixIndex === -1 ? '' : afterScheme.slice(suffixIndex);
+
+    const atIndex = authority.lastIndexOf('@');
+    const userinfoPrefix = atIndex === -1 ? '' : authority.slice(0, atIndex + 1);
+    const hostPort = atIndex === -1 ? authority : authority.slice(atIndex + 1);
+
+    if (hostPort.startsWith('[')) {
+      const closeBracketIndex = hostPort.indexOf(']');
+      if (closeBracketIndex !== -1) {
+        const bracketedHost = hostPort.slice(0, closeBracketIndex + 1);
+        const portPart = hostPort.slice(closeBracketIndex + 1);
+        const scoped = splitScopedIpv6Literal(bracketedHost);
+        if (scoped) {
+          const sanitizedUrl = `${schemePrefix}${userinfoPrefix}[${scoped.address}]${portPart}${suffix}`;
+          const parsed = new URL(sanitizedUrl);
+          if (!parsed.hostname.startsWith('[') || !parsed.hostname.endsWith(']')) {
+            throw new TypeError('Invalid scoped IPv6 address');
+          }
+          const canonicalAddress = parsed.hostname.slice(1, -1);
+          const hostname = `[${canonicalAddress}%25${scoped.zoneId}]`;
+          const host = parsed.port ? `${hostname}:${parsed.port}` : hostname;
+          const credentials =
+            parsed.username || parsed.password
+              ? `${parsed.username}${parsed.password ? `:${parsed.password}` : ''}@`
+              : '';
+          const href = `${parsed.protocol}//${credentials}${host}${parsed.pathname}${parsed.search}${parsed.hash}`;
+
+          return {
+            href,
+            host,
+            hostname,
+            port: parsed.port,
+            protocol: parsed.protocol,
+            pathname: parsed.pathname,
+            search: parsed.search,
+            hash: parsed.hash,
+          };
+        }
+      }
+    }
+  }
+
+  const parsed = new URL(input);
+  return {
+    href: parsed.href,
+    host: parsed.host,
+    hostname: parsed.hostname,
+    port: parsed.port,
+    protocol: parsed.protocol,
+    pathname: parsed.pathname,
+    search: parsed.search,
+    hash: parsed.hash,
+  };
+};
 
 /**
  * The host of a Chatwoot installation, including a port when one is given.
@@ -32,7 +132,7 @@ export const extractDomain = ({ url }: { url: string }) => {
   }
 
   try {
-    const { host } = new URL(hasScheme ? trimmedUrl : `${URL_TYPE}${trimmedUrl}`);
+    const { host } = parseUrl(hasScheme ? trimmedUrl : `${URL_TYPE}${trimmedUrl}`);
     return host;
   } catch {
     return hasScheme ? '' : trimmedUrl;
@@ -97,7 +197,7 @@ export const checkValidUrl = ({ url }: { url: string }): boolean => {
     return false;
   }
   try {
-    return Boolean(new URL(url));
+    return Boolean(parseUrl(url));
   } catch {
     return false;
   }
@@ -126,9 +226,19 @@ export const isLocalOrPrivateHost = (hostname: string): boolean => {
   try {
     const wrapped =
       hostname.includes(':') && !hostname.startsWith('[') ? `[${hostname}]` : hostname;
+    let hostToCanonicalize = wrapped;
+    if (wrapped.startsWith('[') && wrapped.endsWith(']')) {
+      const scoped = splitScopedIpv6Literal(wrapped);
+      if (scoped) {
+        hostToCanonicalize = `[${scoped.address}]`;
+      }
+    }
     // Canonicalize IPv4 octets / IPv6 using the standard WHATWG URL parser
-    canonicalHost = new URL(`http://${wrapped}`).hostname;
+    canonicalHost = new URL(`http://${hostToCanonicalize}`).hostname;
   } catch {
+    if (hostname.includes('%')) {
+      return false;
+    }
     // Fallback if not directly parseable
   }
   const clean = canonicalHost
@@ -211,9 +321,9 @@ export const extractUrlDetails = ({ url }: { url: string }): UrlDetails => {
 
   try {
     const rawWithoutScheme = trimmedUrl.replace(/^[a-z][a-z0-9+.-]*:\/\//i, '');
-    const parsed = new URL(`http://${rawWithoutScheme}`);
+    const parsed = parseUrl(`http://${rawWithoutScheme}`);
     const hostname = parsed.hostname;
-    const explicitPortMatch = rawWithoutScheme.split(/[/?#]/)[0].match(/:(\d+)$/);
+    const explicitPortMatch = rawWithoutScheme.split(/[/?#\\]/)[0].match(/:(\d+)$/);
     const port = explicitPortMatch ? explicitPortMatch[1] : parsed.port;
 
     return {
@@ -276,7 +386,7 @@ export const getInitialUrl = ({
       return installationUrl.replace(/\/$/, '');
     }
     try {
-      const parsedHost = new URL(installationUrl).hostname;
+      const parsedHost = parseUrl(installationUrl).hostname;
       if (
         isLocalOrPrivateHost(parsedHost) ||
         !checkValidInstallationUrl(parsedHost) ||

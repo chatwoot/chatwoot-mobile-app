@@ -42,7 +42,7 @@ jobs:
             }
 
             const body = (pr.body || '').replace(/<!--[\s\S]*?-->/g, '');
-            const media = /github\.com\/user-attachments\/(assets|files)\/|(private-)?user-images\.githubusercontent\.com|\.(png|jpe?g|gif|webp|mp4|mov|webm)\b/i;
+            const media = /github\.com\/user-attachments\/assets\/|(private-)?user-images\.githubusercontent\.com\/|https?:\/\/\S+\.(png|jpe?g|gif|webp|mp4|mov|webm)\b/i;
             if (media.test(body)) {
               core.info('Screenshot or recording found.');
               return;

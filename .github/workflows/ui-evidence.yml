@@ -1,0 +1,58 @@
+name: PR checks
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened, ready_for_review, labeled, unlabeled]
+    branches: [develop]
+
+permissions:
+  pull-requests: read
+
+jobs:
+  ui-evidence:
+    name: UI evidence
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+
+            if (pr.labels.some(label => label.name === 'no-ui-change')) {
+              core.info('Exempted by a maintainer with the no-ui-change label.');
+              return;
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+
+            const isUiFile = name =>
+              (/^src\/.*\.tsx$/.test(name) && !/(__tests__\/|\.(test|spec)\.tsx$)/.test(name)) ||
+              /^src\/(theme|assets|svg-icons)\//.test(name) ||
+              /^assets\//.test(name);
+
+            const uiFiles = files.map(file => file.filename).filter(isUiFile);
+            if (uiFiles.length === 0) {
+              core.info('No UI files changed.');
+              return;
+            }
+
+            const body = (pr.body || '').replace(/<!--[\s\S]*?-->/g, '');
+            const media = /github\.com\/user-attachments\/(assets|files)\/|(private-)?user-images\.githubusercontent\.com|\.(png|jpe?g|gif|webp|mp4|mov|webm)\b/i;
+            if (media.test(body)) {
+              core.info('Screenshot or recording found.');
+              return;
+            }
+
+            core.setFailed([
+              'This PR changes UI files but its description has no screenshot or screen recording.',
+              'Attach them under "Screenshots / Screen Recordings", labelled iOS / Android; editing the description re-runs this check.',
+              'If the change has no visible effect, explain why in that section; a maintainer can apply the no-ui-change label.',
+              '',
+              'UI files changed:',
+              ...uiFiles.map(name => `  ${name}`),
+            ].join('\n'));

@@ -17,7 +17,12 @@ import { InteractionManager, useWindowDimensions, View } from 'react-native';
 
 import { ContainerWidthContext } from '@/context';
 import { useIsSplitLayout } from '@/utils';
-import { DashboardColumnParams, SecondaryColumn, SplitViewContext } from './SplitViewContext';
+import {
+  DashboardColumnParams,
+  EmailColumnParams,
+  SecondaryColumn,
+  SplitViewContext,
+} from './SplitViewContext';
 import { ConversationPane } from './ConversationPane';
 import { EmptyPane } from './EmptyPane';
 import { SecondaryPane } from './SecondaryPane';
@@ -118,6 +123,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       openCompose: () => openColumn({ kind: 'compose' }),
       openDashboard: (params: DashboardColumnParams) =>
         openColumn({ kind: 'dashboard', ...params }),
+      openEmail: (params: EmailColumnParams) => openColumn({ kind: 'email', ...params }),
       // Clear the column after sliding out.
       closeSecondary: () => {
         columnOpenStore.set(false);

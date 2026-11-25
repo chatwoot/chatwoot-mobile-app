@@ -8,6 +8,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
+import EmailMessageScreen from '@/screens/email-message/EmailMessageScreen';
 import { ConversationActions } from '@/screens/chat-screen/conversation-actions';
 import { MacrosPane } from '@/screens/chat-screen/components/macros/MacrosPane';
 import { ReplyBoxContainer } from '@/screens/chat-screen/components/reply-box/ReplyBoxContainer';
@@ -40,7 +41,7 @@ export const SecondaryPane = ({
       ? isPrivateNote
         ? 'bg-amber-50'
         : 'bg-white'
-      : column.kind === 'dashboard'
+      : column.kind === 'dashboard' || column.kind === 'email'
         ? 'bg-white'
         : 'bg-gray-50';
 
@@ -82,6 +83,12 @@ export const SecondaryPane = ({
           </RefsProvider>
         </ComposePaneContext.Provider>
       </DetailPaneContext.Provider>
+    );
+  } else if (column.kind === 'email') {
+    content = (
+      <EmailMessageScreen
+        paneParams={{ conversationId: column.conversationId, messageId: column.messageId }}
+      />
     );
   } else {
     content = (

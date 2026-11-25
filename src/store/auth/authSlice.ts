@@ -33,9 +33,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: state => {
-      // in rootReducer, there is an action to CLEAR the complete Redux Store's state
-    },
+    logout: () => initialState,
     resetAuth: state => {
       state.user = null;
       state.accessToken = null;
@@ -178,6 +176,16 @@ export const authSlice = createSlice({
           ...state.user,
           ...action.payload.user,
         };
+        // Server applies status asynchronously.
+        const availability = action.meta.arg?.profile?.availability;
+        const accountId = state.user?.account_id;
+        if (availability && state.user?.accounts) {
+          state.user.accounts = state.user.accounts.map(account =>
+            account.id === accountId
+              ? { ...account, availability, availability_status: availability }
+              : account,
+          );
+        }
       })
       .addCase(authActions.updateWorkPreferences.fulfilled, (state, action) => {
         state.user = {

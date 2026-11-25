@@ -1,9 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { View, Text } from 'react-native';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 
 export const UnsupportedBubble = () => {
+  const tailwind = useTailwind();
   return (
     <View
       style={tailwind.style(

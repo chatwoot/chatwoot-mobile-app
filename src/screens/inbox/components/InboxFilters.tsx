@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
 import i18n from '@/i18n';
@@ -22,6 +22,7 @@ type SortByCellProps = {
 const sortByList = Object.keys(InboxSortOptions) as InboxSortTypes[];
 
 const SortByCell = (props: SortByCellProps) => {
+  const tailwind = useTailwind();
   const { value, index, sortOrder, onChange } = props;
 
   const hapticSelection = useHaptic();
@@ -53,6 +54,7 @@ const SortByCell = (props: SortByCellProps) => {
 };
 
 export const InboxFilters = () => {
+  const tailwind = useTailwind();
   const sortOrder = useAppSelector(selectSortOrder);
   const dispatch = useAppDispatch();
   const { inboxFiltersSheetRef } = useRefsContext();

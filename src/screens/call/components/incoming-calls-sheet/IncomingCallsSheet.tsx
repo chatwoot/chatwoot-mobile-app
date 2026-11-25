@@ -4,17 +4,16 @@ import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, { FadeIn, FadeOut, SlideInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { useHaptic } from '@/utils';
 import i18n from '@/i18n';
 import type { LiveCall } from '@/store/call/callTypes';
 
 import {
-  CALL_DIVIDER,
-  CALL_LABEL_TEXT,
-  CALL_RING_TEXT,
+  CALL_SHEET_MAX_WIDTH,
   CARD_SHADOW,
   SHEET_SHADOW,
+  useCallTheme,
 } from '../../constants/callTheme';
 import { SHEET_CLOSE_MS } from '../../constants/sheet';
 import { useCallerInfo } from '../../hooks/useCallerInfo';
@@ -51,6 +50,8 @@ export const IncomingCallsSheet = ({
   onDecline,
   onSilenceAll,
 }: IncomingCallsSheetProps) => {
+  const tailwind = useTailwind();
+  const { CALL_DIVIDER, CALL_HANDLE, CALL_LABEL_TEXT, CALL_RING_TEXT } = useCallTheme();
   const insets = useSafeAreaInsets();
   const single = calls.length === 1 ? calls[0] : null;
   const singleInfo = useCallerInfo(single);
@@ -116,97 +117,108 @@ export const IncomingCallsSheet = ({
           style={tailwind.style('absolute inset-0')}
         />
       </Animated.View>
-      <GestureDetector gesture={sheet.pan}>
-        <Animated.View
-          entering={SlideInDown.duration(260)}
-          style={[tailwind.style('absolute left-0 right-0 bottom-0'), sheet.sheetStyle]}>
-          <View
+      <View
+        style={tailwind.style('absolute left-0 right-0 bottom-0 items-center')}
+        pointerEvents="box-none">
+        <GestureDetector gesture={sheet.pan}>
+          <Animated.View
+            entering={SlideInDown.duration(260)}
             style={[
-              tailwind.style('rounded-t-[34px] bg-white pt-2.5', single ? 'px-5' : ''),
-              single ? CARD_SHADOW : SHEET_SHADOW,
-              { paddingBottom: insets.bottom + 12 },
+              tailwind.style('w-full'),
+              { maxWidth: CALL_SHEET_MAX_WIDTH },
+              sheet.sheetStyle,
             ]}>
             <View
-              style={tailwind.style('self-center h-[5px] w-9 rounded-[3px] bg-[#CCCCCC] mb-3.5')}
-            />
-            <View style={tailwind.style('flex-row items-center gap-2', single ? '' : 'px-5')}>
-              <PulseDot />
-              <Text
+              style={[
+                tailwind.style('rounded-t-[34px] bg-white pt-2.5', single ? 'px-5' : ''),
+                single ? CARD_SHADOW : SHEET_SHADOW,
+                { paddingBottom: insets.bottom + 12 },
+              ]}>
+              <View
                 style={[
-                  tailwind.style(
-                    'font-inter-580-24 uppercase text-[13px] leading-4 tracking-[0.4px]',
-                  ),
-                  { color: CALL_RING_TEXT },
-                ]}>
-                {title}
-              </Text>
-            </View>
-
-            {single ? (
-              <SingleCallerCard info={singleInfo} />
-            ) : (
-              <ScrollView
-                style={[
-                  tailwind.style('mt-4 border-t border-b'),
-                  {
-                    maxHeight: LIST_MAX_HEIGHT + (openSid ? OPEN_ROW_EXTRA_HEIGHT : 0),
-                    borderColor: CALL_DIVIDER,
-                  },
+                  tailwind.style('self-center h-[5px] w-9 rounded-[3px] mb-3.5'),
+                  { backgroundColor: CALL_HANDLE },
                 ]}
-                contentContainerStyle={[
-                  tailwind.style('gap-px'),
-                  { backgroundColor: CALL_DIVIDER },
-                ]}
-                showsVerticalScrollIndicator={false}
-                scrollEnabled={calls.length > LIST_VISIBLE_ROWS}
-                bounces={calls.length > LIST_VISIBLE_ROWS}>
-                {calls.map(entry => (
-                  <RingingRow
-                    key={entry.callSid}
-                    call={entry}
-                    isOpen={openSid === entry.callSid}
-                    hasActiveCall={hasActiveCall}
-                    answerDisabled={answerDisabled}
-                    onPress={() => toggleRow(entry.callSid)}
-                    onAnswer={() => answerRow(entry)}
-                    onDecline={() => onDecline(entry)}
-                  />
-                ))}
-              </ScrollView>
-            )}
+              />
+              <View style={tailwind.style('flex-row items-center gap-2', single ? '' : 'px-5')}>
+                <PulseDot />
+                <Text
+                  style={[
+                    tailwind.style(
+                      'font-inter-580-24 uppercase text-[13px] leading-4 tracking-[0.4px]',
+                    ),
+                    { color: CALL_RING_TEXT },
+                  ]}>
+                  {title}
+                </Text>
+              </View>
 
-            <View>
               {single ? (
-                <>
-                  {hasActiveCall ? (
-                    <Text style={[tailwind.style(HINT_TEXT, 'mt-4'), { color: CALL_LABEL_TEXT }]}>
-                      {i18n.t('CONVERSATION.VOICE_WIDGET.ANSWERING_ENDS_CURRENT')}
-                    </Text>
-                  ) : null}
-                  <View style={tailwind.style('mt-3.5 mx-4')}>
-                    <IncomingCallActions
-                      onDecline={declineSingle}
-                      onAnswer={answerSingle}
-                      answerLabel={answerLabel}
-                      answerDisabled={answerDisabled}
-                    />
-                  </View>
-                </>
+                <SingleCallerCard info={singleInfo} />
               ) : (
-                <>
-                  <Text
-                    style={[tailwind.style(HINT_TEXT, 'py-4 px-5'), { color: CALL_LABEL_TEXT }]}>
-                    {i18n.t('CONVERSATION.VOICE_WIDGET.TAP_HINT')}
-                  </Text>
-                  <View style={tailwind.style('flex-row mx-5')}>
-                    <SilenceAllButton onPress={silenceAll} />
-                  </View>
-                </>
+                <ScrollView
+                  style={[
+                    tailwind.style('mt-4 border-t border-b'),
+                    {
+                      maxHeight: LIST_MAX_HEIGHT + (openSid ? OPEN_ROW_EXTRA_HEIGHT : 0),
+                      borderColor: CALL_DIVIDER,
+                    },
+                  ]}
+                  contentContainerStyle={[
+                    tailwind.style('gap-px'),
+                    { backgroundColor: CALL_DIVIDER },
+                  ]}
+                  showsVerticalScrollIndicator={false}
+                  scrollEnabled={calls.length > LIST_VISIBLE_ROWS}
+                  bounces={calls.length > LIST_VISIBLE_ROWS}>
+                  {calls.map(entry => (
+                    <RingingRow
+                      key={entry.callSid}
+                      call={entry}
+                      isOpen={openSid === entry.callSid}
+                      hasActiveCall={hasActiveCall}
+                      answerDisabled={answerDisabled}
+                      onPress={() => toggleRow(entry.callSid)}
+                      onAnswer={() => answerRow(entry)}
+                      onDecline={() => onDecline(entry)}
+                    />
+                  ))}
+                </ScrollView>
               )}
+
+              <View>
+                {single ? (
+                  <>
+                    {hasActiveCall ? (
+                      <Text style={[tailwind.style(HINT_TEXT, 'mt-4'), { color: CALL_LABEL_TEXT }]}>
+                        {i18n.t('CONVERSATION.VOICE_WIDGET.ANSWERING_ENDS_CURRENT')}
+                      </Text>
+                    ) : null}
+                    <View style={tailwind.style('mt-3.5 mx-4')}>
+                      <IncomingCallActions
+                        onDecline={declineSingle}
+                        onAnswer={answerSingle}
+                        answerLabel={answerLabel}
+                        answerDisabled={answerDisabled}
+                      />
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <Text
+                      style={[tailwind.style(HINT_TEXT, 'py-4 px-5'), { color: CALL_LABEL_TEXT }]}>
+                      {i18n.t('CONVERSATION.VOICE_WIDGET.TAP_HINT')}
+                    </Text>
+                    <View style={tailwind.style('flex-row mx-5')}>
+                      <SilenceAllButton onPress={silenceAll} />
+                    </View>
+                  </>
+                )}
+              </View>
             </View>
-          </View>
-        </Animated.View>
-      </GestureDetector>
+          </Animated.View>
+        </GestureDetector>
+      </View>
     </View>
   );
 };

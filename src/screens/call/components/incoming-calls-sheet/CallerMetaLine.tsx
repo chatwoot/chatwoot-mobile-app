@@ -1,12 +1,10 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 
-import { CALL_LABEL_TEXT } from '../../constants/callTheme';
+import { useCallTheme } from '../../constants/callTheme';
 import { InboxChannelIcon } from '../InboxChannelIcon';
-
-const META_RULE = tailwind.color('bg-call-rule') as string;
 
 const SIZES = {
   large: { text: 'text-[15px] leading-5', mark: 14, gap: 'gap-1.5' },
@@ -28,6 +26,9 @@ export const CallerMetaLine = ({
   medium,
   size,
 }: CallerMetaLineProps) => {
+  const tailwind = useTailwind();
+  const { CALL_LABEL_TEXT } = useCallTheme();
+  const META_RULE = tailwind.color('bg-call-rule') as string;
   const { text, mark, gap } = SIZES[size];
   const textStyle = [tailwind.style('font-inter-420-20', text), { color: CALL_LABEL_TEXT }];
   return (

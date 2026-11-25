@@ -2,15 +2,18 @@ import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Animated, StatusBar, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 import { Button, Icon } from '@/components-next';
 import { EMAIL_REGEX } from '@/constants';
 import { KeyRoundIcon } from '@/svg-icons';
 import { tailwind } from '@/theme';
 import { authActions } from '@/store/auth/authActions';
-import { useAppDispatch } from '@/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { resetAuth } from '@/store/auth/authSlice';
+import { selectResetPasswordLoading } from '@/store/auth/authSelectors';
 import AnalyticsHelper from '@/utils/analyticsUtils';
+import { showToast } from '@/utils/toastUtils';
 import { ACCOUNT_EVENTS } from '@/constants/analyticsEvents';
 import i18n from '@/i18n';
 
@@ -21,6 +24,8 @@ type FormData = {
 
 const ForgotPassword = () => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
+  const isResettingPassword = useAppSelector(selectResetPasswordLoading);
 
   useEffect(() => {
     dispatch(resetAuth());
@@ -34,8 +39,14 @@ const ForgotPassword = () => {
 
   const onSubmit = async (data: FormData) => {
     const { email } = data;
-    dispatch(authActions.resetPassword({ email }));
     AnalyticsHelper.track(ACCOUNT_EVENTS.FORGOT_PASSWORD);
+    try {
+      await dispatch(authActions.resetPassword({ email })).unwrap();
+      showToast({ message: i18n.t('FORGOT_PASSWORD.API_SUCCESS') });
+      navigation.goBack();
+    } catch {
+      // Request errors are shown as toasts by the auth thunk
+    }
   };
 
   return (
@@ -104,6 +115,8 @@ const ForgotPassword = () => {
           <Button
             text={i18n.t('FORGOT_PASSWORD.RESET_HERE')}
             handlePress={handleSubmit(onSubmit)}
+            disabled={isResettingPassword}
+            isLoading={isResettingPassword}
           />
         </Animated.ScrollView>
       </View>

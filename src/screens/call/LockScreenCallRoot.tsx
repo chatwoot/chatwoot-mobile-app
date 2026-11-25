@@ -6,7 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 
 import { useAppSelector } from '@/hooks';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { selectActiveCall } from '@/store/call/callSelectors';
 import { setMinimised } from '@/store/call/callSlice';
 import { store } from '@/store';
@@ -76,12 +76,15 @@ const LockScreenCall = () => {
   );
 };
 
-export const LockScreenCallRoot = () => (
-  <Provider store={store}>
-    <SafeAreaProvider>
-      <GestureHandlerRootView style={tailwind.style('flex-1')}>
-        <LockScreenCall />
-      </GestureHandlerRootView>
-    </SafeAreaProvider>
-  </Provider>
-);
+export const LockScreenCallRoot = () => {
+  const tailwind = useTailwind();
+  return (
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <GestureHandlerRootView style={tailwind.style('flex-1')}>
+          <LockScreenCall />
+        </GestureHandlerRootView>
+      </SafeAreaProvider>
+    </Provider>
+  );
+};

@@ -65,6 +65,20 @@ export interface ToggleConversationStatusAPIResponse {
   };
 }
 
+export interface UpdateCustomAttributesPayload {
+  conversationId: number;
+  customAttributes: Record<string, unknown>;
+}
+
+export interface CustomAttributesAPIResponse {
+  custom_attributes: Record<string, unknown> | null;
+}
+
+export interface UpdateCustomAttributesResponse {
+  conversationId: number;
+  customAttributes: Record<string, string>;
+}
+
 export interface ApiErrorResponse {
   success: boolean;
   errors: string[];

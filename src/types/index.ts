@@ -25,7 +25,9 @@ export interface GenericListType {
   hasChevron?: boolean;
   checked?: boolean;
   disabled?: boolean;
+  isSelected?: boolean;
   inactive?: boolean;
+  locked?: boolean;
   link?: string;
   onPressListItem?: (key?: string) => void;
   actions?: {

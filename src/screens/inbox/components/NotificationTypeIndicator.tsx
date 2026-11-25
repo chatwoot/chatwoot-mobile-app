@@ -1,6 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next';
 import Animated from 'react-native-reanimated';
 import {
@@ -35,6 +35,7 @@ export const getNotificationTypeIcon = (type: NotificationType) => {
 };
 
 export const NotificationTypeIndicator = (props: NotificationTypeProps) => {
+  const tailwind = useTailwind();
   return (
     <Animated.View style={tailwind.style('h-6 w-6 rounded-full justify-center items-center')}>
       <Icon icon={getNotificationTypeIcon(props.type)} />

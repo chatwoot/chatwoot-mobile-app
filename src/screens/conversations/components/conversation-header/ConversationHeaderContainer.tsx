@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
+import { useTailwind } from '@/theme/useTailwind';
+import React, { useCallback, useEffect, useMemo } from 'react';
+import { BackHandler } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -7,8 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { useConversationListStateContext } from '@/context';
-import { tailwind } from '@/theme';
-import { useHaptic } from '@/utils';
+import { IOS_DESIGN, useHaptic, useSideTabBarLayout } from '@/utils';
 import { getFilteredConversations } from '@/store/conversation/conversationSelectors';
 import { selectUserId } from '@/store/auth/authSelectors';
 import {
@@ -27,8 +28,7 @@ import { ConversationFilterBar } from '../conversation-filters';
 import { ConversationHeaderPresenter } from './ConversationHeaderPresenter';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
-import { useNavigation } from '@react-navigation/native';
-import { StackActions } from '@react-navigation/native';
+import { StackActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 
 const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterState): number => {
   let count = 0;
@@ -42,7 +42,9 @@ const getFiltersAppliedCount = (defaultState: FilterState, updatedState: FilterS
 };
 
 export const ConversationHeader = () => {
+  const tailwind = useTailwind();
   const currentState = useAppSelector(selectCurrentState);
+  const sideTabBar = useSideTabBarLayout();
 
   const filters = useAppSelector(selectFilters);
   const dispatch = useAppDispatch();
@@ -101,12 +103,29 @@ export const ConversationHeader = () => {
     }
   };
 
+  const exitSelectMode = useCallback(() => {
+    dispatch(clearSelection());
+    dispatch(setCurrentState('none'));
+  }, [dispatch]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (currentState !== 'Select') {
+        return undefined;
+      }
+      const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+        exitSelectMode();
+        return true;
+      });
+      return () => subscription.remove();
+    }, [currentState, exitSelectMode]),
+  );
+
   const handleRightIconPress = () => {
     if (currentState === 'Filter') {
       dispatch(setCurrentState('none'));
     } else if (currentState === 'Select') {
-      dispatch(clearSelection());
-      dispatch(setCurrentState('none'));
+      exitSelectMode();
     } else {
       dispatch(setCurrentState('Filter'));
     }
@@ -123,10 +142,17 @@ export const ConversationHeader = () => {
   };
 
   return (
-    <Animated.View style={[tailwind.style('border-b-[1px] bg-white z-10'), headerBorderAnimation]}>
+    <Animated.View
+      style={[
+        IOS_DESIGN || sideTabBar
+          ? tailwind.style('z-10')
+          : [tailwind.style('border-b-[1px] bg-white z-10'), headerBorderAnimation],
+        { paddingTop: sideTabBar?.contentTopPadding ?? 0 },
+      ]}>
       <ConversationHeaderPresenter
         currentState={currentState}
         isSelectedAll={isSelectedAll}
+        selectedCount={selectedConversations.length}
         filtersAppliedCount={filtersAppliedCount}
         onLeftIconPress={handleLeftIconPress}
         onRightIconPress={handleRightIconPress}

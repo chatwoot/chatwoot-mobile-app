@@ -1,12 +1,13 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Text } from 'react-native';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { SlaMissedIcon } from '@/svg-icons';
 import { SLA, SLAEvent, SLAStatus } from '@/types/common/SLA';
 import { evaluateSLAStatus } from '@/utils/slaUtils';
 import i18n from '@/i18n';
+import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
 
 const REFRESH_INTERVAL = 60000;
 
@@ -27,6 +28,8 @@ export const SLAIndicator = ({
   slaEvents?: SLAEvent[];
   onSLAStatusChange: (hasThreshold: boolean) => void;
 }) => {
+  const tailwind = useTailwind();
+  const iosText = useIOSListText();
   const [slaStatus, setSlaStatus] = useState<SLAStatus | null>(null);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -73,6 +76,7 @@ export const SLAIndicator = ({
       <Text
         style={tailwind.style(
           'pl-1 text-sm leading-[20px] text-center',
+          iosText && IOS_LIST_TEXT.footnote,
           slaStatus?.isSlaMissed ? 'text-ruby-800' : 'text-gray-800',
         )}>
         {`${sLAStatusText()}: ${slaStatus?.threshold}`}

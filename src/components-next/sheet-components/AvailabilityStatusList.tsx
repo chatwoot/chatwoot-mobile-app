@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, Text, Animated } from 'react-native';
 
 import { AVAILABILITY_STATUS_LIST } from '@/constants';
 import { TickIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { AvailabilityStatus, AvailabilityStatusListItemType } from '@/types';
 import { useHaptic } from '@/utils';
 import { Icon } from '@/components-next/common/icon';
@@ -22,6 +22,7 @@ const StatusCell = ({
   availabilityStatus,
   changeAvailabilityStatus,
 }: StatusCellProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
 
   const handlePress = () => {
@@ -60,16 +61,19 @@ export const AvailabilityStatusList = ({
 }: {
   availabilityStatus: string;
   changeAvailabilityStatus: (status: string) => void;
-}) => (
-  <Animated.View style={tailwind.style('py-1 pl-3')}>
-    {AVAILABILITY_STATUS_LIST.map((item, index) => (
-      <StatusCell
-        key={item.status}
-        item={item as AvailabilityStatusListItemType}
-        index={index}
-        availabilityStatus={availabilityStatus as AvailabilityStatus}
-        changeAvailabilityStatus={changeAvailabilityStatus}
-      />
-    ))}
-  </Animated.View>
-);
+}) => {
+  const tailwind = useTailwind();
+  return (
+    <Animated.View style={tailwind.style('py-1 pl-3')}>
+      {AVAILABILITY_STATUS_LIST.map((item, index) => (
+        <StatusCell
+          key={item.status}
+          item={item as AvailabilityStatusListItemType}
+          index={index}
+          availabilityStatus={availabilityStatus as AvailabilityStatus}
+          changeAvailabilityStatus={changeAvailabilityStatus}
+        />
+      ))}
+    </Animated.View>
+  );
+};

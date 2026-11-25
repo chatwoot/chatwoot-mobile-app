@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback, useMemo } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useChatWindowContext } from '@/context';
 import { AttachFileIcon, CameraIcon, VideoCall, VoiceNote } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { isMarkdown } from '@/utils';
 import { expandTabs } from '@/utils/expandTabs';
@@ -23,6 +23,7 @@ const variantBaseMap = {
 };
 
 export const ReplyMessageBubble = (props: ReplyMessageBubbleProps) => {
+  const tailwind = useTailwind();
   const replyMessageItem = props.replyMessage as Message;
 
   const { setScrollToMessageId } = useChatWindowContext();

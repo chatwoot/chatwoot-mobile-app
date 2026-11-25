@@ -1,5 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
-import { Alert, Dimensions, Platform, Share } from 'react-native';
+import { Alert, Platform, Share } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
@@ -13,11 +14,10 @@ import {
   UpdateParticipant,
 } from './components';
 import { TAB_BAR_HEIGHT } from '@/constants';
-import { tailwind } from '@/theme';
 import i18n from '@/i18n';
 import { errorMessage } from '@/utils/errorUtils';
 import { ConversationStatus } from '@/types';
-import { useChatWindowContext } from '@/context';
+import { useChatWindowContext, useContainerWidth } from '@/context';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { selectConversationById } from '@/store/conversation/conversationSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
@@ -30,18 +30,26 @@ import { selectAllTeams } from '@/store/team/teamSelectors';
 import { selectInstallationUrl } from '@/store/settings/settingsSelectors';
 import { ConversationMetaInformation } from './components/ConversationMetaInformation';
 import { selectConversationParticipantsByConversationId } from '@/store/conversation-participant/conversationParticipantSelectors';
-
-const SCREEN_WIDTH = Dimensions.get('screen').width;
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
+import { IOS_DESIGN } from '@/utils';
+import { useIsInDetailPane } from '@/navigation/split/SplitViewContext';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
 
 export type ConversationActionType = 'mute' | 'status' | 'unmute';
 
 export const ConversationActions = () => {
+  const tailwind = useTailwind();
+  const isInPane = useIsInDetailPane() || IOS_DESIGN;
+  const sectionGap = isInPane ? 'pt-8' : 'pt-10';
+  const paneRightInset = usePaneRightInset();
+  const SCREEN_WIDTH = useContainerWidth();
   const dispatch = useAppDispatch();
   const { updateParticipantSheetRef, actionsModalSheetRef } = useRefsContext();
   const { conversationId } = useChatWindowContext();
   const conversation = useAppSelector(state => selectConversationById(state, conversationId));
 
   const installationUrl = useAppSelector(selectInstallationUrl);
+  const { hasMissingAttributes, openResolveForm } = useRequiredAttributes();
 
   const { status, muted: isMuted, meta, priority = null } = conversation || {};
   const { assignee, team } = meta || {};
@@ -80,6 +88,8 @@ export const ConversationActions = () => {
       dispatch(conversationActions.muteConversation({ conversationId }));
     } else if (type === 'unmute') {
       dispatch(conversationActions.unmuteConversation({ conversationId }));
+    } else if (status === 'resolved' && hasMissingAttributes(conversation)) {
+      openResolveForm({ conversationId });
     } else {
       dispatch(
         conversationActions.toggleConversationStatus({
@@ -118,16 +128,19 @@ export const ConversationActions = () => {
   };
 
   return (
-    <Animated.View style={tailwind.style('', `w-[${SCREEN_WIDTH}px]`)}>
+    <Animated.View style={tailwind.style(isInPane ? 'bg-gray-50' : '', `w-[${SCREEN_WIDTH}px]`)}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`)}>
+        contentContainerStyle={[
+          tailwind.style(`pb-[${TAB_BAR_HEIGHT}]`),
+          { paddingRight: paneRightInset },
+        ]}>
         <ConversationBasicActions
           status={status}
           updateConversationStatus={updateConversationStatus}
           isMuted={isMuted || false}
         />
-        <Animated.View style={tailwind.style('pt-10')}>
+        <Animated.View style={tailwind.style(sectionGap)}>
           <ConversationSettingsPanel
             assignee={assignee || null}
             team={currentTeam || null}
@@ -137,20 +150,20 @@ export const ConversationActions = () => {
             onChangePriority={onChangePriority}
           />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
+        <Animated.View style={tailwind.style(sectionGap)}>
           <ConversationLabelActions labels={currentLabels} />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
+        <Animated.View style={tailwind.style(sectionGap)}>
           <AddParticipantList
             conversationParticipants={conversationParticipants}
             onAddParticipant={onAddParticipant}
             conversationId={conversationId}
           />
         </Animated.View>
-        <Animated.View style={tailwind.style('pt-10')}>
+        <Animated.View style={tailwind.style(sectionGap)}>
           {conversation && <ConversationMetaInformation conversation={conversation} />}
         </Animated.View>
-        <Animated.View style={tailwind.style('px-4 pt-10')}>
+        <Animated.View style={tailwind.style('px-4', sectionGap)}>
           <Button
             variant="secondary"
             handlePress={onShareConversation}

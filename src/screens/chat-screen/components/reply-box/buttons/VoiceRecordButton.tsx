@@ -1,26 +1,34 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 import { Pressable } from 'react-native';
 import { Icon } from '@/components-next/common';
 import { VoiceNote } from '@/svg-icons';
 import { useScaleAnimation } from '@/utils';
-import { tailwind } from '@/theme';
 import { VoiceRecordButtonProps } from '../types';
+import { ReplyGlassCircle } from './ReplyGlassCircle';
 import { voiceNoteIconEnterAnimation, voiceNoteIconExitAnimation } from '@/utils/customAnimations';
 
-export const VoiceRecordButton = (props: VoiceRecordButtonProps) => {
+export const VoiceRecordButton = ({ glass = false, ...props }: VoiceRecordButtonProps) => {
+  const tailwind = useTailwind();
   const { animatedStyle, handlers } = useScaleAnimation();
 
   return (
     <Pressable {...props} {...handlers}>
       <Animated.View
-        entering={voiceNoteIconEnterAnimation}
-        exiting={voiceNoteIconExitAnimation}
+        entering={glass ? undefined : voiceNoteIconEnterAnimation}
+        exiting={glass ? undefined : voiceNoteIconExitAnimation}
         style={[
-          tailwind.style('flex items-center justify-center h-10 w-10 rounded-2xl'),
+          tailwind.style(glass ? '' : 'flex items-center justify-center h-10 w-10 rounded-2xl'),
           animatedStyle,
         ]}>
-        <Icon icon={<VoiceNote />} size={24} />
+        {glass ? (
+          <ReplyGlassCircle>
+            <Icon icon={<VoiceNote stroke={tailwind.color('text-gray-950')} />} size={22} />
+          </ReplyGlassCircle>
+        ) : (
+          <Icon icon={<VoiceNote stroke={tailwind.color('text-gray-950')} />} size={24} />
+        )}
       </Animated.View>
     </Pressable>
   );

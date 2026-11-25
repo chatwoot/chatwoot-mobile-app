@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useMemo } from 'react';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Message } from '@/types';
 import { Spinner } from '@/components-next';
 import { ReplyMessageBubble } from './ReplyMessageBubble';
@@ -20,6 +20,7 @@ type ComposedBubbleProps = {
 };
 
 export const ComposedBubble = (props: ComposedBubbleProps) => {
+  const tailwind = useTailwind();
   const { content, private: isPrivate, contentAttributes, status } = props.item as Message;
   const { conversationId } = useChatWindowContext();
 

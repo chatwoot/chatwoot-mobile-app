@@ -11,7 +11,8 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { useTailwind } from '@/theme/useTailwind';
+import { DefaultTheme, DarkTheme, NavigationContainer } from '@react-navigation/native';
 import { AppTabs } from './tabs/AppTabs';
 import { OngoingCallBar } from '@/screens/call';
 import { isCallPush } from '@/utils/callNotifications';
@@ -39,6 +40,8 @@ setBackgroundMessageHandler(getMessaging(), async remoteMessage => {
 });
 
 export const AppNavigationContainer = () => {
+  const tailwind = useTailwind();
+  const navigationTheme = tailwind.isDark ? DarkTheme : DefaultTheme;
   const [fontsLoaded] = useFonts(APP_FONTS);
 
   const routeNameRef = useRef<string | undefined>(undefined);
@@ -201,6 +204,16 @@ export const AppNavigationContainer = () => {
 
   return (
     <NavigationContainer
+      theme={{
+        ...navigationTheme,
+        colors: {
+          ...navigationTheme.colors,
+          background: tailwind.color('bg-white')!,
+          card: tailwind.color('bg-white')!,
+          text: tailwind.color('text-gray-950')!,
+          border: tailwind.color('gray-200')!,
+        },
+      }}
       linking={linking}
       ref={navigationRef}
       onReady={() => {

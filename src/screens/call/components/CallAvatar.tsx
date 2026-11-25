@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 
-import { CALL_TONES, type CallTone } from '../constants/callTheme';
+import { useCallTheme, type CallTone } from '../constants/callTheme';
 import { CallerDisc } from './CallerDisc';
 import { SonarDisc } from './SonarDisc';
 
@@ -13,12 +13,15 @@ const SONAR_STAGGER_MS = 1600;
 
 type CallAvatarProps = {
   name: string;
+  hasName: boolean;
   uri?: string;
   tone: CallTone;
   aura?: boolean;
 };
 
-export const CallAvatar = ({ name, uri, tone, aura }: CallAvatarProps) => {
+export const CallAvatar = ({ name, hasName, uri, tone, aura }: CallAvatarProps) => {
+  const tailwind = useTailwind();
+  const { CALL_TONES } = useCallTheme();
   const colours = CALL_TONES[tone];
   return (
     <View style={tailwind.style('h-[132px] w-[132px] items-center justify-center')}>
@@ -27,6 +30,7 @@ export const CallAvatar = ({ name, uri, tone, aura }: CallAvatarProps) => {
         : null}
       <CallerDisc
         name={name}
+        hasName={hasName}
         uri={uri}
         tone={tone}
         box="h-[132px] w-[132px]"

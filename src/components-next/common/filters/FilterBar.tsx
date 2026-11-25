@@ -1,6 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated, { LinearTransition, withTiming } from 'react-native-reanimated';
-import { tailwind } from '@/theme';
 import { FilterButton } from './FilterButton';
 import i18n from '@/i18n';
 
@@ -18,6 +18,7 @@ type FilterBarProps = {
 };
 
 export const FilterBar = ({ allFilters, selectedFilters, onFilterPress }: FilterBarProps) => {
+  const tailwind = useTailwind();
   // Row Exit Animation
   const exiting = () => {
     'worklet';

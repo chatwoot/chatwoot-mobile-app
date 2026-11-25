@@ -1,14 +1,24 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
-import { Animated } from 'react-native';
+import { Animated, Pressable, Text } from 'react-native';
 import AutoHeightWebView from 'react-native-autoheight-webview';
+import type { WebViewMessageEvent } from 'react-native-webview';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
-import { tailwind } from '@/theme';
-
+import i18n from '@/i18n';
 import { EmailMeta } from './EmailMeta';
 import { Message } from '@/types';
 import { MarkdownBubble } from './MarkdownBubble';
 import { MessageAttachments } from './MessageAttachments';
-import { MESSAGE_TYPES } from '@/constants';
+import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
+import {
+  OPEN_FULL_EMAIL_MESSAGE,
+  buildEmailPreviewScript,
+  getEmailHtml,
+  getEmailStyle,
+  isOutgoingMarkdownEmail,
+  splitQuotedText,
+} from '@/utils/emailUtils';
 
 type EmailBubbleProps = {
   item: Message;
@@ -17,65 +27,65 @@ type EmailBubbleProps = {
 };
 
 export const EmailBubble = (props: EmailBubbleProps) => {
+  const tailwind = useTailwind();
+  const navigation = useNavigation();
+  const splitView = useSplitView();
+  const isInDetailPane = useIsInDetailPane();
   const messageItem = props.item as Message;
-  const { sender, contentAttributes, messageType, content } = messageItem;
+  const { sender, contentAttributes, content } = messageItem;
+  const isForwarded = !!contentAttributes?.forwardedMessageId;
+  const linkLabel = i18n.t('CONVERSATION.EMAIL_HEADER.VIEW_FULL_EMAIL');
 
-  const emailMessageContent = () => {
-    const {
-      htmlContent: { full: fullHTMLContent } = { full: undefined },
-      textContent: { full: fullTextContent } = { full: undefined },
-    } = contentAttributes?.email || {};
-
-    if (fullHTMLContent) {
-      return fullHTMLContent;
+  const openFullEmail = () => {
+    const params = { conversationId: messageItem.conversationId, messageId: messageItem.id };
+    if (isInDetailPane && splitView) {
+      splitView.openEmail(params);
+      return;
     }
-
-    if (fullTextContent) {
-      return fullTextContent.replace(/\n/g, '<br>');
-    }
-
-    return content || '';
+    navigation.dispatch(StackActions.push('EmailMessage', params));
   };
 
-  const isOutgoing = messageType === MESSAGE_TYPES.OUTGOING;
+  const handleWebViewMessage = (event: WebViewMessageEvent) => {
+    if (event.nativeEvent.data.includes(OPEN_FULL_EMAIL_MESSAGE)) {
+      openFullEmail();
+    }
+  };
 
-  const FormattedEmail = emailMessageContent().replace('height:100%;', '');
-
-  const baseStyle = `
-        * {
-          font-family: system,-apple-system,".SFNSText-Regular","San Francisco",Roboto,"Segoe UI","Helvetica Neue","Lucida Grande",sans-serif;
-          font-size: 16px;
-        }
-        img{
-          max-width: 100% !important;
-        }
-      `;
-  const outgoingReadableStyle = `
-        :root {
-          color-scheme: light;
-        }
-        html, body {
-          background: #ffffff;
-          color: #111827;
-        }
-      `;
-  const emailCustomStyle = isOutgoing ? `${outgoingReadableStyle}${baseStyle}` : baseStyle;
+  const { reply, quoted } = isForwarded
+    ? { reply: content, quoted: '' }
+    : splitQuotedText(content || '', contentAttributes?.emailQuoteAppended);
 
   return (
     <React.Fragment>
       {contentAttributes && <EmailMeta {...{ contentAttributes, sender }} />}
       <Animated.View style={[tailwind.style('flex  w-full')]}>
         <Animated.View style={tailwind.style('w-full')}>
-          {content && isOutgoing ? (
-            <MarkdownBubble messageContent={content} variant={props.variant} />
+          {isOutgoingMarkdownEmail(messageItem) ? (
+            <React.Fragment>
+              <MarkdownBubble messageContent={reply} variant={props.variant} />
+              {!!quoted && (
+                <Pressable
+                  accessibilityRole="button"
+                  onPress={openFullEmail}
+                  hitSlop={6}
+                  style={tailwind.style('self-start py-1')}>
+                  <Text style={tailwind.style('font-inter-medium-24 text-sm text-gray-700')}>
+                    {linkLabel}
+                  </Text>
+                </Pressable>
+              )}
+            </React.Fragment>
           ) : (
             <AutoHeightWebView
               style={{ width: '100%', minHeight: 1, minWidth: '100%' }}
               scrollEnabled={false}
               forceDarkOn={false}
-              customStyle={emailCustomStyle}
+              autoManageStatusBarEnabled={false}
+              customStyle={getEmailStyle(messageItem, tailwind.isDark)}
+              customScript={isForwarded ? undefined : buildEmailPreviewScript(linkLabel)}
+              onMessage={handleWebViewMessage}
               source={{
-                html: FormattedEmail,
+                html: getEmailHtml(messageItem),
               }}
               viewportContent={'width=device-width, user-scalable=no'}
             />

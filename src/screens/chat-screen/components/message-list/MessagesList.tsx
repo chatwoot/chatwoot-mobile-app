@@ -1,5 +1,5 @@
 import { useTailwind } from '@/theme/useTailwind';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import Animated, {
   interpolate,
@@ -15,7 +15,7 @@ import { useAppKeyboardAnimation } from '@/utils';
 import { Message } from '@/types';
 import { MessageComponent } from '../message-item/Message';
 import { useRefsContext } from '@/context';
-import { MESSAGE_TYPES } from '@/constants';
+import { useAutoScrollToNewest } from './useAutoScrollToNewest';
 
 export type FlashListRenderProps = {
   item: { date: string } | Message;
@@ -69,9 +69,11 @@ export const MessagesList = ({
   const { progress, height } = useAppKeyboardAnimation();
   const { messageListRef } = useRefsContext();
   const slaPill = useSlaPillVisibility();
+  const scrollY = useSharedValue(0);
   const isPillShown = useSharedValue(1);
   const onScroll = useAnimatedScrollHandler({
     onScroll: event => {
+      scrollY.value = event.contentOffset.y;
       if (!slaPill) return;
       const shouldShow = event.contentOffset.y < 8 ? 1 : 0;
       if (shouldShow === isPillShown.value) return;
@@ -83,22 +85,13 @@ export const MessagesList = ({
     FlashListRef<Message | { date: string }>
   >;
 
-  // FlashList keeps position; scroll to sent.
-  const newest = messages[0];
-  const newestId = newest && !('date' in newest) ? newest.id : null;
-  const lastNewestId = useRef(newestId);
-  useEffect(() => {
-    if (newestId === lastNewestId.current) return;
-    const isFirstLoad = lastNewestId.current === null;
-    lastNewestId.current = newestId;
-    if (isFirstLoad || !newest || 'date' in newest) return;
-    const senderId = newest.sender?.id ?? newest.senderId;
-    if (newest.messageType !== MESSAGE_TYPES.OUTGOING || senderId !== currentUserId) return;
-    const frame = requestAnimationFrame(() => {
-      typedMessageListRef.current?.scrollToOffset({ offset: 0, animated: true });
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [newestId, newest, currentUserId, typedMessageListRef]);
+  useAutoScrollToNewest({
+    messages,
+    currentUserId,
+    messageListRef: typedMessageListRef,
+    scrollY,
+    isSearchNavigation,
+  });
 
   const handleRender = ({ item, index }: { item: Message | { date: string }; index: number }) => {
     if ('date' in item) {

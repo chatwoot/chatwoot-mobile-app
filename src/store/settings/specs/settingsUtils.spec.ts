@@ -1,7 +1,12 @@
 import {
   buildWebSocketUrl,
+  checkValidInstallationUrl,
   checkValidUrl,
   extractDomain,
+  extractScheme,
+  extractUrlDetails,
+  getInitialUrl,
+  isLocalOrPrivateHost,
   repairPersistedWebSocketUrl,
 } from '../settingsUtils';
 
@@ -66,12 +71,34 @@ describe('extractDomain', () => {
   });
 });
 
+describe('extractScheme', () => {
+  it.each([
+    ['http://192.168.0.71:9668', 'http://'],
+    ['HTTP://192.168.0.71:9668/', 'http://'],
+    ['https://app.chatwoot.com', 'https://'],
+    ['HTTPS://APP.CHATWOOT.COM/', 'https://'],
+  ])('extracts %s as %s', (url, expected) => {
+    expect(extractScheme({ url })).toBe(expected);
+  });
+
+  it.each(['192.168.0.71:9668', 'app.chatwoot.com', 'ftp://app.chatwoot.com', ''])(
+    'returns null for %s without valid http(s) scheme',
+    url => {
+      expect(extractScheme({ url })).toBeNull();
+    },
+  );
+});
+
 describe('buildWebSocketUrl', () => {
   it.each([
     ['app.chatwoot.com', 'wss://app.chatwoot.com/cable'],
     ['chatwoot.example.com:3000', 'wss://chatwoot.example.com:3000/cable'],
   ])('builds the cable endpoint for %s', (host, expected) => {
     expect(buildWebSocketUrl(host)).toBe(expected);
+  });
+
+  it('builds insecure ws cable endpoint when protocol is ws', () => {
+    expect(buildWebSocketUrl('192.168.0.71:9668', 'ws')).toBe('ws://192.168.0.71:9668/cable');
   });
 });
 
@@ -87,6 +114,20 @@ describe('repairPersistedWebSocketUrl', () => {
       baseUrl: 'app.chatwoot.com',
       installationUrl: 'https://app.chatwoot.com/',
       webSocketUrl: 'wss://app.chatwoot.com/cable',
+    });
+  });
+
+  it('rebuilds a websocket URL with ws scheme when installationUrl is http', () => {
+    const settings = {
+      baseUrl: '192.168.0.71:9668',
+      installationUrl: 'http://192.168.0.71:9668/',
+      webSocketUrl: 'wss://192.168.0.71:9668/cable',
+    };
+
+    expect(repairPersistedWebSocketUrl(settings)).toEqual({
+      baseUrl: '192.168.0.71:9668',
+      installationUrl: 'http://192.168.0.71:9668/',
+      webSocketUrl: 'ws://192.168.0.71:9668/cable',
     });
   });
 
@@ -118,5 +159,346 @@ describe('checkValidUrl', () => {
 
   it('rejects an empty URL', () => {
     expect(checkValidUrl({ url: '' })).toBe(false);
+  });
+
+  it('accepts an RFC 6874 scoped link-local IPv6 URL', () => {
+    expect(checkValidUrl({ url: 'http://[fe80::1%25en0]:3000/' })).toBe(true);
+  });
+
+  it('rejects a scoped IPv6 URL with invalid or empty zone identifier', () => {
+    expect(checkValidUrl({ url: 'http://[fe80::1%25]:3000/' })).toBe(false);
+    expect(checkValidUrl({ url: 'http://[fe80::1%en0]:3000/' })).toBe(false);
+  });
+});
+
+describe('isLocalOrPrivateHost', () => {
+  it.each([
+    ['localhost', true],
+    ['chatwoot.localhost', true],
+    ['chatwoot.local', true],
+    ['chatwoot.lan', true],
+    ['chatwoot.internal', true],
+    ['localhost.', true],
+    ['chatwoot.localhost.', true],
+    ['chatwoot.local.', true],
+    ['chatwoot.lan.', true],
+    ['chatwoot.internal.', true],
+    ['127.0.0.1', true],
+    ['10.0.2.2', true],
+    ['172.20.10.2', true],
+    ['192.168.0.71', true],
+    ['169.254.1.1', true],
+    ['::1', true],
+    ['[::1]', true],
+    ['[fd12::1]', true],
+    ['fd12::1', true],
+    ['[fe80::1]', true],
+    ['fe80::1', true],
+    ['[fe80::1%25en0]', true],
+    ['fe80::1%25en0', true],
+    ['[FE80:0:0:0::1%25Wi-Fi]', true],
+    ['[::1%25lo0]', true],
+    ['[::ffff:192.168.0.71%25en0]', true],
+    ['[2001:db8::1%25en0]', false],
+    ['[fe80::1%25]', false],
+    ['[fe80::1%en0]', false],
+    ['[::ffff:192.168.0.71]', true],
+    ['::ffff:192.168.0.71', true],
+    ['[::ffff:c0a8:47]', true],
+    ['::ffff:c0a8:47', true],
+    ['[::ffff:127.0.0.1]', true],
+    ['[::ffff:10.0.0.1]', true],
+    ['[::ffff:172.16.0.1]', true],
+    ['[::ffff:169.254.1.1]', true],
+    ['[::ffff:8.8.8.8]', false],
+    ['::ffff:8.8.8.8', false],
+    ['[::ffff:808:808]', false],
+    ['010.0.0.1', false],
+    ['0x7f000001', true],
+    ['chatwoot.example.com.', false],
+    ['app.chatwoot.com', false],
+    ['chatwoot.example.com', false],
+    ['8.8.8.8', false],
+    ['', false],
+  ])('returns %s for host %s', (host, expected) => {
+    expect(isLocalOrPrivateHost(host)).toBe(expected);
+  });
+});
+
+describe('extractUrlDetails', () => {
+  it('preserves explicit port 443 on bare host', () => {
+    const details = extractUrlDetails({ url: '192.168.0.71:443' });
+    expect(details).toEqual({
+      hostname: '192.168.0.71',
+      port: '443',
+      scheme: null,
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('preserves explicit port 80 on bare host', () => {
+    const details = extractUrlDetails({ url: '192.168.0.71:80' });
+    expect(details).toEqual({
+      hostname: '192.168.0.71',
+      port: '80',
+      scheme: null,
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts complete pasted URL with path and fragment', () => {
+    const details = extractUrlDetails({ url: 'https://app.chatwoot.com/#/app' });
+    expect(details).toEqual({
+      hostname: 'app.chatwoot.com',
+      port: '',
+      scheme: 'https://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts URL with query string', () => {
+    const details = extractUrlDetails({
+      url: 'https://app.chatwoot.com/app/accounts/1?token=abc%20123',
+    });
+    expect(details).toEqual({
+      hostname: 'app.chatwoot.com',
+      port: '',
+      scheme: 'https://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('rejects input with whitespace', () => {
+    const details = extractUrlDetails({ url: 'app chatwoot com' });
+    expect(details.isValid).toBe(false);
+    expect(details.hasWhitespace).toBe(true);
+  });
+
+  it('extracts bracketed IPv6 with explicit port', () => {
+    const details = extractUrlDetails({ url: 'http://[fd12::1]:3000' });
+    expect(details).toEqual({
+      hostname: '[fd12::1]',
+      port: '3000',
+      scheme: 'http://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts RFC 6874 scoped link-local IPv6 literal preserving zone case', () => {
+    const details = extractUrlDetails({ url: 'http://[FE80:0:0:0::1%25En0]:3000/app' });
+    expect(details).toEqual({
+      hostname: '[fe80::1%25En0]',
+      port: '3000',
+      scheme: 'http://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('extracts bare RFC 6874 scoped link-local IPv6 literal with explicit port 443', () => {
+    const details = extractUrlDetails({ url: '[fe80::1%25en0]:443' });
+    expect(details).toEqual({
+      hostname: '[fe80::1%25en0]',
+      port: '443',
+      scheme: null,
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('rejects malformed scoped IPv6 literals', () => {
+    expect(extractUrlDetails({ url: 'http://[fe80::1%25]:3000' }).isValid).toBe(false);
+    expect(extractUrlDetails({ url: 'http://[fe80::1%en0]:3000' }).isValid).toBe(false);
+    expect(extractUrlDetails({ url: 'http://[fe80::1%25en%GG]:3000' }).isValid).toBe(false);
+    expect(extractUrlDetails({ url: 'http://[not-ipv6%25en0]:3000' }).isValid).toBe(false);
+  });
+
+  it('extracts fully qualified domain with trailing dot', () => {
+    const details = extractUrlDetails({ url: 'https://chatwoot.example.com./' });
+    expect(details).toEqual({
+      hostname: 'chatwoot.example.com.',
+      port: '',
+      scheme: 'https://',
+      hasWhitespace: false,
+      isValid: true,
+    });
+  });
+
+  it('rejects unsupported schemes like ftp', () => {
+    const details = extractUrlDetails({ url: 'ftp://app.chatwoot.com' });
+    expect(details.isValid).toBe(false);
+  });
+});
+
+describe('checkValidInstallationUrl', () => {
+  it.each([
+    ['app.chatwoot.com', true],
+    ['https://app.chatwoot.com', true],
+    ['https://app.chatwoot.com/', true],
+    ['https://app.chatwoot.com/app', true],
+    ['https://app.chatwoot.com/#/app', true],
+    ['http://192.168.0.71:9668/', true],
+    ['192.168.0.71:9668', true],
+    ['http://[fd12::1]:3000', true],
+    ['[fd12::1]:3000', true],
+    ['http://[fe80::1%25en0]:3000', true],
+    ['[fe80::1%25en0]:3000', true],
+    ['[fe80::1%25en0]', true],
+    ['http://[fe80::1%25en%200]:3000', true],
+    ['http://[fe80::1%25]:3000', false],
+    ['http://[fe80::1%en0]:3000', false],
+    ['http://[not-ipv6%25en0]:3000', false],
+    ['https://chatwoot.example.com./', true],
+    ['chatwoot.example.com.', true],
+    ['localhost:3000', true],
+    ['localhost', true],
+    ['localhost.', true],
+    ['http://localhost:3000', true],
+    ['chatwoot.local', true],
+    ['chatwoot.local.', true],
+    ['custom-host:8080', true],
+    ['http://chatwoot', true],
+    ['https://chatwoot', true],
+    ['http://intranet/', true],
+    ['[::ffff:192.168.0.71]:9668', true],
+    ['http://[::ffff:192.168.0.71]:9668', true],
+    ['app chatwoot com', false],
+    ['https://', false],
+    ['http://', false],
+    ['', false],
+    ['   ', false],
+    ['ftp://app.chatwoot.com', false],
+    ['javascript:alert(1)', false],
+    [':::3000', false],
+    ['random-string-no-dot-no-port', false],
+  ])('returns %s for input %s', (input, expected) => {
+    expect(checkValidInstallationUrl(input)).toBe(expected);
+  });
+});
+
+describe('getInitialUrl', () => {
+  it('retains explicit http scheme for public installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot.example.com',
+        installationUrl: 'http://chatwoot.example.com/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('http://chatwoot.example.com');
+  });
+
+  it('retains explicit http scheme for local IP installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '192.168.0.71:9668',
+        installationUrl: 'http://192.168.0.71:9668/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('http://192.168.0.71:9668');
+  });
+
+  it('retains explicit https scheme for local IP installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '192.168.0.71:9668',
+        installationUrl: 'https://192.168.0.71:9668/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://192.168.0.71:9668');
+  });
+
+  it('retains explicit https scheme for local .local host installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot.local',
+        installationUrl: 'https://chatwoot.local/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://chatwoot.local');
+  });
+
+  it('retains explicit https scheme for bracketed IPv6 installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '[fd12::1]:3000',
+        installationUrl: 'https://[fd12::1]:3000/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://[fd12::1]:3000');
+  });
+
+  it('retains explicit https scheme for scoped link-local IPv6 installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '[fe80::1%25en0]:3000',
+        installationUrl: 'https://[fe80::1%25en0]:3000/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://[fe80::1%25en0]:3000');
+  });
+
+  it('retains explicit https scheme for single-label intranet host installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot',
+        installationUrl: 'https://chatwoot/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('https://chatwoot');
+  });
+
+  it('retains explicit http scheme for single-label intranet host installations', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot',
+        installationUrl: 'http://chatwoot/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('http://chatwoot');
+  });
+
+  it('returns bare baseUrl for standard cloud Chatwoot', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'app.chatwoot.com',
+        installationUrl: 'https://app.chatwoot.com/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('app.chatwoot.com');
+  });
+
+  it('returns bare baseUrl for standard HTTPS custom domain', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: 'chatwoot.mycompany.com',
+        installationUrl: 'https://chatwoot.mycompany.com/',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('chatwoot.mycompany.com');
+  });
+
+  it('falls back to default app name for fresh Chatwoot install', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '',
+        installationUrl: '',
+        appName: 'Chatwoot',
+      }),
+    ).toBe('app.chatwoot.com');
+  });
+
+  it('returns empty string for white-labeled fresh install', () => {
+    expect(
+      getInitialUrl({
+        baseUrl: '',
+        installationUrl: '',
+        appName: 'CustomApp',
+      }),
+    ).toBe('');
   });
 });

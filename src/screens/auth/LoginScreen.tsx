@@ -19,6 +19,7 @@ import {
   selectInstallationUrl,
   selectBaseUrl,
   selectLocale,
+  selectShowSsoLogin,
 } from '@/store/settings/settingsSelectors';
 import { selectIsLoggingIn } from '@/store/auth/authSelectors';
 import { setLocale } from '@/store/settings/settingsSlice';
@@ -91,9 +92,8 @@ const LoginScreen = () => {
     }
   };
 
-  // TODO: Change this condition based on EE check
-  // Show SSO login button only if installation URL contains app.chatwoot.com
-  const showSsoLogin = installationUrl.includes('app.chatwoot.com');
+  // Show SSO login button if installation URL is configured (supports Cloud and self-hosted environments)
+  const showSsoLogin = useAppSelector(selectShowSsoLogin);
 
   const openResetPassword = () => {
     navigation.navigate('ResetPassword' as never);

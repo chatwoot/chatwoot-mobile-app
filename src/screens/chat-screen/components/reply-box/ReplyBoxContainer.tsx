@@ -33,9 +33,9 @@ import {
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { MESSAGE_MAX_LENGTH, REPLY_EDITOR_MODES } from '@/constants';
 import {
-  selectMessageContent,
+  selectMessageContentByConversationId,
   selectAttachments,
-  selectQuoteMessage,
+  selectQuoteMessageByConversationId,
   resetSentMessage,
   selectIsPrivateMessage,
   togglePrivateMessage,
@@ -140,15 +140,6 @@ const BottomSheetContent = () => {
   const { progress: keyboardProgress } = useReanimatedKeyboardAnimation();
   const { messageListRef } = useRefsContext();
 
-  // Selectors
-  const userId = useAppSelector(selectUserId);
-  const userThumbnail = useAppSelector(selectUserThumbnail);
-  const userName = useAppSelector(selectUserName);
-  const messageContent = useAppSelector(selectMessageContent);
-  const attachedFiles = useAppSelector(selectAttachments);
-  const quoteMessage = useAppSelector(selectQuoteMessage);
-  const isPrivate = useAppSelector(selectIsPrivateMessage);
-
   // Context
   const {
     isAddMenuOptionSheetOpen,
@@ -160,6 +151,15 @@ const BottomSheetContent = () => {
     isCopilotMenuOpen,
     setIsCopilotMenuOpen,
   } = useChatWindowContext();
+
+  // Selectors
+  const userId = useAppSelector(selectUserId);
+  const userThumbnail = useAppSelector(selectUserThumbnail);
+  const userName = useAppSelector(selectUserName);
+  const messageContent = useAppSelector(selectMessageContentByConversationId(conversationId));
+  const attachedFiles = useAppSelector(selectAttachments);
+  const quoteMessage = useAppSelector(selectQuoteMessageByConversationId(conversationId));
+  const isPrivate = useAppSelector(selectIsPrivateMessage);
 
   // Copilot
   const copilotAbortRef = useRef<{ abort: () => void; unwrap: () => Promise<unknown> } | null>(
@@ -358,13 +358,13 @@ const BottomSheetContent = () => {
   };
 
   const handleCopilotAccept = () => {
-    dispatch(setMessageContent(generatedContent));
+    dispatch(setMessageContent({ conversationId, messageContent: generatedContent }));
     dispatch(resetCopilot());
   };
 
   const handleCopilotDiscard = () => {
     copilotAbortRef.current?.abort();
-    dispatch(setMessageContent(originalContent));
+    dispatch(setMessageContent({ conversationId, messageContent: originalContent }));
     dispatch(resetCopilot());
   };
 
@@ -495,8 +495,7 @@ const BottomSheetContent = () => {
 
   const sendMessage = (messagePayload: SendMessagePayload) => {
     dispatch(conversationActions.sendMessage(messagePayload));
-    dispatch(resetSentMessage());
-    dispatch(setMessageContent(''));
+    dispatch(resetSentMessage({ conversationId }));
     dispatch(clearEmailRecipients());
     if (isComposer) closeComposer();
     messageListRef?.current?.scrollToOffset({ offset: 0, animated: true });
@@ -546,7 +545,7 @@ const BottomSheetContent = () => {
       variables: messageVariables,
     });
     AnalyticsHelper.track(CONVERSATION_EVENTS.INSERTED_A_CANNED_RESPONSE);
-    dispatch(setMessageContent(updatedContent));
+    dispatch(setMessageContent({ conversationId, messageContent: updatedContent }));
   };
 
   const onPressVoiceRecordIcon = () => {

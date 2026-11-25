@@ -5,7 +5,7 @@ import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import Animated from 'react-native-reanimated';
 import { Image } from 'expo-image';
 
-import { useRefsContext } from '@/context';
+import { useRefsContext, useChatWindowContext } from '@/context';
 import { CloseIcon, FileIcon, VoiceNote } from '@/svg-icons';
 import { isMarkdown } from '@/utils';
 import { expandTabs } from '@/utils/expandTabs';
@@ -13,7 +13,10 @@ import { Icon } from '@/components-next/common';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 
-import { selectQuoteMessage, setQuoteMessage } from '@/store/conversation/sendMessageSlice';
+import {
+  selectQuoteMessageByConversationId,
+  setQuoteMessage,
+} from '@/store/conversation/sendMessageSlice';
 
 import { VideoBubblePlayer } from '../message-components';
 import { Message } from '@/types';
@@ -41,7 +44,8 @@ const File = () => {
 
 export const QuoteReply = () => {
   const tailwind = useTailwind();
-  const quoteMessage = useAppSelector(selectQuoteMessage);
+  const { conversationId } = useChatWindowContext();
+  const quoteMessage = useAppSelector(selectQuoteMessageByConversationId(conversationId));
   const dispatch = useAppDispatch();
 
   const { messageListRef } = useRefsContext();

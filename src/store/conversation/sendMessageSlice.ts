@@ -19,9 +19,19 @@ const emptyEmailDraft: EmailDraft = {
   bcc: '',
 };
 
+export type SetMessageContentPayload = {
+  conversationId?: number;
+  messageContent: string;
+};
+
+export type ResetSentMessagePayload = {
+  conversationId?: number;
+};
+
 interface SendMessageState {
   emailDraft: EmailDraft;
   messageContent: string;
+  drafts: Record<number, string>;
   isPrivateMessage: boolean;
   attachments: Asset[];
   quoteMessage: Message | null;
@@ -30,6 +40,7 @@ interface SendMessageState {
 const initialState: SendMessageState = {
   emailDraft: emptyEmailDraft,
   messageContent: '',
+  drafts: {},
   isPrivateMessage: false,
   attachments: [],
   quoteMessage: null,
@@ -58,8 +69,25 @@ const sendMessageSlice = createSlice({
     clearEmailRecipients: state => {
       state.emailDraft = { ...state.emailDraft, to: '', cc: '', bcc: '' };
     },
-    setMessageContent: (state, action: PayloadAction<string>) => {
-      state.messageContent = action.payload;
+    setMessageContent: (state, action: PayloadAction<string | SetMessageContentPayload>) => {
+      if (typeof action.payload === 'string') {
+        state.messageContent = action.payload;
+      } else {
+        const { conversationId, messageContent } = action.payload;
+        if (conversationId) {
+          if (!state.drafts) {
+            state.drafts = {};
+          }
+          state.drafts[conversationId] = messageContent;
+        }
+        state.messageContent = messageContent;
+      }
+    },
+    clearDraft: (state, action: PayloadAction<number>) => {
+      if (state.drafts) {
+        delete state.drafts[action.payload];
+      }
+      state.messageContent = '';
     },
     togglePrivateMessage: (state, action: PayloadAction<boolean>) => {
       state.isPrivateMessage = action.payload;
@@ -76,26 +104,53 @@ const sendMessageSlice = createSlice({
     setQuoteMessage: (state, action: PayloadAction<Message | null>) => {
       state.quoteMessage = action.payload;
     },
-    resetSentMessage: state => {
-      state.attachments = [];
-      state.quoteMessage = null;
-      state.messageContent = '';
+    resetSentMessage: {
+      reducer: (state, action: PayloadAction<ResetSentMessagePayload | undefined>) => {
+        state.attachments = [];
+        state.quoteMessage = null;
+        state.messageContent = '';
+        if (action.payload?.conversationId) {
+          if (state.drafts) {
+            delete state.drafts[action.payload.conversationId];
+          }
+        } else {
+          state.drafts = {};
+        }
+      },
+      prepare: (payload?: ResetSentMessagePayload) => ({ payload }),
     },
   },
 });
 
 export const selectEmailDraft = (state: RootState) =>
   state.sendMessage.emailDraft ?? emptyEmailDraft;
+export const selectDrafts = (state: RootState) => state.sendMessage.drafts ?? {};
 export const selectMessageContent = (state: RootState) => state.sendMessage.messageContent;
+export const selectMessageContentByConversationId =
+  (conversationId?: number) =>
+  (state: RootState): string => {
+    if (!conversationId) {
+      return state.sendMessage.messageContent || '';
+    }
+    return state.sendMessage.drafts?.[conversationId] ?? '';
+  };
 export const selectIsPrivateMessage = (state: RootState) => state.sendMessage.isPrivateMessage;
 export const selectAttachments = (state: RootState) => state.sendMessage.attachments;
 export const selectQuoteMessage = (state: RootState) => state.sendMessage.quoteMessage;
+export const selectQuoteMessageByConversationId =
+  (conversationId?: number) =>
+  (state: RootState): Message | null => {
+    const quote = state.sendMessage.quoteMessage;
+    if (!quote || !conversationId) return quote;
+    return quote.conversationId === conversationId ? quote : null;
+  };
 
 export const {
   setEmailDraft,
   updateEmailDraft,
   clearEmailRecipients,
   setMessageContent,
+  clearDraft,
   togglePrivateMessage,
   updateAttachments,
   deleteAttachment,

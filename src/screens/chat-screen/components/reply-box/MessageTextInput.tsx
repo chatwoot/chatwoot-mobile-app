@@ -29,8 +29,8 @@ import {
   setMessageContent,
   togglePrivateMessage,
   selectIsPrivateMessage,
-  selectQuoteMessage,
-  selectMessageContent,
+  selectQuoteMessageByConversationId,
+  selectMessageContentByConversationId,
 } from '@/store/conversation/sendMessageSlice';
 import { REPLY_EDITOR_MODES } from '@/constants';
 import i18n from '@/i18n';
@@ -98,7 +98,9 @@ export const MessageTextInput = ({
 }: MessageTextInputProps) => {
   const tailwind = useTailwind();
   const dispatch = useAppDispatch();
-  const messageContent = useAppSelector(selectMessageContent);
+  const { setAddMenuOptionSheetState, textInputRef, setIsTextInputFocused, conversationId } =
+    useChatWindowContext();
+  const messageContent = useAppSelector(selectMessageContentByConversationId(conversationId));
   const { height: windowHeight } = useWindowDimensions();
   const iosMaxHeight = Math.max(124, Math.round(windowHeight * 0.4));
 
@@ -108,11 +110,8 @@ export const MessageTextInput = ({
     };
   });
 
-  const { setAddMenuOptionSheetState, textInputRef, setIsTextInputFocused, conversationId } =
-    useChatWindowContext();
-
   const isPrivateMessage = useAppSelector(selectIsPrivateMessage);
-  const quoteMessage = useAppSelector(selectQuoteMessage);
+  const quoteMessage = useAppSelector(selectQuoteMessageByConversationId(conversationId));
 
   const dispatchTypingStatus = useCallback(
     (status: 'on' | 'off') => {
@@ -151,7 +150,7 @@ export const MessageTextInput = ({
 
   const onChangeText = (text: string) => {
     startTyping();
-    dispatch(setMessageContent(text));
+    dispatch(setMessageContent({ conversationId, messageContent: text }));
   };
 
   const handleOnFocus = useCallback(
@@ -325,7 +324,9 @@ export const MessageTextInput = ({
               ? i18n.t('CONVERSATION.PRIVATE_NOTE_SHORT')
               : `${i18n.t('CONVERSATION.TYPE_MESSAGE')}`
           }
-          onSubmitEditing={() => setMessageContent('')}
+          onSubmitEditing={() =>
+            dispatch(setMessageContent({ conversationId, messageContent: '' }))
+          }
           value={messageContent}
           returnKeyType={'default'}
           textAlignVertical="top"

@@ -4,6 +4,7 @@ import { authActions } from '@/store/auth/authActions';
 import { AppDispatch } from '@/store';
 import { showToast } from './toastUtils';
 import i18n from '@/i18n';
+import { SSO_CALLBACK_URL } from '@/constants';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -14,6 +15,15 @@ export interface SsoLoginParams {
 }
 
 export class SsoUtils {
+  private static handledTokens = new Set<string>();
+
+  /**
+   * Clears tracked tokens (primarily for testing)
+   */
+  static clearHandledTokens(): void {
+    SsoUtils.handledTokens.clear();
+  }
+
   /**
    * Initiates SSO login flow using Expo AuthSession
    * @param installationUrl - The Chatwoot installation URL
@@ -23,10 +33,11 @@ export class SsoUtils {
     installationUrl: string,
   ): Promise<WebBrowser.WebBrowserAuthSessionResult> {
     try {
-      // Create redirect URI with custom scheme
+      // Create redirect URI with custom scheme matching server callback
       const redirectUri = AuthSession.makeRedirectUri({
         scheme: 'chatwootapp',
-        path: 'sso/callback',
+        path: 'auth/saml',
+        native: SSO_CALLBACK_URL,
       });
 
       // Construct SSO auth URL with mobile redirect URI parameter
@@ -66,6 +77,13 @@ export class SsoUtils {
         return false;
       }
 
+      // Prevent duplicate login dispatches if callback is received by both
+      // openAuthSessionAsync and the deep link listener (e.g. on Android)
+      if (SsoUtils.handledTokens.has(params.sso_auth_token)) {
+        return true;
+      }
+      SsoUtils.handledTokens.add(params.sso_auth_token);
+
       // Dispatch SSO login action
       const result = await dispatch(
         authActions.loginWithSso({
@@ -78,6 +96,7 @@ export class SsoUtils {
       if (authActions.loginWithSso.fulfilled.match(result)) {
         return true;
       } else {
+        SsoUtils.handledTokens.delete(params.sso_auth_token);
         showToast({
           message: i18n.t('LOGIN.SSO_AUTH_FAILED'),
         });
@@ -85,6 +104,9 @@ export class SsoUtils {
       }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
+      if (params.sso_auth_token) {
+        SsoUtils.handledTokens.delete(params.sso_auth_token);
+      }
       showToast({
         message: i18n.t('LOGIN.SSO_UNEXPECTED_ERROR'),
       });

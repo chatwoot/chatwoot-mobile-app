@@ -4,24 +4,20 @@ import { Text } from 'react-native';
 
 import { NativeView } from '@/components-next/native-components';
 import { SlaMissedIcon } from '@/svg-icons';
-import { SLA, SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus } from '@chatwoot/utils';
-import { evaluateSLAStatus as evaluateDueSLAStatus, hasSLADueTimes } from '@/utils/slaUtils';
+import { SLA, SLAEvent, SLAStatus } from '@/types/common/SLA';
+import { evaluateSLAStatus } from '@/utils/slaUtils';
 import i18n from '@/i18n';
 import { IOS_LIST_TEXT, useIOSListText } from '@/utils';
-import { useAppSelector } from '@/hooks';
-import { selectConversationById } from '@/store/conversation/conversationSelectors';
 
 const REFRESH_INTERVAL = 60000;
 
 export const SLAIndicator = ({
-  conversationId,
   slaPolicyId,
   appliedSla,
   appliedSlaConversationDetails,
+  slaEvents,
   onSLAStatusChange,
 }: {
-  conversationId?: number;
   slaPolicyId: number;
   appliedSla: SLA;
   appliedSlaConversationDetails: {
@@ -29,56 +25,24 @@ export const SLAIndicator = ({
     waitingSince: number;
     status: string;
   };
+  slaEvents?: SLAEvent[];
   onSLAStatusChange: (hasThreshold: boolean) => void;
 }) => {
   const tailwind = useTailwind();
   const iosText = useIOSListText();
-  // Measure misses from recorded SLA events.
-  const slaEvents = useAppSelector(state =>
-    conversationId ? selectConversationById(state, conversationId)?.slaEvents : undefined,
-  );
   const [slaStatus, setSlaStatus] = useState<SLAStatus | null>(null);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const updateSlaStatus = useCallback(() => {
-    // Server due times include business hours.
-    if (hasSLADueTimes(appliedSla)) {
-      const dueStatus = evaluateDueSLAStatus({
-        appliedSla,
-        chat: {
-          status: appliedSlaConversationDetails.status,
-          firstReplyCreatedAt: appliedSlaConversationDetails.firstReplyCreatedAt,
-          waitingSince: appliedSlaConversationDetails.waitingSince,
-        },
-        slaEvents,
-      });
-      setSlaStatus(dueStatus);
-      onSLAStatusChange(dueStatus?.threshold ? true : false);
-      return;
-    }
     const status = evaluateSLAStatus({
-      appliedSla: {
-        id: appliedSla.id,
-        name: appliedSla.slaName,
-        description: appliedSla.slaDescription,
-        sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
-        sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
-        sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
-        only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
-        created_at: appliedSla.createdAt,
-      },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      chat: {
-        first_reply_created_at: appliedSlaConversationDetails.firstReplyCreatedAt,
-        waiting_since: appliedSlaConversationDetails.waitingSince,
-        status: appliedSlaConversationDetails.status,
-      },
+      appliedSla,
+      chat: appliedSlaConversationDetails,
+      slaEvents,
     });
     setSlaStatus(status);
     onSLAStatusChange(status?.threshold ? true : false);
-  }, [appliedSla, appliedSlaConversationDetails, onSLAStatusChange, slaEvents]);
+  }, [appliedSla, appliedSlaConversationDetails, slaEvents, onSLAStatusChange]);
 
   const createTimer = useCallback(() => {
     timerRef.current = setTimeout(() => {

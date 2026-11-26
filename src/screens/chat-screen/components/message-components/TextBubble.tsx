@@ -3,6 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { Message } from '@/types';
+import { isRTLText } from '@/utils/rtlUtils';
 import { MarkdownBubble } from './MarkdownBubble';
 import { EmailMeta } from './EmailMeta';
 import i18n from '@/i18n';
@@ -43,10 +44,10 @@ export const TextBubble = (props: TextBubbleProps) => {
       {hasTranslations && (
         <Pressable onPress={toggleTranslation} hitSlop={4}>
           <Animated.Text
-            style={tailwind.style(
-              'text-xs font-inter-420-20 tracking-[0.32px] pt-1',
-              toggleTextColor,
-            )}>
+            style={[
+              tailwind.style('text-xs font-inter-420-20 tracking-[0.32px] pt-1', toggleTextColor),
+              isRTLText(displayContent) && { textAlign: 'right', writingDirection: 'rtl' },
+            ]}>
             {showOriginal
               ? i18n.t('CONVERSATION.VIEW_TRANSLATED')
               : i18n.t('CONVERSATION.VIEW_ORIGINAL')}

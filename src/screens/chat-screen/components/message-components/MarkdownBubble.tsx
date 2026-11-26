@@ -1,9 +1,10 @@
 import { useTailwind, ThemeTailwind } from '@/theme/useTailwind';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform, I18nManager, Text } from 'react-native';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { openURL } from '@/utils/urlUtils';
 import { expandTabs } from '@/utils/expandTabs';
+import { isRTLText } from '@/utils/rtlUtils';
 
 import { MESSAGE_VARIANTS } from '@/constants';
 import { appFont } from '@/theme/appFont';
@@ -31,17 +32,64 @@ const handleURL = (url: string) => {
   return true;
 };
 
-const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
+// Explicit break rules avoid Android newline layout collapse issues inside nested text
+const markdownRules = {
+  softbreak: (
+    node: { key: string },
+    _children: React.ReactNode,
+    _parent: unknown,
+    styles: Record<string, unknown>,
+  ) => (
+    <Text key={node.key} style={styles.softbreak as StyleSheet.NamedStyles<unknown>}>
+      {'\n'}
+    </Text>
+  ),
+  hardbreak: (
+    node: { key: string },
+    _children: React.ReactNode,
+    _parent: unknown,
+    styles: Record<string, unknown>,
+  ) => (
+    <Text key={node.key} style={styles.hardbreak as StyleSheet.NamedStyles<unknown>}>
+      {'\n'}
+    </Text>
+  ),
+};
+
+const buildStyles = (variant: string, tailwind: ThemeTailwind, isRtl: boolean) => {
   const textStyle = tailwind.style(variantTextMap[variant]);
+  const writingDirection = isRtl ? 'rtl' : 'ltr';
+  const textAlign = isRtl ? 'right' : 'left';
+  // On Android, non-zero letterSpacing breaks cursive Arabic/RTL glyph shaping and ligatures,
+  // which causes multiline text to collapse or render blank in native text measurement.
+  const letterSpacing = isRtl && Platform.OS === 'android' ? 0 : 0.32;
+  // In an RTL layout (I18nManager.isRTL), Yoga already lays out 'row' from right to left.
+  // Reversing the row is only needed when the text is RTL in an LTR system layout.
+  const shouldReverseRow = isRtl && !I18nManager.isRTL;
 
   return StyleSheet.create({
     body: {
       rowGap: 12,
+      fontSize: 16,
+      lineHeight: 22,
+      writingDirection,
+      textAlign,
+      ...textStyle,
     },
     text: {
       fontSize: 16,
-      letterSpacing: 0.32,
+      letterSpacing,
       lineHeight: 22,
+      writingDirection,
+      textAlign,
+      ...textStyle,
+    },
+    textgroup: {
+      fontSize: 16,
+      letterSpacing,
+      lineHeight: 22,
+      writingDirection,
+      textAlign,
       ...textStyle,
     },
     strong: {
@@ -58,7 +106,26 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
     paragraph: {
       marginTop: 0,
       marginBottom: 0,
+      flexDirection: shouldReverseRow ? 'row-reverse' : 'row',
+      alignItems: 'flex-start',
+      justifyContent: shouldReverseRow ? 'flex-end' : 'flex-start',
       ...appFont('Inter-400-20'),
+    },
+    hardbreak: {
+      width: undefined,
+      height: undefined,
+      fontSize: 16,
+      lineHeight: 22,
+      writingDirection,
+      textAlign,
+      ...textStyle,
+    },
+    softbreak: {
+      fontSize: 16,
+      lineHeight: 22,
+      writingDirection,
+      textAlign,
+      ...textStyle,
     },
     bullet_list: {
       minWidth: 200,
@@ -67,20 +134,20 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
       minWidth: 200,
     },
     list_item: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
+      flexDirection: shouldReverseRow ? 'row-reverse' : 'row',
+      justifyContent: shouldReverseRow ? 'flex-end' : 'flex-start',
       alignItems: 'center',
       ...textStyle,
     },
     bullet_list_icon: {
-      marginLeft: 0,
-      marginRight: 8,
+      marginLeft: isRtl ? 8 : 0,
+      marginRight: isRtl ? 0 : 8,
       fontWeight: '900',
       ...textStyle,
     },
     ordered_list_icon: {
-      marginLeft: 0,
-      marginRight: 8,
+      marginLeft: isRtl ? 8 : 0,
+      marginRight: isRtl ? 0 : 8,
       fontWeight: '900',
       ...textStyle,
     },
@@ -90,18 +157,18 @@ const buildStyles = (variant: string, tailwind: ThemeTailwind) => {
 // Markdown compares its props by identity, and on a miss it re-tokenises the
 // message and rebuilds the Text tree beneath it. A fresh tree is a new
 // attributed string on the native side, which iOS lays out again on the main
-// thread. Styles are built once per variant so a re-render of the surrounding
+// thread. Styles are built once per variant and direction so a re-render of the surrounding
 // row does not invalidate the whole tree.
 const stylesByVariant = new Map<string, ReturnType<typeof buildStyles>>();
 
-const getStyles = (variant: string, tailwind: ThemeTailwind) => {
-  const cacheKey = `${tailwind.isDark}:${variant}`;
+const getStyles = (variant: string, tailwind: ThemeTailwind, isRtl: boolean) => {
+  const cacheKey = `${tailwind.isDark}:${variant}:${isRtl}:${Boolean(I18nManager?.isRTL)}`;
   const cachedStyles = stylesByVariant.get(cacheKey);
   if (cachedStyles) {
     return cachedStyles;
   }
 
-  const styles = buildStyles(variant, tailwind);
+  const styles = buildStyles(variant, tailwind, isRtl);
   stylesByVariant.set(cacheKey, styles);
   return styles;
 };
@@ -110,13 +177,15 @@ export const MarkdownBubble = React.memo((props: MarkdownBubbleProps) => {
   const tailwind = useTailwind();
   const { variant } = props;
   const text = expandTabs(props.messageContent);
+  const isRtl = isRTLText(props.messageContent) || Boolean(I18nManager?.isRTL);
 
   return (
     <Markdown
       mergeStyle
       markdownit={markdownItInstance}
       onLinkPress={handleURL}
-      style={getStyles(variant, tailwind)}>
+      rules={markdownRules}
+      style={getStyles(variant, tailwind, isRtl)}>
       {text}
     </Markdown>
   );

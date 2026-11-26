@@ -16,14 +16,20 @@ import { IOSSearchField } from '@/screens/search/components/header/IOSSearchFiel
 import { assignableAgentActions } from '@/store/assignable-agent/assignableAgentActions';
 import { selectAssignableAgentsByInboxId } from '@/store/assignable-agent/assignableAgentSelectors';
 import { conversationActions } from '@/store/conversation/conversationActions';
+import { selectConversationsState } from '@/store/conversation/conversationSelectors';
 import {
   selectSelectedIds,
   selectSelectedInboxes,
+  selectSelectedConversations,
 } from '@/store/conversation/conversationSelectedSlice';
 import { filterLabels } from '@/store/label/labelSelectors';
 import { CloseIcon, TickIcon } from '@/svg-icons';
 import { useHaptic } from '@/utils';
 import { showToast } from '@/utils/toastUtils';
+import {
+  commonLabels,
+  toggleLabel,
+} from '@/screens/conversations/components/conversation-actions/labelSelection';
 
 type BulkPickerScreenProps = NativeStackScreenProps<TabBarExcludedScreenParamList, 'BulkPicker'>;
 
@@ -45,9 +51,13 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
   const dispatch = useAppDispatch();
   const haptic = useHaptic();
   const [query, setQuery] = useState('');
-  const [added, setAdded] = useState<string[]>([]);
   const selectedIds = useAppSelector(selectSelectedIds);
   const selectedInboxes = useAppSelector(selectSelectedInboxes, shallowEqual);
+  const conversations = useAppSelector(selectSelectedConversations);
+  const entities = useAppSelector(selectConversationsState).entities;
+  const [selectedLabels, setSelectedLabels] = useState<string[]>(() =>
+    commonLabels(conversations.map(conversation => entities[conversation.id] ?? conversation)),
+  );
   const agents = useAppSelector(state =>
     selectAssignableAgentsByInboxId(state, selectedInboxes, query),
   );
@@ -75,20 +85,20 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
     [haptic, dispatch, selectedIds, navigation],
   );
 
-  const addLabel = useCallback(
+  const handleLabelPress = useCallback(
     (title: string) => {
-      if (added.includes(title)) return;
       haptic?.();
-      setAdded(current => [...current, title]);
+      const result = toggleLabel(selectedLabels, title);
+      setSelectedLabels(result.selected);
       dispatch(
         conversationActions.bulkAction({
           type: 'Conversation',
           ids: selectedIds,
-          labels: { add: [title] },
+          labels: result.action,
         }),
       );
     },
-    [added, haptic, dispatch, selectedIds],
+    [selectedLabels, haptic, dispatch, selectedIds],
   );
 
   const rows = useMemo<PickerRow[]>(
@@ -109,10 +119,10 @@ const BulkPickerScreen = ({ route, navigation }: BulkPickerScreenProps) => {
             title: label.title,
             thumbnail: null,
             color: label.color,
-            onPress: () => addLabel(label.title),
-            checked: added.includes(label.title),
+            onPress: () => handleLabelPress(label.title),
+            checked: selectedLabels.includes(label.title),
           })),
-    [kind, agents, labels, added, assign, addLabel],
+    [kind, agents, labels, selectedLabels, assign, handleLabelPress],
   );
 
   return (

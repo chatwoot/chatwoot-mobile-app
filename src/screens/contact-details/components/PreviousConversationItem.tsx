@@ -14,9 +14,13 @@ import { ConversationItemDetailContent } from '@/screens/conversations/component
 
 type PreviousConversationItemProps = {
   conversation: Conversation;
+  contactId: number;
 };
 
-export const PreviousConversationItem = ({ conversation }: PreviousConversationItemProps) => {
+export const PreviousConversationItem = ({
+  conversation,
+  contactId,
+}: PreviousConversationItemProps) => {
   const tailwind = useTailwind();
   const navigation = useNavigation();
   const splitView = useSplitView();
@@ -30,11 +34,11 @@ export const PreviousConversationItem = ({ conversation }: PreviousConversationI
 
   const navigateToConversation = () => {
     if (splitView) {
-      splitView.openConversation(conversation.id);
+      splitView.openConversationFromContact(conversation.id, contactId);
       return;
     }
     navigation.dispatch(
-      StackActions.replace('ChatScreen', {
+      StackActions.push('ChatScreen', {
         conversationId: conversation.id,
         isConversationOpenedExternally: false,
       }),

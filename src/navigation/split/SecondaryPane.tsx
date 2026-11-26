@@ -1,12 +1,9 @@
 import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 
 import { View } from 'react-native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
 import EmailMessageScreen from '@/screens/email-message/EmailMessageScreen';
 import { ConversationActions } from '@/screens/chat-screen/conversation-actions';
@@ -16,13 +13,8 @@ import ActionBottomSheet from '@/navigation/tabs/ActionBottomSheet';
 import { ChatWindowProvider, RefsProvider } from '@/context';
 import { useAppSelector } from '@/hooks';
 import { selectIsPrivateMessage } from '@/store/conversation/sendMessageSlice';
-import type { TabBarExcludedScreenParamList } from '@/navigation/tabs/AppTabs';
-import {
-  ComposePaneContext,
-  ContactPaneContext,
-  DetailPaneContext,
-  SecondaryColumn,
-} from './SplitViewContext';
+import { ComposePaneContext, DetailPaneContext, SecondaryColumn } from './SplitViewContext';
+import { ContactPane } from './ContactPane';
 
 export const SecondaryPane = ({
   column,
@@ -32,8 +24,6 @@ export const SecondaryPane = ({
   conversationId: number;
 }) => {
   const tailwind = useTailwind();
-  const navigation =
-    useNavigation<NativeStackNavigationProp<TabBarExcludedScreenParamList, 'ContactDetails'>>();
   const { right } = useSafeAreaInsets();
   const isPrivateNote = useAppSelector(selectIsPrivateMessage);
   const background =
@@ -47,17 +37,8 @@ export const SecondaryPane = ({
 
   let content: React.ReactNode = null;
   if (column.kind === 'contact') {
-    const route = {
-      key: `contact-${conversationId}`,
-      name: 'ContactDetails' as const,
-      params: { conversationId },
-    };
     content = (
-      <ContactPaneContext.Provider value={true}>
-        <DetailPaneContext.Provider value={true}>
-          <ContactDetailsScreen route={route} navigation={navigation} />
-        </DetailPaneContext.Provider>
-      </ContactPaneContext.Provider>
+      <ContactPane conversationId={conversationId} routeKey={`contact-${conversationId}`} />
     );
   } else if (column.kind === 'actions') {
     content = (

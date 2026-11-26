@@ -60,7 +60,11 @@ export const ContactPreviousConversations = (props: ContactPreviousConversations
             </Animated.View>
           ) : (
             previousConversations.map(conversation => (
-              <PreviousConversationItem key={conversation.id} conversation={conversation} />
+              <PreviousConversationItem
+                key={conversation.id}
+                conversation={conversation}
+                contactId={contactId}
+              />
             ))
           )}
         </Animated.View>

@@ -13,7 +13,7 @@ import { StackActions, useIsFocused, useNavigation } from '@react-navigation/nat
 import { takeSplitHandoff, useSplitHandoffSignal } from './splitHandoff';
 import { ColumnOpenStoreContext, createColumnOpenStore } from './columnOpenStore';
 
-import { InteractionManager, useWindowDimensions, View } from 'react-native';
+import { InteractionManager, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ContainerWidthContext } from '@/context';
 import { useIsSplitLayout } from '@/utils';
@@ -26,6 +26,7 @@ import {
 import { ConversationPane } from './ConversationPane';
 import { EmptyPane } from './EmptyPane';
 import { SecondaryPane } from './SecondaryPane';
+import { ContactPane } from './ContactPane';
 
 type SplitViewProps = PropsWithChildren<{
   resetKey?: unknown;
@@ -53,6 +54,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
   const listWidth = Math.max(320, Math.round(width * 0.4));
   const [selectedConversationId, setSelectedConversationId] = useState<number | null>(null);
   const [secondary, setSecondary] = useState<SecondaryColumn | null>(null);
+  const [listPaneContactId, setListPaneContactId] = useState<number | null>(null);
   const [isPreviewing, setPreviewing] = useState(false);
   const isColumnShown = secondary !== null;
   const columnOpenStore = useRef(createColumnOpenStore()).current;
@@ -94,14 +96,25 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
         generationSV.value += 1;
         setPreviewing(false);
         setSecondary(null);
+        setListPaneContactId(null);
+        setSelectedConversationId(id);
+      },
+      openConversationFromContact: (id: number, contactId: number) => {
+        generationSV.value += 1;
+        setPreviewing(false);
+        setSecondary(null);
+        setListPaneContactId(contactId);
         setSelectedConversationId(id);
       },
       closeConversation: () => {
         generationSV.value += 1;
         setPreviewing(false);
         setSecondary(null);
+        setListPaneContactId(null);
         setSelectedConversationId(null);
       },
+      isContactInListPane: listPaneContactId !== null,
+      closeContactInListPane: () => setListPaneContactId(null),
       secondary,
       isSecondaryOpen,
       openContact: () => openColumn({ kind: 'contact' }),
@@ -136,6 +149,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
     }),
     [
       selectedConversationId,
+      listPaneContactId,
       secondary,
       isSecondaryOpen,
       isActionsWarm,
@@ -152,6 +166,14 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
   const wasSplit = useRef(isSplit);
   useEffect(() => {
     if (wasSplit.current && !isSplit) {
+      if (selectedConversationId && listPaneContactId) {
+        listNavigation.dispatch(
+          StackActions.push('ContactDetails', {
+            conversationId: selectedConversationId,
+            contactId: listPaneContactId,
+          }),
+        );
+      }
       if (selectedConversationId) {
         listNavigation.dispatch(
           StackActions.push('ChatScreen', {
@@ -162,10 +184,11 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
       }
       setPreviewing(false);
       setSecondary(null);
+      setListPaneContactId(null);
       setSelectedConversationId(null);
     }
     wasSplit.current = isSplit;
-  }, [isSplit, selectedConversationId, listNavigation]);
+  }, [isSplit, selectedConversationId, listPaneContactId, listNavigation]);
 
   const handoffSignal = useSplitHandoffSignal();
   const isFocused = useIsFocused();
@@ -174,6 +197,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
     const id = takeSplitHandoff();
     if (id) {
       setSecondary(null);
+      setListPaneContactId(null);
       setSelectedConversationId(id);
     }
   }, [isSplit, isFocused, handoffSignal]);
@@ -184,6 +208,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
     if (lastResetSignature.current !== resetSignature) {
       lastResetSignature.current = resetSignature;
       setSecondary(null);
+      setListPaneContactId(null);
       setSelectedConversationId(null);
     }
   }, [resetSignature]);
@@ -263,6 +288,16 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
             <ContainerWidthContext.Provider value={isSplit ? listWidth : null}>
               <View style={isSplit ? { width: listWidth } : tailwind.style('flex-1')}>
                 {children}
+                {/* Covers the list so it keeps its scroll and filters. */}
+                {isSplit && listPaneContactId && selectedConversationId ? (
+                  <View style={[StyleSheet.absoluteFill, tailwind.style('bg-gray-50')]}>
+                    <ContactPane
+                      conversationId={selectedConversationId}
+                      contactId={listPaneContactId}
+                      routeKey={`list-pane-contact-${listPaneContactId}`}
+                    />
+                  </View>
+                ) : null}
               </View>
             </ContainerWidthContext.Provider>
             {isSplit ? (

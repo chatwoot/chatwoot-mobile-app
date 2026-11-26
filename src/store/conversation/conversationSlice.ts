@@ -306,6 +306,12 @@ const conversationSlice = createSlice({
       .addCase(conversationActions.toggleConversationStatus.rejected, state => {
         state.isChangingConversationStatus = false;
       })
+      .addCase(conversationActions.updateCustomAttributes.fulfilled, (state, { payload }) => {
+        const conversation = state.entities[payload.conversationId];
+        if (conversation) {
+          conversation.customAttributes = payload.customAttributes;
+        }
+      })
       .addCase(conversationActions.muteConversation.fulfilled, (state, action) => {
         const { conversationId } = action.payload;
         const conversation = state.entities[conversationId];

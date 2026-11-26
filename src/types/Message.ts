@@ -109,6 +109,8 @@ export type MessageContentAttributes = {
   isUnsupported: boolean;
   translations?: Record<string, string>;
   data?: VoiceCallContentData;
+  forwardedMessageId?: number;
+  emailQuoteAppended?: boolean;
 };
 
 export interface Message {

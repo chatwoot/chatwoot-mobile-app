@@ -14,30 +14,34 @@ import { appReducer } from '@/store/reducers';
 import { setStore } from './storeAccessor';
 import { contactListenerMiddleware } from './contact/contactListener';
 import { callListenerMiddleware } from './call/callListener';
-import { repairPersistedWebSocketUrl } from './settings/settingsUtils';
+import { repairPersistedConversations } from './conversation/conversationPersistUtils';
+import { setSentryUser } from '@/utils/sentryUtils';
+import {
+  getRootStoredState,
+  ROOT_PERSIST_KEY,
+  ROOT_PERSIST_VERSION,
+  SESSION_SLICES,
+  withoutSessionSlices,
+} from './persistConfig';
 
 // Disable this in testing environment
 const shouldLoadDebugger = __DEV__ && !process.env.JEST_WORKER_ID;
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const reactotronInstance = shouldLoadDebugger ? require('../../ReactotronConfig').default : null;
 
-const CURRENT_VERSION = 2;
-
 const persistConfig = {
-  key: 'Root',
-  version: CURRENT_VERSION,
+  key: ROOT_PERSIST_KEY,
+  version: ROOT_PERSIST_VERSION,
   storage: AsyncStorage,
-  blacklist: ['calls'],
+  blacklist: ['calls', ...SESSION_SLICES],
+  getStoredState: getRootStoredState,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   migrate: async (state: any) => {
     // If the stored version is older or doesn't exist, return initial state
-    if (!state?._persist?.version || state._persist.version < CURRENT_VERSION) {
-      const initialState = appReducer(undefined, { type: 'INIT' });
-      return {
-        ...initialState,
-      };
+    if (!state?._persist?.version || state._persist.version < ROOT_PERSIST_VERSION) {
+      return withoutSessionSlices(appReducer(undefined, { type: 'INIT' }));
     }
-    return repairPersistedWebSocketUrl(state);
+    return withoutSessionSlices(repairPersistedConversations(state));
   },
 };
 
@@ -49,7 +53,7 @@ const middlewares: Middleware[] = [
 const rootReducer = (state: ReturnType<typeof appReducer>, action: AnyAction) => {
   if (action.type === 'auth/logout') {
     const initialState = appReducer(undefined, { type: 'INIT' });
-    return { ...initialState, settings: state.settings };
+    return appReducer({ ...initialState, auth: state.auth, settings: state.settings }, action);
   }
   return appReducer(state, action);
 };
@@ -88,7 +92,10 @@ export const store = configureStore({
 // TODO: Please get rid of this
 setStore(store);
 
-export const persistor = persistStore(store);
+export const persistor = persistStore(store, null, () => {
+  const { auth, settings } = store.getState();
+  setSentryUser(auth.user, settings.installationUrl);
+});
 
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;

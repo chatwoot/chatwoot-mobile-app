@@ -20,6 +20,8 @@ type CallerIdentityProps = {
   tone: CallTone;
   aura: boolean;
   onOpenConversation?: () => void;
+  sidePadding: number;
+  bottomPadding: number;
 };
 
 export const CallerIdentity = ({
@@ -30,15 +32,26 @@ export const CallerIdentity = ({
   tone,
   aura,
   onOpenConversation,
+  sidePadding,
+  bottomPadding,
 }: CallerIdentityProps) => {
   const tailwind = useTailwind();
   const { CALL_MUTED_TEXT } = useCallTheme();
   return (
     <View
-      style={tailwind.style('absolute inset-0 items-center justify-center pb-[110px] px-8')}
+      style={[
+        tailwind.style('absolute inset-0 items-center justify-center'),
+        { paddingHorizontal: sidePadding, paddingBottom: bottomPadding },
+      ]}
       pointerEvents="box-none">
       <CallStatusLine call={call} activeSince={activeSince} flags={statusFlags} tone={tone} />
-      <CallAvatar name={info.name} uri={info.avatar || undefined} tone={tone} aura={aura} />
+      <CallAvatar
+        name={info.name}
+        hasName={info.hasName}
+        uri={info.avatar || undefined}
+        tone={tone}
+        aura={aura}
+      />
       <Text
         numberOfLines={1}
         style={tailwind.style(

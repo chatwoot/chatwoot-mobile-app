@@ -114,5 +114,11 @@ export const PILL_SHADOW = {
 };
 
 export const CALL_TRAY_HEIGHT = 116;
+export const CALL_CONTENT_MAX_WIDTH = 400;
+export const CALL_SHEET_MAX_WIDTH = 440;
+export const CALL_STRIP_HEIGHT = 52;
+export const CALL_STRIP_GAP = 14;
+export const callTrayInset = (insets: { left: number; right: number }) =>
+  Math.max(20, insets.left, insets.right);
 export const callTrayBottom = (safeBottom: number) =>
   safeBottom + (Platform.OS === 'ios' ? 12 : 16);

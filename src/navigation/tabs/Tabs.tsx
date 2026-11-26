@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { authActions } from '@/store/auth/authActions';
-import * as Sentry from '@sentry/react-native';
+import { setSentryUser } from '@/utils/sentryUtils';
 
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import {
@@ -34,6 +34,7 @@ import AnalyticsHelper from '@/utils/analyticsUtils';
 import { clearAllDeliveredNotifications } from '@/utils/pushUtils';
 import { dashboardAppActions } from '@/store/dashboard-app/dashboardAppActions';
 import { customAttributeActions } from '@/store/custom-attribute/customAttributeActions';
+import { accountActions } from '@/store/account/accountActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { runCallReadiness } from '@/screens/call/utils/callReadiness';
 import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
@@ -66,6 +67,7 @@ export const Tabs = () => {
     dispatch(clearSelection());
     dispatch(dashboardAppActions.index());
     dispatch(customAttributeActions.index());
+    dispatch(accountActions.show());
     initAnalytics();
     initSentry();
     initPushNotifications();
@@ -97,14 +99,7 @@ export const Tabs = () => {
   }, []);
 
   const initSentry = useCallback(async () => {
-    Sentry.setUser({
-      id: user?.id,
-      email: user?.email,
-      account_id: user?.account_id,
-      name: user?.name,
-      role: user?.role,
-      installation_url: installationUrl,
-    });
+    setSentryUser(user, installationUrl);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,6 +121,7 @@ export const Tabs = () => {
     dispatch(labelActions.fetchLabels());
     dispatch(dashboardAppActions.index());
     dispatch(customAttributeActions.index());
+    dispatch(accountActions.show());
     initActionCable();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);

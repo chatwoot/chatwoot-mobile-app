@@ -14,6 +14,8 @@ import {
 } from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { selectConversationsState } from '@/store/conversation/conversationSelectors';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
 import i18n from '@/i18n';
 import { StatusOptions } from '@/types';
 type StatusCellProps = {
@@ -71,17 +73,27 @@ export const UpdateStatus = () => {
     ? StatusList
     : filterStatusList(selectedConversation?.status || 'open');
 
+  const conversations = useAppSelector(selectConversationsState).entities;
+  const { hasMissingAttributes, openResolveForm, getBulkStatusIds } = useRequiredAttributes();
+
   const hapticSelection = useHaptic();
 
   const handleStatusPress = (status: ConversationStatus) => {
     hapticSelection?.();
     if (isMultipleConversationsSelected) {
-      const payload = { type: 'Conversation', ids: selectedIds, fields: { status } };
+      const ids = getBulkStatusIds(status, selectedIds);
+      if (ids.length === 0) return;
+      const payload = { type: 'Conversation', ids, fields: { status } };
       dispatch(conversationActions.bulkAction(payload));
       actionsModalSheetRef.current?.dismiss();
       dispatch(setCurrentState('none'));
     } else {
       if (!selectedConversation?.id) return;
+      if (status === 'resolved' && hasMissingAttributes(conversations[selectedConversation.id])) {
+        actionsModalSheetRef.current?.dismiss();
+        openResolveForm({ conversationId: selectedConversation.id });
+        return;
+      }
       dispatch(
         conversationActions.toggleConversationStatus({
           conversationId: selectedConversation?.id,

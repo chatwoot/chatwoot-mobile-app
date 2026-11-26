@@ -15,7 +15,14 @@ import { CallHeader } from './components/CallHeader';
 import { CALL_GLASS, CallSurface } from './components/CallSurface';
 import { CallerIdentity } from './components/CallerIdentity';
 import { IncomingCallActions } from './components/IncomingCallActions';
-import { callTrayBottom, CARD_SHADOW } from './constants/callTheme';
+import {
+  CALL_CONTENT_MAX_WIDTH,
+  CALL_STRIP_GAP,
+  CALL_STRIP_HEIGHT,
+  callTrayBottom,
+  callTrayInset,
+  CARD_SHADOW,
+} from './constants/callTheme';
 import { useAudioRoutePicker } from './hooks/useAudioRoutePicker';
 import type { CallerInfo } from './hooks/useCallerInfo';
 import { useHardwareBackToMinimise } from './hooks/useHardwareBackToMinimise';
@@ -50,6 +57,7 @@ type ActiveCallScreenProps = {
   onEnd: () => void;
   onOpenConversation: () => void;
   onRoutePickerOpenChange?: (open: boolean) => void;
+  hasWaitingCalls?: boolean;
 };
 
 export const ActiveCallScreen = ({
@@ -75,6 +83,7 @@ export const ActiveCallScreen = ({
   onEnd,
   onOpenConversation,
   onRoutePickerOpenChange,
+  hasWaitingCalls = false,
 }: ActiveCallScreenProps) => {
   const tailwind = useTailwind();
   const insets = useSafeAreaInsets();
@@ -91,78 +100,91 @@ export const ActiveCallScreen = ({
   const tone = callTone(isOnHold, isConnected && !isAwaitingTwilioContact(call));
   const statusFlags = { isOnHold, isConnected, isConnecting, isIncoming };
   const trayBottom = callTrayBottom(insets.bottom);
+  const sideInset = Math.max(insets.left, insets.right);
+  const trayInset = callTrayInset(insets);
 
   return (
     <View style={tailwind.style('absolute inset-0')}>
       <CallBackdrop tone={tone} />
       <CallHeader canMinimise={!onLockScreen} onMinimise={onMinimise} />
-      <CallerIdentity
-        info={info}
-        call={call}
-        activeSince={activeSince}
-        statusFlags={statusFlags}
-        tone={tone}
-        aura={
-          !!isIncoming ||
-          (!isConnecting &&
-            (!isConnected || isAwaitingTwilioContact(call)) &&
-            isOutboundCallRinging(call))
-        }
-        onOpenConversation={call.conversationId ? onOpenConversation : undefined}
-      />
-
-      {routePicker.isOpen ? (
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={i18n.t('CONVERSATION.VOICE_WIDGET.AUDIO_ROUTE')}
-          onPress={routePicker.close}
-          style={tailwind.style('absolute inset-0')}
+      <View style={tailwind.style('absolute inset-0')} pointerEvents="box-none">
+        <CallerIdentity
+          info={info}
+          call={call}
+          activeSince={activeSince}
+          statusFlags={statusFlags}
+          tone={tone}
+          aura={
+            !!isIncoming ||
+            (!isConnecting &&
+              (!isConnected || isAwaitingTwilioContact(call)) &&
+              isOutboundCallRinging(call))
+          }
+          onOpenConversation={call.conversationId ? onOpenConversation : undefined}
+          sidePadding={Math.max(32, sideInset)}
+          bottomPadding={110 + (hasWaitingCalls ? CALL_STRIP_HEIGHT + CALL_STRIP_GAP : 0)}
         />
-      ) : null}
 
-      <View style={[tailwind.style('absolute left-5 right-5 gap-2'), { bottom: trayBottom }]}>
         {routePicker.isOpen ? (
-          <AudioRoutePicker
-            routes={availableAudioRoutes(audioRoute)}
-            current={currentRoute}
-            labelFor={routeLabel}
-            onSelect={route => {
-              routePicker.close();
-              onSelectAudioRoute(route);
-            }}
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={i18n.t('CONVERSATION.VOICE_WIDGET.AUDIO_ROUTE')}
+            onPress={routePicker.close}
+            style={tailwind.style('absolute inset-0')}
           />
         ) : null}
 
-        <CallSurface
-          radius={24}
-          shadow={CARD_SHADOW}
-          plain={CALL_GLASS}
-          style={tailwind.style('p-4')}>
-          {isIncoming ? (
-            <IncomingCallActions
-              onDecline={onEnd}
-              onAnswer={onAnswer ?? (() => {})}
-              declineDisabled={isEnding}
-              answerDisabled={!!isJoining}
-            />
-          ) : (
-            <CallControlsTray
-              isConnected={isConnected}
-              isMuted={isMuted}
-              isOnHold={isOnHold}
-              isSpeakerOn={isSpeakerOn}
-              isEnding={isEnding}
-              hasHeadset={hasHeadset}
-              currentRoute={currentRoute}
-              routeLabel={routeLabel}
-              onToggleMute={onToggleMute}
-              onToggleSpeaker={onToggleSpeaker}
-              onToggleRoutePicker={routePicker.toggle}
-              onToggleHold={onToggleHold}
-              onEnd={onEnd}
-            />
-          )}
-        </CallSurface>
+        <View
+          style={[
+            tailwind.style('absolute items-center'),
+            { left: trayInset, right: trayInset, bottom: trayBottom },
+          ]}
+          pointerEvents="box-none">
+          <View style={[tailwind.style('w-full gap-2'), { maxWidth: CALL_CONTENT_MAX_WIDTH }]}>
+            {routePicker.isOpen ? (
+              <AudioRoutePicker
+                routes={availableAudioRoutes(audioRoute)}
+                current={currentRoute}
+                labelFor={routeLabel}
+                onSelect={route => {
+                  routePicker.close();
+                  onSelectAudioRoute(route);
+                }}
+              />
+            ) : null}
+
+            <CallSurface
+              radius={24}
+              shadow={CARD_SHADOW}
+              plain={CALL_GLASS}
+              style={tailwind.style('p-4')}>
+              {isIncoming ? (
+                <IncomingCallActions
+                  onDecline={onEnd}
+                  onAnswer={onAnswer ?? (() => {})}
+                  declineDisabled={isEnding}
+                  answerDisabled={!!isJoining}
+                />
+              ) : (
+                <CallControlsTray
+                  isConnected={isConnected}
+                  isMuted={isMuted}
+                  isOnHold={isOnHold}
+                  isSpeakerOn={isSpeakerOn}
+                  isEnding={isEnding}
+                  hasHeadset={hasHeadset}
+                  currentRoute={currentRoute}
+                  routeLabel={routeLabel}
+                  onToggleMute={onToggleMute}
+                  onToggleSpeaker={onToggleSpeaker}
+                  onToggleRoutePicker={routePicker.toggle}
+                  onToggleHold={onToggleHold}
+                  onEnd={onEnd}
+                />
+              )}
+            </CallSurface>
+          </View>
+        </View>
       </View>
     </View>
   );

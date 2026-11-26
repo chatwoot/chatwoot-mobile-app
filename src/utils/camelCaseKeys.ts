@@ -28,6 +28,16 @@ export const transformConversation = (conversation: any): Conversation => {
   return { ...transformed, messages: transformed.messages ?? [] };
 };
 
+export const transformConversationCustomAttributes = (
+  customAttributes: any,
+): Conversation['customAttributes'] => {
+  return camelcaseKeys(customAttributes || {}, { deep: true });
+};
+
+// The key a conversation custom attribute is stored under once its API response is transformed.
+export const toCustomAttributeKey = (attributeKey: string) =>
+  Object.keys(camelcaseKeys({ [attributeKey]: null }))[0];
+
 export const transformContact = (contact: any): Contact => {
   return camelcaseKeys(contact, { deep: true }) as unknown as Contact;
 };

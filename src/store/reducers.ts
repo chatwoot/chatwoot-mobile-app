@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 
-import authSlice from '@/store/auth/authSlice';
-import settingsSlice from '@/store/settings/settingsSlice';
+import { persistedAuthSlice, persistedSettingsSlice } from '@/store/persistConfig';
 import conversationFilterSlice from '@/store/conversation/conversationFilterSlice';
 import conversationSelectedSlice from '@/store/conversation/conversationSelectedSlice';
 import conversationHeaderSlice from '@/store/conversation/conversationHeaderSlice';
@@ -29,10 +28,11 @@ import macroSlice from '@/store/macro/macroSlice';
 import searchSlice from '@/store/search/searchSlice';
 import copilotSlice from '@/store/copilot/copilotSlice';
 import callSlice from '@/store/call/callSlice';
+import accountSlice from '@/store/account/accountSlice';
 
 export const appReducer = combineReducers({
-  auth: authSlice,
-  settings: settingsSlice,
+  auth: persistedAuthSlice,
+  settings: persistedSettingsSlice,
   conversationFilter: conversationFilterSlice,
   selectedConversation: conversationSelectedSlice,
   conversationHeader: conversationHeaderSlice,
@@ -59,4 +59,5 @@ export const appReducer = combineReducers({
   search: searchSlice,
   copilot: copilotSlice,
   calls: callSlice,
+  account: accountSlice,
 });

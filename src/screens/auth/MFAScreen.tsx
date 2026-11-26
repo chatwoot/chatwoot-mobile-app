@@ -221,10 +221,12 @@ const MFAScreen = () => {
                     isCodeWrong={isCodeWrong}
                     focused={isCodeFocused}
                   />
-                  {/* Invisible input over the boxes: tapping focuses it, long press pastes */}
+                  {/* Invisible input over the boxes: tapping focuses it, long press pastes.
+                      The text colour is a non-zero transparent value because Android's renderer
+                      treats a colour of 0 ('transparent') as unset and draws the text in black. */}
                   <TextInput
                     ref={hiddenInputRef}
-                    style={tailwind.style('absolute inset-0 text-transparent bg-transparent')}
+                    style={tailwind.style('absolute inset-0 text-white/0 bg-transparent')}
                     value={code.join('')}
                     onChangeText={handleCodeChange}
                     onPressIn={() => hiddenInputRef.current?.focus()}

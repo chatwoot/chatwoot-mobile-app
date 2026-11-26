@@ -1,6 +1,6 @@
 {
   "name": "@chatwoot/mobile-app",
-  "version": "4.11.2",
+  "version": "4.11.6",
   "packageManager": "pnpm@10.11.0",
   "scripts": {
     "start": "expo start --dev-client",
@@ -46,6 +46,7 @@
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-clipboard/clipboard": "^1.6.1",
     "@react-native-community/blur": "^4.4.1",
+    "@react-native-community/datetimepicker": "^8.4.4",
     "@react-native-community/netinfo": "^12.0.1",
     "@react-native-documents/picker": "^12.0.1",
     "@react-native-firebase/app": "^26.3.2",
@@ -100,7 +101,7 @@
     "react-native-ios-utilities": "^5.2.0",
     "react-native-keyboard-controller": "^1.22.4",
     "react-native-markdown-display": "^7.0.0-alpha.2",
-    "react-native-pager-view": "^8.0.2",
+    "react-native-pager-view": "^8.0.4",
     "react-native-permissions": "^5.2.4",
     "react-native-reanimated": "~4.5.5",
     "react-native-safe-area-context": "^5.7.0",
@@ -123,7 +124,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "@react-native-community/datetimepicker": "^8.4.4",
     "@react-native-community/slider": "^5.0.1",
     "@storybook/addon-ondevice-actions": "^8.6.2",
     "@storybook/addon-ondevice-controls": "^8.6.2",

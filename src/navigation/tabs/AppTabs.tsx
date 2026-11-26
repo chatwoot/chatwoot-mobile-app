@@ -14,7 +14,10 @@ import BulkPickerScreen from '@/screens/conversations/BulkPickerScreen';
 import ConversationActionsScreen from '@/screens/chat-screen/ConversationActionsScreen';
 import ContactDetailsScreen from '@/screens/contact-details/ContactDetailsScreen';
 import DashboardScreen from '@/screens/dashboard/DashboardScreen';
+import EmailMessageScreen from '@/screens/email-message/EmailMessageScreen';
 import SearchScreen from '@/screens/search/SearchScreen';
+import ResolveAttributesScreen from '@/screens/resolve-attributes/ResolveAttributesScreen';
+import type { ResolveAttributesParams } from '@/screens/resolve-attributes/useRequiredAttributes';
 
 import { SideColumnDivider } from './SideColumnDivider';
 import { LayoutChangeCover } from './LayoutChangeCover';
@@ -49,11 +52,13 @@ export type TabBarExcludedScreenParamList = {
   BulkPicker: { kind: 'assign' | 'label' };
   ConversationActions: undefined;
   Dashboard: { url: string };
+  EmailMessage: { conversationId: number; messageId: number };
   Login: undefined;
   SearchScreen: undefined;
   ImageScreen: undefined;
   ConversationDetails: undefined;
   ConversationAction: undefined;
+  ResolveAttributes: ResolveAttributesParams;
 };
 const Stack = createNativeStackNavigator<TabBarExcludedScreenParamList>();
 
@@ -83,6 +88,11 @@ export const AppTabs = () => {
           />
           <Stack.Screen options={sidePageOptions} name="Dashboard" component={DashboardScreen} />
           <Stack.Screen
+            options={sidePageOptions}
+            name="EmailMessage"
+            component={EmailMessageScreen}
+          />
+          <Stack.Screen
             options={{ animation: 'slide_from_right' }}
             name="ComposeScreen"
             component={ComposeScreen}
@@ -101,6 +111,11 @@ export const AppTabs = () => {
             options={{ presentation: 'modal' }}
             name="BulkPicker"
             component={BulkPickerScreen}
+          />
+          <Stack.Screen
+            options={{ presentation: 'modal' }}
+            name="ResolveAttributes"
+            component={ResolveAttributesScreen}
           />
           <Stack.Screen
             options={{ headerShown: false, animation: 'slide_from_right' }}

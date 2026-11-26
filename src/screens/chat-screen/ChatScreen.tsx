@@ -174,13 +174,21 @@ const ChatScreen = (props: ChatScreenProps) => {
     const unfolded = !wasSplitLayout.current && isSplitLayout;
     wasSplitLayout.current = isSplitLayout;
     if (!unfolded || isInDetailPane || !navigation.isFocused()) return;
-    handOffToSplitView(conversationId);
+    const { routes } = props.navigation.getState();
+    const previousRoute = routes[routes.length - 2];
+    const contactParams =
+      previousRoute?.name === 'ContactDetails'
+        ? (previousRoute.params as TabBarExcludedScreenParamList['ContactDetails'])
+        : undefined;
+    const splitViewContactId = contactParams?.fromSplitView ? contactParams.contactId : undefined;
+    handOffToSplitView(conversationId, splitViewContactId);
     // Pop next frame; option applies later.
     navigation.setOptions({ animation: 'none' });
     requestAnimationFrame(() => {
-      if (navigation.canGoBack()) navigation.dispatch(StackActions.pop());
+      if (splitViewContactId) navigation.dispatch(StackActions.pop(2));
+      else if (navigation.canGoBack()) navigation.dispatch(StackActions.pop());
     });
-  }, [isSplitLayout, conversationId, isInDetailPane, navigation]);
+  }, [isSplitLayout, conversationId, isInDetailPane, navigation, props.navigation]);
 
   const handleBackPress = () => {
     if (navigation.canGoBack()) {

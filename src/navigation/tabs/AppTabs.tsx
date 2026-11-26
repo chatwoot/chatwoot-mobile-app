@@ -45,7 +45,7 @@ export type TabBarExcludedScreenParamList = {
     messageId?: number;
     instant?: boolean;
   };
-  ContactDetails: { conversationId?: number; contactId?: number };
+  ContactDetails: { conversationId?: number; contactId?: number; fromSplitView?: boolean };
   ComposeScreen: { conversationId: number };
   MacrosScreen: { conversationId: number };
   ConversationActionsScreen: { conversationId: number };

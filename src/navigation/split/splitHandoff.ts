@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 
-let pendingConversationId: number | null = null;
+type SplitHandoff = { conversationId: number; contactId?: number };
+
+let pendingHandoff: SplitHandoff | null = null;
 const listeners = new Set<() => void>();
 
-export const handOffToSplitView = (conversationId: number) => {
-  pendingConversationId = conversationId;
+export const handOffToSplitView = (conversationId: number, contactId?: number) => {
+  pendingHandoff = { conversationId, contactId };
   listeners.forEach(listener => listener());
 };
 
 export const takeSplitHandoff = () => {
-  const id = pendingConversationId;
-  pendingConversationId = null;
-  return id;
+  const handoff = pendingHandoff;
+  pendingHandoff = null;
+  return handoff;
 };
 
 export const useSplitHandoffSignal = () => {

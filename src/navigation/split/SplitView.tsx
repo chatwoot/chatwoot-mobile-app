@@ -171,6 +171,7 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
           StackActions.push('ContactDetails', {
             conversationId: selectedConversationId,
             contactId: listPaneContactId,
+            fromSplitView: true,
           }),
         );
       }
@@ -194,11 +195,11 @@ export const SplitView = ({ children, resetKey, emptyIcon, emptyMessage }: Split
   const isFocused = useIsFocused();
   useEffect(() => {
     if (!isSplit || !isFocused) return;
-    const id = takeSplitHandoff();
-    if (id) {
+    const handoff = takeSplitHandoff();
+    if (handoff) {
       setSecondary(null);
-      setListPaneContactId(null);
-      setSelectedConversationId(id);
+      setListPaneContactId(handoff.contactId ?? null);
+      setSelectedConversationId(handoff.conversationId);
     }
   }, [isSplit, isFocused, handoffSignal]);
 

@@ -97,6 +97,7 @@ export const persistor = persistStore(store, null, () => {
   setSentryUser(auth.user, settings.installationUrl);
 });
 
+export type AppStore = typeof store;
 export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<

@@ -3,6 +3,7 @@ import { settingsActions } from './settingsActions';
 import * as RootNavigation from '@/utils/navigationUtils';
 import { NotificationSettings } from './settingsTypes';
 import { Theme } from '@/types/common/Theme';
+import type { MobileAppMinVersions } from '@/utils/appUpdateUtils';
 
 interface SettingsState {
   baseUrl: string;
@@ -17,6 +18,8 @@ interface SettingsState {
   webSocketUrl: string;
   theme: Theme;
   version: string;
+  mobileAppMinVersions: MobileAppMinVersions;
+  serverInfoRequestId: string;
   pushToken: string;
 }
 const initialState: SettingsState = {
@@ -40,6 +43,8 @@ const initialState: SettingsState = {
   webSocketUrl: 'wss://app.chatwoot.com/cable',
   theme: 'system',
   version: '',
+  mobileAppMinVersions: { ios: null, android: null },
+  serverInfoRequestId: '',
   pushToken: '',
 };
 export const settingsSlice = createSlice({
@@ -67,6 +72,7 @@ export const settingsSlice = createSlice({
         state.uiFlags.isSettingUrl = false;
         state.installationUrl = action.payload.installationUrl;
         state.baseUrl = action.payload.baseUrl;
+        state.mobileAppMinVersions = initialState.mobileAppMinVersions;
         state.webSocketUrl = action.payload.webSocketUrl;
         RootNavigation.navigate('Login');
       })
@@ -88,9 +94,19 @@ export const settingsSlice = createSlice({
       .addCase(settingsActions.updateNotificationSettings.rejected, state => {
         state.uiFlags.isUpdating = false;
       })
+      .addCase(settingsActions.getChatwootVersion.pending, (state, action) => {
+        state.serverInfoRequestId = action.meta.requestId;
+      })
       .addCase(settingsActions.getChatwootVersion.fulfilled, (state, action) => {
-        const { version } = action.payload;
+        // Ignores stale or previous-server responses.
+        if (action.meta.requestId !== state.serverInfoRequestId) return;
+        if (action.meta.arg.installationUrl !== state.installationUrl) return;
+        const { version, mobile_app: mobileApp } = action.payload;
         state.version = version;
+        state.mobileAppMinVersions = {
+          ios: mobileApp?.min_version?.ios ?? null,
+          android: mobileApp?.min_version?.android ?? null,
+        };
       })
       .addCase(settingsActions.saveDeviceDetails.fulfilled, (state, action) => {
         if (action?.payload?.fcmToken) {

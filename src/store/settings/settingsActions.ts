@@ -14,6 +14,7 @@ import {
 
 import { SettingsService } from './settingsService';
 import type {
+  ChatwootVersionResponse,
   NotificationSettings,
   NotificationSettingsPayload,
   InstallationUrls,
@@ -83,7 +84,7 @@ export const settingsActions = {
     NotificationSettingsPayload
   >('settings/updateNotificationSettings', SettingsService.updateNotificationSettings),
 
-  getChatwootVersion: createSettingsThunk<{ version: string }, { installationUrl: string }>(
+  getChatwootVersion: createSettingsThunk<ChatwootVersionResponse, { installationUrl: string }>(
     'settings/getChatwootVersion',
     ({ installationUrl }) => SettingsService.getChatwootVersion(installationUrl),
   ),

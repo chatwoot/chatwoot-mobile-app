@@ -38,6 +38,8 @@ import { accountActions } from '@/store/account/accountActions';
 import { clearSelection } from '@/store/conversation/conversationSelectedSlice';
 import { runCallReadiness } from '@/screens/call/utils/callReadiness';
 import { RESULTS, checkNotifications, requestNotifications } from 'react-native-permissions';
+import { AppUpdatePrompt } from '@/components-next/app-update/AppUpdatePrompt';
+import { markNotificationRequestSettled } from '@/utils/appUpdateUtils';
 import { CustomTabBar } from './CustomTabBar';
 
 const Tab = createBottomTabNavigator();
@@ -83,6 +85,7 @@ export const Tabs = () => {
     } catch {
       // Prompt failures must not prevent registration.
     }
+    markNotificationRequestSettled();
     dispatch(settingsActions.saveDeviceDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -125,11 +128,6 @@ export const Tabs = () => {
     initActionCable();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accountId]);
-
-  useEffect(() => {
-    dispatch(settingsActions.getChatwootVersion({ installationUrl: installationUrl }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [installationUrl]);
 
   const userPermissions = user ? getUserPermissions(user, user.account_id) : [];
 
@@ -178,6 +176,7 @@ export const Tabs = () => {
         )}
         <Tab.Screen name="Settings" options={{ headerShown: false }} component={SettingsStack} />
       </Tab.Navigator>
+      <AppUpdatePrompt />
     </SideToolbarProvider>
   );
 };

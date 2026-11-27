@@ -21,9 +21,11 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 
 ## Screenshots / Screen Recordings
 
-For UI changes, attach screenshots or a short screen recording of the affected flow. Include before and after views when helpful, and label each attachment with its platform (iOS or Android).
+<!-- Required check: PRs that change UI files cannot merge without an image or video here. -->
 
-For changes without a visual impact, write `N/A`.
+UI fixes, features and enhancements require screenshots or a screen recording of the affected flow. Label each with its platform (iOS or Android); include before and after views when helpful.
+
+If there is no user-visible change, write `N/A` and explain why. A maintainer will review it and apply the exemption.
 
 ## Checklist:
 

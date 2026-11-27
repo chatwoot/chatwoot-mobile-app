@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { VOICE_CALL_STATUS } from '@/constants';
+import { VOICE_CALL_PROVIDERS, VOICE_CALL_STATUS } from '@/constants';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { store } from '@/store';
 import { selectUserId } from '@/store/auth/authSelectors';
@@ -50,6 +50,8 @@ export const useCallBubbleActions = (item: Message, display: Display) => {
   const canCallBack =
     display.isFailed &&
     !display.isOutbound &&
+    (call?.provider === VOICE_CALL_PROVIDERS.WHATSAPP ||
+      !!conversation?.meta?.sender?.phoneNumber) &&
     !!inboxId &&
     !!item.conversationId &&
     !hasActiveCall &&

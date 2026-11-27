@@ -1,6 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { authActions } from './authActions';
 import { User } from '@/types/User';
+import type { WorkPreferences } from '@/types/common/AvailabilityStatus';
 import { AuthHeaders, VerificationChannel } from './authTypes';
 export interface AuthState {
   user: User | null;
@@ -32,9 +33,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: state => {
-      // in rootReducer, there is an action to CLEAR the complete Redux Store's state
-    },
+    logout: () => initialState,
     resetAuth: state => {
       state.user = null;
       state.accessToken = null;
@@ -91,6 +90,18 @@ export const authSlice = createSlice({
           ...state.user,
           accounts: updatedAccounts,
         };
+      }
+    },
+    setCurrentUserWorkPreferences(state, action: PayloadAction<WorkPreferences>) {
+      const { accepts_conversations: acceptsConversations, accepts_calls: acceptsCalls } =
+        action.payload;
+      const account = state.user?.accounts?.find(({ id }) => id === state.user?.account_id);
+      if (!account) return;
+      if (account.accepts_conversations !== acceptsConversations) {
+        account.accepts_conversations = acceptsConversations;
+      }
+      if (account.accepts_calls !== acceptsCalls) {
+        account.accepts_calls = acceptsCalls;
       }
     },
     setAccount: (state, action) => {
@@ -165,6 +176,22 @@ export const authSlice = createSlice({
           ...state.user,
           ...action.payload.user,
         };
+        // Server applies status asynchronously.
+        const availability = action.meta.arg?.profile?.availability;
+        const accountId = state.user?.account_id;
+        if (availability && state.user?.accounts) {
+          state.user.accounts = state.user.accounts.map(account =>
+            account.id === accountId
+              ? { ...account, availability, availability_status: availability }
+              : account,
+          );
+        }
+      })
+      .addCase(authActions.updateWorkPreferences.fulfilled, (state, action) => {
+        state.user = {
+          ...state.user,
+          ...action.payload.user,
+        };
       })
       .addCase(authActions.verifyMfa.pending, state => {
         state.uiFlags.isVerifyingMfa = true;
@@ -212,6 +239,7 @@ export const {
   setAccount,
   resetAuth,
   setCurrentUserAvailability,
+  setCurrentUserWorkPreferences,
   clearAuthError,
   clearMfaToken,
 } = authSlice.actions;

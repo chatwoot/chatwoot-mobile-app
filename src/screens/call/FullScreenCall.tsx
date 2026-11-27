@@ -89,6 +89,7 @@ export const FullScreenCall = ({
         onEnd={end}
         onOpenConversation={handleOpenConversation}
         onRoutePickerOpenChange={setRoutePickerOpen}
+        hasWaitingCalls={ringingBehind.calls.length > 0}
       />
       {ringingBehind.calls.length && !routePickerOpen ? (
         <IncomingCallsSheet
@@ -98,7 +99,7 @@ export const FullScreenCall = ({
           answerDisabled={isJoining}
           onAnswer={ringingBehind.answer}
           onDecline={ringingBehind.decline}
-          onDeclineAll={ringingBehind.declineAll}
+          onSilenceAll={ringingBehind.silenceAll}
         />
       ) : null}
     </>

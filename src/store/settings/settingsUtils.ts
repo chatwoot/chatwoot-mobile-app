@@ -50,19 +50,20 @@ export const buildWebSocketUrl = (host: string) => `wss://${host}/cable`;
  * cannot connect. `settings` survives logout, so such a value would otherwise
  * persist for the lifetime of the install.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const repairPersistedWebSocketUrl = (state: any) => {
-  const { baseUrl, webSocketUrl } = state?.settings ?? {};
+export const repairPersistedWebSocketUrl = <T extends { baseUrl?: string; webSocketUrl?: string }>(
+  settings: T,
+): T => {
+  const { baseUrl, webSocketUrl } = settings;
   if (!baseUrl) {
-    return state;
+    return settings;
   }
 
   const expectedUrl = buildWebSocketUrl(baseUrl);
   if (webSocketUrl === expectedUrl) {
-    return state;
+    return settings;
   }
 
-  return { ...state, settings: { ...state.settings, webSocketUrl: expectedUrl } };
+  return { ...settings, webSocketUrl: expectedUrl };
 };
 
 /**

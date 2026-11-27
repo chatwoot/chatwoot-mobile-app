@@ -14,6 +14,7 @@ const config = {
 };
 
 module.exports = withStorybook(config, {
-  enabled: true,
+  enabled: process.env.NODE_ENV !== 'production',
+  onDisabledRemoveStorybook: true,
   configPath: path.resolve(__dirname, './.storybook'),
 });

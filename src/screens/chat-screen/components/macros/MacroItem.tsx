@@ -1,10 +1,10 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useCallback } from 'react';
 import { Pressable } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { Icon, Spinner } from '@/components-next';
 import { CaretRight, InfoIcon, MacroIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Macro } from '@/types';
 import { useMacroContext } from './MacroContext';
 
@@ -17,6 +17,7 @@ type MacroItemProps = {
 };
 
 const MacroItem = (props: MacroItemProps) => {
+  const tailwind = useTailwind();
   const { macro, index, handleMacroPress, isInsideBottomSheet, isLastItem } = props;
   const { executeMacro, executingMacroId } = useMacroContext();
 

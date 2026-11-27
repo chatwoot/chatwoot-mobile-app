@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import { useRefsContext } from '@/context';
-import { tailwind } from '@/theme';
 import { ConversationStatus, StatusCollection } from '@/types';
 import { getStatusTypeIcon, useHaptic } from '@/utils';
 import { BottomSheetHeader, Icon } from '@/components-next';
@@ -14,6 +14,8 @@ import {
 } from '@/store/conversation/conversationSelectedSlice';
 import { conversationActions } from '@/store/conversation/conversationActions';
 import { setCurrentState } from '@/store/conversation/conversationHeaderSlice';
+import { selectConversationsState } from '@/store/conversation/conversationSelectors';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
 import i18n from '@/i18n';
 import { StatusOptions } from '@/types';
 type StatusCellProps = {
@@ -30,6 +32,7 @@ const StatusList: StatusCollection[] = [
 ];
 
 const StatusCell = (props: StatusCellProps) => {
+  const tailwind = useTailwind();
   const { value, isLastItem, onPress } = props;
   return (
     <Pressable
@@ -59,6 +62,7 @@ const filterStatusList = (status: ConversationStatus) => {
 };
 
 export const UpdateStatus = () => {
+  const tailwind = useTailwind();
   const { actionsModalSheetRef } = useRefsContext();
 
   const dispatch = useAppDispatch();
@@ -69,17 +73,27 @@ export const UpdateStatus = () => {
     ? StatusList
     : filterStatusList(selectedConversation?.status || 'open');
 
+  const conversations = useAppSelector(selectConversationsState).entities;
+  const { hasMissingAttributes, openResolveForm, getBulkStatusIds } = useRequiredAttributes();
+
   const hapticSelection = useHaptic();
 
   const handleStatusPress = (status: ConversationStatus) => {
     hapticSelection?.();
     if (isMultipleConversationsSelected) {
-      const payload = { type: 'Conversation', ids: selectedIds, fields: { status } };
+      const ids = getBulkStatusIds(status, selectedIds);
+      if (ids.length === 0) return;
+      const payload = { type: 'Conversation', ids, fields: { status } };
       dispatch(conversationActions.bulkAction(payload));
       actionsModalSheetRef.current?.dismiss();
       dispatch(setCurrentState('none'));
     } else {
       if (!selectedConversation?.id) return;
+      if (status === 'resolved' && hasMissingAttributes(conversations[selectedConversation.id])) {
+        actionsModalSheetRef.current?.dismiss();
+        openResolveForm({ conversationId: selectedConversation.id });
+        return;
+      }
       dispatch(
         conversationActions.toggleConversationStatus({
           conversationId: selectedConversation?.id,

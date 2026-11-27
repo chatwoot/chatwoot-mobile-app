@@ -1,5 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect, useState } from 'react';
-import { Alert, Dimensions, PermissionsAndroid, Platform, Pressable } from 'react-native';
+import { Alert, PermissionsAndroid, Platform, Pressable } from 'react-native';
 import AudioRecorderPlayer, {
   RecordBackType,
   AVEncodingOption,
@@ -10,9 +11,8 @@ import * as Sentry from '@sentry/react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 
 import { TEXT_INPUT_CONTAINER_HEIGHT } from '@/constants';
-import { useChatWindowContext } from '@/context';
+import { useChatWindowContext, useContainerWidth } from '@/context';
 import { SendIcon, Trash } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { Icon } from '@/components-next';
 import { PauseIcon, PlayIcon } from '../message-components';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -22,8 +22,7 @@ import {
 } from '@/store/conversation/localRecordedAudioCacheSlice';
 import { convertAacToWav } from '@/utils/audioConverter';
 import type { AttachmentFile } from '@/store/conversation/conversationTypes';
-
-const RecorderSegmentWidth = Dimensions.get('screen').width - 8 - 80 - 12;
+import { usePaneRightInset } from '@/navigation/split/usePaneRightInset';
 
 const ARPlayer = new AudioRecorderPlayer();
 
@@ -67,6 +66,8 @@ export const AudioRecorder = ({
   onRecordingComplete: (audioFile: AttachmentFile) => void;
   audioFormat: 'audio/m4a' | 'audio/wav';
 }) => {
+  const tailwind = useTailwind();
+  const RecorderSegmentWidth = useContainerWidth() - usePaneRightInset() - 8 - 80 - 12;
   const localRecordedAudioCacheFilePaths = useAppSelector(selectLocalRecordedAudioCacheFilePaths);
   const dispatch = useAppDispatch();
   const [isSending, setIsSending] = useState(false);

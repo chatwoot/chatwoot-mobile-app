@@ -19,6 +19,14 @@ Please delete options that are not relevant.
 
 Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
 
+## Screenshots / Screen Recordings
+
+<!-- Required check: PRs that change UI files cannot merge without an image or video here. -->
+
+UI fixes, features and enhancements require screenshots or a screen recording of the affected flow. Label each with its platform (iOS or Android); include before and after views when helpful.
+
+If there is no user-visible change, write `N/A` and explain why. A maintainer will review it and apply the exemption.
+
 ## Checklist:
 
 - [ ] I have performed a self-review of my own code

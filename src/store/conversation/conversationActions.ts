@@ -28,6 +28,8 @@ import type {
   TranslateMessagePayload,
   TranslateMessageAPIResponse,
   PendingMessage,
+  UpdateCustomAttributesPayload,
+  UpdateCustomAttributesResponse,
 } from './conversationTypes';
 import { AxiosError } from 'axios';
 import { MESSAGE_STATUS } from '@/constants';
@@ -207,6 +209,20 @@ export const conversationActions = {
   >('conversations/toggleConversationStatus', async (payload, { rejectWithValue }) => {
     try {
       return await ConversationService.toggleConversationStatus(payload);
+    } catch (error) {
+      const { response } = error as AxiosError<ApiErrorResponse>;
+      if (!response) {
+        throw error;
+      }
+      return rejectWithValue(response.data);
+    }
+  }),
+  updateCustomAttributes: createAsyncThunk<
+    UpdateCustomAttributesResponse,
+    UpdateCustomAttributesPayload
+  >('conversations/updateCustomAttributes', async (payload, { rejectWithValue }) => {
+    try {
+      return await ConversationService.updateCustomAttributes(payload);
     } catch (error) {
       const { response } = error as AxiosError<ApiErrorResponse>;
       if (!response) {

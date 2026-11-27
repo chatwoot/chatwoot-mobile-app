@@ -1,6 +1,6 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 
-import { tailwind } from '@/theme';
 import { NativeView } from '@/components-next/native-components';
 import { Icon } from '@/components-next/common/icon';
 import { getChannelIcon } from '@/utils';
@@ -14,6 +14,7 @@ type ChannelIndicatorProps = {
 };
 
 export const ChannelIndicator = (props: ChannelIndicatorProps) => {
+  const tailwind = useTailwind();
   const { channelType = '', medium = '' } = props.inbox || {};
   const { type = '' } = props.additionalAttributes || {};
 

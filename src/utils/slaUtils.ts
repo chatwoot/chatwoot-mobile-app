@@ -59,10 +59,6 @@ const isTerminalSLAStatus = (status?: string) => ['hit', 'missed'].includes(stat
 const isSLACompleted = (sla: SLA, conversation: SLAConversation) =>
   isTerminalSLAStatus(sla.slaStatus) || conversation.status === 'resolved';
 
-/** Whether the server sends the due-at timestamps this evaluator relies on. */
-export const hasSLADueTimes = (appliedSla?: SLA | null) =>
-  !!appliedSla && appliedSla.slaFrtDueAt !== undefined;
-
 export const shouldRefreshSLAStatus = ({
   appliedSla,
   chat,

@@ -1,7 +1,8 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React, { useEffect } from 'react';
 import { Image } from 'expo-image';
 
-import { avatarTheme, tailwind } from '@/theme';
+import { avatarTheme } from '@/theme';
 import { cx } from '@/utils';
 
 import { AvatarProps } from './Avatar';
@@ -17,6 +18,7 @@ export const AvatarImage: React.FC<AvatarImageProps> = ({
   size,
   handleFallback,
 }) => {
+  const tailwind = useTailwind();
   const onError = () => {
     handleFallback();
   };

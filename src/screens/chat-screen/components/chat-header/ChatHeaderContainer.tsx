@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { useIsInDetailPane, useSplitView } from '@/navigation/split/SplitViewContext';
 import { useChatWindowContext, useRefsContext } from '@/context';
 import { showToast } from '@/utils/toastUtils';
 import i18n from '@/i18n';
@@ -12,8 +13,7 @@ import { ChatHeader } from './ChatHeader';
 import { DashboardList } from './DropdownMenu';
 import { ImageSourcePropType } from 'react-native';
 import { SLAStatus } from '@/types/common/SLA';
-import { evaluateSLAStatus as evaluateLegacySLAStatus } from '@chatwoot/utils';
-import { evaluateSLAStatus, hasSLADueTimes } from '@/utils/slaUtils';
+import { evaluateSLAStatus } from '@/utils/slaUtils';
 import { resetSentMessage } from '@/store/conversation/sendMessageSlice';
 import { selectAllDashboardApps } from '@/store/dashboard-app/dashboardAppSlice';
 import { selectUser } from '@/store/auth/authSelectors';
@@ -21,8 +21,9 @@ import { selectInboxById } from '@/store/inbox/inboxSelectors';
 import { selectHasActiveCall, selectHasIncomingCall } from '@/store/call/callSelectors';
 import { getVoiceCallProvider } from '@/utils/inboxUtils';
 import { placeOutboundCall } from '@/utils/placeOutboundCall';
-import { getChannelIcon } from '@/utils';
+import { IOS_DESIGN, getChannelIcon } from '@/utils';
 import { Channel } from '@/types';
+import { useRequiredAttributes } from '@/screens/resolve-attributes/useRequiredAttributes';
 
 type ChatScreenHeaderProps = {
   name: string;
@@ -32,6 +33,8 @@ type ChatScreenHeaderProps = {
 const REFRESH_INTERVAL = 60000;
 
 export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
+  const isInDetailPane = useIsInDetailPane();
+  const splitView = useSplitView();
   const { name, imageSrc } = props;
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -51,6 +54,7 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   const hasActiveCall = useAppSelector(selectHasActiveCall);
   const hasIncomingCall = useAppSelector(selectHasIncomingCall);
   const [isStartingCall, setIsStartingCall] = useState(false);
+  const { hasMissingAttributes, openResolveForm } = useRequiredAttributes();
   const voiceCallProvider = getVoiceCallProvider(inbox);
 
   const appliedSla = conversation?.appliedSla;
@@ -70,41 +74,17 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       setSlaStatus(null);
       return;
     }
-    if (hasSLADueTimes(appliedSla)) {
-      setSlaStatus(
-        evaluateSLAStatus({
-          appliedSla,
-          chat: {
-            status: conversation?.status,
-            firstReplyCreatedAt: conversation?.firstReplyCreatedAt,
-            waitingSince: conversation?.waitingSince,
-          },
-          slaEvents,
-        }),
-      );
-      return;
-    }
-    // Servers without due-at timestamps are evaluated from the policy thresholds.
-    const status = evaluateLegacySLAStatus({
-      appliedSla: {
-        id: appliedSla.id,
-        name: appliedSla.slaName,
-        description: appliedSla.slaDescription,
-        sla_first_response_time_threshold: appliedSla.slaFirstResponseTimeThreshold,
-        sla_next_response_time_threshold: appliedSla.slaNextResponseTimeThreshold,
-        sla_resolution_time_threshold: appliedSla.slaResolutionTimeThreshold,
-        only_during_business_hours: appliedSla.slaOnlyDuringBusinessHours,
-        created_at: appliedSla.createdAt,
-      },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      chat: {
-        first_reply_created_at: conversation?.firstReplyCreatedAt,
-        waiting_since: conversation?.waitingSince,
-        status: conversation?.status,
-      },
-    });
-    setSlaStatus(status);
+    setSlaStatus(
+      evaluateSLAStatus({
+        appliedSla,
+        chat: {
+          status: conversation?.status,
+          firstReplyCreatedAt: conversation?.firstReplyCreatedAt,
+          waitingSince: conversation?.waitingSince,
+        },
+        slaEvents,
+      }),
+    );
   }, [appliedSla, conversation, slaEvents]);
 
   const { chatPagerView } = useRefsContext();
@@ -137,11 +117,23 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
   };
 
   const handleNavigationToContactDetails = () => {
+    if (isInDetailPane && splitView) {
+      splitView.openContact();
+      return;
+    }
     const navigateToScreen = StackActions.push('ContactDetails', { conversationId });
     navigation.dispatch(navigateToScreen);
   };
 
   const handleNavigation = (url?: string, title?: string) => {
+    if (isInDetailPane && splitView) {
+      if (url) {
+        splitView.openDashboard({ url, title, conversation, currentUser });
+      } else {
+        splitView.openActions();
+      }
+      return;
+    }
     if (url) {
       const navigateToScreen = StackActions.push('Dashboard', {
         url,
@@ -150,6 +142,8 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
         currentUser,
       });
       navigation.dispatch(navigateToScreen);
+    } else if (IOS_DESIGN) {
+      navigation.dispatch(StackActions.push('ConversationActionsScreen', { conversationId }));
     } else {
       chatPagerView.current?.setPage(1);
     }
@@ -160,6 +154,10 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       conversationStatus === CONVERSATION_STATUS.OPEN
         ? CONVERSATION_STATUS.RESOLVED
         : CONVERSATION_STATUS.OPEN;
+    if (updatedStatus === CONVERSATION_STATUS.RESOLVED && hasMissingAttributes(conversation)) {
+      openResolveForm({ conversationId });
+      return;
+    }
     await dispatch(
       conversationActions.toggleConversationStatus({
         conversationId,
@@ -171,6 +169,8 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       message: i18n.t('CONVERSATION.STATUS_CHANGE'),
     });
   };
+
+  const canCallContact = voiceCallProvider !== null && !conversation?.anonymousCaller;
 
   const startCall = async () => {
     if (!voiceCallProvider || !inbox || isStartingCall) return;
@@ -228,12 +228,20 @@ export const ChatHeaderContainer = (props: ChatScreenHeaderProps) => {
       slaType={slaType}
       slaEvents={slaEvents}
       statusText={slaStatusText()}
-      showCallButton={voiceCallProvider !== null}
+      slaTime={slaStatus?.threshold}
+      showCallButton={canCallContact}
       isCallDisabled={hasActiveCall || hasIncomingCall || isStartingCall}
       onCallPress={startCall}
-      onBackPress={handleBackPress}
+      onBackPress={isInDetailPane && splitView ? splitView.closeConversation : handleBackPress}
       onContactDetailsPress={handleNavigationToContactDetails}
       onToggleChatStatus={toggleChatStatus}
+      onOpenActions={
+        isInDetailPane && splitView
+          ? splitView.openActions
+          : IOS_DESIGN
+            ? () => handleNavigation()
+            : undefined
+      }
     />
   );
 };

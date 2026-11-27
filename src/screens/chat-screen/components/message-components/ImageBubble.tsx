@@ -1,11 +1,12 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Image } from 'expo-image';
 import { Galeria } from '@nandorojo/galeria';
-import { tailwind } from '@/theme';
 import { useImageDimensions } from '@/hooks/useImageDimensions';
 import type { ImageCellProps, ImageContainerProps } from '@/hooks/useImageDimensions';
 
 export const ImageBubbleContainer = (props: ImageContainerProps) => {
+  const tailwind = useTailwind();
   const { imageSrc, maxWidth = 300, maxHeight = 360 } = props;
   const imageStyle = useImageDimensions(imageSrc, maxWidth, maxHeight);
 
@@ -24,6 +25,7 @@ export const ImageBubbleContainer = (props: ImageContainerProps) => {
 
 // Fixed-size media thumbnail.
 export const ImageThumbnail = (props: ImageCellProps) => {
+  const tailwind = useTailwind();
   const { imageSrc } = props;
 
   return (

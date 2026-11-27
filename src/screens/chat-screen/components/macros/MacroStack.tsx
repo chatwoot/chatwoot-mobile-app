@@ -1,7 +1,7 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import Animated from 'react-native-reanimated';
 
-import { tailwind } from '@/theme';
 import { Macro } from '@/types';
 import MacroItem from './MacroItem';
 import i18n from '@/i18n';
@@ -13,6 +13,7 @@ type MacroStackProps = {
 };
 
 const MacroStack = (props: MacroStackProps) => {
+  const tailwind = useTailwind();
   const { macrosList, handleMacroPress, isInsideBottomSheet = false } = props;
 
   if (macrosList.length === 0) {

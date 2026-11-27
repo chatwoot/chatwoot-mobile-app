@@ -3,7 +3,7 @@ import { ActivityIndicator, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { FlashList, FlashListRef } from '@shopify/flash-list';
 
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import { TAB_BAR_HEIGHT } from '@/constants';
 import type { SearchItem, SearchSectionType } from '@/store/search/searchTypes';
 import { FadeInView } from './FadeInView';
@@ -33,6 +33,7 @@ export function SearchListItems({
   onEndReached,
   isLoadingMore,
 }: SearchListItemsProps) {
+  const tailwind = useTailwind();
   if (useFlashList) {
     return (
       <View style={tailwind.style('flex-1')}>

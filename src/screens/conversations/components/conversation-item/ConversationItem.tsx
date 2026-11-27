@@ -1,9 +1,9 @@
+import { useTailwind } from '@/theme/useTailwind';
 /* eslint-disable react/display-name */
 import React, { memo } from 'react';
 import { ImageURISource } from 'react-native';
 
 import { NativeView } from '@/components-next/native-components';
-import { tailwind } from '@/theme';
 import {
   Agent,
   AvailabilityStatus,
@@ -17,7 +17,8 @@ import { Inbox } from '@/types/Inbox';
 import { ConversationAvatar } from './ConversationAvatar';
 import { ConversationItemDetail } from './ConversationItemDetail';
 import { ConversationSelect } from './ConversationSelect';
-import { SLA } from '@/types/common/SLA';
+import { SLA, SLAEvent } from '@/types/common/SLA';
+import { useIOSListText } from '@/utils';
 
 export type ConversationItemProps = {
   // Basic info
@@ -47,6 +48,7 @@ export type ConversationItemProps = {
         status: string;
       }
     | Record<string, never>;
+  slaEvents?: SLAEvent[];
 
   // Additional data
   additionalAttributes?: ConversationAdditionalAttributes;
@@ -79,12 +81,16 @@ export const ConversationItem = memo(
     slaPolicyId = null,
     appliedSla = null,
     appliedSlaConversationDetails = {},
+    slaEvents,
     additionalAttributes,
     allLabels,
     typingText,
   }: ConversationItemProps) => {
+    const tailwind = useTailwind();
+    const iosList = useIOSListText();
     return (
-      <NativeView style={tailwind.style('px-3 gap-3 flex-row justify-between')}>
+      <NativeView
+        style={tailwind.style('gap-3 flex-row justify-between', iosList ? 'pl-4 pr-1.5' : 'px-3')}>
         <NativeView style={tailwind.style('py-3 flex flex-row')}>
           <ConversationSelect {...{ isSelected, currentState }} />
           <ConversationAvatar
@@ -108,6 +114,7 @@ export const ConversationItem = memo(
             inboxId,
             appliedSla,
             appliedSlaConversationDetails,
+            slaEvents,
             additionalAttributes,
             slaPolicyId,
             currentState,

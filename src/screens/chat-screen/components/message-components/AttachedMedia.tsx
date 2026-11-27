@@ -1,3 +1,4 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { Asset } from 'react-native-image-picker';
@@ -12,7 +13,6 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 import { Image } from 'expo-image';
 
 import { AttachFileIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useScaleAnimation } from '@/utils';
 import { Icon } from '@/components-next/common';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -59,6 +59,7 @@ type AttachedMediaProps = {
 type AttachedImageProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedImage = (props: AttachedImageProps) => {
+  const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
   const dispatch = useAppDispatch();
 
@@ -105,6 +106,7 @@ const AttachedImage = (props: AttachedImageProps) => {
 type AttachedVideoProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedVideo = (props: AttachedVideoProps) => {
+  const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
 
   const dispatch = useAppDispatch();
@@ -184,6 +186,7 @@ const AttachedVideo = (props: AttachedVideoProps) => {
 type AttachedFileProps = AttachedMediaProps & { attachmentsLength: number };
 
 const AttachedFile = (props: AttachedFileProps) => {
+  const tailwind = useTailwind();
   const { item, index, attachmentsLength } = props;
   const dispatch = useAppDispatch();
 
@@ -240,6 +243,7 @@ const AttachedFile = (props: AttachedFileProps) => {
 };
 
 export const AttachedMedia = () => {
+  const tailwind = useTailwind();
   const attachments = useAppSelector(selectAttachments);
 
   const handleRenderItem = ({ item, index }: AttachedMediaProps) => {

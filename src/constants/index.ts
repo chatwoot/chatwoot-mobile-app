@@ -11,6 +11,13 @@ export const SCREENS = {
 };
 
 export const TAB_BAR_HEIGHT = 83;
+export const SIDE_TAB_BAR_WIDTH = 40;
+// Measured inset of side status items.
+export const SIDE_STATUS_COLUMN_SHIFT = 5;
+export const SIDE_TAB_BAR_GAP = 8;
+// Side status bar height, measured.
+export const SIDE_STATUS_BAR_CLEARANCE = 168;
+export const SIDE_STATUS_BAR_CLEARANCE_COMPACT = 214;
 export const TEXT_INPUT_CONTAINER_HEIGHT = 57;
 
 export const userStatusList = [
@@ -239,6 +246,7 @@ export const NOTIFICATION_PREFERENCE_TYPES = {
   push_sla_missed_first_response: 'CONVERSATION_SLA_MISSED_FIRST_RESPONSE',
   push_sla_missed_next_response: 'CONVERSATION_SLA_MISSED_NEXT_RESPONSE',
   push_sla_missed_resolution: 'CONVERSATION_SLA_MISSED_RESOLUTION',
+  push_voice_call_missed: 'VOICE_CALL_MISSED',
 };
 
 export const NOTIFICATION_TYPES = [
@@ -315,6 +323,14 @@ export const VOICE_CALL_PROVIDERS = {
 
 export const VOICE_CALL_END_REASON = {
   AGENT_REJECTED: 'agent_rejected',
+  OUTSIDE_WORKING_HOURS: 'outside_working_hours',
+} as const;
+
+export const VOICE_CALL_FAILURES = {
+  SYSTEM_UI_INCOMING: 'system_ui_incoming',
+  SYSTEM_UI_OUTGOING: 'system_ui_outgoing',
+  TWILIO_CALL_FAILED: 'twilio_call_failed',
+  WEBRTC_CONNECTION_LOST: 'webrtc_connection_lost',
 } as const;
 
 export const ORIENTATION = {

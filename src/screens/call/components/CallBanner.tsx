@@ -3,10 +3,10 @@ import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { LiveCall } from '@/store/call/callTypes';
-import { tailwind } from '@/theme';
+import { useTailwind } from '@/theme/useTailwind';
 import i18n from '@/i18n';
 
-import { CALL_LINK } from '../constants/callTheme';
+import { useCallTheme } from '../constants/callTheme';
 import { useCallStatusText } from '../hooks/useCallStatusText';
 import type { CallStatusFlags } from '../utils/callStatusText';
 
@@ -20,6 +20,8 @@ type CallBannerProps = {
 };
 
 export const CallBanner = ({ call, activeSince, flags, onPress }: CallBannerProps) => {
+  const tailwind = useTailwind();
+  const { CALL_LINK } = useCallTheme();
   const insets = useSafeAreaInsets();
   const statusText = useCallStatusText(call, activeSince, flags);
 
@@ -30,7 +32,12 @@ export const CallBanner = ({ call, activeSince, flags, onPress }: CallBannerProp
       onPress={onPress}
       style={tailwind.style('absolute top-0 left-0 right-0')}>
       <View
-        style={[tailwind.style('px-5'), { paddingTop: insets.top, backgroundColor: CALL_LINK }]}>
+        style={{
+          paddingTop: insets.top,
+          paddingLeft: insets.left + 20,
+          paddingRight: insets.right + 20,
+          backgroundColor: CALL_LINK,
+        }}>
         <View
           style={[
             tailwind.style('flex-row items-center justify-between'),

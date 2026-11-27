@@ -174,6 +174,16 @@ describe('getVoiceCallDisplay', () => {
     expect(display.subtextParams).toEqual({ agentName: 'Sam Taylor' });
   });
 
+  it('marks an inbound call ended outside business hours', () => {
+    const display = getVoiceCallDisplay(
+      buildMessage({}, { status: 'no-answer', endReason: 'outside_working_hours' }),
+    );
+    expect(display).toMatchObject({
+      labelKey: 'CONVERSATION.VOICE_CALL.MISSED_CALL',
+      subtextKey: 'CONVERSATION.VOICE_CALL.MISSED_CALL_OUTSIDE_HOURS',
+    });
+  });
+
   it('treats an outbound no-answer call as the contact not picking up', () => {
     const display = getVoiceCallDisplay(
       buildMessage({ messageType: 1 }, { status: 'no-answer', direction: 'outgoing' }),

@@ -1,12 +1,13 @@
+import { useTailwind } from '@/theme/useTailwind';
 import React from 'react';
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import Markdown, { MarkdownIt } from 'react-native-markdown-display';
 import { Icon } from '@/components-next/common';
 import { CopilotDiscardIcon, CopilotAcceptIcon } from '@/svg-icons';
-import { tailwind } from '@/theme';
 import { useHaptic } from '@/utils';
 import { expandTabs } from '@/utils/expandTabs';
+import { appFont } from '@/theme/appFont';
 
 type CopilotEditorSectionProps = {
   isGenerating: boolean;
@@ -19,17 +20,16 @@ type CopilotEditorSectionProps = {
 const markdownStyles = StyleSheet.create({
   body: {
     fontSize: 14,
-    fontFamily: 'Inter-400-20',
+    ...appFont('Inter-400-20'),
     lineHeight: 21,
     letterSpacing: -0.1,
-    color: tailwind.color('text-slate-950') as string,
   },
   paragraph: {
     marginTop: 0,
     marginBottom: 0,
   },
   strong: {
-    fontFamily: 'Inter-600-20',
+    ...appFont('Inter-600-20'),
     fontWeight: '600',
   },
   em: {
@@ -46,6 +46,7 @@ export const CopilotEditorSection = ({
   onAccept,
   onDiscard,
 }: CopilotEditorSectionProps) => {
+  const tailwind = useTailwind();
   const hapticSelection = useHaptic();
   const displayText = isGenerating ? originalContent : generatedContent;
   const showActions = !isGenerating && generatedContent.length > 0;
@@ -81,7 +82,12 @@ export const CopilotEditorSection = ({
       <ScrollView
         style={tailwind.style('flex-1 max-h-[120px] border border-blackA-A3 rounded-2xl')}
         contentContainerStyle={tailwind.style('px-3 py-2')}>
-        <Markdown style={markdownStyles} markdownit={markdownIt}>
+        <Markdown
+          style={{
+            ...markdownStyles,
+            body: { ...markdownStyles.body, color: tailwind.color('text-gray-950') },
+          }}
+          markdownit={markdownIt}>
           {expandTabs(displayText)}
         </Markdown>
       </ScrollView>

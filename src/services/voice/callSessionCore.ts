@@ -1,5 +1,5 @@
 import { store } from '@/store';
-import { VOICE_CALL_PROVIDERS } from '@/constants';
+import { VOICE_CALL_FAILURES, VOICE_CALL_PROVIDERS } from '@/constants';
 import { callActions } from '@/store/call/callActions';
 import { CallService } from '@/store/call/callService';
 import {
@@ -23,6 +23,7 @@ import {
   selectLocalCallSid,
 } from '@/store/call/callSelectors';
 import { callEngine } from '@/services/voice/callEngine';
+import { callLogger } from '@/services/voice/callLogger';
 import {
   setMicrophoneGrantedHandler,
   setWebrtcConnectionLostHandler,
@@ -202,6 +203,10 @@ const install = () => {
     const active = selectActiveCall(state);
     if (!active || !localCallSid || active.callSid !== localCallSid) return;
     if (active.provider !== VOICE_CALL_PROVIDERS.WHATSAPP) return;
+    callLogger.reportFailure(
+      VOICE_CALL_FAILURES.WEBRTC_CONNECTION_LOST,
+      new Error('WhatsApp call connection lost'),
+    );
     store.dispatch(callActions.endCall());
   });
 
@@ -215,6 +220,12 @@ const install = () => {
       active.provider !== VOICE_CALL_PROVIDERS.TWILIO
     ) {
       return;
+    }
+    if (event.state === 'failed') {
+      callLogger.reportFailure(
+        VOICE_CALL_FAILURES.TWILIO_CALL_FAILED,
+        new Error(event.error || 'Twilio call failed'),
+      );
     }
     store.dispatch(callActions.endCall());
   });

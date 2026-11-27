@@ -125,7 +125,19 @@ export const ChatHeader = ({
         />
       ) : (
         <>
-          {isInPane ? (
+          {isInPane && splitView?.isContactInListPane ? (
+            <SideToolbarButton
+              icon={
+                <ChevronLeft
+                  stroke={tailwind.color('text-gray-950')}
+                  strokeWidth={TOOLBAR_STROKE}
+                />
+              }
+              iconSize={24}
+              onPress={splitView.closeContactInListPane}
+              accessibilityLabel={i18n.t('CONVERSATION.HEADER.BACK')}
+            />
+          ) : isInPane ? (
             <SideToolbarButton
               icon={<CloseIcon stroke={tailwind.color('text-gray-950')} strokeWidth={1.2} />}
               iconSize={28}

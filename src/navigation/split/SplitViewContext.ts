@@ -6,7 +6,10 @@ import { User } from '@/types/User';
 export type SplitViewContextValue = {
   selectedConversationId: number | null;
   openConversation: (conversationId: number) => void;
+  openConversationFromContact: (conversationId: number, contactId: number) => void;
   closeConversation: () => void;
+  isContactInListPane: boolean;
+  closeContactInListPane: () => void;
   secondary: SecondaryColumn | null;
   isSecondaryOpen: boolean;
   openContact: () => void;

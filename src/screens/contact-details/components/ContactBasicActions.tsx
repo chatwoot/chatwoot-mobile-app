@@ -9,7 +9,6 @@ import { useTailwind } from '@/theme/useTailwind';
 import { IOS_DESIGN, useHaptic, useScaleAnimation } from '@/utils';
 import i18n from '@/i18n';
 import { openNumber, openEmail } from '@/utils/urlUtils';
-import { useContainerWidth } from '@/context';
 import { useIsInContactPane } from '@/navigation/split/SplitViewContext';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import type { SheetRef } from '@/components-next/common/sheet/Sheet';
@@ -39,7 +38,6 @@ type ContactOptionProps = {
 const ContactOptionComponent = (props: ContactOptionProps) => {
   const tailwind = useTailwind();
   const isInContactPane = useIsInContactPane() || IOS_DESIGN;
-  const OPTION_WIDTH = (useContainerWidth() - 32 - 12 * 3) / 2;
   const { option, handleOptionPress, disabled = false } = props;
 
   const { handlers, animatedStyle } = useScaleAnimation();
@@ -55,9 +53,8 @@ const ContactOptionComponent = (props: ContactOptionProps) => {
       <Pressable
         style={({ pressed }) => [
           tailwind.style(
-            'flex items-center justify-center flex-1 rounded-xl py-3',
+            'flex items-center justify-center w-full rounded-xl py-3',
             isInContactPane ? 'bg-white' : 'bg-gray-50',
-            `w-[${OPTION_WIDTH}px]`,
             pressed ? 'bg-gray-100' : '',
             disabled ? 'opacity-40' : '',
           ),
@@ -170,7 +167,7 @@ export const ContactBasicActions = (props: ContactBasicActionsProps) => {
 
   if (email && canCall) {
     return (
-      <Animated.View style={[tailwind.style('flex flex-row justify-between '), style]}>
+      <Animated.View style={[tailwind.style('flex flex-row justify-between gap-1'), style]}>
         <ContactOptionComponent
           key="email"
           option={{

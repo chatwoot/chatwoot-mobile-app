@@ -3,3 +3,4 @@ export * from './Copy';
 export * from './Delete';
 export * from './Link';
 export * from './Reply';
+export * from './Share';

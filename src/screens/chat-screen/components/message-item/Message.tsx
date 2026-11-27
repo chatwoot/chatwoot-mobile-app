@@ -36,11 +36,12 @@ import {
 } from '@/constants';
 import i18n from '@/i18n';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { CopyIcon, Trash, ReplyIcon, TranslateIcon } from '@/svg-icons';
 import { setQuoteMessage } from '@/store/conversation/sendMessageSlice';
-import { inboxSupportsReplyTo, isAWhatsAppChannel } from '@/utils';
+import { isAWhatsAppChannel } from '@/utils';
 import { MenuOption, MessageMenu } from '../message-menu';
 import { View, Text } from 'react-native';
+import { buildMessageMenuOptions } from './messageMenuUtils';
+import { downloadAndShareMedia } from '@/utils/mediaShareUtils';
 import { useContainerWidth } from '@/context';
 import { Avatar } from '@/components-next';
 import { useTargetMessageAnimation } from './useTargetMessageAnimation';
@@ -437,64 +438,22 @@ export const MessageComponent = (props: MessageComponentProps) => {
     }
   };
 
+  const handleShareMedia = async (dataUrl: string, fileName?: string) => {
+    hapticSelection?.();
+    if (!dataUrl) return;
+    await downloadAndShareMedia(dataUrl, fileName);
+  };
+
   const getMenuOptions = (message: Message): MenuOption[] => {
-    const {
-      messageType,
-      content,
-      attachments,
-      private: isPrivate,
-      status: messageStatus,
-    } = message;
-    const hasText = !!content;
-    const hasAttachments = !!(attachments && attachments.length > 0);
-    const isDeleted = message.contentAttributes?.deleted;
-    const isFailedOrProcessing =
-      messageStatus === MESSAGE_STATUS.FAILED || messageStatus === MESSAGE_STATUS.PROGRESS;
-
-    const menuOptions: MenuOption[] = [];
-    if (messageType === MESSAGE_TYPES.ACTIVITY || isDeleted) {
-      return [];
-    }
-
-    if (hasText) {
-      menuOptions.push({
-        title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.COPY'),
-        icon: <CopyIcon />,
-        handleOnPressMenuOption: () => handleCopyMessage(content),
-        destructive: false,
-      });
-
-      const targetLanguage = i18n.locale?.split('_')[0] || 'en';
-      const hasTranslationForLocale = !!message.contentAttributes?.translations?.[targetLanguage];
-      if (!hasTranslationForLocale) {
-        menuOptions.push({
-          title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.TRANSLATE'),
-          icon: <TranslateIcon />,
-          handleOnPressMenuOption: () => handleTranslateMessage(message.id),
-          destructive: false,
-        });
-      }
-    }
-
-    if (!isPrivate && !isFailedOrProcessing && inboxSupportsReplyTo(inbox).outgoing) {
-      menuOptions.push({
-        title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.REPLY'),
-        icon: <ReplyIcon />,
-        handleOnPressMenuOption: () => handleQuoteReply(message),
-        destructive: false,
-      });
-    }
-
-    if (hasAttachments || hasText) {
-      menuOptions.push({
-        title: i18n.t('CONVERSATION.LONG_PRESS_ACTIONS.DELETE_MESSAGE'),
-        icon: <Trash />,
-        handleOnPressMenuOption: () => handleDeleteMessage(message.id),
-        destructive: true,
-      });
-    }
-
-    return menuOptions;
+    return buildMessageMenuOptions({
+      message,
+      inbox,
+      onCopyText: handleCopyMessage,
+      onTranslate: handleTranslateMessage,
+      onShareMedia: handleShareMedia,
+      onReply: handleQuoteReply,
+      onDelete: handleDeleteMessage,
+    });
   };
 
   const shouldShowAvatar = () => {

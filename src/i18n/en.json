@@ -343,7 +343,10 @@
       "COPY": "Copy",
       "REPLY": "Reply",
       "DELETE_MESSAGE": "Delete message",
-      "TRANSLATE": "Translate"
+      "TRANSLATE": "Translate",
+      "SHARE_IMAGE": "Share image",
+      "SHARE_VIDEO": "Share video",
+      "SHARE_FILE": "Share file"
     },
     "FAILED_TO_SEND": "Failed to send",
     "RETRY_MESSAGE": "Retry",
